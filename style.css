@@ -53,6 +53,14 @@ li.year-header a { color:#555; }
 ul.top-index { list-style:none; padding:0; }
 ul.top-index li { display:inline-block; margin:.2em .4em; }
 
+/* 検索ボックス (Pagefind UI) */
+div.search-box { margin:1em 0 1.5em; padding:1em 1.2em;
+  background:#f0f4ff; border:1px solid #c0d0ee; border-radius:6px; }
+/* Pagefind UI のデフォルトをサイトに馴染ませる上書き */
+.pagefind-ui__search-input { font-family:inherit; font-size:1em; }
+.pagefind-ui__result-title a { color:#007744; }
+.pagefind-ui__result-excerpt mark { background:#ffe080; color:#222; border-radius:2px; }
+
 /* タイプリンク */
 p.type-links { margin:.5em 0; line-height:2; }
 

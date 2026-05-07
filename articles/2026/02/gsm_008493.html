@@ -2,7 +2,7 @@
 <html lang="ja">
 <head>
 <meta charset="UTF-8">
-<title>共有メモ - JRF Blog Archive</title>
+<title>Gemini 3.1 Pro がハーネス的 Tools でなく bash… - JRF Blog Archive</title>
 <link rel="stylesheet" href="../../../style.css">
 </head>
 <body>
@@ -17,7 +17,7 @@
 
 </table>
 </div>
-<h1>共有メモ</h1>
+<h1>Gemini 3.1 Pro がハーネス的 Tools でなく bash…</h1>
 <pre class="body">jrf&gt; Gemini 3.1 Pro がハーネス的 Tools でなく bash を使いたがる点について。私の MemoryBanditWorkflow で何が足りないかと考えた。おそらく AI さんは、制御構文が欲しい課題については、それを AI 自身の作業過程でなく(計算機的確実性のある)プログラム的に実行したいのではないか。Tool を使いつつ、if や while を許すようなものが欲しいのかもしれない。その制御構文の際、AI さん達の判断・介入を許したいということであれば、MemoryBanditWorkflow では workflow の機能が近い。ただそれは順次実行のみで if や while を許してなかった。それを許せばいいのか？ むしろそこまでするなら、サブエージェントを作って(コールして)指示ができるようにしたほうが素直なのではないか？
 
 それとも YAML を AI が自分でインタープリットしながら実行するという方向がいいのかな？

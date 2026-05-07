@@ -2,7 +2,7 @@
 <html lang="ja">
 <head>
 <meta charset="UTF-8">
-<title>共有メモ - JRF Blog Archive</title>
+<title>(承前) AI… - JRF Blog Archive</title>
 <link rel="stylesheet" href="../../../style.css">
 </head>
 <body>
@@ -17,7 +17,7 @@
 
 </table>
 </div>
-<h1>共有メモ</h1>
+<h1>(承前) AI…</h1>
 <pre class="body">jrf&gt; (承前)
 
 AI さん達に見せびらかすと「忘却」が足りないと言われた。おそらく、忘却は、個々のキーワードや個々のメモリについて(ベース)スコアを設け、それを decay させていけばいいのだろう。個々のメモリ等は、accessed_at と score_at_last_access を持ち、current_score = f(now(), accessed_at, score_at_last_access) などとすればよいのだろう。アクセスするごとに score_at_last_access = current_score + 1 する感じで。

@@ -1,9 +1,18 @@
 <!DOCTYPE html>
 <html lang="ja">
-<head><meta charset="UTF-8"><title>JRF Blog Archive</title>
-<link rel="stylesheet" href="style.css"></head>
+<head>
+<meta charset="UTF-8">
+<title>JRF Blog Archive</title>
+<link rel="stylesheet" href="style.css">
+<link href="pagefind/pagefind-ui.css" rel="stylesheet">
+</head>
 <body>
 <h1>JRF Blog Archive</h1>
+
+<div class="search-box" id="search-box">
+<div id="search"></div>
+</div>
+
 <p class="type-links"><a href="index/column.html">雑記</a>（227件） &nbsp;|&nbsp; <a href="index/religion.html">宗教と動機付け</a>（38件） &nbsp;|&nbsp; <a href="index/society.html">税・経済・法</a>（37件） &nbsp;|&nbsp; <a href="index/software.html">ソフトウェア Tips</a>（82件） &nbsp;|&nbsp; <a href="index/pr.html">勝手に PR</a>（4件） &nbsp;|&nbsp; <a href="index/statuses.html">ひとこと</a>（5423件） &nbsp;|&nbsp; <a href="index/hbm.html">ブックマーク</a>（2047件） &nbsp;|&nbsp; <a href="index/gsm.html">共有メモ</a>（8635件） &nbsp;|&nbsp; <a href="index/tags.html">タグ一覧（175種）</a></p>
 <p>月別インデックス (243 ヶ月分)</p>
 <ul class="top-index">
@@ -274,4 +283,16 @@
 </ul>
 <hr>
 <p><small>このアーカイブは <a href="https://github.com/JRF-2018/jrf_blog_find">jrf_blog_find</a> により自動生成。</small></p>
+<script src="pagefind/pagefind-ui.js"></script>
+<script>
+new PagefindUI({
+  element: "#search",
+  showSubResults: true,
+  resetStyles: false,
+  translations: {
+    placeholder: "検索 (例: cocolog:9644812、aboutme:4032、URL の一部など)",
+    zero_results: "「[SEARCH_TERM]」に一致する記事がありません。"
+  }
+});
+</script>
 </body></html>

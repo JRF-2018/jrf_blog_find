@@ -2,7 +2,7 @@
 <html lang="ja">
 <head>
 <meta charset="UTF-8">
-<title>共有メモ - JRF Blog Archive</title>
+<title>imagine_keywords の話つづき。… - JRF Blog Archive</title>
 <link rel="stylesheet" href="../../../style.css">
 </head>
 <body>
@@ -17,7 +17,7 @@
 
 </table>
 </div>
-<h1>共有メモ</h1>
+<h1>imagine_keywords の話つづき。…</h1>
 <pre class="body">jrf&gt; imagine_keywords の話つづき。
 
 ああ、そうか。memory_read を bandit_schedule するだけでは memory:3333 などが読み出された時点でサブタスクが終了とみなされて次に処理が移ってしまうか。すると、そこから逆算して、subwork_done というツールを作り自らサブタスクの終了を宣言できるようにした上で、bandit_schedule を拡張し、&quot;memory_read subwork_done&quot; みたいに複数の流れを schedule できるようにする必要がある。

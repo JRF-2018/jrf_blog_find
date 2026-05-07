@@ -2,7 +2,7 @@
 <html lang="ja">
 <head>
 <meta charset="UTF-8">
-<title>共有メモ - JRF Blog Archive</title>
+<title>あたり前の話だが、numpy ってオーバーヘッドがすごいんだな。… - JRF Blog Archive</title>
 <link rel="stylesheet" href="../../../style.css">
 </head>
 <body>
@@ -17,7 +17,7 @@
 
 </table>
 </div>
-<h1>共有メモ</h1>
+<h1>あたり前の話だが、numpy ってオーバーヘッドがすごいんだな。…</h1>
 <pre class="body">jrf&gt; あたり前の話だが、numpy ってオーバーヘッドがすごいんだな。
 
 行列を使わず単一の数値に使うとき、例えば np.exp 使うより math.exp 使ったほうが早いし、np.clip も自分で同じ関数書いたほうが早い。np.random.uniform() より random.uniform(0,1) のほうが早い(さらに random.random() のほうが早い)。
