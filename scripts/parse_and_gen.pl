@@ -319,7 +319,7 @@ sub html_article {
     my $url        = $art->{url}   || '';
     my $body       = $art->{body}  || '';
     my $section    = $art->{section} || '';
-    my $disp_title = $title || label_for_type($type);
+    my $disp_title = art_display_title($art);
 
     # --- ID (Pagefind span) ---
     my ($id_str, $id_cell) = ('', '');
@@ -442,7 +442,7 @@ sub build_backref_html {
     for my $item (@found) {
         my $ref   = $item->{art};
         my $href  = $ref->{html_path} ? "${root}$ref->{html_path}" : '#';
-        my $title = $ref->{title} || label_for_type($ref->{type});
+        my $title = art_display_title($ref);
         $html .= sprintf qq(<li><span class="backref-label">%s</span> <a href="%s">%s</a> <span class="backref-date">%s</span></li>\n),
             h($item->{label}), h($href), h($title), h(date_str($ref));
     }
@@ -676,7 +676,7 @@ HTML
             printf $out qq(<details class="month-block">\n<summary><a href="%s">%s年%s月</a> (%d件)</summary>\n<ul class="month-index">\n),
                 $mp, $y, $m, scalar @ms;
             for my $art (@ms) {
-                my $title = $art->{title} || label_for_type($art->{type});
+                my $title = art_display_title($art);
                 my $href  = $art->{html_path} ? "${root}$art->{html_path}" : '#';
                 my $id_d  = $art->{cocolog_id} ? " [cocolog:$art->{cocolog_id}]"
                           : $art->{aboutme_id} ? " [aboutme:$art->{aboutme_id}]"
@@ -768,10 +768,19 @@ sub gen_top_index {
     print $out <<"HTML";
 <!DOCTYPE html>
 <html lang="ja">
-<head><meta charset="UTF-8"><title>JRF Blog Archive</title>
-<link rel="stylesheet" href="style.css"></head>
+<head>
+<meta charset="UTF-8">
+<title>JRF Blog Archive</title>
+<link rel="stylesheet" href="style.css">
+<link href="pagefind/pagefind-ui.css" rel="stylesheet">
+</head>
 <body>
 <h1>JRF Blog Archive</h1>
+
+<div class="search-box" id="search-box">
+<div id="search"></div>
+</div>
+
 <p class="type-links">$type_links &nbsp;|&nbsp; <a href="index/tags.html">タグ一覧（${tag_cnt}種）</a></p>
 <p>月別インデックス (${\scalar @yms} ヶ月分)</p>
 <ul class="top-index">
@@ -787,9 +796,35 @@ HTML
 </ul>
 <hr>
 <p><small>このアーカイブは <a href="https://github.com/JRF-2018/jrf_blog_find">jrf_blog_find</a> により自動生成。</small></p>
+<script src="pagefind/pagefind-ui.js"></script>
+<script>
+new PagefindUI({
+  element: "#search",
+  showSubResults: true,
+  resetStyles: false,
+  translations: {
+    placeholder: "検索 (例: cocolog:9644812、aboutme:4032、URL の一部など)",
+    zero_results: "「[SEARCH_TERM]」に一致する記事がありません。"
+  }
+});
+</script>
 </body></html>
 HTML
     close($out);
+
+    # search.html は index.html へリダイレクト（古いリンク対策）
+    my $spath = "$out_dir/search.html";
+    open(my $sout, '>:encoding(UTF-8)', $spath) or return;
+    print $sout <<'HTML';
+<!DOCTYPE html>
+<html lang="ja">
+<head><meta charset="UTF-8">
+<meta http-equiv="refresh" content="0; url=index.html">
+<title>検索 - JRF Blog Archive</title></head>
+<body><a href="index.html">→ トップページ（検索はこちら）</a></body>
+</html>
+HTML
+    close($sout);
 }
 
 sub gen_css {
@@ -850,6 +885,14 @@ li.year-header a { color:#555; }
 /* トップ月別 */
 ul.top-index { list-style:none; padding:0; }
 ul.top-index li { display:inline-block; margin:.2em .4em; }
+
+/* 検索ボックス (Pagefind UI) */
+div.search-box { margin:1em 0 1.5em; padding:1em 1.2em;
+  background:#f0f4ff; border:1px solid #c0d0ee; border-radius:6px; }
+/* Pagefind UI のデフォルトをサイトに馴染ませる上書き */
+.pagefind-ui__search-input { font-family:inherit; font-size:1em; }
+.pagefind-ui__result-title a { color:#007744; }
+.pagefind-ui__result-excerpt mark { background:#ffe080; color:#222; border-radius:2px; }
 
 /* タイプリンク */
 p.type-links { margin:.5em 0; line-height:2; }
@@ -921,4 +964,29 @@ sub label_for_type {
               software=>'ソフトウェア Tips', pr=>'勝手に PR',
               statuses=>'ひとこと', hbm=>'ブックマーク', gsm=>'共有メモ' );
     return $L{$type} // $type;
+}
+
+# タイトルなし記事（statuses・gsm）は本文冒頭をタイトル代わりに使う
+sub art_display_title {
+    my ($art, $maxlen) = @_;
+    $maxlen //= 40;
+    return $art->{title} if $art->{title};
+    # statuses・gsm：本文冒頭から末尾の「JRF YYYY年...」「○ timestamp」を除いた部分
+    if ($art->{type} eq 'statuses' || $art->{type} eq 'gsm') {
+        my $body = $art->{body} // '';
+        # 末尾の日付行・署名行を除去
+        $body =~ s/\nJRF\s+\d{4}年.*$//s;
+        $body =~ s/^\s*jrf>\s*//;       # "jrf> " 書き出しを除去
+        $body =~ s/^\s*//;
+        # 改行・連続空白を1スペースに
+        $body =~ s/\s+/ /g;
+        $body =~ s/^\s+|\s+$//g;
+        if (length($body) > $maxlen) {
+            $body = substr($body, 0, $maxlen);
+            $body =~ s/\s+\S*$//;  # 単語境界で切る
+            $body .= '…';
+        }
+        return $body || label_for_type($art->{type});
+    }
+    return label_for_type($art->{type});
 }
