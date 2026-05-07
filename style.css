@@ -105,6 +105,7 @@ details.month-block > summary::before { content:"▶ "; font-size:.8em; }
 details.month-block[open] > summary::before { content:"▼ "; }
 details.month-block > summary:hover { background:#e0e8ff; }
 details.month-block > summary a { color:#333; }
+span.all-month-link { font-size:.8em; color:#888; font-weight:normal; }
 /* タグ一覧 */
 ul.tag-cloud { list-style:none; padding:0; }
 ul.tag-cloud > li { display:inline-block; margin:.2em .3em; vertical-align:middle; position:relative; }
