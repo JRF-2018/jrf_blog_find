@@ -224,18 +224,25 @@ sub parse_blog {
         $body = $1 if $chunk =~ /\d{2}:\d{2}:\d{2}[^\n]*\n+(.*?)(?=\nTrackbacks?:|\z)/s;
         $body =~ s/\s+$//;
         my @tbs;
+        my @links_raw;  # Links: セクションの生テキスト行
         if ($chunk =~ /Trackbacks?:\n+(.*)\z/s) {
-            my $tb = $1;
-            while ($tb =~ /《([^》]*)》 from ([^\n]*)\n(https?:\/\/\S+)\n\n(.*?)(?=\n《|\z)/gs) {
+            my $tb_text = $1;
+            # Trackback本体
+            while ($tb_text =~ /《([^》]*)》 from ([^\n]*)\n(https?:\/\/\S+)\n\n(.*?)(?=\n《|\nLinks:|\z)/gs) {
                 push @tbs, {title=>$1, from=>$2, url=>$3, excerpt=>$4};
+            }
+            # Links: セクション
+            if ($tb_text =~ /\nLinks:\n\n(.*)\z/s) {
+                @links_raw = split /\n/, $1;
+                @links_raw = grep { /\S/ } @links_raw;
             }
         }
         push @arts, {
             type=>$type, cocolog_id=>$cid, id=>"${type}_${cid}",
             title=>$title, url=>$url,
             year=>$year, month=>$month, day=>$day, time_str=>$time_str,
-            tags=>\@tags, body=>$body, trackbacks=>\@tbs, section=>$sec_name,
-            html_path=>'',
+            tags=>\@tags, body=>$body, trackbacks=>\@tbs, links=>\@links_raw,
+            section=>$sec_name, html_path=>'',
         };
     }
     return @arts;
@@ -435,6 +442,29 @@ sub html_article {
         }
     }
 
+    # --- Links セクション（Trackback後に来る「名前: URL」リスト）---
+    my $links_html = '';
+    if ($art->{links} && @{ $art->{links} }) {
+        $links_html = "\nLinks:\n\n";
+        for my $line (@{ $art->{links} }) {
+            if ($line =~ /^(.+?):\s+(https?:\/\/\S+)\s*$/) {
+                my ($name, $url2) = ($1, $2);
+                my $name_h = h($name);
+                my $url2_h = h($url2);
+                if (my $art2 = $url_to_art{$url2}) {
+                    my $path2  = $art2->{html_path} or next;
+                    my $ihref  = h($root . $path2);
+                    my $title2 = h($art2->{title} || label_for_type($art2->{type}));
+                    $links_html .= qq($name_h: <a href="$ihref" class="int-link" title="$title2">$url2_h</a>\n);
+                } else {
+                    $links_html .= qq($name_h: <a href="$url2_h" class="ext-link">$url2_h</a>\n);
+                }
+            } else {
+                $links_html .= h($line) . "\n";
+            }
+        }
+    }
+
     # --- 後方参照 ---
     my $backref_html = build_backref_html($art, $root);
 
@@ -460,7 +490,8 @@ ${\ ($tags_html ? "<tr><th>タグ</th><td>$tags_html</td></tr>" : '')}
 </div>
 <h1>${\h($disp_title)}</h1>
 <pre class="body">$body_html</pre>
-${\($tb_html ? "<pre class=\"trackbacks\">$tb_html</pre>" : '')}
+${\($tb_html    ? "<pre class=\"trackbacks\">$tb_html</pre>"    : '')}
+${\($links_html ? "<pre class=\"links\">$links_html</pre>"      : '')}
 $backref_html
 </article>
 $prevnext_html
@@ -624,6 +655,22 @@ sub idref_to_link {
     my $ihref = h($root . $art->{html_path});
     my $title = h($art->{title} || label_for_type($art->{type}));
     return qq(<a href="$ihref" class="int-link cocolog-id" title="$title">$tag_h</a>);
+}
+
+# --- Links: ブロックの「名前: URL」→ 「名前: <a href>URL</a>」 ---
+sub links_item_to_html {
+    my ($lnk, $root) = @_;
+    my $name = h($lnk->{name});
+    my $url  = $lnk->{url};
+    my $url_h = h($url);
+    # 内部リンク判定
+    if (my $art = $url_to_art{$url}) {
+        my $path  = $art->{html_path} or return "$name: <a href=\"$url_h\" class=\"ext-link\">$url_h</a>";
+        my $ihref = h($root . $path);
+        my $title = h($art->{title} || label_for_type($art->{type}));
+        return qq($name: <a href="$ihref" class="int-link" title="$title">$url_h</a>);
+    }
+    return qq($name: <a href="$url_h" class="ext-link">$url_h</a>);
 }
 
 # --- [google:クエリ] / [wikipedia:項目名] → 外部リンク ---
@@ -1183,6 +1230,8 @@ pre.body { background:#fff; border:1px solid #ddd; padding:1em;
   white-space:pre-wrap; word-break:break-all; line-height:1.8; margin:0; }
 /* Trackback */
 pre.trackbacks { background:#f8f8f8; border:1px dashed #bbb; margin-top:.5em;
+  padding:.5em 1em; white-space:pre-wrap; word-break:break-all; font-size:.9em; }
+pre.links { background:#f0f8ff; border:1px solid #b8d4ee; margin-top:.3em;
   padding:.5em 1em; white-space:pre-wrap; word-break:break-all; font-size:.9em; }
 /* 後方参照 */
 section.backrefs { margin-top:1.2em; padding:.6em 1em;
