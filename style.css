@@ -6,24 +6,32 @@ nav { margin:.4em 0 .8em; font-size:.9em; }
 nav a { margin-right:.8em; }
 h1 { font-size:1.3em; border-bottom:1px solid #ccc; padding-bottom:.3em; }
 h2 { font-size:1.1em; margin-top:1.5em; border-left:3px solid #888; padding-left:.5em; }
-
+/* サイトヘッダー */
+div.site-header { display:flex; align-items:center; gap:.8em; margin-bottom:.3em; }
+div.site-header h1 { border:none; margin:0; padding:0; }
+a.gh-icon-link { flex-shrink:0; }
+img.gh-icon { width:48px; height:48px; border-radius:50%; border:2px solid #ccc; display:block; }
+/* 説明文 */
+p.site-desc { font-size:.88em; color:#555; background:#f5f5f5;
+  border-left:3px solid #bbb; padding:.5em .8em; margin:.5em 0 1em; line-height:1.6; }
+/* 検索ボックス */
+div.search-box { margin:1em 0 1.5em; padding:1em 1.2em;
+  background:#f0f4ff; border:1px solid #c0d0ee; border-radius:6px; }
+.pagefind-ui__search-input { font-family:inherit; font-size:1em; }
+.pagefind-ui__result-title a { color:#007744; }
+.pagefind-ui__result-excerpt mark { background:#ffe080; color:#222; border-radius:2px; }
 /* meta テーブル */
 div.meta { margin-bottom:.8em; }
 table.meta-table { border-collapse:collapse; font-size:.85em; width:100%; }
 table.meta-table th { background:#eee; padding:.2em .6em; text-align:left;
   white-space:nowrap; border:1px solid #ccc; width:5em; vertical-align:top; }
 table.meta-table td { padding:.2em .6em; border:1px solid #ccc; word-break:break-all; }
-
 /* 本文 */
 pre.body { background:#fff; border:1px solid #ddd; padding:1em;
   white-space:pre-wrap; word-break:break-all; line-height:1.8; margin:0; }
-
-/* Trackback 折りたたみ */
-details.trackbacks { margin-top:.5em; font-size:.9em; }
-details.trackbacks summary { cursor:pointer; color:#666; padding:.2em; }
-details.trackbacks pre { background:#f8f8f8; border:1px dashed #bbb;
-  padding:.5em 1em; white-space:pre-wrap; word-break:break-all; }
-
+/* Trackback */
+pre.trackbacks { background:#f8f8f8; border:1px dashed #bbb; margin-top:.5em;
+  padding:.5em 1em; white-space:pre-wrap; word-break:break-all; font-size:.9em; }
 /* 後方参照 */
 section.backrefs { margin-top:1.2em; padding:.6em 1em;
   background:#f0f4ff; border:1px solid #c0d0ee; border-radius:4px; }
@@ -34,36 +42,43 @@ section.backrefs li:last-child { border-bottom:none; }
 .backref-label { font-size:.78em; color:#446; background:#dde;
   padding:.1em .35em; border-radius:3px; margin-right:.4em; white-space:nowrap; }
 .backref-date  { font-size:.78em; color:#888; margin-left:.4em; }
-
+/* 前後記事ナビ */
+nav.prevnext { display:flex; justify-content:space-between; flex-wrap:wrap;
+  gap:.5em; margin:1em 0 .5em; padding:.6em .8em;
+  background:#f8f8f8; border:1px solid #ddd; border-radius:4px; font-size:.88em; }
+.prev-art { flex:1; text-align:left; }
+.next-art { flex:1; text-align:right; }
+.pn-date  { font-size:.85em; color:#888; }
 /* ID / URL */
 span.cocolog-id { font-family:monospace; background:#eef; padding:.1em .4em;
   border-radius:3px; font-size:.9em; }
 span.original-url { word-break:break-all; }
-
 /* 画像 */
-img.thumb { max-width:300px; max-height:300px; vertical-align:middle; border:1px solid #ccc; }
-
-/* 月別インデックス */
+img.thumb { max-width:300px; max-height:300px; vertical-align:middle;
+  border:2px solid #aaa; border-radius:3px; cursor:pointer; transition:border-color .15s; }
+img.thumb:hover { border-color:#007744; }
+a:has(> img.thumb) { display:inline-block; }
+/* サブブログバッジ */
+span.type-badge { display:inline-block; font-size:.72em; padding:.05em .35em;
+  border-radius:3px; margin-right:.3em; vertical-align:middle;
+  white-space:nowrap; font-weight:500; }
+.badge-column   { background:#ddeeff; color:#224477; }
+.badge-religion { background:#ffe8dd; color:#773322; }
+.badge-society  { background:#ddffd8; color:#225522; }
+.badge-software { background:#eeddff; color:#442277; }
+.badge-pr       { background:#fff0cc; color:#664400; }
+.badge-statuses { background:#ffeeff; color:#553355; }
+.badge-hbm      { background:#e8f5e9; color:#2e7d32; }
+.badge-gsm      { background:#e3f2fd; color:#1565c0; }
+.badge-other    { background:#eee;    color:#555; }
+/* インデックス共通 */
 ul.month-index { list-style:none; padding:0; }
 ul.month-index li { border-bottom:1px solid #eee; padding:.25em 0; }
 li.year-header { font-weight:bold; margin-top:.8em; color:#555; }
 li.year-header a { color:#555; }
-
-/* トップ月別 */
 ul.top-index { list-style:none; padding:0; }
 ul.top-index li { display:inline-block; margin:.2em .4em; }
-
-/* 検索ボックス (Pagefind UI) */
-div.search-box { margin:1em 0 1.5em; padding:1em 1.2em;
-  background:#f0f4ff; border:1px solid #c0d0ee; border-radius:6px; }
-/* Pagefind UI のデフォルトをサイトに馴染ませる上書き */
-.pagefind-ui__search-input { font-family:inherit; font-size:1em; }
-.pagefind-ui__result-title a { color:#007744; }
-.pagefind-ui__result-excerpt mark { background:#ffe080; color:#222; border-radius:2px; }
-
-/* タイプリンク */
 p.type-links { margin:.5em 0; line-height:2; }
-
 /* タイプ別インデックス: 月折りたたみ */
 details.month-block { margin:.3em 0; }
 details.month-block > summary { cursor:pointer; font-weight:bold;
@@ -73,10 +88,9 @@ details.month-block > summary::before { content:"▶ "; font-size:.8em; }
 details.month-block[open] > summary::before { content:"▼ "; }
 details.month-block > summary:hover { background:#e0e8ff; }
 details.month-block > summary a { color:#333; }
-
 /* タグ一覧 */
 ul.tag-cloud { list-style:none; padding:0; }
-ul.tag-cloud > li { display:inline-block; margin:.2em .3em; vertical-align:middle; }
+ul.tag-cloud > li { display:inline-block; margin:.2em .3em; vertical-align:middle; position:relative; }
 ul.tag-cloud details > summary { cursor:pointer; }
 ul.tag-cloud details > summary::-webkit-details-marker { display:none; }
 .tag-xl > details > summary { font-size:1.3em; font-weight:bold; }
@@ -86,18 +100,13 @@ ul.tag-cloud details > summary::-webkit-details-marker { display:none; }
 ul.tag-cloud details ul { list-style:none; padding:.3em 0 .3em 1em; margin:.2em 0 0;
   background:#f8f8ff; border:1px solid #ddf; border-radius:3px; min-width:220px;
   position:absolute; z-index:10; box-shadow:2px 2px 6px rgba(0,0,0,.15); }
-ul.tag-cloud > li { position:relative; }
-
+/* リンク色 */
 a { color:#0066cc; } a:visited { color:#6600cc; }
-/* 内部リンク（アーカイブ内の記事へのリンク）*/
 a.int-link         { color:#007744; font-weight:500; }
 a.int-link:visited { color:#005533; }
 a.int-link:hover   { color:#00aa55; text-decoration:underline; }
 a.int-link.cocolog-id { background:#e8f5ee; padding:.05em .3em; border-radius:3px; }
-/* gsm >>タイムスタンプ参照 */
-a.int-link.gsm-tsref   { background:#e8f0ff; padding:.05em .3em; border-radius:3px; }
-span.gsm-tsref         { background:#f4f4f4; padding:.05em .3em; border-radius:3px; color:#888; }
-/* 外部リンク */
-a.ext-link         { color:#0066cc; }
-a.ext-link:visited { color:#6600cc; }
+a.int-link.gsm-tsref  { background:#e8f0ff; padding:.05em .3em; border-radius:3px; }
+span.gsm-tsref { background:#f4f4f4; padding:.05em .3em; border-radius:3px; color:#888; }
+a.ext-link { color:#0066cc; } a.ext-link:visited { color:#6600cc; }
 .bottom { margin-top:2em; border-top:1px solid #ccc; padding-top:.5em; font-size:.9em; }
