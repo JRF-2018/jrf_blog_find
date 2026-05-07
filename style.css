@@ -53,11 +53,25 @@ nav.prevnext { display:flex; justify-content:space-between; flex-wrap:wrap;
 span.cocolog-id { font-family:monospace; background:#eef; padding:.1em .4em;
   border-radius:3px; font-size:.9em; }
 span.original-url { word-break:break-all; }
-/* 画像 */
-img.thumb { max-width:300px; max-height:300px; vertical-align:middle;
-  border:2px solid #aaa; border-radius:3px; cursor:pointer; transition:border-color .15s; }
-img.thumb:hover { border-color:#007744; }
-a:has(> img.thumb) { display:inline-block; }
+/* 画像: クリック可（サムネイル→フル）は枠・ポインタ */
+a.thumb-link { display:inline-block; }
+a.thumb-link img.thumb { border:2px solid #aaa; border-radius:3px;
+  cursor:pointer; transition:border-color .15s; }
+a.thumb-link:hover img.thumb { border-color:#007744; }
+/* 画像: 単体（クリック不可）は枠なし */
+img.thumb-plain { max-width:300px; max-height:300px; vertical-align:middle; }
+img.thumb { max-width:300px; max-height:300px; vertical-align:middle; }
+/* タグリンク */
+a.tag-link { color:#333; text-decoration:none; font-size:.9em;
+  background:#f0f0f8; border:1px solid #c8c8e0; border-radius:3px;
+  padding:.05em .3em; margin:.1em; display:inline-block; }
+a.tag-link:hover { background:#e0e8ff; border-color:#88a; }
+/* keyword リンク */
+span.keyword-ref { display:inline-block; background:#fff8e8;
+  border:1px solid #e8d890; border-radius:3px; padding:.1em .4em;
+  font-size:.9em; margin:.1em 0; }
+a.keyword-link { color:#885500; font-weight:500; }
+a.keyword-link:hover { color:#cc7700; }
 /* サブブログバッジ */
 span.type-badge { display:inline-block; font-size:.72em; padding:.05em .35em;
   border-radius:3px; margin-right:.3em; vertical-align:middle;
@@ -109,4 +123,15 @@ a.int-link.cocolog-id { background:#e8f5ee; padding:.05em .3em; border-radius:3p
 a.int-link.gsm-tsref  { background:#e8f0ff; padding:.05em .3em; border-radius:3px; }
 span.gsm-tsref { background:#f4f4f4; padding:.05em .3em; border-radius:3px; color:#888; }
 a.ext-link { color:#0066cc; } a.ext-link:visited { color:#6600cc; }
+/* タグリンク（meta欄） */
+a.tag-link { color:#333; text-decoration:none; font-size:.9em;
+  background:#f0f0f8; border:1px solid #c8c8e0; border-radius:3px;
+  padding:.05em .3em; margin:.05em; display:inline-block; }
+a.tag-link:hover { background:#e0e8ff; border-color:#88a; }
+/* keyword: リンク */
+span.keyword-ref { display:inline-block; background:#fff8e8;
+  border:1px solid #e8d890; border-radius:3px; padding:.1em .4em;
+  font-size:.9em; margin:.1em 0; }
+a.keyword-link { color:#885500; font-weight:500; }
+a.keyword-link:hover { color:#cc7700; }
 .bottom { margin-top:2em; border-top:1px solid #ccc; padding-top:.5em; font-size:.9em; }

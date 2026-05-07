@@ -14,7 +14,7 @@
 <tr><th>セクション</th><td>JRF のソフトウェア Tips</td></tr>
 <tr><th>日時</th><td><a href="../../../index/2020/02.html">2020年02月07日 01:45:07</a></td></tr>
 <tr><th>元URL</th><td><a href="http://jrf.cocolog-nifty.com/software/2020/02/post-c87651.html" class="ext-link"><span class="original-url">http://jrf.cocolog-nifty.com/software/2020/02/post-c87651.html</span></a></td></tr>
-<tr><th>タグ</th><td>[Python] [人工知能・機械学習]</td></tr>
+<tr><th>タグ</th><td><a href="../../../index/tag/Python.html" class="tag-link">[Python]</a> <a href="../../../index/tag/%E4%BA%BA%E5%B7%A5%E7%9F%A5%E8%83%BD%E3%83%BB%E6%A9%9F%E6%A2%B0%E5%AD%A6%E7%BF%92.html" class="tag-link">[人工知能・機械学習]</a></td></tr>
 </table>
 </div>
 <h1>Predictor - Actor (- Recollector) モデルと負の学習</h1>
@@ -92,7 +92,7 @@ Done at  108
 
 Windows ではアラームが鳴ったあと、次のアニメーションが得られる。(アラームを鳴らすには、pip install pygame する必要がある。元のサイズは 600x400 だが 300x200 にしてある。)
 
-<img src="../../../images/e01_car_optimizer.gif" alt="e01_car_optimizer.gif" class="thumb">
+<img src="../../../images/e01_car_optimizer.gif" alt="e01_car_optimizer.gif" class="thumb-plain">
 
 しかし、action の長さが 100 を越えるというのは長過ぎで、これを学習していくのは難し過ぎるだろう。…ということで、あまりやってはいけないことかもしれないが、MoutainCarContinuous の env.unwrapped の power と max_speed をいじって、もっと短い解を出すことを考える。
 
@@ -210,7 +210,7 @@ Done:  [-0.858027, -0.9698391, 1.0400538, 1.039655, -0.0064819604]
 
 次のようなアニメーションを出力する。
 
-<img src="../../../images/e04_test_recollector_tf1_1.gif" alt="e04_test_recollector_tf1_1.gif" class="thumb">
+<img src="../../../images/e04_test_recollector_tf1_1.gif" alt="e04_test_recollector_tf1_1.gif" class="thumb-plain">
 
 先に述べたように実際の入力は action を二乗したものである。その一方、 optimizer への入力は、二乗をしてないものである。OptForStep のあとの行の数値の列が次からとるべき action の列を表している。current が「環境」、 purpose が「予想」で、そこから Actor が導き出したのが act であるが、それが合うべきは act を二乗した act^2 が、上の行の最初の数値と合致していればうまくいっている証拠である。
 
@@ -346,7 +346,7 @@ Done:  [0.7458111, 1.097463, 0.629207]
 
 アニメーションは次のようになる。
 
-<img src="../../../images/e04_test_recollector_tf1_2.gif" alt="e04_test_recollector_tf1_2.gif" class="thumb">
+<img src="../../../images/e04_test_recollector_tf1_2.gif" alt="e04_test_recollector_tf1_2.gif" class="thumb-plain">
 
 ちゃんと動いてはいる。
 

@@ -14,7 +14,7 @@
 <tr><th>セクション</th><td>JRF のソフトウェア Tips</td></tr>
 <tr><th>日時</th><td><a href="../../../index/2019/01.html">2019年01月26日 00:23:09</a></td></tr>
 <tr><th>元URL</th><td><a href="http://jrf.cocolog-nifty.com/software/2019/01/post.html" class="ext-link"><span class="original-url">http://jrf.cocolog-nifty.com/software/2019/01/post.html</span></a></td></tr>
-<tr><th>タグ</th><td>[Python] [人工知能・機械学習]</td></tr>
+<tr><th>タグ</th><td><a href="../../../index/tag/Python.html" class="tag-link">[Python]</a> <a href="../../../index/tag/%E4%BA%BA%E5%B7%A5%E7%9F%A5%E8%83%BD%E3%83%BB%E6%A9%9F%E6%A2%B0%E5%AD%A6%E7%BF%92.html" class="tag-link">[人工知能・機械学習]</a></td></tr>
 </table>
 </div>
 <h1>機械学習の練習のため競争的な学習の実験をしてみた</h1>
@@ -216,7 +216,7 @@ hidden_size = 7 でそこそこうまくいく。
 
 そして comp_learn_1_1.png が表示される。もちろん、乱数を使っているので、このままの数値にはならない。
 
-<img src="../../../images/comp_learn_1_1.png" alt="comp_learn_1_1.png" class="thumb">
+<img src="../../../images/comp_learn_1_1.png" alt="comp_learn_1_1.png" class="thumb-plain">
 
 hidden_size = 10 にすればかなりうまくいく。
 
@@ -230,7 +230,7 @@ hidden_size = 10 にすればかなりうまくいく。
 
 そして comp_learn_1_2.png が表示される。
 
-<img src="../../../images/comp_learn_1_2.png" alt="comp_learn_1_2.png" class="thumb">
+<img src="../../../images/comp_learn_1_2.png" alt="comp_learn_1_2.png" class="thumb-plain">
 
 ところで、『ゼロから作る Deep Learning』の Affine レイヤの初期値をすでにいじっている。元の初期値で 0.01 を乱数にかけているのをこれまでは 0.5 をかけたものに変えていた。元の初期値でやるとまったくうまくいかない。
 
@@ -244,7 +244,7 @@ hidden_size = 10 にすればかなりうまくいく。
 
 そして comp_learn_1_3.png が表示される。
 
-<img src="../../../images/comp_learn_1_3.png" alt="comp_learn_1_3.png" class="thumb">
+<img src="../../../images/comp_learn_1_3.png" alt="comp_learn_1_3.png" class="thumb-plain">
 
 「負の学習」も試してみよう。
 
@@ -258,7 +258,7 @@ hidden_size = 10 にすればかなりうまくいく。
 
 そして comp_learn_1_4.png が表示される。
 
-<img src="../../../images/comp_learn_1_4.png" alt="comp_learn_1_4.png" class="thumb">
+<img src="../../../images/comp_learn_1_4.png" alt="comp_learn_1_4.png" class="thumb-plain">
 
 若干、下がるのが早い気がするが、最終的には学習の損失は少し高いところで止まっているように見える。早いのはもしかすると効果があるということかもしれないが、あってもその効果は大きくなさそうだ。高止まりするのは、むしろ「負の学習」で最適なところから動いてしまうのが問題なのだろう。ちなみに --learning-rate=0 --negative-learning-rate=0.1 として「負の学習」のみをさせた場合は、損失が発散してしまい、大きく失敗する。
 
@@ -274,7 +274,7 @@ hidden_size = 10 にすればかなりうまくいく。
 
 そして comp_learn_1_5.png が表示される。
 
-<img src="../../../images/comp_learn_1_5.png" alt="comp_learn_1_5.png" class="thumb">
+<img src="../../../images/comp_learn_1_5.png" alt="comp_learn_1_5.png" class="thumb-plain">
 
 かなりうまくいったようだ。
 

@@ -295,14 +295,27 @@ GitHub は <a href="https://github.com/JRF-2018">https://github.com/JRF-2018</a>
 <p><small>このアーカイブは <a href="https://github.com/JRF-2018/jrf_blog_find">jrf_blog_find</a> により自動生成。</small></p>
 <script src="pagefind/pagefind-ui.js"></script>
 <script>
-new PagefindUI({
-  element: "#search",
-  showSubResults: true,
-  resetStyles: false,
-  translations: {
-    placeholder: "検索 (例: cocolog:9644812、aboutme:4032、URL の一部など)",
-    zero_results: "「[SEARCH_TERM]」に一致する記事がありません。"
-  }
-});
+var pfUI;
+if (typeof PagefindUI !== 'undefined') {
+  pfUI = new PagefindUI({
+    element: "#search",
+    showSubResults: true,
+    resetStyles: false,
+    translations: {
+      placeholder: "検索 (例: cocolog:9644812、aboutme:4032、URL の一部など)",
+      zero_results: "「[SEARCH_TERM]」に一致する記事がありません。"
+    }
+  });
+} else {
+  document.getElementById('search').innerHTML =
+    '<p style="color:#888;font-size:.9em">（検索インデックス未生成。GitHub Actions 実行後に利用可能になります。）</p>';
+}
+function doSearch(el) {
+  var kw = el.getAttribute('data-kw');
+  if (!kw || !pfUI) return;
+  event.preventDefault();
+  pfUI.triggerSearch(kw);
+  document.getElementById('search-box').scrollIntoView({behavior:'smooth'});
+}
 </script>
 </body></html>

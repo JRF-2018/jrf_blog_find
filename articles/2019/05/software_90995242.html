@@ -14,7 +14,7 @@
 <tr><th>セクション</th><td>JRF のソフトウェア Tips</td></tr>
 <tr><th>日時</th><td><a href="../../../index/2019/05.html">2019年05月16日 05:49:50</a></td></tr>
 <tr><th>元URL</th><td><a href="http://jrf.cocolog-nifty.com/software/2019/05/post-3c97df.html" class="ext-link"><span class="original-url">http://jrf.cocolog-nifty.com/software/2019/05/post-3c97df.html</span></a></td></tr>
-<tr><th>タグ</th><td>[Python] [人工知能・機械学習]</td></tr>
+<tr><th>タグ</th><td><a href="../../../index/tag/Python.html" class="tag-link">[Python]</a> <a href="../../../index/tag/%E4%BA%BA%E5%B7%A5%E7%9F%A5%E8%83%BD%E3%83%BB%E6%A9%9F%E6%A2%B0%E5%AD%A6%E7%BF%92.html" class="tag-link">[人工知能・機械学習]</a></td></tr>
 </table>
 </div>
 <h1>ニューラルネットで負の学習: 競争的な学習の実験 その２</h1>
@@ -199,7 +199,7 @@ TensorFlow バージョンはアーカイブには入っているが、ここで
   
 詳しくは前回を見ていただきたいが、--hidden-size=10 より大きくないとうまくいかなかった。--hidden-size=10 の結果 comp_learn_1_2.png を再掲する。
 
-<img src="../../../images/comp_learn_1_2.png" alt="comp_learn_1_2.png" class="thumb">
+<img src="../../../images/comp_learn_1_2.png" alt="comp_learn_1_2.png" class="thumb-plain">
 
 comp_learn_3.py を --neg-coeff=-1.0, --neg-sigma=1.0 で実行すると、劇的に改善され、これまで以上にうまくいく。
 
@@ -213,7 +213,7 @@ comp_learn_3.py を --neg-coeff=-1.0, --neg-sigma=1.0 で実行すると、劇�
 
 そして comp_learn_3_2.png が表示される。
 
-<img src="../../../images/comp_learn_3_2.png" alt="comp_learn_3_2.png" class="thumb">
+<img src="../../../images/comp_learn_3_2.png" alt="comp_learn_3_2.png" class="thumb-plain">
 
 前回はさほどよくなかった --hidden-size=7 でさえうまくいく。% python comp_learn_3.py
 :
@@ -225,7 +225,7 @@ comp_learn_3.py を --neg-coeff=-1.0, --neg-sigma=1.0 で実行すると、劇�
 
 そして comp_learn_3_3.png が表示される。
 
-<img src="../../../images/comp_learn_3_3.png" alt="comp_learn_3_3.png" class="thumb">
+<img src="../../../images/comp_learn_3_3.png" alt="comp_learn_3_3.png" class="thumb-plain">
 
 一方、結果は載せないが、--neg-coeff=1.0 や --neg-coeff=0.5 などはまったくうまくいかない。
 
@@ -245,7 +245,7 @@ comp_learn_4.py に移ろう。--neg-mid=0.5, --neg-bs-first=0.1, --neg-bs-mid=0
 
 そして comp_learn_4_1.png が表示される。少し改善されるようだ。
 
-<img src="../../../images/comp_learn_4_1.png" alt="comp_learn_4_1.png" class="thumb">
+<img src="../../../images/comp_learn_4_1.png" alt="comp_learn_4_1.png" class="thumb-plain">
 
 が、そもそも --neg-coeff がないとうまくいかない。
 
@@ -259,7 +259,7 @@ comp_learn_4.py に移ろう。--neg-mid=0.5, --neg-bs-first=0.1, --neg-bs-mid=0
 
 そして comp_learn_4_2.png が表示される。最初に再掲したものと比べると少し悪化しているぐらいかもしれない。
 
-<img src="../../../images/comp_learn_4_2.png" alt="comp_learn_4_2.png" class="thumb">
+<img src="../../../images/comp_learn_4_2.png" alt="comp_learn_4_2.png" class="thumb-plain">
 
 --neg-mid だけを削ることもやってみたが、comp_learn_3.py と同じレベルに落ち着き、あったほうがこころなしか良いという結果になった。
 

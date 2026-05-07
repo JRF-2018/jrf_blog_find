@@ -14,19 +14,19 @@
 <tr><th>セクション</th><td>JRF の私見：雑記</td></tr>
 <tr><th>日時</th><td><a href="../../../index/2011/01.html">2011年01月20日 19:41:29</a></td></tr>
 <tr><th>元URL</th><td><a href="http://jrf.cocolog-nifty.com/column/2011/01/post-1.html" class="ext-link"><span class="original-url">http://jrf.cocolog-nifty.com/column/2011/01/post-1.html</span></a></td></tr>
-<tr><th>タグ</th><td>[論理学] [精神分裂病] [情報工学・コンピュータ科学] [ストーリー]</td></tr>
+<tr><th>タグ</th><td><a href="../../../index/tag/%E8%AB%96%E7%90%86%E5%AD%A6.html" class="tag-link">[論理学]</a> <a href="../../../index/tag/%E7%B2%BE%E7%A5%9E%E5%88%86%E8%A3%82%E7%97%85.html" class="tag-link">[精神分裂病]</a> <a href="../../../index/tag/%E6%83%85%E5%A0%B1%E5%B7%A5%E5%AD%A6%E3%83%BB%E3%82%B3%E3%83%B3%E3%83%94%E3%83%A5%E3%83%BC%E3%82%BF%E7%A7%91%E5%AD%A6.html" class="tag-link">[情報工学・コンピュータ科学]</a> <a href="../../../index/tag/%E3%82%B9%E3%83%88%E3%83%BC%E3%83%AA%E3%83%BC.html" class="tag-link">[ストーリー]</a></td></tr>
 </table>
 </div>
 <h1>時間泥棒の夕べ − 排中律と call/cc</h1>
 <pre class="body">「量子」という考え方を御存知あろう。その特徴として、複数の排他的状態が「可能性」として現実に並存し、観測によってその状態が確定する解釈が有名である。&lt;ruby&gt;&lt;rb&gt;喩&lt;/rb&gt;&lt;rt&gt;たと&lt;/rt&gt;&lt;/ruby&gt;えれば、先に書いた七芒星の埋め込みの記事で、平面への展開図が発散する方向は確定していないが、空間への埋め込みにおいては、グラフの作画者はスピンの巻き方を左(InLeft)か右(InRight)に決定せざるをえないようなものだ。
 
-  <a href="../../../images/seven_tops_six_forks.jpg"><img src="../../../images/thumbnail-seven_tops_six_forks.jpg" alt="七芒星のポスター" class="thumb"></a>
+  <a href="../../../images/seven_tops_six_forks.jpg" class="thumb-link"><img src="../../../images/thumbnail-seven_tops_six_forks.jpg" alt="七芒星のポスター" class="thumb"></a>
   
   この図のグラフでは、Y = 1/X の Y 軸の発散部分を三次元の円筒上に「繰り込ん」で、そこに七芒星を描いています。それを平面に直したグラフも描いていますが、星型の辺部分は、単純に点を直線でつないでいるだけですから、無限に発散する部分は必ずしも、プラスとマイナスで逆方向に描く必要はありません。
   
 一方、そう意志を持ってなされた実験において、そういったスピンを持った「量子」が、どの方向に向かっているかはわかりきったことだ。圏論で「直積 (product)」を最初に習ったことと思うが、その定義において、固定された複数の射が向かう対象への任意の射が、その任意の射の組に対し関数的に唯一求まる射と固定された射の合成となるならば、固定された射が発する対象は、固定された射が着く複数の対象の直積として区別が付かない。「唯一の道」が対象すなわち「何者であったか」を確定し、わかりきったこととする。InLeft と InRight によって作られる対象「直和(coproduct)」は直積の双対概念である。その「唯一の道」の向きは、直積とは真逆になる。
 
-  <img src="../../../images/Prod_and_Sum.png" alt="カテゴリ理論の直積・直和の図" class="thumb">
+  <img src="../../../images/Prod_and_Sum.png" alt="カテゴリ理論の直積・直和の図" class="thumb-plain">
   
   下に書く Haskell のソースでは、直積 A×B は Prod a b と、直和 A＋B は Sum a b となっています。Haskell であるデータ c が型 C を持つことは c :: C と記述し、X から Y への関数の型は f :: X-&gt;Y と記述します。 任意の A, B という型について、first :: (Prod A B)-&gt;A と second :: (Prod A B)-&gt;B がすでに定義されていたとします、ある二つの関数 fa :: A-&gt;C, fb :: B-&gt;C を取ってきたとき、fab :: (Prod A B)-&gt;C が常に fab(x::(Prod A B)) = fa(first(x))::C となるのは、結局、この定義と同じ意味を持つもの「唯一つ」になります。実際 Haskell には、 Prod A B と同じ「機能」を持つ Tuple すなわち (A,B) は、常に Prod A B と相互に変換できることになります。
   
