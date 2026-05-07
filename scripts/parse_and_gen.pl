@@ -502,7 +502,7 @@ sub html_article {
 </head>
 <body>
 <nav><a href="${root}index.html">TOP</a>$month_link$type_link</nav>
-<article data-pagefind-body>
+<article data-pagefind-body data-pagefind-meta="種別:${\ h(label_for_type($type))}">
 <div class="meta">
 <table class="meta-table">
 <tr><th>種別</th><td>[$type]${\ ($id_cell ? " $id_cell" : '')}</td></tr>
