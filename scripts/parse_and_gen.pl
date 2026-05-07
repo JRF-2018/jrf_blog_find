@@ -681,11 +681,20 @@ sub extref_to_link {
         my $url = "https://www.google.com/search?q=$q_enc";
         return qq(<span class="extref-google">\[google: <a href="$url" class="ext-link" target="_blank" rel="noopener">$q_h</a>\]</span>);
     } elsif ($svc eq 'wikipedia') {
-        my $q_enc = $q; $q_enc =~ s/ /_/g;
-        utf8::encode($q_enc);
-        $q_enc =~ s/([^A-Za-z0-9_\-])/sprintf('%%%02X',ord($1))/ge;
-        my $url = "https://ja.wikipedia.org/wiki/$q_enc";
-        return qq(<span class="extref-wiki">\[wikipedia: <a href="$url" class="ext-link" target="_blank" rel="noopener">$q_h</a>\]</span>);
+        # [wikipedia:項目名] → 日本語版
+        # [wikipedia:en:項目名] → 英語版（他言語コードも同様）
+        my ($lang, $item) = ('ja', $q);
+        if ($q =~ /^([a-z]{2,3}):(.+)$/) {
+            ($lang, $item) = ($1, $2);
+        }
+        my $item_enc = $item; $item_enc =~ s/ /_/g;
+        utf8::encode($item_enc);
+        $item_enc =~ s/([^A-Za-z0-9_\-])/sprintf('%%%02X',ord($1))/ge;
+        my $url   = "https://${lang}.wikipedia.org/wiki/?search=$item_enc";
+        # 表示: [wikipedia: 項目] または [wikipedia:en: 項目]
+        my $prefix = $lang eq 'ja' ? 'wikipedia: ' : "wikipedia:${lang}: ";
+        my $item_h = h($item);
+        return qq(<span class="extref-wiki">\[${prefix}<a href="$url" class="ext-link" target="_blank" rel="noopener">$item_h</a>\]</span>);
     }
     return h("[$svc:$q]");
 }
