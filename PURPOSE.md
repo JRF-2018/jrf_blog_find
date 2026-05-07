@@ -128,7 +128,9 @@ gsm のタイムスタンプは初期 16 件だけ `T11:1633Z` のような不�
 
   * `[google:クエリ]` — Google 検索リンク（`span.extref-google`、薄青背景）。別タブ。
 
-  * `[wikipedia:項目名]` — Wikipedia 日本語版リンク（`span.extref-wiki`、薄緑背景）。別タブ。
+  * `[wikipedia:項目名]` — Wikipedia 日本語版リンク（`span.extref-wiki`、薄緑背景）。別タブ。`/?search=` 経由で検索。
+
+  * `[wikipedia:en:項目名]` — Wikipedia 英語版リンク。表示は `[wikipedia:en: 項目名]`。他言語コード（2〜3文字）も同様に対応。
 
   * `keyword: キーワード`（行頭） — `search.html?q=キーワード` へのリンク（`span.keyword-ref`、薄黄背景）。
 
@@ -144,15 +146,17 @@ gsm のタイムスタンプは初期 16 件だけ `T11:1633Z` のような不�
 
 ```
 docs/
-├── index.html                        トップページ（検索UI + タイプ別リンク + 月別一覧）
-├── search.html                       検索専用ページ（?q=クエリ でURL直接指定可）
-├── blogparts.html                    ブログパーツ（元ブログのサイドバーに貼るHTML）
-├── style.css                         スタイルシート
-├── articles/YYYY/MM/TYPE_ID.html    各記事
-├── index/YYYY/MM.html               月別インデックス
-├── index/TYPE.html                  タイプ別インデックス（gsm/statuses は月ごと折りたたみ）
-├── index/tags.html                  タグ一覧（件数順タグクラウド、アコーディオン）
-└── index/tag/tag_NNNN.html          タグ個別ページ（175件）
+├── index.html                         トップページ（検索UI + タイプ別リンク + 月別一覧）
+├── search.html                        検索専用ページ（?q=クエリ でURL直接指定可）
+├── blogparts.html                     ブログパーツ（元ブログのサイドバーに貼るHTML）
+├── style.css                          スタイルシート
+├── articles/YYYY/MM/TYPE_ID.html     各記事
+├── index/YYYY/MM.html                月別インデックス（全タイプ混在）
+├── index/YYYY/MM/statuses.html       月別ひとこと専用インデックス
+├── index/YYYY/MM/gsm.html            月別共有メモ専用インデックス
+├── index/TYPE.html                   タイプ別インデックス（gsm/statuses は月ごと折りたたみ）
+├── index/tags.html                   タグ一覧（件数順タグクラウド、アコーディオン）
+└── index/tag/tag_NNNN.html           タグ個別ページ（175件）
 ```
 
 **重要: タグ個別ページのファイル名は連番 ID（`tag_0001.html` 等）**  
@@ -181,16 +185,36 @@ docs/
   * 月別・タイプ別インデックスの各行にサブブログバッジ（`span.type-badge`、タイプ別色分け）を表示
   * statuses・gsm は本文冒頭 40 文字を疑似タイトルとして使用（`art_display_title()`）
   * gsm/statuses のタイプ別インデックスは月ごとに `<details>` 折りたたみ
+  * タイプ別インデックスの月ヘッダーは専用の月別ページ（`index/YYYY/MM/TYPE.html`）へリンク
   * タグ一覧は件数順タグクラウド＋アコーディオン（1つ開いたら他は閉じる JS）
 
 ## Pagefind 検索対応
 
   * `<article data-pagefind-body>` で記事全体をインデックス対象
+  * `data-pagefind-meta="種別:ひとこと"` で種別をメタデータとして仕込む（検索結果に表示）
+  * 投稿月も `<div data-pagefind-meta="投稿月:2026年01月" style="display:none">` で仕込む
   * meta テーブル全体も検索対象（Trackbacks・後方参照・ナビは `data-pagefind-ignore`）
   * `cocolog:ID` / `aboutme:ID` は `<span class="cocolog-id">` でマーク
   * 元記事 URL は `<span class="original-url">` でマーク
   * `search.html?q=クエリ` で URL パラメータ直接指定の検索が可能（Pagefind の `triggerSearch()` 使用）
-  * `blogparts.html` に元ブログのサイドバー用検索フォームを生成
+  * `blogparts.html` に元ブログのサイドバー用検索フォームを生成（`<form action="search.html" method="get">`）
+  * Pagefind UI のオプション: `excerptLength: 100`（抜粋を長めに表示）
+  * 日本語検索の注意: 「小泉悠」より「小泉 悠」（スペース区切り）のほうが精度が高い場合がある（Pagefind のわかちがき実装によるもの）
+
+## リンクの色分け（CSS）
+
+| クラス | 色 | 意味 |
+|--------|-----|------|
+| `a.int-link` | 緑（`#007744`） | アーカイブ内部の記事へのリンク |
+| `a.int-link.cocolog-id` | 緑＋薄緑背景 | `[cocolog:ID]`・`[aboutme:ID]` 内部リンク |
+| `a.int-link.gsm-tsref` | 緑＋薄青紫背景 | `>>timestamp` gsm 内部リンク |
+| `span.gsm-tsref` | 薄灰背景・グレー文字 | `>>timestamp` でマッチなし |
+| `a.ext-link` | 青（`#0066cc`） | 外部リンク |
+| `span.extref-google` | 薄青背景 | `[google:クエリ]` |
+| `span.extref-wiki` | 薄緑背景 | `[wikipedia:項目名]` |
+| `span.keyword-ref` | 薄黄背景 | `keyword: キーワード` |
+| `span.hbm-ref` | グレー小文字 | Links 欄の hbm 参照リンク |
+| `a.tag-link` | 薄青紫背景 | meta 欄のタグリンク |
 
 ## スクリプト使い方
 
@@ -211,18 +235,26 @@ perl parse_and_gen.pl [--dump full_dump.txt] [--outdir docs] [--imgdir images]
 5. **パス1**: 全記事の `html_path` を確定
 6. **パス1b**: `prev_art`・`next_art` を設定（同タイプ時系列順）
 7. **パス1.5**: `%tag_id` テーブルを構築 ← **パス2より前であること（タグリンクに必須）**
-8. **パス2**: HTML生成 + インデックス収集（`%month_index`・`%type_index`・`%tag_index`）
+8. **パス2**: HTML生成 + インデックス収集（`%month_index`・`%type_index`・`%tag_index`・`%type_month_index`）
 9. 各種インデックス・CSS・ブログパーツを生成
 
 ### タイプ別パーサの注意点
 
   * **statuses** の区切り正規表現は `\[(?:aboutme|cocolog):\d+\]`（両形式対応）
   * **gsm** のタイムスタンプは `normalize_gsm_ts()` で正規化（初期 16 件の不規則フォーマット対応）
-  * **Links:** セクションは `parse_blog` でのみパース（`$art->{links_text}` に格納）
+  * **Links:** セクションは `parse_blog` でのみパース（`$art->{links_text}` に格納）。Trackbacks の後か、Trackbacks がない場合は本文の直後に来る。
 
 ### body_to_html の変換順序
 
 `[image:]` 退避 → `[google/wikipedia:]` 退避 → `[cocolog/aboutme:]` 退避 → `>>timestamp` 退避 → `keyword:` 退避 → HTMLエスケープ → URL リンク化 → 各退避を内部/外部リンクに展開 → `[image:]` を `<img>` に展開
+
+### Links: セクションの処理
+
+  * `parse_blog` で Trackbacks パース時に `Links:` も別途取り出し `$art->{links_text}` に格納
+  * `html_article` で `<pre class="links">` として出力
+  * 通常ブログ記事への URL → 内部リンク
+  * hbm への URL → 外部リンク ＋ `(hbm)` 内部リンクを右に添える（`span.hbm-ref`）
+  * その他 → 外部リンク
 
 ## GitHub Actions（build.yml）
 
@@ -249,6 +281,7 @@ steps:
   * Claude Code は使えない。アーティファクト（ファイル出力）にコードを示してもらい手動実行する形式。
   * ローカルは Cygwin (Perl)。Pagefind は GitHub Actions 上で実行。
   * Claude のネットワーク制限: xrea.com・GitHub CDN・主要クラウドストレージには Claude から直接アクセス不可。zip の確認は `git clone` でリポジトリをクローンして行う。
+  * スマートフォンでの日本語検索: Pagefind のわかちがき実装の差により、PC とスマホで検索結果件数が異なる場合がある。スペース区切りで検索すると解消することが多い。
 
 ## 未実装・今後の課題
 
