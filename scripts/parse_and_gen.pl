@@ -162,12 +162,17 @@ my %tag_id;
 }
 printf STDERR "タグIDテーブル: %d種\n", scalar keys %tag_id;
 
+my %type_month_index;  # {type}{YYYY/MM} => [@arts]  statuses/gsm の月別
+
 # パス2: HTML生成 & インデックス収集
 for my $art (@all_articles) {
     gen_article_html($art, $out_dir, $img_dir);
     if ($art->{year} && $art->{month}) {
         my $ym = sprintf "%04d/%02d", $art->{year}, $art->{month};
         push @{ $month_index{$ym} }, $art;
+        if ($art->{type} eq 'statuses' || $art->{type} eq 'gsm') {
+            push @{ $type_month_index{ $art->{type} }{$ym} }, $art;
+        }
     }
     push @{ $type_index{ $art->{type} } }, $art;
     push @{ $tag_index{$_} }, $art for @{ $art->{tags} };
@@ -177,6 +182,12 @@ for my $art (@all_articles) {
 printf STDERR "タグIDテーブル確認: %d種\n", scalar keys %tag_id;
 gen_month_index($_, $month_index{$_}, $out_dir) for sort keys %month_index;
 gen_type_index($_, $type_index{$_},   $out_dir) for keys %type_index;
+# statuses/gsm のタイプ別月別インデックスを生成
+for my $type (keys %type_month_index) {
+    for my $ym (sort keys %{ $type_month_index{$type} }) {
+        gen_type_month_index($type, $ym, $type_month_index{$type}{$ym}, $out_dir);
+    }
+}
 gen_tag_index(\%tag_index, $out_dir);
 gen_tag_pages(\%tag_index, $out_dir);
 gen_top_index(\%month_index, \%type_index, \%tag_index, $out_dir);
@@ -550,7 +561,7 @@ sub build_backref_html {
         my $ref   = $item->{art};
         my $href  = $ref->{html_path} ? "${root}$ref->{html_path}" : '#';
         my $title = art_display_title($ref);
-        $html .= sprintf qq(<li><span class="backref-label">%s</span> <a href="%s">%s</a> <span class="backref-date">%s</span></li>\n),
+        $html .= sprintf qq(<li><span class="backref-label">%s</span> <a href="%s" class="int-link">%s</a> <span class="backref-date">%s</span></li>\n),
             h($item->{label}), h($href), h($title), h(date_str($ref));
     }
     $html .= "</ul>\n</section>\n";
@@ -796,13 +807,22 @@ sub gen_month_index {
     } @$arts_ref;
     open(my $out, '>:encoding(UTF-8)', $path) or return;
     my $root = '../../';
+    # この月にstatuses/gsmがあれば個別リンクを用意
+    my %type_count;
+    $type_count{$_->{type}}++ for @sorted;
+    my $type_links = join(' ', map {
+        my $t = $_;
+        my $cnt = $type_count{$t} // 0;
+        $cnt ? sprintf('<a href="%sindex/%s/%s.html">%s(%d件)</a>',
+                       $root, $ym, $t, h(label_for_type($t)), $cnt) : ()
+    } qw(statuses gsm));
     print $out <<"HTML";
 <!DOCTYPE html>
 <html lang="ja">
-<head><meta charset="UTF-8"><title>${year}年${month}月 - JRF Blog Archive</title>
+<head><meta charset="UTF-8"><title>${year}年${month}月 - JRF ブログ退避所</title>
 <link rel="stylesheet" href="${root}style.css"></head>
 <body>
-<nav><a href="${root}index.html">TOP</a></nav>
+<nav><a href="${root}index.html">TOP</a>${\($type_links ? " | $type_links" : '')}</nav>
 <h1>${year}年${month}月の記事 (${\scalar @sorted} 件)</h1>
 <ul class="month-index">
 HTML
@@ -819,6 +839,43 @@ HTML
             $badge, h($href), h($title), h($id_d), h($date), h($tags);
     }
     print $out "</ul>\n<nav class=\"bottom\"><a href=\"${root}index.html\">TOP</a></nav>\n</body></html>\n";
+    close($out);
+}
+
+sub gen_type_month_index {
+    my ($type, $ym, $arts_ref, $out_dir) = @_;
+    my ($year, $month) = split '/', $ym;
+    my $path = "$out_dir/index/$ym/${type}.html";
+    make_path(dirname($path));
+    my @sorted = sort {
+        ($a->{day}||0)      <=> ($b->{day}||0)
+        || ($a->{time_str}||'') cmp ($b->{time_str}||'')
+        || ($a->{ts_raw}||'')   cmp ($b->{ts_raw}||'')
+    } @$arts_ref;
+    open(my $out, '>:encoding(UTF-8)', $path) or return;
+    my $root  = '../../../';  # index/YYYY/MM/TYPE.html -> docs/
+    my $label = label_for_type($type);
+    print $out <<"HTML";
+<!DOCTYPE html>
+<html lang="ja">
+<head><meta charset="UTF-8"><title>${year}年${month}月 ${\h($label)} - JRF ブログ退避所</title>
+<link rel="stylesheet" href="${root}style.css"></head>
+<body>
+<nav><a href="${root}index.html">TOP</a> | <a href="${root}index/$ym.html">${year}年${month}月</a> | <a href="${root}index/${type}.html">${\h($label)}</a></nav>
+<h1>${year}年${month}月 ${\h($label)} (${\scalar @sorted} 件)</h1>
+<ul class="month-index">
+HTML
+    for my $art (@sorted) {
+        my $title = art_display_title($art);
+        my $href  = $art->{html_path} ? "${root}$art->{html_path}" : '#';
+        my $date  = date_str($art);
+        my $id_d  = $art->{cocolog_id} ? " [cocolog:$art->{cocolog_id}]"
+                  : $art->{aboutme_id} ? " [aboutme:$art->{aboutme_id}]"
+                  : '';
+        printf $out qq(<li><a href="%s">%s</a>%s %s</li>\n),
+            h($href), h($title), h($id_d), h($date);
+    }
+    print $out "</ul>\n<nav class=\"bottom\"><a href=\"${root}index.html\">TOP</a> | <a href=\"${root}index/$ym.html\">${year}年${month}月</a></nav>\n</body></html>\n";
     close($out);
 }
 
@@ -859,9 +916,15 @@ HTML
         for my $ym (sort { $b cmp $a } keys %by_ym) {
             my @ms = @{ $by_ym{$ym} };
             my ($y,$m) = $ym eq 'undated' ? ('?','?') : split '/', $ym;
-            my $mp = $ym ne 'undated' ? "${root}index/${ym}.html" : '#';
-            printf $out qq(<details class="month-block">\n<summary><a href="%s">%s年%s月</a> (%d件)</summary>\n<ul class="month-index">\n),
-                $mp, $y, $m, scalar @ms;
+            # タイプ別月別ページ（メインリンク）と全体月別ページ（サブリンク）
+            my $tm_link = $ym ne 'undated'
+                ? sprintf('<a href="%sindex/%s/%s.html">%s年%s月</a>', $root, $ym, $type, $y, $m)
+                : "${y}年${m}月";
+            my $all_link = $ym ne 'undated'
+                ? sprintf(' <span class="all-month-link">(<a href="%sindex/%s.html">全体</a>)</span>', $root, $ym)
+                : '';
+            printf $out qq(<details class="month-block">\n<summary>%s%s (%d件)</summary>\n<ul class="month-index">\n),
+                $tm_link, $all_link, scalar @ms;
             for my $art (@ms) {
                 my $title = art_display_title($art);
                 my $href  = $art->{html_path} ? "${root}$art->{html_path}" : '#';
@@ -1071,6 +1134,7 @@ if (typeof PagefindUI !== 'undefined') {
     element: "#search",
     showSubResults: true,
     resetStyles: false,
+    excerptLength: 100,
     translations: {
       placeholder: "検索 (例: cocolog:9644812、aboutme:4032、URL の一部など)",
       zero_results: "「[SEARCH_TERM]」に一致する記事がありません。"
@@ -1109,6 +1173,7 @@ if (typeof PagefindUI !== 'undefined') {
     element: "#search",
     showSubResults: true,
     resetStyles: false,
+    excerptLength: 100,
     translations: {
       placeholder: "検索 (例: cocolog:9644812、keyword、URL の一部など)",
       zero_results: "「[SEARCH_TERM]」に一致する記事がありません。"
@@ -1310,6 +1375,7 @@ details.month-block > summary::before { content:"▶ "; font-size:.8em; }
 details.month-block[open] > summary::before { content:"▼ "; }
 details.month-block > summary:hover { background:#e0e8ff; }
 details.month-block > summary a { color:#333; }
+span.all-month-link { font-size:.8em; color:#888; font-weight:normal; }
 /* タグ一覧 */
 ul.tag-cloud { list-style:none; padding:0; }
 ul.tag-cloud > li { display:inline-block; margin:.2em .3em; vertical-align:middle; position:relative; }
