@@ -165,6 +165,7 @@ for my $art (@all_articles) {
 gen_month_index($_, $month_index{$_}, $out_dir) for sort keys %month_index;
 gen_type_index($_, $type_index{$_},   $out_dir) for keys %type_index;
 gen_tag_index(\%tag_index, $out_dir);
+gen_tag_pages(\%tag_index, $out_dir);
 gen_top_index(\%month_index, \%type_index, \%tag_index, $out_dir);
 gen_css($out_dir);
 print STDERR "完了。\n";
@@ -354,8 +355,12 @@ sub html_article {
         $id_cell = h($art->{ts_raw});
     }
 
-    # --- タグ ---
-    my $tags_html = join(' ', map { '['.h($_).']' } @{ $art->{tags} });
+    # --- タグ（個別タグページへのリンク）---
+    my $tags_html = join(' ', map {
+        my $t = $_;
+        sprintf('<a href="%sindex/tag/%s.html" class="tag-link">[%s]</a>',
+                $root, tag_to_filename($t), h($t))
+    } @{ $art->{tags} });
 
     # --- 日付（月別インデックスへリンク）---
     my $date_str = date_str($art);
@@ -511,12 +516,20 @@ sub body_to_html {
         "\x00IDREF".$#idrefs."\x00"
     /ge;
 
-    # >>TIMESTAMP / >> TIMESTAMP を退避（HTMLエスケープ前に処理）
+    # >>TIMESTAMP を退避
     my @tsrefs;
     $body =~ s/>>(\s*)(\d{4}-\d{2}-\d{2}T[\d:]+Z)/
         push @tsrefs, {space=>$1, ts=>$2};
         "\x00TSREF".$#tsrefs."\x00"
     /ge;
+
+    # keyword: キーワード（行頭）を退避
+    my @kw_list;
+    $body =~ s/^keyword:[ \t]*([^\n\]]+)/
+        my $kw = $1; $kw =~ s!\s+$!!;
+        push @kw_list, $kw;
+        "\x00KW".($#kw_list)."\x00"
+    /gme;
 
     # HTMLエスケープ
     $body = h($body);
@@ -529,6 +542,9 @@ sub body_to_html {
 
     # >>TIMESTAMP プレースホルダを内部リンクに変換
     $body =~ s/\x00TSREF(\d+)\x00/tsref_to_link($tsrefs[$1]{space}, $tsrefs[$1]{ts}, $root)/ge;
+
+    # keyword: プレースホルダをリンクに変換
+    $body =~ s/\x00KW(\d+)\x00/keyword_to_link($kw_list[$1], $root)/ge;
 
     # [image:] を戻す
     $body =~ s/\x00IMG(\d+)\x00/image_html($images[$1], $root)/ge;
@@ -585,6 +601,28 @@ sub idref_to_link {
     return qq(<a href="$ihref" class="int-link cocolog-id" title="$title">$tag_h</a>);
 }
 
+# --- keyword: キーワード → Pagefind 検索リンク ---
+sub keyword_to_link {
+    my ($kw, $root) = @_;
+    my $kw_h    = h($kw);
+    # index.html に pagefind UI があるのでそこへ遷移（#search へのアンカー + クエリは JS で）
+    # search.html は index.html にリダイレクトなので index.html を使う
+    my $search_url = h($root . 'index.html#search');
+    my $kw_enc  = $kw; $kw_enc =~ s/([^A-Za-z0-9_\-.])/sprintf('%%%02X', ord($1))/ge;
+    # pagefind-ui はURLパラメータ未対応なので、data属性でキーワードを持たせ JS で操作
+    return qq(<span class="keyword-ref" data-kw="$kw_h">keyword: <a href="$search_url" class="keyword-link" data-kw="$kw_h" onclick="doSearch(this)">$kw_h</a></span>);
+}
+
+# --- タグ名をファイル名に変換（日本語対応: URLエンコード）---
+sub tag_to_filename {
+    my ($tag) = @_;
+    my $enc = $tag;
+    # Perl の uri_escape 相当を手実装
+    utf8::encode($enc);  # UTF-8バイト列に
+    $enc =~ s/([^A-Za-z0-9_\-])/sprintf('%%%02X', ord($1))/ge;
+    return $enc;
+}
+
 # --- >>TIMESTAMP → gsm 記事への内部リンク ---
 sub tsref_to_link {
     my ($space, $ts, $root) = @_;
@@ -631,11 +669,16 @@ sub image_html {
     my $fn      = basename($url);
     my $full_fn = ($fn =~ /^thumbnail-(.+)$/) ? $1 : '';
     my ($ts, $fs) = ('', '');
-    $ts = "${root}images/$fn"     if $img_exists{$fn};
+    $ts = "${root}images/$fn"      if $img_exists{$fn};
     $fs = "${root}images/$full_fn" if $full_fn && $img_exists{$full_fn};
-    return $ts && $fs ? qq(<a href="$fs"><img src="$ts" alt="$alt" class="thumb"></a>)
-         : $ts        ? qq(<img src="$ts" alt="$alt" class="thumb">)
-                      : qq(<a href=") . h($url) . qq(">[$alt]</a>);
+    return $ts && $fs
+        # サムネイル→フル: a タグに thumb-link クラス → CSS で枠
+        ? qq(<a href="$fs" class="thumb-link"><img src="$ts" alt="$alt" class="thumb"></a>)
+        # サムネイルのみ: 枠なし
+        : $ts
+        ? qq(<img src="$ts" alt="$alt" class="thumb-plain">)
+        # ローカルなし: テキストリンク
+        : qq(<a href=") . h($url) . qq(">[$alt]</a>);
 }
 
 # ============================================================
@@ -816,6 +859,56 @@ HTML
     printf STDERR "タグ一覧: %d種\n", scalar @tags;
 }
 
+sub gen_tag_pages {
+    my ($tag_index, $out_dir) = @_;
+    my $dir = "$out_dir/index/tag";
+    make_path($dir);
+    my $root = '../../';  # index/tag/XXX.html -> docs/
+    my $count = 0;
+    for my $tag (keys %$tag_index) {
+        my $fn   = tag_to_filename($tag);
+        my $path = "$dir/$fn.html";
+        my @arts = sort {
+            ($b->{year}||0) <=> ($a->{year}||0) || ($b->{month}||0) <=> ($a->{month}||0)
+            || ($b->{day}||0) <=> ($a->{day}||0)
+        } @{ $tag_index->{$tag} };
+        open(my $out, '>:encoding(UTF-8)', $path) or next;
+        my $tag_h = h($tag);
+        my $cnt   = scalar @arts;
+        print $out <<"HTML";
+<!DOCTYPE html>
+<html lang="ja">
+<head><meta charset="UTF-8"><title>[$tag_h] - JRF Blog Archive</title>
+<link rel="stylesheet" href="${root}style.css"></head>
+<body>
+<nav><a href="${root}index.html">TOP</a> | <a href="${root}index/tags.html">タグ一覧</a></nav>
+<h1>[$tag_h] (${cnt}件)</h1>
+<ul class="month-index">
+HTML
+        my $prev_ym = '';
+        for my $art (@arts) {
+            if ($art->{year} && $art->{month}) {
+                my $ym = sprintf "%04d/%02d", $art->{year}, $art->{month};
+                if ($ym ne $prev_ym) {
+                    my $mp = sprintf "${root}index/%s.html", $ym;
+                    printf $out qq(<li class="year-header"><a href="%s">%d年%d月</a></li>\n),
+                        $mp, $art->{year}, $art->{month};
+                    $prev_ym = $ym;
+                }
+            }
+            my $title = art_display_title($art);
+            my $href  = $art->{html_path} ? "${root}$art->{html_path}" : '#';
+            my $badge = type_badge($art->{type});
+            printf $out qq(<li>%s<a href="%s">%s</a> %s</li>\n),
+                $badge, h($href), h($title), h(date_str($art));
+        }
+        print $out "</ul>\n<nav class=\"bottom\"><a href=\"${root}index.html\">TOP</a> | <a href=\"${root}index/tags.html\">タグ一覧</a></nav>\n</body></html>\n";
+        close($out);
+        $count++;
+    }
+    printf STDERR "タグ個別ページ: %d件\n", $count;
+}
+
 sub gen_top_index {
     my ($month_index, $type_index, $tag_index, $out_dir) = @_;
     my $path = "$out_dir/index.html";
@@ -871,15 +964,28 @@ HTML
 <p><small>このアーカイブは <a href="https://github.com/JRF-2018/jrf_blog_find">jrf_blog_find</a> により自動生成。</small></p>
 <script src="pagefind/pagefind-ui.js"></script>
 <script>
-new PagefindUI({
-  element: "#search",
-  showSubResults: true,
-  resetStyles: false,
-  translations: {
-    placeholder: "検索 (例: cocolog:9644812、aboutme:4032、URL の一部など)",
-    zero_results: "「[SEARCH_TERM]」に一致する記事がありません。"
-  }
-});
+var pfUI;
+if (typeof PagefindUI !== 'undefined') {
+  pfUI = new PagefindUI({
+    element: "#search",
+    showSubResults: true,
+    resetStyles: false,
+    translations: {
+      placeholder: "検索 (例: cocolog:9644812、aboutme:4032、URL の一部など)",
+      zero_results: "「[SEARCH_TERM]」に一致する記事がありません。"
+    }
+  });
+} else {
+  document.getElementById('search').innerHTML =
+    '<p style="color:#888;font-size:.9em">（検索インデックス未生成。GitHub Actions 実行後に利用可能になります。）</p>';
+}
+function doSearch(el) {
+  var kw = el.getAttribute('data-kw');
+  if (!kw || !pfUI) return;
+  event.preventDefault();
+  pfUI.triggerSearch(kw);
+  document.getElementById('search-box').scrollIntoView({behavior:'smooth'});
+}
 </script>
 </body></html>
 HTML
@@ -959,11 +1065,25 @@ nav.prevnext { display:flex; justify-content:space-between; flex-wrap:wrap;
 span.cocolog-id { font-family:monospace; background:#eef; padding:.1em .4em;
   border-radius:3px; font-size:.9em; }
 span.original-url { word-break:break-all; }
-/* 画像 */
-img.thumb { max-width:300px; max-height:300px; vertical-align:middle;
-  border:2px solid #aaa; border-radius:3px; cursor:pointer; transition:border-color .15s; }
-img.thumb:hover { border-color:#007744; }
-a:has(> img.thumb) { display:inline-block; }
+/* 画像: クリック可（サムネイル→フル）は枠・ポインタ */
+a.thumb-link { display:inline-block; }
+a.thumb-link img.thumb { border:2px solid #aaa; border-radius:3px;
+  cursor:pointer; transition:border-color .15s; }
+a.thumb-link:hover img.thumb { border-color:#007744; }
+/* 画像: 単体（クリック不可）は枠なし */
+img.thumb-plain { max-width:300px; max-height:300px; vertical-align:middle; }
+img.thumb { max-width:300px; max-height:300px; vertical-align:middle; }
+/* タグリンク */
+a.tag-link { color:#333; text-decoration:none; font-size:.9em;
+  background:#f0f0f8; border:1px solid #c8c8e0; border-radius:3px;
+  padding:.05em .3em; margin:.1em; display:inline-block; }
+a.tag-link:hover { background:#e0e8ff; border-color:#88a; }
+/* keyword リンク */
+span.keyword-ref { display:inline-block; background:#fff8e8;
+  border:1px solid #e8d890; border-radius:3px; padding:.1em .4em;
+  font-size:.9em; margin:.1em 0; }
+a.keyword-link { color:#885500; font-weight:500; }
+a.keyword-link:hover { color:#cc7700; }
 /* サブブログバッジ */
 span.type-badge { display:inline-block; font-size:.72em; padding:.05em .35em;
   border-radius:3px; margin-right:.3em; vertical-align:middle;
@@ -1015,6 +1135,17 @@ a.int-link.cocolog-id { background:#e8f5ee; padding:.05em .3em; border-radius:3p
 a.int-link.gsm-tsref  { background:#e8f0ff; padding:.05em .3em; border-radius:3px; }
 span.gsm-tsref { background:#f4f4f4; padding:.05em .3em; border-radius:3px; color:#888; }
 a.ext-link { color:#0066cc; } a.ext-link:visited { color:#6600cc; }
+/* タグリンク（meta欄） */
+a.tag-link { color:#333; text-decoration:none; font-size:.9em;
+  background:#f0f0f8; border:1px solid #c8c8e0; border-radius:3px;
+  padding:.05em .3em; margin:.05em; display:inline-block; }
+a.tag-link:hover { background:#e0e8ff; border-color:#88a; }
+/* keyword: リンク */
+span.keyword-ref { display:inline-block; background:#fff8e8;
+  border:1px solid #e8d890; border-radius:3px; padding:.1em .4em;
+  font-size:.9em; margin:.1em 0; }
+a.keyword-link { color:#885500; font-weight:500; }
+a.keyword-link:hover { color:#cc7700; }
 .bottom { margin-top:2em; border-top:1px solid #ccc; padding-top:.5em; font-size:.9em; }
 CSS
     close($out);
