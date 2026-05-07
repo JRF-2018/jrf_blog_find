@@ -1,0 +1,97 @@
+name: Build and Deploy Blog Archive
+
+on:
+  # ボタン一つで手動実行
+  workflow_dispatch:
+
+  # 必要なら定期実行も可能（コメントアウト中）
+  # schedule:
+  #   - cron: '0 3 1 1,4,7,10 *'  # 1月・4月・7月・10月の1日 午前3時(UTC)
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write   # gh-pages ブランチへの push に必要
+
+    steps:
+      # ① リポジトリをチェックアウト
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # ② zip をダウンロードして展開
+      - name: Download and extract zip
+        run: |
+          echo "Downloading zip..."
+          curl -fL -o jrf_cocolog_public.zip \
+            "http://jrockford.s1010.xrea.com/jrf_cocolog_backup/jrf_cocolog_public.zip"
+          echo "Downloaded: $(du -sh jrf_cocolog_public.zip | cut -f1)"
+
+          echo "Extracting..."
+          unzip -q jrf_cocolog_public.zip -d cocolog_data
+          echo "Files:"
+          ls -lh cocolog_data/
+          echo "Images: $(ls cocolog_data/images/ | wc -l) files"
+
+      # ③ Perl で HTML を生成
+      - name: Generate HTML with Perl
+        run: |
+          mkdir -p docs
+          perl scripts/parse_and_gen.pl \
+            --dump   cocolog_data/full_dump.txt \
+            --outdir docs \
+            --imgdir cocolog_data/images
+          echo "Generated: $(find docs -name '*.html' | wc -l) HTML files"
+
+      # ④ images/ を docs/ にコピー（GitHub Pages から参照するため）
+      - name: Copy images to docs
+        run: |
+          cp -r cocolog_data/images docs/images
+          echo "Copied: $(ls docs/images/ | wc -l) images"
+
+      # ⑤ Pagefind で検索インデックスを生成
+      - name: Build search index with Pagefind
+        run: |
+          npx -y pagefind --site docs --output-path docs/pagefind
+          echo "Pagefind index built."
+
+      # ⑥ 検索 UI ページ（search.html）を生成
+      - name: Generate search page
+        run: |
+          cat > docs/search.html << 'SEARCHHTML'
+          <!DOCTYPE html>
+          <html lang="ja">
+          <head>
+          <meta charset="UTF-8">
+          <title>検索 - JRF Blog Archive</title>
+          <link rel="stylesheet" href="style.css">
+          <link href="pagefind/pagefind-ui.css" rel="stylesheet">
+          </head>
+          <body>
+          <nav><a href="index.html">TOP</a></nav>
+          <h1>検索</h1>
+          <div id="search"></div>
+          <script src="pagefind/pagefind-ui.js"></script>
+          <script>
+          new PagefindUI({
+            element: "#search",
+            showSubResults: true,
+            translations: {
+              placeholder: "検索キーワード（例: cocolog:9644812）",
+              zero_results: "「[SEARCH_TERM]」に一致する記事がありません。"
+            }
+          });
+          </script>
+          </body>
+          </html>
+          SEARCHHTML
+          echo "Search page generated."
+
+      # ⑦ GitHub Pages にデプロイ
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./docs
+          publish_branch: gh-pages
+          commit_message: "Deploy blog archive (${{ github.run_number }})"
