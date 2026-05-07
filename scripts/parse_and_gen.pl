@@ -130,6 +130,26 @@ for my $art (@all_articles) {
         : "articles/undated/$art->{id}.html";
 }
 
+# パス1b: 前後記事リンク用インデックスを構築
+# タイプごとに時系列順で並べ、各記事に prev/next を設定
+{
+    my %type_arts;
+    push @{ $type_arts{$_->{type}} }, $_ for @all_articles;
+    for my $type (keys %type_arts) {
+        my @sorted = sort {
+            ($a->{year}||0)     <=> ($b->{year}||0)
+            || ($a->{month}||0) <=> ($b->{month}||0)
+            || ($a->{day}||0)   <=> ($b->{day}||0)
+            || ($a->{time_str}||'') cmp ($b->{time_str}||'')
+            || ($a->{ts_raw}||'')   cmp ($b->{ts_raw}||'')
+        } @{ $type_arts{$type} };
+        for my $i (0 .. $#sorted) {
+            $sorted[$i]{prev_art} = $i > 0       ? $sorted[$i-1] : undef;
+            $sorted[$i]{next_art} = $i < $#sorted ? $sorted[$i+1] : undef;
+        }
+    }
+}
+
 # パス2: HTML生成 & インデックス収集
 for my $art (@all_articles) {
     gen_article_html($art, $out_dir, $img_dir);
@@ -361,7 +381,7 @@ sub html_article {
     # --- 本文 ---
     my $body_html = body_to_html($body, $root, $img_dir);
 
-    # --- Trackback ---
+    # --- Trackback（折りたたみ廃止・直出し）---
     my $tb_html = '';
     if ($art->{trackbacks} && @{ $art->{trackbacks} }) {
         $tb_html .= "\nTrackbacks:\n\n";
@@ -370,6 +390,29 @@ sub html_article {
                 h($tb->{url}), h($tb->{title}), h($tb->{from});
             $tb_html .= h($tb->{excerpt})."\n" if $tb->{excerpt};
             $tb_html .= "\n";
+        }
+    }
+
+    # --- 前後記事リンク ---
+    my $prevnext_html = '';
+    {
+        my $prev = $art->{prev_art};
+        my $next = $art->{next_art};
+        if ($prev || $next) {
+            $prevnext_html = qq(<nav class="prevnext" data-pagefind-ignore>);
+            if ($prev) {
+                my $ph   = $prev->{html_path} ? "${root}$prev->{html_path}" : '#';
+                my $ptit = art_display_title($prev);
+                $prevnext_html .= sprintf qq(<span class="prev-art">← <a href="%s">%s</a> <span class="pn-date">%s</span></span>),
+                    h($ph), h($ptit), h(date_str($prev));
+            }
+            if ($next) {
+                my $nh   = $next->{html_path} ? "${root}$next->{html_path}" : '#';
+                my $ntit = art_display_title($next);
+                $prevnext_html .= sprintf qq(<span class="next-art"><a href="%s">%s</a> <span class="pn-date">%s</span> →</span>),
+                    h($nh), h($ntit), h(date_str($next));
+            }
+            $prevnext_html .= "</nav>\n";
         }
     }
 
@@ -398,9 +441,10 @@ ${\ ($tags_html ? "<tr><th>タグ</th><td>$tags_html</td></tr>" : '')}
 </div>
 <h1>${\h($disp_title)}</h1>
 <pre class="body">$body_html</pre>
-${\($tb_html ? "<details class=\"trackbacks\" data-pagefind-ignore><summary>Trackbacks (${\scalar @{$art->{trackbacks}}} 件)</summary><pre>$tb_html</pre></details>" : '')}
+${\($tb_html ? "<pre class=\"trackbacks\">$tb_html</pre>" : '')}
 $backref_html
 </article>
+$prevnext_html
 <nav class="bottom" data-pagefind-ignore><a href="${root}index.html">TOP</a>$month_link$type_link</nav>
 </body>
 </html>
@@ -621,15 +665,16 @@ sub gen_month_index {
 <ul class="month-index">
 HTML
     for my $art (@sorted) {
-        my $title = $art->{title} || label_for_type($art->{type});
+        my $title = art_display_title($art);
         my $href  = $art->{html_path} ? "${root}$art->{html_path}" : '#';
         my $date  = date_str($art);
         my $id_d  = $art->{cocolog_id} ? " [cocolog:$art->{cocolog_id}]"
                   : $art->{aboutme_id} ? " [aboutme:$art->{aboutme_id}]"
-                  : $art->{ts_raw}     ? " $art->{ts_raw}" : '';
+                  : '';   # gsm は date_str が ts_raw を兼ねるので省略
         my $tags  = @{$art->{tags}} ? ' '.join(' ',map{"[$_]"}@{$art->{tags}}) : '';
-        printf $out qq(<li><a href="%s">%s</a>%s %s%s</li>\n),
-            h($href), h($title), h($id_d), h($date), h($tags);
+        my $badge = type_badge($art->{type});
+        printf $out qq(<li>%s<a href="%s">%s</a>%s %s%s</li>\n),
+            $badge, h($href), h($title), h($id_d), h($date), h($tags);
     }
     print $out "</ul>\n<nav class=\"bottom\"><a href=\"${root}index.html\">TOP</a></nav>\n</body></html>\n";
     close($out);
@@ -699,13 +744,14 @@ HTML
                     $prev_ym = $ym;
                 }
             }
-            my $title = $art->{title} || label_for_type($art->{type});
+            my $title = art_display_title($art);
             my $href  = $art->{html_path} ? "${root}$art->{html_path}" : '#';
             my $id_d  = $art->{cocolog_id} ? " [cocolog:$art->{cocolog_id}]"
                       : $art->{aboutme_id} ? " [aboutme:$art->{aboutme_id}]" : '';
             my $tags  = @{$art->{tags}} ? ' '.join(' ',map{"[$_]"}@{$art->{tags}}) : '';
-            printf $out qq(<li><a href="%s">%s</a>%s %s%s</li>\n),
-                h($href), h($title), h($id_d), h(date_str($art)), h($tags);
+            my $badge = type_badge($art->{type});
+            printf $out qq(<li>%s<a href="%s">%s</a>%s %s%s</li>\n),
+                $badge, h($href), h($title), h($id_d), h(date_str($art)), h($tags);
         }
         print $out "</ul>\n";
     }
@@ -738,17 +784,34 @@ HTML
             ($b->{year}||0) <=> ($a->{year}||0) || ($b->{month}||0) <=> ($a->{month}||0)
         } @{ $tag_index->{$tag} };
         my $size = $cnt>=50 ? 'xl' : $cnt>=20 ? 'lg' : $cnt>=5 ? 'md' : 'sm';
-        printf $out qq(<li class="tag-%s"><details><summary>[%s]（%d件）</summary><ul>\n),
+        printf $out qq(<li class="tag-%s"><details class="tag-details"><summary>[%s]（%d件）</summary><ul>\n),
             $size, h($tag), $cnt;
         for my $art (@arts) {
-            my $title = $art->{title} || label_for_type($art->{type});
+            my $title = art_display_title($art);
             my $href  = $art->{html_path} ? "${root}$art->{html_path}" : '#';
-            printf $out qq(<li><a href="%s">%s</a> %s</li>\n),
-                h($href), h($title), h(date_str($art));
+            my $badge = type_badge($art->{type});
+            printf $out qq(<li>%s<a href="%s">%s</a> %s</li>\n),
+                $badge, h($href), h($title), h(date_str($art));
         }
         print $out "</ul></details></li>\n";
     }
-    print $out "</ul>\n<nav class=\"bottom\"><a href=\"${root}index.html\">TOP</a></nav>\n</body></html>\n";
+    print $out <<'HTML';
+</ul>
+<nav class="bottom"><a href="../index.html">TOP</a></nav>
+<script>
+// アコーディオン: 1つ開いたら他を閉じる
+document.querySelectorAll('details.tag-details').forEach(function(d) {
+  d.addEventListener('toggle', function() {
+    if (d.open) {
+      document.querySelectorAll('details.tag-details').forEach(function(other) {
+        if (other !== d) other.open = false;
+      });
+    }
+  });
+});
+</script>
+</body></html>
+HTML
     close($out);
     printf STDERR "タグ一覧: %d種\n", scalar @tags;
 }
@@ -775,7 +838,17 @@ sub gen_top_index {
 <link href="pagefind/pagefind-ui.css" rel="stylesheet">
 </head>
 <body>
+<div class="site-header">
+<a href="https://github.com/JRF-2018" class="gh-icon-link">
+<img src="https://github.com/JRF-2018.png" alt="JRF-2018 on GitHub" class="gh-icon">
+</a>
 <h1>JRF Blog Archive</h1>
+</div>
+<p class="site-desc">ここは JRF のブログ等を検索するためのサイトです。
+元のブログは <a href="http://jrf.cocolog-nifty.com/">http://jrf.cocolog-nifty.com/</a> にあります。
+共有メモは <a href="http://jrockford.s1010.xrea.com/demo/shared_memo.cgi?cmd=log">http://jrockford.s1010.xrea.com/demo/shared_memo.cgi?cmd=log</a> にあります。
+ブックマークは <a href="https://b.hatena.ne.jp/jrf/">https://b.hatena.ne.jp/jrf/</a> にあります。
+GitHub は <a href="https://github.com/JRF-2018">https://github.com/JRF-2018</a> です。</p>
 
 <div class="search-box" id="search-box">
 <div id="search"></div>
@@ -839,24 +912,32 @@ nav { margin:.4em 0 .8em; font-size:.9em; }
 nav a { margin-right:.8em; }
 h1 { font-size:1.3em; border-bottom:1px solid #ccc; padding-bottom:.3em; }
 h2 { font-size:1.1em; margin-top:1.5em; border-left:3px solid #888; padding-left:.5em; }
-
+/* サイトヘッダー */
+div.site-header { display:flex; align-items:center; gap:.8em; margin-bottom:.3em; }
+div.site-header h1 { border:none; margin:0; padding:0; }
+a.gh-icon-link { flex-shrink:0; }
+img.gh-icon { width:48px; height:48px; border-radius:50%; border:2px solid #ccc; display:block; }
+/* 説明文 */
+p.site-desc { font-size:.88em; color:#555; background:#f5f5f5;
+  border-left:3px solid #bbb; padding:.5em .8em; margin:.5em 0 1em; line-height:1.6; }
+/* 検索ボックス */
+div.search-box { margin:1em 0 1.5em; padding:1em 1.2em;
+  background:#f0f4ff; border:1px solid #c0d0ee; border-radius:6px; }
+.pagefind-ui__search-input { font-family:inherit; font-size:1em; }
+.pagefind-ui__result-title a { color:#007744; }
+.pagefind-ui__result-excerpt mark { background:#ffe080; color:#222; border-radius:2px; }
 /* meta テーブル */
 div.meta { margin-bottom:.8em; }
 table.meta-table { border-collapse:collapse; font-size:.85em; width:100%; }
 table.meta-table th { background:#eee; padding:.2em .6em; text-align:left;
   white-space:nowrap; border:1px solid #ccc; width:5em; vertical-align:top; }
 table.meta-table td { padding:.2em .6em; border:1px solid #ccc; word-break:break-all; }
-
 /* 本文 */
 pre.body { background:#fff; border:1px solid #ddd; padding:1em;
   white-space:pre-wrap; word-break:break-all; line-height:1.8; margin:0; }
-
-/* Trackback 折りたたみ */
-details.trackbacks { margin-top:.5em; font-size:.9em; }
-details.trackbacks summary { cursor:pointer; color:#666; padding:.2em; }
-details.trackbacks pre { background:#f8f8f8; border:1px dashed #bbb;
-  padding:.5em 1em; white-space:pre-wrap; word-break:break-all; }
-
+/* Trackback */
+pre.trackbacks { background:#f8f8f8; border:1px dashed #bbb; margin-top:.5em;
+  padding:.5em 1em; white-space:pre-wrap; word-break:break-all; font-size:.9em; }
 /* 後方参照 */
 section.backrefs { margin-top:1.2em; padding:.6em 1em;
   background:#f0f4ff; border:1px solid #c0d0ee; border-radius:4px; }
@@ -867,36 +948,43 @@ section.backrefs li:last-child { border-bottom:none; }
 .backref-label { font-size:.78em; color:#446; background:#dde;
   padding:.1em .35em; border-radius:3px; margin-right:.4em; white-space:nowrap; }
 .backref-date  { font-size:.78em; color:#888; margin-left:.4em; }
-
+/* 前後記事ナビ */
+nav.prevnext { display:flex; justify-content:space-between; flex-wrap:wrap;
+  gap:.5em; margin:1em 0 .5em; padding:.6em .8em;
+  background:#f8f8f8; border:1px solid #ddd; border-radius:4px; font-size:.88em; }
+.prev-art { flex:1; text-align:left; }
+.next-art { flex:1; text-align:right; }
+.pn-date  { font-size:.85em; color:#888; }
 /* ID / URL */
 span.cocolog-id { font-family:monospace; background:#eef; padding:.1em .4em;
   border-radius:3px; font-size:.9em; }
 span.original-url { word-break:break-all; }
-
 /* 画像 */
-img.thumb { max-width:300px; max-height:300px; vertical-align:middle; border:1px solid #ccc; }
-
-/* 月別インデックス */
+img.thumb { max-width:300px; max-height:300px; vertical-align:middle;
+  border:2px solid #aaa; border-radius:3px; cursor:pointer; transition:border-color .15s; }
+img.thumb:hover { border-color:#007744; }
+a:has(> img.thumb) { display:inline-block; }
+/* サブブログバッジ */
+span.type-badge { display:inline-block; font-size:.72em; padding:.05em .35em;
+  border-radius:3px; margin-right:.3em; vertical-align:middle;
+  white-space:nowrap; font-weight:500; }
+.badge-column   { background:#ddeeff; color:#224477; }
+.badge-religion { background:#ffe8dd; color:#773322; }
+.badge-society  { background:#ddffd8; color:#225522; }
+.badge-software { background:#eeddff; color:#442277; }
+.badge-pr       { background:#fff0cc; color:#664400; }
+.badge-statuses { background:#ffeeff; color:#553355; }
+.badge-hbm      { background:#e8f5e9; color:#2e7d32; }
+.badge-gsm      { background:#e3f2fd; color:#1565c0; }
+.badge-other    { background:#eee;    color:#555; }
+/* インデックス共通 */
 ul.month-index { list-style:none; padding:0; }
 ul.month-index li { border-bottom:1px solid #eee; padding:.25em 0; }
 li.year-header { font-weight:bold; margin-top:.8em; color:#555; }
 li.year-header a { color:#555; }
-
-/* トップ月別 */
 ul.top-index { list-style:none; padding:0; }
 ul.top-index li { display:inline-block; margin:.2em .4em; }
-
-/* 検索ボックス (Pagefind UI) */
-div.search-box { margin:1em 0 1.5em; padding:1em 1.2em;
-  background:#f0f4ff; border:1px solid #c0d0ee; border-radius:6px; }
-/* Pagefind UI のデフォルトをサイトに馴染ませる上書き */
-.pagefind-ui__search-input { font-family:inherit; font-size:1em; }
-.pagefind-ui__result-title a { color:#007744; }
-.pagefind-ui__result-excerpt mark { background:#ffe080; color:#222; border-radius:2px; }
-
-/* タイプリンク */
 p.type-links { margin:.5em 0; line-height:2; }
-
 /* タイプ別インデックス: 月折りたたみ */
 details.month-block { margin:.3em 0; }
 details.month-block > summary { cursor:pointer; font-weight:bold;
@@ -906,10 +994,9 @@ details.month-block > summary::before { content:"▶ "; font-size:.8em; }
 details.month-block[open] > summary::before { content:"▼ "; }
 details.month-block > summary:hover { background:#e0e8ff; }
 details.month-block > summary a { color:#333; }
-
 /* タグ一覧 */
 ul.tag-cloud { list-style:none; padding:0; }
-ul.tag-cloud > li { display:inline-block; margin:.2em .3em; vertical-align:middle; }
+ul.tag-cloud > li { display:inline-block; margin:.2em .3em; vertical-align:middle; position:relative; }
 ul.tag-cloud details > summary { cursor:pointer; }
 ul.tag-cloud details > summary::-webkit-details-marker { display:none; }
 .tag-xl > details > summary { font-size:1.3em; font-weight:bold; }
@@ -919,20 +1006,15 @@ ul.tag-cloud details > summary::-webkit-details-marker { display:none; }
 ul.tag-cloud details ul { list-style:none; padding:.3em 0 .3em 1em; margin:.2em 0 0;
   background:#f8f8ff; border:1px solid #ddf; border-radius:3px; min-width:220px;
   position:absolute; z-index:10; box-shadow:2px 2px 6px rgba(0,0,0,.15); }
-ul.tag-cloud > li { position:relative; }
-
+/* リンク色 */
 a { color:#0066cc; } a:visited { color:#6600cc; }
-/* 内部リンク（アーカイブ内の記事へのリンク）*/
 a.int-link         { color:#007744; font-weight:500; }
 a.int-link:visited { color:#005533; }
 a.int-link:hover   { color:#00aa55; text-decoration:underline; }
 a.int-link.cocolog-id { background:#e8f5ee; padding:.05em .3em; border-radius:3px; }
-/* gsm >>タイムスタンプ参照 */
-a.int-link.gsm-tsref   { background:#e8f0ff; padding:.05em .3em; border-radius:3px; }
-span.gsm-tsref         { background:#f4f4f4; padding:.05em .3em; border-radius:3px; color:#888; }
-/* 外部リンク */
-a.ext-link         { color:#0066cc; }
-a.ext-link:visited { color:#6600cc; }
+a.int-link.gsm-tsref  { background:#e8f0ff; padding:.05em .3em; border-radius:3px; }
+span.gsm-tsref { background:#f4f4f4; padding:.05em .3em; border-radius:3px; color:#888; }
+a.ext-link { color:#0066cc; } a.ext-link:visited { color:#6600cc; }
 .bottom { margin-top:2em; border-top:1px solid #ccc; padding-top:.5em; font-size:.9em; }
 CSS
     close($out);
@@ -964,6 +1046,24 @@ sub label_for_type {
               software=>'ソフトウェア Tips', pr=>'勝手に PR',
               statuses=>'ひとこと', hbm=>'ブックマーク', gsm=>'共有メモ' );
     return $L{$type} // $type;
+}
+
+# インデックス行の先頭に付けるサブブログバッジ
+sub type_badge {
+    my ($type) = @_;
+    my %colors = (
+        column   => 'badge-column',
+        religion => 'badge-religion',
+        society  => 'badge-society',
+        software => 'badge-software',
+        pr       => 'badge-pr',
+        statuses => 'badge-statuses',
+        hbm      => 'badge-hbm',
+        gsm      => 'badge-gsm',
+    );
+    my $cls  = $colors{$type} // 'badge-other';
+    my $label = label_for_type($type);
+    return qq(<span class="type-badge $cls">${\h($label)}</span> );
 }
 
 # タイトルなし記事（statuses・gsm）は本文冒頭をタイトル代わりに使う
