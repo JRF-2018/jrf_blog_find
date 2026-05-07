@@ -497,7 +497,9 @@ sub html_article {
 <html lang="ja">
 <head>
 <meta charset="UTF-8">
-<title>${\h($disp_title)} - JRF Blog Archive</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>${\h($disp_title)} - JRF ブログ退避所</title>
 <link rel="stylesheet" href="${root}style.css">
 </head>
 <body>
@@ -822,7 +824,8 @@ sub gen_month_index {
     print $out <<"HTML";
 <!DOCTYPE html>
 <html lang="ja">
-<head><meta charset="UTF-8"><title>${year}年${month}月 - JRF ブログ退避所</title>
+<head><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1"><title>${year}年${month}月 - JRF ブログ退避所</title>
 <link rel="stylesheet" href="${root}style.css"></head>
 <body>
 <nav><a href="${root}index.html">TOP</a>${\($type_links ? " | $type_links" : '')}</nav>
@@ -861,7 +864,8 @@ sub gen_type_month_index {
     print $out <<"HTML";
 <!DOCTYPE html>
 <html lang="ja">
-<head><meta charset="UTF-8"><title>${year}年${month}月 ${\h($label)} - JRF ブログ退避所</title>
+<head><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1"><title>${year}年${month}月 ${\h($label)} - JRF ブログ退避所</title>
 <link rel="stylesheet" href="${root}style.css"></head>
 <body>
 <nav><a href="${root}index.html">TOP</a> | <a href="${root}index/$ym.html">${year}年${month}月</a> | <a href="${root}index/${type}.html">${\h($label)}</a></nav>
@@ -903,7 +907,8 @@ sub gen_type_index {
     print $out <<"HTML";
 <!DOCTYPE html>
 <html lang="ja">
-<head><meta charset="UTF-8"><title>${\h($label)} - JRF Blog Archive</title>
+<head><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1"><title>${\h($label)} - JRF ブログ退避所</title>
 <link rel="stylesheet" href="${root}style.css"></head>
 <body>
 <nav><a href="${root}index.html">TOP</a></nav>
@@ -979,7 +984,8 @@ sub gen_tag_index {
     print $out <<"HTML";
 <!DOCTYPE html>
 <html lang="ja">
-<head><meta charset="UTF-8"><title>タグ一覧 - JRF ブログ退避所</title>
+<head><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1"><title>タグ一覧 - JRF ブログ退避所</title>
 <link rel="stylesheet" href="${root}style.css"></head>
 <body>
 <nav><a href="${root}index.html">TOP</a></nav>
@@ -1046,7 +1052,8 @@ sub gen_tag_pages {
         print $out <<"HTML";
 <!DOCTYPE html>
 <html lang="ja">
-<head><meta charset="UTF-8"><title>[$tag_h] - JRF Blog Archive</title>
+<head><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1"><title>[$tag_h] - JRF ブログ退避所</title>
 <link rel="stylesheet" href="${root}style.css"></head>
 <body>
 <nav><a href="${root}index.html">TOP</a> | <a href="${root}index/tags.html">タグ一覧</a></nav>
@@ -1094,6 +1101,7 @@ sub gen_top_index {
 <html lang="ja">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>JRF ブログ退避所</title>
 <link rel="stylesheet" href="style.css">
 <link href="pagefind/pagefind-ui.css" rel="stylesheet">
@@ -1160,7 +1168,8 @@ HTML
 <html lang="ja">
 <head>
 <meta charset="UTF-8">
-<title>検索 - JRF Blog Archive</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>検索 - JRF ブログ退避所</title>
 <link rel="stylesheet" href="style.css">
 <link href="pagefind/pagefind-ui.css" rel="stylesheet">
 </head>
@@ -1207,7 +1216,8 @@ sub gen_blogparts {
     print $out <<'HTML';
 <!DOCTYPE html>
 <html lang="ja">
-<head><meta charset="UTF-8"><title>ブログパーツ - JRF ブログ退避所</title>
+<head><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1"><title>ブログパーツ - JRF ブログ退避所</title>
 <style>
 body { font-family: sans-serif; font-size:14px; padding:1em; }
 pre { background:#f5f5f5; border:1px solid #ddd; padding:.5em; overflow-x:auto; font-size:12px; }
@@ -1271,7 +1281,7 @@ sub gen_css {
     my ($out_dir) = @_;
     open(my $out, '>:encoding(UTF-8)', "$out_dir/style.css") or return;
     print $out <<'CSS';
-/* JRF Blog Archive */
+/* JRF ブログ退避所 */
 body { font-family:'Noto Sans JP','Hiragino Kaku Gothic ProN',Meiryo,sans-serif;
   font-size:15px; line-height:1.7; max-width:920px; margin:0 auto;
   padding:1em 1.5em; color:#222; background:#fafafa; }
