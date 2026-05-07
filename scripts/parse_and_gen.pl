@@ -162,6 +162,15 @@ for my $art (@all_articles) {
 }
 
 # ---------- 各種インデックス ----------
+# タグIDテーブルを先に構築（ファイル名に使う）
+my %tag_id;  # tag => "tag_0001" のような連番ID
+{
+    my $seq = 0;
+    for my $tag (sort keys %tag_index) {
+        $tag_id{$tag} = sprintf("tag_%04d", ++$seq);
+    }
+}
+printf STDERR "タグIDテーブル: %d種\n", scalar keys %tag_id;
 gen_month_index($_, $month_index{$_}, $out_dir) for sort keys %month_index;
 gen_type_index($_, $type_index{$_},   $out_dir) for keys %type_index;
 gen_tag_index(\%tag_index, $out_dir);
@@ -644,14 +653,16 @@ sub keyword_to_link {
     return qq(<span class="keyword-ref">keyword: <a href="$search_url" class="keyword-link">$kw_h</a></span>);
 }
 
-# --- タグ名をファイル名に変換（日本語対応: URLエンコード）---
+# --- タグ名をファイル名に変換（連番ID方式、日本語でも安全）---
 sub tag_to_filename {
     my ($tag) = @_;
-    my $enc = $tag;
-    # Perl の uri_escape 相当を手実装
-    utf8::encode($enc);  # UTF-8バイト列に
-    $enc =~ s/([^A-Za-z0-9_\-])/sprintf('%%%02X', ord($1))/ge;
-    return $enc;
+    return $tag_id{$tag} // do {
+        # 万一テーブルにない場合はASCII安全なフォールバック
+        my $enc = $tag;
+        utf8::encode($enc);
+        $enc =~ s/([^A-Za-z0-9_\-])/sprintf('_%02X', ord($1))/ge;
+        $enc;
+    };
 }
 
 # --- >>TIMESTAMP → gsm 記事への内部リンク ---
@@ -845,7 +856,7 @@ sub gen_tag_index {
     print $out <<"HTML";
 <!DOCTYPE html>
 <html lang="ja">
-<head><meta charset="UTF-8"><title>タグ一覧 - JRF Blog Archive</title>
+<head><meta charset="UTF-8"><title>タグ一覧 - JRF ブログ退避所</title>
 <link rel="stylesheet" href="${root}style.css"></head>
 <body>
 <nav><a href="${root}index.html">TOP</a></nav>
@@ -854,12 +865,15 @@ sub gen_tag_index {
 HTML
     for my $tag (@tags) {
         my $cnt  = scalar @{ $tag_index->{$tag} };
+        my $fn   = tag_to_filename($tag);
         my @arts = sort {
             ($b->{year}||0) <=> ($a->{year}||0) || ($b->{month}||0) <=> ($a->{month}||0)
         } @{ $tag_index->{$tag} };
         my $size = $cnt>=50 ? 'xl' : $cnt>=20 ? 'lg' : $cnt>=5 ? 'md' : 'sm';
-        printf $out qq(<li class="tag-%s"><details class="tag-details"><summary>[%s]（%d件）</summary><ul>\n),
-            $size, h($tag), $cnt;
+        # summary はタグ個別ページへのリンク＋件数
+        printf $out qq(<li class="tag-%s"><details class="tag-details">).
+                    qq(<summary><a href="%sindex/tag/%s.html" class="tag-page-link">[%s]</a>（%d件）</summary><ul>\n),
+            $size, $root, $fn, h($tag), $cnt;
         for my $art (@arts) {
             my $title = art_display_title($art);
             my $href  = $art->{html_path} ? "${root}$art->{html_path}" : '#';
@@ -1262,6 +1276,8 @@ a.tag-link { color:#333; text-decoration:none; font-size:.9em;
   background:#f0f0f8; border:1px solid #c8c8e0; border-radius:3px;
   padding:.05em .3em; margin:.05em; display:inline-block; }
 a.tag-link:hover { background:#e0e8ff; border-color:#88a; }
+a.tag-page-link { color:#224; font-weight:500; text-decoration:none; }
+a.tag-page-link:hover { text-decoration:underline; }
 /* google/wikipedia 外部参照 */
 span.extref-google { background:#e8f0fe; border:1px solid #aac; border-radius:3px; padding:.05em .3em; font-size:.9em; }
 span.extref-wiki   { background:#eaf3ea; border:1px solid #aca; border-radius:3px; padding:.05em .3em; font-size:.9em; }
