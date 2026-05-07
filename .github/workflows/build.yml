@@ -48,6 +48,8 @@ jobs:
         run: |
           cp -r cocolog_data/images docs/images
           echo "Copied: $(ls docs/images/ | wc -l) images"
+          # .nojekyll: Jekyll処理をスキップ（%エンコードされたURLのファイルが404になる問題を防ぐ）
+          touch docs/.nojekyll
 
       # ⑤ Pagefind で検索インデックスを生成
       - name: Build search index with Pagefind

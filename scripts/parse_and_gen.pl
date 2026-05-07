@@ -167,6 +167,7 @@ gen_type_index($_, $type_index{$_},   $out_dir) for keys %type_index;
 gen_tag_index(\%tag_index, $out_dir);
 gen_tag_pages(\%tag_index, $out_dir);
 gen_top_index(\%month_index, \%type_index, \%tag_index, $out_dir);
+gen_blogparts($out_dir);
 gen_css($out_dir);
 print STDERR "完了。\n";
 
@@ -523,6 +524,14 @@ sub body_to_html {
         "\x00TSREF".$#tsrefs."\x00"
     /ge;
 
+    # [google:クエリ] / [wikipedia:項目名] を退避
+    my @extrefs;
+    $body =~ s/\[(google|wikipedia):[ \t]*([^\]]+)\]/
+        my ($svc, $q) = ($1, $2); $q =~ s!\s+$!!;
+        push @extrefs, {svc=>$svc, q=>$q};
+        "\x00EXTREF".$#extrefs."\x00"
+    /ge;
+
     # keyword: キーワード（行頭）を退避
     my @kw_list;
     $body =~ s/^keyword:[ \t]*([^\n\]]+)/
@@ -542,6 +551,9 @@ sub body_to_html {
 
     # >>TIMESTAMP プレースホルダを内部リンクに変換
     $body =~ s/\x00TSREF(\d+)\x00/tsref_to_link($tsrefs[$1]{space}, $tsrefs[$1]{ts}, $root)/ge;
+
+    # [google:] / [wikipedia:] プレースホルダを展開
+    $body =~ s/\x00EXTREF(\d+)\x00/extref_to_link($extrefs[$1]{svc}, $extrefs[$1]{q}, $root)/ge;
 
     # keyword: プレースホルダをリンクに変換
     $body =~ s/\x00KW(\d+)\x00/keyword_to_link($kw_list[$1], $root)/ge;
@@ -601,16 +613,35 @@ sub idref_to_link {
     return qq(<a href="$ihref" class="int-link cocolog-id" title="$title">$tag_h</a>);
 }
 
-# --- keyword: キーワード → Pagefind 検索リンク ---
+# --- [google:クエリ] / [wikipedia:項目名] → 外部リンク ---
+sub extref_to_link {
+    my ($svc, $q, $root) = @_;
+    my $q_h = h($q);
+    if ($svc eq 'google') {
+        my $q_enc = $q;
+        utf8::encode($q_enc);
+        $q_enc =~ s/([^A-Za-z0-9_\-.])/sprintf('%%%02X',ord($1))/ge;
+        my $url = "https://www.google.com/search?q=$q_enc";
+        return qq(<span class="extref-google">\[google: <a href="$url" class="ext-link" target="_blank" rel="noopener">$q_h</a>\]</span>);
+    } elsif ($svc eq 'wikipedia') {
+        my $q_enc = $q; $q_enc =~ s/ /_/g;
+        utf8::encode($q_enc);
+        $q_enc =~ s/([^A-Za-z0-9_\-])/sprintf('%%%02X',ord($1))/ge;
+        my $url = "https://ja.wikipedia.org/wiki/$q_enc";
+        return qq(<span class="extref-wiki">\[wikipedia: <a href="$url" class="ext-link" target="_blank" rel="noopener">$q_h</a>\]</span>);
+    }
+    return h("[$svc:$q]");
+}
+
+# --- keyword: キーワード → search.html?q= リンク ---
 sub keyword_to_link {
     my ($kw, $root) = @_;
-    my $kw_h    = h($kw);
-    # index.html に pagefind UI があるのでそこへ遷移（#search へのアンカー + クエリは JS で）
-    # search.html は index.html にリダイレクトなので index.html を使う
-    my $search_url = h($root . 'index.html#search');
-    my $kw_enc  = $kw; $kw_enc =~ s/([^A-Za-z0-9_\-.])/sprintf('%%%02X', ord($1))/ge;
-    # pagefind-ui はURLパラメータ未対応なので、data属性でキーワードを持たせ JS で操作
-    return qq(<span class="keyword-ref" data-kw="$kw_h">keyword: <a href="$search_url" class="keyword-link" data-kw="$kw_h" onclick="doSearch(this)">$kw_h</a></span>);
+    my $kw_h   = h($kw);
+    my $kw_enc = $kw;
+    utf8::encode($kw_enc);
+    $kw_enc =~ s/([^A-Za-z0-9_\-.])/sprintf('%%%02X',ord($1))/ge;
+    my $search_url = h($root . "search.html?q=$kw_enc");
+    return qq(<span class="keyword-ref">keyword: <a href="$search_url" class="keyword-link">$kw_h</a></span>);
 }
 
 # --- タグ名をファイル名に変換（日本語対応: URLエンコード）---
@@ -926,7 +957,7 @@ sub gen_top_index {
 <html lang="ja">
 <head>
 <meta charset="UTF-8">
-<title>JRF Blog Archive</title>
+<title>JRF ブログ退避所</title>
 <link rel="stylesheet" href="style.css">
 <link href="pagefind/pagefind-ui.css" rel="stylesheet">
 </head>
@@ -935,7 +966,7 @@ sub gen_top_index {
 <a href="https://github.com/JRF-2018" class="gh-icon-link">
 <img src="https://github.com/JRF-2018.png" alt="JRF-2018 on GitHub" class="gh-icon">
 </a>
-<h1>JRF Blog Archive</h1>
+<h1>JRF ブログ退避所</h1>
 </div>
 <p class="site-desc">ここは JRF のブログ等を検索するためのサイトです。
 元のブログは <a href="http://jrf.cocolog-nifty.com/">http://jrf.cocolog-nifty.com/</a> にあります。
@@ -964,9 +995,8 @@ HTML
 <p><small>このアーカイブは <a href="https://github.com/JRF-2018/jrf_blog_find">jrf_blog_find</a> により自動生成。</small></p>
 <script src="pagefind/pagefind-ui.js"></script>
 <script>
-var pfUI;
 if (typeof PagefindUI !== 'undefined') {
-  pfUI = new PagefindUI({
+  new PagefindUI({
     element: "#search",
     showSubResults: true,
     resetStyles: false,
@@ -979,31 +1009,123 @@ if (typeof PagefindUI !== 'undefined') {
   document.getElementById('search').innerHTML =
     '<p style="color:#888;font-size:.9em">（検索インデックス未生成。GitHub Actions 実行後に利用可能になります。）</p>';
 }
-function doSearch(el) {
-  var kw = el.getAttribute('data-kw');
-  if (!kw || !pfUI) return;
-  event.preventDefault();
-  pfUI.triggerSearch(kw);
-  document.getElementById('search-box').scrollIntoView({behavior:'smooth'});
-}
 </script>
 </body></html>
 HTML
     close($out);
 
-    # search.html は index.html へリダイレクト（古いリンク対策）
+    # search.html: URLパラメータ ?q= 対応の独立検索ページ
     my $spath = "$out_dir/search.html";
     open(my $sout, '>:encoding(UTF-8)', $spath) or return;
     print $sout <<'HTML';
 <!DOCTYPE html>
 <html lang="ja">
-<head><meta charset="UTF-8">
-<meta http-equiv="refresh" content="0; url=index.html">
-<title>検索 - JRF Blog Archive</title></head>
-<body><a href="index.html">→ トップページ（検索はこちら）</a></body>
+<head>
+<meta charset="UTF-8">
+<title>検索 - JRF Blog Archive</title>
+<link rel="stylesheet" href="style.css">
+<link href="pagefind/pagefind-ui.css" rel="stylesheet">
+</head>
+<body>
+<nav><a href="index.html">TOP</a></nav>
+<h1>検索</h1>
+<div class="search-box"><div id="search"></div></div>
+<script src="pagefind/pagefind-ui.js"></script>
+<script>
+var pfUI;
+if (typeof PagefindUI !== 'undefined') {
+  pfUI = new PagefindUI({
+    element: "#search",
+    showSubResults: true,
+    resetStyles: false,
+    translations: {
+      placeholder: "検索 (例: cocolog:9644812、keyword、URL の一部など)",
+      zero_results: "「[SEARCH_TERM]」に一致する記事がありません。"
+    }
+  });
+  // URLパラメータ ?q=xxx から検索語を取得して即検索
+  var params = new URLSearchParams(location.search);
+  var q = params.get('q');
+  if (q) {
+    pfUI.triggerSearch(q);
+  }
+} else {
+  document.getElementById('search').innerHTML =
+    '<p style="color:#888">（検索インデックス未生成。GitHub Actions 実行後に利用可能です。）</p>';
+}
+</script>
+</body>
 </html>
 HTML
     close($sout);
+}
+
+sub gen_blogparts {
+    my ($out_dir) = @_;
+    my $path = "$out_dir/blogparts.html";
+    open(my $out, '>:encoding(UTF-8)', $path) or return;
+    # ブログのサイドバーに貼り付けるためのサイト内検索パーツ
+    print $out <<'HTML';
+<!DOCTYPE html>
+<html lang="ja">
+<head><meta charset="UTF-8"><title>ブログパーツ - JRF ブログ退避所</title>
+<style>
+body { font-family: sans-serif; font-size:14px; padding:1em; }
+pre { background:#f5f5f5; border:1px solid #ddd; padding:.5em; overflow-x:auto; font-size:12px; }
+</style></head>
+<body>
+<h1>サイト内検索ブログパーツ</h1>
+<p>以下のコードをブログのサイドバーに貼り付けると、JRF ブログ退避所の記事を検索できます。</p>
+
+<h2>シンプル版（推奨）</h2>
+<pre id="code-simple"></pre>
+
+<h2>横並びコンパクト版</h2>
+<pre id="code-compact"></pre>
+
+<script>
+var BASE = 'https://jrf-2018.github.io/jrf_blog_find/';
+
+var simple = [
+  '<form action="' + BASE + 'search.html" method="get" target="_blank">',
+  '  <div style="border:1px solid #ccc; border-radius:4px; padding:6px 8px; background:#f8f8ff; display:inline-block;">',
+  '    <div style="font-size:11px; color:#666; margin-bottom:4px;">JRF ブログ退避所 検索</div>',
+  '    <input type="text" name="q" placeholder="キーワードを入力" style="width:180px; padding:4px 6px; border:1px solid #aaa; border-radius:3px; font-size:13px;">',
+  '    <button type="submit" style="padding:4px 10px; background:#007744; color:#fff; border:none; border-radius:3px; cursor:pointer; font-size:13px;">検索</button>',
+  '  </div>',
+  '</form>'
+].join('\n');
+
+var compact = [
+  '<form action="' + BASE + 'search.html" method="get" target="_blank" style="display:flex; gap:4px; align-items:center;">',
+  '  <input type="text" name="q" placeholder="JRF ブログ退避所を検索" style="flex:1; padding:4px 6px; border:1px solid #aaa; border-radius:3px; font-size:13px; min-width:120px;">',
+  '  <button type="submit" style="padding:4px 8px; background:#007744; color:#fff; border:none; border-radius:3px; cursor:pointer; font-size:13px;">検索</button>',
+  '</form>'
+].join('\n');
+
+document.getElementById('code-simple').textContent = simple;
+document.getElementById('code-compact').textContent = compact;
+</script>
+
+<h2>プレビュー</h2>
+<h3>シンプル版</h3>
+<form action="https://jrf-2018.github.io/jrf_blog_find/search.html" method="get" target="_blank">
+  <div style="border:1px solid #ccc; border-radius:4px; padding:6px 8px; background:#f8f8ff; display:inline-block;">
+    <div style="font-size:11px; color:#666; margin-bottom:4px;">JRF ブログ退避所 検索</div>
+    <input type="text" name="q" placeholder="キーワードを入力" style="width:180px; padding:4px 6px; border:1px solid #aaa; border-radius:3px; font-size:13px;">
+    <button type="submit" style="padding:4px 10px; background:#007744; color:#fff; border:none; border-radius:3px; cursor:pointer; font-size:13px;">検索</button>
+  </div>
+</form>
+
+<h3>横並びコンパクト版</h3>
+<form action="https://jrf-2018.github.io/jrf_blog_find/search.html" method="get" target="_blank" style="display:flex; gap:4px; align-items:center; max-width:300px;">
+  <input type="text" name="q" placeholder="JRF ブログ退避所を検索" style="flex:1; padding:4px 6px; border:1px solid #aaa; border-radius:3px; font-size:13px;">
+  <button type="submit" style="padding:4px 8px; background:#007744; color:#fff; border:none; border-radius:3px; cursor:pointer; font-size:13px;">検索</button>
+</form>
+</body></html>
+HTML
+    close($out);
+    print STDERR "ブログパーツ: blogparts.html\n";
 }
 
 sub gen_css {
@@ -1140,6 +1262,9 @@ a.tag-link { color:#333; text-decoration:none; font-size:.9em;
   background:#f0f0f8; border:1px solid #c8c8e0; border-radius:3px;
   padding:.05em .3em; margin:.05em; display:inline-block; }
 a.tag-link:hover { background:#e0e8ff; border-color:#88a; }
+/* google/wikipedia 外部参照 */
+span.extref-google { background:#e8f0fe; border:1px solid #aac; border-radius:3px; padding:.05em .3em; font-size:.9em; }
+span.extref-wiki   { background:#eaf3ea; border:1px solid #aca; border-radius:3px; padding:.05em .3em; font-size:.9em; }
 /* keyword: リンク */
 span.keyword-ref { display:inline-block; background:#fff8e8;
   border:1px solid #e8d890; border-radius:3px; padding:.1em .4em;
