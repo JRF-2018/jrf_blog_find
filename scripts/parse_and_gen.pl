@@ -221,27 +221,30 @@ sub parse_blog {
             @tags = ($5 =~ /\[([^\]]+)\]/g);
         } elsif ($url =~ m{/(\d{4})/(\d{2})/}) { ($year,$month) = ($1+0,$2+0) }
         my $body = '';
-        $body = $1 if $chunk =~ /\d{2}:\d{2}:\d{2}[^\n]*\n+(.*?)(?=\nTrackbacks?:|\z)/s;
-        $body =~ s/\s+$//;
+        if ($chunk =~ /\d{2}:\d{2}:\d{2}[^\n]*\n+(.*?)(?=\nTrackbacks?:|\nLinks:|\z)/s) {
+            $body = $1; $body =~ s/\s+$//;
+        }
         my @tbs;
-        my @links_raw;  # Links: セクションの生テキスト行
+        my $links_text = '';
         if ($chunk =~ /Trackbacks?:\n+(.*)\z/s) {
             my $tb_text = $1;
-            # Trackback本体
             while ($tb_text =~ /《([^》]*)》 from ([^\n]*)\n(https?:\/\/\S+)\n\n(.*?)(?=\n《|\nLinks:|\z)/gs) {
                 push @tbs, {title=>$1, from=>$2, url=>$3, excerpt=>$4};
             }
-            # Links: セクション
-            if ($tb_text =~ /\nLinks:\n\n(.*)\z/s) {
-                @links_raw = split /\n/, $1;
-                @links_raw = grep { /\S/ } @links_raw;
+            if ($tb_text =~ /\nLinks:\n\n(.*)\z/s || $tb_text =~ /^Links:\n\n(.*)\z/s) {
+                $links_text = $1;
+                $links_text =~ s/\s+$//;
             }
+        } elsif ($chunk =~ /\nLinks:\n\n(.*)\z/s) {
+            # Trackbacks なしで直接 Links が来る場合
+            $links_text = $1;
+            $links_text =~ s/\s+$//;
         }
         push @arts, {
             type=>$type, cocolog_id=>$cid, id=>"${type}_${cid}",
             title=>$title, url=>$url,
             year=>$year, month=>$month, day=>$day, time_str=>$time_str,
-            tags=>\@tags, body=>$body, trackbacks=>\@tbs, links=>\@links_raw,
+            tags=>\@tags, body=>$body, trackbacks=>\@tbs, links_text=>$links_text,
             section=>$sec_name, html_path=>'',
         };
     }
@@ -442,21 +445,31 @@ sub html_article {
         }
     }
 
-    # --- Links セクション（Trackback後に来る「名前: URL」リスト）---
+    # --- Links セクション ---
+    # 通常記事→内部リンク、hbmのみ→外部リンク+hbmリンク併記、なし→外部リンク
     my $links_html = '';
-    if ($art->{links} && @{ $art->{links} }) {
-        $links_html = "\nLinks:\n\n";
-        for my $line (@{ $art->{links} }) {
+    if ($art->{links_text}) {
+        $links_html = "Links:\n\n";
+        for my $line (split /\n/, $art->{links_text}) {
+            next unless $line =~ /\S/;
             if ($line =~ /^(.+?):\s+(https?:\/\/\S+)\s*$/) {
                 my ($name, $url2) = ($1, $2);
                 my $name_h = h($name);
                 my $url2_h = h($url2);
-                if (my $art2 = $url_to_art{$url2}) {
-                    my $path2  = $art2->{html_path} or next;
-                    my $ihref  = h($root . $path2);
-                    my $title2 = h($art2->{title} || label_for_type($art2->{type}));
+                my $linked_art = $url_to_art{$url2};
+                if ($linked_art && $linked_art->{type} ne 'hbm') {
+                    # 通常ブログ記事への内部リンク
+                    my $ihref  = h($root . $linked_art->{html_path});
+                    my $title2 = h($linked_art->{title} || label_for_type($linked_art->{type}));
                     $links_html .= qq($name_h: <a href="$ihref" class="int-link" title="$title2">$url2_h</a>\n);
+                } elsif ($linked_art && $linked_art->{type} eq 'hbm') {
+                    # hbmにマッチ→外部リンク本体 + hbmへのリンクを添える
+                    my $hbm_href  = h($root . $linked_art->{html_path});
+                    my $hbm_title = h($linked_art->{title} || 'ブックマーク');
+                    $links_html .= qq($name_h: <a href="$url2_h" class="ext-link">$url2_h</a> )
+                                 . qq(<span class="hbm-ref">(<a href="$hbm_href" class="int-link" title="$hbm_title">hbm</a>)</span>\n);
                 } else {
+                    # 対応記事なし→外部リンク
                     $links_html .= qq($name_h: <a href="$url2_h" class="ext-link">$url2_h</a>\n);
                 }
             } else {
@@ -655,22 +668,6 @@ sub idref_to_link {
     my $ihref = h($root . $art->{html_path});
     my $title = h($art->{title} || label_for_type($art->{type}));
     return qq(<a href="$ihref" class="int-link cocolog-id" title="$title">$tag_h</a>);
-}
-
-# --- Links: ブロックの「名前: URL」→ 「名前: <a href>URL</a>」 ---
-sub links_item_to_html {
-    my ($lnk, $root) = @_;
-    my $name = h($lnk->{name});
-    my $url  = $lnk->{url};
-    my $url_h = h($url);
-    # 内部リンク判定
-    if (my $art = $url_to_art{$url}) {
-        my $path  = $art->{html_path} or return "$name: <a href=\"$url_h\" class=\"ext-link\">$url_h</a>";
-        my $ihref = h($root . $path);
-        my $title = h($art->{title} || label_for_type($art->{type}));
-        return qq($name: <a href="$ihref" class="int-link" title="$title">$url_h</a>);
-    }
-    return qq($name: <a href="$url_h" class="ext-link">$url_h</a>);
 }
 
 # --- [google:クエリ] / [wikipedia:項目名] → 外部リンク ---
@@ -1233,6 +1230,7 @@ pre.trackbacks { background:#f8f8f8; border:1px dashed #bbb; margin-top:.5em;
   padding:.5em 1em; white-space:pre-wrap; word-break:break-all; font-size:.9em; }
 pre.links { background:#f0f8ff; border:1px solid #b8d4ee; margin-top:.3em;
   padding:.5em 1em; white-space:pre-wrap; word-break:break-all; font-size:.9em; }
+span.hbm-ref { font-size:.85em; color:#666; }
 /* 後方参照 */
 section.backrefs { margin-top:1.2em; padding:.6em 1em;
   background:#f0f4ff; border:1px solid #c0d0ee; border-radius:4px; }
