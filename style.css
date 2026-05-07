@@ -128,6 +128,9 @@ a.tag-link { color:#333; text-decoration:none; font-size:.9em;
   background:#f0f0f8; border:1px solid #c8c8e0; border-radius:3px;
   padding:.05em .3em; margin:.05em; display:inline-block; }
 a.tag-link:hover { background:#e0e8ff; border-color:#88a; }
+/* google/wikipedia 外部参照 */
+span.extref-google { background:#e8f0fe; border:1px solid #aac; border-radius:3px; padding:.05em .3em; font-size:.9em; }
+span.extref-wiki   { background:#eaf3ea; border:1px solid #aca; border-radius:3px; padding:.05em .3em; font-size:.9em; }
 /* keyword: リンク */
 span.keyword-ref { display:inline-block; background:#fff8e8;
   border:1px solid #e8d890; border-radius:3px; padding:.1em .4em;

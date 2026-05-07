@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head><meta charset="UTF-8"><title>ブログパーツ - JRF ブログ退避所</title>
+<style>
+body { font-family: sans-serif; font-size:14px; padding:1em; }
+pre { background:#f5f5f5; border:1px solid #ddd; padding:.5em; overflow-x:auto; font-size:12px; }
+</style></head>
+<body>
+<h1>サイト内検索ブログパーツ</h1>
+<p>以下のコードをブログのサイドバーに貼り付けると、JRF ブログ退避所の記事を検索できます。</p>
+
+<h2>シンプル版（推奨）</h2>
+<pre id="code-simple"></pre>
+
+<h2>横並びコンパクト版</h2>
+<pre id="code-compact"></pre>
+
+<script>
+var BASE = 'https://jrf-2018.github.io/jrf_blog_find/';
+
+var simple = [
+  '<form action="' + BASE + 'search.html" method="get" target="_blank">',
+  '  <div style="border:1px solid #ccc; border-radius:4px; padding:6px 8px; background:#f8f8ff; display:inline-block;">',
+  '    <div style="font-size:11px; color:#666; margin-bottom:4px;">JRF ブログ退避所 検索</div>',
+  '    <input type="text" name="q" placeholder="キーワードを入力" style="width:180px; padding:4px 6px; border:1px solid #aaa; border-radius:3px; font-size:13px;">',
+  '    <button type="submit" style="padding:4px 10px; background:#007744; color:#fff; border:none; border-radius:3px; cursor:pointer; font-size:13px;">検索</button>',
+  '  </div>',
+  '</form>'
+].join('\n');
+
+var compact = [
+  '<form action="' + BASE + 'search.html" method="get" target="_blank" style="display:flex; gap:4px; align-items:center;">',
+  '  <input type="text" name="q" placeholder="JRF ブログ退避所を検索" style="flex:1; padding:4px 6px; border:1px solid #aaa; border-radius:3px; font-size:13px; min-width:120px;">',
+  '  <button type="submit" style="padding:4px 8px; background:#007744; color:#fff; border:none; border-radius:3px; cursor:pointer; font-size:13px;">検索</button>',
+  '</form>'
+].join('\n');
+
+document.getElementById('code-simple').textContent = simple;
+document.getElementById('code-compact').textContent = compact;
+</script>
+
+<h2>プレビュー</h2>
+<h3>シンプル版</h3>
+<form action="https://jrf-2018.github.io/jrf_blog_find/search.html" method="get" target="_blank">
+  <div style="border:1px solid #ccc; border-radius:4px; padding:6px 8px; background:#f8f8ff; display:inline-block;">
+    <div style="font-size:11px; color:#666; margin-bottom:4px;">JRF ブログ退避所 検索</div>
+    <input type="text" name="q" placeholder="キーワードを入力" style="width:180px; padding:4px 6px; border:1px solid #aaa; border-radius:3px; font-size:13px;">
+    <button type="submit" style="padding:4px 10px; background:#007744; color:#fff; border:none; border-radius:3px; cursor:pointer; font-size:13px;">検索</button>
+  </div>
+</form>
+
+<h3>横並びコンパクト版</h3>
+<form action="https://jrf-2018.github.io/jrf_blog_find/search.html" method="get" target="_blank" style="display:flex; gap:4px; align-items:center; max-width:300px;">
+  <input type="text" name="q" placeholder="JRF ブログ退避所を検索" style="flex:1; padding:4px 6px; border:1px solid #aaa; border-radius:3px; font-size:13px;">
+  <button type="submit" style="padding:4px 8px; background:#007744; color:#fff; border:none; border-radius:3px; cursor:pointer; font-size:13px;">検索</button>
+</form>
+</body></html>

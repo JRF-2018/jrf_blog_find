@@ -1,7 +1,38 @@
 <!DOCTYPE html>
 <html lang="ja">
-<head><meta charset="UTF-8">
-<meta http-equiv="refresh" content="0; url=index.html">
-<title>検索 - JRF Blog Archive</title></head>
-<body><a href="index.html">→ トップページ（検索はこちら）</a></body>
+<head>
+<meta charset="UTF-8">
+<title>検索 - JRF Blog Archive</title>
+<link rel="stylesheet" href="style.css">
+<link href="pagefind/pagefind-ui.css" rel="stylesheet">
+</head>
+<body>
+<nav><a href="index.html">TOP</a></nav>
+<h1>検索</h1>
+<div class="search-box"><div id="search"></div></div>
+<script src="pagefind/pagefind-ui.js"></script>
+<script>
+var pfUI;
+if (typeof PagefindUI !== 'undefined') {
+  pfUI = new PagefindUI({
+    element: "#search",
+    showSubResults: true,
+    resetStyles: false,
+    translations: {
+      placeholder: "検索 (例: cocolog:9644812、keyword、URL の一部など)",
+      zero_results: "「[SEARCH_TERM]」に一致する記事がありません。"
+    }
+  });
+  // URLパラメータ ?q=xxx から検索語を取得して即検索
+  var params = new URLSearchParams(location.search);
+  var q = params.get('q');
+  if (q) {
+    pfUI.triggerSearch(q);
+  }
+} else {
+  document.getElementById('search').innerHTML =
+    '<p style="color:#888">（検索インデックス未生成。GitHub Actions 実行後に利用可能です。）</p>';
+}
+</script>
+</body>
 </html>

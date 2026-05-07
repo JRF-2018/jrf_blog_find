@@ -2,7 +2,7 @@
 <html lang="ja">
 <head>
 <meta charset="UTF-8">
-<title>JRF Blog Archive</title>
+<title>JRF ブログ退避所</title>
 <link rel="stylesheet" href="style.css">
 <link href="pagefind/pagefind-ui.css" rel="stylesheet">
 </head>
@@ -11,7 +11,7 @@
 <a href="https://github.com/JRF-2018" class="gh-icon-link">
 <img src="https://github.com/JRF-2018.png" alt="JRF-2018 on GitHub" class="gh-icon">
 </a>
-<h1>JRF Blog Archive</h1>
+<h1>JRF ブログ退避所</h1>
 </div>
 <p class="site-desc">ここは JRF のブログ等を検索するためのサイトです。
 元のブログは <a href="http://jrf.cocolog-nifty.com/">http://jrf.cocolog-nifty.com/</a> にあります。
@@ -295,9 +295,8 @@ GitHub は <a href="https://github.com/JRF-2018">https://github.com/JRF-2018</a>
 <p><small>このアーカイブは <a href="https://github.com/JRF-2018/jrf_blog_find">jrf_blog_find</a> により自動生成。</small></p>
 <script src="pagefind/pagefind-ui.js"></script>
 <script>
-var pfUI;
 if (typeof PagefindUI !== 'undefined') {
-  pfUI = new PagefindUI({
+  new PagefindUI({
     element: "#search",
     showSubResults: true,
     resetStyles: false,
@@ -309,13 +308,6 @@ if (typeof PagefindUI !== 'undefined') {
 } else {
   document.getElementById('search').innerHTML =
     '<p style="color:#888;font-size:.9em">（検索インデックス未生成。GitHub Actions 実行後に利用可能になります。）</p>';
-}
-function doSearch(el) {
-  var kw = el.getAttribute('data-kw');
-  if (!kw || !pfUI) return;
-  event.preventDefault();
-  pfUI.triggerSearch(kw);
-  document.getElementById('search-box').scrollIntoView({behavior:'smooth'});
 }
 </script>
 </body></html>
