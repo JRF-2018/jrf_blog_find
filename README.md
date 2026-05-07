@@ -1,6 +1,6 @@
 # JRF ブログ退避所
 
-<!-- Time-stamp: "2026-05-07T05:29:23Z" -->
+<!-- Time-stamp: "2026-05-07T05:58:35Z" -->
 
 Claude Projects を使って私のブログの検索用の退避所を作ってもらいました。
 
@@ -10,6 +10,9 @@ https://jrf-2018.github.io/jrf_blog_find/index.html
 
 Claude さんは、今回 Claude Sonnet 4.6 さんでした。出した指示は、PURPOSE.md にまとめてあります。
 
+私のブログ検索用ブログパーツは↓にあります。
+
+https://jrf-2018.github.io/jrf_blog_find/blogparts.html
 
 ## Author
 

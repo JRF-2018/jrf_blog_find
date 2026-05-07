@@ -150,6 +150,18 @@ for my $art (@all_articles) {
     }
 }
 
+# パス1.5: タグIDテーブルを先に構築（パス2のHTML生成でタグリンクに使うため）
+my %tag_id;
+{
+    my %all_tags;
+    $all_tags{$_} = 1 for map { @{ $_->{tags} } } @all_articles;
+    my $seq = 0;
+    for my $tag (sort keys %all_tags) {
+        $tag_id{$tag} = sprintf("tag_%04d", ++$seq);
+    }
+}
+printf STDERR "タグIDテーブル: %d種\n", scalar keys %tag_id;
+
 # パス2: HTML生成 & インデックス収集
 for my $art (@all_articles) {
     gen_article_html($art, $out_dir, $img_dir);
@@ -162,15 +174,7 @@ for my $art (@all_articles) {
 }
 
 # ---------- 各種インデックス ----------
-# タグIDテーブルを先に構築（ファイル名に使う）
-my %tag_id;  # tag => "tag_0001" のような連番ID
-{
-    my $seq = 0;
-    for my $tag (sort keys %tag_index) {
-        $tag_id{$tag} = sprintf("tag_%04d", ++$seq);
-    }
-}
-printf STDERR "タグIDテーブル: %d種\n", scalar keys %tag_id;
+printf STDERR "タグIDテーブル確認: %d種\n", scalar keys %tag_id;
 gen_month_index($_, $month_index{$_}, $out_dir) for sort keys %month_index;
 gen_type_index($_, $type_index{$_},   $out_dir) for keys %type_index;
 gen_tag_index(\%tag_index, $out_dir);
