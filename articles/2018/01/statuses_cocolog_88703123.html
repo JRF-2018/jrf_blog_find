@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>ひとこと - JRF Blog Archive</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2018/01.html">2018年01月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+<article data-pagefind-body>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[statuses] <span class="cocolog-id">cocolog:88703123</span></td></tr>
+<tr><th>セクション</th><td>JRF のひとこと</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2018/01.html">2018年01月06日</a></td></tr>
+<tr><th>元URL</th><td><a href="http://jrf.cocolog-nifty.com/statuses/2018/01/post-abfc.html" class="ext-link"><span class="original-url">http://jrf.cocolog-nifty.com/statuses/2018/01/post-abfc.html</span></a></td></tr>
+
+</table>
+</div>
+<h1>ひとこと</h1>
+<pre class="body">ブラウザ拡張(アドオン)として Tweet Sig を作って公開した。三文判程度の認証に使うことを想定している。
+JRF 2018年1月6日
+
+Firefox 用のアドオンのページ:
+
+《Tweet Sig – Firefox 向けアドオン》
+<a href="https://addons.mozilla.org/firefox/addon/tweet_sig/" class="ext-link">https://addons.mozilla.org/firefox/addon/tweet_sig/</a>
+
+Chrome 用のアドオンのページ:
+
+《Tweet Sig - Chrome ウェブストア》
+<a href="https://chrome.google.com/webstore/detail/tweet-sig/epefaednifmpgcdkedbcjkecibikpdkd" class="ext-link">https://chrome.google.com/webstore/detail/tweet-sig/epefaednifmpgcdkedbcjkecibikpdkd</a>
+
+JRF 2018年1月6日
+
+説明用ホームページ:
+
+《Tweet Sig》
+<a href="http://jrf.cocolog-nifty.com/archive/tweet_sig/README_ja.html" class="ext-link">http://jrf.cocolog-nifty.com/archive/tweet_sig/README_ja.html</a>
+
+サポート用のブログ内ページ:
+
+《Tweet Sig: ウェブ上の三文判？》
+<a href="../../../articles/2018/01/software_88702702.html" class="int-link" title="Tweet Sig: ウェブ上の三文判？">http://jrf.cocolog-nifty.com/software/2018/01/post.html</a>
+
+JRF 2018年1月6日
+
+PP Authorizer (<a href="../../../articles/2017/11/statuses_cocolog_88492515.html" class="int-link cocolog-id" title="ひとこと">[cocolog:88492515]</a>)、PP Interrupter (<a href="../../../articles/2017/12/statuses_cocolog_88550595.html" class="int-link cocolog-id" title="ひとこと">[cocolog:88550595]</a>)、PP Interrupter Lite (<a href="../../../articles/2017/12/statuses_cocolog_88646381.html" class="int-link cocolog-id" title="ひとこと">[cocolog:88646381]</a>) と作って来て、本作が４作目のアドオンになる。
+
+JRF 2018年1月6日
+
+keyword: 時間記録デバイス
+
+サポート用のブログ内ページに書いたが、時間記録デバイス(<a href="../../../articles/2012/03/statuses_cocolog_72139046.html" class="int-link cocolog-id" title="ひとこと">[cocolog:72139046]</a>)がいつまでたっても登場しないことから、それに替わる何かができないかとして作ってみたのが本作になる。
+
+JRF 2018年1月6日
+
+……。
+
+今回の挑戦は、background.js を Event Pages (↓)として設計することであった。イベントページは Chrome の機能で、Firefox はサポートしていない。今回、イベントページとしての作り方がわかったことで、以前のアドオン、特に PP Authorizer についてもイベントページで作り直そうかと、頭をもたげているが、しばらくは Tweet Sig の更新が忙しいだろうから、それが終ってからの課題となるだろう。
+
+JRF 2018年1月6日
+
+《Event Pages - Google Chrome》
+<a href="https://developer.chrome.com/apps/event_pages" class="ext-link">https://developer.chrome.com/apps/event_pages</a>
+
+JRF 2018年1月6日
+
+……。
+
+最初、Google+ にも対応しようと思って、調べてみると OAuth 2.0 が必要そうで、これは実装が難しくなるな…と思っていたら、よくよく調べると、OAuth 2.0 を使っても Google+ は投稿に対応していないことがわかり「なんじゃそりゃ」となった。
+
+Twitter も OAuth 1.0a で、これも実装は難しいな…と思ったら、Tweet Button という逃げ道があり、これなら実装は簡単…と一気に作ってしまえた。
+
+JRF 2018年1月6日
+
+さらに、後になって Facebook も OAuth 2.0 だからどうせ投稿には対応してないだろう…と思ったら、こちらは対応しているらしい。うーむ、やるしかないか？
+
+でも、私は Facebook のアカウントは持っていないのだった。Facebook の実名ポリシーはニートには厳しく、また、アカウントを停止することで一般に見えるページが見れなくなってしまうようなサイトは、(ニコニコ動画や mixi も、)権限が強過ぎるのでそもそも使うべきでないという、意固地なポリシーがあって、アカウントを取っていないのだった。
+
+JRF 2018年1月6日
+
+しかし、開発するなら、そうもいってられない。アカウントを取るしかないだろう。そして、開発…というのが、これから先のスケジュールになる。
+
+JRF 2018年1月6日
+
+……。
+
+追記。更新。
+
+幻のバージョン 0.2。Mozilla や Google には登録していない。
+
+Facebook 対応！…と思ったら、Facebook は Tweet Sig がやるような直接ユーザーが入力したわけではない事前入力がある投稿を許していないらしい。しかたなく、審査を受ける前に諦めた。
+
+OAuth 2.0 を使うような実装とテストを行い、動くところまでいっていただけに残念だ。
+
+JRF 2018年1月7日
+
+このために Facebook のアカウントも取得したのだったが、無駄になった。しかし、Facebook の開発環境のすごさ・使い易さを体験できたのはよかった。ありがたかった。
+
+JRF 2018年1月7日
+
+なお、途中、Firefox for Android (Nightly 59.0a1) でも試したのだが、どうも、chrome.identity.getRedirectURL() と chrome.identity.launchWebAuthFlow() が動いていないようだった。PC 用の Firefox では動いたコードがそれが原因で動かなかった。それらの MDN のページでは Firefox for Android でもバージョン 53 から動くとなっているのに。
+
+JRF 2018年1月7日
+
+……。
+
+追記。更新。
+
+バージョン 0.2.1。
+
+上に書いたことがあって、意気消沈したあと、機能をバージョン 0.1 並みのものに戻して Mozilla と Google に登録したのが、バージョン 0.2.1 ということになる。バージョン 0.2 でやった変更を痕跡としてわざと残し、ファイルが増えたりしているが、基本的には 0.1 と変わらない機能になっているはず。
+
+JRF 2018年1月7日
+
+このあとどうするか…。Facebook の審査をダメもとで試してみるか？ いや、それはしないな。でも、そうなると次に何をしたらいいのか見えて来ない。「痕跡」は次のバージョンでは消しておくべきか…。五里霧中…。
+
+JRF 2018年1月7日
+
+……。
+
+追記。更新。
+
+バージョン 0.4。
+
+また Firefox for Android 用のものも専用に作った。そちらはバージョン 0.1.1。リンクは↓。
+
+《Tweet Sig for Android – Firefox 向けアドオン》
+<a href="https://addons.mozilla.org/ja/firefox/addon/tweet_sig_mobile/" class="ext-link">https://addons.mozilla.org/ja/firefox/addon/tweet_sig_mobile/</a>
+
+JRF 2018年1月19日
+
+変更は大きく二つ。まず、右クリックメニューでセレクションを投稿し、投稿した URL をクリップボードに保存するモードを足したこと。これは for Android では、セレクションをするとボタンが表示されるようにして、そのボタンをクリックすることでできるようになっている。
+
+JRF 2018年1月19日
+
+もう一つは、Facebook への対応。バージョン 0.3 が飛んでいるが、Facebook の審査申請に限定公開していたバージョンが 0.3 系列になる。
+
+JRF 2018年1月19日
+
+……。
+
+上で「諦めた」と言っていたことを思い直して、Tweet Sig を Facebook に対応させることができた。Facebook をちょっとけなしぎみだったのは、私の早とちり、結果的に判断ミスだったと言わざるを得ない。謝って訂正したい。
+
+JRF 2018年1月19日
+
+ただ、普通の方法ではできなかった。最初、Tweet Sig の仕様を変更し上で書いた右クリックメニューの動作を足すことでよりユーザーの意志により入力がされたことがはっきりするようにした。その審査を申請してしばらくして、Twitter の Tweet Button の中身のような、シンプルな投稿ボックスである simple social page poster というアプリを作り、ダメもとで、審査申請してみたところ、予想に反して、それが先に通ってしまった。そこで一端 Tweet Sig の審査申請を取り下げた。
+
+JRF 2018年1月19日
+
+そのような投稿ボックスが認められるなら、なぜ今 Facebook 自身が用意してないのかよくわからなかったが、そのような投稿ボックスがあれば、アドオンレベルの技術を用いれば、「事前入力(prefill)」しほうだいになる。Tweet Sig に関しては審査なしでの実装が可能となった。
+
+JRF 2018年1月19日
+
+でも、そのような自作アプリを使うよりも、アドオンだけで完結するほうが、ユーザーの信頼感も得やすいだろうと、simple social page poster を使わないバージョンを再度、審査申請してみた。
+
+JRF 2018年1月19日
+
+審査には落ちた…のだが、落ちた理由がよくわからない。作ったスクリーンキャストの情報が少ないらしいのだが、どういう情報を足せばよいのかよくわからない。私は正直に simple social page poster があれば審査なしでも同機能を作れるがそうしてもいいかと尋ねてみたが、無視されてしまった。その申し出に何の反応もないことから、黙諾と取って、simple social page poster を使った Tweet Sig を審査なしで公開することになった。…というのが現時点。
+
+JRF 2018年1月19日
+
+ただ、審査なしで prefill するとは言っても、Tweet Sig の場合、ユーザーの意志によることがはっきりしているし、引用符なども prefill として禁じるとすれば、それは引用の法的要件を犯すことを促すことになる。そういうユーザーの機会まで損壊するのは逆に問題があるのではないかと思う。
+
+JRF 2018年1月19日
+
+この先、今回のことが問題となるリスクはあるが、今は「黙認」と判断して、とりあえず Facebook を「けなした」ことへのお詫びと審査という手数をかけていただいたことへのお礼を述べたい。すみませんでした。ありがとうございました。
+
+JRF 2018年1月19日
+
+……。
+
+ところで、Facebook の審査には「スクリーンキャスト」が必要だったのには参った。スクリーンキャストとは操作画面を動画に撮ったもの。Facebook の勧めるアプリは Monosnnap でそれを使った。使う前は、動画にテキスト入力ぐらいできるだろうと思ったら、そんなものはなく、動画を撮っている途中にマイクでしゃべるしかなかった。
+
+JRF 2018年1月19日
+
+Facebook は日本語で OK なのかわからないから、最初は、英語と日本語両方でしゃべるとかもやったが、simple social page poster のときは「ダメもと」だったので日本語だけの説明にしたところ、それで通ってしまったので、以降は日本語だけの説明にした。
+
+また、Monosnap の操作に最初慣れてなくて、動画の最後のほうが画面が固定されて変わらないというのに悩まされたが、フレームレートと品質を落とす(10 frames per sec. and Low)ことで、その「バグ」はなくなった。
+
+JRF 2018年1月19日
+
+……。
+
+ところで、simple social page poster は最初、simple fb page poster にしようと思っていたのだが、アプリの名前に fb などの商標的なものを含んではならないという Facebook の規制により、このような名前となった。いちおう、そのアプリにもリンクしておく。
+
+《simple social page poster》
+<a href="http://jrf.cocolog-nifty.com/archive/tweet_sig/fb_page_poster.html" class="ext-link">http://jrf.cocolog-nifty.com/archive/tweet_sig/fb_page_poster.html</a>
+
+JRF 2018年1月19日
+
+……。
+
+Tweet Sig for Android の開発について。
+
+Firefox for Android では contextMenus が使えないので、selection を監視して、selectionchange イベントでセレクトされていたら、アドレスバーにボタンが表示されるようにして、ボタンをクリックするとセレクションの内容を読んで処理する…といったことをやろうとした。
+
+JRF 2018年1月19日
+
+ボタンを表示するところまではうまくいった。しかし、ボタンをクリックすると、どうもセレクションの内容が読まれない。おそらく、アドレスバーのボタンを押すと selection が消えるというのが Firefox for Android の仕様らしい。
+
+他に selection を取るには、ドキュメント内に要素を足すぐらいしか考えつかないが、任意のドキュメントにそれをするのは困難(セキュリティ的に問題あり)。
+
+JRF 2018年1月19日
+
+そこで、苦肉の策として、selection がなくなったときも前の selection を記憶しておいて、それに関して処理するというようにした。つまり、一度、セレクトするとずっとボタンが出っぱなしになるようになった。
+
+怪我の功名か、そのおかげで、iframe に対応するのも簡単にできた。
+
+JRF 2018年1月19日
+
+……。
+
+Mozilla に登録する段になって、審査待ちが発生していたのは今回はじめてで、少し驚いた。Google に登録するときも、タイルの再提出を求められた。審査で少し自意識過剰になっている私には、Facebook にある意味「たてついた」から邪魔されているのか…とか妄想してしまった。orz (もちろん、そんなことはない。)
+
+JRF 2018年1月19日
+
+……。
+
+……。
+
+追記。更新。
+
+バージョン 0.5。mobile バージョン 0.2。
+
+小さな変更。引用時にタイトルもコピーできるようにした。
+
+このためだけに manifest.json で新たなパーミッション(&quot;tabs&quot;)が必要になるので、実装するか少し迷ったが、実装した。mobile では逆に &quot;tabs&quot; を使わずに実装するようにした。
+
+JRF 2018年1月23日
+
+タイトルが長い場合、文字数を設定しておいてそれで truncate することも考えたが他のアプリはあまりやってないようなので、やめておいた。引用がメインなのでタイトルはむしろ邪魔かもしれないと考え、設定でタイトルを付けるかどうか決められるようにして、デフォルトではタイトルを付けない設定にした。
+
+JRF 2018年1月23日
+
+……。
+
+……。
+
+追記。更新。
+
+バージョン 0.6。mobile バージョン 0.3。
+
+小さなバグを修正。
+
+また、Facebook のサポートをやめた。いろいろな制限に対応するのを諦めた。
+
+JRF 2018年7月2日
+
+理由 0. 前から「prefill」かどうかの問題があった。
+
+理由 1. Facebook の API のバージョンアップの際、メインのタイムラインにアプリが書けなくなった。
+
+理由 2. EU の GDPR の影響か、住所の入力が求められ、それを公開に近い形で開示されそうなのが、いやだった。
+
+JRF 2018年7月2日
+
+理由 3. Facebook のログイン後、突然、ショートメッセージ用の携帯電話番号の入力が求められるようになった。しかし、私は携帯電話を持っていない。母の携帯を使う手もあるが、今後もこんなふうにして、Facebook はまわりのプライバシーを次々に侵害していくだろう。それにつきあう気がなくなった。
+
+JRF 2018年7月2日
+
+つまり、現在、Facebook にログインできない状況。開発はできない。残念だ。
+
+simple social page poster もバージョンアップできないので、このままサポート終了するつもり。残念だ。
+
+JRF 2018年7月2日
+
+Trackbacks:
+
+《cocolog:89122076》 from JRF のひとこと
+<a href="../../../articles/2018/03/statuses_cocolog_89122076.html" class="int-link" title="ひとこと">http://jrf.cocolog-nifty.com/statuses/2018/03/post-c055.html</a>
+
+金利は破綻のリスクに対する保障としてあり、その本質は社会に確保される「捨て扶持」にあるのではないか？ 投資により所得が増えるのは、「捨て扶持」を利用するところからリスクを取るところに移動し、人口増に寄与するからではないか？... 
+
+受信： 2018-03-30 21:28:11 (JST)</pre>
+
+
+<section class="backrefs" data-pagefind-ignore>
+<h2>後方参照 (6 件)</h2>
+<ul>
+<li><span class="backref-label">[cocolog:88703123]参照</span> <a href="../../../articles/2018/03/statuses_cocolog_89122076.html">ひとこと</a> <span class="backref-date">2018年03月30日</span></li>
+<li><span class="backref-label">[cocolog:88703123]参照</span> <a href="../../../articles/2018/01/software_88702702.html">Tweet Sig: ウェブ上の三文判？</a> <span class="backref-date">2018年01月06日 17:12:01</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2017/12/statuses_cocolog_88646381.html">ひとこと</a> <span class="backref-date">2017年12月27日</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2017/12/statuses_cocolog_88550595.html">ひとこと</a> <span class="backref-date">2017年12月08日</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2017/11/statuses_cocolog_88492515.html">ひとこと</a> <span class="backref-date">2017年11月27日</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2012/03/statuses_cocolog_72139046.html">ひとこと</a> <span class="backref-date">2012年03月29日</span></li>
+</ul>
+</section>
+
+</article>
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2018/01.html">2018年01月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+</body>
+</html>

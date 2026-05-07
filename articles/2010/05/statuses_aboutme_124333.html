@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>ひとこと - JRF Blog Archive</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2010/05.html">2010年05月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+<article data-pagefind-body>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[statuses] <span class="cocolog-id">aboutme:124333</span></td></tr>
+<tr><th>セクション</th><td>JRF のひとこと</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2010/05.html">2010年05月14日</a></td></tr>
+<tr><th>元URL</th><td><a href="http://jrf.cocolog-nifty.com/statuses/2010/05/aboutme124333.html" class="ext-link"><span class="original-url">http://jrf.cocolog-nifty.com/statuses/2010/05/aboutme124333.html</span></a></td></tr>
+
+</table>
+</div>
+<h1>ひとこと</h1>
+<pre class="body">プロバイダが提供する共有の OpenID を一時的に使って匿名ログイン・サービスをできないか？プロバイダが共有用に予めいくつか ID を持っておき、それを NAT のように割り当てるイメージ。問題があれば、プロバイダごと排除されるリスクも受け容れるということ。
+JRF 2010年5月14日
+
+ユーザーに見えるところの機構を簡単にして、そこから経験的に匿名のルールが学べるようにしたい。
+
+keyword: 反知性
+
+《保証付き匿名ログインと即時銀行振込を可能にして！ ― プライバシープロバイダ API （仮称）》
+<a href="../../../articles/2006/12/column_15631876.html" class="int-link" title="保証付き匿名ログインと即時銀行振込を可能にして！ ― プライバシープロバイダ API （仮称）">http://jrf.cocolog-nifty.com/column/2006/12/post_1.html</a>
+
+JRF 2010年5月14日
+
+…でも、何か OpenID の機構として似たものがすでにあるような感じ。実のところどうなのだろう？匿名ログインとして機能し信頼を得てる？
+
+《Relying Party に対してユーザを匿名化する OpenID Provider - tkudo's weblog about identity management》
+<a href="http://blogs.sun.com/tkudo/entry/using_pseudonym_in_openid2_deployment" class="ext-link">http://blogs.sun.com/tkudo/entry/using_pseudonym_in_openid2_deployment</a>
+
+JRF 2010年5月14日
+
+《「OpenIDはメアド同様に複数使い分けてもいい」、OpenID提唱者 － ＠IT》
+<a href="http://www.atmarkit.co.jp/news/200707/19/openid.html" class="ext-link">http://www.atmarkit.co.jp/news/200707/19/openid.html</a>
+
+《今更ながらOpenIDを使ってみた。》
+<a href="http://prius.cc/d/20080131_imasaranagaraopenidotsukattemi.html" class="ext-link">http://prius.cc/d/20080131_imasaranagaraopenidotsukattemi.html</a>
+
+私も使ってみようとするべきということか…。いや、それがなかなか…(^^;。
+JRF 2010年5月14日
+
+NAT に擬したところから連想すると、上の共有IDはグループIDとして扱ったらどうだろう？
+
+こっからここまでって感じの範囲のIDを特定グループに割り当てる。で、グループに属するユーザーは、随時その中のIDを使ってログインする。IPアドレスみたいに、割り当てられた中から、さらに一部をサブグループに割り当てることもできる。
+JRF 2010年5月15日
+
+こういうことのメリットは統計が得られることか。グループ管理者が、グループとしての統計を見れるようにする。ログイン先の統計の集計をグループごとに集めるサービスとか。
+
+それで排除するときもプロバイダごとではなく、グループごと、サブグループごとに Ban ができ、その単位で抗弁を受け付ける、と。(なんとなくグループというよりチームといった感じだけど。)
+
+JRF 2010年5月15日
+
+でも何で個人が個別ではなくグループIDでログインすることを好むようになるとできるのか？NAT がそうであるように資源が限られている必要がある…。
+
+「同人サイト」がその規模を同人レベルに留めるためにアクセス量の制限をする。そのとき、グループ単位でアクセスを制限するから…とか。するとまず必要なのは(事後的に)アクセス量に従った閲覧管理ができるようシステム側が対応すること？OpenID プロバイダやログイン名ごとのアクセス制限をできるようにする？
+
+JRF 2010年5月15日
+
+それってビジネス的には何だ？…卸売市場？バイヤーをどこかの組合に加入させ、参加枠を組合ごとに設定する…。
+JRF 2010年5月15日
+
+グループIDということなら、複数のグループIDで同時ログインというのもおもしろいか。OpenID で複数のグループとしてログインし、OAuth で個別ユーザーとしてログインするといった使い分けができるようにするとか。
+
+複数グループをどう使うか？有効な利用や取引がないと見なされるグループは、枠を削減されるため、有力な個別ユーザーにグループIDを使ってもらう必要がある、とか。それで個別ユーザー一人ごとの同時ログイン・グループID数が制限されているので、有力ユーザーの奪い合いがあり、また、有力ユーザーとしてそれなりの数を育てる必要がある…と。
+
+JRF 2010年5月15日
+
+あまり関連ないが↓。
+<a href="http://jrf.aboutme.jp/user_statuses/show/121986" class="ext-link">http://jrf.aboutme.jp/user_statuses/show/121986</a>
+＞機能的には、現在個人のパソコンに接続している IP などの診断情報を要求によって帰すようなソフトをインストールさせられれば、「巡回」は実現できるように思うが(…)。
+
+いや、何かの(P2P)プロトコルとして、接続を要求するときに必ずその(余計な)診断情報を(適切な接続方法を決定するためのカタログとして)得ざるをえないようにする(…)。
+
+なんとなく NAT 越えのためのプロトコルの中に実はそういう目的をもつものがすでにありそうな気もするが…。
+＜
+JRF 2010年5月15日
+
+Trackbacks:
+
+《aboutme:138968》 from JRF のひとこと
+<a href="../../../articles/2011/05/statuses_aboutme_138968.html" class="int-link" title="ひとこと">http://jrf.cocolog-nifty.com/statuses/2011/05/aboutme138968.html</a>
+
+OAuth を使った CGI アプリを作っている。うすうす感じていたが OAuth は「PPログイン」に使えそうだ。 
+
+受信： 2012-01-04 19:20:22 (JST)
+
+《cocolog:72357469》 from JRF のひとこと
+<a href="../../../articles/2012/04/statuses_cocolog_72357469.html" class="int-link" title="ひとこと">http://jrf.cocolog-nifty.com/statuses/2012/04/post-1e37.html</a>
+
+グループクレジットカードってできないか？どこかの金融グループのクレカというのではなく、グループ発行のクレジットつまりツタヤとかPontaとかの共通ポイントのカードというのでもなく、グループがある種の「個」としてクレジットカードを共有し、使った額をSNSで皆が見れるようなシステム。... 
+
+受信： 2012-06-27 07:20:07 (JST)</pre>
+
+
+<section class="backrefs" data-pagefind-ignore>
+<h2>後方参照 (3 件)</h2>
+<ul>
+<li><span class="backref-label">[aboutme:124333]参照</span> <a href="../../../articles/2012/04/statuses_cocolog_72357469.html">ひとこと</a> <span class="backref-date">2012年04月17日</span></li>
+<li><span class="backref-label">[aboutme:124333]参照</span> <a href="../../../articles/2011/05/statuses_aboutme_138968.html">ひとこと</a> <span class="backref-date">2011年05月25日</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2010/04/statuses_aboutme_121986.html">ひとこと</a> <span class="backref-date">2010年04月04日</span></li>
+</ul>
+</section>
+
+</article>
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2010/05.html">2010年05月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+</body>
+</html>

@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>STACKLIB: プチコンmkII用スタックライブラリ - JRF Blog Archive</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2013/02.html">2013年02月</a> | <a href="../../../index/software.html">ソフトウェア Tips</a></nav>
+<article data-pagefind-body>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[software] <span class="cocolog-id">cocolog:75676987</span></td></tr>
+<tr><th>セクション</th><td>JRF のソフトウェア Tips</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2013/02.html">2013年02月21日 04:44:53</a></td></tr>
+<tr><th>元URL</th><td><a href="http://jrf.cocolog-nifty.com/software/2013/02/post-1.html" class="ext-link"><span class="original-url">http://jrf.cocolog-nifty.com/software/2013/02/post-1.html</span></a></td></tr>
+<tr><th>タグ</th><td>[Perl] [JRF 作成ソフトウェア] [プチコン]</td></tr>
+</table>
+</div>
+<h1>STACKLIB: プチコンmkII用スタックライブラリ</h1>
+<pre class="body">プチコン(mkII)の SMILE BASIC には、いわゆる関数定義の方法はないが、 GOSUB ＆ RETURN はある。GOSUB は、変数に入ったラベル名でも OK な優れものだが、引数を取れないので、引数や戻り値をどうやって返すかは、(自分で) 決めておく必要がある。
+
+普通には、A1=&quot;A&quot;:A2=&quot;B&quot;:GOSUB @F1:PRINT R といった感じで、 A1,A2,A3... に引数を入れ、R に返すとでも決めればいいのだが、この方法だと呼び出されたときの引数の値が、デバッグ時に残らない。
+
+そこで、コンパイラが吐くアセンブラでよく使うテクニックとして、スタックを使って、そこに変数を push して引数を渡す方法があるのだが、私はそれを採用することにした。
+
+このテクニックの自然な拡張として、push pop で「ローカル変数」みたいなものも確保できる。実際、それをローカル変数と見なして「文法」チェックする(そしてQRコードを吐く) Perl スクリプトも書いた。
+
+今回は、そのライブラリと Perl スクリプトを紹介する。
+
+■レジスタ
+  
+「ローカル変数」を使えるようにするといっても、さすがにグローバル変数をまったく使わず関数が書ける手品を私は知らないので、「レジスタ」となるべき、グローバル変数を決め、push pop 時や戻り値の保存などにはそれを使っている。
+
+他にも若干あるのだが、それはソースを読んでいただくとして、いちおうレジスタは A, A$, R, R$, RR$[], RA$[] (あと修飾子的な RT$, RN)を使う。あと、配列の RR$[] や RA$ を扱うときのために TMP$[] もレジスタとして使う。
+
+重要なのは、これらのレジスタは、関数を呼び出す側が保存したければ保存する責任がある…逆に言えば、&lt;b&gt;レジスタ以外の「ローカル変数」は呼び出された側の関数が、常に push pop を使って保存する必要がある。&lt;/b&gt;ということである。だから、普通は、レジスタは保存する必要はないのだが、ややこしくなるので、STACKLIB 内の関数に関しては、引数や戻り値となっているレジスタ以外、レジスタも保存するようにしている。
+
+もちろん、push pop などのスタックライブラリ自身も引数を使う。そういったものには、上の R, R$ といった R の付いたレジスタを使う。
+
+&lt;b&gt;一般の戻り値には、R や R$ を使うのが取り決めで、その型を表す文字列を RT$ にセットする。&lt;/b&gt;ただし、戻り値がない「関数」の場合は、その必要はない。
+
+■PUSH と POP と BP
+  
+例から見ていただこう。次は @EXAMPLE1 の関数定義で、第一引数が &quot;E1&quot; で第二引数が &quot;E2&quot; なら、&quot;OK E1 &amp; E2&quot; という文字列を返すだけのものである。
+
+@EXAMPLE_1 '(ARG1$:STRING, ARG2$:STRING)
+  R = BP
+  GOSUB @PUSH_R
+  BP = SP - 1 - 2
+  
+  R$ = ARG1$
+  GOSUB @PUSH_RS
+  R$ = ARG2$
+  GOSUB @PUSH_RS
+  
+  ARG1$ = STACK$[BP + 1]
+  ARG2$ = STACK$[BP + 2]
+  
+  A$ = &quot;OK &quot; + ARG1$ + &quot; &amp; &quot; + ARG2$
+  
+  GOSUB @POP_RS
+  ARG1$ = R$
+  GOSUB @POP_RS
+  ARG2$ = R$
+  
+  GOSUB @POP_R
+  SP = BP
+  BP = R
+  
+  RT$ = &quot;STRING&quot;
+  R$ = A$
+  RETURN
+  
+さて、BASIC なのに書き方がまるでアセンブラなのに驚かれただろうか。 STACKLIB を使うというのは、要するにこういうことなのである。BASIC をレジスタがいっぱい使えるアセンブラとして使うといった感じになる。マクロが使えないのがマイナスだが、式は書きやすいといったところか。
+
+先にレジスタは説明したが、肝心のスタックのほうを説明していなかった。スタックは STACK$[] になっていて、スタックポインタは、SP になる。この実装では最後に push されたものを STACK$[SP] で参照でき、一つ前のものは STACK$[SP - 1] で参照できる。先の push が数値変数に対してであれば(コストはかかってるのだが)、VAL(STACK$[SP])で参照できる。
+
+STACK$[] や SP はレジスタ的な特別なグローバル変数というわけだが、上のソースで出てくる BP、これは「レジスタ」ではなく、普通の「ローカル変数」であるため、push pop が必要となる。ただ、これも後述の文法チェッカを使うなら、特別な意味をもった変数と言える。
+
+数値変数 I の内容を保存するときは、R = I としてから、GOSUB @PUSH_R。文字列変数 S$ の内容を保存するときは、R$ = S$ としてから、GOSUB @PUSH_RS。保存したものを取り出すときは、GOSUB @POP_R としてから I = R。または、 GOSUB @POP_RS してから、S$ = R$。ここは、レジスタ名等をどうするかは別としてこう作るしかないといったところ。
+
+上の例の関数で、最初の空行までに BP に何かしているが、これは決まり文句みたいなもので、BP = SP - 1 - 2 の 2 が、引数の数になる。こうすることで、第一引数を STACK$[BP + 1]、第二引数を STACK$[BP + 2] に必ず割り当てるのがテクニックである。
+
+そして RETURN の前の空行の上の部分で、BP の値を戻し、スタックを「消費」つまり、引数として与えられた分のスタックを解消している。逆にいうと BP は引数を消費した場合のスタックの位置を保存していたとも言える。
+
+だから、&lt;b&gt;呼び出し側は、push をして引数を渡すが、呼び出したあとその分のスタックを(pop して)解消する必要はない&lt;/b&gt;というのもプロトコルになる。次のような感じで呼び出す。
+
+  R$ = &quot;E1&quot;: GOSUB @PUSH_RS
+  R$ = &quot;E2&quot;: GOSUB @PUSH_RS
+  GOSUB @EXAMPLE_1
+  
+  PRINT R$
+  
+BP がそのようなものだということを知っていただければ、もういちいち BP に関して、SP を突っこむような処理を書いていただくより、だいたい同じことを行う GOSUB @ENTER と GOSUB @LEAVE を使っていただいたほうがよい。
+
+それらを使うと上の関数は次のようになる。
+
+@EXAMPLE_1 '(ARG1$:STRING, ARG2$:STRING)
+  ARGNUM = 2: R$ = &quot;@EXAMPLE_1&quot;: GOSUB @ENTER
+  
+  R$ = ARG1$
+  GOSUB @PUSH_RS
+  R$ = ARG2$
+  GOSUB @PUSH_RS
+  
+  ARG1$ = STACK$[BP + 1]
+  ARG2$ = STACK$[BP + 2]
+  
+  A$ = &quot;OK &quot; + ARG1$ + &quot; &amp; &quot; + ARG2$
+  
+  GOSUB @POP_RS
+  ARG1$ = R$
+  GOSUB @POP_RS
+  ARG2$ = R$
+  
+  ARGNUM = 2: GOSUB @LEAVE
+  
+  RT$ = &quot;STRING&quot;
+  R$ = A$
+  RETURN
+  
+さて、ここで ARGNUM という変数が出てきた。これはレジスタでもなく、 @ENTER と @LEAVE にしか使ってはいけない特別な引数用変数という取り決めになる。これも後の文法チェッカでは特別視している。
+
+@ENTER と @LEAVE は一つ上の例と同じことをしているのだが、@LEAVE は BP がちゃんと合ってるかのチェックなどをしている。これがあることで、途中、関数呼び出しの引数の数を間違えてたりすると、エラーでローカルに止めてくれる。
+
+また、DEBUG = 1 としていれば、FSP と FSTACK$[] で、@ENTER に R$ で渡した関数名と、そのときの SP を保存してくれる。これに関し次のようにファンクションキー3番に割り当てておけば、それを押せば、どこかでプログラムが止まったとき「スタック・トレース」みたいなものを表示できるようになる。(ちなみに F1 と F2 の LIST ERL で、エラーのあった行を編集するコマンド。)
+
+KEY 1,&quot;LIST &quot;: KEY 2,&quot;ERL&quot;+CHR$(13)
+KEY 3, &quot;FOR A=0 TO FSP:?FSTACK$[A]:NEXT&quot; + CHR$(13)
+DEBUG = 1
+
+正直なところ stacklib.prg の関数は「プリミティブ(原始的)」で、、 STACKLIB を使って書くことになるべき関数と違って変態的な運用を必要とする。だから、ユーザーが関数を書きたいとなると、stacklib.prg を参考にしていただくのは、むしろマズい。同梱の stdlib.prg や ctrllib.prg, hlpview.prg などをご参照いだたきたい。
+
+■配列
+  
+一時的に配列領域を確保したいとき、SP に領域分の数値(N)を足すのも常套テクニックだが、これは次のように呼び出すことにしている。
+
+  ...
+  R = N: GOSUB @ADD_STACK
+  ...
+  R = N: GOSUB @SUBTRACT_STACK
+  ...
+  
+この実装として、他の関数と同じように R = N のあと、GOSUB @PUSH_R してもらうという実装もありえたのだが、その push の分を含めるかどうかでややこしくなるので、こういう実装になった。(これを使った例としては、stdlib.prg にラベルから文字列を読み出して PRINT する CON_PRINT_L がある。)
+
+他に、配列をスタックに収納するための関数もある。ただ、先にお断わりしておくが、これらは思ったように動かないだろう…というのは、今のプチコンには、文字列変数の256バイト制限(変数名と違う。それは16文字制限!)があり、配列を文字列化してスタックに積もうとすると、これに引っかかることが多い。もちろん、各要素を一つ一つスタックに積んで、最後にサイズを積むという実装もありえたわけだが、やりたければ FOR ループ一つでできるので、あえてそうしなかった。
+
+次のように呼びだす。
+
+  RR$[0] = &quot;A&quot;
+  RR$[1] = STR$(1)
+  RN = 2
+  GOSUB @PUSH_RR
+  
+こうすると、STACK$[SP] には &quot;A,1&quot; が入ることになる。RR$[] に値を入れて、 RN にサイズを入れるのが流儀になる。もちろん、対応する @POP_RR もある。
+
+同様に「連想配列」 RA$[] もある。これは別にハッシュではないため、その値を get したりするのには相応のコストがかかる。
+
+  RA$[0,0] = &quot;A&quot;
+  RA$[0,1] = STR$(1)
+  RA$[1,0] = &quot;B&quot;
+  RA$[1,1] = STR$(2)
+  RA$[2,0] = &quot;C&quot;
+  RA$[2,1] = STR$(3)
+  RN = 3
+  GOSUB @PUSH_RA
+  ...
+  GOSUB @POP_RA
+  R$ = &quot;A&quot;: GOSUB @PUSH_RS
+  GOSUB @GET_RA
+  
+上のようにすると、GET_RA の結果として &quot;1&quot; が R$ に返ってくる。さて、上にチラと書いたように、格納される配列は &quot;,&quot; で区切っている。もとの RR$[] の値に &quot;,&quot; が含まれているときは、@PUSH_RA 内で、それを「エスケープ」する処理があり、その関数も(当然だが)STACKLIB に含まれている。
+
+@ESCAPE と @UNESCAPE がそれになる。これは push して引数を渡し R$ に戻り値を返す「普通の関数」だが、いちおうSTACKLIB内ということでレジスタも保存するようにしてある。@ESCAPE は &quot;\&quot; を &quot;\\&quot; にし、&quot;,&quot; を &quot;\x2C&quot; にしている。また、空リストが表わせるよう、@PUSH_RR などでは空文字列を &quot;\0&quot; にしている。@UNESCAPE はそれらを元に戻せる。
+
+ただ、@UNESCAPE や @ESCAPE を使うより、@PUSH_RR や @PUSH_RA したあと、すぐに @POP_RS して文字列として取り出す…などのほうが常套テクニックである。
+
+連想配列操作用に、STACKLIB に入っているのは、@GET_RA のほかは @SET_RAと @DELETE_RA ぐらいで、以上までで、stacklib.prg に含まれる(ほぼ)すべての関数を紹介したことになる。とても小さく基礎的なものしか含まれていない。
+
+■ライブラリ初期化
+  
+「関数」の紹介としては最後になるが、このライブラリを使うならば最初に GOSUB @STACKLIB_INIT して、変数の初期値や定数的変数の定義、DIM の定義の機会を与えてもらう必要がある。
+
+この BASIC には APPEND というコマンドはあっても、それはプログラム内で使うことができず、「ヘッダファイル」のような考え方はない。プログラムは単純に連結するしかなく、&lt;b&gt;他の「ライブラリ」についても、最初に @FILENAME_INIT (FILENAME は filename.prg のベースネームを upper case にしたもののつもり) を呼んでもらう&lt;/b&gt;という決まりにしたい。
+
+当然、これは、上の普通の @ENTER や @LEAVE を使う関数とは違い、グローバル変数の定義ばかりがならぶことになるだろう。もちろん、push を使いながら、関数呼び出ししてもよいが、ローカル変数が必要なものはそういった関数呼び出しにまかせ、INIT 内での配列の初期化などは A や A$ などのレジスタを使うに留めたほうが見通しがつきやすいだろう。
+
+■文法チェッカ付き QR コード生成機
+  
+プチコンをやりはじめて驚いたのだが、ググっても見つからなかったのに CPAN には Data::Petitcom というプチコン用 Perl モジュールがあったということ。それは QR コード生成機も含んでおり、ずいぶんお世話になっている。
+
+文法チェッカも Web 上に公開されたものがあり、ずっとそれを使っていたのだが、分割してライブラリ的に管理するファイルが大きくなって、使いにくくなってしまった。そこで、つい QR コード生成機用の Perl スクリプトに簡単な文法チェッカも付けてしまった。ついでなんで、変数名の出現等もチェックし、ローカル変数にちゃんとなってるかのチェックもできるようにしてしまった。
+
+それが、同梱の gen_qrcode.pl になる。
+
+QR コードの PNG を生成したあと、Web で公開することを考えると、PNG そのままじゃなく何かラッパーとなる HTML &amp; JavaScript が欲しい。
+
+それを生成するのが make_qrcodes_html.pl (&amp; template_qrcodes.html) になる。
+
+なお、私は、プチコンの行数制限の厳しさ等から、こういったツールにはチューンナップが必要になるはずだと思うので、これらのツールは、prg ファイルと同じローカルに管理するべきだと考えるのだが、あえて、~/bin や /usr/bin に入れたいというなら、ちょっと一般的な名前過ぎるので、 gen_ptc_qrcode.pl や make_ptc_qrcodes_html.pl にしたり、思い切って gpqr や mpqrh にすべきだろう。(その場合は、make_qrcodes_html.pl 内の template_qrcodes.html の指定をフルパスにすることを忘れないこと。)
+
+gen_qrcode.pl の一般的な使い方は次のような感じであろう。
+
+# perl gen_qrcode.pl --strict --no-check-global-once -N TEMP0000 \
+    -t qrcode/ test.prg stdlib.prg stacklib.prg
+    
+TEMP0000 がプチコン上でのファイル名で、test.prg stdlib.prg stacklib.prg を連結して一つのファイルにし、qrcode/qr001.png といった感じに QR コードが生成される。
+
+他の二つは文法チェック用のオプションで --strict は @ENTER, @LEAVE 内のローカル性を厳しめにチェックするオプションで、--no-check-global-once は、stacklib.prg 等をライブラリ的に使えば、使われないグローバル変数が見つかるのは当然のことなので、それに関する警告を表示しないようにするオプションである。
+
+make_qrcodes_html の使い方は次のような感じである。
+
+# perl make_qrcodes_html.pl -t qrcode/ -N TEMP0000 \
+    --version-from test.prg
+    
+これは、TEMP0000 というタイトルを持たせたページを qrcode/qrcodes.html として作る。なお、バージョン番号は、-V 0.01 などとも指定できるが、test.prg の TEST_VER$ という変数から取ってくる場合は、こう書ける。
+
+おまけとして、check_version.pl というスクリプトも付いてくる。これは配布物を作る前に Time-stamp が変わってるのにバージョン番号を上げるのを忘れているかチェックするのに使うプログラムになる。
+
+■配布物
+  
+配布は shar (シェルアーカイブ)形式で行っている。ZIP や TAR.GZ がいいという方は、youscout_ptc のアーカイブに同じものが含まれているので、それをダウンロードすればよい。
+
+  ●stacklib_ptc.shar
+    
+ライセンス的なことに関しては、私は Public-Domain にしたつもりだが、そのほうが都合が悪い場合は、BSD License や Artificial License 下にあるとして扱ってもらってもかまわない。
+
+■関連
+  ●《プチコンmkII - スマイルブーム》。本家。
+  ●《プチコンまとめWiki》。今「プチコン」でググれば見つかるところ。
+  ●《プチコン文法チェッカー》。上で挙げた Web 上の文法チェッカ。
+  ●《hayajo/p5-Data-Petitcom - GitHub》。Data::Petitcom の github。
+    
+更新：2013-02-20,2013-02-23
+初公開：2013年02月21日 04:44:57
+最新版：2013年02月23日 09:24:07</pre>
+<details class="trackbacks" data-pagefind-ignore><summary>Trackbacks (3 件)</summary><pre>
+Trackbacks:
+
+《<a href="http://jrf.cocolog-nifty.com/software/2013/02/post-2.html">CON_PRINT: プチコンmkII用コンソールPRINT</a>》 from JRF のソフトウェア Tips
+プチコンの PRINT の実装は何かと「不完全」である。下画面は PRINT ではなく PNLSTR を使わねばならないし、上画面のコンソールの文字の読み出しはできるが、色までは読み出せない。そもそも、プチコンは、文字列が \xXX といった「エスケープシーケンス」に対応しておらず、文字列として改行やダブルクォート()を入力する方法はなく、CHR$() でアスキーコードを文字列にしてから連結する必... 
+
+受信： 2013-02-22 07:58:17 (JST)
+
+
+《<a href="http://jrf.cocolog-nifty.com/software/2013/02/post-3.html">POPUP_MNU_RA: プチコンmkII用のポップアップメニュー</a>》 from JRF のソフトウェア Tips
+STACKLIB に付いてくる ctrllib.prg は、今風の「ジェスチャ入力」「モーションコントローラ」には対応していない。わざわざライブラリにするぐらいだから、そういうのを期待されるのかもしれないが、『易双六 PTC』で使うのに必要とした部分のみしか作っていないというべきで、ウリと言えば、自分で使っていて便利だなと思ったポップアップメニューのルーチン @POPUP_MNU_RA になる。... 
+
+受信： 2013-02-22 18:17:41 (JST)
+
+
+《<a href="http://jrf.cocolog-nifty.com/software/2013/02/post-4.html">HLPVIEW: プチコンmkII用の簡易アドヴェンチャーゲーム用ルーチン</a>》 from JRF のソフトウェア Tips
+ハイパーテキストという概念があり、現在の Web が(一部)実現したハイパーリンクのもとになった考え方という見方もある。NCSA Mosaic という最初のネットブラウザーがでてくる以前にも、Mac には HyperCard があったし、90年代のエロゲーの中には、システムを一般化して内部でリンクを辿っていくような処理をしているものもあった。 なんでエロゲーの話が出てくるかというと、私が最初にこの... 
+
+受信： 2013-02-23 09:58:02 (JST)
+
+
+Comments:
+
+[E:drama] 初公開：stacklib-20130221.shar。バージョン 0.01。
+
+投稿: JRF | 2013-02-21 04:49:14 (JST)
+
+[E:notes] 更新：stacklib_ptc-20130223.shar。バージョン 0.02。
+
+CON_PRINT 等の記事を書きながら気付たことや、ちょっとしたバグの修正。上の記事も誤字等を訂正している。
+
+なお、バージョン 0.01 では stacklib.shar という名前にしていたが、ちょっと一般的過ぎる名前かと思い、今回のバージョンから stacklib_ptc.shar という名前にした。stacklib.shar は削除したが、上の日付が付いたリンクに関しては残してある。プチコンのスタックライブラリはググっても他のものがないので、とりあえずこれで識別できると思う。
+
+投稿: JRF | 2013-02-23 09:31:51 (JST)
+
+[E:bell] 更新：stacklib_ptc-20130225.shar。バージョン 0.03。
+
+gen_qrcode.pl の IF THEN ELSE まわりでちゃんとしたエラーを出すよう改良。
+
+投稿: JRF | 2013-02-25 14:33:09 (JST)
+
+[E:shoe] [E:shoe] 更新：stacklib_ptc-20130301.shar。バージョン 0.04。
+
+変数 G_PAGE, SP_PAGE, BG_PAGE を導入した。youscout_ptc では、G_PAGE は複雑なのでレジスタ的に、SP_PAGE と BG_PAGE はローカル変数的に使うのを心掛けたが、メインルーチン群(MODE_*)に関しては、SP_PAGE と BG_PAGE はグローバル変数的に使っている。
+
+また、CON_PRINT について。スクロールルーチンを書くつもりはないが、要素を組み合わせれば、遅かろうと縦スクロールのマネゴトができるように、クリッピング領域のマイナス側の外を描かない処理をちゃんとやった。また、\c によるカラー指定があるときは DECORATE を停止するようにした。
+
+投稿: JRF | 2013-03-01 01:52:27 (JST)
+
+[E:parking] 更新：stacklib_ptc-20130305.shar。バージョン 0.05。
+
+HLP_VIEW に \P を追加。詳しくはトラックバックにある HLPVIEW の記事をご参照あれ。
+
+投稿: JRF | 2013-03-05 19:59:35 (JST)
+
+[E:xmas] 更新：stacklib_ptc-20130413.shar。バージョン 0.06。
+
+変更なし。YSCHELP のみの更新で、こちらに影響はないが、いちおうバージョンナンバーだけ上げておいた。
+
+投稿: JRF | 2013-04-13 16:00:07 (JST)
+
+[E:mailto] 上のツールで作った QR コード(集)を非ネット環境で使えるようにしておけば便利かもしれない。インクジェットプリンタとかで名刺印刷みたいな感じで、QR コードをカードに印刷するための「版下」を作る Perl スクリプト(の例)を［cocolog:78731905］で公開しています。
+
+投稿: JRF | 2014-01-30 08:03:37 (JST)
+
+
+Links:
+
+文法チェッカも Web 上に公開されたもの: http://www016.upp.so-net.ne.jp/Khnum/petitcom/SBChecker.html
+youscout_ptc: http://jrf.cocolog-nifty.com/archive/youscout/ptc/index.html
+stacklib_ptc.shar: http://jrf.cocolog-nifty.com/archive/ptc/stacklib_ptc.shar
+プチコンmkII - スマイルブーム: http://smileboom.com/special/ptcm2/
+プチコンまとめWiki: http://wiki.hosiken.jp/petc/
+プチコン文法チェッカー: http://www016.upp.so-net.ne.jp/Khnum/petitcom/SBChecker.html
+hayajo/p5-Data-Petitcom - GitHub: https://github.com/hayajo/p5-Data-Petitcom
+stacklib-20130221.shar: http://jrf.cocolog-nifty.com/archive/ptc/stacklib-20130221.shar
+stacklib_ptc-20130223.shar: http://jrf.cocolog-nifty.com/archive/ptc/stacklib_ptc-20130223.shar
+stacklib_ptc-20130225.shar: http://jrf.cocolog-nifty.com/archive/ptc/stacklib_ptc-20130225.shar
+stacklib_ptc-20130301.shar: http://jrf.cocolog-nifty.com/archive/ptc/stacklib_ptc-20130301.shar
+stacklib_ptc-20130305.shar: http://jrf.cocolog-nifty.com/archive/ptc/stacklib_ptc-20130305.shar
+stacklib_ptc-20130413.shar: http://jrf.cocolog-nifty.com/archive/ptc/stacklib_ptc-20130413.shar
+
+
+
+</pre></details>
+
+<section class="backrefs" data-pagefind-ignore>
+<h2>後方参照 (4 件)</h2>
+<ul>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2014/01/statuses_cocolog_78731905.html">ひとこと</a> <span class="backref-date">2014年01月20日</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2013/02/software_75696191.html">HLPVIEW: プチコンmkII用の簡易アドヴェンチャーゲーム用ルーチン</a> <span class="backref-date">2013年02月23日 09:53:30</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2013/02/software_75686369.html">CON_PRINT: プチコンmkII用コンソールPRINT</a> <span class="backref-date">2013年02月22日 07:58:04</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2013/02/software_75690273.html">POPUP_MNU_RA: プチコンmkII用のポップアップメニュー</a> <span class="backref-date">2013年02月22日 18:17:29</span></li>
+</ul>
+</section>
+
+</article>
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2013/02.html">2013年02月</a> | <a href="../../../index/software.html">ソフトウェア Tips</a></nav>
+</body>
+</html>

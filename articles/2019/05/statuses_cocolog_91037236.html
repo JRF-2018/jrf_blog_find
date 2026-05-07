@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>ひとこと - JRF Blog Archive</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2019/05.html">2019年05月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+<article data-pagefind-body>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[statuses] <span class="cocolog-id">cocolog:91037236</span></td></tr>
+<tr><th>セクション</th><td>JRF のひとこと</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2019/05.html">2019年05月31日</a></td></tr>
+<tr><th>元URL</th><td><a href="http://jrf.cocolog-nifty.com/statuses/2019/05/post-aa01d1.html" class="ext-link"><span class="original-url">http://jrf.cocolog-nifty.com/statuses/2019/05/post-aa01d1.html</span></a></td></tr>
+
+</table>
+</div>
+<h1>ひとこと</h1>
+<pre class="body">資産市場の簡易シミュレーション…を作り、記事を公開した。Python を使った「土地」と「知的財産」からなる資産市場のシミュレーション。資産市場でない贅沢品だけからなる商品市場とからめる。
+JRF 2019年5月31日
+
+詳しくは記事を読んで欲しい。記事は↓。
+
+《資産市場の簡易シミュレーション》
+<a href="../../../articles/2019/05/society_91037181.html" class="int-link" title="資産市場の簡易シミュレーション">http://jrf.cocolog-nifty.com/society/2019/05/post-9da6e7.html</a>
+
+プロジェクト名は simple_market_a1 または simple_market_a1_*.py。a1 の a は asset の a。
+
+JRF 2019年5月31日
+
+simple_market_0.pl の後継であり、いずれ micro_economy_*.py と組み合わせることを考えて作った。
+
+simple_market_0.pl は↓。
+
+《外作用的簡易経済シミュレーションのアイデアと Perl による実装》
+<a href="../../../articles/2011/01/society_66612185.html" class="int-link" title="外作用的簡易経済シミュレーションのアイデアと Perl による実装">http://jrf.cocolog-nifty.com/society/2011/01/post.html</a>
+
+micro_economy_*.py は↓。
+
+《ミクロ経済学の我流シミュレーション その１ 基礎経済モデル》
+<a href="../../../articles/2018/03/hbm_01864.html" class="int-link" title="ミクロ経済学の我流シミュレーション [ JRF の私見：税・経済・法 ]">http://jrf.cocolog-nifty.com/society/2018/03/post.html</a>
+
+JRF 2019年5月31日
+
+ただし、simple_market_0.pl の後継と言いながら多くのアイデアが失われている。記事にも書いたとおり、入れ子構造にしたい(現状そうなってないが…)とか、カタストロフィックな遷移がありうるんじゃないか…といったアイデアは失われている。
+
+さらに、simple_market_0.pl のころはベーシックインカム論(BI論)が盛んだったこともあって、少し影響を受けていた。具体的には、借金がどこまでも自由に借りられ、「働く」者はランダムに選ばれた者だけということになっていた。
+
+JRF 2019年5月31日
+
+simple_market_a1 では micro_economy_*.py の考え方を受け、働くのがデフォルトになっている。ただ、借金がかなり自由に借りられるのは変わってないので、まったく、そっち方面への視座がなくなったわけではないかもしれない。
+
+JRF 2019年5月31日
+
+……。
+
+この後…であるが、micro_economy_*.py との合体もあるのだが、その前にしばらくテレビゲームで遊びたい。遊んだ上で、すぐに取りかかるかというとそれもそういうわけではなく、その前に、他のことを考えたい。
+
+経済学に関する部分では、交易…輸出入をモデル化できないか考えたい。が、どうこれにトライしていくか、現状ではほぼ何も考えていない。
+
+JRF 2019年5月31日
+
+これも micro_economy_*.py みたいに最適化を使うのか、使うとすれば経済ごとに最適化を複数本回すのか、あくまで一本の最適化にまとめなければならないのか…。それとも今回みたいに最適化なしのモデルができるのか。意外に遺伝的アルゴリズムを使ったりして…。とか、検討も全々できていない。
+
+まぁ、ぼちぼちやっていくつもりです。
+
+JRF 2019年5月31日
+
+……。
+
+追記。
+
+追加実験を行い、モデルをブラッシュアップして新たな記事を書いた。
+
+《資産市場の簡易シミュレーション その２ 論理的モデル進化》
+<a href="../../../articles/2019/06/society_91071598.html" class="int-link" title="資産市場の簡易シミュレーション その２ 論理的モデル進化">http://jrf.cocolog-nifty.com/society/2019/06/post-4e7664.html</a>
+
+JRF 2019年6月11日
+
+内容は読んでいただきたいが、最後、給与など価格がモデルに大きな影響を与えていたことに改めて気付き驚いた。返済率を変えても贅沢品需要が変わらないとか、全 Liability が増えない…というのは、たまたま選んだ価格設定によるところが大きそうだ。
+
+このあたりもう少し詰めてみないといけないかもしれない。が、それは今後の課題ということで…。
+
+JRF 2019年6月11日
+
+……。
+
+追記。
+
+書き忘れてた。simple_market_0.pl から失われたものがもう一点。
+
+greed。借金が多いと、必需品の値段を上げようとする…というもの。
+
+借金が多いこと自体にペナルティがないとしても、それが社会的に悪影響を及ぼすことから、借金を多くしない方向にインセンティブ付けなされるべきことが予定されていた。あまり活かされていなかったが。
+
+それが simple_market_a1_*.py では消えている。
+
+JRF 2019年6月11日
+
+また、知的財産の多寡で判定するのは、借金を多くしたほうが有利にするという初期の考え方に反していたり、01.py から 02.py に移る過程でも、いくつか考え方が脱落している。
+
+その辺、また活かすことがあるのか、ないのか、今のところはわからない。
+
+JRF 2019年6月11日</pre>
+
+
+<section class="backrefs" data-pagefind-ignore>
+<h2>後方参照 (1 件)</h2>
+<ul>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2019/05/society_91037181.html">資産市場の簡易シミュレーション</a> <span class="backref-date">2019年05月31日 19:54:35</span></li>
+</ul>
+</section>
+
+</article>
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2019/05.html">2019年05月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+</body>
+</html>

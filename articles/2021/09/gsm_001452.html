@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>共有メモ - JRF Blog Archive</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2021/09.html">2021年09月</a> | <a href="../../../index/gsm.html">共有メモ</a></nav>
+<article data-pagefind-body>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[gsm] 2021-09-13T17:46:51Z</td></tr>
+<tr><th>セクション</th><td>グローバル共有メモ</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2021/09.html">2021-09-13T17:46:51Z</a></td></tr>
+<tr><th>元URL</th><td>(URLなし)</td></tr>
+
+</table>
+</div>
+<h1>共有メモ</h1>
+<pre class="body">jrf&gt; [仏教の最適化プログラムの続き。]
+
+過去のアイデアログを読み直し、いくつか未実装のものを実装した。simbdp3.py のみいじる。
+
+まずは大きなところで hating まわり。
+
+hating_unknown の存在を忘れていて、犯罪などに hating_unknown が反映されていなかったのを修正した。そして、hating_unknown の上がり方を 0.1 * hate ではなく、カルマと同じ、p.hating_unknown = max([p.hating_unknown, new_hate]) + 0.1 * min([p.hating_unknown, new_hate]) という形にした。
+
+次に、強姦の際、妊娠したら hating_unknown が 0.5 たまることにした。0.5 では少ないと思われる向きもあるかもしれないが、強姦は今のところ戦時強姦で、政治への hating は前からたまるようにしていたこともあり、抑えめにした。
+
+さらに、重犯罪の被害者になる際のなりやすさに、hating の相手方の hated を参照するようにした。その判定の前に、憎まれの最大値 tmp_max_hated というのを求めておき、それを参照している。
+
+なお、強く恨まれてるより数多く恨まれてるほうが被害者になりやすいかもしれないが、数を問題にすると面倒なので tmp_max_hated で十分とし、数多くというのは merchant_hated である程度代替しうると考えた。
+
+あとついでに、重犯罪は、男性のほうが力がある分、女性より 1.2 倍、罪を犯しやすくしておいた。
+
+さらについでに、重犯罪の被害者になりやすさについて、もっとランダムに誰しもが選ばれやすくしておいた。
+
+……。
+
+アイデアログに次のように書いていた。
+
+＞古代では特に父親は実子と思っているが、養子であることがあるというのを表すために使う。これにより時限爆弾的に恨みが発生することに対応したい。＜
+
+…しかし、時限爆弾的にいつ起こるかわからないものだと、重ねて恨みが発生しないように起きたときを記録しておかねばならないだろう。それは処理が重くなり過ぎるように思う。
+
+そこで、扶養されていたが子供でなかったとき、結婚時または成人時にそれぞれ 0.15 ぐらい産みの親(生きてる場合)への hating が発生するとした。
+
+……。
+
+＞特定の誰かへの恨みは減りにくいが、hating_unknown は日々の生活の中、(教育があれば)減りやすいとしよう。＜…と書いた。
+
+結局、soothe されるとき、hating_unknown も個人に対するのの 1.5 倍の確率で soothe されるとしたが、複数人への hating であることを考慮し、減り方を 0.5 をかけるのではなく 0.75 をかけるようにした。</pre>
+
+
+</article>
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2021/09.html">2021年09月</a> | <a href="../../../index/gsm.html">共有メモ</a></nav>
+</body>
+</html>

@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>共有メモ - JRF Blog Archive</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2021/02.html">2021年02月</a> | <a href="../../../index/gsm.html">共有メモ</a></nav>
+<article data-pagefind-body>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[gsm] 2021-02-20T12:54:35Z</td></tr>
+<tr><th>セクション</th><td>グローバル共有メモ</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2021/02.html">2021-02-20T12:54:35Z</a></td></tr>
+<tr><th>元URL</th><td>(URLなし)</td></tr>
+
+</table>
+</div>
+<h1>共有メモ</h1>
+<pre class="body">jrf&gt; Python。別のモジュールのグローバル変数は基本代入できないのだね。
+
+t1.py のモジュールで Q というグローバル変数が定義されてると思いねい。
+
+import t1
+from t1 import Q
+
+if __name__ == '__main__':
+    global Q
+    t1.Q = 1
+    Q = 2
+    print(t1.Q, Q)
+
+とすると
+
+1 2
+
+と表示される。t1 側で print(Q) すると、t1.Q の値が表示される。だからグローバル変数を使いたいときは、from t1 import Q とするよりは t1.Q で常に参照したほうがいいみたい。
+
+ただ、Q に直接の代入をしない(Q のメンバにしか代入しない… Q.a = 1 とか)なら、from t1 import Q でもいいみたい。</pre>
+
+
+</article>
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2021/02.html">2021年02月</a> | <a href="../../../index/gsm.html">共有メモ</a></nav>
+</body>
+</html>

@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>balance_mail_redirect：ランダムだが確実にメールが誰かに届くよう振り分けたい - JRF Blog Archive</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2010/05.html">2010年05月</a> | <a href="../../../index/software.html">ソフトウェア Tips</a></nav>
+<article data-pagefind-body>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[software] <span class="cocolog-id">cocolog:63437032</span></td></tr>
+<tr><th>セクション</th><td>JRF のソフトウェア Tips</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2010/05.html">2010年05月22日 21:46:54</a></td></tr>
+<tr><th>元URL</th><td><a href="http://jrf.cocolog-nifty.com/software/2010/05/post-2.html" class="ext-link"><span class="original-url">http://jrf.cocolog-nifty.com/software/2010/05/post-2.html</span></a></td></tr>
+<tr><th>タグ</th><td>[Perl] [JRF 作成ソフトウェア]</td></tr>
+</table>
+</div>
+<h1>balance_mail_redirect：ランダムだが確実にメールが誰かに届くよう振り分けたい</h1>
+<pre class="body">本作は、ずっと以前からアイデアがあり、2005 年ぐらいに sendmail 等のメーラー用プログラムとして一端書き上げたが、組織で運用するようなチャンスもなく、そのままオクラ入りになっていた。死蔵していても無意味だし、せっかく sendmail 等がなくても Perl の標準ライブラリがあれば動くようにしているので、Net::SMTP を直に利用するサンプルとして、私の個人サイトにコソッと置いておくことにした。
+
+■要旨
+  
+random_mail_redirect は、たまにメールをリダイレクトする。
+
+balance_mail_redirect は、最低何人、最高何人にランダムにメールをリダイレクトしたいときに使う。balance_mail_redirect は random_mail_redirect と違い、必ずメールを送ることが保証されている。
+
+中小組織が、メーラーの /etc/aliases などにこのプログラムをフィルタとして使うことを想定している。
+
+そのような組織において、balance_mail_redirect は秘書に仕事を振り分けるのに便利であり、random_mail_redirect は上司が直訴をたまに許すなど、部下のチェックをするのに便利であろうと想像した。苦情処理を分散させたい場合、メールの配送処理を分散複線化させたいときにも使えるかもしれない。
+
+■配布
+  
+本作はαバーションである。
+
+  ●balance_mail_redirect-20100522.shar
+    
+今では珍しいかもしれないが、shar でまとめてある。このファイルをシェル上でスクリプトとして実行するなり、unshar すれば展開できる。ファイルとしては以下のものが入っている。
+
+  ●balance_mail_redirect.pl
+  ●random_mail_redirect.pl
+  ●README.alpha.txt
+README.alpha.txtは、この記事のもとになったもので、ほぼ同じものである。
+  
+■基本機能
+  
+メールを送る部分は共通のオプションが使えるが、それらの説明はあとにまわすため、メールを送る部分の設定はすでにプログラム内に書かれているものとして、両者の基本オプションを説明する。
+
+random_mail_redirect.pl --frequency=[FREQ] [ADDRESS]+
+
+標準入力に渡されるメールを何回(1/[FREQ])に一度、[ADDRESS] に送るかを指定する。[ADDRESS] が複数のときは、それぞれについて 1/[FREQ] 面のサイコロを振って判断する。
+
+[ADDRESS] は、&quot;/&quot;(スラッシュ)が含まれるものはローカルに保存すべきものと判断し、ファイルは mbox として、ディレクトリは MailDir として扱われる。
+
+balance_mail_redirect.pl --min=[MIN] --max=[MAX] \
+    --power=[POW] --list=[SLIST]
+    
+標準入力に渡されるメールを [SLIST] の中にあるアドレスから最少 [MIN] 個、最大 [MAX] 個、適当に選んで、その(複数の)アドレスに配る。ランダムさを含んでいるので、多少配分の濃淡が出るが、その濃淡が出ないようどれほど「矯正」するかを [POW] で指定する。([MIN] と [MAX] を同じにすることでちょうど{MIN]個、配ることになる。)
+
+[SLIST] の中身は各行にスペースで区切った [ADDRESS] と [SCORE] の組を書いたリストである。[SCORE] は実数で、その都度書き換えられる。アドレスを扱うプログラムとしては行儀がよくないが、# 以降はコメントと見なす。
+
+■メーラー機能
+  
+これら *_mail_redirect.pl は、sendmail の /etc/aliases などでパイプとして用いられることを想定しており、様々な環境に対応するため、sendmail がなくてもメールを送ったり、メールボックスが扱えるようになっている。
+
+その機能を果たす上で、最初に説明すべき、もっとも大切なオプションとして --alias=[ALIAS_ENTRY] というダミーオプションがある。
+
+このダミーオプションは、スクリプト内では何の働きもない。しかし、 /etc/aliases でこのプログラムをパイプとして利用するとき、sendmail などは、同じメールを複数、同じアドレスに送らないようにするために、パイプで指定されたものさえ、同じエントリを単一化してしまうため意図どおりに動かないことがある。これを防ぐために、alias のエントリごとに、違う名前となるよう、このようなオプションを指定するとよい。
+
+メールを中継してくれるるホストは、--host=[HOST] で指定する。[HOST} は複数指定できる。それぞれの [HOST] は USER:PASSWORD@HOST:PORT という形で指定できる。--from=[ADDRESS] を付けることで、Return-Path に書くべきアドレスを指定できる。ただ、これらは他者に見えるべき /etc/aliases に書くより、*_mail_redirect.pl の変数として直接指定したほうがいいだろう。
+
+&lt;b&gt;ただし&lt;/b&gt;、Perl の Net::SMTP にユーザー認証をさせるためには、標準ライブラリだけではダメらしく、Authen::SASL (と関連パッケージ) をインストールしておく必要がある。
+
+組織で用いることを前提として Cc と --log-mail に関する機能がある。
+
+balance_mail_redirect はヘッダに Cc: を自動的に付加する。そうしたくない場合は、--no-cc を使う。random_mail_redirect に Cc を自動的に付加させることもできる。この場合は、--use-cc を使う。Cc の替わりに Bcc を使いたいときは --use-cc=bcc、Resent-Cc を使いたいときは、--use-cc=resent と指定できる。
+
+似ているが、--use-cc とは別に --add-cc=[ADDRESS] というオプションがある。--add-cc によって、社員が返信した場合にそのメールが管理者にも届くようにできる。
+
+管理者に、誰にメールが届いたかがわかるようにするため、--log-mail=[ADDRESS] がある。 基本的に管理者が直接クレーム処理にあたることはないだろうが、いつまでたってもクレーム処理がなされない場合に催促ができるように、--log-mail の Reply-To は、メールが送られた社員のアドレスになるようになっている。
+
+Cc のアドレスに現れる順序は不定である。よって、先にアドレスが現れた人がまず、最初にクレームを処理する責任を負い、どうもその人が忙しそうだと判断したならば、次の人が処理するなどとすれば良い。
+
+なお、--no-cc を指定すると、社員は誰と情報を共有しているかわからなくなる。この場合は、社員は、直接メールを返信するのではなく、Reply-To や X-Request-Forward-To に転送すべき顧客のアドレスを指定した上で、一端それを管理者に集めて転送を依頼するなどして、処理の重複を除去することになるだろう。
+
+少し裏ワザ的だが、リストの読み込みを早くするためリストを複数に分ける場合があれば、ひょっとすると /dev/null をメールボックスとして指定したいと思うかもしれない。このとき、[MIN] よりも /dev/null でないアドレスが多く、それ以外の /dev/null が多くなるとバランスが崩れてしまう。これを 修正したい場合は、/dev/null/1 /dev/null/2 などと指定すれば良い。 /dev/null または、/dev/null/ ではじまるメールボックスは、そのようなデバイスがあろうとなかろうと、無視される。
+
+これらを以外にもオプションがある。オプションの情報は、コマンドラインで --help オプションを指定することで読むことができる。
+
+■例１：メーラーとして使う
+  
+ただのメーラーとして使うには、random_mail_redirect に --frequency=1 を指定すればいい。
+
+perl random_mail_redirect.pl --frequency=1.0 \
+    --user=[USER] --password=[PASS] --host=[HOST]:587 \
+    [ADDRESS] &lt; your.mail
+    
+■例２：苦情処理
+  
+中小企業などでクレーム処理を分散させたい場合の設定は次のようになるだろう。まず、非常に処理能力の高い guru-san@foo.bar.baz がいて、普通の処理能力を持つ straight-san@foo2.bar.baz, otaku-san@foo3.bar.baz がいて、新人の kitty-chan@foo4.bar.baz がいてかれらを complaints-admin@foo.bar.baz が管理しているとしよう。クレームを受けるアドレスは user-support である。
+
+まず、/etc/scored-mail-list を次のように設定する。
+
+##
+# Scored Mailing List for balance_mail_redirect.pl
+##
+
+guru-san@foo.bar.baz        #@# '#' に続く行の残りはコメント。
+                              #@# '#@#' は sendmail のコメント。
+guru-san@foo.bar.baz  0.0   # 二つめのエントリ。0.0 はスコア。実行
+                              # 時に付加されるので、ユーザーはこれを
+                              # 指定する *べきではない*。
+straight-san@foo2.bar.baz
+straight-san@foo2.bar.baz   # 二つめのエントリ。
+guru-san@foo.bar.baz        # 三つめのエントリ。出現の順序は関係な
+                              # いため、仕事ができるようになったらエ
+                              # ントリを append していくだけで良い。
+                              
+# 空行は無視される。
+otaku-san@foo3.bar.baz
+otaku-san@foo3.bar.baz      # 二つめのエントリ。
+kitty-chan@foo4.bar.baz
+
+次に /etc/aliases に次のような部分を足す。
+
+# User support
+user-support: complaints-admin@foo.bar.baz,
+    &quot;|/usr/bin/perl /path/to/balance_mail_redirect.pl
+        --alias=user-support 
+        --list=/etc/scored_mail_list --min=2 --max=2 --bits=8
+        --log-mail=complaints-admin@foo.bar.baz
+        --log-return=balance_mail_redirect-master@foo.bar.baz
+        --add-cc=complaints-admin@foo.bar.baz&quot;
+        
+中継ホストの設定は、balance_mail_redirect.pl に直に書かれているとした。
+
+■使用した確率モデル
+  
+balace_mail_redirect のスコアの計算は、いくつかモデルを考えて試した結果、選んだものである。ユニバーサルなクラスのどれかを決定して、そこからパラメータを摂動して出した……とか言えたら、カッコイイのかもしれないが、そういうことはない。スパムフィルタなどでベイズの公式を使った学習が00年代初頭にはやったが、そういう考慮もしていない。スコアを足して、乱数で針を落とせばできるから、そこを何とか工夫して……というふうに造った。
+
+balance_mail_redirect は前回までのバランスをスコアファイルに記憶する。「新人」に集中してメールが送られるのを防止するなどのためスコアを用い、それぞれには初期値として 0 が与えられる。全員で n 人、i 人に送られたとすると、送られた人間は - i/n され、送られなかった人間は +(n-i/n) される。次のメールが届くと、1.5^(スコア) (exp(log(1.5)* スコア)) を足し合わせたものに、乱数で針を落とす。……といった感じである。
+
+個人ごとに重みづけ(スコアファイルに [WEIGHT] の項目を作るなど)して仕事量を調整できるようにしたいとも考えたのだが、あまりうまい式を見つけられなかった。結局、上で書いたように、一つのアドレスを複数個登録できるようにすることで、それを代替できるとした。
+
+どうして、本作のアルゴリズムでうまくいくか、なぜ重みづけがうまくいかなかったか、それら計算式の解析は今後の課題としたい。
+
+■作業履歴
+  
+メールを使ったシステムを造りたいという構想は 2001 年以前からあったが、 2005 年ごろ他の道を模索していて、大規模なものはもう造れないだろうと痛感しているとき、ミニマルには本作の二つがあれば十分で、それなら今でも造れるとかもしれないと考えたのが、作製のキッカケである。
+
+  &lt;b&gt;2010-05-22&lt;/b&gt;αバージョンとしての同人的配布のため少し体裁を整え、このドキュメントを創る。
+  &lt;b&gt;2005-05-23&lt;/b&gt;このころにはほぼ今の機能が完成していた。
+  &lt;b&gt;2005-05-04&lt;/b&gt;この日に作ったテストファイルが残っている。
+    
+(以下は、法的事情を私なりに考慮した文。文体を「ですます」調にする。)
+
+■αバージョンに関して
+  
+本作のこのバージョンは、需要家の使用に耐えた実績がないばかりか、同好の士による十分な試用も行われていません。作者が考えた理屈どおりにコンピュータ上で動かせると判断したところに留まっています。そのような意味において、このバージョンを開発中のαバージョンと位置づけます。
+
+■免責宣言
+  
+本作は、日本国大阪府在住者によりパブリックドメインとなるよう造られました。しかし、この文を読むような方は BSD-License または Artistic License に則るよう本作を扱うことをお勧めします。
+
+■本作のリンク
+  
+<a href="http://jrf.cocolog-nifty.com/archive/balance_mail_redirect.html" class="ext-link">http://jrf.cocolog-nifty.com/archive/balance_mail_redirect.html</a>
+
+■謝辞
+  
+両親による生活の援助とその他様々な方・団体のご理解のもと、私は本作に関する活動ができました。ここに謹んで感謝の意を表します。ありがとうございました。私は未だ自立に向けた支援が必要な状態で、まだまだご迷惑をおかけすることと思いますが、これからもよろしくお願いします。
+
+更新：2010-05-22
+初公開：2010年05月22日 21:47:02
+最新版：2010年05月22日 21:47:02</pre>
+<details class="trackbacks" data-pagefind-ignore><summary>Trackbacks (1 件)</summary><pre>
+Trackbacks:
+
+《<a href="http://jrf.cocolog-nifty.com/software/2016/08/post.html">モンティ・ホール問題または三囚人問題の拡張とその確率操作シミュレーション</a>》 from JRF のソフトウェア Tips
+はじめに 近年、J. ローゼンハウスの『モンティ・ホール問題テレビ番組から生まれた史上最も議論を呼んだ確率問題の紹介と解説』という本が出た。この本は、モンティ・ホール問題について詳しく、この本が出る前に私が考えていた問題の拡張についても書かれてしまっていた。この本を読んで、一端は、私がこれ以上、この問題について何か書く必要はないかと思った。が、それからしばらくして、私がやったことも少しは意味がある... 
+
+受信： 2016-08-27 21:21:41 (JST)
+
+
+Links:
+
+balance_mail_redirect-20100522.shar: http://jrf.cocolog-nifty.com/archive/balance_mail_redirect-20100522.shar
+
+
+
+</pre></details>
+
+<section class="backrefs" data-pagefind-ignore>
+<h2>後方参照 (3 件)</h2>
+<ul>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2010/07/statuses_aboutme_127739.html">ひとこと</a> <span class="backref-date">2010年07月10日</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2010/05/statuses_aboutme_125348.html">ひとこと</a> <span class="backref-date">2010年05月29日</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2010/05/statuses_aboutme_124813.html">ひとこと</a> <span class="backref-date">2010年05月21日</span></li>
+</ul>
+</section>
+
+</article>
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2010/05.html">2010年05月</a> | <a href="../../../index/software.html">ソフトウェア Tips</a></nav>
+</body>
+</html>

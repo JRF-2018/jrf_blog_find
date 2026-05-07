@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>ひとこと - JRF Blog Archive</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2014/01.html">2014年01月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+<article data-pagefind-body>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[statuses] <span class="cocolog-id">cocolog:78739712</span></td></tr>
+<tr><th>セクション</th><td>JRF のひとこと</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2014/01.html">2014年01月21日</a></td></tr>
+<tr><th>元URL</th><td><a href="http://jrf.cocolog-nifty.com/statuses/2014/01/jsact.html" class="ext-link"><span class="original-url">http://jrf.cocolog-nifty.com/statuses/2014/01/jsact.html</span></a></td></tr>
+
+</table>
+</div>
+<h1>ひとこと</h1>
+<pre class="body">JSActions を使って「テキストリンク」をタブで開くための Open_Text_Links.js をアップデート。
+JRF 2014年1月21日
+
+以前 <a href="../../../articles/2011/05/statuses_aboutme_138754.html" class="int-link cocolog-id" title="ひとこと">[aboutme:138754]</a> で、2ch 等によくある http から h を削った ttp ではじまるテキストで書かれたリンクをタブで開くための JSActions スクリプトを公開した。
+
+JRF 2014年1月21日
+
+今回、自分用として aboutme や cocolog ではじまるようなテキストリンクにも対応した。これは、自作の aboutme2cocolog を使ったサイトでのみ有効なもので、Open_Text_Links.js ではデフォルトで無効になっているが、ソースの searchURL を適当に設定すれば使えるようになる。
+
+JRF 2014年1月21日
+
+ダウンロードは↓から。JSActions の global に置く。
+
+  <a href="http://jrf.cocolog-nifty.com/archive/javascript/Open_Text_Links.js" class="ext-link">http://jrf.cocolog-nifty.com/archive/javascript/Open_Text_Links.js</a>
+
+JRF 2014年1月21日
+
+地味な改良点として、リンクが見つからないときに入力を求めたり、ハイパーリンクがあるところではセレクションなしでも、テキストリンクが取れるようにしている。
+
+JRF 2014年1月21日
+
+……。
+
+関連リンク。
+
+keyword: JSActions
+
+《aboutme2cocolog: アバウトミーの「ひとこと」をココログプロへ移転するツール》
+<a href="../../../articles/2011/04/software_67976071.html" class="int-link" title="aboutme2cocolog: アバウトミーの「ひとこと」をココログプロへ移転するツール">http://jrf.cocolog-nifty.com/software/2011/04/post.html</a>
+
+《Statuses_Editor_Proxy.CGI - XMLRPC と OAuth を組み合わせた「ひとことサイト」ソリューション》
+<a href="../../../articles/2011/06/software_68520060.html" class="int-link" title="Statuses_Editor_Proxy.CGI - XMLRPC と OAuth を組み合わせた「ひとことサイト」ソリューション">http://jrf.cocolog-nifty.com/software/2011/06/post.html</a>
+
+JRF 2014年1月21日
+
+(あと、関連は薄いけど JSActions を使った No_Ad_URL システムを<a href="../../../articles/2013/06/statuses_cocolog_76692463.html" class="int-link cocolog-id" title="ひとこと">[cocolog:76692463]</a> で紹介している。自分的にはナイスアイデアなつもりなので、ぜひぜひご覧ください。←宣伝。)
+
+JRF 2014年1月21日
+
+……。
+
+JSActions のメインサイトは↓。
+
+《HideAway Firefox》
+<a href="../../../articles/2010/04/hbm_01326.html" class="int-link" title="FrontPage - + HideAway Firefox +">http://hideaway.cc/Firefox/</a>
+
+JRF 2014年1月21日
+
+JSActions 3.0.10 が Firefox 26 あたりから動かなくなった。その前あたりか、どうも作者のサイトが「事故」ってしまったようで、現在は↑のトップページは作者の Twitter アカウントが表示されるようになっている。
+
+そのメッセージに Skydrive に対応した版を置いているとあったので、jsactions_3.0.10beta.20131130.xpi を取ってきたところ、JSActions は動くようになったのだが、JSActionsButton が今度は動かなくなった。
+
+JRF 2014年1月21日
+
+私に詳しいことがわかるわけないが、試しにソースの diff を取ってみると、beta 版で変わったのは、私が関わった selection 関連だけのようす。
+
+JRF 2014年1月21日
+
+その cscript.js に以下のパッチをあてれば、いちおう動くようにはできたので、以前、勝手に PR で紹介する際に連絡したメールアドレスにパッチを送っておいた。
+
+  <a href="http://jrf.cocolog-nifty.com/archive/javascript/jsactions_3.0.10beta_cscript_js.patch" class="ext-link">http://jrf.cocolog-nifty.com/archive/javascript/jsactions_3.0.10beta_cscript_js.patch</a>
+
+JRF 2014年1月21日
+
+……。
+
+あと Tips として。
+
+ソース見てて気付いたのだが、いつの間にか、JSActions でポップアップするメニューにセパレーター(項目を上下に分けて見やすくする線)が付けれるようになっていた。
+
+スクリプトを置いてるディレクトリに 50_--.js とかいう名前にして中身のないファイルを置くとそれが separator になる。50_ の部分はメニューの表示順を変えるためのものだから適当な数字で OK。
+
+JRF 2014年1月21日
+
+……。
+
+関連として。「元ネタ」にもリンクしといたほうがいいか…。
+
+《XUL Apps &gt; Text Link - outsider reflex》
+<a href="http://piro.sakura.ne.jp/xul/textlink/" class="ext-link">http://piro.sakura.ne.jp/xul/textlink/</a>
+
+この「本家」だと全角文字も対応しているらしい。
+
+JRF 2014年1月21日
+
+Trackbacks:
+
+《cocolog:79036705》 from JRF のひとこと
+<a href="../../../articles/2014/02/statuses_cocolog_79036705.html" class="int-link" title="ひとこと">http://jrf.cocolog-nifty.com/statuses/2014/02/javas.html</a>
+
+JavaScirpt 内でも password とかは参照できないようにするべきでは？File (Reader) API がなければ、ファイルの操作は JavaScript からは難しかったんで、それで代替できたかもしれないけど、すでに暗号化したのを入力させるのもなんかね…。... 
+
+受信： 2014-03-30 23:36:01 (JST)</pre>
+
+
+<section class="backrefs" data-pagefind-ignore>
+<h2>後方参照 (3 件)</h2>
+<ul>
+<li><span class="backref-label">[cocolog:78739712]参照</span> <a href="../../../articles/2014/02/statuses_cocolog_79036705.html">ひとこと</a> <span class="backref-date">2014年02月24日</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2013/06/statuses_cocolog_76692463.html">ひとこと</a> <span class="backref-date">2013年06月04日</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2011/05/statuses_aboutme_138754.html">ひとこと</a> <span class="backref-date">2011年05月12日</span></li>
+</ul>
+</section>
+
+</article>
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2014/01.html">2014年01月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+</body>
+</html>

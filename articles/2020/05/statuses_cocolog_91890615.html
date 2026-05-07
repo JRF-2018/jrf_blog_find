@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>ひとこと - JRF Blog Archive</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2020/05.html">2020年05月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+<article data-pagefind-body>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[statuses] <span class="cocolog-id">cocolog:91890615</span></td></tr>
+<tr><th>セクション</th><td>JRF のひとこと</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2020/05.html">2020年05月09日</a></td></tr>
+<tr><th>元URL</th><td><a href="http://jrf.cocolog-nifty.com/statuses/2020/05/post-2d4490.html" class="ext-link"><span class="original-url">http://jrf.cocolog-nifty.com/statuses/2020/05/post-2d4490.html</span></a></td></tr>
+
+</table>
+</div>
+<h1>ひとこと</h1>
+<pre class="body">「志村けん問題」を JAGS で解く…という記事を書いた。超有名人が感染したことがわかったら、感染者数はわかる以前より多いと見積もっても正しいか…という問題。「正しい」というのが私の結論で、JAGS によるシミュレーションをその証拠とする。
+JRF 2020年5月9日
+
+記事は↓。
+
+《「志村けん問題」を JAGS で解く その１ 結論編》
+<a href="../../../articles/2020/05/software_91890591.html" class="int-link" title="「志村けん問題」を JAGS で解く その１ 結論編">http://jrf.cocolog-nifty.com/software/2020/05/post-918b0f.html</a>
+
+《「志村けん問題」を JAGS で解く その２ 試行錯誤編
+<a href="../../../articles/2020/05/software_91890593.html" class="int-link" title="「志村けん問題」を JAGS で解く その２ 試行錯誤編">http://jrf.cocolog-nifty.com/software/2020/05/post-e84089.html</a>
+
+JRF 2020年5月9日
+
+……。
+
+<a href="../../../articles/2020/04/statuses_cocolog_91824909.html" class="int-link cocolog-id" title="ひとこと">[cocolog:91824909]</a> で書いたように新型コロナウィルス(COVID-19 )関連の記事(↓)を読んで、JAGS に興味を持った。
+
+《COVID-19 日本国内の潜在的な陽性者数を推定する試み - StatModeling Memorandum》
+<a href="../../../articles/2020/05/hbm_01985.html" class="int-link" title="COVID-19 日本国内の潜在的な陽性者数を推定する試み - StatModeling Memorandum">http://statmodeling.hatenablog.com/entry/covid19-estimate-total-number-of-positives-in-japan</a>
+
+JRF 2020年5月9日
+
+JAGS で「志村けん問題」を解いてみたらカッコイイとか思った。「志村けん問題」にアタリを付けながら、その前に、まず JAGS でモンティ・ホール問題を解いたりした(<a href="../../../articles/2020/04/statuses_cocolog_91836101.html" class="int-link cocolog-id" title="ひとこと">[cocolog:91836101]</a>)。
+
+<a href="../../../articles/2020/05/statuses_cocolog_91888253.html" class="int-link cocolog-id" title="ひとこと">[cocolog:91888253]</a> で書いたように Kruschke 『ベイズ統計モデリング - R, JAGS, Stan によるチュートリアル 原著第2版』を読んで JAGS の勉強をしながら、この「志村けん問題」に取り組んだ。この本を読むのにとにかく時間がかかった。
+
+JRF 2020年5月9日
+
+……。
+
+「その２」の結論で書いたように、JAGS は確率に関する Prolog みたいなものという認識で、それがおもしろいと思っていた。しかし、そのような使い方だと ESS が小さくなり、実質的に評価ができないことがわかった。
+
+JRF 2020年5月9日
+
+不等式を使う場合だけでなく、sk_problem24.jag のような不等式のトリックを使わないようなものでも、ESSがとても小さくなるのは意外だった。その「苦労」の結果、Prolog みたいに使うのは間違いだと結論せざるを得ない。
+
+(そもそも Prolog 自体、万能推論機でないので、逆にそこが似てるのかもしれないが。)
+
+JRF 2020年5月9日
+
+……。
+
+……。
+
+R の coda パッケージにバグを発見。
+
+coda.samples から得られる mcmc.list …ここでは sk_problem01.jag を実行して post.list という名前を付けたとする。
+
+JRF 2020年5月9日
+
+それについて plot(post.list[,&quot;n.pos.sk&quot;], trace=FALSE) とすると、内部では densplot というものが呼ばれる。重ねて plot するため、densplot に ylim を渡そうとするとエラーが出る。
+
+JRF 2020年5月9日
+
+&lt;pre&gt;
+&gt; densplot(post.list[,&quot;n.pos.sk&quot;], ylim=c(0,0.02))
+ plot(yhist, xlab = xlab, ylab = ylab, ylim = ylim.par, main = main.par,  でエラー: 
+   オブジェクト 'ylim.par' がありません
+&lt;/pre&gt;
+
+JRF 2020年5月9日
+
+英語だと…、
+
+&lt;pre&gt;
+&gt; densplot(post.list[,&quot;n.pos.sk&quot;], ylim=c(0,0.02))
+Error in plot(yhist, xlab = xlab, ylab = ylab, ylim = ylim.par, main = main.par,  : 
+  object 'ylim.par' not found
+&lt;/pre&gt;
+
+JRF 2020年5月9日
+
+《coda/output.R at master - cran/coda》  
+<a href="https://github.com/cran/coda/blob/master/R/output.R" class="ext-link">https://github.com/cran/coda/blob/master/R/output.R</a>
+
+JRF 2020年5月9日
+
+で、解決法だが、グラフを重ねたければ ggplot2 を使えばいいということだと思う。そのほうがキレイだし。私はそうした。
+
+JRF 2020年5月9日</pre>
+
+
+<section class="backrefs" data-pagefind-ignore>
+<h2>後方参照 (2 件)</h2>
+<ul>
+<li><span class="backref-label">[cocolog:91890615]参照</span> <a href="../../../articles/2020/05/software_91890591.html">「志村けん問題」を JAGS で解く その１ 結論編</a> <span class="backref-date">2020年05月09日 05:25:43</span></li>
+<li><span class="backref-label">[cocolog:91890615]参照</span> <a href="../../../articles/2020/04/statuses_cocolog_91824909.html">ひとこと</a> <span class="backref-date">2020年04月13日</span></li>
+</ul>
+</section>
+
+</article>
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2020/05.html">2020年05月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+</body>
+</html>

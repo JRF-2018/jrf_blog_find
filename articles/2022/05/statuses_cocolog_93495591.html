@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>ひとこと - JRF Blog Archive</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2022/05.html">2022年05月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+<article data-pagefind-body>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[statuses] <span class="cocolog-id">cocolog:93495591</span></td></tr>
+<tr><th>セクション</th><td>JRF のひとこと</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2022/05.html">2022年05月15日</a></td></tr>
+<tr><th>元URL</th><td><a href="http://jrf.cocolog-nifty.com/statuses/2022/05/post-3b108d.html" class="ext-link"><span class="original-url">http://jrf.cocolog-nifty.com/statuses/2022/05/post-3b108d.html</span></a></td></tr>
+
+</table>
+</div>
+<h1>ひとこと</h1>
+<pre class="body">村田安雄『動的経済システムの最適制御』の検算＆シミュレーションを少し行った。今のところ第2章、第4章、第3章2節b の検算のみで、Google Colab で Python のノートブックを作成して行った。
+JRF 2022年5月15日
+
+『動的経済システムの最適制御』(村田 安雄 著, 関西大学出版局, 1998年)
+<a href="https://www.amazon.co.jp/dp/4873542634" class="ext-link">https://www.amazon.co.jp/dp/4873542634</a>
+<a href="https://7net.omni7.jp/detail/1101522662" class="ext-link">https://7net.omni7.jp/detail/1101522662</a>
+
+JRF 2022年5月15日
+
+以前のサッと目を通したときの「ひとこと」は <a href="../../../articles/2022/04/statuses_cocolog_93455912.html" class="int-link cocolog-id" title="ひとこと">[cocolog:93455912]</a> にある。ノートブックの公開は GitHub (↓)で。
+
+《JRF-2018/economy_control: 村田安雄『動的経済システムの最適制御』の検算＆シミュレーション。》  
+<a href="https://github.com/JRF-2018/economy_control" class="ext-link">https://github.com/JRF-2018/economy_control</a>
+
+JRF 2022年5月15日
+
+詳しく…ってわけでもないが、まずは、↑の README.md を読んでいただきたい。
+
+そこに書かなかったこと、あまり書いたらややこしくなるかな…というようなことをこちらに書いていきたい。
+
+JRF 2022年5月15日
+
+……。
+
+このプロジェクトのための前段階として、Google Colab や SymPy のテストをし、Gist で公開したものもあった。「グローバル共有メモ」からそのあたりをコピペしておこう。
+
+JRF 2022年5月15日
+
+○ 2022-04-26T13:05:23Z
+
+《数列変数・級数の偏微分のテスト - sum_diff_example_01.ipynb》  
+<a href="https://gist.github.com/JRF-2018/89a520d3283605840f6d0fcf884fad13" class="ext-link">https://gist.github.com/JRF-2018/89a520d3283605840f6d0fcf884fad13</a>
+
+JRF 2022年5月15日
+
+○ 2022-04-27T04:35:55Z
+
+《行列変数の代入のテスト - matrix_subs_test_01.ipynb》  
+<a href="https://gist.github.com/JRF-2018/c88a3b4ada72611a23cd6d2ede9cebd6" class="ext-link">https://gist.github.com/JRF-2018/c88a3b4ada72611a23cd6d2ede9cebd6</a>
+
+JRF 2022年5月15日
+
+○ 2022-04-27T07:24:44Z
+
+《行列の「多項式」の特定の項の係数を取るテスト - matrix_poly_coeff_test_01.ipynb》  
+<a href="https://gist.github.com/JRF-2018/fb3402c227421eee4f31086d68e9978b" class="ext-link">https://gist.github.com/JRF-2018/fb3402c227421eee4f31086d68e9978b</a>
+
+JRF 2022年5月15日
+
+○ 2022-04-28T17:58:56Z
+
+このところ SymPy で MatrixSymbol のお試しをしててこういうのがあったらいいんじゃない？…という関数をまとめて、Google Colab から使えるようにしておいた。あくまで自分用で実験的利用のため…と考えていただきたい。
+
+《JRF-2018/sympy_matrix_tools: Some tools for sympy matrices.》  
+<a href="https://github.com/JRF-2018/sympy_matrix_tools" class="ext-link">https://github.com/JRF-2018/sympy_matrix_tools</a>
+
+JRF 2022年5月15日
+
+○ 2022-04-29T14:01:36Z
+
+昨日作った↑。いろいろいじった。テストに Google Colab を使ってそこでどんどんエラーや改善点が見つかってしまい、バージョンを一日で上げまくることに。これぐらいで許して欲しいが…。次は級数関連…。
+
+JRF 2022年5月15日
+
+○ 2022-05-03T13:49:11Z
+
+sympy_matrix_tools に級数の部分展開を行うルーチンや行列の数列を扱う MatrixFunction を作った(version 0.1.0)。しかし、MatrixFunction はかなり無理な実装なのでほとんどまともに動作しないのが残念。
+
+JRF 2022年5月15日
+
+……。
+
+上にも書いたように sympy_matrix_tools は、自分用で実験的利用のため…が第一の目的。もちろん、他の方に使っていただけてもありがたいのではあるが、MatrixFunction などは本家の SymPy でいつ出てきてもおかしくないようなものだったりするので、使うときは、sympy_matrix_tools と SymPy のバージョンは決め打ちしたほうが良いかもしれない。または、私のようにノートブックにしてそのときどきの出力を残せば十分と考えるか。
+
+JRF 2022年5月15日
+
+本来は、SymPy の Issues に希望を書いて取り込んでもらうとかするべきなのかもしれないが、私、英語できないし、技術力も大してないしで、そこまで手がまわらない。
+
+JRF 2022年5月15日
+
+……。
+
+本当はこういった検算・証明は専門の theorem prover を使ってやるべきである。しかし、無料で誰でも使える Google Colab &amp; Python で示せればそれはそれで価値があるのではないかと考えた。…とも README.md に書いたが、行列も扱える theorem prover って何があるのだろう？ 何がいいのだろう？ 教えて欲しい。
+
+JRF 2022年5月15日
+
+……。
+
+追記。
+
+そういえば大学で研究室にも属さないころ、何かの授業の実験・演習で好きなものを作っていいといったときに、行列計算機を作ったことがある。
+
+そして、大学院生時代には Theorem Prover を扱っていた。
+
+そういったころの「魂」が今も生きてこういうことに関心を抱いた面があるのかもしれない。三つ子の魂百まで…というにはやってたころは幼くないが、そんな感じがするね。よく言ったものだ。
+
+JRF 2022年5月15日</pre>
+
+
+<section class="backrefs" data-pagefind-ignore>
+<h2>後方参照 (4 件)</h2>
+<ul>
+<li><span class="backref-label">[cocolog:93495591]参照</span> <a href="../../../articles/2022/06/statuses_cocolog_93564604.html">ひとこと</a> <span class="backref-date">2022年06月19日</span></li>
+<li><span class="backref-label">[cocolog:93495591]参照</span> <a href="../../../articles/2022/06/statuses_cocolog_93532295.html">ひとこと</a> <span class="backref-date">2022年06月02日</span></li>
+<li><span class="backref-label">[cocolog:93495591]参照</span> <a href="../../../articles/2022/05/gsm_002183.html">共有メモ</a> <span class="backref-date">2022-05-24T10:54:22Z</span></li>
+<li><span class="backref-label">[cocolog:93495591]参照</span> <a href="../../../articles/2022/04/statuses_cocolog_93455912.html">ひとこと</a> <span class="backref-date">2022年04月26日</span></li>
+</ul>
+</section>
+
+</article>
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2022/05.html">2022年05月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+</body>
+</html>

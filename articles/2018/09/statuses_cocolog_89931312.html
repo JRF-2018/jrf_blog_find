@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>ひとこと - JRF Blog Archive</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2018/09.html">2018年09月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+<article data-pagefind-body>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[statuses] <span class="cocolog-id">cocolog:89931312</span></td></tr>
+<tr><th>セクション</th><td>JRF のひとこと</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2018/09.html">2018年09月09日</a></td></tr>
+<tr><th>元URL</th><td><a href="http://jrf.cocolog-nifty.com/statuses/2018/09/pytho.html" class="ext-link"><span class="original-url">http://jrf.cocolog-nifty.com/statuses/2018/09/pytho.html</span></a></td></tr>
+
+</table>
+</div>
+<h1>ひとこと</h1>
+<pre class="body">Python による「ミクロ経済学の我流シミュレーション」の記事の「その２」を書いた。スコアを取るとき、利益を足し合わせるだけでなく、バランスを取るために分散を足すようにした。はっきり言ってやってることのレベル低くて申し訳ない…。
+JRF 2018年9月9日
+
+ミクロ経済学の我流シミュレーションの「その１」に関するひとことは <a href="../../../articles/2018/03/statuses_cocolog_89067097.html" class="int-link cocolog-id" title="ひとこと">[cocolog:89067097]</a>。
+
+その１の記事は
+
+《ミクロ経済学の我流シミュレーション その１ 基礎経済モデル》
+<a href="../../../articles/2018/03/hbm_01864.html" class="int-link" title="ミクロ経済学の我流シミュレーション [ JRF の私見：税・経済・法 ]">http://jrf.cocolog-nifty.com/society/2018/03/post.html</a>
+
+JRF 2018年9月9日
+
+その２の記事は
+
+《ミクロ経済学の我流シミュレーション その２ バランス戦略》
+<a href="../../../articles/2018/09/society_89931266.html" class="int-link" title="ミクロ経済学の我流シミュレーション その２ バランス戦略">http://jrf.cocolog-nifty.com/society/2018/09/post.html</a>
+
+アーカイブは
+
+《micro_economy.zip》
+<a href="http://jrf.cocolog-nifty.com/archive/python/micro_economy.zip" class="ext-link">http://jrf.cocolog-nifty.com/archive/python/micro_economy.zip</a>
+
+JRF 2018年9月9日
+
+……。
+
+詳しくは記事を読んでもらうとして、こちらではやろうとしてやらなかったことを延べたい。
+
+それは、その２の記事の λ と μ について。
+
+JRF 2018年9月9日
+
+まず、λ について。
+
+&lt;pre&gt;
+  スコア１ = - mean([r_N, r_L, r_I]) + λ * variance([r_N, r_L, r_I])
+&lt;/pre&gt;
+
+JRF 2018年9月9日
+
+という式だが、分散を足すのに、math.sqrt をかけたほうがいいのか、そのまま足したほうがいいのかでまず迷ったが、そのまま足す形の関数が『Strategic Asset Allocation - Portfolio Choice for Long-Term Investers』(<a href="../../../articles/2016/11/statuses_cocolog_86393544.html" class="int-link cocolog-id" title="ひとこと">[cocolog:86393544]</a>)でも紹介されているので、この形にした。その本では必ずしも、最適化のスコアとして用いていたわけではなかったが…。
+
+JRF 2018年9月9日
+
+で、λ の値は、最初、m = mean([r_N,r_L,R_I]) とすると、r_N = 3m/2, r_L = 3m/4, r_I = 3m/4 などとなるときに スコア１ = 0 とおいた値である 16/(3 * m) を λにすることを考えた(sympy で解を確認)。その r_N,r_L,r_I のところで偏微分すると具合も良かったから。
+
+JRF 2018年9月9日
+
+ただ、r_* はマイナスになることもあるため、そのままでは使えない。そこで、大きい値の場合は、そのままだが、小さな値やマイナスだと丸める関数 softPlusE という関数を定義し、λ = 16 / (3 * softPlusE(0.01, mean([r_N, r_L, r_I]))) としてみた。
+
+JRF 2018年9月9日
+
+ちなみに softPlusE の定義は、
+
+&lt;pre&gt;
+def softPlusE (M, m):
+    if m / M &gt; 100:
+        return m
+    else:
+        return math.log(math.e + math.exp(m / M)) * M
+&lt;/pre&gt;
+
+JRF 2018年9月9日
+
+だいたいいい感じなのだが、でも、r_* の値はだいたい 1.0 から -1.0 までの間なので、そんなこった関数ではなく定数で十分なのではないかといういい気がしてきた。そこで λ をだいたい 100.0 に決めうちしてしまうと、そのほうがなぜかシステムもクラッシュを起こしにくくなった。そこで λ = 100.0 に決めた。
+
+JRF 2018年9月9日
+
+……。
+
+μ については、スコア１が小数点 1 位か2位以下の問題のようなので、だいたいそれぐらいになるようにということで、まずは (労働需要 - 労働供給) ** 2 / mean([労働需要,労働供給]) にしてみた。
+
+micro_economy_3*.py はそれでよかったが、micro_economy_4*.py だと、ときどき、(労働需要 - 労働供給) の絶対値が 100 を超える場合が出てくる。おかしい…っていうんで、係数をかけて大きくしたりしてみたがやっぱりおかしい。
+
+JRF 2018年9月9日
+
+それで、試しに固定してみようと μ * (労働需要 - 労働供給) ** 2  にして μ = 0.1 にすると micro_economy_4*.py では割とうまくいった。しかし、今度は micro_economy_3*.py に戻るとうまくいかない。
+
+μ = 0.01 にすると、micro_economy_3*.py でも micro_economy_4*.py でもそこそこよくなったので、そう決めうちすることにした。
+
+JRF 2018年9月9日
+
+……。
+
+…とまぁ、そんなところ。
+
+「その２」の記事に今後の課題として「過去実績とのバランスをとる」ことを書いたが、他に、新規参入を全分野で一期一社のみとする代わりに、時間要素を取り入れ、一期の時間幅を変動させることも考えたりしている。しかし、その場合、退出して企業数が 0 になる場合の強制参入について、これまでと違う論理が必要になり、どう攻めればいいのか思いついていない。
+
+JRF 2018年9月9日
+
+「その２」でも書いたが、もしかすると最適化はこんなテキトーな感じで使っていいものではないのかもしれない。そのあたり私は修行が足りな過ぎるな…と思う。そんな状態で記事を公開して、なんか恥ずかしく申し訳なく感じる…。
+
+JRF 2018年9月9日
+
+Trackbacks:
+
+《cocolog:90214777》 from JRF のひとこと
+<a href="../../../articles/2018/11/statuses_cocolog_90214777.html" class="int-link" title="ひとこと">http://jrf.cocolog-nifty.com/statuses/2018/11/pytho.html</a>
+
+Python を使った最適化の本と人工知能(AI)の本を読んだが、身につかなかった。私が普段使うマシンでは例の実行にすごく時間がかかることもあって、例を確かめなかった。本気でやるなら GPU (グラボ) を買うべきか。... 
+
+受信： 2018-12-30 11:48:08 (JST)
+
+《cocolog:90097610》 from JRF のひとこと
+<a href="../../../articles/2018/10/statuses_cocolog_90097610.html" class="int-link" title="ひとこと">http://jrf.cocolog-nifty.com/statuses/2018/10/post-5cc3.html</a>
+
+小島寛之『エコロジストのための経済学』を読んだ。「活動家」を経済学に引き込むのが目的らしく、シンプルな論理を用いていてわかりやすかった。 
+
+受信： 2018-12-30 11:48:24 (JST)</pre>
+
+
+<section class="backrefs" data-pagefind-ignore>
+<h2>後方参照 (5 件)</h2>
+<ul>
+<li><span class="backref-label">[cocolog:89931312]参照</span> <a href="../../../articles/2019/05/statuses_cocolog_91020330.html">ひとこと</a> <span class="backref-date">2019年05月24日</span></li>
+<li><span class="backref-label">[cocolog:89931312]参照</span> <a href="../../../articles/2018/11/statuses_cocolog_90214777.html">ひとこと</a> <span class="backref-date">2018年11月05日</span></li>
+<li><span class="backref-label">[cocolog:89931312]参照</span> <a href="../../../articles/2018/10/statuses_cocolog_90097610.html">ひとこと</a> <span class="backref-date">2018年10月13日</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2018/03/statuses_cocolog_89067097.html">ひとこと</a> <span class="backref-date">2018年03月19日</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2016/11/statuses_cocolog_86393544.html">ひとこと</a> <span class="backref-date">2016年11月26日</span></li>
+</ul>
+</section>
+
+</article>
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2018/09.html">2018年09月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+</body>
+</html>

@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>共有メモ - JRF Blog Archive</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2021/09.html">2021年09月</a> | <a href="../../../index/gsm.html">共有メモ</a></nav>
+<article data-pagefind-body>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[gsm] 2021-09-01T03:29:52Z</td></tr>
+<tr><th>セクション</th><td>グローバル共有メモ</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2021/09.html">2021-09-01T03:29:52Z</a></td></tr>
+<tr><th>元URL</th><td>(URLなし)</td></tr>
+
+</table>
+</div>
+<h1>共有メモ</h1>
+<pre class="body">jrf&gt; [仏教の最適化プログラムの続き。]
+
+オプション --invasion-mag を 2.0 から 5.0 に上げてやってみた。このほうが、戦争被害が大きくなって違いがクッキリ出るかと思って。
+
+simbdp3.py のディレクトリがあるところからはじめて…
+
+python simbdp3.py -d -t 1200 -S --save-period=12 --no-view --invasion-mag=5.0
+cd stats_simbdp3/
+cp -p ../simbdp3.pickle .
+run_simbdp3.sh normal2 10 -L -t 360 --change-random-seed
+run_simbdp3.sh mwar2 10 -L -t 360 --change-random-seed --invasion-average-term-min=60
+python plot_logs.py normal2 mwar2 -p AccDeath
+
+…としたのだが、やはり大きな違いはない。前よりは確かに違いは大きくなったようだが、それほど大きくはなっていない。
+
+しかし、plot_logs.py を更新して「堕胎」の累積数を数えてみると…
+
+python plot_logs.py normal2 mwar2 -p AccAbortion
+
+…割とハッキリ違いが出た。normal2 のほうが「堕胎」が多い。これは予想通り、実は、前のデータ normal と mwar で -p AccAbortion をしてもやはりハッキリ違いが出ていた。
+
+これはどういうことだろう？ 基礎的な死亡の数が一定して多いので、違いが目立ちにくいということなのか、それとも条件が悪くなると逆に死を防ぐような何かが自動的に組み込まれている…ということなのか？ 後者は今のところ思い当たることがないが…。
+
+死が増えると僧が増えて教育などが改善し、それが国力となって、災害などに強くなり、死者が減る…ということだろうか？ しかし、plot_log.py にコードを足して、戦争以外の災害の大きさを比べてみても大差はない。もしやと調べた教育や僧の数もほとんど同じ。それはそれでおかしいのだが…。</pre>
+
+
+</article>
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2021/09.html">2021年09月</a> | <a href="../../../index/gsm.html">共有メモ</a></nav>
+</body>
+</html>

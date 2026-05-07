@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>共有メモ - JRF Blog Archive</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2021/09.html">2021年09月</a> | <a href="../../../index/gsm.html">共有メモ</a></nav>
+<article data-pagefind-body>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[gsm] 2021-09-05T03:16:02Z</td></tr>
+<tr><th>セクション</th><td>グローバル共有メモ</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2021/09.html">2021-09-05T03:16:02Z</a></td></tr>
+<tr><th>元URL</th><td>(URLなし)</td></tr>
+
+</table>
+</div>
+<h1>共有メモ</h1>
+<pre class="body">jrf&gt; [仏教の最適化プログラムの続き。]
+
+ARGS.prophecy_effect を小さくする lpe を試す。(ここは完全な失敗なので。他の人はやる必要がない。)
+
+run_simbdp3.sh lpe 10 -L -t 360 --change-random-seed --prophecy-effect=0.8
+
+run_simbdp3.sh ltomlpe 10 -L -t 360 --change-random-seed --tombs-population=10000 --prophecy-effect=0.8
+
+run_simbdp3.sh ledultomlpe 10 -L -t 360 --change-random-seed --education-goal=0.35 --education-goal-max=0.5 --education-goal-min=0.20 --tombs-population=10000 --prophecy-effect=0.8
+
+python plot_logs.py normal2 lpe -p AccDeath
+python plot_logs.py lpe ltomlpe ledultomlpe -p AccDeath
+python plot_logs.py normal2 ledu ltomlpe ledultomlpe -p AccKarma
+
+…やってみると、lpe はまったく効いていないことがわかる。意図としては予言の有効性が減ることで災害のダメージが増えるはずであったが、まったくそうなっていない。試しに --prophecy-effect=0.0 をやってみる。
+
+run_simbdp3.sh lpe0 10 -L -t 360 --change-random-seed --prophecy-effect=0.0
+python plot_logs.py normal2 lpe0 -p AccDeath
+
+…これだとさすがに差が出るようでひとまずホッとする。では、--prophecy-effect=0.5 でやってみよう。
+
+run_simbdp3.sh lpe05 10 -L -t 360 --change-random-seed --prophecy-effect=0.5
+python plot_logs.py normal2 lpe0 lpe05 -p AccDeath
+
+…すると、lpe05 は lpe0 ぐらい normal2 より高くなっており、今後は lpe05 を lpe としていけば良さそうなことがわかる。ただし、lpe0 と lpe05 がほぼ重なる形になってるのが、気にかかるところではあるが…。
+
+あと、狂信を見るとき、ちょうどそれは --prophecy-effect と同じような形で作用するのであるが、その作用は最大で --prophecy-effect=0.8 ぐらいにしていた。しかし、これではまったく足りないということがわかった。そこで、最大で --prophecy-effect=0.2 ぐらいになるよう改めることとする。</pre>
+
+
+</article>
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2021/09.html">2021年09月</a> | <a href="../../../index/gsm.html">共有メモ</a></nav>
+</body>
+</html>

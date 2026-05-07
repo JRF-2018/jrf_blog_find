@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>ひとこと - JRF Blog Archive</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2025/04.html">2025年04月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+<article data-pagefind-body>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[statuses] <span class="cocolog-id">cocolog:95369157</span></td></tr>
+<tr><th>セクション</th><td>JRF のひとこと</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2025/04.html">2025年04月11日</a></td></tr>
+<tr><th>元URL</th><td><a href="http://jrf.cocolog-nifty.com/statuses/2025/04/post-7e9540.html" class="ext-link"><span class="original-url">http://jrf.cocolog-nifty.com/statuses/2025/04/post-7e9540.html</span></a></td></tr>
+
+</table>
+</div>
+<h1>ひとこと</h1>
+<pre class="body">岩見＆中岡＆岩波『ウイルス感染の数理モデルとシミュレーション』を読んだ。感染症の社会シミュレーションに興味を持って手に取ったが、この本は細胞内のウィルス動態が中心でその点ではアテが外れた。が、参考にできそうな部分も多かった。生物学に関しては基本飛ばして読んだ。
+JRF 2025年4月11日
+
+『ウイルス感染の数理モデルとシミュレーション - データを定量的に理解する 』(岩見 真吾 ＆ 中岡 慎治 ＆ 岩波 翔也 著, 共立出版, 2024年2月)
+<a href="https://www.amazon.co.jp/dp/4320115538" class="ext-link">https://www.amazon.co.jp/dp/4320115538</a>
+<a href="https://7net.omni7.jp/detail/1107479533" class="ext-link">https://7net.omni7.jp/detail/1107479533</a>
+
+JRF 2025年4月11日
+
+感染症の社会シミュレーションをしたいと計画している。人口の様子から感染を実際に起こさせるエージェント・ベース・シミュレーションをしたいと思っている。そのために以前↓(参: <a href="../../../articles/2024/09/statuses_cocolog_95052633.html" class="int-link cocolog-id" title="ひとこと">[cocolog:95052633]</a>(2024年9月))…みたいな準備はしていた。
+
+《JRF-2018/simple_synthetic_population: 仮想合成人口個票の簡易な実装》  
+<a href="https://github.com/JRF-2018/simple_synthetic_population" class="ext-link">https://github.com/JRF-2018/simple_synthetic_population</a>
+
+JRF 2025年4月11日
+
+また近時、大久保 潤『確率的シミュレーション』という本も読んだ(<a href="../../../articles/2025/04/statuses_cocolog_95358180.html" class="int-link cocolog-id" title="ひとこと">[cocolog:95358180]</a>(2025年4月))。
+
+今回、この本は生物学寄りの専門書で私には難しすぎるとは思ったのだが、いちおう「目を通す」だけはしてみた。社会シミュレーションとしての側面はほぼなく、細胞内のウィルス動態の常微分連立方程式(たまに偏微分もある)による数理モデルが議論の中心になる。その数学的側面は興味深く読んだが、細胞内の生物学については正直ほとんど飛ばして読むことになった。
+
+JRF 2025年4月11日
+
+コロナ禍の最中に書かれた本で、コロナ(COVID-19)にも最後の2章が割かれている。そこは特に興味深く読んだ。ただ、基本は、HIV (AIDS) や C型肝炎(HCV) などが著者らのメインの研究領域のようだ。
+
+ここからは、引用しながら軽くコメントしていく。
+
+JRF 2025年4月11日
+
+……。
+
+＞AIC = -2 log f(y|θ*) + 2k＜(p.30)
+
+Kullback-Leibler 情報量については、上の simple_synthetic_population でもちょっと参考にしたのでわかるのだが、AIC (赤池情報量基準) については、毎度いろいろな文献に載ってそのたび確認するのだが、どうも忘れてしまう。
+
+JRF 2025年4月11日
+
+今回のこの式は最初どう読めばいいのかピンとこなかった。そこで Grok さんに聞いたところ、log f(y|θ*) は、尤度関数だということで、やっと理解が追いついた。この本では、この直前のところに別の意味の f() が出ていて、それに引っぱられて、意味不明になっていたのだった。ここの文脈で言えば、f() は L(y|θ*) と書いてくれたほうがわかりやすかっただろう。
+
+JRF 2025年4月11日
+
+……。
+
+＞FACS 解析＜(p.43)
+
+知らない言葉。ググると…、
+
+「FACS（フローサイトメトリーによる細胞の分選(または、蛍光活性化セルソーティング)）解析は、細胞を1個ずつ測定して、細胞の特性を解析する技術です。細胞の大きさや数、周期、表面マーカー量などを測定し、細胞を特定の集団に選別することができます。﻿」…とのこと。
+
+JRF 2025年4月11日
+
+……。
+
+＞ギレスピーアルゴリズム＜(p.51)
+
+直近で大久保 潤『確率的シミュレーション』という本も読んだ(<a href="../../../articles/2025/04/statuses_cocolog_95358180.html" class="int-link cocolog-id" title="ひとこと">[cocolog:95358180]</a>(2025年4月))ところ。先に読んどいて良かった。
+
+JRF 2025年4月11日
+
+……。
+
+＞ここで分布遅れをもつ微分方程式(4.6)から常微分方程式(4.7)を導出した方法は、&quot;linear-chain-trick&quot; と呼ばれており、数理モデルを用いたさまざまな数理生物学の研究で広く使われている[48]。＜(p.84)
+
+まず偏微分(連立)方程式(4.4)を作り、「特性曲線法」を用いて分布遅れを持つ(常)微分(連立)方程式(4.6)に変形する。そこにガンマ分布を仮定し、それを整数的なアーラン分布に置き換えることで、過程を分解したような常微分(連立)方程式(4.7)に変形する。これが見事だと思った。
+
+JRF 2025年4月11日
+
+偏微分方程式というとシュレジンガー方程式みたいな x と t などのものを思い出すが、ここでは、時間遅れが(時間とは別の)もう一つの変数となる偏微分方程式で、そういうのアリなんだ…という発見(思い出し？)があった。
+
+JRF 2025年4月11日
+
+……。
+
+＞反応拡散方程式を数値的に解く場合は、偏微分方程式の数値解放に関する知見が必要である。境界条件が有界な矩形や円領域など比較的単純な場合、領域の分割に支障がないため、有限差分法など基本的な数値解法を利用すればよい。一方、境界の形状が複雑な場合は、一般に有限要素法(finite element method)が用いられる。
+
+JRF 2025年4月11日
+
+有限要素法では、偏微分方程式を積分形式で定式化された弱形式で表現し、領域を有限要素(2次元の場合は三角形など)に細分化して近似的に離散差分方程式を構成し、領域全体で重ね合わせた離散差分方程式を解くことで、近似解を得る。
+
+近年、有限要素法に基づく数値計算をするうえで、FreeFEM++ といった非常に使いやすいソフトウェアがフリーで利用できる(《コード 5-2: 拡散方程式の数値計算の実装》参照)。
+＜(p.134)
+
+JRF 2025年4月11日
+
+有限要素法。いつか学ばないといけないと思いつつ、ずっと学ばないで来ている。もう縁はないのかな…。
+
+JRF 2025年4月11日
+
+……。
+
+社会シミュレーションでなくウィルス動態的シミュレーションが社会シミュレーション的に役に立つ場面があるようだ。
+
+＞利用できるデータは発症後のウィルス量のみに限定されているが、数理モデルを用いれば、過去の感染時刻を推算することができる。
+
+JRF 2025年4月11日
+
+(…)
+
+客観的な指標であるバイオマーカーに基づく提案アプローチでは、&quot;暴露時刻&quot; という不確実性を回避できる。暴露時刻は感染者の想起に依存した主観的なもので、接触者追跡におけるインタビューに内在する1つの問題である。もちろん、COVID-19 に限らず、特に感染イベントを直接観察することが実用的でない感染症の場合、ウィルス量を用いた潜伏期間の推定は非常に有用であると考えられる。
+＜(p.246)
+
+JRF 2025年4月11日
+
+コロナなどは体内のウィルス量の推移がつりがね状でモデル化でき、例えば二点、調べれば、いつ感染したかが予測できる。それを利用して、例えば、感染したのが帰ってくる前の海外であったかどうかなどを判定できる。
+
+JRF 2025年4月11日
+
+また、だいたいの感染パターンが予測できるため、隔離終了を判定する固定期間法(発症後10日間隔離)と検査法(PCR検査で感染がないことを確認して隔離終了とする方法)をすり抜けるだいたいの割合などが予測でき、それに基づいて、隔離期間や検査回数を提案できたりするようだ。そういうことができるのかという驚きがあった。
+
+JRF 2025年4月11日
+
+……。
+
+……。
+
+追記。
+
+岩見＆中岡＆岩波『ウイルス感染の数理モデルとシミュレーション』の前編にほぼあたる↓にもザッと目を通した。「読んだ」というのではなく、だいたい何が書いてあるかの偵察をしただけの感じ。
+
+JRF 2025年4月25日
+
+『ウイルス感染と常微分方程式』(岩見 真吾 ＆ 佐藤 佳 ＆ 竹内 康博 著, 共立出版, 2017年4月)
+<a href="https://www.amazon.co.jp/dp/4320110064" class="ext-link">https://www.amazon.co.jp/dp/4320110064</a>
+<a href="https://7net.omni7.jp/detail/1106768243" class="ext-link">https://7net.omni7.jp/detail/1106768243</a>
+
+JRF 2025年4月25日
+
+『ウイルス感染の数理モデルとシミュレーション』のころになると Stan を使ってベイズ推定を行っている。Stan は常微分方程式をそのまま扱えるためそれを使っている。一方、『ウイルス感染と常微分方程式』では最小二乗法はあるが、ベイズ推定はまだ使ってなさそう。その代わりといってはなんだが、後者は、常微分方程式の解析については詳しいというか細かい話が載っていたように思う。前者はシミュレーション技法に詳しく、私の関心としては前者で十分という感じだった。
+
+JRF 2025年4月25日
+
+ちょっと話は変わるが、私が感染モデルで実験したいことの一つとして、患者の行動(隔離など)により、「ウィルスの弱毒化」が起きうることを示したいというのがある(参: <a href="../../../articles/2024/06/statuses_cocolog_94891057.html" class="int-link cocolog-id" title="ひとこと">[cocolog:94891057]</a>(2024年6月) or <a href="../../../articles/2024/08/gsm_006026.html" class="int-link gsm-tsref" title="jrf&gt; 私はウィルスの弱毒化はあると思う。過去からありこれまで十分弱毒化してな">>>2024-08-09T09:02:59Z</a> )。
+
+強毒のものが隔離される(死亡する)ことで、感染性をもつが、毒性の弱いものが広がりやすくなるはずだ。…という信念なわけだが、しかし、これは細胞レベルでも起きうるのではないか…とこの本を読んでちょっと考えた。
+
+JRF 2025年4月25日
+
+＞感染肝細胞の破壊を促進するような免疫反応が血漿中のウイルスRNA量を低く保つために重要な役割を果たすことを示唆している。＜(p.112)
+
+T細胞とか免疫のシステムの中には、隔離・死亡による「弱毒化」に近いものがあるのではないか…と思った。もしそうなら、弱毒化の(数理・シミュレーション)モデルが示せれば、免疫のモデルにもなりうるのではないか…と夢想する。
+
+JRF 2025年4月25日
+
+……。
+
+……。
+
+追記。
+
+Grok3 さんに上のアイデアをぶつけたところ、ウィルス弱毒化の SIR 的モデル を教えてもらったのでその Python コードを GitHub Gist に付けておいた。
+
+《virus_attenuation_SIR.ipynb》  
+<a href="https://gist.github.com/JRF-2018/b190e53d792a921f6ca56fa5aebc2c9d" class="ext-link">https://gist.github.com/JRF-2018/b190e53d792a921f6ca56fa5aebc2c9d</a>
+
+JRF 2025年4月25日
+
+そのときの会話(数理モデルの式含む)は↓。
+
+<a href="https://x.com/i/grok/share/2wKN9S2lbHzonHDHEkEITRvxg" class="ext-link">https://x.com/i/grok/share/2wKN9S2lbHzonHDHEkEITRvxg</a>
+
+JRF 2025年4月25日
+
+……。
+
+……。
+
+追記。
+
+ウィルス弱毒化シミュレーションの ABM (Agent-Based Model) を Grok3 さんに教えてもらいながら作ったのでその Python コードを GitHub Gist に付けておいた。
+
+《virus_attenuation_ABM.ipynb》  
+<a href="https://gist.github.com/JRF-2018/42d292c92325bce1c515d229fe9486b5" class="ext-link">https://gist.github.com/JRF-2018/42d292c92325bce1c515d229fe9486b5</a>
+
+JRF 2025年4月28日
+
+前回の SIR 的モデルは弱毒株と強毒株がすでにある状態のモデルでしかない。そうではなく、どれぐらい弱毒か強毒かが確率的に決まり、どれぐらい感染力があるも確率的に決まるとき、強毒なものほど隔離されるとすると、弱毒かつ感染力があるものが広がりやすいということを示したい。
+
+この場合はエージント・シミュレーションつまり、ABM (Agent-Based Model) がほぼ必要になる。その ABM についても Grok3 さんはシュッと出してきた。
+
+JRF 2025年4月28日
+
+それをさらに拡張して、潜伏期間(感染性あり)もランダムに決まるとき、ロックダウン的政策をすると、潜伏期間の短縮されることも示したいと考えた。こちらも Grok3 さんの補助の元、プログラムしたのだが、結果として私が考えるロックダウン的政策では潜伏期間の短縮がほぼならないことがわかった。これは意外だった。
+
+会話は前回のつづきで↓。
+
+<a href="https://x.com/i/grok/share/Pl9eHC3k5QgrEFkmuTcfBKABz" class="ext-link">https://x.com/i/grok/share/Pl9eHC3k5QgrEFkmuTcfBKABz</a>
+
+JRF 2025年4月28日</pre>
+
+
+<section class="backrefs" data-pagefind-ignore>
+<h2>後方参照 (7 件)</h2>
+<ul>
+<li><span class="backref-label">[cocolog:95369157]参照</span> <a href="../../../articles/2025/08/statuses_cocolog_95573715.html">ひとこと</a> <span class="backref-date">2025年08月07日</span></li>
+<li><span class="backref-label">[cocolog:95369157]参照</span> <a href="../../../articles/2025/05/statuses_cocolog_95463688.html">ひとこと</a> <span class="backref-date">2025年05月27日</span></li>
+<li><span class="backref-label">[cocolog:95369157]参照</span> <a href="../../../articles/2025/05/gsm_007010.html">共有メモ</a> <span class="backref-date">2025-05-24T17:45:13Z</span></li>
+<li><span class="backref-label">[cocolog:95369157]参照</span> <a href="../../../articles/2025/05/statuses_cocolog_95436730.html">ひとこと</a> <span class="backref-date">2025年05月09日</span></li>
+<li><span class="backref-label">[cocolog:95369157]参照</span> <a href="../../../articles/2025/05/statuses_cocolog_95428644.html">ひとこと</a> <span class="backref-date">2025年05月03日</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2025/04/gsm_006894.html">共有メモ</a> <span class="backref-date">2025-04-24T18:59:45Z</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2025/04/gsm_006817.html">共有メモ</a> <span class="backref-date">2025-04-10T18:11:41Z</span></li>
+</ul>
+</section>
+
+</article>
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2025/04.html">2025年04月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+</body>
+</html>

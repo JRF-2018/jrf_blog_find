@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>Firefox でココログを印刷しようとすると本文が１ページ目しか表示されない - JRF Blog Archive</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2006/03.html">2006年03月</a> | <a href="../../../index/software.html">ソフトウェア Tips</a></nav>
+<article data-pagefind-body>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[software] <span class="cocolog-id">cocolog:10750678</span></td></tr>
+<tr><th>セクション</th><td>JRF のソフトウェア Tips</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2006/03.html">2006年03月27日 02:07:13</a></td></tr>
+<tr><th>元URL</th><td><a href="http://jrf.cocolog-nifty.com/software/2006/03/post_4.html" class="ext-link"><span class="original-url">http://jrf.cocolog-nifty.com/software/2006/03/post_4.html</span></a></td></tr>
+<tr><th>タグ</th><td>[ウェブログ・ココログ関連] [HTML/XML/CSS] [Firefox]</td></tr>
+</table>
+</div>
+<h1>Firefox でココログを印刷しようとすると本文が１ページ目しか表示されない</h1>
+<pre class="body">これはココログのテンプレートで使っている CSS が overflow:hidden を設定しているためです。これがわかるまでは、page-break (改ページ)まわりの設定や自作スクリプトがはく HTML のコードが悪いのかとかなり悩みました。
+
+《檜山正幸のキマイラ飼育記：[日常]長文記事を読んでもらいたい人は印刷向けスタイルシート設定した方がいいよ》を読んでプリンタまわりの設定をしようとしたところ、上記不具合に気付きました。
+
+CSS がエディットできるなら、例えば次を足せば良いはずです。
+
+@media print {
+    #calender, #left, #right, div.comment-form {display:none;} 
+    
+    #container {margin: 0 0 0 0; width:100%; border:0;}
+    #center {margin: 0 0 0 0; width:100%; overflow:visible;}
+    .content {margin: 0 0 0 0; /* padding: 0 0 0 0; */ }
+}
+
+ちなみに display:none はサイドバー等を表示しないようにするために付けています。必要に応じて修正してください。
+
+2006-03-28 のココログのバージョンアップで、ココログプロでないユーザーも CSS が一部使えるようになっているそうなので、できることならば、サイト管理者が対応するべきでしょう。ユーザーが管理者に訴るべきと言いたいです。
+
+ところが、現在 2010-05-23 ですが、2006-3-27 にはこの記事を出していたにもかかわらず、直っていないサイトが普通のままのようです。
+
+そこで、Firefox ということですし、ユーザー側で CSS をいじってしまうことを勧めてもいいだろうと考えました。その方法を紹介します。
+
+Firefox でユーザー側で CSS をいじるといえば、まず、Stylish というアドオンが思い浮かびます。しかし、この方法はうまく行きません。なぜなら、 CSS 内の @-moz-document 要素の中では、@media が使えないらしいからです。
+
+そこで、Greasemonkey を使って、ユーザー側で javascript を実行して CSS を書き換えることにします。GM_addStyle を使って上記の文字列を足すと……私のところではうまくいきました。
+
+以下にそのユーザースクリプトへのリンクを置いておきます。Greasemonkey のアドオンをインスールしてから、以下をクリックして下さい。サイトとして、 &quot;cocolog-nifty.com&quot; ドメインだけ指定してあります。ココログは cocolog-nifty.com 以外にもありますし、すでに対応しているサイトもあるはずです。それを足したり引いたりするのはユーザーでもできますので、いろいろ試してみてください。
+
+  ●cocolog_print_fix.user.js
+    
+■参考
+  ●《Software Salariman: CSS @media for Firefox Stylish Add-in》。
+  ●《asamuzaK.jp : FirefoxのuserContent.css》。@import にもメディアタイプを指定できるらしいので、Stylish でもそれを使えば同等のことができるのかもしれません。それを試す方は、このリンクが参考になるかも。
+    
+更新：2006-03-27,2010-05-23
+初公開：2006年03月27日 02:07:16
+最新版：2010年05月28日 21:13:18
+
+
+Comments:
+
+[E:pen] 更新：主に「ところが」以降を足し、Greasemonkey スクリプトを公開した。とはいえ、このスクリプトは今日作ったばかりでテスト不十分。私にとってはいつものことだけど…。
+投稿: JRF | 2010-05-23 23:12:40 (JST)
+
+[E:happy02] 更新：asamuzaK.jp の方法を見つけ、リンクを足す。そんな方法があったんだと驚く。Greasemonkey は使えないが、userContent.css なら使えるというところもひょっとするとあるかもしれないので、リンクしておいた。
+投稿: JRF | 2010-05-28 21:18:30 (JST)
+
+トラックバックいただいたものです。
+
+&gt; @import にもメディアタイプを指定できるらしいので、Stylish でもそれを使えば同等のことができるのかもしれません
+
+Stylishはデータベースとして内容を保持しているようですので、@importを使うのは無理なような気がしますけど。
+ちゃんと検証したわけじゃありませんが。
+
+投稿: asamuzak.jp | 2010-07-31 18:03:06 (JST)
+
+[E:bearing] 上を書いた段階では、Stylish がどこにファイルを保存しているのか知りませんでした。探したがそれらしいファイルが見あたらなかったのです。データベースになっていたのですね。@import url(&quot;file:...&quot;) print; …とかも試してみましたが、確かにできません。
+
+Firefox は chrome 周りで裏ワザがあるので、知識のない私にはひょっとすると何かあるのではないかという疑いは残りますが、今の私は asamuzak.jp 様と同じ結論です。
+
+ともあれ、貴重な情報・コメントをいただきました。ありがとうございます。
+
+投稿: JRF | 2010-07-31 19:16:48 (JST)
+
+[E:bearing] 更新：cocolog_print_fix.user.js のバージョン 0.02 にする。Firefox 4 でエラーが出るのを修正。
+
+投稿: JRF | 2011-05-11 01:13:47 (JST)
+
+[E:noodle] 更新：cocolog_print_fix.user.js をバージョン 0.03 にする。Firefox 17 から Greasemonkey に E4X が使えなくなったらしく(参：<a href="../../../articles/2012/12/statuses_cocolog_74918848.html" class="int-link cocolog-id" title="ひとこと">[cocolog:74918848]</a>)、それに対応した。
+
+投稿: JRF | 2012-12-12 17:57:27 (JST)
+
+
+Links:
+
+檜山正幸のキマイラ飼育記：[日常]長文記事を読んでもらいたい人は印刷向けスタイルシート設定した方がいいよ: <a href="../../../articles/2006/04/hbm_00114.html" class="int-link" title="檜山正幸のキマイラ飼育記 - 長文記事を読んでもらいたい人は印刷向けスタイルシート設定した方がいいよ">http://d.hatena.ne.jp/m-hiyama/20060320/1142815498</a>
+cocolog_print_fix.user.js: <a href="http://jrf.cocolog-nifty.com/archive/cocolog_print_fix.user.js" class="ext-link">http://jrf.cocolog-nifty.com/archive/cocolog_print_fix.user.js</a>
+Software Salariman: CSS @media for Firefox Stylish Add-in: <a href="../../../articles/2010/05/hbm_01333.html" class="int-link" title="Software Salariman: CSS @media for Firefox Stylish Add-in">http://softwaresalariman.blogspot.com/2009/05/css-media-for-firefox-stylish-add-in.html</a>
+asamuzaK.jp : FirefoxのuserContent.css: <a href="../../../articles/2010/05/hbm_01340.html" class="int-link" title="asamuzaK.jp : FirefoxのuserContent.css">http://asamuzak.jp/html/ua/126</a>
+asamuzak.jp: <a href="http://asamuzak.jp" class="ext-link">http://asamuzak.jp</a></pre>
+
+
+<section class="backrefs" data-pagefind-ignore>
+<h2>後方参照 (3 件)</h2>
+<ul>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2011/05/statuses_aboutme_138720.html">ひとこと</a> <span class="backref-date">2011年05月11日</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2011/04/column_67685733.html">前期の翌日(2011-01-01)から昨日(2011-03-31)まで 90 日間のアクセス解析・近況など</a> <span class="backref-date">2011年04月01日 00:45:38</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2010/10/column_65238931.html">前期の翌日(2010-07-01)から昨日(2010-09-30)まで 92 日間のアクセス解析・近況など</a> <span class="backref-date">2010年10月01日 00:50:45</span></li>
+</ul>
+</section>
+
+</article>
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2006/03.html">2006年03月</a> | <a href="../../../index/software.html">ソフトウェア Tips</a></nav>
+</body>
+</html>

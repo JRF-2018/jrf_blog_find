@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>モンティ・ホール問題または三囚人問題の拡張とその確率操作シミュレーション - JRF Blog Archive</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2016/08.html">2016年08月</a> | <a href="../../../index/software.html">ソフトウェア Tips</a></nav>
+<article data-pagefind-body>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[software] <span class="cocolog-id">cocolog:85821961</span></td></tr>
+<tr><th>セクション</th><td>JRF のソフトウェア Tips</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2016/08.html">2016年08月27日 21:17:40</a></td></tr>
+<tr><th>元URL</th><td><a href="http://jrf.cocolog-nifty.com/software/2016/08/post.html" class="ext-link"><span class="original-url">http://jrf.cocolog-nifty.com/software/2016/08/post.html</span></a></td></tr>
+<tr><th>タグ</th><td>[Perl] [シミュレーション]</td></tr>
+</table>
+</div>
+<h1>モンティ・ホール問題または三囚人問題の拡張とその確率操作シミュレーション</h1>
+<pre class="body">■はじめに
+  
+近年、J. ローゼンハウスの『モンティ・ホール問題テレビ番組から生まれた史上最も議論を呼んだ確率問題の紹介と解説』という本が出た。この本は、モンティ・ホール問題について詳しく、この本が出る前に私が考えていた問題の拡張についても書かれてしまっていた。この本を読んで、一旦は、私がこれ以上、この問題について何か書く必要はないかと思った。が、それからしばらくして、私がやったことも少しは意味があるかと思い直し、私の思考の跡を備忘的に記録するため、ちょっとした確率モデルのシミュレーションに関する論考を足して、レポートにしておくことにした。
+
+■内容物
+  
+配布されている zip に含まれるのは以下の通りである。
+
+  ●monty_report.pdf
+    
+    メインとなる配布物。モンティ・ホール問題とそれを用いた確率モデルについて解説している。
+  ●00_README.txt
+    
+    この記事とだいたい同じドキュメント。
+  ●00_URI.txt
+    
+    この配布物の URL が書かれたファイル。
+  ●monty_hall_1.pl
+    
+    モンティ・ホール問題(のパターン１)をシミュレーションで求める。
+  ●monty_hall_2.pl
+    
+    拡張されたモンティ・ホール問題。モンティ・ホール問題のパターン２と呼ばれるものをシミュレーションで求める。
+  ●monty_hall_3_1.pl
+    
+    monty_hall_1.pl のドア数を増やす拡張。
+  ●monty_hall_3_2.pl
+    
+    monty_hall_2.pl のドア数を増やす拡張。
+  ●monty_hall_4.pl
+    
+    点数型モンティ・ホール問題をシミュレーションで求める。
+  ●monty_hall_5.pl
+    
+    6 つのドアで、最初に 2 つ選び、残り 4 つの中からハズレのものを司会者が 1 枚選んで開け、全体の残り 5 つの中から選ぶ問題。
+  ●monty_hall_6.pl
+    
+    三囚人問題のパターン３をシミュレーションで求める。
+  ●monty_hall_7.pl
+    
+    パターン１とパターン２の混合。ドア数拡張も含む。パターン３対応も含む。
+  ●monty_hall_8.pl
+    
+    monty_hall_7.pl にさらにアタリ・ハズレの割り当てが比率によって決まるようにする拡張。司会者の選択も比率によって決めることができる。
+  ●test_bl_1.pl
+    
+    アタリ・ハズレの比率がランダムに決まるとき、扉がどれだけアタリになったかを扉ごとに出力してから、アタリが同じ扉でどれだけの長さ連続したかを長さごとに出力する。
+  ●test_bl_2.pl
+    
+    balance_mail_redirect 風のアルゴリズムを使ったとき、扉がどれだけアタリになったかを扉ごとに出力してから、アタリが同じ扉でどれだけの長さ連続したかを長さごとに出力する。
+  ●test_bl_3.pl
+    
+    balance_mail_redirect 風アルゴリズムを改変したものを使ったとき、扉がどれだけアタリになったかを扉ごとに出力してから、アタリが同じ扉でどれだけの長さ連続したかを長さごとに出力する。
+  ●test_bl_4.pl
+    
+    balance_mail_redirect 風のアルゴリズムを使い、さらに人気度も考慮したとき、扉がどれだけアタリになったかを扉ごとに出力してから、アタリが同じ扉でどれだけの長さ連続したかを長さごとに出力する。
+  ●test_bl_5.pl
+    
+    balance_mail_redirect 風アルゴリズムを改変したものを使い、さらに人気度も考慮したとき、扉がどれだけアタリになったかを扉ごとに出力してから、アタリが同じ扉でどれだけの長さ連続したかを長さごとに出力する。
+  ●monty_sim_1_1.pl
+    
+    アタリ・ハズレの比率がランダムに決まるとき、最初の選択をランダムにしたあと、司会者が残したほうに必ず乗り替える戦略を使う確率モデル。
+  ●monty_sim_1_2.pl
+    
+    アタリ・ハズレの比率がランダムに決まるとき、最初の選択を比率が最も小さかったものにしたあと、司会者が残したほうに必ず乗り替える戦略を使う確率モデル。
+  ●monty_sim_1_3.pl
+    
+    アタリ・ハズレの比率がランダムに決まるとき、最初の選択を比率が最も大きかったものにしたあと、最初の選択に固執する戦略を使うモデル。
+  ●monty_sim_1_4.pl
+    
+    アタリ・ハズレの比率がランダムに決まるとき、最大の比率が残りの比率の和よりも大きいならば、monty_sim_1_3.pl のように、それ以外ならば、 monty_sim_1_2.pl のように動く戦略を使う確率モデル。
+  ●monty_sim_2_1.pl
+    
+    アタリ・ハズレの比率がランダムに決まるとき、$CHALLENGE_LENGTH の長さだけアタリが連続しているならば、最初の選択にそれを選択し、それ以外ならば、最初の選択をランダムに選択し、いずれにせよ必ず司会者の残したほうに乗り替える確率モデル。
+  ●monty_sim_2_2.pl
+    
+    balance_mail_redirect 風のアルゴリズムを使ったとき、 $CHALLENGE_LENGTH の長さだけアタリが連続しているならば、最初の選択にそれを選択し、それ以外ならば、最初の選択をランダムに選択し、いずれにせよ必ず司会者の残したほうに乗り替える確率モデル。
+  ●monty_sim_2_3.pl
+    
+    アタリ・ハズレの比率がランダムに決まるとき、$CHALLENGE_LENGTH の長さだけある扉が選択されずにいるならば、最初の選択にそれを選択し、最初の選択に固執し、それ以外ならば、最初の選択をランダムに選択し、後に司会者の残したほうに乗り替える戦略の確率モデル。
+  ●monty_sim_2_4.pl
+    
+    balance_mail_redirect 風のアルゴリズムを使ったとき、 $CHALLENGE_LENGTH の長さだけある扉が選択されずにいるならば、最初の選択にそれを選択し、最初の選択に固執し、それ以外ならば、最初の選択をランダムに選択し、後に司会者の残したほうに乗り替える戦略の確率モデル。
+  ●monty_sim_2_5.pl
+    
+    balance_mail_redirect 風のアルゴリズムを使ったとき、 $CHALLENGE_LENGTH の長さだけある扉が選択されずにいるならば、最初の選択にそれを選択し、最初の選択に固執し、それ以外ならば、最初の選択で一つ前のアタリの扉を選択し、後に司会者の残したほうに乗り替える戦略の確率モデル。
+  ●monty_sim_2_6.pl
+    
+    balance_mail_redirect 風アルゴリズムを改変したものを使ったとき、 $CHALLENGE_LENGTH の長さだけある扉が選択されずにいるならば、最初の選択にそれを選択し、最初の選択に固執し、それ以外ならば、最初の選択で一つ前のアタリの扉を選択し、後に司会者の残したほうに乗り替える戦略の確率モデル。
+  ●monty_sim_2_7.pl
+    
+    balance_mail_redirect 風アルゴリズムを改変したものを使ったとき、 $CHALLENGE_LENGTH の長さだけアタリが連続しているならば、最初の選択にそれを選択し、それ以外ならば、最初の選択をランダムに選択し、いずれにせよ必ず司会者の残したほうに乗り替える確率モデル。
+  ●monty_sim_2_8.pl
+    
+    balance_mail_redirect 風アルゴリズムを改変したものを使い、さらに人気度も考慮したとき、一つ前のアタリが人気度の高いものについては、 $CHALLENGE_LENGTH の長さだけアタリが連続しているならば、最初の選択にそれを選択し、それ以外ならば、最初の選択をランダムに選択し、人気度の高くないものについては、一つ前のアタリの位置を最初の選択とし、いずれにせよ必ず司会者の残したほうに乗り替える確率モデル。
+  ●monty_sim_2_9.pl
+    
+    balance_mail_redirect 風アルゴリズムを改変したものを使い、さらに人気度も考慮したとき、$CHALLENGE_LENGTH の長さだけある扉が選択されずにいるならば、最初の選択にそれを選択し、最初の選択に固執し、それ以外ならば、一つ前のアタリが人気度の高いものについては、2 回以上連続してアタリが続いている場合のみ最初の選択としてそこを選び、人気度が低いもにについては一つ前のアタリの位置を最初の選択として選び、それら以外は、ランダムに最初の選択を選び、後に司会者の残したほうに乗り替える確率モデル。
+  ●monty_sim_2_10.pl
+    
+    monty_sim_2_9.pl を拡張し $PRISONER_PROTEST が 1 に近いとき、もともとランダムに最初の選択をしたならば、人気度が高い(比率が低い)ものは最初の選択に固執するようにしてみる戦略の確率モデル。
+  ●monty_sim_2_11.pl
+    
+    monty_sim_2_9.pl を拡張し $PRISONER_PROTEST が 1 に近いとき、もともとランダムに最初の選択をしたならば、人気度が低い(比率が高い)ものは最初の選択に固執するようにしてみる戦略の確率モデル。
+  ●monty_sim_2_12.pl
+    
+    monty_sim_2_9.pl を拡張し $PRISONER_PROTEST が 1 に近いとき、もともとランダムに最初の選択をしたならば、人気度にかかわらず、最初の選択に固執するようにしてみる戦略の確率モデル。
+  ●monty_sim_2_13.pl
+    
+    monty_sim_2_9.pl を拡張し $PRISONER_PROTEST が 1 に近いとき、もともとランダムに最初の選択をしたならば、最初の選択の人気度のほうが司会者の残したものの人気度より高い場合は、最初の選択に固執するようにしてみる戦略の確率モデル。
+  ●monty_sim_3_1.pl
+    
+    monty_sim_2_11.pl をベースにして、$PRISONER_PROTEST と $REJECTION_POSITIVE が適当に動くようにした確率モデル。これが本稿の最終目的地。
+  ●monty_sim_3_2.pl
+    
+    monty_sim_3_1.pl において、アタリ・ハズレの比率がランダムに決まるよう置き換えた確率モデル。
+  ●monty_sim_3_3.pl
+    
+    monty_sim_3_1.pl において、戦略をまったくランダムにした場合の確率モデル。
+  ●monty_sim_3_4.pl
+    
+    monty_sim_3_2.pl において、戦略をまったくランダムにした場合の確率モデル。
+  ●monty_sim_3_5.pl
+    
+    monty_sim_3_1.pl において、戦略を一つ前のアタリを最初の選択とし、後に司会者が残したほうに乗り替えるものにした場合の確率モデル。
+    
+■License
+  
+The author is a Japanese.
+
+I intended this program to be public-domain, but you can treat this program under the (new) BSD-License or under the Artistic License, if it is convenient for you.
+
+Within three months after the release of this program, I especially admit responsibility of efforts for rational requests of correction to this program.
+
+I often have bouts of schizophrenia, but I believe that my intention is legitimately fulfilled.
+
+■配布物
+  ●monty_report.pdf を中心に上で言及したファイルを全部含む配布物： monty_sim.zip。
+  ●上に含まれる LaTeX で生成した PDF ドキュメント： monty_report.pdf。
+■リンク
+  ●《balance_mail_redirect》。今回、アイデアとして使った自作のメール配送プログラム。ただし、プログラミングがブランクあけの昔に作ったものなので完成度は低い。
+  ●ローゼンハウスの『モンティ・ホール問題』をひとことで取り上げたことがある(<a href="../../../articles/2014/06/statuses_cocolog_79824785.html" class="int-link cocolog-id" title="ひとこと">[cocolog:79824785]</a>)。
+  ●《モンティ・ホール・ジレンマ - NATROMの日記》。(私にとっては)昔の記事。
+  ●《３囚人問題 - 小人さんの妄想》。(私とっては)少し前の記事。
+  ●《確率を一切使わずに「モンティホール問題」を解説したよ - アイデア共有ブログ》。最近の記事。
+    
+更新：2016-08-27,2018-05-17
+初公開：2016年08月27日 21:17:43
+最新版：2018年05月17日 16:23:43</pre>
+<details class="trackbacks" data-pagefind-ignore><summary>Trackbacks (1 件)</summary><pre>
+Trackbacks:
+
+《<a href="http://jrf.cocolog-nifty.com/software/2017/02/post-1.html">眠り姫問題のプログラム</a>》 from JRF のソフトウェア Tips
+「眠り姫問題」は意志決定問題と人間原理という二つの分野で共通のテーマセッターとなっている有名な難問なのだそうだ。三浦俊彦『多宇宙と輪廻転生』によると、次のような問題である。 日曜日に、ある実験が始められる。まず、あなたは眠らされる。そのあとフェアなコインが投げられ、表か裏かによって、次の二つの措置が選ばれる。 場合A■表が出た場合 - あなたは月曜日に一度起こされ、インタビューされ、また眠らされ、... 
+
+受信： 2017-02-11 19:25:11 (JST)
+
+
+Comments:
+
+[E:train] 初公開。monty_sim-20160827.zip。バージョン 0.01。
+
+投稿: JRF | 2016-08-27 21:52:44 (JST)
+
+[E:subway] 更新。monty_sim-20180517.zip。monty_report.pdf のみ更新。第2版。
+
+ほんの少し基礎的な説明を増やしわかりやすくしたつもり。
+
+なお、[cocolog:89358180] に「陽性変異と陰性変異」に関する私的な考察がある。とくに「陰性変異」については、モンティ・ホール問題にヒントを得た議論をしているので、モンティ・ホール問題の応用に関心のある方は、参照していただければと思う。
+
+投稿: JRF | 2018-05-17 16:22:31 (JST)
+
+[E:golf] 更新: monty_sim-20190119.zip。monty_report.pdf のみ更新。第2.1版。
+
+以下の節を「序」に足した。
+
+＞これはヒッカケのヒッカケ問題のように思う。司会者が変更を可能だというのだから、一見、司会者が出した新しい提案に乗ったほうが有利かもしれないとまずは思う。これが第一のヒッカケで、落ち着いて考えれば、選択に関する物理的な何かが変わったわけではないので、確率がイーブンだと思う。しかし、これが第二のヒッカケで、本当は、ちゃんと計算すると情報の操作だけで確率が変わっている。…という構造をしている。＜
+投稿: JRF | 2019-01-19 17:32:08 (JST)
+
+
+Links:
+
+monty_report.pdf: http://jrf.cocolog-nifty.com/archive/perl/monty_report.pdf
+monty_sim.zip: http://jrf.cocolog-nifty.com/archive/perl/monty_sim.zip
+balance_mail_redirect: http://jrf.cocolog-nifty.com/software/2010/05/post-2.html
+モンティ・ホール・ジレンマ - NATROMの日記: http://d.hatena.ne.jp/NATROM/20050202
+３囚人問題 - 小人さんの妄想: http://d.hatena.ne.jp/rikunora/20100315/p1
+確率を一切使わずに「モンティホール問題」を解説したよ - アイデア共有ブログ: http://www.idea-sense.com/entry/2016/01/14/120000
+monty_sim-20160827.zip: http://jrf.cocolog-nifty.com/archive/perl/monty_sim-20160827.zip
+monty_sim-20180517.zip: http://jrf.cocolog-nifty.com/archive/perl/monty_sim-20180517.zip
+monty_sim-20190119.zip: http://jrf.cocolog-nifty.com/archive/perl/monty_sim-20190119.zip
+
+
+
+</pre></details>
+
+<section class="backrefs" data-pagefind-ignore>
+<h2>後方参照 (16 件)</h2>
+<ul>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2023/02/statuses_cocolog_94018088.html">ひとこと</a> <span class="backref-date">2023年02月11日</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2021/09/statuses_cocolog_93023146.html">ひとこと</a> <span class="backref-date">2021年09月23日</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2021/09/gsm_001472.html">共有メモ</a> <span class="backref-date">2021-09-19T00:45:42Z</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2020/12/statuses_cocolog_92396511.html">ひとこと</a> <span class="backref-date">2020年12月05日</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2020/11/statuses_cocolog_92385476.html">ひとこと</a> <span class="backref-date">2020年11月30日</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2020/11/software_92328105.html">二封筒問題のシミュレーション その１ 基礎編</a> <span class="backref-date">2020年11月05日 22:51:24</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2020/04/software_91836017.html">JAGS でモンティ・ホール問題を解く</a> <span class="backref-date">2020年04月18日 19:28:13</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2020/04/statuses_cocolog_91836101.html">ひとこと</a> <span class="backref-date">2020年04月18日</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2019/01/statuses_cocolog_90564871.html">ひとこと</a> <span class="backref-date">2019年01月19日</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2018/05/statuses_cocolog_89280989.html">ひとこと</a> <span class="backref-date">2018年05月01日</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2017/04/column_87140463.html">今後の(主に勉学の)方針 (2017年度版)</a> <span class="backref-date">2017年04月01日 02:03:10</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2017/03/statuses_cocolog_87083159.html">ひとこと</a> <span class="backref-date">2017年03月22日</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2017/02/software_86853962.html">眠り姫問題のプログラム</a> <span class="backref-date">2017年02月11日 19:24:07</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2017/02/statuses_cocolog_86854015.html">ひとこと</a> <span class="backref-date">2017年02月11日</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2016/08/statuses_cocolog_85822334.html">ひとこと</a> <span class="backref-date">2016年08月27日</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2014/06/statuses_cocolog_79824785.html">ひとこと</a> <span class="backref-date">2014年06月02日</span></li>
+</ul>
+</section>
+
+</article>
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2016/08.html">2016年08月</a> | <a href="../../../index/software.html">ソフトウェア Tips</a></nav>
+</body>
+</html>

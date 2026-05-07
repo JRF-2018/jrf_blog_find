@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>共有メモ - JRF Blog Archive</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2021/04.html">2021年04月</a> | <a href="../../../index/gsm.html">共有メモ</a></nav>
+<article data-pagefind-body>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[gsm] 2021-04-24T09:06:37Z</td></tr>
+<tr><th>セクション</th><td>グローバル共有メモ</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2021/04.html">2021-04-24T09:06:37Z</a></td></tr>
+<tr><th>元URL</th><td>(URLなし)</td></tr>
+
+</table>
+</div>
+<h1>共有メモ</h1>
+<pre class="body">jrf&gt; (承前)
+
+その後、DISM.exe と sfc /scannow は正常終了。
+
+手順8。クリーンブートの実行。しかし、直らず、むしろひどくなる。最初出ていたデスクトップ背景とアイコンも表示されなくなった。
+
+で、ここで気付いたんだが、黒い画面でもスタートメニューは出せるようだ。そこから設定等は動かせないが、再起動はできる。
+
+ここまでやったところで諦めて、PC 初期化をするしかないかと、セーフブートと同じ手順で(起動でクルクル回るところで電源を二回切りその次に出てくる)自動修復の選択画面に行った。
+
+そこで、そこから更新をアンインストールし復元する方法があることに気付く。手順7 でできなかったことが、ここではできるようだ！
+
+…ということで、復元すると…成功。ちゃんと起動し、デスクトップ背景とアイコンを表示してからも、操作ができる！ 確認すると、デバイスドライバの変更や、クリーンブートの設定は、やる前の元に戻ったようだ。念のため再起動してもちゃんと起動。
+
+ウィルスバスターはアンインストールされたままだが、これはしかたない。そこでおかしなことにもなってないようで、今度からこのマシンはウィルスバスターでなく、デフォルトの Windows Defender を使うことにする。
+
+まぁ、復元したということは、前のバージョンに戻ったわけで、そこは心配だが、とりあえず動くようになったのでヨシとする。
+
+ちょっとさっきまで恨み節も入っていたが、今は晴ればれとした気分。</pre>
+
+
+</article>
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2021/04.html">2021年04月</a> | <a href="../../../index/gsm.html">共有メモ</a></nav>
+</body>
+</html>

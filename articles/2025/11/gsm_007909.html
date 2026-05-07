@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>共有メモ - JRF Blog Archive</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2025/11.html">2025年11月</a> | <a href="../../../index/gsm.html">共有メモ</a></nav>
+<article data-pagefind-body>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[gsm] 2025-11-04T17:35:49Z</td></tr>
+<tr><th>セクション</th><td>グローバル共有メモ</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2025/11.html">2025-11-04T17:35:49Z</a></td></tr>
+<tr><th>元URL</th><td>(URLなし)</td></tr>
+
+</table>
+</div>
+<h1>共有メモ</h1>
+<pre class="body">jrf&gt; 「「多層目的＝アテンション」を確かめる二足歩行の実験 その2＆3」を行った。その2では「走る」が創発したのはうれしい。その3はちょっとした確認。
+
+その2は↓。
+
+《humanoid_nested_attention_dt_2.ipynb - Colab》  
+<a href="https://colab.research.google.com/drive/1HWZ19RmFD_PHy1H38i1VoPLpC_fSYXyG" class="ext-link">https://colab.research.google.com/drive/1HWZ19RmFD_PHy1H38i1VoPLpC_fSYXyG</a>
+
+その3は↓。
+
+《humanoid_nested_attention_dt_3.ipynb - Colab》  
+<a href="https://colab.research.google.com/drive/19G3Jvm6DYAJC_aLeAygI5MnP0Eq6Ft-T" class="ext-link">https://colab.research.google.com/drive/19G3Jvm6DYAJC_aLeAygI5MnP0Eq6Ft-T</a>
+
+……。
+
+その2 で何が変わったか。
+
+前回、その1では、SkipPromptDT() というクラスを実装してもらった。それにより、「前進」が創発した。ただ、きれいに歩く姿になってはおらず、とにかく前進するというだけの軌跡になっていた。
+
+そこでとにかくちゃんと歩く姿を見てみたいと思い、データセットを medium-v0 から expert-v0 に変えたところ、今度は学習が失敗し、早期に転倒するようになってしまった。これはおかしい。
+
+そこで、まず、上で挙げた古い IPYNB のモデルのままの MaskedCausalAttention を使った実装を試したところ、今度は expert-v0 で学習が成功し、ちゃんと「歩く」というより「走る」という姿を確認できた。これにより、私の前の SkipPromptDT は基本的には失敗していたことが判明した。
+
+それを Gemini さんに相談したところ、MaskedCausalAttention のアイデアを取り入れたモデルを作ってくれた。CausalSkipPromptDT の誕生である。これにより、私のモデルでも「走る」が創発するようになった。それが今回の humanoid_nested_attention_dt_2.ipynb である。
+
+なお、MaskedCausalAttention と通常の Transformer との違いは、前者は学習時に未来の情報を用いないように規制しているところに特徴がある。私はそれを層に重ねるとき、アテンションが多層目的であれば、目的をクエリできることが大事なので、上の層でも同じ仕組みが必要なことになかなか納得できなかったが、Gemini 三と議論して、特徴量が過去のすべてを参照しなければならないというのはマレであると気づき、とりあえず納得した。
+
+……。
+
+その3 で何が変わるか。
+
+ところが、その2では prompt_id=1 も prompt_id=2 と変わらない結果になってしまった。これは expert-v0 データセットが全体としてよすぎるために差が出ないのだろうというのが Gemini さんの解釈。
+
+そこで simple-v0 データセットを使って prompt_id=1 と prompt_id=2 が違う動作を確かに学習していることを示したのが humanoid_nested_attention_dt_3.ipynb になる。
+
+……。
+
+今後の課題。
+
+確かに prompt_id の制御は効いている。しかし、本来なら、まったく違う動作について prompt_id を割り当てて、それで動作が切り替わるか確認すべきである。しかし現状の Minari のデータセットでは、そのような実験は難しそうである。データセットを変えるなどして、そのような確認を今後したい。
+
+あと、個人的には、工場でのロボットの動作に興味を持っている。ねじ回しなどのデータセットがあるらしく、それは今回と違い、視覚情報も大事となる。そういうものの学習にもトライしたい。</pre>
+
+
+</article>
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2025/11.html">2025年11月</a> | <a href="../../../index/gsm.html">共有メモ</a></nav>
+</body>
+</html>

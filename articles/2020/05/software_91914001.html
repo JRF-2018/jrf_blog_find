@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>グローバル共有メモ - JRF Blog Archive</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2020/05.html">2020年05月</a> | <a href="../../../index/software.html">ソフトウェア Tips</a></nav>
+<article data-pagefind-body>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[software] <span class="cocolog-id">cocolog:91914001</span></td></tr>
+<tr><th>セクション</th><td>JRF のソフトウェア Tips</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2020/05.html">2020年05月18日 12:30:39</a></td></tr>
+<tr><th>元URL</th><td><a href="http://jrf.cocolog-nifty.com/software/2020/05/post-dd6738.html" class="ext-link"><span class="original-url">http://jrf.cocolog-nifty.com/software/2020/05/post-dd6738.html</span></a></td></tr>
+<tr><th>タグ</th><td>[Perl]</td></tr>
+</table>
+</div>
+<h1>グローバル共有メモ</h1>
+<pre class="body">グローバルに共有して使うメモのウェブアプリです。
+
+《グローバル共有メモ》に動いているサービスがあります。
+
+■メモを使うユーザーへのヒント
+  
+誰でも書け、誰でも消せます。街中の黒板のようなものです。
+
+ただし、18時間以内は書いた人しか消せません。
+
+メモは 200 個を越えたところで 200個より前のものは消去されます。
+
+「梅Pゴシック」というフリーなフォントをインストールしておくと、文字がいくぶんキレイになります。
+
+「グローバル共有メモ: ログ」ページについて。
+
+日時は世界標準時で、日時の右の灰色の不思議な文字列は偽造防止のための「ハッシュ」です。
+
+日時の左の先頭の丸は、自分が書いたか・削除したか否かを表します。●は自分が書いたもの、○は他人が書いたもの、赤は他人が削除したもので、青緑は自分が削除したものです。赤の●は、自分が書いて他人が削除したもので、注意を要します。
+
+自分かどうかの識別子は 10 日前後で、いっせいに更新されます。その日以降の「自分」は別人とみなされます。
+
+ログページでは URL はリンクされ、[google: 検索文字列] や [wikipedia:項目名] といった表記も適当にリンクされます。漢字[かんじ] または [ruby:漢字:かんじ] といった表記で、ルビを付すことができます。ローカルな参照は、<span class="gsm-tsref">>>2020-01-01T01:00:00Z</span> などとして行います。
+
+■ブログ等で使う場合
+  
+グローバル共有メモのウィジェットをブログ等で使う場合、ウィジェットを挿入したい位置に次のようなコードを書きます。
+
+&lt;script type=&quot;text/javascript&quot;&gt;SHARED_MEMO_WIDGET_WIDTH=&quot;auto&quot;; SHARED_MEMO_WIDGET_ROWS=8;&lt;/script&gt;
+&lt;script type=&quot;text/javascript&quot; src=&quot;<a href="http://jrockford.s1010.xrea.com/demo/shared_memo_widget.js&amp;quot;&amp;gt;&amp;lt;/script&amp;gt;" class="ext-link">http://jrockford.s1010.xrea.com/demo/shared_memo_widget.js&amp;quot;&amp;gt;&amp;lt;/script&amp;gt;</a>
+
+もし、ウィジェットの width を固定したい場合は、次のように書きます。 (200px で固定します。)
+
+&lt;script type=&quot;text/javascript&quot;&gt;SHARED_MEMO_WIDGET_WIDTH=200; SHARED_MEMO_WIDGET_ROWS=8;&lt;/script&gt;
+&lt;script type=&quot;text/javascript&quot; src=&quot;<a href="http://jrockford.s1010.xrea.com/demo/shared_memo_widget.js&amp;quot;&amp;gt;&amp;lt;/script&amp;gt;" class="ext-link">http://jrockford.s1010.xrea.com/demo/shared_memo_widget.js&amp;quot;&amp;gt;&amp;lt;/script&amp;gt;</a>
+
+TEXTAREA の rows を変更したい場合は、上の SHARED_MEMO_WIDGET_ROWS に代入する値を変えましょう。
+
+もし IE にも対応したいのならば、IE では height の自動調整が効きませんので、IE 用に height を設定することになります。しかし、height を設定するとそのままでは自動調整は OFF になるので、IE 以外のブラウザで自動調整を残したい場合は、さらに auto_height を 1 に設定する必要があります。 rows を変更するには結局、次のように設定することになります。
+
+&lt;script type=&quot;text/javascript&quot;&gt;
+SHARED_MEMO_WIDGET_ROWS=20;
+SHARED_MEMO_WIDGET_WIDTH=200;
+SHARED_MEMO_WIDGET_AUTO_WIDTH=1;
+SHARED_MEMO_WIDGET_HEIGHT=420;
+SHARED_MEMO_WIDGET_AUTO_HEIGHT=1;
+&lt;/script&gt;
+&lt;script type=&quot;text/javascript&quot; src=&quot;<a href="http://jrockford.s1010.xrea.com/demo/shared_memo_widget.js&amp;quot;&amp;gt;&amp;lt;/script&amp;gt;" class="ext-link">http://jrockford.s1010.xrea.com/demo/shared_memo_widget.js&amp;quot;&amp;gt;&amp;lt;/script&amp;gt;</a>
+
+XREA の共有 SSL を使いたい場合は、script タグのところを次のように変えましょう。
+
+&lt;script type=&quot;text/javascript&quot; src=&quot;<a href="https://ss1.xrea.com/jrockford.s1010.xrea.com/demo/shared_memo_widget.js&amp;quot;&amp;gt;&amp;lt;/script&amp;gt;" class="ext-link">https://ss1.xrea.com/jrockford.s1010.xrea.com/demo/shared_memo_widget.js&amp;quot;&amp;gt;&amp;lt;/script&amp;gt;</a>
+
+■クローンサイトを生成する場合
+  
+このプログラムの GitHub レポジトリは <a href="https://github.com/JRF-2018/shared_memo" class="ext-link">https://github.com/JRF-2018/shared_memo</a> です。
+
+<a href="https://github.com/JRF-2018/memo_cgi" class="ext-link">https://github.com/JRF-2018/memo_cgi</a> にあるものと違ってこれは、自分のブログサイト用に作ったウェブアプリで、そのソースを公開するために一応、配布をしているという体裁です。
+
+ただ、クローンサイトを作りたいというのであれば、それほど難しくありません。そのためにやることはいくつかあります。
+
+やること 1 つ目、shared_memo.css で指定している textar-min.ttf フォントをクローンサイトの /fonts 以下に置く。フォントは《Textar Font》にアーカイブがあります。@font-face で指定するフォントには同一ドメイン制約があるので、これが必要になります。(更新 2021-12-12: 現在、shared_memo.css はデフォルトでは Textar Font を使わず monospace を使うようになり、この設定は必要ありません。)
+
+やること 2 つ目、shared_memo_log.png を自分用に生成する。 GD::Barcode::QRcode がインストールされている perl を用いれば、次のコマンドで生成できます。(ちなみに XREA の perl にはインストールされてます。)
+
+perl gen_qr_code.pl <a href="http://jrockford.s1010.xrea.com/demo/shared_memo.cgi\?cmd=log" class="ext-link">http://jrockford.s1010.xrea.com/demo/shared_memo.cgi\?cmd=log</a> -o shared_memo_log.png
+
+<a href="http://jrockford.s1010.xrea.com/demo/" class="ext-link">http://jrockford.s1010.xrea.com/demo/</a> の部分は自分のサイト用に書き換えてください。または、QR コードを生成するサイトはいろいろありますので、そこで <a href="http://jrockford.s1010.xrea.com/demo/shared_memo.cgi?cmd=log" class="ext-link">http://jrockford.s1010.xrea.com/demo/shared_memo.cgi?cmd=log</a> みたいな URL の QR コードを生成し、shared_memo_log.png にすれば良いでしょう。
+
+やること 3 つ目、.htaccess を設定する。直接ログ等が見られないようにすべきです。check_log.cgi も設置する場合は、DOS 対策としてリミットを設けるべきです。.htaccess にたとえば次のように設定しましょう。
+
+LimitRequestBody 50000000
+
+&lt;Files ~ &quot;\.(log|xml|pl|md)$&quot;&gt;
+  deny from all
+&lt;/Files&gt;
+
+やること 4 つ目、もし、Google reCAPTCHA v2 checkbox が使いたい場合は、 Google で reCAPTCHA の設定をしたあと、shared_memo.cgi の $USE_RECAPTCHA = 1にし、$RECAPTCHA_SECRET_KEY と $RECAPTCHA_SITE_KEY を設定してください。
+
+やること 5 つ目、もし、街角に掲示するなどのため、特定の IP からのみ書き込みを可にしたい(削除はどこからでもできるけれども)場合、その IP が XXX.XXX.XXX.XXX なら、shared_memo.cgi の our @WRITABLE_IP = (); のところを our @WRITABLE_IP = ('XXX.XXX.XXX.XXX'); などと書き換えてください。
+
+あとは、このアーカイブのファイルをディレクトリに置いて動かしてください。上に書いたブログ等に挿入するウィジェットコードの shared_memo_widget.js の位置を書き換えるのを忘れずに。また、cgi のパーミッションの設定も忘れずに。
+
+なお、運用後の話になりますが、とんでもない書き込みがあって、18時間を待たずに削除することが求められることがあるかもしれません。その場合は、まず証拠保全(shared_memo.xml とshared_memo.log を別の場所に保存)した上で、shared_memo.cgi の our $DELETABLE_HOUR = 18; のところの 18 を 0 にして即時(0時間待ち)削除可能にした上で、削除したあと、0 を 18 に戻せば良いでしょう。
+
+ただし、管理人が常に見張っているわけにもいかないものですし、日本の憲法 21条には事前検閲の原則禁止もあり、24時間以内(18時間程度)であれば削除されなかったからと言って、管理人の責任が問われることはないと私は考えます。むしろ、気付いたとき証拠保全をし、自分だけが挙証責任を負うのではなく、第三者も証拠を保存できるよう連絡するほうが大切かもしれません。そして18 時間たったとき速やかに削除すればよいでしょう。
+
+■ログに偽造がないか調べる
+  
+「グローバル共有メモ: ログ」のページを保存したものを log.html とします。改行コード lf (\x0a)、文字コード utf-8 で保存されているとします。
+
+他者から log.html を受け取ったとき、そこに残されたメモが偽造されていないか簡単にチェックすることができます。それが shared_memo.cgi と同じディレクトリに置かれているであろう check_log.cgi です。違うサイトのものではチェックできません。
+
+そこにアクセスすると、上下に分かれたシンプルなページが表示されます。上側で log.html を指定してから送信すると、結果が次のページに表示され、 Result の最後に OK が出て「チェック済みのメモ」が出力されればほぼ偽造がないと判断できます。
+
+ただし、CSS や JavaScript、HTML 形式の偽装まではチェックしていません。あくまで、log.html 内に残されているメモに偽造がないことのチェックのみをしています。
+
+なお、メモを書き込んだ者は「ログ」のページの一番下から「ログ署名」ができます。署名したあとの「グローバル共有メモ: ログ」のページを保存したものを log.html として、check_log.cgi をすれば、書き込みがその署名者(の IP アドレス)からのものであるかを確認できます。(自分かどうかの識別子は 10 日前後で切り替わることにご注意ください。)
+
+ある日、メモが削除されたとして、削除前の署名なしのログページと書いた本人による削除後の署名済みログページの該当部分を突き合わせれば、書いた本人の削除されたメモの先頭が「●」のはずなので、メモを書いたことを実質的に復元できます。定期的にログページを保存する者と書いた本人の協力があり、識別子の切り替えに間に合えば、他者にいたずらに削除されても、メモを書いた著者が誰かを確証できるということです。
+
+ただし、常に https にするなどしない限り、プロバイダなどサーバー側が共謀することで、作者をたばかることが可能なことにはご注意ください。
+
+check_log.cgi で、「抽出するメモの日時」を(複数)指定すると特定のメモだけ取り出せます。(万一、同じ日時に複数のメモがある場合、日時の後ろに (1) や (2) ... を付けることで区別できます。) 結果のページを「保存」すると、それは check_log.cgi で再びチェックできる形式になっています。
+
+check_log.cgi の下側では特定の日時の書き込みについてログ署名が取られていないか調べることができます。ただし、識別子の切り替え期間を過ぎても管理人はログ署名できるものとします。その場合には告知するはずです。
+
+■メモのハッシュの計算方法 その１
+  
+「メモのハッシュの計算方法」は専門的なトピックになります。普通の人は読み飛ばしてください。
+
+メモを書き換えすると、ログに ISO 8601 拡張形式の日時と削除ボタンの間に何やら意味のなさそうなグレーの文字列が並んでいます。これが、「ハッシュ」で、簡単にいうと偽造を防止するためにあります。
+
+詳しく説明します。
+
+このアプリはログを残します。メモの「ログ」こと「メッセージリスト」の他に、書換・削除の際の日時や IP アドレスなどが残る「書込ログ」が取られています。
+
+この両者のログには自動的に大きくなり過ぎるとカットする機能があります。そのため、情報が残ることを嫌う攻撃者によって、大量ポストによる「消去」が図られるおそれがあります。
+
+このアプリではできるだけメモを完全消去し、大量ポストを無意味にしています。
+
+しかし、そうしていると、次に、文句を言うがためにスクリーンショットを取る人が現れ、それが IP アドレス開示を迫ってきたときどうするかという問題が出てきます。もし書込者に本当に問題があるなら、開示してもいっこうにかまわないのですが、仮に逆にこの開示請求者が悪意を持っているとした場合、問題となります。
+
+そこで、「メッセージリスト」にハッシュを載せることにしました。これで悪意のある開示請求者は相当排除できると考えています。しかし、こちらを強くすると、問題は、「書込ログ」に残る IP アドレスを消したい者がまた現れ、大量ポストする誘引ができることになります。
+
+いっそのこと、IP アドレスも「メッセージリスト」に表示してしまうという手もあったのですが、そうすると、事情をよく知らないプロバイダが悪意のある開示請求者にだまされる誘引を作ることになりかねません。
+
+そこで IP アドレスのハッシュも「メッセージリスト」に表示することにしました。「メッセージリスト」のハッシュはメモごとに一つに見えますが、実は二つの部分、「メッセージハッシュ」と「IP ハッシュ」からなっています。
+
+これにより「メッセージリスト」「書込ログ」の二つのログが実質的に消去されても、開示請求者の側にメッセージリストが保存されており、怪しい IP アドレスの心あたりがあれば、その IP アドレスからの書込・削除であったことを確認できるようになっています。
+
+これにより大量ポスト攻撃の誘引も減るし、悪意のある開示請求者への誘引も減ることと私は考えています。
+
+実は「メッセージハッシュ」は「確認ハッシュ」と「検証ハッシュ」のさらに二つの部分になります。よって「ハッシュ」全体は、「確認ハッシュ」と「検証ハッシュ」と「IP ハッシュ」の三つの部分からなることになります。(削除をしたときは、「確認ハッシュ」と削除者の「IP ハッシュ」だけが残るようになっています。)
+
+「検証ハッシュ」と「IP ハッシュ」の値を得るためには、shared_memo.cgi が生成したキーファイル shared_memo_key.xml が必要です。「確認ハッシュ」にはそれが必要ありません。
+
+ですから、弁護士などが、開示請求のための依頼を受けたとき、「確認ハッシュ」だけはチェックすることで、「ずさんな偽造」については shared_memo.cgi の管理者などに問い合わせる前に排除することができるようになっています。
+
+なお、確認ハッシュ、検証ハッシュは日時にメッセージを連結したものに対して取っています。IP ハッシュは日時に IP アドレスを連結したものに対して取っています。
+
+確認ハッシュ、検証ハッシュに日時を連結するのは、日時の偽装がなされないためです。
+
+IP ハッシュに日時を連結するのは、少し考えてこうしました。日時を連結せず IP アドレスそのものはわからないが同じ IP アドレスの投稿かはわかるようにするという方向はありうると思います。しかし、IP アドレスというものはしばしば変わるもので、突然ハッシュが変わって別人が書いたことにされたり、IP ハッシュの変化の傾向によって使っているプロバイダを予想できたりしたりしたら、あまり穏やかではありません。そこで、同じ IP アドレスかどうかがユーザーからはわからないように日時連結をすることにしたのでした。
+
+もちろん、こういうトラブルが実際に起こることを「想定している」ということではありません。こういうトラブルにも容易に対処できることを示すことで、攻撃者が現れにくくするということです。
+
+■メモのハッシュの計算方法 その２ calc_hash.pl の使い方
+  
+ハッシュが「真正」なものかどうかの計算をサポートするための calc_hash.pl がこのアーカイブには同梱されています。
+
+まず、shared_memo_key.xml を持つ管理者に問う前に、弁護士などが「ずさんな偽造」をチェックするためには、保存されたメッセージリストを log.html として、次のように実行します。
+
+$ perl calc_hash.pl -H -n log.html
+
+このように perl を実行すると、偽造がされていなければ、ハッシュの値だけがメモの数だけ表示されます。ハッシュが10桁のものはメッセージの残っているもの、ハッシュ10桁の中4桁が空白のものはメッセージが削除されているものです。もし、「ずさんな偽造」がされていれば、残っているメッセージのハッシュの値の横に n が表示されます。
+
+開示を求めるものにだけ n が表示されれば、「ずさんな偽造」が行われていると考えてよさそうです。しかし、こういうシステムがあることをわかって、そういうことをする者はいないでしょう。
+
+ほとんどすべてに n が表示される場合、それは逆にメッセージリストの log.html ファイルに何らかのミスがあると考えるべきかもしれません。改行コード(lf)や文字コード(utf-8)を変えて試してみるべきでしょう。
+
+開示請求の場所など関係なく、途中から n が付く場合は shared_memo.cgi のバージョンの違いによりハッシュを取るためアルゴリズムが変わっているのかもしれません。それについては、下の更新情報で確かめましょう。
+
+なお、あるメモが削除された log.html があり、削除されていないものと称する log2.html を手に入れたとします。それぞれ上のコマンドを実行して、log.html にも log2.html にも n が表示されず、ハッシュの先頭二文字が合っているときは、手の込んだ偽造か、削除されていない真正なファイルを手に入れたことになるでしょう。
+
+さて、(log2.html のことは忘れて、)ここで「ずさんな偽造」がないとなったら、管理者の出番です。管理者は n が出ない log.html を渡されたとしましょう。
+
+怪しい IP アドレスを XXX.XXX.XXX.XXX とし、shared_memo.cgi が生成したキーファイル shared_memo_key.xml がカレントディレクトリにあるところで、次のように実行します。
+
+$ perl calc_hash.pl -H -i XXX.XXX.XXX.XXX log.html
+
+そうすると、メモごとに計算されたハッシュとその横にメッセージハッシュがあっていれば ok と、IP ハッシュがあっていれば ip と表示されます。原理的に削除されているハッシュは ok と表示されることはなく ip のみ表示される可能性があります。
+
+もし、削除されてないすべてのメッセージに ok が表示されていれば log.html は真正であると考えてまず間違ありません。ok のところでさらに ip が書かれていれば、その書込は「怪しい IP アドレス」からによるものと言ってまず間違いがありません。(ただし、ハッシュを取るアルゴリズムやキーファイルに変更があった場合はこの限りではありません。)
+
+削除されていないもので ok が出ていないのに ip が合っているというのには注意を要します。それは本来ありえないからです。もしそうなっていれば、キーが盗まれたことを脅迫的にほのめかされていると考えるべきなのかもしれません。
+
+なお、最後に全体の日時とメッセージとハッシュを連結したものに関してハッシュを取った Sum Hash とログ署名があれば Sign Hash のチェックが表示されます。これは、すべてのメッセージに ok が表示された上でのチェックとして意味があります。
+
+■メモのハッシュの計算方法 その３ log.html がないとき
+  
+管理者に届けられたとき log.html はないが画像のスクリーンショットがあり、日時(2020-05-18T14:36:47Z とします)と怪しい IP アドレス(XXX.XXX.XXX.XXX とします)がわかっているという場合、次のようにコマンドを実行します。
+
+$ echo &quot;&quot; | perl calc_hash.pl -t 2020-05-18T14:36:47Z -i XXX.XXX.XXX.XXX
+XXYYYYZZZZ
+
+このとき表示されるハッシュ XXYYYYZZZZ のうち、XXYYYY の部分はメッセージハッシュで、今回は関係ありません。後ろ4文字の ZZZZ が IP ハッシュで、ここがスクリーンショットのハッシュと一致していれば、その IP から書かれたものであることが確認できます。
+
+しかし、スクリーンショットのメッセージの部分のみ不正に書き換えることはできるので、そのメッセージそのものを書いたことは確認できないことには注意が必要です。
+
+もちろん、スクリーンショットからメッセージを復元できればいいのですが、スペースや細かな文字の違いでハッシュが合わなくなるため、あまりあてにはできません。が、復元したメッセージのハッシュも合うようなら、それはメッセージの確認も取れたことになります。
+
+管理者に届ける前の弁護士の段階で、メッセージの復元だけ試みることもできます。その場合、復元したメッセージのファイルが tmp.txt で日時が 2020-05-18T14:36:47Z とすると、
+
+$ perl calc_hash.pl -n -t 2020-05-18T14:36:47Z tmp.txt
+XXYYYY
+
+と表示されたとき、XX がハッシュの先頭二文字と合っていれば、復元が成功している可能性がかなり高いことになります。ただ、これはとても難しく、末尾の改行の有無などにも注意が必要です。そこまでやるなら calc_hash.pl のソースをちゃんと読んでからトライすることをオススメします。
+
+check_log.cgi でチェックできる「証明書」を発行したい場合は、ハッシュが合っていることを確かめたあと、次のようにします。
+
+$ perl calc_hash.pl -i 127.0.0.1 -t 2020-05-18T14:36:47Z \
+    input.txt -o output.html
+XXYYYYZZZZ
+
+ouput.html が証明書になります。input.txt の改行を lf に、文字コードを utf-8 にするのを忘れずに。
+
+なお、日時さえあっていれば、書込ログ(shared_memo.cgi)から自動的に IP アドレス等を抽出して利用しますので、-i オプションは必要ありません。また、自動的に証明書発行をしたことのログを書込ログに残します。書込ログを使いたくないときは --no-log を指定してください。
+
+当然ですが、証明書を安易に発行してはいけません。
+
+■メモのハッシュの計算方法 その４ 注意
+  
+任意のテキストや log.html に対する calc_hash.pl の実行結果のハッシュを他人に渡してはいけません。そのハッシュが付された偽造 log.html が出回ることになります。
+
+告白すると、shared_memo.cgi の作者は、calc_hash.pl と同等の機能を持つ calc_hash.cgi を作って公開し、問題にすぐに気付いて 2時間ほどで取り下げたのでした。失敗しました。
+
+■キーファイルの更新
+  
+キーファイルを更新するときは renew_key.pl を実行します。このときメモはすべて削除されます。
+
+前のキーファイルが shared_memo_key-(日付).xml となって残り、check_log.cgi を使う際に指定できるようになります。必要ない場合は削除してください。
+
+■License
+  
+The author is a Japanese.
+
+I intended this program to be public-domain, but you can treat this program under the (new) BSD-License or under the Artistic License, if it is convenient for you.
+
+Within three months after the release of this program, I especially admit responsibility of efforts for rational requests of correction to this program.
+
+I often have bouts of schizophrenia, but I believe that my intention is legitimately fulfilled.
+
+■配布物
+  
+今回の配布物は以下の zip ファイル。更新があれば下のリンクの中身は最新のものに置き変わっているはず。
+
+  ●shared_memo.zip
+    
+GitHub にも登録してあるが、更新は、ここの更新のあと1日から3日遅れるかも。
+
+  ●《GitHub - JRF-2018/shared_memo》。
+    
+更新：2020-05-18--2020-07-01,2020-12-03,2021-12-12
+初公開：2020年05月18日 12:30:37
+最新版：2021年12月12日 20:48:02
+
+
+Comments:
+
+初公開: shared_memo-20200518.zip。バージョン 0.0.1。
+
+このバージョンが特に欲しい方は↓からどうぞ。
+
+<a href="https://github.com/JRF-2018/shared_memo/releases/tag/v0.0.1" class="ext-link">https://github.com/JRF-2018/shared_memo/releases/tag/v0.0.1</a>
+
+<a href="../../../articles/2020/05/statuses_cocolog_91914050.html" class="int-link cocolog-id" title="ひとこと">[cocolog:91914050]</a>(↓)に作った感想が書いているので、よろしければご参照を。
+
+《「グローバル共有メモ」こと shared_memo.cgi を作り、このサイトに...》  
+<a href="../../../articles/2020/05/statuses_cocolog_91914050.html" class="int-link" title="ひとこと">http://jrf.cocolog-nifty.com/statuses/2020/05/post-fa75f7.html</a>
+
+投稿: JRF | 2020-05-18 13:21:28 (JST)
+
+更新: shared_memo-20200519.zip。バージョン 0.0.2。
+
+このバージョンが特に欲しい方は↓からどうぞ。
+
+<a href="https://github.com/JRF-2018/shared_memo/releases/tag/v0.0.2" class="ext-link">https://github.com/JRF-2018/shared_memo/releases/tag/v0.0.2</a>
+
+凡ミスの修正、IE への部分的な対応があるが、大きなところは、「グローバル共有メモ：ログ」にメッセージのハッシュを載せるようにしたことがある。
+
+アーカイブに calc_hash.pl を入れたが、その使い方は、一つ上の「初公開」のコメントに書いている「感想」の <a href="../../../articles/2020/05/statuses_cocolog_91914050.html" class="int-link cocolog-id" title="ひとこと">[cocolog:91914050]</a> に簡単に書いておいた。
+
+投稿: JRF | 2020-05-19 15:27:44 (JST)
+
+更新: shared_memo-20200524.zip。バージョン 0.0.3。
+
+このバージョンが特に欲しい方は↓からどうぞ。
+
+<a href="https://github.com/JRF-2018/shared_memo/releases/tag/v0.0.3" class="ext-link">https://github.com/JRF-2018/shared_memo/releases/tag/v0.0.3</a>
+
+凡ミスの修正。削除の際、削除理由を聞くようにした。w3m でもいちおう動くようにした。ハッシュの取り方を変更し、ハッシュの説明は README.md に書いておいた。メモを保存するとき crlf を lf に変換しておくようにした。
+
+投稿: JRF | 2020-05-24 17:15:51 (JST)
+
+更新: shared_memo-20200601.zip。バージョン 0.0.4。
+
+このバージョンが特に欲しい方は↓からどうぞ。
+
+<a href="https://github.com/JRF-2018/shared_memo/releases/tag/v0.0.4" class="ext-link">https://github.com/JRF-2018/shared_memo/releases/tag/v0.0.4</a>
+
+Google reCAPTCHA v2 checkbox をすぐ導入できるようにした。自分が書いたものとそうでないものを区別できるように SESSION_ID を導入した。
+
+投稿: JRF | 2020-06-01 19:12:40 (JST)
+
+更新: shared_memo-20200609.zip。バージョン 0.0.5。
+
+このバージョンが特に欲しい方は↓からどうぞ。
+
+<a href="https://github.com/JRF-2018/shared_memo/releases/tag/v0.0.5" class="ext-link">https://github.com/JRF-2018/shared_memo/releases/tag/v0.0.5</a>
+
+削除をしたとき IP ハッシュが残るようにした。メモそれぞれに固有ページはないが固有リンクはできるようにした。
+
+投稿: JRF | 2020-06-09 23:14:43 (JST)
+
+更新: shared_memo-20200616.zip。バージョン 0.0.6。
+
+このバージョンが特に欲しい方は↓からどうぞ。
+
+<a href="https://github.com/JRF-2018/shared_memo/releases/tag/v0.0.6" class="ext-link">https://github.com/JRF-2018/shared_memo/releases/tag/v0.0.6</a>
+
+削除の際のハッシュを削除者の IP ハッシュ 4桁だけでなく、消したメッセージの確認ハッシュ 2桁も残し、6桁にした。18時間以内は、書いた本人しか削除できないようにした。@WRITABLE_IP を設定して、特定の IP からだけ書き込みを許せるようにした。
+
+投稿: JRF | 2020-06-16 21:58:03 (JST)
+
+更新: shared_memo-20200624.zip。バージョン 0.0.7。
+
+このバージョンが特に欲しい方は↓からどうぞ。
+
+<a href="https://github.com/JRF-2018/shared_memo/releases/tag/v0.0.7" class="ext-link">https://github.com/JRF-2018/shared_memo/releases/tag/v0.0.7</a>
+
+並び方をチェックできる Sum Hash を log.html に付した(非表示)。その上で、log.html が真正か偽造かをチェックする check_log.cgi を作って同梱した。Android 用に「ページの先頭に戻る」ボタンを付けておいた。
+
+投稿: JRF | 2020-06-24 04:15:27 (JST)
+
+更新: shared_memo-20200701.zip。バージョン 0.0.8。
+
+このバージョンが特に欲しい方は↓からどうぞ。
+
+<a href="https://github.com/JRF-2018/shared_memo/releases/tag/v0.0.8" class="ext-link">https://github.com/JRF-2018/shared_memo/releases/tag/v0.0.8</a>
+
+書き込んだ人間が、ログ署名をできるようにした。ログ署名者の(IP アドレスからの)書き込みであることを check_log.cgi で確認できる。
+
+calc_hash.pl に -o オプションを作り、check_log.cgi でチェックできる証明書を発行しやすくした。
+
+XREA の共有 SSL など「プロキシ」経由の IP アドレスに対応した。
+
+check_log.cgi で特定のメモを抽出できるようにした。
+
+check_log.cgi で特定の日時のメモに対しログ署名が取られているか否かを調べられるようにした。
+
+投稿: JRF | 2020-07-01 10:41:51 (JST)
+
+更新: shared_memo-20200818.zip。バージョン 0.0.9。
+
+このバージョンが特に欲しい方は↓からどうぞ。
+
+<a href="https://github.com/JRF-2018/shared_memo/releases/tag/v0.0.9" class="ext-link">https://github.com/JRF-2018/shared_memo/releases/tag/v0.0.9</a>
+
+メモの行数を 100 以下に制限した。
+
+投稿: JRF | 2020-08-18 07:10:37 (JST)
+
+更新: shared_memo-20201028.zip。バージョン 0.1.0。
+
+このバージョンが特に欲しい方は↓からどうぞ。
+
+<a href="https://github.com/JRF-2018/shared_memo/releases/tag/v0.1.0" class="ext-link">https://github.com/JRF-2018/shared_memo/releases/tag/v0.1.0</a>
+
+バージョン 0.0.9 のときに混入した改行コードに関するバグを修正。
+
+投稿: JRF | 2020-10-28 19:18:47 (JST)
+
+更新: shared_memo-20201207.zip。バージョン 0.1.1。
+
+このバージョンが特に欲しい方は↓からどうぞ。
+
+<a href="https://github.com/JRF-2018/shared_memo/releases/tag/v0.1.1" class="ext-link">https://github.com/JRF-2018/shared_memo/releases/tag/v0.1.1</a>
+
+今回は、基本、ログページのリンクに a タグや ruby タグを付し、それを「ページを保存」したものでも check_log.cgi などが通るようにしただけ。
+
+ただ、その過程で、200個以上のメモがあるときに書込するとハッシュがうまく取れなバグをなおした。
+
+さらに、バージョン 0.0.9 のバグである \x0d が混入することの後遺症をなんとかする必要があり、お行儀が悪いが、\x0d が含まれるメモは、\x0d を除去した上でメモごとのハッシュを取り直すことにした。正常な動作ではメモごとのハッシュは一度決まれば変わらない。それが変わるわけだから問題があるが、今回のみの一回の対応でできるということでお許しいただきたい。
+
+ちなみに、更新しただけでは \x0d の除去は起きない。一度、メモを書くとそのときに一度だけ一気に全メモの \x0d の除去を行うことになる。(以前から普段の投稿において常に \x0d の除去が行われているのでそうなる以前のメモが対象。)
+
+投稿: JRF | 2020-12-07 21:05:08 (JST)
+
+更新: shared_memo-20201229.zip。バージョン 0.1.2。
+
+このバージョンが特に欲しい方は↓からどうぞ。
+
+<a href="https://github.com/JRF-2018/shared_memo/releases/tag/v0.1.2" class="ext-link">https://github.com/JRF-2018/shared_memo/releases/tag/v0.1.2</a>
+
+shared_memo_log.js で [ ] の中に URL がある場合の修正。shared_memo.js で TEXTAREA を変更すると「書込」の色が変わるように改良。
+
+投稿: JRF | 2020-12-29 04:46:31 (JST)
+
+更新: shared_memo-20210213.zip。バージョン 0.1.3。
+
+このバージョンが特に欲しい方は↓からどうぞ。
+
+<a href="https://github.com/JRF-2018/shared_memo/releases/tag/v0.1.3" class="ext-link">https://github.com/JRF-2018/shared_memo/releases/tag/v0.1.3</a>
+
+CSS をほんの少しいじっただけ。
+
+投稿: JRF | 2021-02-13 22:48:21 (JST)
+
+更新: shared_memo-20210818.zip。バージョン 0.1.4。
+
+このバージョンが特に欲しい方は↓からどうぞ。
+
+<a href="https://github.com/JRF-2018/shared_memo/releases/tag/v0.1.4" class="ext-link">https://github.com/JRF-2018/shared_memo/releases/tag/v0.1.4</a>
+
+Windows の改行コードの関係で、改行を含む2000文字近いメモを書き込むと最後のほうが切れる問題を修正した。めっちゃ安直な方法で。
+
+投稿: JRF | 2021-08-18 19:20:05 (JST)
+
+更新: shared_memo-20211212.zip。バージョン 0.2.0。
+
+このバージョンが特に欲しい方は↓からどうぞ。
+
+<a href="https://github.com/JRF-2018/shared_memo/releases/tag/v0.2.0" class="ext-link">https://github.com/JRF-2018/shared_memo/releases/tag/v0.2.0</a>
+
+フォントを Textar ではなく monospace を使うようにした。renew_key.pl を足した。
+
+投稿: JRF | 2021-12-12 20:52:23 (JST)
+
+更新: shared_memo-20220926.zip。バージョン 0.2.1。
+
+このバージョンが特に欲しい方は↓からどうぞ。
+
+<a href="https://github.com/JRF-2018/shared_memo/releases/tag/v0.2.1" class="ext-link">https://github.com/JRF-2018/shared_memo/releases/tag/v0.2.1</a>
+
+XREA がアップデートして Perl に JSON モジュールが入っておらず、 JSON::PP を使えということらしいのでそうしたのみ。
+
+投稿: JRF | 2022-09-26 10:57:29 (JST)
+
+更新: shared_memo-20220926.zip。バージョン 0.2.2。
+
+このバージョンが特に欲しい方は↓からどうぞ。
+
+<a href="https://github.com/JRF-2018/shared_memo/releases/tag/v0.2.2" class="ext-link">https://github.com/JRF-2018/shared_memo/releases/tag/v0.2.2</a>
+
+ログに表示される注意書きのみいじった。プログラムはそのまま。
+
+注意書きには「※管理人によるネットでのアーカイブに同意しない場合、間に合うように削除してください。」を足した。
+
+いろいろ考えてこの文にしたが、詳しい説明は↓で。
+
+《「グローバル共有メモ」こと shared_memo.cgi を作り、このサイトに... - JRF のひとこと》  
+<a href="../../../articles/2020/05/statuses_cocolog_91914050.html" class="int-link" title="ひとこと">http://jrf.cocolog-nifty.com/statuses/2020/05/post-fa75f7.html</a>
+
+投稿: JRF | 2023-01-28 19:13:15 (JST)
+
+
+Links:
+
+グローバル共有メモ: <a href="http://jrockford.s1010.xrea.com/demo/shared_memo.cgi" class="ext-link">http://jrockford.s1010.xrea.com/demo/shared_memo.cgi</a>
+Textar Font: <a href="../../../articles/2020/05/hbm_01987.html" class="int-link" title="Textar Font(temporary)">https://yamacraft.github.io/textar-font/</a>
+shared_memo.zip: <a href="https://www.sugarsync.com/pf/D252372_79_66933105529" class="ext-link">https://www.sugarsync.com/pf/D252372_79_66933105529</a>
+GitHub - JRF-2018/shared_memo: <a href="https://github.com/JRF-2018/shared_memo" class="ext-link">https://github.com/JRF-2018/shared_memo</a></pre>
+
+
+<section class="backrefs" data-pagefind-ignore>
+<h2>後方参照 (1 件)</h2>
+<ul>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2020/05/statuses_cocolog_91914050.html">ひとこと</a> <span class="backref-date">2020年05月18日</span></li>
+</ul>
+</section>
+
+</article>
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2020/05.html">2020年05月</a> | <a href="../../../index/software.html">ソフトウェア Tips</a></nav>
+</body>
+</html>

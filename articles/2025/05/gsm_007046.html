@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>共有メモ - JRF Blog Archive</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2025/05.html">2025年05月</a> | <a href="../../../index/gsm.html">共有メモ</a></nav>
+<article data-pagefind-body>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[gsm] 2025-05-30T03:21:39Z</td></tr>
+<tr><th>セクション</th><td>グローバル共有メモ</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2025/05.html">2025-05-30T03:21:39Z</a></td></tr>
+<tr><th>元URL</th><td>(URLなし)</td></tr>
+
+</table>
+</div>
+<h1>共有メモ</h1>
+<pre class="body">jrf&gt; 更新: jrf_pdb_agent_lib バージョン 0.0.16。pal.AiException と pal.LoopRequestException を定義しておいた。
+
+`pal.AiException(arg)`: AI エージェント、または AI が提供するコード内で意図的に発生させるカスタム例外です。この例外は、AI のロジックやプログラムのエラーハンドリングによって明示的にキャッチされることを想定しています。明示的にキャッチされない限り、通常の Python 例外と同様に `pal.do` を素通りし、呼び出しスタックを上位に伝播します。
+
+`pal.LoopRequestException(arg)`: `pal.do` 内の `EXEC` ブロックにおいて、AI エージェントが明示的に `EXEC` ループの次のイテレーションを要求するために使用するカスタム例外です。単一の `pal.do` 呼び出し内で多段階の操作を管理するのに役立ちます。
+
+《JRF-2018/jrf_pdb_agent_lib》  
+<a href="https://github.com/JRF-2018/jrf_pdb_agent_lib" class="ext-link">https://github.com/JRF-2018/jrf_pdb_agent_lib</a></pre>
+
+
+</article>
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2025/05.html">2025年05月</a> | <a href="../../../index/gsm.html">共有メモ</a></nav>
+</body>
+</html>

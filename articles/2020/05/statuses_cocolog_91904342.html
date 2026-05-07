@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>ひとこと - JRF Blog Archive</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2020/05.html">2020年05月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+<article data-pagefind-body>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[statuses] <span class="cocolog-id">cocolog:91904342</span></td></tr>
+<tr><th>セクション</th><td>JRF のひとこと</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2020/05.html">2020年05月14日</a></td></tr>
+<tr><th>元URL</th><td><a href="http://jrf.cocolog-nifty.com/statuses/2020/05/post-5d5e92.html" class="ext-link"><span class="original-url">http://jrf.cocolog-nifty.com/statuses/2020/05/post-5d5e92.html</span></a></td></tr>
+
+</table>
+</div>
+<h1>ひとこと</h1>
+<pre class="body">XREA にアカウントを取った。ココログに HTML アプリなどを直接アップロードできなくなったため。
+JRF 2020年5月14日
+
+ココログの全面リニューアルで、ファイルマネージャーから自由なアップロードができなくなった。メールでココログと交渉していたが、どうも自由なアップロードの復活はなさそう。
+
+JRF 2020年5月14日
+
+そこで、プライベートなブログを一つつぶし、JavaScript や CSS の置き場となるブログ(テンプレート)を作った。いちおう場所は↓以下になるが、このトップページからは何も辿れなくなっている。
+
+《JRF's Library》  
+<a href="http://jrf.cocolog-nifty.com/mylib/" class="ext-link">http://jrf.cocolog-nifty.com/mylib/</a>
+
+JRF 2020年5月14日
+
+このブログで使う JavaScript 等は、そこのテンプレート機能を使えば良いのだが、ディレクトリの要素をたくさん使う HTML アプリに関してはブログテンプレートだけでは対応するのが難しい。そこで、XREA のアカウントを取って、そこに置くことにした。
+
+《JRF's XREA》  
+<a href="http://jrockford.s1010.xrea.com/index.html" class="ext-link">http://jrockford.s1010.xrea.com/index.html</a>
+
+JRF 2020年5月14日
+
+今のところ「易双六」と「JRF Flag Semaphore」が置いてある。無料版で広告が入るのはしかたがない。
+
+JRF 2020年5月14日
+
+本当は XREA の前に XFree を選んだのだが、XFree は ID の更新が 3 ヶ月ごとに必要らしく、できれば、私が死んでからも遺しておいて欲しいという欲には合わなかったため、すぐに XFree の退会手続きをとった。まぁ、XREA も geocities みたいに私が死ぬ前にダメになるかもしれないけど…希望はあるから…。
+
+JRF 2020年5月14日
+
+XREA は、ID を取るのにスマホ認証が必要で、スマホを自分のものとしては持っていない私は、それがイヤだったのだが、しかたなく母のスマホで認証した。
+
+JRF 2020年5月14日
+
+……
+
+XREA は cgi が使える。BASIC 認証も使える。…ということで前から欲しかった Web 版の簡易メモを作ってみた。
+
+《JRF-2018/memo_cgi: The simplest memo.cgi》  
+<a href="https://github.com/JRF-2018/memo_cgi" class="ext-link">https://github.com/JRF-2018/memo_cgi</a>
+
+JRF 2020年5月14日
+
+XREA で BASIC 認証を使った CGI を使おうとして、はじめは 500 Internal Server Error が出てなかなかその理由がわからず手間どった。
+
+結局、その理由は、.htaccess に書く .htpasswd のパスが、public_html を含む必要があるのにそうしてなかったことだった。
+
+JRF 2020年5月14日
+
+&lt;pre&gt;
+AuthUserFile /virtual/jrockford/public_html/［ディレクトリ名］/.htpasswd
+&lt;/pre&gt;
+
+…みたいにする必要があったというだけ。もちろん、パーミッションの問題(700 にする)とかもあるんだけど、それをしてなおできなかったので、焦ったのだった。
+
+JRF 2020年5月14日
+
+……。
+
+追記。
+
+memo.cgi で、複数人が同時に書き込もうとしたら面倒だな…というのが気になって、上下、二のペーンに分け、書き換えられてないほうは、Read される dual_memo.cgi を作った。チャットにも使えるかもしれない。
+
+場所は、上の GitHub の memo.cgi と同じところに置いておいた。
+
+JRF 2020年5月15日
+
+……。
+
+↓に dual_memo.cgi のデモを用意した。本来は、Basic 認証のあるところで使うことを想定しているが、ここではまったくそういうのをしていないので、お手柔らかに。
+
+《Dual Memo》  
+<a href="http://jrockford.s1010.xrea.com/demo/dual_memo.cgi" class="ext-link">http://jrockford.s1010.xrea.com/demo/dual_memo.cgi</a>
+
+JRF 2020年5月15日
+
+……。
+
+追記。
+
+dual_memo.cgi だと二人しか安心して使えないなぁ…ということで、三人以上ということだと結局、掲示板システムが必要か…と思い、簡易 BBS まで作ってしまった。simple_bbs.cgi がそれで、ソースは上の memo_cgi の GitHub に置いておいた。今回も Dual Memo と同じく Basic 認証があるのが本来は前提なのだが、あくまでデモということで、↓にデモを置いておいた。
+
+JRF 2020年5月15日
+
+《Simple BBS》  
+<a href="http://jrockford.s1010.xrea.com/demo/simple_bbs.cgi" class="ext-link">http://jrockford.s1010.xrea.com/demo/simple_bbs.cgi</a>
+
+JRF 2020年5月15日</pre>
+
+
+<section class="backrefs" data-pagefind-ignore>
+<h2>後方参照 (4 件)</h2>
+<ul>
+<li><span class="backref-label">[cocolog:91904342]参照</span> <a href="../../../articles/2022/12/statuses_cocolog_93934149.html">ひとこと</a> <span class="backref-date">2022年12月29日</span></li>
+<li><span class="backref-label">[cocolog:91904342]参照</span> <a href="../../../articles/2021/12/statuses_cocolog_93217049.html">ひとこと</a> <span class="backref-date">2021年12月29日</span></li>
+<li><span class="backref-label">[cocolog:91904342]参照</span> <a href="../../../articles/2020/12/statuses_cocolog_92448572.html">ひとこと</a> <span class="backref-date">2020年12月30日</span></li>
+<li><span class="backref-label">[cocolog:91904342]参照</span> <a href="../../../articles/2020/05/statuses_cocolog_91914050.html">ひとこと</a> <span class="backref-date">2020年05月18日</span></li>
+</ul>
+</section>
+
+</article>
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2020/05.html">2020年05月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+</body>
+</html>

@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>共有メモ - JRF Blog Archive</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2021/09.html">2021年09月</a> | <a href="../../../index/gsm.html">共有メモ</a></nav>
+<article data-pagefind-body>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[gsm] 2021-09-05T03:51:43Z</td></tr>
+<tr><th>セクション</th><td>グローバル共有メモ</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2021/09.html">2021-09-05T03:51:43Z</a></td></tr>
+<tr><th>元URL</th><td>(URLなし)</td></tr>
+
+</table>
+</div>
+<h1>共有メモ</h1>
+<pre class="body">jrf&gt; [仏教の最適化プログラムの続き。]
+
+狂信について試したい。
+
+狂信のパラメータは、ARGS.nation_education_power_threshold と ARGS.faith_realization_power_threshold で、これを同時に大きくする 0.9 か 0.95 ぐらいにするのが狂信を試すことに相当する。
+
+問題は、ARGS.nation_education_power_threshold がほとんど意味がないことである。
+
+狂信は、教育や信仰理解が高いことそのものではない。高い教育や信仰理解を(threshold を高く設定し)国力にかえようとすることが狂信である…といった定義になっている。
+
+支配層の信仰理解は、1.0 に近くなることもあり、threshold を高めに設定することに意味がある。しかし、教育は国民の平均を見ており、国民の平均は 0.5 付近に張り付いていて、高い threshold を設定してもそれにかかることは絶対にありえず意味がない。
+
+これに意味を持たせるにはどうするか？
+
+まず、教育の平均の分布は中心極限定理によりそれはそれで正規分布に近付くはずである。その正規分布の Percent Point が ARGS.nation_education_power_threshold になる点を新たに threshold と定義しなおすという方向を思い付いた。
+
+しかし、これはダメである。個人の教育の分布が本当に 0.0 から 1.0 の一様分布であれば、一様分布の σ**2 に対し、n 人(25000人ぐらい)の平均の分布の分散は (σ**2)/n となりかなり小さくなる。その例えば 90 % 点というのは 0.5 にものすごく近付くがそれは、教育の平均が動くのに対してあまりにも近付き過ぎということになる。
+
+つまるところ、このシステムでは、個人の教育の平均は 0.5 ではないのが普通で、0.5 から (σ**2)/n の点とか考えても意味がないのだ。
+
+そこで、もっと違う方法を考えてみる。一つの方法として平均と取る前に個人に対して threshold を適用してはどうか…ということである。しかし、これは、平均がかなり低めに出ることになり、教育が高いこと自体は狂信ではないという定義に反するように思う。低めに出るのが問題だからと、上を切るのと同時に教育の低い方にも threshold を適用することも考えられるが、しかし、それは教育の低い者を国力と認めない方向で、それはそれで間違っている気がする。
+
+平均を取るという方向、その平均に何か操作をするというこれまでの方向は間違っていないように思う。
+
+（続く）</pre>
+
+
+</article>
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2021/09.html">2021年09月</a> | <a href="../../../index/gsm.html">共有メモ</a></nav>
+</body>
+</html>

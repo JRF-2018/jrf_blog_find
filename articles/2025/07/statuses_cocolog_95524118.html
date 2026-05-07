@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>ひとこと - JRF Blog Archive</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2025/07.html">2025年07月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+<article data-pagefind-body>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[statuses] <span class="cocolog-id">cocolog:95524118</span></td></tr>
+<tr><th>セクション</th><td>JRF のひとこと</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2025/07.html">2025年07月05日</a></td></tr>
+<tr><th>元URL</th><td><a href="http://jrf.cocolog-nifty.com/statuses/2025/07/post-36be53.html" class="ext-link"><span class="original-url">http://jrf.cocolog-nifty.com/statuses/2025/07/post-36be53.html</span></a></td></tr>
+
+</table>
+</div>
+<h1>ひとこと</h1>
+<pre class="body">熊剣迷路問題 revisited。2023年6月から7月に行った LLMにごく簡単な迷路ゲームを解かせる実験。2025年の今、進化したツール類を使って再挑戦。が、クリアまでは偶然行けたが「偶然」という感じで「賢い！」とはならなかった。あまりうまくいかなかった。AGIまだ遠いか。
+JRF 2025年7月5日
+
+成果物は↓になる。
+
+《langchain_maze_0.0.1.ipynb - GitHub Gist》  
+<a href="https://gist.github.com/JRF-2018/5fc81c32a907dfb4a4c3c1131e002aea" class="ext-link">https://gist.github.com/JRF-2018/5fc81c32a907dfb4a4c3c1131e002aea</a>
+
+JRF 2025年7月5日
+
+……。
+
+LLM で簡単な迷路ゲームを解かせたい。強化学習を使わなくても事前知識が LLM にあるのでうまい具合にいくのではないかと考えていました。
+
+2023年6月から7月ぐらいのまだ LLM が話題になった当初で、Gemini さんがまだ Bard と名乗っていたころ、Bard さんに迷路ゲームを解かせるようなプログラムを書いて、Gist に公開していました。以下がその記録です。
+
+JRF 2025年7月5日
+
+<a href="../../../articles/2023/07/statuses_cocolog_94293132.html" class="int-link cocolog-id" title="ひとこと">[cocolog:94293132]</a>(2023年7月)
+《「熊剣迷路問題」。Google Bard で簡単な迷路ゲームを教師付きで無理やりクリアさせてみた。なんとかコストの高いファインチューンや追加学習を避けて「few-shot learning」だけで迷路を解くプログラムが作れないか？…とはじめたができなくて、目標を変更した。 - JRF のひとこと》
+<a href="../../../articles/2023/07/statuses_cocolog_94293132.html" class="int-link" title="ひとこと">http://jrf.cocolog-nifty.com/statuses/2023/07/post-619804.html</a>
+
+JRF 2025年7月5日
+
+それはなかなかうまくいかなかったため、とにかく教師が明確な方針を与えて一度ゴールさせる方向になりました。しかし、それでも Bard さんは何かを試しているかのように迷いました。そこで、方針に従わない場合「叱る」ことをしてみたところ、とりあえずゴールさせることができるようになりました。バージョン 1.7.1 まで作りました。
+
+JRF 2025年7月5日
+
+そして、2年たって、Gemini さんが驚くほど賢くなった現在、私は Gemini CLI の登場を機に一念発起して GCP の課金を決断し、この実験に戻ってきました。表では示していませんが、先の bard_maze_1.7.1.ipynb をほぼ Gemini さんで動かしただけのコードで、ちゃんと 100点満点でゴールすることはわかっています。モデルは gemini-1.5-flash で十分でした。簡単すぎた様子です。
+
+JRF 2025年7月5日
+
+今なら、教師が明確な方針を与えなくても、Gemini さんは自ら方針を編み出してゴールできるのではないか。追加知識も LangChain などにある自動的な記憶要約機能で簡単にできるのではないか。そう考えました。
+
+それを試してみたのが今回の ipynb になります。
+
+JRF 2025年7月5日
+
+……。
+
+結論。
+
+あまりうまくいきませんでした。クリアまで行ったこともありますが行かないこともあります。偶然の要素が強いようです。
+
+あまり地図が読めてません。テキストの地図の読み取りが下手なのでしょう。
+
+方針と計画を AI がセットできるようにしたのですが、これがあまりうまく方針を立てられません。
+
+JRF 2025年7月5日
+
+今回たまたまうまくいったのでその時の様子を記録するために公開しておくことにしました。
+
+しかし、あれぇ、これじゃ AGI なんか無理だぞ…という感じです。もしかすると私のプロンプトやコンテクスト設計がマズイのかもしれませんが…。
+
+JRF 2025年7月5日
+
+……。
+
+なぜ LangChain なのか？
+
+2023年7月当時では、方針と追加知識の自動更新ができませんでした。でも、そういうのって一般的にエージェント AI は必要としているはずです。
+
+現在なら、システムプロンプトの他に、常に必要なファイル(システムファイル?)は保持しながら、チャットを記録し、コンテクスト長が一定を超えそうなら、方針と要約を更新して、コンテクスト長を圧縮する…みたいなライブラリがすでにありそうなものです。
+
+JRF 2025年7月5日
+
+どうもそういうのをするオープンなライブラリの有名なものが LangChain のようなのです。Gemini さんにそう紹介され、確かにそのようなので、今回使ってみることにしました。
+
+ちなみに、通常の Web インターフェイスの Gemini さんなどはチャット・スレッドの前の記憶が残っています。実は、これは API の Gemini さんには標準ではない機能だったりします。これまでのチャットの記憶が必要なら、その記憶をプロンプトに含めて渡さねばなりません。これを提供するのも LangChain などの役割となります。
+
+JRF 2025年7月5日
+
+「プロンプトエンジニアリングよりコンテクストエンジニアリング」と最近言われますが、今回使わないものの LangMem などの長期記憶を提供しながらプロンプトの補助を行うようなものが言われるコンテクストの一種で、そういったものを提供するのも LangChain 系の得意とする役割になります。
+
+JRF 2025年7月5日
+
+……。
+
+……。
+
+以上が成果物の説明だが、いろいろ迷ってやっていたときの記録があるので、以下にそれをコピペしておく。お目汚し失礼ですが…。
+
+JRF 2025年7月5日
+
+……。
+
+○ 2025-07-04T07:07:27Z
+
+LangChain を使って熊剣迷路問題(<a href="../../../articles/2023/07/statuses_cocolog_94293132.html" class="int-link cocolog-id" title="ひとこと">[cocolog:94293132]</a>(2023年7月))を解かせてみたのだが、うまくいかなかった。
+
+まず、ハマったのが、create_gemini_functions_agent がないということ。あるという情報とないという情報があって、錯綜していた。create_openai_functions_agent は確実にある。
+
+結局これは、create_tool_calling_agent を使えということらしい。
+
+JRF 2025年7月5日
+
+ところが、create_tool_calling_agent にも問題がある。llm = GoogleGenerativeAI() の llm では使えなくて、llm = ChatVertexAI() の llm なら使えるという罠があった。(あとで Gemini さんに聞くと llm = GoogleGenerativeAI() じゃなくて llm = ChatGoogleGenerativeAI() なら使えるとのこと。使えた orz。)
+
+JRF 2025年7月5日
+
+さらにどうも、ツールコールでない質疑などが間に挟まると、 Message's content is expected to be a dict, got &lt;class 'int'&gt;! …というエラーが出るときがあって、一度それが出ると、その後も同じエラーが invoke のごとに発生してしまう。
+
+これは、チャット履歴におかしなデータが混入しているのが問題であるらしく、agent_executor.memory.clear() みたいなことをすれば、その後は invoke が有効になった。
+
+JRF 2025年7月5日
+
+で、そういうエラーに(ある程度手動で)対応できるようになって、迷路を解かせるのだが、これが全然うまくいかない。地図が読めない。テキストの地図の読み取りが下手なのだろう。
+
+方針と計画を AI がセットできるようにしたのだが、これが全然うまく方針を立てられない。
+
+結局、剣を取るところまでは進んだが、その後、熊を倒しにいくところまではいけなかった。剣を取ったところでチラと見えるゴールにどうしても向かおうとして、いつまでも迂回ができない様子だった。
+
+JRF 2025年7月5日
+
+あれぇ、これじゃ AGI なんか無理だぞ…という感じ。もしかすると私のプロンプトやコンテクスト設計がマズイのかもしれないが…。
+
+(まだ迷路も解けてない段階では公開しても無意味なような気がするので迷ったのだが、一応他の人の参考になるかもしれないので公開しておく。)
+
+《langchain_maze_vertexai_0.0.1.ipynb - GitHub Gist》  
+<a href="https://gist.github.com/JRF-2018/be6a8cb85227aeccd048346d29fdc803" class="ext-link">https://gist.github.com/JRF-2018/be6a8cb85227aeccd048346d29fdc803</a>
+
+JRF 2025年7月5日
+
+……。
+
+create_tool_calling_agent ではなく create_react_agent を使うなら GoogleGenerativeAI() でもよかったのだが、それだとツールコールがうまくいかないことが多かったので、最終的には create_tool_calling_agent を使うようにした。
+
+ChatVertexAI() は、認証がかなりやっかいなので、使えるなら API_KEY だけで認証できる ChatGoogleGenerativeAI() のほうがいいので、そこをまず変え、使えるツール…ほぼ「自明」なツール類…を増やしたのが次の実験になる。
+
+JRF 2025年7月5日
+
+……。
+
+○ 2025-07-04T09:02:32Z
+
+速報。LangChain を使って熊剣迷路問題(<a href="../../../articles/2023/07/statuses_cocolog_94293132.html" class="int-link cocolog-id" title="ひとこと">[cocolog:94293132]</a>(2023年7月))。クリアできた！ 何が良かったのかわからないが。うーん、偶然の要素が強いのかもしれない…。
+
+うれしいので、記録のため公開しておきます。おそらく再現性がないので、醜い形ですが再実行せずに、公開します。
+
+《langchain_maze_0.0.1.ipynb - GitHub Gist》  
+<a href="https://gist.github.com/JRF-2018/5fc81c32a907dfb4a4c3c1131e002aea" class="ext-link">https://gist.github.com/JRF-2018/5fc81c32a907dfb4a4c3c1131e002aea</a>
+
+JRF 2025年7月5日
+
+……。
+
+○ 2025-07-04T10:53:02Z
+
+そうそう、LangChain のエージェントに渡すツール。オブジェクト(クラス)のメソッドをツールとして渡すのに苦労した。ただの関数なら @tool を使うのがセオリーなのだが、それをメソッドにすると、引数の数が合わない。結局、_create_agent メソッド内に @tool 付きの関数として(self は引数でなくクロージャとして取る)定義する必要があった。これも気づくまではなかなかハマった。
+
+上の IPYNB 内では例えば…。
+
+JRF 2025年7月5日
+
+&lt;pre&gt;
+class PlayGame:
+
+(…)
+
+    def _create_agent (self):
+
+(…)
+&lt;/pre&gt;
+
+JRF 2025年7月5日
+
+&lt;pre&gt;
+        @tool
+        def update_plan (new_plan: str) -&gt; str:
+            &quot;&quot;&quot;
+            プレイヤーの現在の計画と方針を更新します。
+            表示されるべき新しい計画と方針の文字列を提供してください。
+            あなたとは別の者が次の行動をしやすいよう計画と方針を残してください。
+            &quot;&quot;&quot;
+            self.plan = new_plan
+            return &quot;計画と方針が更新されました。&quot;
+&lt;/pre&gt;
+
+JRF 2025年7月5日
+
+…みたいな感じにしたらうまくいった。
+
+JRF 2025年7月5日
+
+……。
+
+……。
+
+追記。
+
+○ 2025-07-05T05:18:35Z
+
+LangChain で熊剣迷路問題 Ver. 0.0.3。
+
+《langchain_maze_0.0.3.ipynb - GitHub Gist》  
+<a href="https://gist.github.com/JRF-2018/2a3fdae8f848c13754eaf85c64fbefcc" class="ext-link">https://gist.github.com/JRF-2018/2a3fdae8f848c13754eaf85c64fbefcc</a>
+
+JRF 2025年7月5日
+
+前回(0.0.1で)、気になっていたこととして、1回の invoke に対し、1度だけ command して欲しいのに、AgentExecutor にはそのようなことをするオプションがないらしいことでした。また agent_scratchpad はあるものの、行動結果に関して memory がうまく機能しそうにないことも気になっていました。
+
+JRF 2025年7月5日
+
+そこで command については、tool として提供するのではなく invoke の Final Answer として受け取るように変えてみました。このようにすれば、invoke のときの行動データが自然に memory にたまるようになるはずです。
+
+JRF 2025年7月5日
+
+あと CoT (Chain of Thought) が有効なことが多いと聞きますが、gemini flash は CoT してるという噂ですが、とにかく、行動コマンドしか出力しないと何を考えているかわからないので express_thought というツールを作り、プロンプトで考えを吐露するように促すこともやってみました。
+
+さらに、かなり迷ってしまうので、可能な行動を明示するようにもしました。
+
+そうやって、またたまたまゴールできたので、それを公開しておくことにしました。
+
+JRF 2025年7月5日
+
+……。
+
+……。
+
+追記。
+
+○ 2025-07-05T22:33:34Z
+
+LangChain で熊剣迷路問題 Ver. 0.0.4。行動予約を導入。Gemini 2.5 Pro さんに「先生お願いします」することで、見事、ゴールできた。
+
+《langchain_maze_0.0.4.ipynb - GitHub Gist》  
+<a href="https://gist.github.com/JRF-2018/6689ea04c1721b764cba1fac9467dabd" class="ext-link">https://gist.github.com/JRF-2018/6689ea04c1721b764cba1fac9467dabd</a>
+
+Version 0.0.4 での違い。
+
+JRF 2025年7月6日
+
+やはり、tool は tool call で呼んで欲しい。そこで、行動はすぐに行動ではなく、「行動予約」として登録し、invoke のあとそれを実行するようにしました。このような方式ならば、「行動」が複数のツールであったり、引数を取るものであっても対応でき、将来性があるという判断です。
+
+ただ、ただそれだけだと、やたら「行動予約」だけして max iterations に達するので、「行動予約」したあとその予約した行動を Final Answer するよう促してみたところ、max iterations に達することは少なくなりました(ないわけではないです)。
+
+JRF 2025年7月6日
+
+ただ、今度は、「行動予約」する前に「行動」を Final Answer することが増えて、ほぼ無限ループのように「行動予約」ツールを使わないことが出てきました。そういう状態が頻発しました。そこで、以前の bard_maze で有効だった「叱る」ことをやってみました。「行動予約」がなかったら、それを促すよう質問を繰り返すという方策です。
+
+ただ、これでも「行動予約」をしないことが頻発します。そこで、意地になって、gemini-2.5-pro さんに「先生お願いします」することにしました。
+
+JRF 2025年7月6日
+
+やはり pro さんは pro らしく、方針の立て方がうまく「行動予約」も怒られれば、そこで対応してきます。賢い。しかし、何でもないところで壁があると間違って判断して、行きつ戻りつをして最初は 90手かけてもゴールできませんでした。覚悟してクレジットを消費したのに orz。
+
+ほぼ同じ条件でもう一度だけ pro さんにお願いしてみました。2トライ目です。すると、今度は見事に、ほぼ理想的な立ち回りでゴールまで到達しました。やったー！ こりゃ、AGI も近そうです (^^)。
+
+JRF 2025年7月6日
+
+実は、pro さんの1トライ目がうまくいかなかったので、「次に可能な行動」を示したほうがいいかと思っていたのですが、それをせずにクリアできてよかったです。
+
+そうやって、またたまたまゴールできたので、それを公開しておくことにしました。
+
+JRF 2025年7月6日
+
+……。
+
+……。
+
+追記。
+
+○ 2025-07-06T23:18:14Z
+
+LangChain で熊剣迷路問題 Ver. 0.0.5。LangGraph 系の create_react_agent を使って実装。謎なエラーに悩まされたが対処療法でとりあえずゴールはできた。
+
+《langchain_maze_0.0.5.ipynb》  
+<a href="https://gist.github.com/JRF-2018/c39048a7ca12d96576ba3de618ca2ffb" class="ext-link">https://gist.github.com/JRF-2018/c39048a7ca12d96576ba3de618ca2ffb</a>
+
+JRF 2025年7月7日
+
+Version 0.0.5 での違い。
+
+LangGraph 系の create_react_agent を使って実装してみました。といってもグラフ機能は全く使っていないので、LangGraph 的なプログラムになっていません。
+
+ツールメッセージが標準でメモリ(messages)に入っているため、これまでのようにメモリの学習を工夫する必要がないと判断し、一回の invoke で数回の行動ができる 0.0.1 のような方法に戻しました。
+
+JRF 2025年7月7日
+
+ハマったのは、まず、Recursion Limit (LangChain 系の max iterations) が例外として発行されるため、例外処理の部分で、checkpointer から messages を復帰させる必要があるという部分です。
+
+JRF 2025年7月7日
+
+次に、なぜか API レベルで 400 Internal error が発生するというのに悩みました。どうもメッセージに不具合があって出ているようです、要約機能を疑ったのですが、要約以外のところでも出ていて、謎です。とにかく messages から ToolMessage と AIMessage を消せば、再び動くようになるので、そのエラーが出た時はそう対処療法しました。
+
+そうやって、またたまたまゴールできたので、それを公開しておくことにしました。
+
+JRF 2025年7月7日
+
+……。
+
+なぜ LangGraph なのか？
+
+わかりません。現在の LangGraph は並列処理ができるわけでもなく、グラフの途中変更ができるわけでもありません。AI がグラフを学習しやすいというわけでも今はないようです。私はグラフよりもプログラムの制御構造のほうが読みやすく感じます。フローチャートの夢をまた追ってる者がいるのか…と思います。
+
+JRF 2025年7月7日
+
+ただ、他の人は LangGraph が使いやすいそうで、時代はそちらに流れています。そのため 0.0.4 までに使っていた create_tool_calling_agent などは deprecated と言われています。しかも LangGraph では代わりに今回私も使った create_react_agent というのを使うのですが、実は LangGraph 以前の LangChain には同名で別ルーチンの create_react_agentがあったりして錯綜しています。
+
+ただ、ツールメッセージが普通にメモリ(messages)に含まれるため、楽な部分があるのは認めます。
+
+JRF 2025年7月7日
+
+……。
+
+追記。
+
+○ 2025-07-07T06:28:10Z
+
+LangChain で熊剣迷路問題 Ver. 0.0.5。少しだけアップデート。messages のサニタイズは AIMessage は消しても ToolMessage は残しておいても良さそうなのでそうした。別のファイルで試したから Gist のものを再実行してないのはお許しください。
+
+JRF 2025年7月7日
+
+……。
+
+……。
+
+追記。
+
+○ 2025-07-07T18:40:09Z
+
+LangGraph。私に誤解があった。ツールコールを 1 invoke につき一回に制限するのも割と簡単にできるようだ。stream() という機能があって、それでツールコールが呼ばれたかどうかを順次監視でき、呼ばれたらループを break するだけ。LangChain の AgentExecutor でも調べると stream はあったのだが、それほど整った形式でなくやりにくかったのが改善されてるということのようだ。
+
+JRF 2025年7月8日
+
+……。
+
+……。
+
+追記。
+
+○ 2025-07-07T21:44:52Z
+
+LangGraph でアプリを作るとき、連想記憶みたいなものが欲しいんだよね…。会話ログ(ToolMessage も含む)をじゃんじゃん記憶にストアしていって、次に与えるプロンプトを与えると、ベクトルサーチなどして、その記憶からトップの連想をもってきて、それをプロンプトに加えるようなものが欲しい。LangMem がそれかと思ったのだが、軽く読んだところ違うような気がする。AI さん達に聞くと、Retriever という系統を使って、そういう機能を実装できるらしいが、標準的で使いやすい物はまだない感じなのかな…。
+
+JRF 2025年7月9日
+
+……。
+
+……。
+
+○ 2025-07-08T21:35:09Z
+
+熊剣迷路問題の追及は、今シーズンはこれで終了かと思う。今の AI なら一般的な「人工知能的手法」を用いるだけで迷路に特別な要素なく、迷路を解くことができることがわかった。
+
+(この「ひとこと」の最初には AGI は遠いかと書いたが、Gemini 2.5 Pro さんなら、もう迷路を賢く簡単に解けるぐらいには AGI は近いことは確認できた。)
+
+JRF 2025年7月9日
+
+ただ、今回そういった手法で解けたのは、問題が小さく、必要な記憶が「要約」で十分に表せる範囲に届まっていたからではないかと思う。
+
+JRF 2025年7月9日
+
+これがポケモンとかの長大(?)なゲームになると、「要約」では不十分で「連想記憶」が重要になるのではないか。連想記憶というのもなかなか難しい。行動やプロンプトをじゃんじゃん記憶して、それを再生するだけではおそらく不十分で、その付近(?)の文脈も記憶されてる必要があり、場面・場面ごとの要約が「エピソード記憶」としてある感じが必要なのかもしれない。そうやって予め圧縮されたものが連想で出てくる感じになるのだろうか。
+
+JRF 2025年7月9日
+
+しかも、マップとかの 2D データからの連想も必要ということになるなら、マルチモーダル的な連想ということになり難度は高くなる。さらに、3D ゲームということになれば、3D 行動からの連想になる。ただ、3D 行動からの連想は、ロボットの模倣学習などの手法とある程度共通性がありそうで、そこは今後発展が期待できるのかもしれない。
+
+JRF 2025年7月9日
+
+すでに AI さん達はポケモンをクリアするまでできているらしいので、その辺の連想記憶システムはすでにあるのだろうと思われる。オープンに標準化された手ごろなものがないだけで(あるのかな？)。
+
+まぁ、Google さんとか長大なコンテキスト力をほこるから、連想記憶とか関係なく、すべてそれまでのゲームをプロンプトに含めてしまう「力技」の可能性もなくはないが…。
+
+JRF 2025年7月9日
+
+……。
+
+……。
+
+追記。
+
+LangChain で熊剣迷路問題 Ver. 0.0.6。LangGraph 系の stream を使って 1 invoke につき 1 command が確かにできることを確かめるだけの試験実装。
+
+《langchain_maze_0.0.6.ipynb》  
+<a href="https://gist.github.com/JRF-2018/2cb8eba04d6ab7be0631fbbd0657cb13" class="ext-link">https://gist.github.com/JRF-2018/2cb8eba04d6ab7be0631fbbd0657cb13</a>
+
+JRF 2025年7月17日
+
+Version 0.0.6 での違い。
+
+1 invoke につき 1 command というのを stream という機能を使って実装するテストです。それ以外は前回 0.0.5 からの変更はほぼありません。今回は無理やり制限をつける形に近いので、0.0.5 のほうが良いプログラムと言えます。ただ、0.0.4 までのころに問題としてた 1 invoke につき 1 command が LangGraph 系ならこんな簡単にできるということを示すためだけに 0.0.6 を作ってみました。
+
+JRF 2025年7月17日
+
+ちなみに LangGraph 系でない 0.0.4 まで使っていた AgentExecutor でも stream はあって同様の実装ができたようなのですが、LangGraph 系ほど使いやすくないようです。
+
+そうやって、またたまたまゴールできたので、それを公開しておくことにしました。
+
+JRF 2025年7月17日
+
+……。
+
+熊剣迷路問題 revisited。今回の一連の実験をいちおう一つのレポジトリにまとめておきました。
+
+《JRF-2018/langchain_maze: 熊剣迷路問題 revisited - GitHub》  
+<a href="https://github.com/JRF-2018/langchain_maze" class="ext-link">https://github.com/JRF-2018/langchain_maze</a>
+
+JRF 2025年7月17日</pre>
+
+
+<section class="backrefs" data-pagefind-ignore>
+<h2>後方参照 (4 件)</h2>
+<ul>
+<li><span class="backref-label">[cocolog:95524118]参照</span> <a href="../../../articles/2025/08/gsm_007574.html">共有メモ</a> <span class="backref-date">2025-08-27T11:14:39Z</span></li>
+<li><span class="backref-label">[cocolog:95524118]参照</span> <a href="../../../articles/2025/08/statuses_cocolog_95570104.html">ひとこと</a> <span class="backref-date">2025年08月05日</span></li>
+<li><span class="backref-label">[cocolog:95524118]参照</span> <a href="../../../articles/2025/07/statuses_cocolog_95531341.html">ひとこと</a> <span class="backref-date">2025年07月10日</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2025/07/gsm_007309.html">共有メモ</a> <span class="backref-date">2025-07-04T18:30:33Z</span></li>
+</ul>
+</section>
+
+</article>
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2025/07.html">2025年07月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+</body>
+</html>

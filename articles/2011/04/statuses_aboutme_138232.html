@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>ひとこと - JRF Blog Archive</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2011/04.html">2011年04月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+<article data-pagefind-body>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[statuses] <span class="cocolog-id">aboutme:138232</span></td></tr>
+<tr><th>セクション</th><td>JRF のひとこと</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2011/04.html">2011年04月06日</a></td></tr>
+<tr><th>元URL</th><td><a href="http://jrf.cocolog-nifty.com/statuses/2011/04/aboutme138232.html" class="ext-link"><span class="original-url">http://jrf.cocolog-nifty.com/statuses/2011/04/aboutme138232.html</span></a></td></tr>
+
+</table>
+</div>
+<h1>ひとこと</h1>
+<pre class="body">IE の Javascript の正規表現で /.../m のマルチライン(複数行)処理がうまくいってないように見え、\r\n の問題かとも迷ったが、結局、IE ではソースで &lt;br /&gt; と書かれているところが、内部で &lt;BR&gt; と大文字に書き換わっていることが原因だった。
+JRF 2011年4月6日
+
+アバウトミーのページをローカルに保存し、コメント等からアンカーを取り除いて、HTML はタグは &lt;br /&gt; しかないようなものをまず作り、それを記事としてココログに登録、その後記事をブラウザで表示するときに、javascript でもう一度アンカー等を付けてやるというコードを書いている。
+
+Javascript で &lt;br /&gt; を \n に書き換えて処理しているのだが、最初、エラーになる部分でその処理を忘れていたのがケチの付きはじめ。
+
+JRF 2011年4月6日
+
+で、いろいろやって、innerText が IE にあって Firefox になく、Firefox には textCont しかないという問題とかもクリアにしながら、どうも IE ではマルチラインが使えないという結論になりかかっていた。
+
+でも、注意して alert で innerHTML を表示させたのを見比べると &lt;BR&gt; が大文字になってる！…というのでやっと上の問題に気づいた。
+
+JRF 2011年4月6日</pre>
+
+
+</article>
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2011/04.html">2011年04月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+</body>
+</html>

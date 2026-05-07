@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>共有メモ - JRF Blog Archive</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2021/01.html">2021年01月</a> | <a href="../../../index/gsm.html">共有メモ</a></nav>
+<article data-pagefind-body>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[gsm] 2021-01-29T23:15:09Z</td></tr>
+<tr><th>セクション</th><td>グローバル共有メモ</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2021/01.html">2021-01-29T23:15:09Z</a></td></tr>
+<tr><th>元URL</th><td>(URLなし)</td></tr>
+
+</table>
+</div>
+<h1>共有メモ</h1>
+<pre class="body">jrf&gt; [仏教の最適化プログラムの続き。]
+
+test_of_income_1.py において、--strong-donation がないと、どこまでも金を儲ける者が現れた。しかし、なんというか、これは夢があり過ぎる。
+
+donation システムがなくても、どこかで商売上の限界にぶつからねばならない。そこで「債券」「株式」「大バクチ」に賭けられる限界(それぞれ 1000, 300, 50 に設定)を設け、それを超えた額は「死蔵」せねばならないとした。
+
+「死蔵」の場合も、「債券」と同じく θ= 0.01 のマイナスのレヴィ分布に支配されるとした。その分布のようすは、↓(バージョン 0.0.2)で python test_normal_levy_3.py -f dead --max=10 --min=-100 などとすれば確かめられる。
+
+《test_normal_levy_3.py - 正規分布+マイナスのレヴィ分布の実験。「株式」「債券」「農地」「大バクチ」「死蔵」それぞれの分布の形を見てみる。》  
+<a href="https://gist.github.com/JRF-2018/50b29e2d95d067483c3e9465c9b510ad" class="ext-link">https://gist.github.com/JRF-2018/50b29e2d95d067483c3e9465c9b510ad</a>
+
+(なお、↑も↓も実行するには、generate_normal_levy_csv.py を実行しておく必要がある。以前に実行してあるなら必要ない。)
+
+test_of_income_1.py では、上昇志向(ambition)に従って「債券」か「株式」(または「大バクチ」)かを決めたあと、「株式」が max を超えたら「大バクチ」にまわし、「大バクチ」が max を超えたら「債券」にまわす。「債券」が max を超えたら「死蔵」にまわすというアルゴリズムにしている。
+
+そのように改良したのが↓ (バージョン 0.0.4)。
+
+《test_of_income_1.py - 主に商業財産から決まる収入のテスト経済シミュレーション。》  
+<a href="https://gist.github.com/JRF-2018/39ed54ff14cb3c79c21f42f7254fa7bc" class="ext-link">https://gist.github.com/JRF-2018/39ed54ff14cb3c79c21f42f7254fa7bc</a>
+
+これを --strong-donation なしで実行すると、最大値の上昇はかなり緩やかになり 50 ステップで、平均が 3400 最大が 6400 ぐらいとなる。
+
+一方、--strong-donation しても平均が 80 ぐらいと前と変わらない。--donation-rate=0.3 でも、最大値が 800 程度で許容範囲だ。さらに --strong-consumption を組み合わせると平均 58 最大 300 程度。ちなみに、これまでのバージョンでは --strong-consumption に大きなミスがあり、最大値などが大きくなり過ぎていた。
+
+さらに --donation-limit=1000 にすると平均が 153 最大が 722 だが、グラフの形がかなりリアリティがあってよい。さらに試しに --no-land を付けても平均 60、最大 700。
+
+これに災害が加わればどうなるか…。</pre>
+
+
+</article>
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2021/01.html">2021年01月</a> | <a href="../../../index/gsm.html">共有メモ</a></nav>
+</body>
+</html>

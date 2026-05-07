@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>ひとこと - JRF Blog Archive</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2014/01.html">2014年01月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+<article data-pagefind-body>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[statuses] <span class="cocolog-id">cocolog:78822199</span></td></tr>
+<tr><th>セクション</th><td>JRF のひとこと</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2014/01.html">2014年01月31日</a></td></tr>
+<tr><th>元URL</th><td><a href="http://jrf.cocolog-nifty.com/statuses/2014/01/safar.html" class="ext-link"><span class="original-url">http://jrf.cocolog-nifty.com/statuses/2014/01/safar.html</span></a></td></tr>
+
+</table>
+</div>
+<h1>ひとこと</h1>
+<pre class="body">Safari 5 でだけ、display: inline-block がうまく表示されないことに悩む。
+JRF 2014年1月31日
+
+hide_img.js を作っててぶつかった問題。
+
+結論としては、Safari だけ float:none が必要だった。
+
+JRF 2014年1月31日
+
+《hide_img.js》
+<a href="http://jrf.cocolog-nifty.com/archive/lib/hide_img.js" class="ext-link">http://jrf.cocolog-nifty.com/archive/lib/hide_img.js</a>
+<a href="http://jrf.cocolog-nifty.com/archive/lib/hide_img.css" class="ext-link">http://jrf.cocolog-nifty.com/archive/lib/hide_img.css</a>
+
+これの機能とポリシーに関しては今のところ↓。
+《デスクトップ壁紙公開についてのこのサイトのポリシー》
+<a href="../../../articles/2013/09/column_77735537.html" class="int-link" title="デスクトップ壁紙公開についてのこのサイトのポリシー">http://jrf.cocolog-nifty.com/column/2013/09/post.html</a>
+
+JRF 2014年1月31日
+
+やろうとしていたのは、イメージの部分に特定のクラス(今回は &quot;sexual&quot;)が設定されていると、そこのイメージをボックスで覆って、クリックがなされたらその覆いを外す。…という機構。
+
+JRF 2014年1月31日
+
+最初、window.confirm を使わず、同等のことを overlay とかでやろうとしてたんだけど、クロスブラウザ対応まで考えると、うまくできず断念。
+
+そのときダイアログをポップアップさせたりしようとして position: relative とか position:absolute とか、ボックスを重ねたりとかいろいろやってた。
+
+window.confirm を使うようにしたところ、その辺をとっぱらえてソースがかなりスッキリした。
+
+JRF 2014年1月31日
+
+そして、relative な span の中にある img の部分に  absolute な div を重ねようとするんだけど、どうしてもうまくいかない。absolute で top: 0px とかやってるのに img の表示後の座標からスタートしてるみたいな感じになる。img も absolute な div も span の子要素なのに。
+
+JRF 2014年1月31日
+
+しかたなく、img を表示したまま上に重ねて隠すのは諦め、一端、display:none してあとから display:inline に戻すようにした。
+
+JRF 2014年1月31日
+
+……。
+
+次に問題になったのはアンカー a のイベント関連。イメージにアンカーが付けられてるところのイメージをウィジェットで置き換えて、そこでは、stopPropagation とかまでやってるのに、その親の a href がどうしても評価されてしまう。
+
+addEventListener の第３引数関連でも、これについてはダメっぽい。
+
+しかたなく、img を display:none にするとき、その親要素が a であったら、そちらとまとめて display:none するようにして対応した。
+
+JRF 2014年1月31日
+
+……。
+
+display:none までしちゃえば、そこにボックスを作るんだから、「こうなれば簡単」と position:relative とかそういうのも外してやると、border とかがまったく効かなくなる。
+
+どうも span は display: inline だから、ボックス的なことはできないということらしい。
+
+で、調べるとそういうときは display: inline-block が便利なようなのでそれを使い解決！
+
+JRF 2014年1月31日
+
+IE でもうまくいってたから、それでいいやと公開した。
+
+あとから気になって、Chrome, Opera も調べるが、これらは OK。でも Safari だけ inline-block なのに inline でしかないような border のない表示になる。なして？
+
+JRF 2014年1月31日
+
+……。
+
+ググっても、スペース関連でおかしいという意見は散見するがズバリの解答はない。ただ、Safari との関連としてではないが、inline-block を使うときは float が問題になってるような書きぶりのサイトが結構ある。
+
+関係ないはずだが一応試してみるか…と、float: none を使ってみると…Safari でもうまくいった！
+
+JRF 2014年1月31日
+
+……。
+
+あとは、縦の中揃えのために一端外していた position: relative と position: absolute を復帰。他といっしょくたにしていた CSS ファイルを分ける。
+
+…なぜか、text-align: left 指定したみたくなってる。
+
+まぁ、これはファイル分けるときによくあるミスで、position 指定とかといっしょに導入したからなかなか原因を特定できなかったが、結局は CSS の評価順の問題。要素のセレクタをより具体的にすることで解決した。
+
+JRF 2014年1月31日
+
+例としては一番上のほうにある hide_img.css を見ればいいと思う。CSS だけなら十分コンパクトだから。
+
+JRF 2014年1月31日</pre>
+
+
+<section class="backrefs" data-pagefind-ignore>
+<h2>後方参照 (1 件)</h2>
+<ul>
+<li><span class="backref-label">[cocolog:78822199]参照</span> <a href="../../../articles/2014/02/software_78894927.html">hide_img.js：画像のクラス指定に順って閲覧を要クリック化する</a> <span class="backref-date">2014年02月08日 17:22:42</span></li>
+</ul>
+</section>
+
+</article>
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2014/01.html">2014年01月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+</body>
+</html>

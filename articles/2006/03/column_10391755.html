@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>ケータイと PC の連携：「着脱式デバイス」で特許取得なんてできるの？ - JRF Blog Archive</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2006/03.html">2006年03月</a> | <a href="../../../index/column.html">雑記</a></nav>
+<article data-pagefind-body>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[column] <span class="cocolog-id">cocolog:10391755</span></td></tr>
+<tr><th>セクション</th><td>JRF の私見：雑記</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2006/03.html">2006年03月07日 11:24:27</a></td></tr>
+<tr><th>元URL</th><td><a href="http://jrf.cocolog-nifty.com/column/2006/03/post_8.html" class="ext-link"><span class="original-url">http://jrf.cocolog-nifty.com/column/2006/03/post_8.html</span></a></td></tr>
+<tr><th>タグ</th><td>[時事] [情報工学・コンピュータ科学]</td></tr>
+</table>
+</div>
+<h1>ケータイと PC の連携：「着脱式デバイス」で特許取得なんてできるの？</h1>
+<pre class="body">《「USBメモリ挿入−プログラム自動起動」で特許取得》という記事があった。 特許電子図書館で「着脱式デバイス」で検索すれば関連特許(今のところ同一の代表出願者による)が出てくる。
+
+USB 機器を CD-ROM として認識させ AUTORUN.INF を実行させることに関する特許のように見える。
+
+出願は 2002 年……90 年代ならまだしも 2002 年でこれぐらいのアイデアは PC をいじる人間なら誰しも持っていただろう。「その分野の専門家(当業者)が容易に思い付くことができる」というものじゃないのか？
+
+まぁ、でも今さら AUTORUN.INF みたいな社内セキュリティ的に問題のある機構だからこそ、特許がおりたのかもしれない。
+
+私は携帯電話に関して、少なくとも 2001 年 8 月末あたりに家族に次のような文を含むメールを送ったことが残っている。(メインの内容は USB に関してではなく、ここでは、2001 年 8 月の段階でもすでにこれぐらいの認識はシロートでも可能だったことを示したいだけ。PnP 自体はずっと前からある話。)
+
+＞
+  USB は接続相手に応じた特定のアプリケーションを起動する機能 (Plug-and-Play 機能)を規格の中に持っている。USB 自体は、あくまでも PC に周辺機器を接続するための client-server 型(中央集権型)の規格であるから、携帯電話を PC につなぐことはできても、携帯電話に PC で使う周辺機器を直接 USB でつなぐことはできないはずである。携帯電話に周辺機器をつなぎたければ、別の仕様で接続することになる。
+  
+  誤解を生じないように詳しく述べれば、Plug-and-Play 機能の意味は、接続した相手のアプリケーションをダウンロードするという意味ではなく、相手に合わせて自分のアプリケーションを起動するという意味である。
+＜
+
+逆にいうと、私は「普通の人」は PnP を、繋いだ「相手のアプリケーションをダウンロード」すなわち CD-ROM の AUTORUN.INF を PC 上に読み込むような風に誤解するかもしれないと思っている。それで、「その方法ができない」と言っているのではなく、「そうでないほうが良い」と言っているわけである。
+
+少し面倒でも、信頼できるサーバーからダウンロードしたプログラムを起動するほうが、何が入っているかわからない「CD-ROM」を起動するよりは、安心できるだろう。今でも、上記の考えは変わっていない。
+
+信頼できるサーバーからダウンロードする仕組も各社まちまちだが、除々に自動化されている。アップデートの自動化もセキュリティ上の心配は尽きないが、責任の所在をはっきりさせやすいのが、使い易い点だ。
+
+ただ、こういう特許が下りるところを見ると、私がメールで書こうとした電子マネーを軸とした携帯電話と PC との連携が進まないのは、特許が安易に出され過ぎて新規開発を縛っているからじゃないかと思えてくる。
+
+ちなみに、「安易な特許」が認可されたときは「無効審判」を請求できる。 2004 年の改正によって利害関係がなくても請求ができるようになった。とはいえ、審判にかかる費用を社会的なコストも含めて考えると、特許による威嚇効果は依然として残っている。
+
+メールを出したころは、携帯電話と PC との連携というと、メモリカードに毛の生えたような機器を中間に置くように考えていた。が、今なら例えば、携帯電話を PC につなぐと Skype みたいな技術を使って、電波を用いず IP 越しに携帯電話会社を利用するとかが、私みたいな門外漢でも思い付く考えだ。
+
+携帯電話を固定電話として使ったり、ケータイの発達した集金システムを使うことはもちろん、社内セキュリティとか災害時や僻地での携帯電話を使った有線通信に利用できるからいいかなぁとか思ってる。
+
+面白そうなことがまだまだできそうなのに、最近は市場が成熟してきたからか、技術的に面白そうな発展が出なくなって淋しい。従来技術でも、地点データを URN にして流通させやすくするとかさぁ、磨けば光りそうなものはありそうなのに。
+
+&lt;b&gt;参考&lt;/b&gt;
+  《日経ＢＰ社：有力な無効事由をはらむ特許の相当対価》
+  
+更新：06/03/07
+初公開：2006年03月07日 11:24:33
+最新版：2006年03月18日 13:35:30</pre>
+<details class="trackbacks" data-pagefind-ignore><summary>Trackbacks (3 件)</summary><pre>
+Trackbacks:
+
+《<a href="http://jrf.cocolog-nifty.com/society/2006/03/post_2.html">未確定知識と衝動知識 ― 非当業者性から考える特許の報酬モデルの二形態</a>》 from JRF の私見：税・経済・法
+ 特許の要件として進歩性がある。 特許法 第二十九条 ２ 特許出願前にその発明の属する技術の分野における通常の知識を有する者が前項各号に掲げる発明に基いて容易に発明をすることができたときは、その発明については、同項の規定にかかわらず、特許を受けることができない。 「その発明の属する技術の分野における通常の知識を有する者」を法律用語で当業者と呼ぶ。 当業者にとって容易であるという判断はつけにくいが、... 
+
+受信： 2006-03-23 19:37:36 (JST)
+
+
+《<a href="http://www.gitam.edu/nba-aicte/viagra.html">Viagra without a prescription.</a>》 from Viagra sale.
+Viagra. Viagra affects on women. Free viagra. Compare stay erect and viagra. Re viagra cello. Viagra attorneys. 
+
+受信： 2007-05-28 15:50:04 (JST)
+
+
+《<a href="http://ixanax.informe.com">Half-life of xanax.</a>》 from Buy xanax.
+Buy xanax. Xanax. Xanax cocktail. 
+
+受信： 2007-07-09 12:39:57 (JST)
+
+
+Links:
+
+「USBメモリ挿入−プログラム自動起動」で特許取得: http://www.itmedia.co.jp/news/articles/0603/06/news036.html
+特許電子図書館: http://www.ipdl.ncipi.go.jp/homepg.ipdl
+日経ＢＰ社：有力な無効事由をはらむ特許の相当対価: http://chizai.nikkeibp.co.jp/chizai/manufacture/jinvent20040625.html
+
+
+
+</pre></details>
+
+</article>
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2006/03.html">2006年03月</a> | <a href="../../../index/column.html">雑記</a></nav>
+</body>
+</html>

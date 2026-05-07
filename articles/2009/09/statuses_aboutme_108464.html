@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>ひとこと - JRF Blog Archive</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2009/09.html">2009年09月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+<article data-pagefind-body>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[statuses] <span class="cocolog-id">aboutme:108464</span></td></tr>
+<tr><th>セクション</th><td>JRF のひとこと</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2009/09.html">2009年09月03日</a></td></tr>
+<tr><th>元URL</th><td><a href="http://jrf.cocolog-nifty.com/statuses/2009/09/aboutme108464.html" class="ext-link"><span class="original-url">http://jrf.cocolog-nifty.com/statuses/2009/09/aboutme108464.html</span></a></td></tr>
+
+</table>
+</div>
+<h1>ひとこと</h1>
+<pre class="body">おそらく今後も使わないけど、Isabelle2009 の cygwin 版をインストール。ProofGeneral の設定が難しい。Meadow だとシンボリックリンクの関係でうまくいかなかった。xemacs も何かおかしい。GNU Emacs 23 だとわりとうまくいった。
+JRF 2009年9月3日
+
+xemac も GNU Emacs も cygwin の X から起動している。
+
+今入ってるバージョンは xemacs 21.4 (patch 22)、GNU Emacs 23.0.92.1。
+
+それぞれの .emacs を編集するのに時間がとられた。ProofGeneral が起動して適度なフォントサイズで utf-8 ぐらいは使えるようにする…ということに絞って設定した。(なんと xemacs はデフォルトだと
+ utf-8 を使えない。ググると (require 'un-define) とかしないといけないらしい。)
+
+JRF 2009年9月3日
+
+ちょっと字を大きくするフォントの設定は xemacs が
+(custom-set-faces
+'(default ((t (:size &quot;14pt&quot; :family &quot;Courier&quot;))) t))
+
+GNU Emacs が
+(if window-system
+(set-default-font
+&quot;-*-fixed-medium-r-normal-*-16-*-*-*-*-*-fontset-standard&quot;))
+JRF 2009年9月3日
+
+ProofGeneral は isatool じゃなくなって /usr/local/Isabelle/bin/isabelle を使う。よって次の設定があるといい。
+
+(if (file-directory-p &quot;/usr/local/ProofGeneral/generic&quot;)
+    (progn
+      (load-file &quot;/usr/local/ProofGeneral/generic/proof-site.el&quot;)
+      (setq isa-isatool-command &quot;/usr/local/Isabelle/bin/isabelle&quot;)))
+
+JRF 2009年9月3日
+
+…しかし、thy ファイルも書き方がずいぶん変わった。Isar って何？私が使ってたころは Isabelle「2009」とか年数がつかず「無印」だった。(98 とかでもないよ。)ZF のドキュメントがデフォルトで消えてるらしいのもちょっとショック。まぁ、大学院を出ていらい実質使ってないから、それぐらいの変化は当然だろうけど。
+
+
+JRF 2009年9月3日
+
+あと emacs で color-mate は普通使わないようになったんですね。jka-compr-ccrypt が使えない(使うと  .gz が読めなくなる)のも地味に痛い。
+JRF 2009年9月3日
+
+使ってないから Isabelle の記事は書いてない。思い出を元に書いたのが↓か。
+
+メタ論理: 演驛と帰納 [ JRF の私見：雑記 ]
+<a href="../../../articles/2006/01/column_9682181.html" class="int-link" title="メタ論理: 演驛と帰納">http://jrf.cocolog-nifty.com/column/2006/01/post_10.html</a>
+JRF 2009年9月4日
+
+Trackbacks:
+
+《cocolog:76238664》 from JRF のひとこと
+<a href="../../../articles/2013/04/statuses_cocolog_76238664.html" class="int-link" title="ひとこと">http://jrf.cocolog-nifty.com/statuses/2013/04/post-b278.html</a>
+
+昔、使ってた定理証明支援システムをインストールしようとしてうまくいかない。 
+
+受信： 2013-06-30 00:01:21 (JST)</pre>
+
+
+<section class="backrefs" data-pagefind-ignore>
+<h2>後方参照 (1 件)</h2>
+<ul>
+<li><span class="backref-label">[aboutme:108464]参照</span> <a href="../../../articles/2013/04/statuses_cocolog_76238664.html">ひとこと</a> <span class="backref-date">2013年04月19日</span></li>
+</ul>
+</section>
+
+</article>
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2009/09.html">2009年09月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+</body>
+</html>

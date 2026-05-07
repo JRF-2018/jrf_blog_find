@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>共有メモ - JRF Blog Archive</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2021/11.html">2021年11月</a> | <a href="../../../index/gsm.html">共有メモ</a></nav>
+<article data-pagefind-body>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[gsm] 2021-11-29T22:24:03Z</td></tr>
+<tr><th>セクション</th><td>グローバル共有メモ</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2021/11.html">2021-11-29T22:24:03Z</a></td></tr>
+<tr><th>元URL</th><td>(URLなし)</td></tr>
+
+</table>
+</div>
+<h1>共有メモ</h1>
+<pre class="body">jrf&gt; 経済シミュレーションの話。追記。(一連のメモは <a href="../../../articles/2021/11/statuses_cocolog_93150989.html" class="int-link cocolog-id" title="ひとこと">[cocolog:93150989]</a> にも書いた。)
+
+基礎等式、直接、貯蓄率 ** k をかけると、貯蓄率が 0 のとき、株価が 0 や ∞ になってしまってよろしくない。
+
+そこで、直間比率を q = 直接投資／間接投資, 貯蓄率を r として、(貯蓄率 ** k) * C  の部分を (k1 + k2 * J) に置き換える。ただし、J は q が 0 のとき 1 - r になり、q が ∞ のとき r になり、q が 1 のとき 0.5 になるような関数である。
+
+J の仕様はそういうことだが、具体的な関数は、J = (r - 0.5) * tanh(log(q)) + 0.5  がその候補となるようだ。これは J = 0.5 + (r - 0.5) * (q ** 2 - 1) / (q ** 2 + 1) に書き換えることもできる。(tanh の中身を少し変えてもいい。tanh(C1 * log(q)) とやって C1 を変えて少し調整しても良いだろう。C1 = 1/2 でも良く、そのときは J = 0.5 + (r - 0.5) * (q - 1) / (q + 1) になる。)
+
+ただ、かなり恣意的な関数なので、「自然か」と言われるとなかなかそうとは言いづらいのが頭の痛いところ。
+
+ちなみに基礎等式は上の J を使って、
+
+株価の総額 ＝ (全販売用在庫＋投資(による在庫)) * (k1 + k2 * J) + k3
+
+ただし、(k1 k2 k3  は定数)…となる。…といった感じか。</pre>
+
+
+</article>
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2021/11.html">2021年11月</a> | <a href="../../../index/gsm.html">共有メモ</a></nav>
+</body>
+</html>

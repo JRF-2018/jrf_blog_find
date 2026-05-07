@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>参考文献：確率論 - JRF Blog Archive</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2006/06.html">2006年06月</a> | <a href="../../../index/column.html">雑記</a></nav>
+<article data-pagefind-body>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[column] <span class="cocolog-id">cocolog:12180123</span></td></tr>
+<tr><th>セクション</th><td>JRF の私見：雑記</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2006/06.html">2006年06月05日 23:01:51</a></td></tr>
+<tr><th>元URL</th><td><a href="http://jrf.cocolog-nifty.com/column/2006/06/post.html" class="ext-link"><span class="original-url">http://jrf.cocolog-nifty.com/column/2006/06/post.html</span></a></td></tr>
+<tr><th>タグ</th><td>[論理学] [参考文献・リンク集] [確率論]</td></tr>
+</table>
+</div>
+<h1>参考文献：確率論</h1>
+<pre class="body">統計よりも確率、または確率モデルに興味があります。この記事の初投稿時の 2006 年に概説本を読んだ影響もあり、手近にあった教科書を書き出してみます。これらの他にも統計学やブラックショールズ方程式の本なども別にありますが、それはまた別の機会に。
+
+  ●『確率と確率過程理工学者が書いた数学の本』(伏見 正則, 講談社, 1987年)
+    
+私の大学学部生時代の教科書でわかりやすかったです。証明とかは少ないのですが。
+
+  ●『推定と検定 − 数学ワンポイント双書 18』(鷲尾 泰俊, 共立出版, 1978年)
+    
+上ではそう書きましたが、結局、学部時代にこの本に出合って、やっと確率・統計の使い方が少しわかるようになった気がします。ただ、今読み返すと、ワンポイント双書にしてはわかりにくいような……私の数学力が落ちたのかな？
+
+  ●『確率の理解を探る ― 3囚人問題とその周辺 認知科学モノグラフ』(市川 伸一, 共立出版, 1998年)
+    
+ところが、卒業後、この三囚人問題で大きくつまづきました。私は、この箸者とは違う答え、「間違い易い」と指摘される答えのほうが正しく感じられます。
+
+確率の定義に戻り、ごく小さい見本空間で自然なものというと私は、変数ごとの直積を考えますが、この本の通りになるよう見本空間を描くと、かなりイビツな空間が求まってしまいます。
+
+(2008年02月28日から03月12日の《アバウトミーひとこと欄》にそのあたりのことが書いています。また、いずれ記事にする予定ですが、聞き手が「ただし、処刑されるべき者を(看守が)今、思い浮かべ、その者が処刑される場合のみ、そう教えて欲しい。」と述べたときは、1/3 から 1/2 に上がることが示せます。また、聞き手が「たまたま決めた者が処刑されるなら教え、そうでなければ教えないで下さい。ただそれだけでは、教えないことが私が処刑されることを意味することになります。そこで、私が恩赦になる場合も教えない場合をつくるために、私が恩赦であることがわかったらサイコロを振り、偶数の目が出たときは、今決めた者が処刑されたとしても教えないようにしてください。」と言うことで、別のコントロールを及ぼすようにできます。)
+
+そこで、この違いがどこからくるのかと、非常に長い式の空間を考えたり、マルコフ連鎖を拡張しようとしたのですが、うまくいきません。
+
+そこで、さらに逆昇って無限における確率空間を調べよう下記を読みました。
+
+  ●『確率論 − 岩波基礎数学選書』(伊藤 清, 岩波基礎数学選書, 1991年)
+    
+しかし、Borel 空間と測度論では、私が自然だと感じる直積の拡張はできません。ここで私の研究は頓挫してしまいました。
+
+2006年ごろ、次の概説書を読みました。
+
+  ●『統計学を拓いた異才たち ― 経験則から科学へ進展した一世紀』(David Salsburg 著, 竹内 恵行, 熊谷 悦生 訳, 日本経済新聞社, 2006年)
+    
+私が夢見ていたのは記号論理学と確率論の統合のようなことです。しかし、この本を読んで、私なんかが手の届かない天才達、たとえば Kolmogorov なども挑戦して果たせなかったものだと知りました。直積的空間と遺伝的アルゴリズムによるその空間変化を論理にできないかとか考えていたのですが、一筋繩ではいきそうにないですね。
+
+あと、この本には私が長年、愛読している『Axiomatic Set Theory』の Patrick Suppes が個人が自分のために定義する確率というのは数値で表せるものではなく大抵次のようなものだ……というのが印象に残りました。
+
+  (1)きっと正しい
+  (2)どちらかといえば正しい
+  (3)正しいか間違っているかは同じ程度
+  (4)どちらかといえば間違っている
+  (5)きっと間違っている
+    
+私は、これは「弁証法」というスパイスをかけるとわかり易くなるのではないかと思います。弁証法が用いられると、それまでの真偽を再び精査しなければならなくなります。
+
+「きっと」というのは、弁証法後もかわらない。
+
+「どちらかといえば」というのは、弁証法による仮定の増加によっては真偽がかわる、または判別できない状態になる。
+
+「同じ程度」というのは本当は何らかの明白な仮定を立てて「正」「反」の図式を作るにはコストが大きすぎる状態、事実上判別できない状態にあることを指しているのではないかと考えました。
+
+いってみれば「個人確率」というのは正負の値をとる「強情度」のようなものではないかと思いました。
+
+  ●『コルモゴロフの確率論入門』(コルモゴロフ, ジュルペンコ, プロホルフ 共著, 丸山 哲郎, 馬場 良和 共訳, 森北出版, 2003年)
+    
+上の本でコルモゴロフに興味を持ち調べたところ、この本に出会いました。初歩からベルヌーイ試行、対称な二項分布が正規分布で近似できること、出生・死滅過程についてまで丁寧に解説している本です。良書だと思います。
+
+以前、遺伝子組換えに関して「発散的確率モデル」という言葉を使ってしまったのですが、こんな言葉、私自身知りません。その責任(?)を感じて記号論理学との関連以外にも目を向けて確率論とその周辺を今、勉強し直しています。
+
+  ●『歴史は「べき乗則」で動く』(マーク・ブキャナン 著, 水谷 淳 訳, ハヤカワ文庫, 2000年/2009年)。
+    
+それは、「複雑系」「カオス」「べき乗則」「散逸構造」といった話に通じるのかもしれません。
+
+「確率モデル」を実装するシミュレーションに取り組むと、乱数を「造る」必要があり、その解析をする機会があります。そのとき下記の PDF 集の「第6章 標本分布」がわかりやすく重宝しています。
+
+  ●《田中 勝人：「数理統計学」レジュメ》
+    
+さらに詳しい話だと次の洋書があります。(ネットで公開されている。)
+
+  ●“Non-Uniform Random Variate Generation” (Luc Devroye 著, Springer-Verlag, New York, 1986年)
+    
+ただ、第一章とあと少しぐらいしか、私は読めてません。まだ必要になってないからと言っておきましょう。(^^;)
+
+初公開：2006年06月05日 23:01:51
+最新版：2011年02月02日 18:21:45</pre>
+<details class="trackbacks" data-pagefind-ignore><summary>Trackbacks (3 件)</summary><pre>
+Trackbacks:
+
+《<a href="http://2153.flopet.at/">mortgage sales leads</a>》 from mortgage sales leads
+ post bankruptcy mortgage loan
+ low online mortgage rate
+ no cost home mortgage
+ reverse mortgage rate and te... 
+
+受信： 2006-06-17 09:05:47 (JST)
+
+
+《<a href="http://jrf.cocolog-nifty.com/society/2011/01/post.html">外作用的簡易経済シミュレーションのアイデアと Perl による実装</a>》 from JRF の私見：税・経済・法
+抽象化された確率モデルにおいて、内的作用(内作用)により作られたモデルと外的作用(外作用)から作られたモデルが同じ臨界をもたらすことがある。経済に関するモデルを作るとき、ミクロな部分でなしたことがマクロに影響するということがいいたいことがあるが、マクロの大きな数と複雑な動きを表すにはコンピュータを用いても限界がある。確率モデルのようなアイデアをもってすれば、コンピュータシミュレーションなどで解析で... 
+
+受信： 2011-01-09 19:05:17 (JST)
+
+
+《<a href="http://jrf.cocolog-nifty.com/software/2016/08/post.html">モンティ・ホール問題または三囚人問題の拡張とその確率操作シミュレーション</a>》 from JRF のソフトウェア Tips
+はじめに 近年、J. ローゼンハウスの『モンティ・ホール問題テレビ番組から生まれた史上最も議論を呼んだ確率問題の紹介と解説』という本が出た。この本は、モンティ・ホール問題について詳しく、この本が出る前に私が考えていた問題の拡張についても書かれてしまっていた。この本を読んで、一端は、私がこれ以上、この問題について何か書く必要はないかと思った。が、それからしばらくして、私がやったことも少しは意味がある... 
+
+受信： 2016-08-27 21:23:21 (JST)
+
+
+Comments:
+
+更新:主に『コルモゴロフの確率論入門』を足した。
+投稿: JRF | 2006-10-09 19:47:41 (JST)
+
+http://viagraonline.land.ru/dysfunction-erectile.html # dysfunction erectile
+   http://viagraonline.land.ru/discount-generic-viagra.html # discount generic viagra
+   http://viagraonline.land.ru/viagra-men.html # viagra men
+   
+http://basetabs.pop3.ru/buy-levitra-online.htm - buy levitra online
+   http://basetabs.pop3.ru/cialis-uk.htm - cialis uk
+   http://basetabs.pop3.ru/erectile-cause-of-erectile-dysfunction.htm - erectile cause of erectile dysfunction
+   
+http://onliveviagra.front.ru/low_price_viagra.html : low price viagra
+   http://onliveviagra.front.ru/index2.html : buy com lvivhost online viagra
+   http://onliveviagra.front.ru/viagra_dosage.html : viagra dosage
+   
+
+投稿: bloghbopw | 2007-04-16 08:01:31 (JST)
+
+[E:shine] 更新：乱数発生に関する文献を足し、当分記事にする予定がないので三囚人問題に関するメモも書いておいた。
+
+投稿: JRF | 2011-02-02 18:25:56 (JST)
+
+
+Links:
+
+確率と確率過程理工学者が書いた数学の本: http://www.amazon.co.jp/exec/obidos/ASIN/4061868373
+推定と検定 − 数学ワンポイント双書 18: http://www.amazon.co.jp/exec/obidos/ASIN/4320012399
+確率の理解を探る ― 3囚人問題とその周辺 認知科学モノグラフ: http://www.amazon.co.jp/exec/obidos/ASIN/4320028600
+アバウトミーひとこと欄: http://jrf.aboutme.jp/user_statuses/list
+確率論 − 岩波基礎数学選書: http://www.amazon.co.jp/exec/obidos/ASIN/400007816X
+統計学を拓いた異才たち ― 経験則から科学へ進展した一世紀: http://www.amazon.co.jp/exec/obidos/ASIN/4532351944
+Axiomatic Set Theory: http://www.amazon.co.jp/exec/obidos/ASIN/0486616304
+コルモゴロフの確率論入門: http://www.amazon.co.jp/exec/obidos/ASIN/4627095112
+歴史は「べき乗則」で動く: http://www.amazon.co.jp/dp/4150503583
+田中 勝人：「数理統計学」レジュメ: http://www.econ.hit-u.ac.jp/~tanaka/mathsta/stat.html
+Non-Uniform Random Variate Generation: http://cg.scs.carleton.ca/~luc/rnbookindex.html
+bloghbopw: http://blogs.law.harvard.edu/viagraonlineviagra/
+
+
+
+</pre></details>
+
+<section class="backrefs" data-pagefind-ignore>
+<h2>後方参照 (1 件)</h2>
+<ul>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2014/06/statuses_cocolog_79824785.html">ひとこと</a> <span class="backref-date">2014年06月02日</span></li>
+</ul>
+</section>
+
+</article>
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2006/06.html">2006年06月</a> | <a href="../../../index/column.html">雑記</a></nav>
+</body>
+</html>

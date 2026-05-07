@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>ひとこと - JRF Blog Archive</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2025/05.html">2025年05月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+<article data-pagefind-body>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[statuses] <span class="cocolog-id">cocolog:95459644</span></td></tr>
+<tr><th>セクション</th><td>JRF のひとこと</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2025/05.html">2025年05月24日</a></td></tr>
+<tr><th>元URL</th><td><a href="http://jrf.cocolog-nifty.com/statuses/2025/05/post-05b95f.html" class="ext-link"><span class="original-url">http://jrf.cocolog-nifty.com/statuses/2025/05/post-05b95f.html</span></a></td></tr>
+
+</table>
+</div>
+<h1>ひとこと</h1>
+<pre class="body">AIコンセプト妄想。RLRMDiffusion … Reinforcement Learning Result Model Diffusion。LLM を使ったロボット制御で下部メカの「どう学習すればいいかのプログラム」をプロンプトとして制御のための行列的なものを生成する…。
+JRF 2025年5月24日
+
+LLMを使ったロボット制御では、下部メカを制御するスパース行列を渡すために、画像生成AIのような拡散モデルみたいなのを使って、「どう学習すればいいかのプログラム」をプロンプトとしてスパース行列的なものを生成して渡す感じになるのだろうか…。
+
+JRF 2025年5月24日
+
+ロボットの制御を LLM で行う場合。細部のメカにコマンドを送りその出力・異常出力をいくつかためて、LLM で処理し指示を出すということになるのだろう。細部のメカも LLM 的になるのだが、反射神経的な動きは、上部の LLM にいつも指示をもらうというのではなく、反射神経的な動きの学習済みデータを上部 LLM からもらう形か。このときスパース行列のようなものを渡さねばならないとなると上部 LLM は学習が大変なので、そうではなく、下部 LLM がどう学習すればいいかのプログラムを渡すことになるのかもしれない。
+
+JRF 2025年5月24日
+
+ただし、その指示に従って学習するのは時間がかかり過ぎるので、画像生成 AI のような拡散モデルみたいなのを使って、「どう学習すればいいかのプログラム」からスパース行列的なものを生成する感じになるのだろう。
+
+JRF 2025年5月24日
+
+……。
+
+名付けて RLResultModelDiffusion … RLRMDiffusion とかでどうだろう？ (^^;
+
+JRF 2025年5月24日
+
+……。
+
+ただ、発展してる分野なので、これぐらいのアイデアはすでにあるのだろう。Gemini さんなどはズバリはまだない…ということだけど、これからの学習すべき人間作成データのなくなった AI は、強化学習が重要になるというニュースがいくつかあって、RLRMDiffusion はそこへの自然な接続という形になる。
+
+JRF 2025年5月24日
+
+あと、StableDiffusion とかを考えると、拡散モデルはそんな大きな ResultModel は扱えないかな…とも考える。今はビデオ生成とかしてるんでかなり大きくても大丈夫…みたいな可能性もあるが、一方で、画像生成はまだそこまで巨大データに対応してないのだった。このあたり、Gemini さんなどに聞くと、「いや、そこまで悲観することはない。大きなデータを圧縮する工夫はできるし、今は難しいが可能性は十分ある」みたいな回答だった。
+
+JRF 2025年5月24日
+
+……。
+
+……。
+
+話は基本的に以上。あとは、私の過去の構想・妄想にリンクしておく。
+
+まずは xxLLM。
+
+keyword: xxLLM
+
+同時応答機械指示付きLLM (題して xLLM)に対し、拡張同時応答機械指示付きLLM を xxLLM と呼ぶ。<a href="../../../articles/2024/05/statuses_cocolog_94833189.html" class="int-link cocolog-id" title="ひとこと">[cocolog:94833189]</a>(2024年5月)にアイデアがある。<a href="../../../articles/2024/09/statuses_cocolog_95029217.html" class="int-link cocolog-id" title="ひとこと">[cocolog:95029217]</a>(2024年9月)にアイデアがまとまっている。
+
+JRF 2025年5月24日
+
+<a href="../../../articles/2024/09/statuses_cocolog_95029217.html" class="int-link cocolog-id" title="ひとこと">[cocolog:95029217]</a>(2024年9月)
+＞(家電操作などを想定して) JSON を出力する xLLM に対し、JSON を出力するプログラムを出力する LLM 名付けて xxLLM のほうが、性能がいいのではないかと考えたことがあります。なぜなら、LLM は逐次出力するため、最初の出力を間違えないようにすることが難しいのですが、xxLLM だと途中で前の式に関して代入などをするなどして修正できるようになるからです。＜
+
+JRF 2025年5月24日
+
+この点、「ひとこと」のほうには付けてなかったが、Grok さんと会話した中で次のようなことを言っていた。<a href="../../../articles/2024/09/statuses_cocolog_95029217.html" class="int-link cocolog-id" title="ひとこと">[cocolog:95029217]</a>(2024年9月)にも趣旨的には同じことを書いてる部分はあるが、具体例がなかったので。
+
+JRF 2025年5月24日
+
+＞あと、たとえば学習する／出力する文中に here ドキュメント的にプログラム実行の指示とその結果を含ませることもこの枠組みでは考えていました。
+
+#!i: sin(3/4 * pi)
+#!o: 0.70710678118
+
+I answer you {!o}.
+
+…みたいな文があっていいわけです。これを生成するとき #!i の行まで生成して、次は実際に計算したものからはじめてもよいわけです。
+＜
+
+JRF 2025年5月24日
+
+……。
+
+……。
+
+AI と資本課税について最近考えたこともリンクしておく。
+
+JRF 2025年5月24日
+
+＞＞
+○ 2025-05-17T10:22:28Z
+
+JRF 2025年5月24日
+
+Chamley-Judd や Kaldor のように資本課税すべきでなく資本蓄積を重視すべきだという経済学の議論はしかし、AI 時代には適合しないのではないか。AI は資本なので資本蓄積を目指すと、AI のみがどんどん成長し、人間はいらない・少子化で良いということになる。AI の成長スピードを落としてでも、一定の消費＝人間の生きる余地を認めさせる必要がある。つまり資本課税も一定程度必要ではないか。コンピュータから離れて計算に習熟するゲームができる The JRF Tarot for 易双六 ( <a href="https://amzn.asia/d/iAGwLxm" class="ext-link">https://amzn.asia/d/iAGwLxm</a> )も一定の必要性があると思われる。
+
+JRF 2025年5月24日
+
+○ 2025-05-20T03:41:08Z
+
+Chamley-Judd を拡張して、資本課税を上げるほうが有利になりうることを数学的に示した。蓮見亮『動学マクロ経済学へのいざない』(<a href="../../../articles/2022/06/statuses_cocolog_93532297.html" class="int-link cocolog-id" title="ひとこと">[cocolog:93532297]</a>(2022年6月))についての私の議論を Gemini さんに反映してもらって。というか私の以前のアイデアを示した後は数学は完全に Gemini さんにおまかせで (^^;。
+
+<a href="https://gemini.google.com/share/79de6ebd30fb" class="ext-link">https://gemini.google.com/share/79de6ebd30fb</a>
+＜＜
+
+JRF 2025年5月24日
+
+……。
+
+……。
+
+あと、逆蒸留について。
+
+<a href="../../../articles/2025/05/statuses_cocolog_95459642.html" class="int-link cocolog-id" title="ひとこと">[cocolog:95459642]</a>(2025年5月)
+＞AI の逆蒸留はできないだろうか？ 小さなモデルから大きなモデルを「蒸留」する…当然大きなモデルはその後の学習に備えて学習に適当なランダム性で膨らませて。これが可能な系列を逆にたどって小さなモデルを突き詰めていくとそれが「遺伝子」みたいになるというイメージ。
+
+JRF 2025年5月24日
+
+(…)
+
+以前、Attention 機構は拡張された微分ではないかとちょっと妄想した。元々の微分がクローズアップして注意した結果傾きがわかる…みたいに解釈して。Attention がすでに微分として出てきているとすれば、逆蒸留も概念としてはすでに出てきているのかもしれない。もしかして、拡散モデルというのは、逆蒸留の一変形ではないか？
+＜
+
+JRF 2025年5月24日
+
+……。
+
+……。
+
+あと、ここを読んでる方はご興味ないかもだが、『宗教学雑考集』を書いた私としては関心の強い涅槃考について。
+
+<a href="../../../articles/2025/05/statuses_cocolog_95459643.html" class="int-link cocolog-id" title="ひとこと">[cocolog:95459643]</a>(2025年5月)
+＞涅槃考。生成 AI に即して、人の世も最適化過程で、望ましい定常状態からズレたところから、意味を生成していくと考えてみる。そのズレが大きな意味で「カルマ」と考える。ならばそれを消す「涅槃」とは何か？ ChatGPT は「出力可能性」に満ちた静かな構造としての存在というが…。＜
+
+JRF 2025年5月24日
+
+……。
+
+……。
+
+追記。
+
+○ 2025-05-26T12:33:47Z
+
+RLRMDiffusion と 逆蒸留 はつながるのかもしれないなぁ…。RLRMDiffusion から RL が取れてなんでも Result Model を Diffusion 的に得られるようにするという方向がありうる(RMD)。そして、Result Model は可塑的にいくらでも大きくなり得て、RMD は自分より大きなモデルを精度低いかもしれないが生成できるとする。
+
+JRF 2025年5月26日
+
+そして、i2i 的に Result Model を入れて、その大きなモデルを RMD で作ると逆蒸留になってる。…みたいな。蒸留体／逆蒸留体が「遺伝子」のイメージ… DNA のイメージとすると、RMD は RNA のイメージになるのかな？
+
+もちろんその先には ASI を考えるわけだが。
+
+JRF 2025年5月26日
+
+……。
+
+……。
+
+追記。
+
+○ 2025-06-04T09:08:22Z
+
+RLRMDiffusion というのを <a href="../../../articles/2025/05/statuses_cocolog_95459644.html" class="int-link cocolog-id" title="ひとこと">[cocolog:95459644]</a>(2025年5月) で考えたが、すでに Diffusion Transformer なる名前の物があるらしい。やっぱり私の「アイデア」ぐらい、先行者がいるか。でも、私もいいところは突いていたということであれば慰めがある。
+
+《NVIDIA Isaac GR00T N1 の概要｜npaka》  
+<a href="https://note.com/npaka/n/na76d85fd8ef6" class="ext-link">https://note.com/npaka/n/na76d85fd8ef6</a>
+
+JRF 2025年6月4日
+
+……。
+
+もちろん、RLRMDiffusion と DiffusionTransformer は違うのだが、RLRMDiffusion に似たところを目指して現状の技術で現実的なところを探るとああなった…というのが私の解釈。
+
+JRF 2025年6月6日
+
+……。
+
+……。
+
+追記。
+
+RLRMDiffusion。やるとしたら、フルにモデルを生成するのではなく、制御レイヤーの層の一部を生成する LoRA みたいなものが必要だろうと思っていた。そこに Sakana AI が Text-To-LoRA というイメージ生成についての「メタ」的な技術を発表した。この方向が今後来るように思う。
+
+《Sakana AI:X:2025-06-12》  
+<a href="https://x.com/SakanaAILabs/status/1932972420522230214" class="ext-link">https://x.com/SakanaAILabs/status/1932972420522230214</a>
+
+JRF 2025年6月15日
+
+＞We’re excited to introduce Text-to-LoRA: a Hypernetwork that generates task-specific LLM adapters (LoRAs) based on a text description of the task. Catch our presentation at #ICML2025!
+
+Paper: <a href="https://arxiv.org/abs/2506.06105" class="ext-link">https://arxiv.org/abs/2506.06105</a>
+Code: <a href="https://github.com/SakanaAI/Text-to-Lora" class="ext-link">https://github.com/SakanaAI/Text-to-Lora</a>
+＜
+
+JRF 2025年8月18日
+
+……。
+
+……。
+
+追記。
+
+最近↓という論文を見つけ、ほぼ、RLRMDiffusion 的なことはすでにされていることが明白になった(これは2025年8月の論文)。
+
+《[2508.08241] BeyondMimic: From Motion Tracking to Versatile Humanoid Control via Guided Diffusion》  
+<a href="https://arxiv.org/abs/2508.08241" class="ext-link">https://arxiv.org/abs/2508.08241</a>
+
+JRF 2025年8月18日
+
+↑の論文が参考にしている中には↓があった(2024年10月の論文)。
+
+《DiffuseLoco: Real-Time Legged Locomotion Control with Diffusion from Offline Datasets | OpenReview》  
+<a href="https://openreview.net/forum?id=nVJm2RdPDu" class="ext-link">https://openreview.net/forum?id=nVJm2RdPDu</a>
+
+JRF 2025年8月18日
+
+さらに Gemini 2.5 Pro さんに聞くと次の論文を紹介された。
+
+《[2205.09991] Planning with Diffusion for Flexible Behavior Synthesis》(2022年5月, Diffuser の論文)
+<a href="https://arxiv.org/abs/2205.09991" class="ext-link">https://arxiv.org/abs/2205.09991</a>
+
+《[2303.04137] Diffusion Policy: Visuomotor Policy Learning via Action Diffusion》(2023年3月の論文)
+<a href="https://arxiv.org/abs/2303.04137" class="ext-link">https://arxiv.org/abs/2303.04137</a>
+
+JRF 2025年8月18日
+
+『Human Motion Diffusion Model』(Guy Tevet, et al. 著, 2022年・2023年)
+<a href="https://guytevet.github.io/mdm-page/" class="ext-link">https://guytevet.github.io/mdm-page/</a>
+
+JRF 2025年8月18日</pre>
+
+
+<section class="backrefs" data-pagefind-ignore>
+<h2>後方参照 (27 件)</h2>
+<ul>
+<li><span class="backref-label">[cocolog:95459644]参照</span> <a href="../../../articles/2025/12/gsm_008207.html">共有メモ</a> <span class="backref-date">2025-12-28T15:12:44Z</span></li>
+<li><span class="backref-label">[cocolog:95459644]参照</span> <a href="../../../articles/2025/12/statuses_cocolog_95774408.html">ひとこと</a> <span class="backref-date">2025年12月21日</span></li>
+<li><span class="backref-label">[cocolog:95459644]参照</span> <a href="../../../articles/2025/12/statuses_cocolog_95762049.html">ひとこと</a> <span class="backref-date">2025年12月12日</span></li>
+<li><span class="backref-label">[cocolog:95459644]参照</span> <a href="../../../articles/2025/12/gsm_008064.html">共有メモ</a> <span class="backref-date">2025-12-02T05:57:08Z</span></li>
+<li><span class="backref-label">[cocolog:95459644]参照</span> <a href="../../../articles/2025/11/statuses_cocolog_95725020.html">ひとこと</a> <span class="backref-date">2025年11月16日</span></li>
+<li><span class="backref-label">[cocolog:95459644]参照</span> <a href="../../../articles/2025/11/statuses_cocolog_95705029.html">ひとこと</a> <span class="backref-date">2025年11月03日</span></li>
+<li><span class="backref-label">[cocolog:95459644]参照</span> <a href="../../../articles/2025/10/statuses_cocolog_95696014.html">ひとこと</a> <span class="backref-date">2025年10月27日</span></li>
+<li><span class="backref-label">[cocolog:95459644]参照</span> <a href="../../../articles/2025/10/gsm_007878.html">共有メモ</a> <span class="backref-date">2025-10-26T20:16:40Z</span></li>
+<li><span class="backref-label">[cocolog:95459644]参照</span> <a href="../../../articles/2025/10/statuses_cocolog_95674080.html">ひとこと</a> <span class="backref-date">2025年10月12日</span></li>
+<li><span class="backref-label">[cocolog:95459644]参照</span> <a href="../../../articles/2025/10/gsm_007800.html">共有メモ</a> <span class="backref-date">2025-10-12T01:35:31Z</span></li>
+<li><span class="backref-label">[cocolog:95459644]参照</span> <a href="../../../articles/2025/10/statuses_cocolog_95666408.html">ひとこと</a> <span class="backref-date">2025年10月07日</span></li>
+<li><span class="backref-label">[cocolog:95459644]参照</span> <a href="../../../articles/2025/10/gsm_007774.html">共有メモ</a> <span class="backref-date">2025-10-06T21:54:47Z</span></li>
+<li><span class="backref-label">[cocolog:95459644]参照</span> <a href="../../../articles/2025/09/statuses_cocolog_95612828.html">ひとこと</a> <span class="backref-date">2025年09月04日</span></li>
+<li><span class="backref-label">[cocolog:95459644]参照</span> <a href="../../../articles/2025/08/gsm_007536.html">共有メモ</a> <span class="backref-date">2025-08-18T06:21:13Z</span></li>
+<li><span class="backref-label">[cocolog:95459644]参照</span> <a href="../../../articles/2025/07/statuses_cocolog_95538601.html">ひとこと</a> <span class="backref-date">2025年07月15日</span></li>
+<li><span class="backref-label">[cocolog:95459644]参照</span> <a href="../../../articles/2025/07/gsm_007355.html">共有メモ</a> <span class="backref-date">2025-07-14T13:18:45Z</span></li>
+<li><span class="backref-label">[cocolog:95459644]参照</span> <a href="../../../articles/2025/07/statuses_cocolog_95531341.html">ひとこと</a> <span class="backref-date">2025年07月10日</span></li>
+<li><span class="backref-label">[cocolog:95459644]参照</span> <a href="../../../articles/2025/07/gsm_007332.html">共有メモ</a> <span class="backref-date">2025-07-09T16:52:50Z</span></li>
+<li><span class="backref-label">[cocolog:95459644]参照</span> <a href="../../../articles/2025/06/statuses_cocolog_95499368.html">ひとこと</a> <span class="backref-date">2025年06月17日</span></li>
+<li><span class="backref-label">[cocolog:95459644]参照</span> <a href="../../../articles/2025/06/gsm_007184.html">共有メモ</a> <span class="backref-date">2025-06-16T21:25:35Z</span></li>
+<li><span class="backref-label">[cocolog:95459644]参照</span> <a href="../../../articles/2025/06/gsm_007161.html">共有メモ</a> <span class="backref-date">2025-06-14T17:14:05Z</span></li>
+<li><span class="backref-label">[cocolog:95459644]参照</span> <a href="../../../articles/2025/06/gsm_007083.html">共有メモ</a> <span class="backref-date">2025-06-04T09:08:22Z</span></li>
+<li><span class="backref-label">[cocolog:95459644]参照</span> <a href="../../../articles/2025/05/statuses_cocolog_95466253.html">ひとこと</a> <span class="backref-date">2025年05月28日</span></li>
+<li><span class="backref-label">[cocolog:95459644]参照</span> <a href="../../../articles/2025/05/statuses_cocolog_95463688.html">ひとこと</a> <span class="backref-date">2025年05月27日</span></li>
+<li><span class="backref-label">[cocolog:95459644]参照</span> <a href="../../../articles/2025/05/statuses_cocolog_95459642.html">ひとこと</a> <span class="backref-date">2025年05月24日</span></li>
+<li><span class="backref-label">[cocolog:95459644]参照</span> <a href="../../../articles/2025/05/statuses_cocolog_95459643.html">ひとこと</a> <span class="backref-date">2025年05月24日</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2025/05/gsm_007008.html">共有メモ</a> <span class="backref-date">2025-05-24T06:03:14Z</span></li>
+</ul>
+</section>
+
+</article>
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2025/05.html">2025年05月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+</body>
+</html>

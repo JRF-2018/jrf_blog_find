@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>ひとこと - JRF Blog Archive</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2011/12.html">2011年12月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+<article data-pagefind-body>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[statuses] <span class="cocolog-id">cocolog:70801660</span></td></tr>
+<tr><th>セクション</th><td>JRF のひとこと</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2011/12.html">2011年12月06日</a></td></tr>
+<tr><th>元URL</th><td><a href="http://jrf.cocolog-nifty.com/statuses/2011/12/post-3903.html" class="ext-link"><span class="original-url">http://jrf.cocolog-nifty.com/statuses/2011/12/post-3903.html</span></a></td></tr>
+
+</table>
+</div>
+<h1>ひとこと</h1>
+<pre class="body">ブラウザゲーム、Safari でも動くか試したほうがいいのかなぁ…。個人でやってるんで、あんまり手間を増やしたくないし、Safari で来るってのは Mac 系なんだろうから、Mac で試してこそ意味があるのであって、Windows の Safari ではあまり意味ない気がして…
+JRF 2011年12月6日
+
+ブラウザゲームだけでなく、アクセス解析を見ると、この《ひとこと》サイトは Safari で引っかかってるふうな感じもあって、ちょっと気になってる。
+
+Mac は大学時代に触ったあともうずいぶん触ってない。ビョーキになる前は Linux ばかり触っていて、退院後に作業所で久々に Windows を触って、私の PC の知識の通じなさに愕然[がくぜん]として、Windows を使わねばならんと思うようになった。そういや作業所にも Mac はあったかな？触った記憶はないけど…。
+
+JRF 2011年12月6日
+
+iPad とかでも動いたらステキで、iPad は、レンタルでウン千円で借りれるようだから、それで試してみるべきなのか…。
+
+JRF 2011年12月6日
+
+昨日、カオス2ch というところで記事が紹介されたらしく、アクセスが急激に増えた。それはそれで偏りあるデータなんだろうが、アクセス解析で、これまで情報として価値のなかったものが、ある程度データとして見てもよさそうになったのでうれしい。
+
+それで昨日から今日までのブラウザ数の統計を見ると、上から Mobile 9、Chrome、Safari となり、その後に IE 8、Firefox 8 が来ている。OS だとトップは MacOS-X で次に Windows 7、その次に Windows XP となる。
+
+これは無視できない感じだ。
+
+JRF 2011年12月6日
+
+(いちおうカオス2chの記事と紹介された記事↓)
+
+《カオスちゃんねる : 地味に怖い雑学》
+<a href="http://chaos2ch.com/archives/3183907.html" class="ext-link">http://chaos2ch.com/archives/3183907.html</a>
+
+《シミュレーション・アーギュメントを論駁する [ JRF の私見：宗教と動機付け ]》
+<a href="../../../articles/2006/10/religion_14794101.html" class="int-link" title="シミュレーション・アーギュメントを論駁する">http://jrf.cocolog-nifty.com/religion/2006/10/post.html</a>
+
+JRF 2011年12月6日
+
+……。
+
+最近、Kinect とかメディアプレーヤーとかいろいろ親に買ってもらっていて、とても iPad も欲しいとか言えそうな感じじゃないので、とりあえず Safari だけインストールして試してみた。
+
+ちゃんと動いてるみたい。
+
+でも、フォント関連とか大丈夫なのかはチェックできないし、Windows の最新版だからうまくいってるだけかもしれないし…。気にかけはじめたらキリないけどね。
+
+JRF 2011年12月7日
+
+……。
+
+でも、iPhone 3GS ですら 320x480 なのか…。「易双六」、父のディスプレイ設定だと見づらいのを反省して 800x600 のモードも用意したんだが、それより小さい画面で上の記事を見てる人が結構多い…。
+
+そこまで想定して作ってないんだが…。私モバイルな環境持ってないから、ココログの機能にまかせっきりなんだけど、そうか…ケータイでこういう記事すら読む時代なんだね…。
+
+JRF 2011年12月7日
+
+……。
+
+Opera でも試してみた。
+
+…どうも fillText したあと、strokeText して文字に黒のふちどりを付けるのがうまくいってない。ビミョーにずれる。
+
+確かにそこは気になってて、JavaScript の Canvas には影(shadow)がデフォルトであって、それを使うべきよう示唆されてるんだけど、文字をはっきりみせるための影としては、あまりいい感じじゃない。漢字のような複雑な文字だと shadow だけじゃ輪郭がつぶれちゃうように思うんだが。
+
+JRF 2011年12月8日
+
+…少しいじっていろいろ試したんだが、「普通」は fillText して strokeText するのではなく、strokeText して fillText するのが順番のようだ。
+
+なぜなら、shadow は fillText ではつかず、strokeText でつくため、fillText の色を活かしたいなら strokeText を先に描画する必要があるから。このときふちどりをしたいなら、shadowBlur を設定するだけだと薄すぎるので、lineWidth = 2 or 3 にしたほうがよい。
+
+JRF 2011年12月8日
+
+ただし、Opera はそうだとしても、strokeText と fillText がややずれるため、やっぱりおかしな表示になる。ずれたりずれなかったりするので、shadowOffsetX とかの問題でもなさそう。
+
+IE もちょっとずれて、stroke が fill の内側に来ちゃうことがあるんだけど、Opera みたいな豪快なズレ方はしない。
+
+これたぶん Opera のバグと言っていいと思う。Bug Report も送った。
+
+JRF 2011年12月8日</pre>
+
+
+</article>
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2011/12.html">2011年12月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+</body>
+</html>

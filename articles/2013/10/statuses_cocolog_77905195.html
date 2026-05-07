@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>ひとこと - JRF Blog Archive</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2013/10.html">2013年10月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+<article data-pagefind-body>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[statuses] <span class="cocolog-id">cocolog:77905195</span></td></tr>
+<tr><th>セクション</th><td>JRF のひとこと</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2013/10.html">2013年10月14日</a></td></tr>
+<tr><th>元URL</th><td><a href="http://jrf.cocolog-nifty.com/statuses/2013/10/wi-b927.html" class="ext-link"><span class="original-url">http://jrf.cocolog-nifty.com/statuses/2013/10/wi-b927.html</span></a></td></tr>
+
+</table>
+</div>
+<h1>ひとこと</h1>
+<pre class="body">近況。Windows XP の作業でぐったり。
+JRF 2013年10月14日
+
+私は CD を mp3 にリッピングする作業をするとき、普段使っている Windows 7 のパソコンではなく、古い Windows XP のパソコンを使っている。
+
+Windows 7 のほうの PC には光学ドライブが付いていないが、USB ポータブル DVD ドライブは持っており、それで MP3 へのリッピングは可能である。
+
+JRF 2013年10月14日
+
+Windows 7 のほうはいくら非力なネットトップ風マシンといっても、古いパソコンに比べれば、リッピングのスピード的にも大きな差はない。でも、デジタルで差がないはずなのに、なぜか、新しいパソコンでリッピングするよりも古いパソコンでリッピングしたほうが音がいい気がする。Rip!AudiCo が使う Lame のバージョンが多少違うというのはあるが、MP3 の 192kbps と 128kbps の違いも気にならないような耳が良いわけでない私なので、多分、気分的なもののように思うんだけど。
+
+JRF 2013年10月14日
+
+Windows XP のパソコンは普段使わないのに、リッピングのときだけ起動するようにしている。Windows XP のパソコンは、要は、プログラム等を開発するときのテスト環境として残している。父が仕事で使っている我が家で最も新しいパソコンも Windows XP で、その「現実」を知ってる身としては、少なくとも XP をテスト環境から切り捨てることができないでいる。今は開発はしてないので、ほとんど起動してないが、まったく起動しないでおくと本当に必要なときに起動しないことに気付く…というのはイヤなので、リッピングのときだけでも起動するのは、悪くない習慣かなと思ってる面もある。
+
+JRF 2013年10月14日
+
+……。
+
+で、今回、Windows XP を起動すると、リッピングがやたら遅い。Ctrl+Alt+Del で見ると、svchost.exe が cpu 率利用率を 100% にしているようだ。「またか」といった感じ。
+
+少し前から、この症状が出ていることがあって、svchost はいろんなソフトが使う API みたいなものらしく、重くなってる PID の svchost をいろんなツールで見ると、ネットがらみの一般的な仕事をしている。これを KILL しちゃうとネットが使えなくなる(が、リッピングはできる)。
+
+JRF 2013年10月14日
+
+ネットで調べると、どうも Windows Update か Micrsoft Update が悪さをしているらしく、前は、Microsoft Update のメモリ使い過ぎとかで、Windows Update に戻せばいいとかいう対策もあったようだが、今回はそれでもダメだった。
+
+(ちなみに直近の <a href="../../../articles/2013/10/statuses_cocolog_77867112.html" class="int-link cocolog-id" title="ひとこと">[cocolog:77867112]</a> も Windows Update がらみのひとことだが、あっちは Windows 7 の話で、これとは別件。)
+
+JRF 2013年10月14日
+
+
+↓を見ると、InternetExplorer のバージョン…IE6 が原因で IE8 に変えればいいとあるが、私はテスト環境として Windows XP を残していて、それは IE6 があることも大きな理由なので、バージョンアップはできない。そもそも Windows XP でも最新の IE が使えるというのなら、バージョンアップしないのが悪いという言い方も理解するが、Microsoft がそもそも最新版では対応せず、古いバージョンのを使い続けろという態度に出てるのに、今さらデフォルトでない IE8 に変えるのもおかしな気がする。
+
+JRF 2013年10月14日
+
+《メールのプロの独り言: Windows XPでsvchostがCPUを長時間100%食いつぶすことへの対応》
+<a href="http://akibaryu.seesaa.net/article/375637929.html" class="ext-link">http://akibaryu.seesaa.net/article/375637929.html</a>
+
+JRF 2013年10月14日
+
+いろいろ調べてると…というか検索にやっと引っかかることになったということなのか、つい先日の 10月8日 に次の記事が出ていた。
+
+《Windows XPにて「svchost.exe」のCPU使用率が100％になるバグが発生 - GIGAZINE》
+<a href="http://gigazine.net/news/20131008-windows-xp-svchost-bug-still-spikes-cpu/" class="ext-link">http://gigazine.net/news/20131008-windows-xp-svchost-bug-still-spikes-cpu/</a>
+
+JRF 2013年10月14日
+
+それでいろいろ調べなおすと、今現在ということだと、自動更新を完全に OFF にするというのが対策になるらしい。マイクロソフトが XP の更新対象から切るのが近づいているはずなので、その予行演習といったところなのか…。
+
+JRF 2013年10月14日
+
+……。
+
+で、実際自動更新を切ってみると…やはり何かおかしい。Sysmtem Idle Process が cpu 100% にする。その処理が終ったのかその後、svchost も起動して 100% になる。これも前から何度かあった。
+
+System Idle Process っていうのは、普通は、cpu を使ってない暇な時間にガーベージコレクションとかをするようなもので、cpu をいっぱい使うこともあるかもしれないけど、そんなずっと 100% に貼り付かせるというのも異常なことのはず。
+
+JRF 2013年10月14日
+
+ただ、System Idle Process だけの間は、リッピング作業はかろうじてできる。ネットにつないで、先に CD の ID3 タグ情報がダウンロードできるものはダウンロードしておき、svchost が起動したところで、それを KILL するという対応になってしまった。
+
+…つまり、結局、何も解決してない。
+
+JRF 2013年10月14日
+
+私の XP マシンは再起動とかにかなり時間がかかる。リッピングもそこそこ時間がかかるということで、その間、モンハン４をやっていた。<a href="../../../articles/2013/10/statuses_cocolog_77903321.html" class="int-link cocolog-id" title="ひとこと">[cocolog:77903321]</a> や <a href="../../../articles/2013/10/statuses_cocolog_77875246.html" class="int-link cocolog-id" title="ひとこと">[cocolog:77875246]</a> に書いたように、モンハン４のほうも詰まっていて、二重にグッタリきてしまった。
+
+JRF 2013年10月14日
+
+……。
+
+それ以外の近況。
+
+電力使用量が上がっていたこともあり、一人カラオケは今週は行かず、夜、カラオケ等がキッカケになって買ったコンピ(オムニバス)洋楽 CD のリッピング作業をしていた。
+
+JRF 2013年10月14日
+
+運動は、ダンスエクササイズはしなかった。やはり、ダンスは以前 <a href="../../../articles/2013/09/statuses_cocolog_77565832.html" class="int-link cocolog-id" title="ひとこと">[cocolog:77565832]</a> ではキツクないみたいなことを書いたが、体が微妙に嫌がっているようで、ダンスをその後しないといけないと考えてると、太極拳もできないような感じになってしまった。
+
+JRF 2013年10月14日
+
+で、八段錦＆太極拳も今週は二回のみ。ただ、<a href="../../../articles/2013/09/statuses_cocolog_77694659.html" class="int-link cocolog-id" title="ひとこと">[cocolog:77694659]</a> で「腹の筋肉が開いてる感じ」というのが、少し気になって、腹を閉める(締めるじゃなくて…)のをこのところ心かげていて、そのためにはスワイショウと馬歩がそこを閉める感覚に一番集中できるよう。普段、立ってるときとかに腹を閉めようとすると八段錦や太極拳の部分的動きに似ることもあるんだけど、時間作って運動しようとすると、その動きの中で、「閉めよう」という感覚にはなかなかできない。
+
+JRF 2013年10月14日
+
+ずっと以前(といっても 7月下旬だが)、<a href="../../../articles/2013/07/statuses_cocolog_77188750.html" class="int-link cocolog-id" title="ひとこと">[cocolog:77188750]</a> で、＞下腹の緊張をグッとむしろ力入れて解くのを繰り返してみてわかった。その緊張が、リラックスした座り方をしようとしたとき、むしろ上体を引き猫背にし、それが腹部を圧迫していたのだ！＜と書いたが、逆に、それで下腹を緩め過ぎていたのかもしれない。
+
+そこで少し反省して、<a href="../../../articles/2013/07/statuses_cocolog_77123379.html" class="int-link cocolog-id" title="ひとこと">[cocolog:77123379]</a> で買ったが気にくわなくて、<a href="../../../articles/2013/08/statuses_cocolog_77247393.html" class="int-link cocolog-id" title="ひとこと">[cocolog:77247393]</a> で安物に取り換えた新しい少し上等なイスを再び使うようにしてみた。
+
+JRF 2013年10月14日
+
+腹を閉めるという目的だと、安物のイスだと尻が座面をはみ出していてそこにつられて脇腹が垂れる感じもでてきたので、上等なイスだとそれはなくなる。イヤだった腰のグリップ感も夏の汗っぽさがなくなったからか、あのころの「超感覚」的状態でなくなったからか、それほどイヤでもない。
+
+微妙に合ってない気は今もするが、安物のイスやバランスボールよりは、「腹を閉める」という今のトレンドだと一番マシなように思う。
+
+JRF 2013年10月14日
+
+……。
+
+9月下旬にはじめたデスクトップ壁紙の公開(参：<a href="../../../articles/2013/09/statuses_cocolog_77767771.html" class="int-link cocolog-id" title="ひとこと">[cocolog:77767771]</a>)。
+
+《JRF の私見：雑記: デスクトップ壁紙》
+<a href="http://jrf.cocolog-nifty.com/column/cat23589406/index.html?mode=long" class="ext-link">http://jrf.cocolog-nifty.com/column/cat23589406/index.html?mode=long</a>
+
+公開したもののダウンロードがまだ一件も記録されてない。orz
+
+JRF 2013年10月14日
+
+続きを書くつもりでいたけど、この様子だとあまりにもキビしい条件にしすぎたということなのか…。ページに辿り着く人も少なそうだし…。
+
+そのあたりで続きを書く前にシステム面の見直しが必要なのかと悩んでいる。
+
+JRF 2013年10月14日
+
+typo 「率利用率」→「利用率」。
+typo 「XP の更新対象から切る」→「XP を更新対象から切る」。
+
+JRF 2013年10月16日
+
+……。
+
+追記。
+
+新しい情報なのかな…公式っぽいところから出てた。
+
+JRF 2013年10月23日
+
+《Windows XP や Windows Server 2003 環境において、Windows Update 実行時に Svchost.exe の CPU 使用率が 100 % となる、時間を大幅に要する - Japan WSUS Support Team Blog - Site Home - TechNet Blogs》
+<a href="http://blogs.technet.com/b/jpwsus/archive/2013/10/18/windows-xp-windows-server-2003-windows-update-svchost-exe-cpu-100.aspx" class="ext-link">http://blogs.technet.com/b/jpwsus/archive/2013/10/18/windows-xp-windows-server-2003-windows-update-svchost-exe-cpu-100.aspx</a>
+
+JRF 2013年10月23日
+
+補足２の「拒否」のところに IE6 がらみのパッチが並んでる…。
+
+JRF 2013年10月23日
+
+まだ、↑の対策を試してないんであれなんだけど、これとは直接関係ないんだけど、上で＞今さらデフォルトでない IE8 に変えるのもおかしな気がする＜と書いた関連についてもう少し「解説」というか私が思うところを述べておくと…。
+
+JRF 2013年10月23日
+
+「仕事で使うシステム」っていうのは下手すると、何十年、まだ、コンピュータ自体の歴史が短いからわからないけど、百年単位で使われることもありえるんだよね。当然、2038年問題とかも越えて。
+
+で、当然、その間にはハードのほうで故障が起きて再インストールするんだけど、とにかく前に動いてたソフトウェアだけは動かそうということも起きるはず。
+
+JRF 2013年10月23日
+
+そういうときに、アップデートをどれだけかけてくれるかの問題がある。今の Microsoft の調子でいくと、XP の Update 用のサーバーもいつまで持つかわからないから、とにかくセキュリティ上大きく問題にならないレベルでの Update を保存しておいてかけたり、外部のウィルス対策メーカーなどが作った Update とかに頼るなりして、最少の Update で済ますことになる可能性がある。
+
+JRF 2013年10月23日
+
+今だと、Windows XP だと IE8 が最新で、普通にアップデートすれば、それも入ると考えて良さそうに思うけど、でも、上に書いたような状態だと、むしろ IE8 や IE7 だったりマチマチなのは保守が大変と判断されるんじゃないかな？今は Microsoft では IE6 よりは IE8 のほうが技術(者)が残っていてまだ保守がやりやすいという判断になるかもしれないけど、この先はどうなんだろう？
+
+JRF 2013年10月23日
+
+レガシーなソフトは安定した報酬を約束するみたいな話があって、マイクロソフト内では、しばらくは IE8 がオイシイのかもしれないけど、その先のことを考えると、やはりマイクロソフト内でも IE6 派が盛り返すことになり、結果、公式にも IE8 から IE6 へのダウングレードをむしろサポートするようなことになったりしないだろうか？
+
+JRF 2013年10月23日
+
+…なんてね。まあ、妄想だね。申し訳ない。
+
+なんちゅーか、上の対策を試せって言われても今さら XP 再起動しまくりも面倒くさいんで、試さない理由を付けるために、遠回しに文句言ってみただけです。(^^;
+
+JRF 2013年10月23日
+
+
+……。
+
+蛇足。
+
+「歴史的経緯」というか…。2013年の今、ここを読みに来る人にとっては当り前のことだと思うけど、遠い将来、(私が)リンク先として使えるように書いておくと…。
+
+JRF 2013年10月31日
+
+Windows XP が出たあと Windows Vista が出たんだけど、「非互換性」でまぁ、すごい悪評で「仕事には使えない」というのが常識といった感じだった。この後、Windows 7 が出ても Vista がベースなので「使えない」という評価がしばらく続いたように思う。
+
+ただ、Windows 8 が出るころになると「使えない」という評価にはなるんだけど、逆にいうとそのころまでには Windows 7 はかなり安定して「使える」 OS になっていて、仕事で使うパソコンは XP からやっと Windows 7 に切り換わっていっているというのが私の印象だった。
+
+JRF 2013年10月31日
+
+が、上述のとおり今でも中小な父の「仕事で使う最新のパソコン」は XP だったわけで…。
+
+JRF 2013年10月31日
+
+さかのぼって、Vista が出てしばらく改善がなかったことで、多くの企業は、(Microsoft がサポートしなくなっても)ずっと XP で行くことを一度は覚悟してるんじゃないかな？
+
+それで、Windows 7 が安定するまで、WEB 業界でも IE6 への対応は「せねばならないこと」の一つで、たしか「はてなブログ」ができた 2,3年前に IE6 への非対応みたいなのを言ったのが話題になったぐらい。
+
+JRF 2013年10月31日
+
+だから、IE が 8 でないと動かないソフトというのはあんがいなくて、Windows XP で使うことを前提にしていれば、IE 6 で動くように作ってるもののほうがほとんどなんじゃないか？(企業の内実を知らないんであれなんだけど。)
+
+本当は、企業のシステム管理者的には、Windows 8.1 とか少なくとも Windows 7 に移行して欲しいところなんだろうけどね。
+
+JRF 2013年10月31日
+
+参考までにググってたまたまあったリンク。
+
+《企業内でIE6は使われ続けてもいい。ただアクセスを外に出さないでほしい。 - bathtimefish's blog》
+<a href="http://bathtimefish.hatenablog.com/entry/2013/05/14/165411" class="ext-link">http://bathtimefish.hatenablog.com/entry/2013/05/14/165411</a>
+
+IE 6 を外に出すなというのが↑の記事だけど、むしろ、「古い」おエライ方が使う IE 6 での安全策の充実みたいなもののほうが必要なのかも。
+
+JRF 2013年10月31日
+
+Trackbacks:
+
+《cocolog:78017511》 from JRF のひとこと
+<a href="../../../articles/2013/10/statuses_cocolog_78017511.html" class="int-link" title="ひとこと">http://jrf.cocolog-nifty.com/statuses/2013/10/post-b7c9.html</a>
+
+近況。天候のせいか、どうも鬱っぽい感じ。 
+
+受信： 2013-12-31 02:05:29 (JST)</pre>
+
+
+<section class="backrefs" data-pagefind-ignore>
+<h2>後方参照 (10 件)</h2>
+<ul>
+<li><span class="backref-label">[cocolog:77905195]参照</span> <a href="../../../articles/2013/10/statuses_cocolog_78017511.html">ひとこと</a> <span class="backref-date">2013年10月28日</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2013/10/statuses_cocolog_77903321.html">ひとこと</a> <span class="backref-date">2013年10月14日</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2013/10/statuses_cocolog_77875246.html">ひとこと</a> <span class="backref-date">2013年10月11日</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2013/10/statuses_cocolog_77867112.html">ひとこと</a> <span class="backref-date">2013年10月10日</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2013/09/statuses_cocolog_77767771.html">ひとこと</a> <span class="backref-date">2013年09月29日</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2013/09/statuses_cocolog_77694659.html">ひとこと</a> <span class="backref-date">2013年09月21日</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2013/09/statuses_cocolog_77565832.html">ひとこと</a> <span class="backref-date">2013年09月07日</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2013/08/statuses_cocolog_77247393.html">ひとこと</a> <span class="backref-date">2013年08月03日</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2013/07/statuses_cocolog_77188750.html">ひとこと</a> <span class="backref-date">2013年07月28日</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2013/07/statuses_cocolog_77123379.html">ひとこと</a> <span class="backref-date">2013年07月20日</span></li>
+</ul>
+</section>
+
+</article>
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2013/10.html">2013年10月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+</body>
+</html>

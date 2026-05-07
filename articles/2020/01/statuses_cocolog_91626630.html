@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>ひとこと - JRF Blog Archive</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2020/01.html">2020年01月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+<article data-pagefind-body>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[statuses] <span class="cocolog-id">cocolog:91626630</span></td></tr>
+<tr><th>セクション</th><td>JRF のひとこと</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2020/01.html">2020年01月22日</a></td></tr>
+<tr><th>元URL</th><td><a href="http://jrf.cocolog-nifty.com/statuses/2020/01/post-718549.html" class="ext-link"><span class="original-url">http://jrf.cocolog-nifty.com/statuses/2020/01/post-718549.html</span></a></td></tr>
+
+</table>
+</div>
+<h1>ひとこと</h1>
+<pre class="body">Jupyter Notebook で venv の Python 3.6 上の TensorFlow 1.x が ImportError: DLL load failed になる。その venv でコマンドラインの .py ではちゃんと import されるのに！
+JRF 2020年1月22日
+
+…結局、コマンドラインの venv から jupyter notebook コマンドを実行することで解決した。
+
+JRF 2020年1月22日
+
+……。
+
+Windows 10 に Anaconda 3 2019.10 をインストール。その後 conda update conda と conda update --all して、jupyter_client をアップデート(こうしないとバーチャル環境 venv が Permission Denied でまともに使えない。)。
+
+そして venv を python=3.6 tensorflow=1.15 で create。以前、作った .py ファイルが警告は出るものの動くことを確認する。
+
+JRF 2020年1月22日
+
+&lt;pre&gt;
+conda install -n myenv ipykernel
+conda activate myenv
+ipython kernel install --user --name=myenv
+&lt;/pre&gt;
+
+JRF 2020年1月22日
+
+こうした上で、Windows のスタートメニューから Jupyter Notebook を起動。
+
+そこで ipynb ファイルで import tensorflow as tf とすると、
+
+&lt;pre&gt;
+ImportError: DLL load failed: 指定されたモジュールが見つかりません。
+&lt;/pre&gt;
+
+…などというエラーが出た。
+
+JRF 2020年1月22日
+
+いろいろ調べて↓から辿った Microsoft Visual C++ の修正版を DL してインストール。
+
+《【Python】Windows10にTensorflowとKerasがインストールできない時の解決法》
+<a href="https://tkstock.site/2018/06/27/post-436/" class="ext-link">https://tkstock.site/2018/06/27/post-436/</a>
+
+…が、改善しない。
+
+JRF 2020年1月22日
+
+似た報告は↓にもあった！
+
+《python - Import error: DLL load failed in Jupyter notebook but working in .py file - Stack Overflow》
+<a href="https://stackoverflow.com/questions/46353215/import-error-dll-load-failed-in-jupyter-notebook-but-working-in-py-file" class="ext-link">https://stackoverflow.com/questions/46353215/import-error-dll-load-failed-in-jupyter-notebook-but-working-in-py-file</a>
+
+JRF 2020年1月22日
+
+……。
+
+結局、Windows のスタートメニューからではなく、Anaconda Prompt 上で…
+
+&lt;pre&gt;
+conda activate myenv
+start jupyter notebook
+&lt;/pre&gt;
+
+…などとすることで、解決した。
+
+Python 3.6 上から jupyter を起動する必要があった…ということなのだろう。
+
+JRF 2020年1月22日
+
+……。
+
+ちなみに、私は環境変数 HOME を Emacs 用に設定していたため、そこでもはまった。初期ディレクトリが変更できなかったのだ。それは↓を見て一旦は解決したが、結局、上のように Anaconda Prompt から jupyter notebook を実行するようになったので無駄になった。
+
+《Jupyter Notebookの初期ディレクトリを変更できなかったときの対処法 - Qiita》
+<a href="https://qiita.com/skytomo221/items/8f07734a63a3e7c15860" class="ext-link">https://qiita.com/skytomo221/items/8f07734a63a3e7c15860</a>
+
+JRF 2020年1月22日
+
+……。
+
+……。
+
+追記。
+
+あれ？ 前に conda create -n myenv python=3.6 tensorflow=1.13.1 keras で仮想環境を作ったときは、%HOME%\.conda\envs 以下にファイルが置かれたのに、今 conda create -n myenv tensorflow=2 にしたところ %HOMEPATH%\Anaconda3\envs 以下にファイルが置かれた。
+
+JRF 2020年1月28日
+
+私のところでは jupyter notebook --generate-config して作られた jupyter_notebook_config.py の c.NotebookApp.notebook_dir を設定しても初期ディレクトリが変更できなかったんだよね。
+
+もしかすると、上で書いた「Python 3.6 上から jupyter を起動する必要があった」ということよりも %HOME% と %HOMEPATH% を別に設定していたのがまずかったんじゃなかろうか…。
+
+JRF 2020年1月28日
+
+まぁ、原因の推測がまちがっていても、上で書いた解決策は変わらないのだが…。
+
+JRF 2020年1月28日</pre>
+
+
+<section class="backrefs" data-pagefind-ignore>
+<h2>後方参照 (1 件)</h2>
+<ul>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2020/01/statuses_cocolog_91609276.html">ひとこと</a> <span class="backref-date">2020年01月14日</span></li>
+</ul>
+</section>
+
+</article>
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2020/01.html">2020年01月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+</body>
+</html>

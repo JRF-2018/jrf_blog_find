@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>共有メモ - JRF Blog Archive</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2021/08.html">2021年08月</a> | <a href="../../../index/gsm.html">共有メモ</a></nav>
+<article data-pagefind-body>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[gsm] 2021-08-31T05:33:15Z</td></tr>
+<tr><th>セクション</th><td>グローバル共有メモ</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2021/08.html">2021-08-31T05:33:15Z</a></td></tr>
+<tr><th>元URL</th><td>(URLなし)</td></tr>
+
+</table>
+</div>
+<h1>共有メモ</h1>
+<pre class="body">jrf&gt; [仏教の最適化プログラムの続き。]
+
+細かい変更をした simbdp3.py を公開する。(バージョン 0.0.4)
+
+《simbd/simbdp3.py at master - JRF-2018/simbd》  
+<a href="https://github.com/JRF-2018/simbd/blob/master/simbdp3.py" class="ext-link">https://github.com/JRF-2018/simbd/blob/master/simbdp3.py</a>
+
+今回の特徴は統計処理をするプログラムを stats_simbdp3/ 以下に置いたこと。
+
+プログラムは主に二つ。run_simbdp3.sh と plot_logs.py。
+
+……。
+
+run_simbdp3.sh は数回 simbdp3.py を実行してそれをログに取る。
+
+plot_logs.py はそのログを Python の seaborn ライブラリを使って描画する。
+
+seaborn ライブラリのインストールは、どこか他のサイトを参照していただきたい。これ以降はすでにインストールされているものとする。
+
+それらを使う準備として、まず、simbdp3.py で simbdp3.pickle を作る。simbdp3.py があるディレクトリで…、
+
+python simbdp3.py -d -t 1200 -S --save-period=12 --no-view
+
+…を実行する。
+
+次に stats_simbdp3/ に移動し simbdp3.pickle をコピーし、run_simbdp3.sh を実行可能にする。(私は Cygwin 上でやっている。run_simbdp3.sh は bash で動く。)
+
+cd stats_simbdp3/
+cp -p ../simbdp3.pickle .
+chmod +x run_simbdp3.sh
+
+次に 30年間を 10 回まわしそれを normal-01.log ... normal-10.log に取る。このとき PREFIX は 'normal' という。
+
+run_simbdp3.sh normal 10 -d -L -t 360 --change-random-seed --no-view
+
+ここで -d 以降は simbdp3.py に渡すオプション。
+
+次に戦争が増えるよう --invasion-average-term-min=60 を付けて 30年間を 10 回まわす。その PREFIX は mwar (many wars の略)とする。
+
+run_simbdp3.sh mwar 10 -d -L -t 360 --change-random-seed --no-view --invasion-average-term-min=60
+
+最後に結果をプロットする。
+
+python plot_logs.py normal mwar -p AccDeath
+
+ここで plot_logs.py は PREFIX を引数に取る。オプションとして -p にどの数値をプロットするかを指定する。AccDeath は累積死亡数を指定する。この他、Population 人口、AccDeath 累積死亡数、Karma 平均カルマ、NewKarma 新規発生カルマ(人口割)、AccKarma 累積新規発生カルマ、AccTemple 累積寺院建設数、Breakup 一家離散数、AccBreakup 累積一家離散数 …がある。
+
+実験の結論としては、ほんの少し mwar が normal より上にあるが、予想されていたほどの差は出なかった。同じ実験をしても、運によって逆転すらあるかもという差でしかない。
+
+うまくいかないものだ。</pre>
+
+
+</article>
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2021/08.html">2021年08月</a> | <a href="../../../index/gsm.html">共有メモ</a></nav>
+</body>
+</html>

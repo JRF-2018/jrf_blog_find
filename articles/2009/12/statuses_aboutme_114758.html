@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>ひとこと - JRF Blog Archive</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2009/12.html">2009年12月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+<article data-pagefind-body>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[statuses] <span class="cocolog-id">aboutme:114758</span></td></tr>
+<tr><th>セクション</th><td>JRF のひとこと</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2009/12.html">2009年12月05日</a></td></tr>
+<tr><th>元URL</th><td><a href="http://jrf.cocolog-nifty.com/statuses/2009/12/aboutme114758.html" class="ext-link"><span class="original-url">http://jrf.cocolog-nifty.com/statuses/2009/12/aboutme114758.html</span></a></td></tr>
+
+</table>
+</div>
+<h1>ひとこと</h1>
+<pre class="body">call/cc を知る。プログラムの例外処理に関してある記事を読み、そういえば、背理法は例外処理にあたると恩師から聴いていたのを思い出しググってみた。以前に call/cc という考え方に触れたことがあったはずだが、そのときは関心を持たなかった…。
+JRF 2009年12月5日
+
+関心を持つようになったのは最近↓に書いた＞ その者の中の乙女が死んだとき、その者が与えた夢の欠片が彼女を抱く、すると、その乙女の夢の中で、乙女は夢を抱きしめて蘇える。＜に call/cc の考え方が似ていると感じたからかもしれない。
+
+《JRFのひとこと:「未来の子供」…: アバウトミー : @nifty》
+<a href="http://jrf.aboutme.jp/user_statuses/show/113999" class="ext-link">http://jrf.aboutme.jp/user_statuses/show/113999</a>
+
+JRF 2009年12月5日
+
+call/cc というのは call with current-continuation の略で、プログラム言語 Scheme などで「継続」と呼ばれるものを作るための機構である。応用として例外処理などを書ける。プログラムには関数を渡すことができるが、この関数としてなんと return を渡せるようにするのが、call/cc という機構であると考えていい。
+
+JRF 2009年12月5日
+
+形式的には、ある解釈の環境 E[] 下で、M という項が問題になっているとき E[M] と書くとすると、E[call/cc(M)] |-&gt; E[M λz. A(E[z])]。この A は環境を固定化し、A が解釈されそうになると、その内に留めた環境に引き戻す効果を(だいたい)もつものである。
+
+JRF 2009年12月5日
+
+call/cc を解釈するときの環境が E_0[] だとして、処理が進んで環境 E_1[] に進んでいる。でも、call/cc から返された継続が呼ばれたとき、E_1 までなったことを捨てて E_0 の続きに戻るという処理がなされる。つまり E_1 は「死んだ夢の世界」のように捨てられる。ただし、そのとき E_1 の環境から値を返すことができる。
+
+……。
+JRF 2009年12月5日
+
+背理法との関係は↓がおもしろかった。
+
+《d.y.d.：Curry-Howard Isomorphism》
+<a href="../../../articles/2011/01/hbm_01421.html" class="int-link" title="Curry-Howard Isomorphism@d.y.d.">http://www.kmonos.net/wlog/61.html</a>
+
+その記事に次のような call/cc を使った例がある。
+
+callcc (
+   fun (k: (a, a-&gt;⊥) sum -&gt; ⊥) -&gt;
+         InRight (fun (x:a) -&gt; k (InLeft x)))
+)
+
+この全体の型は (a,a-&gt;⊥) sum になる。つまり、「a か not a」という定理になる。
+
+JRF 2009年12月5日
+
+上を使うプログラムとしては例えば次のように受ける。
+
+program M {
+  var j = callcc(…上のもの…)
+
+  var b = switch(j){
+  case InRight f -&gt;  f:a-&gt;⊥ についての処理。
+  case InLeft x -&gt;  x:a についての処理。
+  }
+  …
+}
+
+j の中身を見ると、InRight(…) というのが来ているので、switch の中では、「f:a-&gt;⊥ についての処理」がまず続くが、あるとき、f に何か(d:a)が代入されると、そこは f(d):⊥となって、無限ループに陥ることに相当する。
+
+JRF 2009年12月5日
+
+ただし、「継続」のおもしろいところは＞継続に値を突っ込んだらその継続先にジャンプしてしまってその場所には返ってこない＜ところで、こんどは j の奥にあったところの InLeft d となって switch 分の中に「蘇え」り、何ごともなかったかのように「x:a についての処理」を進める。
+
+さて、大事なことは j の段階では d:a があるなんてことは「知らない」ということ。
+
+JRF 2009年12月5日
+
+……。
+
+これを無理に「文学的」に表現してみると…。
+JRF 2009年12月5日
+
+大魔王モモ(M)は、使いとしてやんちゃなジジ(j)を地上に送ります。ジジは料理店の店主バイデン(b)さんのところで働きます。バイデンさんはジジに珍宝である秘伝のスパイス(x:a)は今あるかと聞きます。ジジはそんなことは知りません。でも、夢でモモがそっとささやきました。「ないことにしてあなたが成長すれば、あなたの敵がきっとそれを発明してきます。その世界を苦しむというなら、あなたをそれが今あった世界に導きましょう。」
+
+JRF 2009年12月5日
+
+ジジは「ない」と答えました。ジジはバイデンさんのところで働き続けました。するとモモが言っていたとおり、「敵」がそれ(d:a)を持ってきました。でも、今さら、それが手に入ってもどうすることもできません。そして、ジジは老い、きっと死んだのでしょう。
+
+ジジは「ある」と答えて珍宝(d:a)を取り出しました。バイデンさんは大喜びです。「ライバル」がそれを見て悔しがっています。
+
+JRF 2009年12月5日
+
+「でも、ジジがどうやってその珍宝を手に入れたのか誰も(ジジも)知らないのでした。」そう言って、「大魔王」モモは本を閉じました…とさ。
+
+……。
+
+これが自然で古典的な演繹というわけだ。
+
+JRF 2009年12月5日
+
+なお、知ったばかりでプログラムも実際の処理系で試しておらず、間違っているかもしれません。誰か指摘してくれたらうれしいけど…その望みは薄いですが、もし、指摘があれば後日「まるまるナシにして」と追記するかもしれません。
+
+JRF 2009年12月5日
+
+(最初に書いた「ある記事」は↓。)
+《シーケント計算と例外処理コード - 檜山正幸のキマイラ飼育記》
+<a href="http://d.hatena.ne.jp/m-hiyama/20091130/1259541758" class="ext-link">http://d.hatena.ne.jp/m-hiyama/20091130/1259541758</a>
+
+「文学的」表現については↓が私の関連記事かな。
+《シミュレーション・アーギュメントを論駁する》
+<a href="../../../articles/2006/10/religion_14794101.html" class="int-link" title="シミュレーション・アーギュメントを論駁する">http://jrf.cocolog-nifty.com/religion/2006/10/post.html</a>
+
+JRF 2009年12月5日
+
+シミュレーション・アーギュンメントや三囚人問題と関連するのか一つ前のひとことにも関連して、眠り姫問題というものがあるらしい。Yet Anotehr 変形三囚人問題というのを2008年03月08日あたりのひとことで紹介してます。
+《眠り姫問題とは - はてなキーワード》
+<a href="http://d.hatena.ne.jp/keyword/%CC%B2%A4%EA%C9%B1%CC%E4%C2%EA" class="ext-link">http://d.hatena.ne.jp/keyword/%CC%B2%A4%EA%C9%B1%CC%E4%C2%EA</a>
+
+JRF 2009年12月5日
+
+他に私の以下のカテゴリや記事もよければ読んでみてください。
+《JRF の私見：雑記: 論理学》
+<a href="http://jrf.cocolog-nifty.com/column/cat2934351/index.html" class="ext-link">http://jrf.cocolog-nifty.com/column/cat2934351/index.html</a>
+《呪術的オブジェクト指向用語訳》
+<a href="../../../articles/2006/03/column_10639623.html" class="int-link" title="呪術的オブジェクト指向用語訳">http://jrf.cocolog-nifty.com/column/2006/03/post_17.html</a>
+
+JRF 2009年12月5日
+
+Trackbacks:
+
+《aboutme:123874》 from JRF のひとこと
+<a href="../../../articles/2010/05/statuses_aboutme_123874.html" class="int-link" title="ひとこと">http://jrf.cocolog-nifty.com/statuses/2010/05/aboutme123874.html</a>
+
+感情はコントロールできるけれど、理性はコントロールできないからね…って、いや、しかし、ビョーキを経験した私には、理性と感情を共調させることができれば、その後、感情に理性が従うような設定を理性に律させることはできるという実感がある。... 
+
+受信： 2012-01-05 21:38:42 (JST)</pre>
+
+
+<section class="backrefs" data-pagefind-ignore>
+<h2>後方参照 (1 件)</h2>
+<ul>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2009/11/statuses_aboutme_113999.html">ひとこと</a> <span class="backref-date">2009年11月25日</span></li>
+</ul>
+</section>
+
+</article>
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2009/12.html">2009年12月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+</body>
+</html>

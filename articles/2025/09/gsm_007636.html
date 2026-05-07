@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>共有メモ - JRF Blog Archive</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2025/09.html">2025年09月</a> | <a href="../../../index/gsm.html">共有メモ</a></nav>
+<article data-pagefind-body>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[gsm] 2025-09-10T14:31:50Z</td></tr>
+<tr><th>セクション</th><td>グローバル共有メモ</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2025/09.html">2025-09-10T14:31:50Z</a></td></tr>
+<tr><th>元URL</th><td>(URLなし)</td></tr>
+
+</table>
+</div>
+<h1>共有メモ</h1>
+<pre class="body">jrf&gt; (承前)
+
+このようなことを「フルスペック」でやるとしたら workflow を定義できるようにするべきなんだろうな。
+
+workflow_new や workflow_update をツールとして用意して、bandit_schedule_workflow で workflow を予約できるようにする。
+
+それぞれの workflow はバンディットに登録するような ツール + aux_prompt の列を並べたものになる…。
+
+先の例だが、memory_read + &quot;memory:3333 を読むように&quot; と subwork_done と &quot;memory:3333 の指示が終ったらこのツールを実行するように&quot; という列が workflow として workflow:2222 に登録されて、bandit_schedule_workflow &quot;workflow:2222&quot; される…と。
+
+subwork_done を複数含むような列も登録できる…と。
+
+workflow_do もできる…と。入れ子的実行。
+
+これは言わば列＝chain を登録させるわけだが、LangChain → LangGraph の流れを考えると、グラフを登録したいという欲求も出てくるんだろうな。
+
+そこまでやるか？…という気はするし、AI にそこまでのことをやらせる必要もないかもしれないが、人間は、そういう複雑な workflow を登録しておきたい…というのはあるのかもしれない。私のシステム(の類似物)を複雑な RAG に適用したいなどとする場合。</pre>
+
+
+</article>
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2025/09.html">2025年09月</a> | <a href="../../../index/gsm.html">共有メモ</a></nav>
+</body>
+</html>

@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>ひとこと - JRF Blog Archive</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2013/04.html">2013年04月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+<article data-pagefind-body>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[statuses] <span class="cocolog-id">cocolog:76226522</span></td></tr>
+<tr><th>セクション</th><td>JRF のひとこと</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2013/04.html">2013年04月18日</a></td></tr>
+<tr><th>元URL</th><td><a href="http://jrf.cocolog-nifty.com/statuses/2013/04/post-0ad1.html" class="ext-link"><span class="original-url">http://jrf.cocolog-nifty.com/statuses/2013/04/post-0ad1.html</span></a></td></tr>
+
+</table>
+</div>
+<h1>ひとこと</h1>
+<pre class="body">マメ知識：数列とは自然数の関数である。
+JRF 2013年4月18日
+
+(自然数じゃなく整数だ、いや、正の数だ…とかいうのは、この際は置いといて。)
+
+JRF 2013年4月18日
+
+解析で、関数を習うときは連続関数で習い、数列はまた別の概念みたいに教えられる(と私は覚えている)から気付きにくいと思う。
+
+その後(?)、プログラミングを学んだり、位相とか論理学とか習っていると、集合を取る関数とか、有限の要素についてのみの関数が出てききて、当然、自然数に関する関数も出てきていても、私は、「数列」の正体に気付かなかった。
+
+これに気付いたのは、定理証明システムを使いはじめて、数列に関し証明する必要が出てきたとき。だから、案外、他の人も気付いてないかもしれないと「マメ知識」として書いてみた。
+
+JRF 2013年4月18日
+
+数列というのは、プログラミングの「リスト」とかとはまた違って、無限に値がありえるものなんだよね。「リスト」は高々有限集合なんだけど、数列はそうじゃないというのは、証明を厳密にするところではかなり問題になる。「リスト」の延長線では数列に関する証明はできない。結局、数列は、「自然数の関数」みたいなことにしないと、証明ができない。
+
+JRF 2013年4月18日
+
+……。
+
+もう少しフォローすると、1, 2, 4, 8 はどのような数列か？みたいな問題があって、そういうところから学習できるのが数列…みたいな「哲学」も意味はありそうだけど、解析学で習っていくのは、もうそういうのは飛ばして、完全に自然数の関数としか言えないものばかりになっていく。
+
+JRF 2013年4月18日
+
+数列の和の級数は特殊な概念で、「関数」ってのは「函数」で普通、中身はわかんないから、「関数の関数」たる F について F(f) + F(g) = F(lambda n. f(n) + g(n)) と言えないとかあるんだけど、F = Sum の場合はそれが言える。ただ、Sum の中身が無限個超えちゃうと議論がおかしくなるが、少なくとも可算無限個なら、微妙に OK なものがある。…っていうところを利用している。
+
+JRF 2013年4月18日
+
+……。
+
+このあたり 2008年03月30日 の 0.99999… と 1.000…1 についてのひとことが関連か。。
+
+＞
+1.00…1 を数列とみなすか「表現」とみなすかで考え方が違う。a_1=(2-0.9), a_2=2-(0.9+0.09),...,a_n=2-(0.9+0.09+…),...という数列とみなせば、当然、1 に収束する。
+
+一方、実数全体を含み、かつ無限個の長さの[0-9]列の「あと」に一つの数値がつづくという表現を許す集合は実数の集合よりも真に大きな集合となる。その要素である1.0…1は1どころか実数ではない。
+
+JRF 2013年4月18日
+
+無限個、[0-9]の列が並び、一つ1があって、無限個また[0-9]が続く、という表現は実数に対してはいえない。最初の「無限個」はせいぜい「任意の有限個」にしなければならない。…ということを言えば想像しやすいか。
+
+(…)
+
+0.999…1000… と 1.000…1000… を違う表現と考えるからこそ、実数に対応しなくなるんじゃないか？
+＜
+
+JRF 2013年4月18日
+
+要するに、実数を表現するとき XXX.YYYYY.... と書くとすると、YYYYY.... のところは無現列でいいんだけど、XXX のところは高々有限列でないといけない。…ってのが大事なところ。
+
+JRF 2013年4月18日
+
+……。
+
+keyword: マメ知識
+
+ググるとズバリ、書いてるのがあるね。まぁ、「マメ知識」シリーズだから別に気にしないけど。
+
+《数列は関数だ》
+<a href="http://aozoragakuen.sakura.ne.jp/taiwa/taiwaNch01/node35.html" class="ext-link">http://aozoragakuen.sakura.ne.jp/taiwa/taiwaNch01/node35.html</a>
+
+《数列が関数？？？ - Yahoo!知恵袋》
+<a href="http://detail.chiebukuro.yahoo.co.jp/qa/question_detail/q1342186258" class="ext-link">http://detail.chiebukuro.yahoo.co.jp/qa/question_detail/q1342186258</a>
+
+JRF 2013年4月18日
+
+typo 「無現列」→「無限列」。
+修正 ［「リスト」］→［「リスト」「配列」］。
+
+JRF 2013年4月18日
+
+……。
+
+補足、というか…。
+
+現代では、プログラミングは一般的なことだから、「リスト」「配列」を受け取ると中身を全部足すという関数は簡単に書けても、無限に続く「数列」を受け取って、その収束とか発散まで考えて返すような関数を書くのは難しいということは、感覚的にも理解できると思う。
+
+JRF 2013年4月19日
+
+集合論のこの辺は「計算可能」とはまた別の概念で、「ここまでで使ってない何かを選択する」メモリ割り当てみたいな選択関数が定義できるかどうかのほうが大事な概念となる。ちなみに、「リスト」「配列」のような有限列でも無限集合になると長さを無限まで考慮しなければならないが、逆に有限列が無限個でも長ささえ決まっていれば、その長さに１を加えるものを選択関数とできる。一方、無限数列に関してだと、例えば二個の違う実数の平均を選択すれば三個目の実数となるが、それが無限個だと連続しちゃって一番小さい二個の間を取るということ自体微妙…といったようなことが起きるので、面倒くさい。
+
+JRF 2013年4月19日
+
+(有限列の無限個の集合というのは微妙なところで、例えば、整数のリストなんかだと、整数自身は無限個あるから、長さ１のリストは無限個ある。でも、当然、長さ２のリストを作れるなら、それはこれまでにないものだということができる。このあたり私もいろいろ忘れていて、上のコメント、最初書いたのは消して、ちょっと日和[ひよ]った書き方に変えた。)
+
+JRF 2013年4月19日
+
+《選択公理 - Wikipedia》
+<a href="http://ja.wikipedia.org/wiki/%E9%81%B8%E6%8A%9E%E5%85%AC%E7%90%86" class="ext-link">http://ja.wikipedia.org/wiki/%E9%81%B8%E6%8A%9E%E5%85%AC%E7%90%86</a>
+
+↓については <a href="../../../articles/2012/09/statuses_cocolog_74037700.html" class="int-link cocolog-id" title="ひとこと">[cocolog:74037700]</a> で言及。
+
+《計算可能関数 - Wikipedia》
+<a href="http://ja.wikipedia.org/wiki/%E8%A8%88%E7%AE%97%E5%8F%AF%E8%83%BD%E9%96%A2%E6%95%B0" class="ext-link">http://ja.wikipedia.org/wiki/%E8%A8%88%E7%AE%97%E5%8F%AF%E8%83%BD%E9%96%A2%E6%95%B0</a>
+
+JRF 2013年4月19日
+
+Trackbacks:
+
+《cocolog:88125718》 from JRF のひとこと
+<a href="../../../articles/2017/09/statuses_cocolog_88125718.html" class="int-link" title="ひとこと">http://jrf.cocolog-nifty.com/statuses/2017/09/post-4e04.html</a>
+
+結城浩『数学ガール ゲーデルの不完全性定理』を読んだ。おもしろい。私のかつての専門分野だが、私の不完全性定理の理解は不完全なものだったのだな、と気付かされた。 
+
+受信： 2017-09-30 06:55:02 (JST)</pre>
+
+
+<section class="backrefs" data-pagefind-ignore>
+<h2>後方参照 (3 件)</h2>
+<ul>
+<li><span class="backref-label">[cocolog:76226522]参照</span> <a href="../../../articles/2020/12/statuses_cocolog_92396511.html">ひとこと</a> <span class="backref-date">2020年12月05日</span></li>
+<li><span class="backref-label">[cocolog:76226522]参照</span> <a href="../../../articles/2017/09/statuses_cocolog_88125718.html">ひとこと</a> <span class="backref-date">2017年09月22日</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2012/09/statuses_cocolog_74037700.html">ひとこと</a> <span class="backref-date">2012年09月14日</span></li>
+</ul>
+</section>
+
+</article>
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2013/04.html">2013年04月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+</body>
+</html>

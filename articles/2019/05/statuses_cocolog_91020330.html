@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>ひとこと - JRF Blog Archive</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2019/05.html">2019年05月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+<article data-pagefind-body>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[statuses] <span class="cocolog-id">cocolog:91020330</span></td></tr>
+<tr><th>セクション</th><td>JRF のひとこと</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2019/05.html">2019年05月24日</a></td></tr>
+<tr><th>元URL</th><td><a href="http://jrf.cocolog-nifty.com/statuses/2019/05/post-366bdc.html" class="ext-link"><span class="original-url">http://jrf.cocolog-nifty.com/statuses/2019/05/post-366bdc.html</span></a></td></tr>
+
+</table>
+</div>
+<h1>ひとこと</h1>
+<pre class="body">「ミクロ経済学の我流シミュレーション」の記事の「その３ log 戦略」と「その４ 最適化の失敗」を書いた。「発散」を防止するのに、急な価格上昇に対して「弾力的に」需要が減ればよいとして log 関数に似た関数を使ってみたが、うまくいかなかった。
+JRF 2019年5月24日
+
+記事は↓。
+
+《ミクロ経済学の我流シミュレーション その３ log 戦略》
+<a href="../../../articles/2019/05/society_91020231.html" class="int-link" title="ミクロ経済学の我流シミュレーション その３ log 戦略">http://jrf.cocolog-nifty.com/society/2019/05/post-79cdc2.html</a>
+
+《ミクロ経済学の我流シミュレーション その４ 最適化の失敗》
+<a href="../../../articles/2019/05/society_91020237.html" class="int-link" title="ミクロ経済学の我流シミュレーション その４ 最適化の失敗">http://jrf.cocolog-nifty.com/society/2019/05/post-6f63b5.html</a>
+
+JRF 2019年5月24日
+
+Python を使ったミクロ経済学の我流シミュレーションの「その１ 基礎経済モデル」に関するひとことは <a href="../../../articles/2018/03/statuses_cocolog_89067097.html" class="int-link cocolog-id" title="ひとこと">[cocolog:89067097]</a>、「その２ バランス戦略」に関するひとことは <a href="../../../articles/2018/09/statuses_cocolog_89931312.html" class="int-link cocolog-id" title="ひとこと">[cocolog:89931312]</a>。記事は上記リンクなどから辿れる。
+
+JRF 2019年5月24日
+
+……。
+
+今、今回の micro_economy_*.py ではなく、simple_market_0.pl (↓)を発展させた別の資産市場のアイデアを練っている。その途中 micro_economy_*.py を見直していて浮かんだアイデアを先に実装したのが今回の実験になる。
+
+《外作用的簡易経済シミュレーションのアイデアと Perl による実装》
+<a href="../../../articles/2011/01/society_66612185.html" class="int-link" title="外作用的簡易経済シミュレーションのアイデアと Perl による実装">http://jrf.cocolog-nifty.com/society/2011/01/post.html</a>
+
+JRF 2019年5月24日
+
+まず、資産市場に注目というので、総貯蓄の増分 = social debt ではないかと思い付いたのを試したのだったが、その思い付きは間違っていて、資本家の利益が貯蓄に反映されないのでそういうことにはならないのだった。そこで気付いたことをまず修正。
+
+その後、先に「最適化の失敗」に関する実験を、micro_economy_1.py や micro_economy_3.py に関して行なった。(--opt-try=prev と --opt-try=random に相当するもののみ。)
+
+JRF 2019年5月24日
+
+micro_economy_5.py の実験では --opt-try=random は意味がなかったが、micro_economy_1.py の場合、意味が出てくる。そこでは、「発散」した値などが最適値となり、ぼんぼん値が飛ぶのだった。
+
+JRF 2019年5月24日
+
+なんでこんなことになるんだろう…と考えて、「発散」を防止するには、急な価格上昇に対して「弾力的に」需要が減るということがないといけないのではないか？…という考えに致った。そしてそれを実現するには log 関数を使えばいいのではないか…といったところで、「その３ log 戦略」の記事につながる。
+
+当初は、かなりいいアイデアに思え、これで「バランス戦略」の分散(variance)を取るのも不要になるのではないかと考えたが、そこまでうまくいかなかったのであった。
+
+JRF 2019年5月24日
+
+……。
+
+その後、「最適化の失敗」の実験を --opt-try=prev と --opt-try=random に相当するもののみ、micro_economy_5.py を対象として行った(のが exp_01_06.py)。
+
+JRF 2019年5月24日
+
+そこで記事に書こうと思ったが、SciPy の optimize について調べていると、以前は確かなかった Global Optimization という項目が増えている。「その４ 最適化の失敗」の結論である「最適化は失敗しているが、間違いとは言い切れない。それは実際の経済の「最適化」がどのように行われているかによるからだ。」…という結論は変わりそうにないと思ったので、それは無視してそのまま記事にしようと一時思った。
+
+JRF 2019年5月24日
+
+が、思い直し、Global Optimization も試してみたのだった。それで本当の最適値が求まるならそれもよし。
+
+…が、それでも「本当の最適値」が常に求まるようではなかった。そして不安に思っていたこととして、値が飛びまくるのではないか…ということも、そんなに心配したほどではなかったので逆に安心することができた。
+
+JRF 2019年5月24日
+
+価格の値は 1 から 100 までになっているが、元は 1 から 1000 で試していた。しかし、1000 近くなるとなぜかオーバーフローっぽいエラーが出る。どこで出るのか今いちわからず、今回は 100 までにしてお茶をにごした。1000 ぐらい変わるとスコアも大きく変わるので、今回とは違う印象になる可能性もあるが、それは今後の課題ということで…。
+
+JRF 2019年5月24日</pre>
+
+
+</article>
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2019/05.html">2019年05月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+</body>
+</html>

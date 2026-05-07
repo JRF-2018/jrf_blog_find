@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>The Proofs about Alpha-equivalences in Isabelle - JRF Blog Archive</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2016/01.html">2016年01月</a> | <a href="../../../index/software.html">ソフトウェア Tips</a></nav>
+<article data-pagefind-body>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[software] <span class="cocolog-id">cocolog:84330372</span></td></tr>
+<tr><th>セクション</th><td>JRF のソフトウェア Tips</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2016/01.html">2016年01月07日 14:20:18</a></td></tr>
+<tr><th>元URL</th><td><a href="http://jrf.cocolog-nifty.com/software/2016/01/post.html" class="ext-link"><span class="original-url">http://jrf.cocolog-nifty.com/software/2016/01/post.html</span></a></td></tr>
+<tr><th>タグ</th><td>[JRF 作成ソフトウェア] [関数型言語・定理証明器]</td></tr>
+</table>
+</div>
+<h1>The Proofs about Alpha-equivalences in Isabelle</h1>
+<pre class="body">■Abstract
+  
+The word of &quot;occurrence&quot; in terms is useful to explain notions intuitively, which frequently leads proofs into ambiguous and inaccurate ones.  With theorem provers on the computer like Isabelle, however, we can handle the proofs strictly and maybe complicatedly. In the archive I show, I proved notions of the lambda calculus on the computer especially about alpha-equivalence(s) handling with occurrences.
+
+The second merit was that though I was lacking confidence about mathematics, I could affirm my proofs were correct because of theorem provers.  However, I originally proved the proofs in Isabelle before 1998.  When I have proved originally, I certainly have comprehended what I did.  Now, I almost don't recognize what I do, but I rewrite the legacy proofs into the present style of the Isabelle2015.  Though, I often consider proofs partly when rewriting leads to failure.  I can't prove in the recommended style of Isar structured proof, but prove in the style of &quot;apply ... done&quot; proofs with tactics and tacticals.
+
+The proofs about alpha-equivalence(s) of the lambda calculus include the proof of correspondence between the definition of alpha-equivalence using occurrences and that using inductive set, and proofs about connection of the usual notation and de Bruijn notation.
+
+■Contents
+  
+In the archive, we have *.thy files, which are the proofs.  I dedicate the works to the Isabelle2015.  If you want to load all of the works into the Isabelle2015, you open AllLambda.thy from jEdit or console system.  (With jEdit, at first you must select Logics_ZF of logics of Theories panel, and restart Isabelle2015, and open AllLambda.thy.)
+
+Though the Isabelle2015 have many mechanisms of documentation, I don't leave comments at all, because I write above that now I don't recognize my work correctly.
+
+In the &quot;legacy&quot; directory of the archive, I put the legacy proofs on Isabelle before 1998 for reference.  It may be convenient if you must prove the same lemmas in the future.  They are more readable than those for the Isabelle2015.  The legacy proofs were the contents of my master's thesis in Hokkaido University.
+
+The tutorial advice bound variable should be rewritten by rewrite_tac, but I can't obey the advice, because the number of bound variables is many in complicated proof and the temporal names isn't changed from the legacy proof for the most part.
+
+■Homepage
+  
+I put the archive in a page of my blog which is written in Japanese. The page is below:
+
+  <a href="../../../articles/2016/01/software_84330372.html" class="int-link" title="The Proofs about Alpha-equivalences in Isabelle">http://jrf.cocolog-nifty.com/software/2016/01/post.html</a>
+  
+You can get the sources from GitHub:
+
+  <a href="https://github.com/JRF-2018/isabelle_TheLambda" class="ext-link">https://github.com/JRF-2018/isabelle_TheLambda</a>
+  
+■Author
+  
+  JRF (<a href="http://jrf.cocolog-nifty.com" class="ext-link">http://jrf.cocolog-nifty.com</a>
+  
+■License
+  
+The author is a Japanese.
+
+I intended this program to be public-domain, but you can treat this program under the (new) BSD-License or under the Artistic License, if it is convenient for you.
+
+Within three months after the release of this program, I especially admit responsibility of efforts for rational requests of correction to this program.
+
+I often have bouts of schizophrenia, but I believe that my intention is legitimately fulfilled.
+
+■P.S.(2020-06-22)
+    
+Now, I made the proofs compatible with Isabelle2020. The old proofs for Isabelle2015 is moved into the directory of &quot;legacy2015&quot;.
+
+■Distribution
+  ●isabelle_TheLambda.zip.
+  ●isabelle_TheLambda.tar.gz.  The same contents above.
+    
+
+■要約
+  
+項の中の「出現」という語は、概念を説明するのに便利だが、しばしば、証明をあいまいで不正確なものにしがちである。しかし、それを Isabelle のような定理証明システム上で行うなら話が違う。その証明は、たとえ複雑なものになったとしても、とても厳密なものにできる。このアーカイブでは、ラムダ計算の特にα同値性に関して出現を用いて証明を行った。
+
+この証明の第二の「売り」は、私が数学に関して素人で信用がないにもかかわらず、定理証明システムを使っているがゆえに正しいと肯定できるとう点にあった。しかしながら、元々、この証明は Isabelle 上で 1998 年以前になされたもので、そのころ証明したときには、何をやってるかを自分で理解できていたが、今や、何をやっているかを理解しているとはいい難い。今回やったのは、昔の証明を今の Isabelle2015 のスタイルに書き換えることだけである。もちろん、書き換えがうまくいかないことがあって、しばしば考え込むことがあったが、証明の大枠の理解は抜け落ちている。書き換えるだけなので、推奨されている Isar structured proof のスタイルで証明することはできず、apply ... done タイプの tactics と tacticals を使う証明のスタイルの終始した。
+
+ラムダ計算のα同値に関する証明では、出現を用いた定義と帰納的定義の一致を証明したり、ラムダ計算の通常の表記法と de Bruijn 表記法の間の関係に関する証明を行っている。
+
+■アーカイブの内容
+  
+このアーカイブには、*.thy ファイルが含まれていて、それらが、証明になる。 Isabelle2015 用に専念して書かれているため、他のバージョン、例えば次のバージョンでは動かないかもしれないほど依存性が高い。私の証明のすべてを Isabelle2015 に読み込ませるには、jEdit かコンソールシステム上から AllLambda.thy を読み込めばいい。(jEdit では、まず、Theories パネルの論理を選ぶところで Logics_ZF を選び、Isabelle2015 を再起動した上で、 AllLambda.thy を読み込ませる必要がある。)
+
+Isabelle2015 はドキュメント化のための様々な便宜を提供しているが、それらはまったく利用せず、コメントすら残していない。上にも書いたように現在の私は証明を理解しているとは言い難いというのがその理由の一つである。
+
+アーカイブの中の &quot;legacy&quot; ディレクトリには、1998年以前にやった証明を一応含めておいた。もし、読者が私と同じ証明をすることになったら、 Isabelle2015 上の証明より、legacy な証明のほうが参照しやすいと思ったからだ。なお、legacy な証明は、私の北海道大学での修士論文(相当)の内容だった。
+
+チュートリアルでは、束縛変数名を証明内で参照するときには、rewrite_tac を使って名前を与えよとアドバイスしているが、それにはしたがえなかった。最初はしたがおうとしたが、束縛変数の数がとても多くなり、それでも、 legacy な証明とほとんどの場合、名前の使い方が変わっていないことから、結局、ひよった。
+
+■このアーカイブのホームページ
+  
+アーカイブは、私の(日本語の)ブログ内の一ページに置かれている。その URL は以下の通り：
+
+  <a href="../../../articles/2016/01/software_84330372.html" class="int-link" title="The Proofs about Alpha-equivalences in Isabelle">http://jrf.cocolog-nifty.com/software/2016/01/post.html</a>
+  
+もしくは以下の GitHub にある。
+
+  <a href="https://github.com/JRF-2018/isabelle_TheLambda" class="ext-link">https://github.com/JRF-2018/isabelle_TheLambda</a>
+  
+■著者
+  
+  JRF (<a href="http://jrf.cocolog-nifty.com" class="ext-link">http://jrf.cocolog-nifty.com</a>
+■ライセンス
+  
+(上の英語版のライセンスを読んで下さい。)
+
+■参考
+  ●Isabelle のホームページ (in University of Cambridge, in Technische Universitat Munchen)。
+  ●《caeruiro》 の Isabelle Tutorial の日本語訳には特に Exercise を解くときにお世話になった。
+  ●《Isabelle/Isar（その１） - ATPとCASのこと（謄）》。ここでは Isar structured proof が学べる。結局、使わなかったが、将来的に役立てたらいいなと思う。
+■追記 (2020-06-22)
+  
+Isabelle2020 に対応させた。Isabelle2015 用は、legacy2015 にある。
+
+■配布物
+  ●isabelle_TheLambda.zip。
+  ●isabelle_TheLambda.tar.gz。内容は上と同じ。
+    
+更新：2016-01-07,2020-06-22
+初公開：2016年01月07日 15:10:06
+最新版：2020年06月22日 14:13:42
+
+
+Comments:
+
+[E:diamond] 初公開：isabelle_TheLambda-20160107.zip。バージョン番号は付けない方針だが、あえて付けるならバージョン 0.01。
+
+初公開後、上のドキュメントで Logics_ZF を選んだ上で Isabell2015 の再起動をしたあと、AllLambda.thy を読み込む旨を書き足した。それをドキュメントに反映したバージョンは一週間後くらいに公開する予定。
+
+投稿: JRF | 2016-01-08 13:29:19 (JST)
+
+[E:spade] 更新：isabelle_TheLambda-20160113.zip。バージョン 0.02。
+
+主にドキュメントの書き換えのみ。あとは、証明で back を使っていた三ヶ所を使わないように書き換えた。新しい定理などはない。
+
+投稿: JRF | 2016-01-13 00:18:56 (JST)
+
+更新：isabelle_TheLambda-20200622.zip。バージョン 0.03。
+
+このバージョンが特に欲しい方は↓からどうぞ。
+
+<a href="https://github.com/JRF-2018/isabelle_TheLambda/releases/tag/v0.03" class="ext-link">https://github.com/JRF-2018/isabelle_TheLambda/releases/tag/v0.03</a>
+
+Isabelle2020 に対応。
+
+投稿: JRF | 2020-06-22 14:27:10 (JST)
+
+
+Links:
+
+isabelle_TheLambda.zip: <a href="https://www.sugarsync.com/pf/D252372_79_66178310400" class="ext-link">https://www.sugarsync.com/pf/D252372_79_66178310400</a>
+isabelle_TheLambda.tar.gz: <a href="https://www.sugarsync.com/pf/D252372_79_66178311880" class="ext-link">https://www.sugarsync.com/pf/D252372_79_66178311880</a>
+in University of Cambridge: <a href="../../../articles/2016/01/hbm_01840.html" class="int-link" title="Isabelle">http://www.cl.cam.ac.uk/research/hvg/Isabelle/</a>
+in Technische Universitat Munchen: <a href="../../../articles/2016/01/hbm_01839.html" class="int-link" title="Isabelle">https://isabelle.in.tum.de/</a>
+caeruiro: <a href="../../../articles/2016/01/hbm_01837.html" class="int-link" title="caeruiro">http://d.hatena.ne.jp/caeruiro/</a>
+Isabelle/Isar（その１） - ATPとCASのこと（謄）: <a href="../../../articles/2016/01/hbm_01838.html" class="int-link" title="Isabelle/Isar（その１） - ATPとCASのこと（謄）">http://ehito.hatenablog.com/entry/20130503/1367582411</a>
+isabelle_TheLambda-20160107.zip: <a href="http://jrf.cocolog-nifty.com/archive/isabelle/isabelle_TheLambda-20160107.zip" class="ext-link">http://jrf.cocolog-nifty.com/archive/isabelle/isabelle_TheLambda-20160107.zip</a>
+isabelle_TheLambda-20160113.zip: <a href="http://jrf.cocolog-nifty.com/archive/isabelle/isabelle_TheLambda-20160113.zip" class="ext-link">http://jrf.cocolog-nifty.com/archive/isabelle/isabelle_TheLambda-20160113.zip</a></pre>
+
+
+<section class="backrefs" data-pagefind-ignore>
+<h2>後方参照 (4 件)</h2>
+<ul>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2020/06/statuses_cocolog_91995523.html">ひとこと</a> <span class="backref-date">2020年06月22日</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2016/04/column_84884157.html">前期の翌日(2016-01-01)から昨日(2016-03-31)まで 91 日間のアクセス解析・近況など</a> <span class="backref-date">2016年04月01日 12:53:25</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2016/04/column_84884171.html">今後の(主に勉学の)方針 (2016年度版)</a> <span class="backref-date">2016年04月01日 12:58:07</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2016/01/statuses_cocolog_84331614.html">ひとこと</a> <span class="backref-date">2016年01月07日</span></li>
+</ul>
+</section>
+
+</article>
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2016/01.html">2016年01月</a> | <a href="../../../index/software.html">ソフトウェア Tips</a></nav>
+</body>
+</html>

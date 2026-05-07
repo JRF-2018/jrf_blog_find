@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>共有メモ - JRF Blog Archive</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2023/08.html">2023年08月</a> | <a href="../../../index/gsm.html">共有メモ</a></nav>
+<article data-pagefind-body>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[gsm] 2023-08-30T22:13:47Z</td></tr>
+<tr><th>セクション</th><td>グローバル共有メモ</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2023/08.html">2023-08-30T22:13:47Z</a></td></tr>
+<tr><th>元URL</th><td>(URLなし)</td></tr>
+
+</table>
+</div>
+<h1>共有メモ</h1>
+<pre class="body">jrf&gt; 「熊剣迷路問題」bardapi を使った実験。1.7.1 は、1.7 の SCOLDING や COMMAND_RECEPTION の値を変えた実験。なお、値を変える以外に、スコアの計算間違いの修正を行っている。
+
+《bard_maze_1.7.1.ipynb》  
+<a href="https://gist.github.com/JRF-2018/37b40b23bd18fd26040db49cd7756b91" class="ext-link">https://gist.github.com/JRF-2018/37b40b23bd18fd26040db49cd7756b91</a>
+
+結論としては、SCOLDING: False や COMMAND_RECEPTION: good_all がとても手数がかかった以外は、大差がない感じだった。それ以外は、パラメータの違いより、その日の Bard の調子のほうが問題だったように感じた。とはいえ「叱る」は有効ではあるといえそうだ。
+
+さて、これまで、Bard で実験を続けてきたわけだが、ここでこの系列の実験は終了しようと思う。結論としては &quot;few-shot&quot; 的な方法で解くことは難しかった。途中から無理やり迷路を解かせる方法を試し、その方法では一応ゴールまで行ったが、かなり迷った末のゴールだった。座標を理解しているとはとてもじゃないが、思えない。
+
+Bard 自身がセッションを超えて学んでいる雰囲気があり、その具合も見たかったが、いろいろ垣間見えたものの、テキストの地図と座標を学ぶにはまだ遠そうだった。
+
+今後は、PaLM2 が日本語対応されたので、そちらで試してみる方向がありうる。ファインチューニングもできるので、もっと早く迷路を解かせることも可能かもしれない。しかし、few-shot 的にすぐに解けるのではという当初の関心からは、それらは外れている。他の課題を考えたほうがよさそうに思う。
+
+とにかく、これまで無料で実験させてくれた Google や bardapi の開発者さんには感謝しかない。
+
+ありがとうございました。</pre>
+
+
+</article>
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2023/08.html">2023年08月</a> | <a href="../../../index/gsm.html">共有メモ</a></nav>
+</body>
+</html>

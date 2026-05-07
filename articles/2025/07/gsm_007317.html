@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>共有メモ - JRF Blog Archive</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2025/07.html">2025年07月</a> | <a href="../../../index/gsm.html">共有メモ</a></nav>
+<article data-pagefind-body>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[gsm] 2025-07-06T23:18:14Z</td></tr>
+<tr><th>セクション</th><td>グローバル共有メモ</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2025/07.html">2025-07-06T23:18:14Z</a></td></tr>
+<tr><th>元URL</th><td>(URLなし)</td></tr>
+
+</table>
+</div>
+<h1>共有メモ</h1>
+<pre class="body">jrf&gt; LangChain で熊剣迷路問題 Ver. 0.0.5。LangGraph 系の create_react_agent を使って実装。謎なエラーに悩まされたが対処療法でとりあえずゴールはできた。
+
+《langchain_maze_0.0.5.ipynb》  
+<a href="https://gist.github.com/JRF-2018/c39048a7ca12d96576ba3de618ca2ffb" class="ext-link">https://gist.github.com/JRF-2018/c39048a7ca12d96576ba3de618ca2ffb</a>
+
+Version 0.0.5 での違い。
+
+LangGraph 系の create_react_agent を使って実装してみました。といってもグラフ機能は全く使っていないので、LangGraph 的なプログラムになっていません。
+
+ツールメッセージが標準でメモリ(messages)に入っているため、これまでのようにメモリの学習を工夫する必要がないと判断し、一回の invoke で数回の行動ができる 0.0.1 のような方法に戻しました。
+
+ハマったのは、まず、Recursion Limit (LangChain 系の max iterations) が例外として発行されるため、例外処理の部分で、checkpointer から messages を復帰させる必要があるという部分です。
+
+次に、なぜか API レベルで 400 Internal error が発生するというのに悩みました。どうもメッセージに不具合があって出ているようです、要約機能を疑ったのですが、要約以外のところでも出ていて、謎です。とにかく messages から ToolMessage と AIMessage を消せば、再び動くようになるので、そのエラーが出た時はそう対処療法しました。
+
+そうやって、またたまたまゴールできたので、それを公開しておくことにしました。
+
+……。
+
+なぜ LangGraph なのか？
+
+わかりません。現在の LangGraph は並列処理ができるわけでもなく、グラフの途中変更ができるわけでもありません。AI がグラフを学習しやすいというわけでも今はないようです。私はグラフよりもプログラムの制御構造のほうが読みやすく感じます。フローチャートの夢をまた追ってる者がいるのか…と思います。
+
+ただ、他の人は LangGraph が使いやすいそうで、時代はそちらに流れています。そのため 0.0.4 までに使っていた create_tool_calling_agent などは deprecated と言われています。しかも LangGraph では代わりに今回私も使った create_react_agent というのを使うのですが、実は LangGraph 以前の LangChain には同名で別ルーチンの create_react_agentがあったりして錯綜しています。
+
+ただ、ツールメッセージが普通にメモリ(messages)に含まれるため、楽な部分があるのは認めます。</pre>
+
+
+</article>
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2025/07.html">2025年07月</a> | <a href="../../../index/gsm.html">共有メモ</a></nav>
+</body>
+</html>

@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>共有メモ - JRF Blog Archive</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2025/09.html">2025年09月</a> | <a href="../../../index/gsm.html">共有メモ</a></nav>
+<article data-pagefind-body>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[gsm] 2025-09-22T06:44:22Z</td></tr>
+<tr><th>セクション</th><td>グローバル共有メモ</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2025/09.html">2025-09-22T06:44:22Z</a></td></tr>
+<tr><th>元URL</th><td>(URLなし)</td></tr>
+
+</table>
+</div>
+<h1>共有メモ</h1>
+<pre class="body">jrf&gt; 「MemoryBanditWorkflow を使った RAG の試験実装」のバージョン 0.0.2 を作った。0.0.1 からは RAG のループを少し変えて、一章ごと取材・執筆をするように指示を出し、バンディットが呼ばれやすくならないか試してみた。
+
+《experimental_rag_0.0.2.ipynb - GitHub Gist》  
+<a href="https://gist.github.com/JRF-2018/0e9663f14ef41a73abefae3a475451e9" class="ext-link">https://gist.github.com/JRF-2018/0e9663f14ef41a73abefae3a475451e9</a>
+
+Gemini 2.5 Pro さんというコストのかかる遅いモデルを使った。やはり頭がいい者にやらせたかったから。前回は修正しながら load して resume をやったが、今回は、ほぼ一発出し。タイトルの設定だけお忘れになったが、他はだいたい論文として仕上がってると思う。
+
+一章ずつというわけにはいかなかったが、おおむね細かい単位で取材してくれて、バンディットが強制されやすくはなっていたと思う。前回に引き続き MemoryBanditWorkflow の実証実験としてはそこそこうまくいったと思う。
+
+(ちょっと前にアイデアにあった Recursion Limit ごとに read したものを HumanMessage したり…とかはやってないです。それは今後の課題(だいぶ先?)です。)
+
+なお、再現性がないため、最初からの再実行はやっていないのはご容赦願いたい。コストもかかるしね (^^;。</pre>
+
+
+</article>
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2025/09.html">2025年09月</a> | <a href="../../../index/gsm.html">共有メモ</a></nav>
+</body>
+</html>

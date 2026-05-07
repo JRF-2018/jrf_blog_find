@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>Firefox などの CSS3 を使ってローカルなリンクに別の色を付ける - JRF Blog Archive</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2006/02.html">2006年02月</a> | <a href="../../../index/software.html">ソフトウェア Tips</a></nav>
+<article data-pagefind-body>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[software] <span class="cocolog-id">cocolog:10024421</span></td></tr>
+<tr><th>セクション</th><td>JRF のソフトウェア Tips</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2006/02.html">2006年02月16日 03:58:17</a></td></tr>
+<tr><th>元URL</th><td><a href="http://jrf.cocolog-nifty.com/software/2006/02/post_10.html" class="ext-link"><span class="original-url">http://jrf.cocolog-nifty.com/software/2006/02/post_10.html</span></a></td></tr>
+<tr><th>タグ</th><td>[HTML/XML/CSS] [Firefox]</td></tr>
+</table>
+</div>
+<h1>Firefox などの CSS3 を使ってローカルなリンクに別の色を付ける</h1>
+<pre class="body">ローカルなリンクと外部へのリンクを区別したい場合、Firefox など CSS3 を使えるブラウザ相手には、次のようにすれば良い。
+
+a:link[href^=&quot;file:&quot;] { color: lime; }
+a:link:not([href*=&quot;:&quot;]) { color: green; }
+a:visited[href^=&quot;file:&quot;] { color: olive; }
+a:visited:not([href*=&quot;:&quot;]) { color: olive; }
+
+ちなみにこのサイトではだいたい次のように設定している。
+
+a:link { color: #cc3333; }
+a:visited { color: darkred;}
+a:active { color: #ffcc33;}
+a:hover { color: #ffcc33;}
+
+a:link:not([href^=&quot;<a href="http://jrf.cocolog-nifty.com/&amp;quot;" class="ext-link">http://jrf.cocolog-nifty.com/&amp;quot;</a> { color: blue; }
+a:link:not([href*=&quot;:&quot;]) { color: #990000; }
+a:visited:not([href^=&quot;<a href="http://jrf.cocolog-nifty.com/&amp;quot;" class="ext-link">http://jrf.cocolog-nifty.com/&amp;quot;</a> { color: purple; }
+a:visited:not([href*=&quot;:&quot;]) { color: darkred; }
+a:active:not([href^=&quot;<a href="http://jrf.cocolog-nifty.com/&amp;quot;" class="ext-link">http://jrf.cocolog-nifty.com/&amp;quot;</a> { color: #ffcc33; }
+a:active:not([href*=&quot;:&quot;]) { color: #ffcc33; }
+a:hover:not([href^=&quot;<a href="http://jrf.cocolog-nifty.com/&amp;quot;" class="ext-link">http://jrf.cocolog-nifty.com/&amp;quot;</a> { color: #ffcc33; }
+a:hover:not([href*=&quot;:&quot;]) { color: #ffcc33; }
+
+&lt;b&gt;参考&lt;/b&gt;
+  《userContent.css と userChrome.css で Firefox のカスタマイズ》
+  
+更新：05/05/07,06/02/16
+初公開：2006年02月16日 03:58:17
+最新版：2006年03月01日 14:16:33</pre>
+<details class="trackbacks" data-pagefind-ignore><summary>Trackbacks (1 件)</summary><pre>
+Trackbacks:
+
+《<a href="http://www.netazo.com/firefox/2006/2/16/">Firefoxのネタ</a>》 from ネタ蔵
+Firefoxのネタを追いかけるヨ！ 
+
+受信： 2006-02-16 06:23:07 (JST)
+
+
+Links:
+
+Firefox: http://www.mozilla-japan.org/
+CSS3: http://www.w3.org/Style/CSS/current-work
+userContent.css と userChrome.css で Firefox のカスタマイズ: http://memo.xight.org/2006-02-07-3
+
+
+
+</pre></details>
+
+</article>
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2006/02.html">2006年02月</a> | <a href="../../../index/software.html">ソフトウェア Tips</a></nav>
+</body>
+</html>

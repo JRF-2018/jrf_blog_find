@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>ひとこと - JRF Blog Archive</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2025/05.html">2025年05月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+<article data-pagefind-body>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[statuses] <span class="cocolog-id">cocolog:95440214</span></td></tr>
+<tr><th>セクション</th><td>JRF のひとこと</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2025/05.html">2025年05月11日</a></td></tr>
+<tr><th>元URL</th><td><a href="http://jrf.cocolog-nifty.com/statuses/2025/05/post-86e801.html" class="ext-link"><span class="original-url">http://jrf.cocolog-nifty.com/statuses/2025/05/post-86e801.html</span></a></td></tr>
+
+</table>
+</div>
+<h1>ひとこと</h1>
+<pre class="body">縁故主義経済シミュレーション を Gemini 2.5 Flash さんの協力で作った。結論としては一定の場合に非縁故主義が勝つことが示せたが、逆に言えばそれ以外は縁故主義が意に反して勝ってしまった。orz
+JRF 2025年5月11日
+
+プログラムは Gist に付けてある(↓)。
+
+《nepotism_economy.ipynb - 縁故主義経済シミュレーション - GitHub Gist》  
+<a href="https://gist.github.com/JRF-2018/409d9c3e7b1b36388ae9b5f8b76fb21b" class="ext-link">https://gist.github.com/JRF-2018/409d9c3e7b1b36388ae9b5f8b76fb21b</a>
+
+keyword: 縁故主義
+
+縁故主義(ネポティズムとかクローニー・キャピタリズムとか)よりそうでない非縁故主義のほうが投資ボリュームが増えるというのを経済モデルまたはシミュレーションで示せないかと考えた。
+
+JRF 2025年5月11日
+
+縁故主義だと、商店のリスクがまるわかりのため小さいリスクで投資を引き上げる。縁故主義でないと、わりとリスクがあっても投資が続く。これが広がると、縁故主義でないほう が経済も大きくなって機会も増え、投資ボリュームが増えてもやっていける。…みたいなことが起きると考えた。
+
+これを Gemini 2.5 Flash さんに頼んで Python シミュレーションにしてもらった。はじめて Canvas 機能を使って聞いてみた。私も修正に協力しながらプログラムを組み上げていった。
+
+JRF 2025年5月11日
+
+結論としては、投資環境が良いときは非縁故主義が勝つことが示せた。逆に言えば投資環境が普通以下の場合は、縁故主義が勝ってしまって、もともと私が示したかったようにはいかなかった。
+
+残念である。より頑健な結果を得るには、他日を期したい。または他の人におまかせしたい。
+
+いちおう Gemini さんとの会話は↓に共有しておく。Canvas の内容がうまく見れない感じだが。
+
+<a href="https://g.co/gemini/share/31fe5a537ee9" class="ext-link">https://g.co/gemini/share/31fe5a537ee9</a>
+
+JRF 2025年5月11日
+
+……。
+
+前回↓というウイルス感染に関するシミュレーションをしている。コロナや はしか・天然痘などを想定して。ただ、今回の経済シミュレーションとはほぼ関係ない。
+
+<a href="../../../articles/2025/05/statuses_cocolog_95428644.html" class="int-link cocolog-id" title="ひとこと">[cocolog:95428644]</a>(2025年5月)
+＞Grok さんに教わりながら、ウィルスの弱毒化のシミュレーションと、病痕を美的に評価する集団の実効潜伏期間が短縮されるよう性選択されるというウィルスと人類との共進化(?)シミュレーションを作った。＜
+
+JRF 2025年5月11日
+
+《virus_attenuation_SIR.ipynb - ウィルス弱毒化の SIR 的モデル - GitHub Gist》  
+<a href="https://gist.github.com/JRF-2018/b190e53d792a921f6ca56fa5aebc2c9d" class="ext-link">https://gist.github.com/JRF-2018/b190e53d792a921f6ca56fa5aebc2c9d</a>
+
+《virus_attenuation_ABM.ipynb - ウィルス弱毒化シミュレーションの ABM - GitHub Gist》  
+<a href="https://gist.github.com/JRF-2018/42d292c92325bce1c515d229fe9486b5" class="ext-link">https://gist.github.com/JRF-2018/42d292c92325bce1c515d229fe9486b5</a>
+
+JRF 2025年5月11日
+
+《scar_sexsel.ipynb - ウィルスの(実効)潜伏期間のシミュレーション (性選択による進化シミュレーション) - GitHub Gist》  
+<a href="https://gist.github.com/JRF-2018/c3ccc62951ce90a5a03c4b129850a9de" class="ext-link">https://gist.github.com/JRF-2018/c3ccc62951ce90a5a03c4b129850a9de</a>
+
+JRF 2025年5月11日
+
+なお、今回の経済シミュレーションのプログラムのライセンスについても、↑で書いたの同じように、「簡単なプログラムなので Public Domain でいいです。ただし、それだと使いにくいという場合は MIT License で。」というもので、私が作った部分についてはそれでいいが、問題は、AI さんが作った部分をどう評価するか…。
+
+JRF 2025年5月11日
+
+……。
+
+追記。つづき↓。
+
+<a href="../../../articles/2025/05/statuses_cocolog_95444432.html" class="int-link cocolog-id" title="ひとこと">[cocolog:95444432]</a>
+＞縁故主義経済シミュレーション その2 を作った。Gemini 2.5 Flash (with Canvas) さんと共に、決められた成長率の中で、経済をよくしようとすると少子化が避けられなかったことをシミュレーションでだいたい示した。＜
+
+JRF 2025年5月14日</pre>
+
+
+<section class="backrefs" data-pagefind-ignore>
+<h2>後方参照 (3 件)</h2>
+<ul>
+<li><span class="backref-label">[cocolog:95440214]参照</span> <a href="../../../articles/2025/06/statuses_cocolog_95477543.html">ひとこと</a> <span class="backref-date">2025年06月04日</span></li>
+<li><span class="backref-label">[cocolog:95440214]参照</span> <a href="../../../articles/2025/05/statuses_cocolog_95444432.html">ひとこと</a> <span class="backref-date">2025年05月14日</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2025/05/gsm_006965.html">共有メモ</a> <span class="backref-date">2025-05-11T04:20:39Z</span></li>
+</ul>
+</section>
+
+</article>
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2025/05.html">2025年05月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+</body>
+</html>

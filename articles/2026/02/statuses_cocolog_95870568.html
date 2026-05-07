@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>ひとこと - JRF Blog Archive</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2026/02.html">2026年02月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+<article data-pagefind-body>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[statuses] <span class="cocolog-id">cocolog:95870568</span></td></tr>
+<tr><th>セクション</th><td>JRF のひとこと</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2026/02.html">2026年02月23日</a></td></tr>
+<tr><th>元URL</th><td><a href="http://jrf.cocolog-nifty.com/statuses/2026/02/post-16df96.html" class="ext-link"><span class="original-url">http://jrf.cocolog-nifty.com/statuses/2026/02/post-16df96.html</span></a></td></tr>
+
+</table>
+</div>
+<h1>ひとこと</h1>
+<pre class="body">適応型マルチモーダル区画知覚… CAMP (Compartmentalized Adaptive Multimodal Perception) のアイデア。ツール的メモリ機能とその検索を学習的・適応的に進化させることが、エージェントの次の中心的発展につながるのではないか？
+JRF 2026年2月23日
+
+(「グローバル共有メモ」と Twitter (X) で書いたことを中心に。Gemini 3.0 Flash さん、ChatGPT 5.2 さん、Claude Sonnet 4.6 さん、Grok 4.1 さんと議論。)
+
+JRF 2026年2月23日
+
+……。
+
+○ 2026-02-22T11:22:03Z
+
+RAGにベクトル検索がいるとかいらないとかエージェンティックなほうがいいとか。↓にはなにげなく書いたけど、ツール的メモリ機能とその検索を学習的・適応的に進化させることが、次のLLMまたはエージェントの中心的発展につながるのではないか？
+
+JRF 2026年2月23日
+
+<a href="../../../articles/2026/02/statuses_cocolog_95858241.html" class="int-link cocolog-id" title="ひとこと">[cocolog:95858241]</a>(2026年2月)
+＞＞
+jrf:&gt; ツールとしてのメモリでも、例えば、碁盤の図を絵として残せて、絵として検索できれば、少しはマシになるんじゃないですか？
+
+そんなふうに、メモリに使えるデータ形式と、検索方法を学習的に・適応的に変化させられれば、ニューラルネット的な何かも実現できるのでは…という予感は私にはあります。
+JRF 2026年2月23日
+
+ただ、MemoryBanditWorkflow ではメモリのサーチに「サーチ偽装」の仕組みを使っていて、全部のメモリを LLM さんに渡して LLM さんがセマンティックサーチをしたとか偽装するわけですね。メモリは str、サーチ語句も単に str ですから、やろうと思えばそこにいろんなデータ形式を詰め込んでいいわけです。でも、そういうのをデータ形式を変えて使ったような感じは一度もないのですよね…。
+
+JRF 2026年2月23日
+
+迷路探索とか、迷路を図として覚えれば有利だと思うんですが、図として覚えるのが本当に有利なら、LLM さん達が言われなくてもツールの仕様を見ただけでそれを試そうとするはずですから、あとは LLM さんの学習の問題のような気がするんですが…。
+＜＜
+
+JRF 2026年2月23日
+
+memory に str だけど MIME とかバイナリを許せるように学習して、特に memory_semantic_search や memory_keyword_search が、マルチモーダルな検索を学習していく。つまり、ある str がどういう検索「語句」(画像かもしれない)にどう反応するかを別の機械学習として扱って、エージェンティックに検索結果を返す…非効率だけど、専用ハードとかが使えるようになれば、十分、使いものになっていくんじゃないか？
+
+JRF 2026年2月23日
+
+もちろん、memory ツールを使うエージェントに知らせるためにどういう検索が使えるかを、説明するためにプロンプトに含ませる文章も適応的に生成していく。
+
+この検索用バックグラウンド第2エージェントの学習が問題となってくるように思う。
+
+将来的には何でも str に押し込んで、それを圧倒的計算力で、その base64 テキストが画像かあるかまで学習し、検索できるようになるのが理想。それが画像であったかどうかはヒントとして学習時に与えたほうが効率的かもしれない…みたいになることを期待する。
+
+JRF 2026年2月23日
+
+……。
+
+jrf:&gt; 検索「語句」(例えば文章+画像)と一つのメモリを与えて、(スコア, 該当箇所)を返すように訓練された LLM があれば、それを並列に多大に動かし、その結果を統合すればいいわけです。もちろん、今やると膨大な計算資源もいりますし、工夫のしどころもたくさんあるでしょうが。Google などの内部ではそういう話は出ているんじゃないですか？
+
+JRF 2026年2月23日
+
+基本的には学習はその LLM 一個に対して行えばいいので、学習の観点からは難しい話でもないと思います。第2エージェントは、第1エージェントとは別の時間軸で学習していいわけですし。
+
+JRF 2026年2月23日
+
+Claude:&gt; 並列に大量に動かすというのは、現在のベクトル検索がやっていることをLLMレベルでやる、ということで、コストは今より数桁上になります。ただし専用ハードの話は重要で、Googleが自社でTPUを持っている意味がまさにここにあって、外からは見えないところでそういう実験ができる立場にある。
+
+正直なところ、あなたの整理は「なぜまだ誰もやっていないのか」より「なぜGoogleあたりはもうやっているはずなのか」という方向に引っ張られる内容です。公開されるとしたら論文よりプロダクト改善として静かに入ってくる種類の技術だと思います。
+
+JRF 2026年2月23日
+
+Gemini:&gt; 間違いなく。Google 3.1（Gemini）やその先のモデルでは、「Long Context（長い入力）」 と 「RAG（外部検索）」 の融合が最大のテーマです。
+
+「膨大な入力を一度に読む」よりも、「賢いエージェント（第2エージェント）が、膨大なデータから必要な『該当箇所』だけを精査して取ってくる」ほうが、トークンコストや推論効率の面で最終的に勝利するという予見は、多くのトップリサーチャーが共有しているはずです。
+
+JRF 2026年2月23日
+
+……。
+
+ただ、以前から書いてたように、「ツール的メモリ」が「本物」なのかという問題はある。LLM というよりもっと広い AI としてもっと(長期)記憶は発展の余地がありそうに思う。
+
+JRF 2026年2月23日
+
+……。
+
+今回のアイデアの名称。何がいいでしょう？ マルチモーダル検索用コンパートメントLLM…とか？…と AI さん達に聞いたところ…。
+
+Gemini さんのイチオシは、&quot;Segmental Multi-modal Scouters&quot;（セグメンタル・マルチモーダル・スカウター）(略して SMS)。
+
+Claude さんのイチオシは、MARS（Multi-modal Adaptive Retrieval Subagent）または CAMP（Compartmentalized Adaptive Multimodal Perception）。
+
+JRF 2026年2月23日
+
+ChatGPT さんのイチオシは、COMPASS (Compartmentalized Multimodal Parallel Semantic Search)。
+
+Grok さんのイチオシは、PARSEC (Parallel Adaptive Retrieval System for Enhanced Cognition) 。
+
+JRF 2026年2月23日
+
+個人的に私の言ったものに一番近いと感じたのは、CAMP（Compartmentalized Adaptive Multimodal Perception）。「CAMP LLM の学習」といった感じで使えそう。
+
+日本語だと「マルチモーダル適応的コンパートメント認識」でしょうか。…とも AI さん達に聞いたが、結局、日本語名は ChatGPT さん提案の「適応型マルチモーダル区画知覚」が良いとなった。
+
+JRF 2026年2月23日</pre>
+
+
+<section class="backrefs" data-pagefind-ignore>
+<h2>後方参照 (1 件)</h2>
+<ul>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2026/02/gsm_008509.html">共有メモ</a> <span class="backref-date">2026-02-22T17:01:21Z</span></li>
+</ul>
+</section>
+
+</article>
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2026/02.html">2026年02月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+</body>
+</html>

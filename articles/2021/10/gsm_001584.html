@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>共有メモ - JRF Blog Archive</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2021/10.html">2021年10月</a> | <a href="../../../index/gsm.html">共有メモ</a></nav>
+<article data-pagefind-body>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[gsm] 2021-10-26T09:23:46Z</td></tr>
+<tr><th>セクション</th><td>グローバル共有メモ</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2021/10.html">2021-10-26T09:23:46Z</a></td></tr>
+<tr><th>元URL</th><td>(URLなし)</td></tr>
+
+</table>
+</div>
+<h1>共有メモ</h1>
+<pre class="body">jrf&gt; [仏教の最適化プログラムの続き。]
+
+全体として資産収入のマイナス(--whole-cut-slack)を 27.5 に選んだのは実験結果を見て。まったく一家離散がないのもおかしいと考えたが、それは必要最低限で、ただ、一家離散者が悪目立ちしすぎることもないようにしよう…として、27.5 を選んだ。グラフのつくり方は次の通り(stats_simbdp3 ではなくその親の simbd のディレクトリで)。
+
+CWD=`pwd`
+SIMBD=simbdp3x1
+
+LOG=&quot;${CWD}/stats_simbdp3/test1-00.log&quot;
+CMD=&quot;python ${SIMBD}.py -d -t 1200 -S --save-period=12 --no-view --invasion-mag=5.0 --change-random-seed --no-frozen --whole-cut-slack=20&quot;
+echo &quot;# $CMD&quot; &gt; &quot;$LOG&quot;
+$CMD | tee -a &quot;$LOG&quot;
+
+LOG=&quot;${CWD}/stats_simbdp3/test2-00.log&quot;
+CMD=&quot;python ${SIMBD}.py -d -t 1200 -S --save-period=12 --no-view --invasion-mag=5.0 --change-random-seed --no-frozen --whole-cut-slack=25&quot;
+echo &quot;# $CMD&quot; &gt; &quot;$LOG&quot;
+$CMD | tee -a &quot;$LOG&quot;
+
+LOG=&quot;${CWD}/stats_simbdp3/test3-00.log&quot;
+CMD=&quot;python ${SIMBD}.py -d -t 1200 -S --save-period=12 --no-view --invasion-mag=5.0 --change-random-seed --no-frozen --whole-cut-slack=30&quot;
+echo &quot;# $CMD&quot; &gt; &quot;$LOG&quot;
+$CMD | tee -a &quot;$LOG&quot;
+
+LOG=&quot;${CWD}/stats_simbdp3/test4-00.log&quot;
+CMD=&quot;python ${SIMBD}.py -d -t 1200 -S --save-period=12 --no-view --invasion-mag=5.0 --change-random-seed --no-frozen --whole-cut-slack=27.5&quot;
+echo &quot;# $CMD&quot; &gt; &quot;$LOG&quot;
+$CMD | tee -a &quot;$LOG&quot;
+
+cd stats_simbdp3
+python plot_logs.py test1 test2 test3 test4 -p AccBreakup -o fig-20211026_02.png
+python plot_logs.py test1 test2 test3 test4 -p Welfare -o fig-20211026_03.png
+
+《グラフ集: 2021-10-26 から - Issue #7 - JRF-2018/simbd》  
+<a href="https://github.com/JRF-2018/simbd/issues/7" class="ext-link">https://github.com/JRF-2018/simbd/issues/7</a>
+
+Welfare は生活保護世帝数。
+
+なお、fig-20211026_01.png には 27.5 にした上での最後の状態の資産状況を示すグラフを表示させて、それを保存したものである。</pre>
+
+
+</article>
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2021/10.html">2021年10月</a> | <a href="../../../index/gsm.html">共有メモ</a></nav>
+</body>
+</html>

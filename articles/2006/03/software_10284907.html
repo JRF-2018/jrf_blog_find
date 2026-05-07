@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>DDwin.js をダブルクリックで呼べるようにする - JRF Blog Archive</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2006/03.html">2006年03月</a> | <a href="../../../index/software.html">ソフトウェア Tips</a></nav>
+<article data-pagefind-body>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[software] <span class="cocolog-id">cocolog:10284907</span></td></tr>
+<tr><th>セクション</th><td>JRF のソフトウェア Tips</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2006/03.html">2006年03月01日 19:46:57</a></td></tr>
+<tr><th>元URL</th><td><a href="http://jrf.cocolog-nifty.com/software/2006/03/post.html" class="ext-link"><span class="original-url">http://jrf.cocolog-nifty.com/software/2006/03/post.html</span></a></td></tr>
+<tr><th>タグ</th><td>[Firefox]</td></tr>
+</table>
+</div>
+<h1>DDwin.js をダブルクリックで呼べるようにする</h1>
+<pre class="body">Firefox の拡張に DictionaryTip があります。ダブルクリックすると goo 辞書などを引いてミニウィンドウを出してくれるものです。同じようなことを《DDwin.js》を用いてやるには、JSActions のスタートアップスクリプトを可能にして、そのスクリプト内で、イベントリスナーにダブルクリックに対して DDwin.js を呼ぶよう登録するだけです。
+
+  0.すでに firefox_jsa/selection/DDwin.js があるとします。
+  1.JSActions の設定で Enable Startup Script のチェックボックスを on にします。
+  2.firefox_jsa/startup というフォルダを作ります。
+  3.そこに次のような DDwin-by-Dblclick.js を置きます。
+    
+以上でできるようになるはずです。
+
+// DDwin をダブルクリックで起動。
+// firefox_jsa/selection/DDwin.js を呼ぶ。
+
+if (document &amp;&amp; &quot;addEventListener&quot; in document) {
+      document
+          .addEventListener(&quot;dblclick&quot;, function (e) {
+              if (/* e.ctrlKey &amp;&amp; */ e.button == 0) {
+                  var scrList = JsActions.getScriptList(&quot;selection&quot;);
+                  for (var i in scrList) {
+                      var scr = scrList[i];
+                      if (scr.path.match(/DDwin.*\.js$/i)) {
+                          JsActions.execScript(scr.path, scr.uri, e);
+                          e.stopPropagation();
+                          break;
+                      }
+                  }
+              }
+          }, true);
+}
+
+selection/DDwin.js がなく、Button/70_NL_DDwin.js のみがある場合は、もちろん、selection/DDwin.js を置くか、上の JsActions.getScriptList(&quot;selection&quot;) を JsActions.getScriptList(&quot;Button&quot;) に換えれば OK です。
+
+更新：06/03/01
+初公開：2006年03月01日 19:47:02
+最新版：2006年03月04日 07:49:55
+
+
+Links:
+
+DictionaryTip: <a href="../../../articles/2006/04/hbm_00102.html" class="int-link" title="bushwhacker: Dictionary Tooltip　０．９日本語版">http://bushwhacker.seesaa.net/article/12469028.html</a>
+goo 辞書: <a href="../../../articles/2006/04/hbm_00103.html" class="int-link" title="国語辞典 英和辞典 和英辞典 - goo 辞書">http://dictionary.goo.ne.jp/index.html</a>
+DDwin.js: <a href="http://jrf.cocolog-nifty.com/archive/ddwin-js.html" class="ext-link">http://jrf.cocolog-nifty.com/archive/ddwin-js.html</a>
+JSActions: <a href="../../../articles/2006/04/hbm_00090.html" class="int-link" title="FrontPage -   HideAway Firefox  ">http://openhideaway.net/Firefox/</a>
+DDwin-by-Dblclick.js: <a href="http://jrf.cocolog-nifty.com/archive/DDwin-by-Dblclick.js" class="ext-link">http://jrf.cocolog-nifty.com/archive/DDwin-by-Dblclick.js</a></pre>
+
+
+</article>
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2006/03.html">2006年03月</a> | <a href="../../../index/software.html">ソフトウェア Tips</a></nav>
+</body>
+</html>

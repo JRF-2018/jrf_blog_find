@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>ひとこと - JRF Blog Archive</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2015/04.html">2015年04月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+<article data-pagefind-body>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[statuses] <span class="cocolog-id">cocolog:82318803</span></td></tr>
+<tr><th>セクション</th><td>JRF のひとこと</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2015/04.html">2015年04月26日</a></td></tr>
+<tr><th>元URL</th><td><a href="http://jrf.cocolog-nifty.com/statuses/2015/04/post-e15a.html" class="ext-link"><span class="original-url">http://jrf.cocolog-nifty.com/statuses/2015/04/post-e15a.html</span></a></td></tr>
+
+</table>
+</div>
+<h1>ひとこと</h1>
+<pre class="body">昨晩の夢の中で考えてた。y の x 乗根というとき y は必ず存在するんだろうか？
+JRF 2015年4月26日
+
+y の x 乗を Pow(y, x) で表すと、y の x 乗根は Pow(y, 1/x) と表せる。
+
+JRF 2015年4月26日
+
+y = g(z) という形のとき、常に Pow(g(z), 1/x) というものが考えられるのか？と疑問に思うようになった。
+
+Pow(Pow(y, 1/x), x) = y ではあるが、例えば x = 2 のとき、y がマイナスなら虚数が途中出てくる。でも、コンピュータが虚数も「理解」するなら、問題はないとも言える。
+
+JRF 2015年4月26日
+
+もっと一般に書くと y の x 乗根を求めるというのは、solve_x(Pow(x, 3) = y) というコマンドを実行していると考えられる。
+
+さらに一般化して f(solve_x(f(x) = y)) = y が言えるかを問いたい。
+
+JRF 2015年4月26日
+
+そもそも solve_x(f(x) = y) が、不完全性定理的に解けない…無限ループになることが solve の形によって不可避ということもあろう。でも、今回はそういうのは置いといて…。
+
+JRF 2015年4月26日
+
+solve_x(f(x) = g(z)) = G(z) と置いて、G(z) が「極限を取る手続き」としか得られないとすると、f と G が共振みたいなのを起こして、f(G(z)) が発散または振動してしまう場合もありうるんじゃないか。そういうときはどう考えたらいいんだろう？
+
+複数解のうち並列に求めたどれかで合えばいいのか、それぞれ定義域で分けないとだめなのか？G(z) が確率的・モンテカルロ法的なアルゴリズムで y が確率的にあるポイントを指せばいいとかもできるんだろうか？
+
+JRF 2015年4月26日
+
+また、コンピュータが「虚数」みたいな Imaginary なものを内部で勝手に定義してしまって、f(solve_x(f(x) = y)) = y は特定の f に関して成り立つと答えを返したとしても、それは人がコントロールできていると言えるのか？
+
+JRF 2015年4月26日
+
+そもそもの疑問に戻って、f(x) = Pow(x, u) の段階で solve_x(Pow(x, u), g(z)) がおかしな挙動をすることもあるのではないか？
+
+JRF 2015年4月26日
+
+……。
+
+つまるところ、要は逆関数に関する問題なわけで、この辺、すでにどっかに「解答」は転がってるんだろうな…。
+
+JRF 2015年4月26日
+
+……。
+
+(このひとことには関係ないが、時事として、ネパールで大地震が起きた。)
+
+《CNN.co.jp : ネパール地震　死傷者６５００人超、さらに増加の恐れも》
+<a href="http://www.cnn.co.jp/world/35063736.html" class="ext-link">http://www.cnn.co.jp/world/35063736.html</a>
+
+JRF 2015年4月26日</pre>
+
+
+</article>
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2015/04.html">2015年04月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+</body>
+</html>

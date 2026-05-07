@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>ひとこと - JRF Blog Archive</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2014/02.html">2014年02月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+<article data-pagefind-body>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[statuses] <span class="cocolog-id">cocolog:78972266</span></td></tr>
+<tr><th>セクション</th><td>JRF のひとこと</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2014/02.html">2014年02月16日</a></td></tr>
+<tr><th>元URL</th><td><a href="http://jrf.cocolog-nifty.com/statuses/2014/02/post-6a9b.html" class="ext-link"><span class="original-url">http://jrf.cocolog-nifty.com/statuses/2014/02/post-6a9b.html</span></a></td></tr>
+
+</table>
+</div>
+<h1>ひとこと</h1>
+<pre class="body">ファミコン(NES)で BG を VBlank 中を見計らって更新してるのに、なぜか「ずれる」というか「ちらつく」。ほんの１バイトでも $2006 $2007 に書いたらアウト。
+JRF 2014年2月16日
+
+…と思ったら、VBlank を待つため $2002 を読むのだが、そのときスクロールの値が変わるという仕様らしく、その後 $2005 にスクロールの値を設定することで解決した。
+
+あと、$2002 を読むだけでなく $2006 とか PPU を使えば、同じことが起こるのか、やっぱり操作後ずれるので、スクロール値の書き込みをそこかしこの処理に挟んだ。
+
+JRF 2014年2月16日
+
+……。
+
+ということで、メインの内容は以上で、ここからは近況的なことを。
+
+電子金融がらみのアイデアがあって、ファミコンのアセンブラのプログラミングを初めた。
+
+参考としてはいろいろググって読んでるが、「基本」として↓。
+
+JRF 2014年2月16日
+
+《MagicKit Homepage - NESASM》
+ <a href="../../../articles/2014/03/hbm_01765.html" class="int-link" title="MagicKit Homepage">http://www.magicengine.com/mkit/</a>
+
+《NES研究室》
+ <a href="../../../articles/2014/03/hbm_01762.html" class="int-link" title="NES研究室">http://hp.vector.co.jp/authors/VA042397/nes/index.html</a>
+
+《ｷﾞｺ猫でもわかるファミコンプログラミング》
+<a href="../../../articles/2014/03/hbm_01763.html" class="int-link" title="ギコ猫でもわかるファミコンプログラミング">http://gikofami.fc2web.com/</a>
+
+<a href="http://gikofami.fc2web.com/index.html" class="ext-link">http://gikofami.fc2web.com/index.html</a>
+
+JRF 2014年2月16日
+
+……。
+
+nesasm は、エラーが出ても他のコンパイラとかみたく、エラーコードで終了しないため、 Makefile のとき不便。
+
+確か、シェル(csh?)には出力の最後の行を示す特殊変数があったはず…と調べるもどうもない。あれ？記憶違い？パイプとかで何とかするのがセオリーなの？
+
+なんか面倒になって、上の MagicKit から落としてきたソースをちょっといじってエラーコードはくように改造した。
+
+JRF 2014年2月16日
+
+ソースの zip は dos 用らしく unzip するとファイル名が大文字になるから、それをまず全部、小文字にリネーム。
+
+次に src/as/main.c を書き換える。patch は↓。
+
+JRF 2014年2月16日
+
+&lt;pre&gt;
+--- src/as/main.c~	2000-09-09 19:04:44.000000000 +0900
++++ src/as/main.c	2014-02-16 16:16:57.404721900 +0900
+@@ -495,6 +495,9 @@
+ 		show_seg_usage();
+ 
+ 	/* ok */
++	if (errcnt) {
++	  exit(1);
++	}
+ 	return(0);
+ }
+ &lt;/pre&gt;
+
+JRF 2014年2月16日
+
+……。
+
+アセンブラは↓で書いたように、趣味で大昔に使ってたことはあるが、Z80 とか 8086 系で、モトローラ系 6502 ははじめて。
+
+《アセンブラで JIS から SJIS に変換するとき DAA が使える？》
+<a href="../../../articles/2010/05/software_63479911.html" class="int-link" title="アセンブラで JIS から SJIS に変換するとき DAA が使える？">http://jrf.cocolog-nifty.com/software/2010/05/post-3.html</a>
+
+JRF 2014年2月16日
+
+レジスタが３つしかないとか衝撃的。ZeroPage がむしろ RISC っぽい感じのレジスタなんだね。バグ出しまくりながらもなんとかやってる。
+
+ld で Z (ゼロフラグ)が変化するとかアリ？知らずに作っててあとから、beq bne の前に ld してないか、チェックしたりした。でも、書いてるとむしろこのほうが合理的で、store では変化しないあたり設計者のセンスを感じる。
+
+JRF 2014年2月16日
+
+ただ、nesasm の機能の問題として、and のテスト版の bit で即値が使えないのに、nesasm は通してしまって、なかなか気づかなかったり、マクロや関数が使えてそこはすごい凝ってるのに EQU (=) で文字列が指定できなかったり…と泣きどころが多い。
+
+JRF 2014年2月16日
+
+……。
+
+計画としては、JavaScript のファミコンエミュレータから使う予定で、2P コントローラも使う。そして、ラッパーかませて、Web ページで文字列を入力すると、特定のコントローラ入力を行う…とか、したい。
+
+すると、どうも選択肢が限られてくる感じで、JSNES しかなさそう。CycloaJS とかサンプルに『ダンガンロンパ』(参：<a href="../../../articles/2012/11/statuses_cocolog_74607467.html" class="int-link cocolog-id" title="ひとこと">[cocolog:74607467]</a>)に出てきた Alter Ego って名前のゲーム出してたりして興味はあるんだけど…。(この Alter Ego は別に人工知能とかじゃないけどね。)
+
+JRF 2014年2月16日
+
+《JSでファミコンエミュレータ書いてみた：CycloaJS | ψ（プサイ）の興味関心空間》
+<a href="http://ledyba.org/2012/08/22195829.php" class="ext-link">http://ledyba.org/2012/08/22195829.php</a>
+
+《JSNES: A JavaScript NES emulator - Ben Firshman》
+<a href="../../../articles/2014/03/hbm_01766.html" class="int-link" title="JSNES: A JavaScript NES emulator – Ben Firshman">http://fir.sh/projects/jsnes/</a>
+
+ちなみに JSNES は SNES のエミュレータではない。まぎらわしい！
+
+JRF 2014年2月16日
+
+……。
+
+おっと！上の patch の元バージョンを書いとかないと…。2000年に出た最終バージョンの 2.51、 ↓。
+
+<a href="http://www.magicengine.com/mkit/mkit251_linux.zip" class="ext-link">http://www.magicengine.com/mkit/mkit251_linux.zip</a>
+
+JRF 2014年2月16日
+
+……。
+
+Tips なのか、まだ私のやり方がおかしいのかわからないんだけど…。
+
+BG とスプライトがどうしても 1 ドットずれる。Scroll を X,Y とも 0 を設定してそうなる。上のバグと関係なしに。(上の対策をしないともっとずれる。)いちおう↓にはそれらしいことが書いてる。
+
+《Enri's Home PAGE (ファミリーコンピューターＰＰＵ)》
+<a href="http://www43.tok2.com/home/cmpslv/Famic/Famppu.htm" class="ext-link">http://www43.tok2.com/home/cmpslv/Famic/Famppu.htm</a>
+
+JRF 2014年2月17日
+
+＞
+ＯＢＪ（スプライト）ＲＡＭ
+　　ＯＢＪ（スプライト）を表示する為のＲＡＭです
+　　ポートからアドレスを指定、データを書き込む方法とＶＢＬＡＮＫの割り込み内でＤＭＡ転送する２つの方法があります
+　　　＄００：ＯＢＪ＄００　Ｈ　　　　（Ｙ座標　１ドット下にずれます）
+　　　＄０１：ＯＢＪ＄００　ＣＨＲ　　（キャラクタ）
+　　　＄０２：ＯＢＪ＄００　ＡＴＴＲ　（アトリビュート）
+　　　＄０３：ＯＢＪ＄００　Ｖ　　　　（Ｘ座標）
+＜
+
+JRF 2014年2月17日
+
+私は BG 面をむしろ 240-1 だけずらしてる。このために、バッテリバックアップも使った上で、垂直ミラーリングの .inesmir 3 を指定。でも、スプライトを全部１ドットずらすほうが素直なのかな？
+
+JRF 2014年2月17日
+
+……。
+
+↑はスプライトをずらすほうに変えた。
+
+で、最初の画面ゆれの問題。今のところの解決策は↓みたいなマクロを使って説明すると…。
+
+JRF 2014年2月18日
+
+&lt;pre&gt;
+WaitVBlank .macro
+L\@:
+	lda $2002
+	bpl L\@
+	.endm
+
+WaitVScan .macro
+L\@:
+	lda $2002
+	bmi L\@
+	.endm
+
+SetScroll .macro
+	lda &lt;ScrollX
+	sta $2005
+	lda &lt;ScrollY
+	sta $2005
+	.endm
+&lt;/pre&gt;
+
+JRF 2014年2月18日
+
+「画面揺れ」が起きるときは基本、途中でスキャンライン描画(VScan)中になってるってことだから、ウェイトが必要。
+
+で、スクロール $2005 の設定は「ラスタスクロール」が可能なことからも知られるように、PPU の操作であっても例外的に VScan 中に問題なくできる。だから、WaitVScan 直後に SetScroll するとピタっと合う。
+
+VScan 中に書いたら、その段階でどうもスクロールがずれるようなので、書くときは直後に WaitVBlank する。
+
+(NMI 割り込みは禁止しておく。)
+
+JRF 2014年2月18日
+
+で、一通り書いたあと、やっぱり PPU をいじったわけだから、(WaitVScan のあと？)SetScroll しとかないといけない。
+
+……といった感じで、とりあえず、うまくいってそう。
+
+JRF 2014年2月18日
+
+……。
+
+割り込みの話が出たついでなので、6502 の話ももう少し。
+
+sbc や cmp のキャリー(ボロー)の付き方が Z80 とかと違ってるのは、まだまだ、とまどう。
+
+割り込みは、レジスタ退避は(フラグ以外)まったくないらしく、３つしかないレジスタも自分でスタックに積まないとダメらしい。
+
+そして、VSync (VBlank) の 1/60 秒のタイミングって、かなり長い…って感覚があったんだけど、6502 だと全々余祐ないみたい。上の Wait ガンガン挟まないとダメだった。orz
+
+JRF 2014年2月18日
+
+割り込み禁止して VBlank を待ってんだから、タイミングはいつもいっしょだろう…と思ったら、画面が揺れたり揺れなかったりする。スプライト DMA とかがフックしてるということなんだろうか？
+
+エミュレータは今のところ、VNES を使ってる。メモリビューアぐらいないとデバッグできないから。
+
+JRF 2014年2月18日
+
+&lt;pre&gt;
+Debug	.macro
+	if \?1 = 1
+	if '\1' != 'a'
+	t\1a
+	endif
+	else
+	lda \1
+	endif
+	sta \2
+	.endm
+&lt;/pre&gt;
+
+JRF 2014年2月18日
+
+↑ってな感じのマクロを使ってる。
+
+&lt;pre&gt;
+
+Debug [SRC], [DEST]
+
+&lt;/pre&gt;
+
+…とすると、要は [SRC] を [DEST] にストアするだけなんだけど、[DEST] を &lt;15 とかにすればメモリビューアでチェックしやすい。で、デバッグが終ったら、Debug という文字列を検索して消せばいい。(これが Store という名前にしない理由。)
+
+JRF 2014年2月18日
+
+修正 「VScan 中に書いたら」→「VScan 中に $2006 $2007 に書いたら」。
+修正 「書くときは直後に」→「書く処理をするなら SetScroll のあとに」。
+
+JRF 2014年2月18日</pre>
+
+
+<section class="backrefs" data-pagefind-ignore>
+<h2>後方参照 (1 件)</h2>
+<ul>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2012/11/statuses_cocolog_74607467.html">ひとこと</a> <span class="backref-date">2012年11月06日</span></li>
+</ul>
+</section>
+
+</article>
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2014/02.html">2014年02月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+</body>
+</html>

@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>DDwin.js: Firefox から電子辞書 DDwin (または EBWin) を起動する - JRF Blog Archive</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2006/02.html">2006年02月</a> | <a href="../../../index/software.html">ソフトウェア Tips</a></nav>
+<article data-pagefind-body>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[software] <span class="cocolog-id">cocolog:10196074</span></td></tr>
+<tr><th>セクション</th><td>JRF のソフトウェア Tips</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2006/02.html">2006年02月25日 14:22:08</a></td></tr>
+<tr><th>元URL</th><td><a href="http://jrf.cocolog-nifty.com/software/2006/02/post_17.html" class="ext-link"><span class="original-url">http://jrf.cocolog-nifty.com/software/2006/02/post_17.html</span></a></td></tr>
+<tr><th>タグ</th><td>[Windows アプリ] [Firefox]</td></tr>
+</table>
+</div>
+<h1>DDwin.js: Firefox から電子辞書 DDwin (または EBWin) を起動する</h1>
+<pre class="body">JavaScript Actions(JSActions) を使って Firefox の中でセレクトした文字列を EPWING 対応電子辞書閲覧ソフト DDwin で検索する。
+
+  基本的には一本道で、次のような手順。
+  1.JavaScript Actions のサイトから最新版と ScriptSet をダウンロードし、インストール。動くようにする。
+  2.上と同じところから JSAButton をダウンロードし、インストール。 Button フォルダを作っておく。
+  3.DDwin 用の javascript ファイルを作る。例えばDDwin.jsを selection/ 以下に置き、さらに、これを Button/ 以下に名前を変えてコピーする。例えば 70_NL_DDwin.js などとする。
+  4.DDwin のアイコンを適当なツールで取り出し、先の Button/ 以下に 70_NL_DDwin.png などとして書き出す。私は 16x16 で書き出した。
+  5.ツールバー上でカスタマイズを選択し、JSActionsButton というのを適当な場所に置く。このボタンを一度クリックすると、先のアイコンが表示される。
+    
+DDwin.js は次のようなファイルにした(一部省略)。js のエンコーディングは sjis でいいみたい。DDwin の替わりに EBWin を使うのもほぼ同様で、exec のところが違うだけ(EBWin.js)。
+
+var query;
+
+if(_jsaCScript.context.isTextSelected){
+      query = window.getSelection().toString();
+} else {
+      var mes = &quot;検索文字列を入力してください。&quot;;
+      mes = _jsaCScript.convertCharCodeTo(mes, &quot;shift_jis&quot;);
+      query = prompt(mes, &quot;&quot;);
+}
+
+if(query != null) {
+      query = remove_latin_1_accent(query);
+      query = query.replace(/^\s+/, &quot;&quot;);
+      query = query.replace(/\s+$/, &quot;&quot;);
+      query = query.replace(/^[\x21-\x2F\x7B-\x7E]+/, &quot;&quot;);
+      query = query.replace(/[\x21-\x2F\x7B-\x7E]+$/, &quot;&quot;);
+      query = _jsaCScript.convertCharCodeFrom(query, &quot;shift_jis&quot;);
+      _jsaCScript.exec(&quot;c:\\Program Files\\DDwin\\ddwin.exe&quot;, 
+                        &quot;,2,Firefox用,G1,&quot; + query);
+}
+
+function remove_latin_1_accent(s) {
+      s = s.replace(/[\xC0-\xC5]/g, &quot;A&quot;);
+      // ...省略...
+      s = s.replace(/[\u017F]/g, &quot;s&quot;);
+      return s;
+}
+
+  &quot;Firefox用&quot;は DDwin で使うグループ名。
+  
+ちなみに、これコマンドラインに渡すとき convertCharCodeFrom なんだよね。これを convertCharCode&lt;b&gt;To&lt;/b&gt; を使うと思ってはまってしまった。 JSActions 2.2.0 のバグかもしれないと思ったが《掲示板》をよく見ると exec を使う例で、ちゃんと From でやっていた。
+
+JSActions の今の管理人によると
+
+＞
+  ぶっちゃけ、自分も使ったときに間違ったんですが、JSActions 0.8系にあわせました。
+＜
+
+……だそうで convertCharCode&lt;b&gt;From&lt;/b&gt; であっているよう。FromUnicode にしてくれたらわかりやすかったのに。
+
+なお、通常ここに書いたようなことをやりたければ、DDwin の配布ページでいっしょに公開している DDpop を使うのが普通なのかもしれません。
+
+■参考
+  ●《Meadow から DDwin を使う》
+  ●《chez sugi：firefoxとDDWin》
+    
+■ファイル
+  
+  &lt;b&gt;DDwin.js&lt;/b&gt;
+    JSActions の selection または JSAButton で使うためのスクリプト。
+  &lt;b&gt;DDwin-by-Dblclick.js&lt;/b&gt;
+    JSActions の startup に置くことで、 DDwin.js をダブルクリックで呼べるようにする。
+  &lt;b&gt;EBWin.js&lt;/b&gt;
+    DDwin の替わりに EBWin を使う場合のスクリプト。
+  &lt;b&gt;jsactions.patch&lt;/b&gt;
+    jsactions_2.2.0.xpi でテキストエリアなどのセレクションも取れるようにするためのパッチ。要 .xpi の展開、ビルド。ただし、現在のバージョンではすでに統合されていて不要。
+■更新
+  
+    &lt;b&gt;2006-03-10&lt;/b&gt;jsactions.patch を使うときフォームの中で button などについてもセレクションを取ろうとしてエラーになっていたので、text と textarea のみ対応することにした。
+    &lt;b&gt;2006-02-28&lt;/b&gt;フォーム内のセレクションに対応するためのこのパッチ を jsactions_2.2.0.xpi にあてた場合に対応。
+    &lt;b&gt;2006-02-26&lt;/b&gt;独仏語の検索のために latin-1 のアクセント記号を抜くようにした。単語の前後の非英数の ASCII 文字をとりのぞいた。
+    &lt;b&gt;2006-02-25&lt;/b&gt;セレクションがないときに入力ボックスを開くようにした。
+      
+更新：06/02/25-06/03/10,2009-02-26
+初公開：2006年02月25日 01:08:37
+最新版：2009年02月27日 19:29:25</pre>
+<details class="trackbacks" data-pagefind-ignore><summary>Trackbacks (3 件)</summary><pre>
+Trackbacks:
+
+《<a href="http://jrf.cocolog-nifty.com/software/2006/03/post.html">DDwin.js をダブルクリックで呼べるようにする</a>》 from JRF のソフトウェア Tips
+ Firefox の拡張に DictionaryTip があります。ダブルクリックすると goo 辞書などを引いてミニウィンドウを出してくれるものです。同じようなことを《DDwin.js》を用いてやるには、JSActions のスタートアップスクリプトを可能にして、そのスクリプト内で、イベントリスナーにダブルクリックに対して DDwin.js を呼ぶよう登録するだけです。 0. すでに firef... 
+
+受信： 2006-03-01 19:47:02 (JST)
+
+
+《<a href="http://jrf.cocolog-nifty.com/pr/2012/04/post-3.html">恥をネットに知らせないローカル電子辞書 EBWin/DDwin</a>》 from JRF の勝手に PR
+EPWING は古い電子書籍の規格だが、そうであるがゆえに軽い電子辞書の実装がある。古いがゆえに今では入手の難しい辞書も多いのが玉にキズだが、その「文化」をハイソな大学生以外にも知って欲しい。... 
+
+受信： 2012-05-23 01:28:42 (JST)
+
+
+《<a href="http://jrf.cocolog-nifty.com/pr/2012/04/post-5.html">ブラウザからアプリを起動とかイロイロ。Firefox の拡張 JSActions</a>》 from JRF の勝手に PR
+アプリケーションと言えばブラウザアプリって、PC-9801 のころから親んだ私達のアプリはどうなるの？それがダメなら今のブラウザアプリだっていつかは…。大丈夫おまかせください。ただ、ちょっとスクリプトを書いていただく必要がありまして…。... 
+
+受信： 2012-05-23 01:38:47 (JST)
+
+
+Comments:
+
+更新：現在、本家サイトからダウンロードできる JSActions だと、すでにテキストエリアなどのセレクションも取れるようになっています。よって、jsactions.patch は不要になっています。jsactions.patch は後学の方の参考になるかもしれないので残しているだけです。
+投稿: JRF | 2006-06-02 18:50:11 (JST)
+
+普通は DDpop を使えばいいらしいです。
+投稿: JRF | 2008-04-04 23:52:32 (JST)
+
+[E:punch] 更新：検索の便宜のためタイトルに「電子辞書」を書き足し、上記二つのコメントを本文に反映した。
+投稿: JRF | 2009-02-26 18:34:52 (JST)
+
+[E:coldsweats01] 更新：おまけで EBWin.js も置いておく。IE 用のものは EBWin のサイトに置いてるのに、Firefox 用のものがないようなので。私のところでは DDwin に比べると起動が遅い。
+投稿: JRF | 2009-02-26 21:28:18 (JST)
+
+
+Links:
+
+JavaScript Actions: http://openhideaway.net/Firefox/
+Firefox: http://www.mozilla-japan.org/products/firefox/
+DDwin: http://homepage2.nifty.com/ddwin/
+DDwin.js: http://jrf.cocolog-nifty.com/archive/DDwin.js
+適当なツール: http://homepage1.nifty.com/cosmic/software/iconstars.html
+EBWin: http://www31.ocn.ne.jp/~h_ishida/EBPocket.html
+EBWin.js: http://jrf.cocolog-nifty.com/archive/EBWin.js
+掲示板: http://openhideaway.net/FFBBS/patio.cgi?mode=view&amp;no=29
+Meadow から DDwin を使う: http://jrf.cocolog-nifty.com/archive/ddwin-el.html
+chez sugi：firefoxとDDWin: http://chez-sugi.net/saq/001220.html
+DDwin-by-Dblclick.js: http://jrf.cocolog-nifty.com/archive/DDwin-by-Dblclick.js
+jsactions.patch: http://jrf.cocolog-nifty.com/archive/jsactions.patch
+このパッチ: http://jrf.cocolog-nifty.com/archive/jsactions.patch
+
+
+
+</pre></details>
+
+<section class="backrefs" data-pagefind-ignore>
+<h2>後方参照 (2 件)</h2>
+<ul>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2012/04/pr_72491055.html">恥をネットに知らせないローカル電子辞書 EBWin/DDwin</a> <span class="backref-date">2012年04月29日 02:07:24</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2012/04/pr_72491187.html">ブラウザからアプリを起動とかイロイロ。Firefox の拡張 JSActions</a> <span class="backref-date">2012年04月29日 02:36:54</span></li>
+</ul>
+</section>
+
+</article>
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2006/02.html">2006年02月</a> | <a href="../../../index/software.html">ソフトウェア Tips</a></nav>
+</body>
+</html>

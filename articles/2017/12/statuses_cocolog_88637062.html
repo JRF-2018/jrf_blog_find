@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>ひとこと - JRF Blog Archive</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2017/12.html">2017年12月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+<article data-pagefind-body>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[statuses] <span class="cocolog-id">cocolog:88637062</span></td></tr>
+<tr><th>セクション</th><td>JRF のひとこと</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2017/12.html">2017年12月25日</a></td></tr>
+<tr><th>元URL</th><td><a href="http://jrf.cocolog-nifty.com/statuses/2017/12/andro.html" class="ext-link"><span class="original-url">http://jrf.cocolog-nifty.com/statuses/2017/12/andro.html</span></a></td></tr>
+
+</table>
+</div>
+<h1>ひとこと</h1>
+<pre class="body">Android エミュレータを使うために Android Studio 3.0.1 をインストール。しかし、エミュレータを起動するまでにかなり手間どった。
+JRF 2017年12月25日
+
+現在、PP Authorizer (<a href="../../../articles/2017/11/statuses_cocolog_88492515.html" class="int-link cocolog-id" title="ひとこと">[cocolog:88492515]</a>) と PP Interrupter (<a href="../../../articles/2017/12/statuses_cocolog_88550595.html" class="int-link cocolog-id" title="ひとこと">[cocolog:88550595]</a>) という二つの Mozilla Firefox 用アドオンを作成している。私は Android 実機を持っていないので、これまで Firefox for Android についてはサポートして来なかったが、ずっとサポートしたいとは考えていた。
+
+JRF 2017年12月25日
+
+前に少しググったときには、Firefox for Android の Windows 版があってそれで動作確認ができるという記事もあったのだが、どうも、そういうものは今はもうないらしい。その代わりに最近見つけたページが↓。
+
+JRF 2017年12月25日
+
+《Developing extensions for Firefox for Android - Mozilla | MDN》
+<a href="https://developer.mozilla.org/en-US/Add-ons/WebExtensions/Developing_WebExtensions_for_Firefox_for_Android" class="ext-link">https://developer.mozilla.org/en-US/Add-ons/WebExtensions/Developing_WebExtensions_for_Firefox_for_Android</a>
+
+ここでは Android Studio を使えと書いている。そこで、Windows 10 にこれをインストールしようと試みた。
+
+JRF 2017年12月25日
+
+…結果として、インストールして Android エミュレータが快適に動いているが、それは私のメモリ 4 G の古いマシンではダメで、父のメモリ 8 G の新しいマシンを使う必要があた。また、エミュレータを使いはじめる前に、いくつかエラーに対応する必要があった。
+
+以下、その過程を記す。
+
+JRF 2017年12月25日
+
+……。
+
+まず、上の記事から Android Studio のページに行ってダウンロード。今のバージョンは 3.0.1 らしい。インストール時には、Custom を選んで、Android Virtual Machine もインストール。
+
+JRF 2017年12月25日
+
+インストールが終って Android Studio を起動しようとすると、まず、JDK がないと言われる。これは最初に試した古いマシンの場合で、新しいマシンですると JDK がないというエラーが出ずに先に進んだ。古いマシンには古い Java が入っていたりしたので、そのためなんだろうか？ よくわからない。
+
+JRF 2017年12月25日
+
+とにかく JDK をインストール。今は JDK 9 があるが、Android は今のところ JDK 8 までらしので、Windows x86 用の jdk-8u152 をインストール。
+
+JRF 2017年12月25日
+
+すると Android Studio が起動するようになった。ここで他のファイルのダウンロードとインストールが求められるのだが、ここで一つ問題。
+
+JRF 2017年12月25日
+
+ダウンロード中に詳細を見ると、android_m2repository_r47.zip がいくつもダウンロードしているように見える。ダウンロードに失敗しているのではないか？…と。が、これはそう見えるだけで実際はちゃんとダウンロードできているらしく、しばらく待っていると他のファイルのダウンロード等がはじまるのが分かる。で、ダウンロードができて本起動となる。
+
+JRF 2017年12月25日
+
+……。
+
+最初に Android Studio が本起動するとプロジェクトの作成等を選ぶ画面が出る。
+
+上の記事では SDK Manager を起動しろと書いてあって、ググると Tools &gt; Android &gt; SDK Manager を選べとあるが、そんなものはない。しかたなく、まず適当にプロジェクトを作ることにした。プロジェクトを作ることを選んであとはデフォルトの設定で Next してしまう。
+
+JRF 2017年12月25日
+
+とにかく IDE が起動した。しかしメニューに Tools はあるが Tools &gt; Android はない。しかし、よく調べると右上方真ん中寄りにグレイアウトしてない小さなアイコンで SDK Manager はある。それを起動。
+
+Android Plattform Tools をインストールしろというが、Android SDK Plattform Tools はすでにインストールされているようす。
+
+JRF 2017年12月25日
+
+上の記事ではここからすぐに Firefox for Android をインストールするよう指示がある。が、そもそもエミュレータの起動ボタンがどこにもない。
+
+で、ググると、エミュレターのボタンすなわち AVD Manager ボタンは、Event Log にエラーが出ないようになれば、(SDK Manager の近くに)出てくるとのこと。
+
+Event Log に出ているエラーをググりながら解決することになった。
+
+JRF 2017年12月25日
+
+……。
+
+ここで最初に次のようなエラーが出ていた。
+
+「このバージョンの %1 は、実行中の Windows のバージョンと互換性がありません。」
+
+↓によると、Project Structure で Use embedded JDK のチェックを外して、先にインストールした JDK のパスを指定すればよいらしい。
+
+JRF 2017年12月25日
+
+《Android Studioのエラー(CreateProcess error=216)：「ぷろぐらむ」とか：So-netブログ》
+<a href="http://caro.blog.so-net.ne.jp/2016-11-02" class="ext-link">http://caro.blog.so-net.ne.jp/2016-11-02</a>
+
+JRF 2017年12月25日
+
+こうしたあと、SDK Manager アイコンの付近にある Make Project のアイコンをクリックすると、別のエラーが出るようになった。
+
+なお、この JDK まわりのエラーは古いパソコンでのみ出て、JDK のインストールの必要のなかった新しいパソコンでは出なかった。これ以降のエラーについては新しいパソコンでもエラーが出た。
+
+JRF 2017年12月25日
+
+……。
+
+次のエラーは、
+
+「Error:Failed to find target with hash string 'android-26' in: C:\Users\...\AppData\Local\Android\Sdk」
+
+…というもの。これは SDK Manager を起動して、SDK Plattforms のパネルの Oreo (26) をインストールすることでクリアできた。また Make Project をすると次のエラーが引っかかる。
+
+JRF 2017年12月25日
+
+……。
+
+次のエラーは、
+
+「Error:A problem occurred configuring project ':app'. Failed to find Build Tools revision 26.0.2」
+
+…というもの。これは SDK Manager を起動して、SDK Tools パネルで、Show Package Details をチェックすると SDK Build Tools 26.0.2 が現れるのでそれをインストールすればよい。今度、Make Project するとエラーが表示されなくなった！
+
+JRF 2017年12月25日
+
+ただし、まだ AVD Manager のボタンはグレイアウトされたまま…。
+
+Android Studio を一度終了して再起動。…すると AVD Manager のボタンが現れた！
+
+JRF 2017年12月25日
+
+……。
+
+で、古いマシンで Android Emulator を起動する。するとマイクがないよ…というエラーといっしょに、メモリが足りないから無理やりにメモリが少ない状態で起動させたよ…みたいな警告が出るが、とにかく Nexus 5X のエミュレータが起動した。
+
+遅い。…とてつもなく遅い。キー入力もままならない。Chrome ですらやたら落ちるらしく、最初の画面にいきなり戻ったりする。
+
+JRF 2017年12月25日
+
+AVD Manager で Create Virtual Device して、より軽い構成のはずの Nexus S にしてみるが、少しマシなもののやはり遅い。
+
+JRF 2017年12月25日
+
+が、とにかく Firefox for Android のインストールまではしようとするが、何度か「インストール」をクリックできないのを経験したのち、やっと「インストール」が反応したと思ったら「端末をお持ちでないようです」というエラーが出る。なんで！ これ Android じゃん。Google ID の認証でもミスった？ …とググると、どうもインストールのためには、Google Play を有効にしたエミュレータが必要とのこと。
+
+JRF 2017年12月25日
+
+Create Virtual Device でよくみると Google Play ができるものにはしるしがある。Nexus 5 と Nexus 5X のみ。どちらかを選んで Next すると System Image を選択する画面となる。この中でも Google Play ができるのは限られているようで Recommended パネルのもののみが対応しているようだ。それを選んで(Download したあと) Next していく。
+
+JRF 2017年12月25日
+
+…で、そうすると古いマシンでは遅過ぎる…ということで、しかたなく父に頼んで父の新しいパソコンに Android Studio をインストールさせてもらった。上記のように JDK まわりのエラーが出ず、Google Play ができる Nexus 5 のエミュレータの起動寸前までいった。
+
+JRF 2017年12月25日
+
+そこで、新しいパソコンについてはこれまでにないエラーが出た。いわく、VT-x を有効にしてくれ…とのこと。ググったあと、パソコンの Bios 画面でそのような設定をすると、エミュレータが起動！
+
+おー、さすがに快適に動く。これまでの苦労はなんだったんだ…というくらい。
+
+JRF 2017年12月25日
+
+……。
+
+で、Firefox をインストール。そして、上の記事に書いてある通りに about:config で xpinstall.signatures.required を false にする。…がテスト用のアドオンがインストールできない。ネットインストールはもちろん、abd を使ったインストールでもダメ。どうも普通の Firefox for Android ではダメらしい。
+
+JRF 2017年12月25日
+
+Firefox for Android の Nightly for Developpers をインストール。そこで xpinstall.signatures.required を false にすると、やっと、テストができたのだった。
+
+しかし、PC のほうの Firefox を起動して上記の記事にあるように WebIDE を起動して、USB デバッグらしいことをエミュレータ相手にできるか試してみる。…が、どうもできないようだ。まぁ、自分の add-on が動くところまでで満足すべきか…。
+
+JRF 2017年12月25日
+
+……。
+
+…と、この記事はここまで。
+
+Android Studio がデフォルトでエラーが出ていろいろやらないといけないのはかなり不親切だな…と思った。まぁ、穿った観方をすれば、利用者を選別しているのかもしれないが…。しかし、Android 実機を買わなくても、これだけ作業量をかけられればアドオンのテストができるという点は、資金のない私にはありがたかった。
+
+私の古いマシンでも父の部屋の新しいマシン並みにサクサク動けば、Android のアプリの開発も考えたかもしれず、それは残念。そのあたりは将来の課題といったところで。
+
+JRF 2017年12月25日
+
+Trackbacks:
+
+《cocolog:88492515》 from JRF のひとこと
+<a href="../../../articles/2017/11/statuses_cocolog_88492515.html" class="int-link" title="ひとこと">http://jrf.cocolog-nifty.com/statuses/2017/11/firef-2.html</a>
+
+Firefox のブラウザ拡張(アドオン)である PP Authorizer を作って公開した。匿名的ログインや匿名的支払いをサポートするためのアドオン。2,3 日で終った突貫工事で、完成度は高くないとは思うが…。... 
+
+受信： 2017-12-29 18:14:00 (JST)</pre>
+
+
+<section class="backrefs" data-pagefind-ignore>
+<h2>後方参照 (2 件)</h2>
+<ul>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2017/12/statuses_cocolog_88550595.html">ひとこと</a> <span class="backref-date">2017年12月08日</span></li>
+<li><span class="backref-label">[cocolog:88637062]参照</span> <a href="../../../articles/2017/11/statuses_cocolog_88492515.html">ひとこと</a> <span class="backref-date">2017年11月27日</span></li>
+</ul>
+</section>
+
+</article>
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2017/12.html">2017年12月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+</body>
+</html>

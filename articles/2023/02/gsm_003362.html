@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>共有メモ - JRF Blog Archive</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2023/02.html">2023年02月</a> | <a href="../../../index/gsm.html">共有メモ</a></nav>
+<article data-pagefind-body>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[gsm] 2023-02-09T13:31:46Z</td></tr>
+<tr><th>セクション</th><td>グローバル共有メモ</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2023/02.html">2023-02-09T13:31:46Z</a></td></tr>
+<tr><th>元URL</th><td>(URLなし)</td></tr>
+
+</table>
+</div>
+<h1>共有メモ</h1>
+<pre class="body">jrf&gt; (FANBOX EPUB 化の暫定的な技術的覚え書き つづき)
+
+さて、変換のアウトラインを書き出していこう。変換のスクリプトは私は Perl で書いた。
+
+まず、HTML::Parser で読み込んで {tag =&gt; 'a', attr =&gt; {class=&gt;'...', href=&gt;'...'}, content =&gt; [...]} などという木構造を作っていく。この点、普通は HTML::DOM モジュールなどを使うものだと思うが、私は HTML::DOM をインストールしておらず、このごにおよんでインストールしてない重そうなモジュールは使いたくなかったので、独自の木構造を用いた。
+
+その後、iframe の内容を木構造内に開いていく。Save Page WE は iframe の構造を srcdoc という中に HTML エンコードして保存してくれている。(iframe 内に直接保存されてないことに注意！) それを iframe 内に展開する。
+
+iframe 内や トップの head、画像が、style の中に --savepage-url-数値 という CSS 変数で定義されているのでそれをファイルにセーブしておき、そこを参照している部分を、ファイルからの参照に置き換える。img タグに直接 data 形式で保存されているものもあるので、それもファイルに保存しておき、ファイルを参照するようにする。
+
+iframe やトップの head を削り article 部分のみを取り出しておく。
+
+tco などの短縮 URL を開いておく。
+
+記事のタイトル部分を整形する。
+
+public-DraftStyleDefault-block というクラスの div を p に置き換える。
+
+h2 の中の p を消す。
+
+figure をそれぞれの方式に従って処理する。この処理は後述する。
+
+div の中に p が一つだけあるようなものを p だけにする。
+
+&lt;p&gt;&lt;br/&gt;&lt;/p&gt; を &lt;p&gt;&amp;#160;&lt;/p&gt; にする。これは好みの問題かも。
+
+&lt;article&gt;&lt;div&gt;&lt;p&gt;...&lt;/div&gt;&lt;/article&gt; などとなっているのを、&lt;article&gt;&lt;p&gt;...&lt;/article&gt; という形にする。
+
+以上で変換したものをまとめていく。
+
+……というのが流れになる。
+
+問題は figure をいろいろな方式に従って処理する部分である。
+
+実は FANBOX の HTML のクラス名などは多くの場合、sc-2c960h-0 kYbcOI …といった(おそらく)ランダムな文字列であることが多い。そのためクラス名などから判断して構造を特定するのが難しい。iframe 内も例外的に YouTube のものなどはクラス名が人が読めるものになっているが、そのほうが珍しい形になる。
+
+いきおい、div の並列の数や img タグまでの深さの数などから、方式を特定することになる。正直、かなりダーティなコードとなる。
+
+figure タグの中 iframe タグの外で、iframely-twitter iframely-youtube などというクラス名が使われることがあり、そこから figure の方式がなんであるか大まかに特定できることがあるが、必ずそうではない。
+
+画像を表示するだけの部分もやはり iframely-... というクラス名では判断できず、div の数などから判断して変換する。
+
+HMV や FANBOX への(埋め込み)リンクもそれぞれ違う形式で、それぞれ独自に変換ルーチンを書く必要がある。
+
+YouTube は先に書いたようにクラスが特定できるため、まだ易しく変換できる。
+
+問題は Twitter の埋め込み。Twitter は、その表記のされ方によって、中身がかなり変わり、しかもクラス名がランダムなため、方式の特定がしずらい。これを div の構造や img のあるなしなどから、適当に判断して整形することになる。この辺は Best Effort で、十分やったというところで諦めるしかなかった。</pre>
+
+
+</article>
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2023/02.html">2023年02月</a> | <a href="../../../index/gsm.html">共有メモ</a></nav>
+</body>
+</html>

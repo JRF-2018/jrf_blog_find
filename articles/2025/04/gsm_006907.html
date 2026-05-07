@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>共有メモ - JRF Blog Archive</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2025/04.html">2025年04月</a> | <a href="../../../index/gsm.html">共有メモ</a></nav>
+<article data-pagefind-body>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[gsm] 2025-04-27T16:46:00Z</td></tr>
+<tr><th>セクション</th><td>グローバル共有メモ</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2025/04.html">2025-04-27T16:46:00Z</a></td></tr>
+<tr><th>元URL</th><td>(URLなし)</td></tr>
+
+</table>
+</div>
+<h1>共有メモ</h1>
+<pre class="body">jrf&gt; ウィルス弱毒化シミュレーションの ABM (Agent-Based Model) を Grok3 さんに教えてもらいながら作ったのでその Python コードを GitHub Gist に付けておいた。
+
+《virus_attenuation_ABM.ipynb》  
+<a href="https://gist.github.com/JRF-2018/42d292c92325bce1c515d229fe9486b5" class="ext-link">https://gist.github.com/JRF-2018/42d292c92325bce1c515d229fe9486b5</a>
+
+前回の SIR 的モデルは弱毒株と強毒株がすでにある状態のモデルでしかない。そうではなく、どれぐらい弱毒か強毒かが確率的に決まり、どれぐらい感染力があるも確率的に決まるとき、強毒なものほど隔離されるとすると、弱毒かつ感染力があるものが広がりやすいということを示したい。
+
+この場合はエージント・シミュレーションつまり、ABM (Agent-Based Model) がほぼ必要になる。その ABM についても Grok3 さんはシュッと出してきた。
+
+それをさらに拡張して、潜伏期間(感染性あり)もランダムに決まるとき、ロックダウン的政策をすると、潜伏期間の短縮されることも示したいと考えた。こちらも Grok3 さんの補助の元、プログラムしたのだが、結果として私が考えるロックダウン的政策では潜伏期間の短縮がほぼならないことがわかった。これは意外だった。</pre>
+
+
+</article>
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2025/04.html">2025年04月</a> | <a href="../../../index/gsm.html">共有メモ</a></nav>
+</body>
+</html>

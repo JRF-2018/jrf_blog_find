@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>共有メモ - JRF Blog Archive</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2025/06.html">2025年06月</a> | <a href="../../../index/gsm.html">共有メモ</a></nav>
+<article data-pagefind-body>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[gsm] 2025-06-03T08:51:19Z</td></tr>
+<tr><th>セクション</th><td>グローバル共有メモ</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2025/06.html">2025-06-03T08:51:19Z</a></td></tr>
+<tr><th>元URL</th><td>(URLなし)</td></tr>
+
+</table>
+</div>
+<h1>共有メモ</h1>
+<pre class="body">jrf&gt; jrf_pdb_agent_lib でロボットを制御するときのことを考える。急な状況に対処するため、割り込み処理が必要となるだろう。そして割り込まれた後、中断処理に移行し、割り込んだ処理は、一時的に割り込みを禁止する…。
+
+こういったことを現代風に行うなら、それはつまり thread-safe に作るということだろう。
+
+ここから敷衍すると、pal.do や pal.consult_human でデバッガに入るときに mutex をロックする処理をするのが自然なように思う。しかし、これをすると、中断したデバッガから pal.do などを直接呼ぶと、二重ロックで動かなくなる…デッドロックが発生することになる。これは間違いがわかりやすくなるという点では正しい挙動かもしれないが…。
+
+これをなんとかする場合、同じ thread ならば mutex のロックではなく、デバッガのプッシュをする…みたいな処理にすればいいのかなぁ…。まぁ、今はデバッガのプッシュはないのであるが。
+
+今、pal.do や pal.consult_human に mutex のロックを入れてもいいけど、まぁ、しばらくは自由にしておくほうが拡張の余地があっていいか…。</pre>
+
+
+</article>
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2025/06.html">2025年06月</a> | <a href="../../../index/gsm.html">共有メモ</a></nav>
+</body>
+</html>

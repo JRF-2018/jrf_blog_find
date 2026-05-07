@@ -1,0 +1,793 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>aboutme2cocolog: アバウトミーの「ひとこと」をココログプロへ移転するツール - JRF Blog Archive</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2011/04.html">2011年04月</a> | <a href="../../../index/software.html">ソフトウェア Tips</a></nav>
+<article data-pagefind-body>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[software] <span class="cocolog-id">cocolog:67976071</span></td></tr>
+<tr><th>セクション</th><td>JRF のソフトウェア Tips</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2011/04.html">2011年04月23日 08:56:02</a></td></tr>
+<tr><th>元URL</th><td><a href="http://jrf.cocolog-nifty.com/software/2011/04/post.html" class="ext-link"><span class="original-url">http://jrf.cocolog-nifty.com/software/2011/04/post.html</span></a></td></tr>
+<tr><th>タグ</th><td>[ウェブログ・ココログ関連] [Perl] [JRF 作成ソフトウェア] [HTML/XML/CSS] [JavaScript]</td></tr>
+</table>
+</div>
+<h1>aboutme2cocolog: アバウトミーの「ひとこと」をココログプロへ移転するツール</h1>
+<pre class="body">2011年6月30日終了したアバウトミー(aboutme.jp)から、「ひとこと」のデータをココログプロに移転するために作ったツールです。このドキュメントは、移行の手順を示すものです。
+
+あくまで私個人用に作ったもので、あまり多くの人が使うことを想定していません。よってツール類も個人的嗜好と私の労力削減に重きを置いたものになっています。移行まで時間もなく人数が少ないことが想定されるのでそうしていますが、逆に少ないからこそ、要望等にはかなり融通を&lt;ruby&gt;&lt;rb&gt;利&lt;/rb&gt;&lt;rt&gt;き&lt;/rt&gt;&lt;/ruby&gt;かせることができると思います。要望・質問等はお気軽にお知らせください。
+
+私の「ひとこと」はこのツールを使って↓に移行しました。「正式なオープン」は 2011年6月1日に決めてましたが、それまでに順次、移行は終っており、すでに Google で検索できるような公開の仕方をしていました。
+
+<a href="http://jrf.cocolog-nifty.com/statuses/" class="ext-link">http://jrf.cocolog-nifty.com/statuses/</a>
+
+なお、更新情報は現在ご覧の↓のページでご確認ください。
+
+<a href="../../../articles/2011/04/software_67976071.html" class="int-link" title="aboutme2cocolog: アバウトミーの「ひとこと」をココログプロへ移転するツール">http://jrf.cocolog-nifty.com/software/2011/04/post.html</a>
+
+配布ツールをダウンロードするためのリンクは一番下のほうにあります。
+
+■手順要旨
+  0.事前に必要なもの：
+    ○自分用のホスト名のあるアバウトミー ID
+    ○ココログプロの ID
+    ○はてな ID
+    ○Greasemonkey アドオンの使えるブラウザ(私は Firefox) 
+    ○Perl
+    ○wget などウェブページを一括ダウンロードできるもの
+    ○unshar または shar 形式が解凍できるもの
+      
+      (私は Cygwin の perl, wget, unshar を使っています。)
+  1.wget などで(自分用のホストの)アバウトミーから全ひとことをダウンロードする。
+  2.ココログプロで新しいブログを作成する。(テンプレート等の登録の前に) それを、はてなスターに登録して、Hatena.Star.Token を得る。
+  3.このツールに付属する make_template.pl を動かす。(config.ph で変数の設定が必要。)generated ディレクトリにテンプレート等が生成される。
+  4.生成されたテンプレートをブログのデザインとして登録していく。 Greasemonkey に statuses_editor.user.js を登録する。
+  5.このツールの generated/aboutme2cocolog.pl を使って変換した「ひとこと」を、ココログに読み込む。再構築したら完成。
+  6.Google サイトマップ等に登録し検索されやすくする。(任意)
+    
+
+■手順 1.wget で全ひとことをダウンロードする。
+    
+まず、アバウトミーの自分用のホストから、すべてのファイルを一括ダウンロードしバックアップします。(※すでにアバウトミーが終了しているため、この手順は無視してください。)
+
+特に変わったところはないので一括ダウンロードツールなら、なんでも良いと思いますが、wget を使う方法だとダウンロードしたディレクトリに行ったあと、次のようにします。(ご自身のホスト名となるよう[ユーザーID]を指定してください。)
+
+wget -r -k -w 5 -l 1000 -o wget.log <a href="http://[ユーザーID].aboutme.jp/" class="ext-link">http://[ユーザーID].aboutme.jp/</a>
+
+オプションの説明を簡単にしますと、-r は一括ダウンロードの指定、-k は今回の作業には必ずしも必要ありませんがバックアップをローカルで見たいなら必要です。-w 5 は aboutme への負荷を減らすためにダウンロードに 5 秒の間隔を空けます。-o でログを取ります。
+
+大事なのは -l 1000 です。「ひとこと」の数が多ければ、この数を多くしないといけません。「ひとこと」数÷20 より多くする必要があります。「答えた質問」「作った質問」についてもバックアップを取りたい方は、その数についても考慮する必要があります。
+
+なお、wget は一度失敗しても再挑戦して取得しようとしますが、それでも失敗することがあるらしく、私はのちの aboutme2cocolog.pl を走らせる段階で、「欠け」を見つけ、いくつか個別にダウンロードしなおしました。(それを調べるために wget のログは取っておいたほうが良いです。)
+
+■手順 2.新しいブログを作り、Hatena.Star.Token を得る。
+    
+テンプレート等の登録はあとになって考えるとして、とりあえずココログプロで新しいブログを作成してしまいましょう。
+
+このドキュメントではできたブログの URL は <a href="http://xxx.cocolog-nifty.com/statuses/" class="ext-link">http://xxx.cocolog-nifty.com/statuses/</a> として説明していきます。
+
+ブログ一覧画面で、そのブログ名の上にカーソルを置くと、下に URL が表示され、それは↓のようになっているはずです。
+
+<a href="http://app.cocolog-nifty.com/t/app/weblog/manage?blog_id=XXXXX" class="ext-link">http://app.cocolog-nifty.com/t/app/weblog/manage?blog_id=XXXXX</a>
+
+この blog_id である XXXXX が必要なのでメモしておきましょう。
+
+ブログの設定をします。
+
+  ●バックナンバーについては「週別」「月別」「個別」「カテゴリー」にチェックして変更を保存します。(「日別」は使いません。)
+  ●カテゴリーに「ブックマーク拒否」「休止中」カテゴリを足して変更を保存します。
+  ●RSS フィードはブログのフィード出力は「記事」にチェックし、「概要のみ表示」を選択して変更を保存します。
+  ●本実装はココログのコメント機能を使いません。トラックバックは使いますので、お好きなように設定してください。
+  ●表示方法については、日付の書式が「2011年4月20日(水)」などといった形式にしてください。いちおう投稿の状態は「下書き」、改行は「なし」、概要の文字数は 400 文字にしてください。アバウトミーにならえば表示記事数は 20 件でしょうか。
+    
+コメントがない替わりといってはなんですが、はてなスターを使います。はてなスターの自分用のサイトに行き、「Blogs」をクリックし、外部のブログサイトを登録するに、上の「<a href="http://xxx.cocolog-nifty.com/statuses/」を入力します。" class="ext-link">http://xxx.cocolog-nifty.com/statuses/」を入力します。</a>
+
+すると、Hatena.Star.Token が表示されるので、この値をメモします。(スクリプト全体ではなく、'XXXXX' とかかれた XXXXX 部分の値のみが必要になります。)記事をまだ投稿していないのでタイトル等がおかしいと思いますが、あとで update すればよいので問題ありません。
+
+■手順 3.テンプレートを生成する。
+    
+このドキュメントを読んでいるということはすでに展開が終っているのかもしれませんが、ツールの shar 形式のアーカイブを展開します。unshar または、 sh コマンドとして実行します。
+
+unshar aboutme2cocolog.shar
+
+すると、次の警告が出ます。
+
+x - extracting src/template/TitleByArticle.template (text)
+src/template/TitleByArticle.template: MD5チェックが失敗しました
+x - extracting src/template/TitleOrEntryID.template (text)
+src/template/TitleOrEntryID.template: MD5チェックが失敗しました
+
+この MD5 のチェックの失敗は、これらのファイルが改行を含まないことに起因します。unshar が生成したファイルは改行を含んでいるかもしれませんが、後述のようにこの二つをテンプレートに登録するときは最後の改行がないようにしてください。
+
+そして、config.ph をエディットして設定します。上で得たトークン等を設定してください。FAVICON と TRACKBACK_POLICY_URL を設定するのは私の趣味みたいなものです。FAVICON は LinkIcon.template で、TRACKBACK_POLICY_URL はJapaneseText.template で変数的に設定しているだけなので、それらの template をあとからエディットしてもいいでしょう。
+
+設定し終ったら次のコマンドを実行します。
+
+perl make_templates.pl
+
+これにより generated というディレクトリができます。この generated の中身を使っていきます。この元となっただいたい同じファイルが src ディレクトリの中に残っていますが、ややこしければ src はこの段階で消していただいて結構です。
+
+■手順 4.テンプレートを登録する。
+    
+ココログの管理画面で、上級テンプレートを作成しておきます。新規テンプレートの作成で、「右サイドバー付」を選んで、適当な名前(「201104XXのテンプレート」など)で保存します。次にテンプレートの管理でそれを上級テンプレートに変換し、それを編集して適当な名前を付けます。この段階で「適用」もしておきましょう。
+
+そしてローカルの generated/template/ 以下のファイルを手作業でコピペしながら登録していきます。(面倒くさい！)
+
+種類としては、インデックステンプレートとバックナンバーテンプレートとテンプレートモジュールに分かれます。
+
+順番が前後しますが、まず、generated/template/*.template という拡張子のものをすべてテンプレートモジュールとして登録します。このときテンプレートモジュール名は、ファイル名(generated/template/XXXX.template なら XXXX)にしてください。この名前で他のテンプレートから参照されますから、名前にスペースなどが含まれないように注意してください。大文字小文字も区別します！
+
+なお、チラと上述しましたが、TitleByArticle.template と TitleOrEntryID.template については、最後に改行が含まれないように登録してください。
+
+大文字ではじまる CategoryArchives.html、DataBasedArchives.html、 IndividualArchives.html、Pages.html はバックナンバーテンプレートとして、それぞれ対応するものをコピペで上書きしてください。
+
+小文字ではじまる archives.html、atom.xml、index.html、rss.xml、 index.rdf、styles.css、sidebar.inc は既存のインデックステンプレートをコピペで起きかえてください。出力ファイル名がそれに相当します。
+
+新しいインデックステンプレートして、jumpbydate.html、jumpbyowner.html、 jumpbytitle.html、sitemap-index.xml、sitemap-part.xml を登録します。このテンプレート名は何でも良のですが、&quot;Jump by Date&quot;、&quot;Jump by Owner&quot;、 &quot;Jump by Title&quot;、&quot;Sitemap Index&quot;、&quot;Sitemap Main&quot; とでもすればいいでしょう。
+
+ColorName_*.template は ColorName.template の替わりのデザインで、私のサイトで使っているもの等です。ColorName_brown.templateの背景は X11 のディレクトリから取ったもの(granite)、ColorName_pinktiger.template の虎の絵は、Ghostscript の配布物から取った用例(tiger.eps)で、色とフォーマットを変えて使っています。(なお、ColorName.template は styles.css でしか使っていないため、インストール後、ColorName.template を変更したときは、メインテンプレートの styles.css だけを再構築すれば十分です。)
+
+できあがるテンプレートの表は次のような感じです。
+
+  適用中のデザイン： “ひとこと用テンプレート”
+  
+  上級者向けテンプレート
+  
+  テンプレート           出力ファイル      公開 
+  Archive Index Template archives.html     はい 
+  Atom Template          atom.xml          はい 
+  Jump by Date           jumpbydate.html   はい 
+  Jump by Owner          jumpbyowner.html  はい 
+  Jump by Title          jumpbytitle.html  はい 
+  Main Index Template    index.html        はい 
+  RSS 2.0 Template       rss.xml           はい 
+  RSS Template           index.rdf         はい 
+  Sitemap Index          sitemap-index.xml はい 
+  Sitemap Main           sitemap-part.xml  はい 
+  Stylesheet             styles.css        はい 
+  sidebar                sidebar.inc       はい 
+
+  
+  バックナンバーテンプレート
+  
+  Category Archives      
+  DateBased Archives     
+  Individual Archives    
+  Pages                  
+  テンプレートモジュール 
+  BlogBanner             
+  BlogHatenaRDF          
+  ColorName              
+  EntryHatenaRDF         
+  EntryNav               
+  EntryShort             
+  HatenaStarToken        
+  HeadInfo               
+  JapaneseText           
+  JavascriptVariables    
+  LinkIcon               
+  Notice                 
+  OwnerList              
+  StatusesTools          
+  TitleByArticle         
+  TitleOrEntryID         
+
+  
+このデザインを「適用」するのを忘れないでください。
+
+ここで、緊急告知のための準備もしておきましょう。デフォルトのままであれば、ユーザー用のココログのトップディレクトリに Notice.html というファイルを置くと、それがすべての HTML コンテンツのはじめに表示されます。
+
+generated/Notice.html を「コントロールパネル」の「ファイル」からアップロードしてください。何かがあれば、このファイルをいじって(HTML のコメントアウト &lt;!-- --&gt; をはずすなどして)告知ができます。なお、実体は Notice.template で SSI を使って指定されていますので、告知の際は、Notice.template をいじって再構築するという方法もあります。
+
+次に Greasemonkey に generated/statuses_editor.user.js を登録しましょう。
+
+Greamonkey のアイコンから、「新規ユーザスクリプト」を選び、名前を &quot;Statuses Editor&quot; とでもして、あとは適当に書いて OK をクリックします。そして、エディタで generated_statuses_editor.user.js の内容をそっくりコピペして保存すればできあがりです。
+
+私と共用で Javascript を使うのが心配な方は、config.ph に書いた URL の位置に generated/statuses_tools.js をアップロードしておきましょう。私のサイトでアップデートしながらの運用なのでご自身のサイトに置いたほうが安全です。
+
+なお、おまけとして Firefox の JSActions アドオン用に、aboutme の URL や、aboutme:XXXX、cocolog:XXXX といった表記があれば、このツールで作ったブログのページへジャンプすることができる generated/Aboutme_Jump.js が付属しています。適当に名前を変え、JSActions の global ディレクトリに入れて使ってください。
+
+いちおう generated/summoner.js も付いてきますが、これは statuses_editor.user.js で乱数計算をするだけのライブラリで、私による変更の可能性はないと思っていただいてよいファイルです。ご自分用に持たず、私のサイトのものを使うようにしてください。(万一、私がサイトを閉じたときには必要になるかもしれないのでソースを付けています。)
+
+■手順 5.「ひとこと」をココログに読み込む。
+    
+先に config.ph で ABOUTME_DUMP_DIR に指定していたディレクトリから、ダウンロードされたウェブページをココログで読み込めるように変換します。↓を実行してください。(※すでにアバウトミーが終了しているため、この手順は無視してください。)
+
+perl generated/aboutme2cocolog.pl
+
+すると、cocolog-upload.00X というファイルができますので、順番にこれをココログに読み込ませます。ココログはアップロードするファイルに 1M のサイズ制限があるので、分割アップロードが必要になります。(分割せずにすむ幸運な方もいるかもしれません。)
+
+このとき、ダウンロードが失敗しているかどうかのチェックも行なっています。警告が出れば、ディレクトリに行って、失敗している個別ページをダウンロードしなおしましょう。
+
+(なお、wget の終了までの時間の関係で、「何分前」「何時間前」といった日付けは、順序までは変わりませんが、うまく反映されないことがあります。気になる方は、手順が終って再構築したあと、「アバウトミーからアップデート」してください。)
+
+ブログの「管理」で、「読み込み／書き出し」のページに行きます。
+
+コンピュータ上のファイルを指定し、(文字コードは UTF-8 のままで)上のファイルをアップロードします。
+
+全部読み込ませ終ったら「再構築」してください。再構築に時間がかかる(私のは20分強かかる)かもしれませんが、これで完成のはずです。(「問題が発生」したら、しばらくいろいろ確かめたあと、ダメなら私に連絡してみてください。)
+
+■手順 6.Google サイトマップ等に登録し検索されやすくする。(任意)
+    
+公開して運用する場合、ブログの設定で「更新通知」を「はい」にします。私は「ひとこと」の数が多く、少しでも投稿スピードを早くしたいので、Ping 通知サービスは設定していません。
+
+Google サイトマップはココログプロでは自分で生成しなければなりません。 sitemap-index.xml がそれになりますが、これをトップの robots.txt に書かかれた sitemap.xml に書き込むか、sitemap-index.xml をそのままサイトマップとして登録します。
+
+なお、Google が、登録したサイトマップに関し、title や identifier という余計な要素があるといった警告を表示します。プロトコルの説明ではそうやっていいとのことなので残していますが、しばらく様子をみて不都合があれば、そういった要素を使わないようにするのも原理的には可能なので、その方法も検討します。
+
+このほか、すべての HTML のページに meta タグを足したりしたい場合は、 HeadInfo テンプレートモジュールに書き足すのが便利です。
+
+■完成したサイトに関する注意点
+  
+移行するのは「ひとこと」のみです。「答えた質問」「作った質問」他のユーザーの「ひとこと」への自分のコメントは、移行されません。
+
+Javascript を使いまくってるので、Javascript が使えない訪問者には悲惨な表示結果になるでしょう。
+
+個別ページなどで、その日から前後3日の Google のニュース検索結果を読み込むようにしているのですが、今のところ、昔(一ヶ月以上前)のニュース記事は表示されないようです。他、ブログ・ビデオは日付が反映されません。「ウェブ」のみまともに表示されるようですが…ちょっとおかしいように思います。 daterange 機能はうまく実装されてないのでしょうか？
+
+コメントを「保存」したあと訪問者用のページに反映させるため「再構築」ボタンを押す必要があります。「ひとこと」の数が多いと、これにすごい時間がかかります。
+
+モバイルではほぼチェックしていません。iモードHTMLシミュレータIIで少し見ましたが、 文は表示されます。iモードHTMLシミュレータIではダメでした。モバイルで見る機能は、ココログのデフォルトのままなので、PC のものとはレイアウトが変わります。
+
+あと、私の新しい「ひとこと」サイトはすでに公開し、サイトマップも登録していますが、正式な 2011年6月1日のオープンまでは、かなり流動的で、ソースの変更等もしばしばあると思います。ご容赦ください。
+
+■文章機能
+  
+文章部分はブログのデータベースに登録されるときは、改行(br タグ)以外の HTML 要素が削られます。HTML タグが文章中に書かれても、単純に(エスケープされ)、そのタグそのままが表示されます。
+
+ただし、文章が訪問者のページに読み込まれたときは、Javascript で文章にリンク(URL文字列)があればリンクになるような「装飾」がなされます。それらの機能には次のようなものがあります。(実装は、statuses_tools.js 内の decorate_div 等を呼ぶことでなされています。)
+
+  ●「typo」「修正」「行修正」機能
+    
+コメント部分に行として『typo 「修正前」→「修正後」。』という記述、または、『修正 「修正前」→「修正後」。』という記述があると、それより上のコメント部分の「修正前」を「修正後」に置換します。「」のほか全角の［］も使えます。なお、『行修正 「修正\n前」→「修正後\n」。』と書くときは、括弧の中で一部のエスケープ記号(改行 \n, タブ \t, 空文字列 \0, \\)が使えます。(英語で 『rewrite &quot;before&quot; --&gt; &quot;after&quot;.』や 『srewrite '\nbefore' --&gt; 'after\n'.』とも書けます。)
+
+JavascriptVariables.template の UNTRUSTED_OWNERS_FOR_TYPO に設定されていない者ならば typo が使え、TRUSTED_OWNERS_FOR_FOR_REWRITE に設定されている者のみ「(行)修正」が行えるようになっています。デフォルトでは誰でも typo 指定はできますが、修正指定はサイトのオーナーしかできません。後述の trust、untrust 機能で、「ひとこと」内でその許可を変えられます。ただし、誰が書いたかを示す statuses_editor.user.js の USER_NAME は、たばかって設定できるため、あまり意味のない機能です。
+
+  ●URL リンク機能
+    
+http(s) または ftp ではじまる URL について、それにリンクを付す(a href のタグを自動的に付ける)機能です。おなじみの機能です。アバウトミーでもありました。ただ、アバウトミーからココログに変換するとき、a href タグは一端除去して、Javascript でもう一度付けるという処理をしています。
+
+  ●日付リンク機能
+    
+日付があれば、ココログの月別・週別アーカイブに飛ぶリンクを付す機能です。テンプレートの jumpbydate.html を使っています。
+
+  ●keyword リンク機能
+    
+コメント部分に行として「keyword: キーワード１」という文があれば、 Google を使い、自分のサイト内で「キーワード１」を検索するためのリンクを付す機能です。
+
+  ●ルビ機能
+    
+「漢字[かんじ]」といったように漢字が続いたあとに [] があるとき、ルビとして解釈する機能です。途中からルビをしたい場合など「漢[]字[じ]」「漢[ruby:字:じ]」といった記述法も可能です。
+
+  ●記事 ID リンク機能
+    
+記事の ID を示す[cocolog:XXXXX] や [aboutme:XXXXX] といった表現があれば、その記事へジャンプするためのリンクを付す機能です。 (記事 ID は本システム内表現ではタイトルになるようになっています。)テンプレートの jumpbytitle.html を使っています。
+
+  ●google 検索リンク機能
+    
+[google: クエリ] という文には、Google で「クエリ」が検索されるようなリンクを付します。
+
+  ●タグ機能
+    
+コメント等の最初にある [タグ] という記述は、タグとして解釈され、タグとして検索するためのリンクが付されます。本来なら、ここはブログのカテゴリ機能などで実装できればいいのでしょうが、私が作るには難しいためこうしています。
+
+  ●pre 機能
+    
+アスキーアート等に便利なように、&lt;pre&gt;...&lt;/pre&gt; で囲まれたところは、HTML の pre タグで囲むようにしています。なお、pre 内に上述のこれまでの機能を使う部分があると、それらの機能を使ったあと pre で囲まれることになります。この実装が私にとってもっとも簡単なのです。
+
+  ●trust, untrust 機能
+    
+コメント部分に行として「trust:UUUU」という部分があれば、UUUU という名前のユーザーが行った「typo」や「修正」の指示をその「ひとこと」内で反映します。逆に「untrust: UUUU」という部分があれば、UUUU という名前のユーザーが行った「typo」や「修正」の指示はその「ひとこと」内では無視されます。
+
+この機能を使うには、指示を書き込む者が JavascriptVariables.template の SITE_OWNERS に指定されている必要があります。ただし、書き込んだ者を示す statuses_editor.user.js の USER_NAME は、お互いいじれる関係にあるわけですから、サイトのオーナーを偽装することも簡単です。正直、今のところ、意味のない機能です。
+
+  ●コピー機能
+    
+これはどちらかといえば編集機能なのですが、訪問者からも見えるのでこちらに分類してあります。ローカルに保存したいなど、コピペがしやすいような文章を、IE などの場合はクリップボードにコピーし、Firefox などの場合は、ポップアップした textarea に表示する機能です。textarea に表示されたものはマウスの右クリックで「すべて選択」「コピー」をしてください。 Firefox ではクリップボードが Javascript から使えないという制限があるため、このような実装になっています。
+
+■編集機能
+  
+トップページには新しい「ひとこと」を投稿するためのエディターが、それぞれの「ひとこと」には、コメントの最後に次のコメントを入力するためのエディターが表示されます。この機能は Greasemonky の statuses_editor.user.js によって実現され、内部ではブログシステムと XMLRPC プロトコルで送受信します。
+
+コメントは、ブログのコメントシステムではなく、記事の More 部分に記事の一部となるよう書いていく形をとっています。アバウトミーを参考に、一つの「ひとこと」記事のコメント数は 300 まで、「ひとこと」は 140 字、コメントは、それぞれ 300 字が上限になっています。
+
+2011年6月30日までの「ひとこと」の更新に対応するため、6月30日までの間は「アバウトミーから取得」ボタン、「アバウトミーからアップデート」ボタンが表示されます。前者は、URL などを入れてクリックすれば、アバウトミーの「ひとこと」が GET され、自動的にココログに投稿されます。後者は、すでに投稿された「ひとこと」のコメントの変更を反映させることができます。「再構築」も行われます。
+
+「ひとこと」の数が多くなると、「投稿」「再構築」がたいへん重くなります。「保存」「削除」は私が思っていたより早く、十分実用に耐えると思いますが、それらを使うと「再構築」ボタンの文字が赤くなると思います。「保存」したあと「再構築」を忘れると、ココログの管理画面から、ものすごい時間のかかる「全体の再構築」をする必要が出てくるため、ご注意ください。Status がいちおう表示されてますので入力待ちの参考にしてください。
+
+「ひとこと」記事の削除には対応していません。その替わりと言ってはなんですが、ココログの管理画面の記事編集画面に行くための「編集」ボタンを付けてあります。そこで記事の削除を選択してください。
+
+■CGI 版について
+  
+Google Chrome の UserScript は制限が多く、statuses_editor.user.js がまったく動きません。対策としては、ローカルに httpd を起動し、そこの CGI でバイパスして投稿するぐらいしか私は方法を思い付きませんでした。
+
+ただ、そういった CGI を作ってしまえば、単にブログ上への書き込みに特殊なエディタを使っているというだけではなく、将来、独立した「ひとこと」サイトへ移行することも容易になるはずです。
+
+そういった目論見から、CGI 版を作成してみました。上の方法以上にいろいろ専門知識を必要とするとは思いますが、もし興味がありましたら、ぜひ、 01README.cgi.txt を読んで、そのインストールを試みてください。
+
+■参考サイト
+  
+ソースは様々なものを「引用」しています。数式的ソース利用として特に言及なく使っています。一部引用したものを含め、参考にしたサイトをいくつか下に示します。なお、特に基本的なものについては、下で言及していないサイトもたくさん参照しています。アーカイブの 00README.txt にはさらに多くの URL を書いてあります。
+
+  ●《GreasemonkeyからXMLRPCプロトコルでブログに投稿する | Web scratch》
+  ●《javascriptで日本語文字の種類（漢字・ひらがな・カタカナ）を判別するためのメモ - 超自己満足プログラミング》。
+  ●《[観] 2008年9月2日のバージョンアップで、ココログのテンプレートがどう変わったか》。
+    
+■著作権に関して
+  
+私自身は Public Domain でいいのですが、上で書いたように発表されたソースの「引用」が多く、また、アバウトミーのレイアウト等を参考にし、さらに、ココログの MovableType テンプレートを基にしているので、その点、留意して使っていただければと思います。
+
+■更新履歴
+  
+  &lt;b&gt;2011-03-31&lt;/b&gt;アバウトミー終了のお知らせが各ユーザーに届く。
+  &lt;b&gt;2011-04-01&lt;/b&gt;私の移行準備開始。とりあえずバックアップをとる。
+  &lt;b&gt;2011-04-03&lt;/b&gt;とりあえずココログへの移行をしようと実験しはじめる。
+  &lt;b&gt;2011-04-09&lt;/b&gt;外向け(訪問者用)の機能はだいたいできあがる。
+  &lt;b&gt;2011-04-15&lt;/b&gt;投稿者用機能もだいたいできあがる。
+  &lt;b&gt;2011-04-17&lt;/b&gt;<a href="http://jrf.cocolog-nifty.com/statuses_experimental/" class="ext-link">http://jrf.cocolog-nifty.com/statuses_experimental/</a> で試験運用開始。
+  &lt;b&gt;2011-04-20&lt;/b&gt;配布用のスクリプトを書き、このドキュメントを作成。
+  &lt;b&gt;2011-04-23&lt;/b&gt;初公開。aboutme2cocolog-20110423.shar。
+  &lt;b&gt;2011-04-24&lt;/b&gt;「アバウトミーから取得」「アバウトミーからアップデート」の追加。
+  &lt;b&gt;2011-04-26&lt;/b&gt;更新。aboutme2cocolog-20110426.shar。
+  &lt;b&gt;2011-04-27&lt;/b&gt;更新。aboutme2cocolog-20110427.shar。再構築のスピードアップ。
+  &lt;b&gt;2011-04-30&lt;/b&gt;更新。aboutme2cocolog-20110430.shar。「休止中」でも XML を介するとアクセスできるという「穴」をふさいだ。
+  &lt;b&gt;2011-05-01&lt;/b&gt;<a href="http://jrf.cocolog-nifty.com/statuses/" class="ext-link">http://jrf.cocolog-nifty.com/statuses/</a> 公開運用開始。
+  &lt;b&gt;2011-05-02&lt;/b&gt;更新。aboutme2cocolog-20110502.shar。日付バグ修正。
+  &lt;b&gt;2011-05-03&lt;/b&gt;HeadInfo.template と Notice.template を足す。Firefox でのコピーを alert から textarea に改める。
+  &lt;b&gt;2011-05-06&lt;/b&gt;更新。aboutme2cocolog-20110506.shar。
+  &lt;b&gt;2011-05-13&lt;/b&gt;更新。aboutme2cocolog-20110513.shar。
+  &lt;b&gt;2011-05-16&lt;/b&gt;更新。aboutme2cocolog-20110516_3.shar。
+  &lt;b&gt;2011-05-19&lt;/b&gt;更新。aboutme2cocolog-20110519.shar。(un)trust 機能。
+  &lt;b&gt;2011-05-30&lt;/b&gt;更新。aboutme2cocolog-20110530.shar。正式オープン直前。
+  &lt;b&gt;2011-06-01&lt;/b&gt;statuses_editor_proxy.cgi がだいたい完成。01README.cgi.txt を書く。
+  &lt;b&gt;2011-06-03&lt;/b&gt;更新。aboutme2cocolog-20110603.shar。 statuses_editor_proxy.cgi の同梱開始。
+  &lt;b&gt;2011-06-04&lt;/b&gt;更新。aboutme2cocolog-20110604.shar。CGI公開後の微調整。
+  &lt;b&gt;2011-06-06&lt;/b&gt;更新。aboutme2cocolog-20110606.shar。「管理」コマンド。
+  &lt;b&gt;2011-06-06&lt;/b&gt;更新。aboutme2cocolog-20110606_2.shar。
+  &lt;b&gt;2011-06-09&lt;/b&gt;更新。aboutme2cocolog-20110609.shar。add_user への安全策。
+  &lt;b&gt;2011-06-17&lt;/b&gt;更新。aboutme2cocolog-20110617.shar。大改造前の一服。
+  &lt;b&gt;2011-06-24&lt;/b&gt;更新。aboutme2cocolog-20110624.shar。DELAY_PUBLISH 機能。
+  &lt;b&gt;2011-06-30&lt;/b&gt;アバウトミー終了。
+  &lt;b&gt;2011-07-01&lt;/b&gt;更新。aboutme2cocolog-20110701.shar。アバウトミー終了。
+  &lt;b&gt;2012-01-07&lt;/b&gt;更新。aboutme2cocolog-20120107.shar。本体の変更なし。 dump_blog.pl、xref_trackback.pl を足す。
+  &lt;b&gt;2012-01-12&lt;/b&gt;更新。aboutme2cocolog-20120112.shar。jumpbytitle.html のバグ取り。
+  &lt;b&gt;2014-09-20&lt;/b&gt;更新。aboutme2cocolog-20140920.shar。Firefox 32.0.1 から statuses_editor.user.js が使えなくなったのを修正。
+  &lt;b&gt;2014-09-23&lt;/b&gt;更新。aboutme2cocolog-20140923.shar。20140920 バージョンが動作不良のため修正。おそらく前よりはマシになったはず。
+  &lt;b&gt;2015-11-06&lt;/b&gt;更新。aboutme2cocolog-20151106.shar。ルビを付けるとき、「々」と「〆」に対応。ライセンス等は最近は新しい文を使っているが、変更が軽微なため、あえて変えなかった。
+  &lt;b&gt;2017-11-17&lt;/b&gt;更新。aboutme2cocolog-20171117.shar。Greasemonkey 4.0 に対応するため statuses_editor.user.js を更新しただけの緊急リリース。
+    
+■配布物
+  ●aboutme2cocolog.shar。左は常に最新版に置き換わる。それがどのバージョンかは含まれている 00URI.txt でわかる。
+  ●aboutme2cocolog-20110530.zip。CGI版を&lt;b&gt;含まない&lt;/b&gt;最終バージョンを shar ではなく zip にしたもの。(SugarSyncからのダウンロードも用意)。
+  ●aboutme2cocolog-20110701.zip。アバウトミー終了時バージョンを zip にしたもの。(SugarSyncからのダウンロードも用意)。
+    
+更新：2011-04-23,2011-04-26,2011-04-27,2011-05-02,2011-05-06,2011-05-13,2011-05-16,2011-05-19,2011-06-03,2011-06-04,2011-06-30,2015-11-06,2017-11-17
+初公開：2011年04月23日 08:56:09
+最新版：2017年11月17日 06:19:47</pre>
+<details class="trackbacks" data-pagefind-ignore><summary>Trackbacks (4 件)</summary><pre>
+Trackbacks:
+
+《<a href="http://popopopo-nn.seesaa.net/">誰でも楽しく！おいしく！料理ができる激安キッチングッズ通販ご紹介(((≧▽≦)))</a>》 from 誰でも楽しく！おいしく！料理ができる激安キッチングッズ通販ご紹介(((≧▽≦)))
+毎日の食卓を楽しくなる(*^▽^*)簡単に美味しく料理ができるようになる。簡単レシピ・かわいいキッチン雑貨・お料理上手になる便利グッズをご紹介します。いつまでもイキイキと素敵でいるために、心・生活習慣・食生活の面から誰でも簡単に気軽にできる情報・食材の保存方法やキッチン周りの掃除方法などキッチンで役立つ情報をお届けしています。... 
+
+受信： 2011-04-26 15:19:37 (JST)
+
+
+《<a href="http://jrf.cocolog-nifty.com/software/2011/05/post.html">電子署名の替わりに Loaded Magic</a>》 from JRF のソフトウェア Tips
+今、私は「ひとこと」を書くためのウェブ上のエディタを MovableType、SSI、 Javascript を使って作っている。追加的な機能として「ひとこと」に電子署名のようなものを付けて、その偽造がないことを証明できたらカッコイイだろうなぁと考えた。 しかし、ウェブの標準的で本格的な電子署名技術を、上記の枠組みだけから使うことは不可能だろうし、例えば、コメントのハッシュを付すにしても、そのハッ... 
+
+受信： 2011-05-07 22:32:29 (JST)
+
+
+《<a href="http://jrf.cocolog-nifty.com/software/2011/06/post.html">Statuses_Editor_Proxy.CGI - XMLRPC と OAuth を組み合わせた「ひとことサイト」ソリューション</a>》 from JRF のソフトウェア Tips
+このアプリケーションは何？ ユーザーとして MovableTyle の機能を XMLRPC から使い、Twitter.com やはてな社が実装する OAuth をユーザー認証に用いることで、CGI のサーバーにリソース・セキュリティが乏しい場合でも、ユーザー追加型の「ひとこと」サイトを一般ユーザーが比較的安心して運用できる Web アプリケーションです。 MovableType のテンプレート、そ... 
+
+受信： 2011-06-03 05:48:44 (JST)
+
+
+《<a href="http://jrf.cocolog-nifty.com/software/2012/01/post.html">ブログのバックアップ＆「ひとこと」のクロスリファレンス</a>》 from JRF のソフトウェア Tips
+私の《ひとこと》サイトで「クロスリファレンス」を張ろうと思い立った。少し試した段階でスパム制限等のため時間がかかることがわかったので、その前に《ひとこと》を「ダンプ」つまりフルバックアップすることにした。 ココログの機能として、他所に移転するのを支援するために、バックアップの機能がもとからあるが、これは、元の URL やトラックバック URL、記事 ID などを記録しないため、今回の目的には適さな... 
+
+受信： 2012-01-07 14:32:49 (JST)
+
+
+Comments:
+
+[E:sandclock] 更新：aboutme2cocolog-20110426.shar。「アバウトミーから取得」「アバウトミーからアップデート」の追加。おまけで Aboutme_Jump.js を追加。「休止中」機能のバグ取り。他。
+
+大きな更新が入っています。記事の再アップロードは不要ですが、テンプレートはいちおう全部コピペしなおし、再構築してください。(手間かけさせてすみません。)
+
+「アバウトミーからアップデート」機能が入ったので、ギリギリまで続けることに支障がほぼなくなったように思います。
+
+ただ、「アバウトミーからアップデート」機能は、アバウトミーが存続して、バージョンアップでページのフォーマットが変わると、ややこしいことになります。そういった視点で、存続はないと仮定し、statuses_editor.user.js の DISPLAY_UPDATE_BUTTON を 7 月 1 日以降は false にし、それらの機能を表示しないようにしています。(逆に、存続した場合は、そこを true に強制的にするよう書き換えれば、7 月 1 日以降も表示されます。)
+
+ここまで作ってしまえば、アバウトミーには存続していただいたほうが、より多くのユーザーにこのツールを検討する機会ができますし、これから先欲しいと思っているバックアップサイトを探す必要もなくなるので、大変ありがたいのですが…。(^^)
+
+投稿: JRF | 2011-04-26 00:32:25 (JST)
+
+[E:dash] 更新：aboutme2cocolog-20110427.shar。DataBasedArchives.html に sitemap の機能を一部担わせ、それを sitemap-index.xml で呼ぶようにした。また、jumpbytitle.html もそのデータを用いることにしたので、再構築の時間は減ったが jump にかかるクライアントの処理は重くなった(このページでも Ajax を使うようになった)。
+
+sitemap-part.xml の更新、sitemap-index.xml の追加、DataBasedArchives.html の更新をしてください。再構築はメインテンプレートと月別アーカイブについておこなってください。
+
+投稿: JRF | 2011-04-27 00:23:24 (JST)
+
+[E:flag] 更新：aboutme2cocolog-20110430.shar。「休止中」でも XML を介するとアクセスできるという「穴」をふさいだ。ただし、「休止中」でもタイトルになるような一番上のコメントや、RSS などで概要表示部分が見られるが、それは仕様。
+
+IndividualArchives.html と statuses_tools.js が変わっていて、それらを置き換え再構築する必要がある。他のファイルの変更もあるが趣味的なコード部分なので急ぐものではない。
+
+あと、毎度中身を変更している aboutme2cocolog.shar の中身がわかりやすいように URI を書いた 00URI.txt もアーカイブに含めることにした。
+
+投稿: JRF | 2011-04-30 05:09:16 (JST)
+
+[E:chair] 更新：aboutme2cocolog-20110502.shar。aboutme2ocolog.pl、statuses_editor.user.js、statuses_tools.js、rss.xml、atom.xml の日付に関するバグ取り。 
+
+http://jrf.cocolog-nifty.com/statuses/ の公開運用開始とともに、サイトマップの登録をしたが、現在、サイトマップは警告を出されている状態で、未だページは登録されていないと書いてある。ただ、サイトマップは以前から登録に時間がかかるものだったので、もう少し様子をみたい。
+
+投稿: JRF | 2011-05-02 19:38:25 (JST)
+
+[E:drama] 更新：aboutme2cocolog-20110506.shar。細かな更新が盛りだくさん。
+
+今回から、config.ph に RATING と NOTICE という変数が足されているのに注意。
+
+HeadInfo.template と Notice.template を足して、ほとんどのテンプレートにそれを書き足した。そのため、テンプレートに関してはすべて書き換え、全体の再構築をする必要がある。
+
+Firefox 等で「コピー」の際 alert に表示するのは、文字数がかなり大きいと途中で切れることがわかったのでポップアップオーバーレイで textarea に表示するようにした。statuses_tools.js と styles.css を変更した。
+
+sidebar.inc で favicon を「プロフィール」リンクの横に表示するようにしたが、私自身 generated/sidebar.inc を書き換えて、別の画像(大きなアイコン)にしている。
+
+statuses_tools.js の日付の切り出しアルゴリズムを見直した。
+
+statuses_editor.user.js で summoner.js を使うように変更。私のサイトのものを使って欲しいと書いたが、リスクを知った上で専用のサーバーを建ててもっと複雑なことをしたいというなら止めない。
+
+なお、前回の更新時には始まってなかったサイトマップのページ登録は、その後(警告は出たままだが)順調にすすんでいる。
+
+投稿: JRF | 2011-05-06 00:32:35 (JST)
+
+[E:snail] 更新：このページを更新。00README.txt からの書き移し忘れがあったのと、リンクを足した。
+
+投稿: JRF | 2011-05-06 21:42:10 (JST)
+
+[E:eyeglass] 更新：aboutme2cocolog-20110513.shar。大きな変更はない。
+
+copy-overlay の部分を少しいじる。styles.css と statuses_tools.js に変更あり。statuses_tools.js の decorate_div の切り出しルーチンを少し整理。この影響はないはず。sitemap-part.xml で週別アーカイブの priority を上げた。「行修正」機能を足した。これはソースの中では小さな変更だが追加機能としては大きいかな。
+
+Firefox 4.0.1 には Greasemonkey に関わるバグがあり、statuses_editor.user.js の動作確認の際、たまたまそれに出会った。4.0.1 でも動作しているが、私のように alert を使ってデバッグをする人間はそのバグに会うようなので、そうなったら、Firefox を起動しなおすと直るとのこと。
+
+投稿: JRF | 2011-05-13 11:20:58 (JST)
+
+[E:sign03] 更新：aboutme2cocolog-20110516.shar。
+
+「行修正」機能のおかしな部分を直すため statuses_tools.js に unescape_backslash 関数を書いた。そのとき一瞬、escapeHTML を忘れ、私のサイトで「任意のスクリプト」を実行できるようにしてしまったがすぐに修正。
+
+やはり escape 周りは穴ができやすい。「行修正」機能の「小さな変更」のわりに大きいのは、コードを見ずにマネ(し独自拡張)する人間が陥りやすいセキュリティホールがあるからと言っていいだろう。この点の注意が必要と感じたので、大きな修正ではないが緊急で更新をした。
+
+あと、Aboutme_Jump.js を少しいじってる。
+
+投稿: JRF | 2011-05-16 03:13:40 (JST)
+
+[E:sign02] 更新：aboutme2cocolog-20110516_2.shar。ちょっと手違いがあってさっきの statuses_tools.js を修正。深刻ではないが、上でちょっとカッコつけてるのに凡ミスをしてるのが恥ずかしくて、さっきのバージョンはなかったことにした。
+投稿: JRF | 2011-05-16 04:24:26 (JST)
+
+[E:sleepy]  更新：aboutme2cocolog-20110516_3.shar。考え直した。
+
+ドキュメントから消えているので、どういう機能があったかというところからはじめると、JavaScript の文字表現にもある \x4B とかちょっと変えた \u{ABCD} とかで、ユニコードを指定できるようにしていた。たとえば、&quot;「&quot; や &quot;→&quot; などが含まれる文字列を修正したいとき困るのだが、これらがあれば、最悪そのコードを入力すれば指定できるようになるという点で便利ではあった。
+
+しかし、さっきの凡ミスによれば、\u{XXX} がどれも \x00 が表示されることになっていたはずで、それがブラウザによって大きく見え方が変わっていた。修正を認めるような信頼しているユーザーにしか書かせないという建前とはいえ、突然、ページの一部を破壊する意志を許してはいけない。…と迷ったがそう決めた。
+
+矢印などの特殊文字だから \c{rightarrow} とか名前で指定できるのだけ認めればいいかとも考えたが、煩雑だ。TRUSTED_USERS の修正や typo だけ反映するというのは、いずれ誰かがやるかやっているだろうが、複数ユーザーをするには XMLRPC の設定を共有するようなこのツールでは必要ない。
+
+だから結局「行」修正というところに帰って、\x と \u の機能は削った。
+
+しかし、そうは言っても、このままならマネする人間の前に穴があいたままだ、だから空文字列 \0 を逆に導入しておいた。C 言語などでは \0 は \x00 のことだが、あえてその定義を違え、&quot;a\0b&quot; == &quot;ab&quot; となるようにした。英語版の→は --&gt; なので例えば --\0&gt; などとすれば文中のそれを指定できるようになる。これにより、似た \x00 を表示してみた者が、そのもたらすリスク、ひいては \x や \u の制御文字のリスクを、その操作的外観から気付けることを、私は狙う。
+
+投稿: JRF | 2011-05-16 06:44:09 (JST)
+
+[E:hairsalon] 更新：aboutme2cocolog-20110519.shar。
+
+「trust」「untrust」機能を追加。statuses_editor.user.js をいじれば USER_NAME をたばかることは簡単だから、なんちゃって機能なんだけど、check_auth をまともにする外部の人が現れないとも限らないから、いちおうコードに入れておいた。いじったのは statuses_tools.js と statuses_editor.user.js と styles.css と JavascriptVariables.template。全体の再構築が必要。
+
+あと、上で \c{rightarrow} とか書いたけど \c は制御文字を指示するのに使ってるものがあるから、\u{n:RIGHTWARDS_ARROW} あたりのほうがいいのかな？{} といっしょに使うかぎり \c{} でも大丈夫そうだけど。
+
+投稿: JRF | 2011-05-19 05:58:42 (JST)
+
+[E:yacht] 更新：aboutme2cocolog-20110530.shar。私の「ひとこと」サイトの正式オープン直前リリース。バージョン 1.0 とでも呼ぶべきもの。変更点を箇条書きふうに。
+
+trust 機能のスタイルの変更。styles.css と statuses_tools.js を更新。
+
+コピー機能を使うときに、先にロードしてたらロードしないようにしていたが、コピー機能を使うつどロードするようにした。コピー機能を頻繁に使うのはコメンテーターで、コメンテーターはその更新がすぐに反映されたほうがいいだろうから。statuses_tools.js をいじる。
+
+新しい「ひとこと」の投稿時に USER_NAME を反映するように変更。CSS の使えない環境だとさらに余計な情報が表示されるようになった。statuses_editor.user.js と styles.css と statuses_tools.js と aboutme2cocolog.pl を更新。aboutme2cocolog.pl の変更があるが、再投稿の必要は必ずしもない。(私はしない。)不具合としては、将来記事の削除を実装するときにやや問題が出てくるというだけで、今は関係ない。
+
+Firefox 4 の decodeURIComponent のワナにかかった。jumpbydate.html、jumpbyowner.html、jumpbytitle.html を修正。
+
+CSS の見なおし。StatusesTools.template、statuses_tools.js、ColorName.template、styles.css、さらにテンプレートの *.html すべてをいじったので全体の再構築が必要。特に StatusesTools.template に少しコードを足してあるのに注意。ロード終了時の処理の登録を、どこに置くか迷った末にここにコードを足した。
+
+「バージョン 2.0」に向けて……といったことになると思う。実は Google Chrome の UserScript は Greasemonkey よりかなり制限が強く、statuses_editor.user.js が使えないことがわかっている。その対策としてはローカルに httpd を起動するのが有効らしく、現在、そのための CGI を製作している。statuses_editor.user.js は当然メインとして残すが、次回からは CGI 版も付けようかと考えている。
+
+投稿: JRF | 2011-05-30 00:43:20 (JST)
+
+[E:new] 更新：aboutme2cocolog-20110603.shar。《Statuses_Editor_Proxy.CGI》登場。
+
+statuses_editor_proxy.cgi、statuses_editor_client.js、statuses_editor_client.css、load_statuses_editor_client.user.js、01README.cgi.txt が新たに付属。
+
+statuses_editor.user.js と statuses_tools.js も少し変更がある。前者はテスト時に共存ができるようにして、後者は、trust、untrust が意味を持ったり、ユーザーの別名を反映したりできるよう拡張されている(cgi がない状況では影響がないようにしてるはず。)。
+
+ただ、「安定版」を求める方は、一つ上の aboutme2cocolog-20110530.shar バージョンを使ったほうがいいかもしれない。
+
+投稿: JRF | 2011-06-03 05:51:41 (JST)
+
+[E:parking] 更新：aboutme2cocolog-20110604.shar。大きな変更はない。開発が継続していて、これぐらいのペースで出てくることがこれからもありえますよ…ということを示すためのようなもの。
+
+*_proxy.cgi、*_client.js の status まわりの表示、日本語訳を軽くみなおし。01README.cgi.txt に「管理」の項目を簡単に記載…といったところのみ。
+
+投稿: JRF | 2011-06-04 14:31:28 (JST)
+
+[E:bag] 更新:aboutme2cocolog-20110606.shar。CGI 版にわりと大きな変更。
+
+CGI 版に「章節の管理」コマンドを足し、「全削除」は、管理者以外、デフォルトではできなくした。*_proxy.cgi、*_client.js、*_client.css、statuses_tools.js を変更。xmlhttprequest 関連のバグ取りにも苦労する。
+
+statuses_editor_proxy.css を足して、管理画面に色を付けた。
+
+投稿: JRF | 2011-06-06 22:59:56 (JST)
+
+[E:run] 更新：aboutme2cocolog-20110606_2.shar。
+
+「休止中」の章節について、はてなスターコメントに対応するため、お行儀がよくない方法を使う。EntryShort.template、IndividualArchives.html を変更。全体の再構築が必要。
+
+ちょとした変更だが、一つ前のバージョンを入れたついでにテンプレートを置き換えてもらったほうがいいか…ということで、急遽 _2 バージョンを作った。
+
+投稿: JRF | 2011-06-07 00:05:34 (JST)
+
+[E:cute] 更新：ファイルの更新はない。shar ばかり使うのももしかすると問題のあるところがあるかもしれないので、今回「安定版」を zip にしたもの( aboutme2cocolog-20110530.zip )を作り、「配布物」のところに上げておいた。
+
+投稿: JRF | 2011-06-07 09:08:37 (JST)
+
+[E:cherry] 更新：aboutme2cocolog-20110609.shar。「セキュリティアップデイト」に近いかな。
+
+まず、通常の更新から。*_proxy.cgi、*_proxy.css を変更。「書き換え対象用員の指定」で「用員登記」と「免状の書き換え」の対象となる者を指定すれば、そのデータが読みこまれるようにした。(いつも用員表を見ながらというのは面倒だろうから。)また、「免状」の指定により特定の用員を cleanup の対象から常に外せるようにした。
+
+*.js もほぼすべてちょこちょこといじってる。
+
+そして、問題となる部分。add_user の制限を増やし、本人か 'so' 以外はすでにある ID のログイン先の追加をできなくした。今回、早めのバージョンアップとなったのは、このセキュリティの改善があったため。おそらく以前のポリシーがいいという人はいないだろうから、「緊急」に近いと判断した。
+
+投稿: JRF | 2011-06-09 00:20:48 (JST)
+
+[E:parking] 更新：aboutme2cocolog-20110617.shar。これまでに比べ変更点は少ない。ただし、それは安定してきているからではなく、大きな変更をこの次に行うのに備えているため。
+
+ほぼ唯一の変更点。change_user_id を書き込みがない者についてのみ認めることにした。XMLRPC で管理している領域に書かれた ID については替えるのがとても面倒なので、この制限ポリシーは開発側にとって「自然」なもの。cgi のみ修正。
+
+この次に予定している「大きな変更」は、投稿のスピードアップのため、投稿時に publish＆再構築をせず、publish 操作をあとでまとめて行う機構を導入しよう…というもの。cron は使わず、cgi の処理後、いくつかの process が sleep をしてから処理にあたるといった感じにしようと考えている。
+
+ただ、まだそのプログラムにはとりかかっていない。sleep してから処理にあたるのは 1 つのプロセスで行ったほうがよく、それが効率的かつ頑健であるためには(私にとっては)複雑な排他制御が必要になる。
+
+これが正しく動くことを「証明」したいと思ったが、lock が重なる場合などを総当り的にエミュレートするプログラムを作ってみたいと前々から思っていたこともあり、そういう総当りエミュレート用のちょっとしたプログラムを書くという作業を、今、行っていて時間を食ってる。(『バーチャファイター５ Live Arena』を買って遊んでいたというのもあるが、それは、エミュレートプログラムがなかなか完成しないことの現実逃避みたいなもの(^^;)。)
+
+実装は、それですぐエミューレートできるぐらい簡単なものでもないから、どこかでエミュレーションの研究に区切りをつけて、publish 処理の開発に戻るつもりではある。が、もう少し時間をかけたいので、前のバージョンアップから1週間経ってることもあり、とにかく、今のバージョンを出しておこうとアップしたのが今回のバージョン。
+
+今回のは「安定版」というわけではないけれども、この次はとても不安定になる可能性が高い。
+
+投稿: JRF | 2011-06-17 19:44:22 (JST)
+
+[E:sign05] 更新：aboutme2cocolog-20110624.shar。DELAY_PUBLISH 機能。前回の予告通りの大型更新。
+
+まず、準備として、statses_tools.js と IndividualArchives.html を更新。個別アーカイブの再構築の必要あり。コメント欄を開く処理で escape がらみを少しまともにした。
+
+そしてメインの CGI について。PUBLISH をプロセスを残して一本のラインで行うという大きな変更を行った。すでに動いていたなら実はこの変更は大きなお世話なのかもしれないが、それに付随して行った、できるだけ proxy 経由で記事を読んだり、「章節の開削」をしたあと、すぐに画面に反映したりする…といった変更は、PUBLISH の変更がイヤな方にも望まれていたものかもしれない。そういった方または PUBLISH 処理がうまく動いてなさげな方は、 $DELAY_PUBLISH と $DELAY_NEED_FORK の値をともに 0 にすればいいだろう。statuses_editor_proxy.cgi と statuses_editor_client.js と 01README.cgi.txt を変更。
+
+…ところで、aboutme の終了予定日がまもなくとなってまいりました。どうなることやら、わかりませんが、とにかく、終了予定日後にも一度は更新をします。
+
+投稿: JRF | 2011-06-24 03:59:49 (JST)
+
+[E:eyeglass] DELAY_PUBLISH について補足。
+
+delete_entry に関しては publish ラインを一本にできてない。
+
+set_categories に関しても、(昔はそうでなかったように記憶してるのだが、)set_categories は自動的に publish をやるらしく、publish ラインが一本になっているわけではない。ただ、set_categories のほうは、プロキシ側の publish ラインが一本であるというのを信じて、自動的に publish をなさなくなっても問題はない(と思う)。
+
+しかし、delete_entry に関しては、消したエントリを publish するわけにもいかず、ラインが一本であるという仮定で使うことはできない。このあたりは、XMLRPC を提供する CMS 側に(ココログが今やってるように)何とかしてもらうしかない。
+
+投稿: JRF | 2011-06-24 23:14:17 (JST)
+
+[E:end] 更新：aboutme2cocolog-20110701.shar、aboutme2cocolog-20110701.zip。アバウトミー終了にともなう更新。
+
+サーバー側での「効率化」に備えて $DATE 関連を少しいじろうかと考えたが、「ワナ」だと考えるようになってやめた。
+
+sedit_get_entry だと休止中でも記事が取得できる穴を封じた。cgi を変更。
+
+ColorName_brown.template と ColorName_pinktiger.template をサンプルとして配布物に含めるようにし、00README.txt にそのことを書き足した。絵のバイナリは含まず、私のサイトのものを使うように書いている。
+
+2011年6月30日、アバウトミーが予定どおり終了。それに伴う作業をした。
+
+jumpbytitle.html で cocolog: ではじまるものは 2011年4月以降、aboutme: ではじまるものは 2011年7月までのもののみ検索対象となるようにした。
+
+大きな不具合でもなければ更新しないつもりで、今回は、2011-05-30 バージョンと同じく、zip も作っておいた。今後の更新は、少なくともこれまでのような頻度では行わなくするつもり。他のことに集中したい。
+
+投稿: JRF | 2011-07-01 03:18:35 (JST)
+
+[E:cancer] 更新：今ちょっと気づいた。Firefox 5 だと、「コピー」をすると余計な br が表示されることがあった。IE だと「コピー」ができなくなっていた。それらをちょいと修正。
+
+さしあたりアーカイブにせず、statuses_tools.js を置き換えた。もうしばらく待って次のアーカイブに含める。
+
+投稿: JRF | 2011-07-04 13:13:28 (JST)
+
+[E:sign05] 更新：aboutme2cocolog-20120107.shar。dump_blog.pl と xref_trackback.pl を足す。
+
+二つの pl の使い方は《ブログのバックアップ＆「ひとこと」のクロスリファレンス》を参照のこと。
+
+投稿: JRF | 2012-01-07 14:39:44 (JST)
+
+[E:train] 更新：aboutme2cocolog-20120112.shar。jumpbytitle.html のバグ取り。
+
+さっき、見つけた jumpbytitle.html のバグを取った。これのみテンプレートの「反映」の必要あり。
+
+投稿: JRF | 2012-01-12 17:23:00 (JST)
+
+[E:japanesetea] 更新：［ruby:漢字:ルビ］文が変換後にタグをストリップしたとき、元の文と違っていたのを修正した。
+
+さしあたりアーカイブにせず、statuses_tools.js だけ置き換えた。
+
+投稿: JRF | 2012-02-15 00:14:10 (JST)
+
+[E:ski]  更新：URL 直書きのとき、末尾の句読点類(.!'?:;,)を除去し、途中に &quot;(&quot; のない &quot;)&quot; で終る URL の最後の &quot;)&quot; を除去するようにした。
+
+さしあたりアーカイブにせず、statuses_tools.js だけ置き換えた。
+
+投稿: JRF | 2012-02-24 00:40:46 (JST)
+
+[E:train] 更新：aboutme2cocolog-20121201.shar。jumpbytitle.html のバグ取り。
+
+さっき、見つけた jumpbytitle.html のバグを取った。これのみテンプレートの「反映」の必要あり。
+
+何の因果か1月12日と同じような感じ。
+
+投稿: JRF | 2012-12-01 06:29:40 (JST)
+
+[E:happy02] 更新：aboutme2cocolog-20121206.shar。jumpbytitle.html の先の変更で binary search が失敗していたのを修正。
+
+jumpbytitle.html のみテンプレートの「反映」の必要あり。
+
+また、先のバージョンでは、dump_blog.pl を少しアップデートし、トラックバックに関して保存する情報を追加したりしていた。
+
+投稿: JRF | 2012-12-06 13:59:00 (JST)
+
+[E:noodle] 更新：aboutme2cocolog-20121212.shar。statuses_editor.user.js のみ更新。
+
+Firefox 17 から Greasemonkey に E4X が使えなくなったらしく(参：[cocolog:74918848])、それに対応した。
+
+投稿: JRF | 2012-12-12 17:56:01 (JST)
+
+[E:flag] 更新：aboutme2cocolog-20140920.shar。statuses_editor.user.js のみ更新。
+
+Firefox 32.0.1 から突然、Greasemonkey などへの Permission がキツくなったため、それに対応した。CGI とか他の機能は試してない。
+
+投稿: JRF | 2014-09-20 08:40:26 (JST)
+
+[E:coldsweats02] 更新：すぐにミスに気付く。HeadInfo.template に Google 翻訳用の ID を付けて公開しちゃったのを急いで削って、差し換えた。普段なら名前を変えてるとこだけど、今回は同じ名前で許してください。orz。
+
+投稿: JRF | 2014-09-20 09:04:21 (JST)
+
+[E:downwardleft] どうも aboutme2cocolog-20140920.shar の statuses_editor.user.js はバグありな感じなので、使わないほうがいいかもしれない。
+
+まだ、バグの再現性を見つけておらず、バグがどこで発生してるか推測できてないので、バグ取りには時間がかかるかもしれない。
+
+投稿: JRF | 2014-09-22 17:19:59 (JST)
+
+[E:golf] 更新：aboutme2cocolog-20140923.shar。statuses_editor.user.js のみ更新。
+
+バグの再現はあまりできなかったが、「ここかな」というのに気付いたので少し修正。ちょっとはマシになったはず。
+
+投稿: JRF | 2014-09-23 07:35:13 (JST)
+
+[E:club] 更新: aboutme2cocolog-20151106.shar。statuses_tools.js のみ更新。
+
+ルビを付けるとき、「々」と「〆」に対応。ライセンス等は最近は新しい文を使っているが、変更が軽微なため、あえて変えなかった。
+投稿: JRF | 2015-11-06 00:56:32 (JST)
+
+[E:basketball] 更新: aboutme2cocolog-20171117.shar。statuses_editor.user.js のみ更新。
+
+Greasemonkey 4.0 に対応するための緊急リリース。最近はライセンスをこのころのものとは違うものにしているのだが、緊急リリースのためそのまま。
+
+投稿: JRF | 2017-11-17 06:17:10 (JST)
+
+
+Links:
+
+Greasemonkey: http://wiki.greasespot.net/Main_Page
+X11: http://www.x.org/
+Ghostscript: http://pages.cs.wisc.edu/~ghost/
+JSActions: http://hideaway.cc/Firefox/
+CGI 版を作成: http://jrf.cocolog-nifty.com/software/2011/06/post.html
+GreasemonkeyからXMLRPCプロトコルでブログに投稿する | Web scratch: http://efcl.info/2009/1103/res1416/
+javascriptで日本語文字の種類（漢字・ひらがな・カタカナ）を判別するためのメモ - 超自己満足プログラミング: http://d.hatena.ne.jp/favril/20090514/1242280476
+[観] 2008年9月2日のバージョンアップで、ココログのテンプレートがどう変わったか: http://watcher.moe-nifty.com/memo/2008/09/200892-9e59.html
+aboutme2cocolog-20110423.shar: http://jrf.cocolog-nifty.com/archive/aboutme2cocolog/aboutme2cocolog-20110423.shar
+aboutme2cocolog-20110426.shar: http://jrf.cocolog-nifty.com/archive/aboutme2cocolog/aboutme2cocolog-20110426.shar
+aboutme2cocolog-20110427.shar: http://jrf.cocolog-nifty.com/archive/aboutme2cocolog/aboutme2cocolog-20110427.shar
+aboutme2cocolog-20110430.shar: http://jrf.cocolog-nifty.com/archive/aboutme2cocolog/aboutme2cocolog-20110430.shar
+aboutme2cocolog-20110502.shar: http://jrf.cocolog-nifty.com/archive/aboutme2cocolog/aboutme2cocolog-20110502.shar
+aboutme2cocolog-20110506.shar: http://jrf.cocolog-nifty.com/archive/aboutme2cocolog/aboutme2cocolog-20110506.shar
+aboutme2cocolog-20110513.shar: http://jrf.cocolog-nifty.com/archive/aboutme2cocolog/aboutme2cocolog-20110513.shar
+aboutme2cocolog-20110516_3.shar: http://jrf.cocolog-nifty.com/archive/aboutme2cocolog/aboutme2cocolog-20110516_3.shar
+aboutme2cocolog-20110519.shar: http://jrf.cocolog-nifty.com/archive/aboutme2cocolog/aboutme2cocolog-20110519.shar
+aboutme2cocolog-20110530.shar: http://jrf.cocolog-nifty.com/archive/aboutme2cocolog/aboutme2cocolog-20110530.shar
+aboutme2cocolog-20110603.shar: http://jrf.cocolog-nifty.com/archive/aboutme2cocolog/aboutme2cocolog-20110603.shar
+aboutme2cocolog-20110604.shar: http://jrf.cocolog-nifty.com/archive/aboutme2cocolog/aboutme2cocolog-20110604.shar
+aboutme2cocolog-20110606.shar: http://jrf.cocolog-nifty.com/archive/aboutme2cocolog/aboutme2cocolog-20110606.shar
+aboutme2cocolog-20110606_2.shar: http://jrf.cocolog-nifty.com/archive/aboutme2cocolog/aboutme2cocolog-20110606_2.shar
+aboutme2cocolog-20110609.shar: http://jrf.cocolog-nifty.com/archive/aboutme2cocolog/aboutme2cocolog-20110609.shar
+aboutme2cocolog-20110617.shar: http://jrf.cocolog-nifty.com/archive/aboutme2cocolog/aboutme2cocolog-20110617.shar
+aboutme2cocolog-20110624.shar: http://jrf.cocolog-nifty.com/archive/aboutme2cocolog/aboutme2cocolog-20110624.shar
+aboutme2cocolog-20110701.shar: http://jrf.cocolog-nifty.com/archive/aboutme2cocolog/aboutme2cocolog-20110701.shar
+aboutme2cocolog-20120107.shar: http://jrf.cocolog-nifty.com/archive/aboutme2cocolog/aboutme2cocolog-20120107.shar
+aboutme2cocolog-20120112.shar: http://jrf.cocolog-nifty.com/archive/aboutme2cocolog/aboutme2cocolog-20120112.shar
+aboutme2cocolog-20140920.shar: http://jrf.cocolog-nifty.com/archive/aboutme2cocolog/aboutme2cocolog-20140920.shar
+aboutme2cocolog-20140923.shar: http://jrf.cocolog-nifty.com/archive/aboutme2cocolog/aboutme2cocolog-20140923.shar
+aboutme2cocolog-20151106.shar: http://jrf.cocolog-nifty.com/archive/aboutme2cocolog/aboutme2cocolog-20151106.shar
+aboutme2cocolog-20171117.shar: http://jrf.cocolog-nifty.com/archive/aboutme2cocolog/aboutme2cocolog-20171117.shar
+aboutme2cocolog.shar: http://jrf.cocolog-nifty.com/archive/aboutme2cocolog/aboutme2cocolog.shar
+aboutme2cocolog-20110530.zip: http://jrf.cocolog-nifty.com/archive/aboutme2cocolog/aboutme2cocolog-20110530.zip
+SugarSyncからのダウンロード: https://www.sugarsync.com/pf/D252372_6842690_657562
+aboutme2cocolog-20110701.zip: http://jrf.cocolog-nifty.com/archive/aboutme2cocolog/aboutme2cocolog-20110701.zip
+SugarSyncからのダウンロード: https://www.sugarsync.com/pf/D252372_6842690_653552
+Firefox 4.0.1 には Greasemonkey に関わるバグがあり: http://jrf.aboutme.jp/user_statuses/show/138720
+Statuses_Editor_Proxy.CGI: http://jrf.cocolog-nifty.com/software/2011/06/post.html
+前々から思っていた: http://jrf.cocolog-nifty.com/column/2006/04/post_16.html
+「ワナ」だと考えるようになって: http://jrf.aboutme.jp/user_statuses/show/139417
+statuses_tools.js: http://jrf.cocolog-nifty.com/archive/statuses_tools.js
+ブログのバックアップ＆「ひとこと」のクロスリファレンス: http://jrf.cocolog-nifty.com/software/2012/01/post.html
+
+
+
+</pre></details>
+
+<section class="backrefs" data-pagefind-ignore>
+<h2>後方参照 (36 件)</h2>
+<ul>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2019/03/statuses_cocolog_90801392.html">ひとこと</a> <span class="backref-date">2019年03月11日</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2018/03/statuses_cocolog_89026731.html">ひとこと</a> <span class="backref-date">2018年03月11日</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2017/03/statuses_cocolog_87013147.html">ひとこと</a> <span class="backref-date">2017年03月11日</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2016/04/column_84884157.html">前期の翌日(2016-01-01)から昨日(2016-03-31)まで 91 日間のアクセス解析・近況など</a> <span class="backref-date">2016年04月01日 12:53:25</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2016/03/statuses_cocolog_84750241.html">ひとこと</a> <span class="backref-date">2016年03月11日</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2016/01/column_84274746.html">前期の翌日(2015-10-01)から昨日(2015-12-31)まで 92 日間のアクセス解析・近況など</a> <span class="backref-date">2016年01月01日 01:58:23</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2015/10/column_83514430.html">前期の翌日(2015-07-01)から昨日(2015-09-30)まで 92 日間のアクセス解析・近況など</a> <span class="backref-date">2015年10月01日 13:47:48</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2015/07/column_82774604.html">前期の翌日(2015-04-01)から昨日(2015-06-30)まで 91 日間のアクセス解析・近況など</a> <span class="backref-date">2015年07月01日 05:36:05</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2015/04/column_82138851.html">前期の翌日(2015-01-01)から昨日(2015-03-31)まで 90 日間のアクセス解析・近況など</a> <span class="backref-date">2015年04月01日 09:16:30</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2015/03/statuses_cocolog_81991882.html">ひとこと</a> <span class="backref-date">2015年03月11日</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2015/01/column_81484128.html">前期の翌日(2014-10-01)から昨日(2014-12-31)まで 92 日間のアクセス解析・近況など</a> <span class="backref-date">2015年01月01日 06:55:14</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2014/10/column_80751818.html">前期の翌日(2014-07-01)から昨日(2014-09-30)まで 92 日間のアクセス解析・近況など</a> <span class="backref-date">2014年10月01日 05:31:54</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2014/09/statuses_cocolog_80639852.html">ひとこと</a> <span class="backref-date">2014年09月16日</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2014/07/column_80047968.html">前期の翌日(2014-04-01)から昨日(2014-06-30)まで 91 日間のアクセス解析・近況など</a> <span class="backref-date">2014年07月01日 09:02:01</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2014/04/column_79318735.html">前期の翌日(2014-01-01)から昨日(2014-03-31)まで 90 日間のアクセス解析・近況など</a> <span class="backref-date">2014年04月01日 06:35:22</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2014/03/software_79222541.html">Cocolog_Pro_Analyzer：ココログプロ用アクセス解析補助 Greasemonkey</a> <span class="backref-date">2014年03月20日 03:46:54</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2014/01/statuses_cocolog_78739712.html">ひとこと</a> <span class="backref-date">2014年01月21日</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2014/01/column_78565892.html">前期の翌日(2013-10-01)から昨日(2013-12-31)まで 92 日間のアクセス解析・近況など</a> <span class="backref-date">2014年01月01日 01:27:22</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2013/11/statuses_cocolog_78274410.html">ひとこと</a> <span class="backref-date">2013年11月26日</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2013/10/column_77781983.html">前期の翌日(2013-07-01)から昨日(2013-09-30)まで 92 日間のアクセス解析・近況など</a> <span class="backref-date">2013年10月01日 01:14:59</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2013/07/column_76937312.html">前期の翌日(2013-04-01)から昨日(2013-06-30)まで 91 日間のアクセス解析・近況など</a> <span class="backref-date">2013年07月01日 01:50:58</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2013/04/column_76057634.html">前期の翌日(2013-01-01)から昨日(2013-03-31)まで 90 日間のアクセス解析・近況など</a> <span class="backref-date">2013年04月01日 01:17:46</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2013/01/column_75158671.html">前期の翌日(2013-10-01)から昨日(2012-12-31)まで 92 日間のアクセス解析・近況など</a> <span class="backref-date">2013年01月01日 01:17:42</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2012/10/column_74229152.html">前期の翌日(2012-07-01)から昨日(2012-09-30)まで 92 日間のアクセス解析・近況など</a> <span class="backref-date">2012年10月01日 03:24:01</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2012/02/software_71637031.html">ユーザーによるコメント「削除」をココログプロで実現する</a> <span class="backref-date">2012年02月16日 12:03:53</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2012/01/software_71180305.html">ブログのバックアップ＆「ひとこと」のクロスリファレンス</a> <span class="backref-date">2012年01月07日 14:28:08</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2011/09/statuses_cocolog_69768386.html">ひとこと</a> <span class="backref-date">2011年09月11日</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2011/05/statuses_aboutme_139035.html">ひとこと</a> <span class="backref-date">2011年05月31日</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2011/05/statuses_aboutme_138896.html">ひとこと</a> <span class="backref-date">2011年05月20日</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2011/05/statuses_aboutme_138720.html">ひとこと</a> <span class="backref-date">2011年05月11日</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2011/05/software_68180670.html">電子署名の替わりに Loaded Magic</a> <span class="backref-date">2011年05月07日 22:32:13</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2011/05/statuses_aboutme_138605.html">ひとこと</a> <span class="backref-date">2011年05月02日</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2011/04/statuses_aboutme_138567.html">ひとこと</a> <span class="backref-date">2011年04月30日</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2011/04/statuses_aboutme_138457.html">ひとこと</a> <span class="backref-date">2011年04月23日</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2011/04/statuses_cocolog_67903430.html">ひとこと</a> <span class="backref-date">2011年04月17日</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2011/03/statuses_aboutme_137553.html">ひとこと</a> <span class="backref-date">2011年03月11日</span></li>
+</ul>
+</section>
+
+</article>
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2011/04.html">2011年04月</a> | <a href="../../../index/software.html">ソフトウェア Tips</a></nav>
+</body>
+</html>

@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>ひとこと - JRF Blog Archive</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2011/05.html">2011年05月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+<article data-pagefind-body>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[statuses] <span class="cocolog-id">aboutme:139035</span></td></tr>
+<tr><th>セクション</th><td>JRF のひとこと</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2011/05.html">2011年05月31日</a></td></tr>
+<tr><th>元URL</th><td><a href="http://jrf.cocolog-nifty.com/statuses/2011/05/aboutme139035.html" class="ext-link"><span class="original-url">http://jrf.cocolog-nifty.com/statuses/2011/05/aboutme139035.html</span></a></td></tr>
+
+</table>
+</div>
+<h1>ひとこと</h1>
+<pre class="body">Google ChromeのUserScriptの制限がGreasemonkeyに比べて強いので、メインのスクリプトを(ローカルの)httpdからロードし、そのロードさせる部分のみUserScriptとして書くという方針にするとして、「環境変数」を渡すのをどうするか考えた。
+JRF 2011年5月31日
+
+load する javascript の variable のいくつかを予め set するというか inject したい。
+
+unsafeWindow が使えないため、関数や変数を渡すのにちょっとしたテクニックがいる。
+
+JavaScript ファイルをロードするのは、var s = document.createElement('script') して s.src にファイル名を代入し、document.body.appendChild(s) すればいい。
+
+同じリクツで、変数を渡すには、s.src に代入する替わりに、s.textContent にスクリプトの文を書けばいいだろう。
+
+JRF 2011年5月31日
+
+値の escape は encodeURIComponent を使えば良さそうだ。
+
+コードとしては次みたいなの。
+
+Array とかは面倒だから、あとから split するなりして作ればいいと思う。
+
+
+JRF 2011年5月31日
+
+&lt;pre&gt;
+function make_variable_injection(name, value) {
+  return &quot;window['&quot; + name + &quot;'] = decodeURIComponent(\&quot;&quot;
+    + encodeURIComponent(value) + &quot;\&quot;);&quot;;
+}
+
+var vscr = document.createElement('script');
+vscr.textContent = make_variable_injection(&quot;VAR1&quot;, VAR1);
+document.body.appendChild(vscr);
+&lt;/pre&gt;
+
+JRF 2011年5月31日
+
+CSS とかについても似たようなことができる。ただし、head に書かないとダメなので、var head = document.getElementsByTagName('head')[0] に appendChild するのを忘れないこと。
+
+JRF 2011年5月31日
+
+参考。
+
+《Dynamically loading an external JavaScript or CSS file》
+<a href="http://www.javascriptkit.com/javatutors/loadjavascriptcss.shtml" class="ext-link">http://www.javascriptkit.com/javatutors/loadjavascriptcss.shtml</a>
+
+《Google Chromeでも動くユーザスクリプトを書くためのメモ - maru source》
+<a href="http://d.hatena.ne.jp/h13i32maru/20100606/1275816792" class="ext-link">http://d.hatena.ne.jp/h13i32maru/20100606/1275816792</a>
+
+JRF 2011年5月31日
+
+……。
+
+あと、Chrome の制限として、E4X が使えないというのがあった。
+
+そこは簡単に書き換えることができる……おおっ、それだけで Firefox 用に作った↓の statuses_editor の CGI 版が動いたぞ！
+
+《aboutme2cocolog: アバウトミーの「ひとこと」をココログプロへ移転するツール》
+<a href="../../../articles/2011/04/software_67976071.html" class="int-link" title="aboutme2cocolog: アバウトミーの「ひとこと」をココログプロへ移転するツール">http://jrf.cocolog-nifty.com/software/2011/04/post.html</a>
+
+さて、次は IE で動かせるか…だが…。
+
+JRF 2011年6月1日
+
+……。
+
+もひとつひっかかった。
+
+UserScript で、window.addEventListener に load で登録しても、普通(Firefox)だったら Emacs の eval-after-load みたいに実行されるんだけど、Google Chrome はロードが終っていると判断しているらしく実行してくれない。document.loaded みたいなものが欲しいところだが、あまり適当なものがなさそうなので、↑で、スクリプトの中から実行していることを示すフラグを渡すことで、addEventListner するか直接実行するか、制御することにした。
+
+JRF 2011年6月1日
+
+……。
+
+ところで、IE は XDomainRequest が何かと面倒でまいった。何が面倒って、同期(sync)ができないのがメンドクサイ。あきらめて、コメント書き込みとかは諦めて、alias の反映とか最低限のとこだけやることでお茶をにごした。IE6 じゃあはなから反応ないし(GET で送ってもダメだった。)
+
+それに XDomainRequest、setRequestHeader がないから、POST のとき Content-Type を application/x-www-form-urlencoded にすることができない。
+
+JRF 2011年6月1日
+
+これを、Perl の CGI.pm でムリヤリにでも解釈させるには、結局、CGI-&gt;new する前に↓みたいに環境変数を書き換えるぐらいしか方法がなさそうだった。(CGI-&gt;new(join(&quot;&quot;, &lt;STDIN&gt;)) だけはダメだった。)
+
+JRF 2011年6月1日
+
+&lt;pre&gt;
+if (exists $ENV{REQUEST_METHOD} &amp;&amp; $ENV{REQUEST_METHOD} eq &quot;POST&quot;
+    &amp;&amp; $ENV{HTTP_USER_AGENT} =~ /MSIE/) {
+  $ENV{'CONTENT_TYPE'} = 'application/x-www-form-urlencoded';
+}
+my $CGI = CGI-&gt;new;
+&lt;/pre&gt;
+
+JRF 2011年6月1日
+
+……。
+
+うわっ。やられた。Firefox 4.0 よりまえ 3.6 とか 3.5 とかだと、req.setRequestHeader(&quot;Content-Type&quot;, &quot;application/x-www-form-urlencoded&quot;); すると失敗する。
+
+↓によると、4.0 から url-encoded で OK になったけどそれ以前は、text/plain じゃないと、'preflighted' と判断され、OPTIONS 要求に応えないとダメらしい。だから上の $ENV にムリヤリ値をセットするトリックは、MSIE 以外のFirefox/3 とか他のものに関してもやらないとダメ。
+
+JRF 2011年6月5日
+
+《HTTP access control - MDC Docs》
+<a href="https://developer.mozilla.org/en/http_access_control" class="ext-link">https://developer.mozilla.org/en/http_access_control</a>
+
+一つ前のひとこと↓。
+<a href="http://jrf.aboutme.jp/user_statuses/show/139032" class="ext-link">http://jrf.aboutme.jp/user_statuses/show/139032</a>
+＞Firefox の XMLHttpRequest で CGI からエラーを返すと、Uncaught exception が起きる。onerror とかのハンドラを設定してもダメ。結局、try { } catch { } で囲んでやるほかなかった。＜
+
+JRF 2011年6月5日
+
+Ajax を使うときに Cookie でセッションID 渡すのはまだ実用的じゃないのかな？
+
+JavaScript をロードするとき、セッションID をしこんでおいて Access-Control-Allow-Origin は使わないほうがいいのかな？でも、こういう機構が出てきてるってことは、それがいつまで認められるかわからないってことだろうし…。
+
+JRF 2011年6月5日
+
+'preflighted' のほかに、IE には P3P ポリシーとかあるらしいけど、その辺もまだ私はわかってない。(ブラウザの違いが多すぎてやってらんない！orz)
+
+《非同期クロスドメイン通信でCookieを送信したかった (それなりブログ)》
+<a href="http://kjirou.sakura.ne.jp/mt/2011/03/cookie_1.html" class="ext-link">http://kjirou.sakura.ne.jp/mt/2011/03/cookie_1.html</a>
+
+JRF 2011年6月5日
+
+さらに、Google Chrome は req.setRequestHeader(&quot;Content-Type&quot;, &quot;test/plain&quot;); と明示的に設定しないと(setRequestHeader を削ってるのでは)ダメっぽい。
+
+なんじゃそりゃーっ。これはかなり高い確率で罠だな。明らかに text/plain って MIME Type がおかしいもん。escape/unescape の二の舞になるだろうな…。まーた、わかっててこういうことをやらせるわけか。OPTIONS リクエストをこういうときは使えって示唆なんだろうが…。ほんと evil な人たち。(もちろん、オレも含め。)orz
+
+JRF 2011年6月5日
+
+Trackbacks:
+
+《cocolog:70722096》 from JRF のひとこと
+<a href="../../../articles/2011/11/statuses_cocolog_70722096.html" class="int-link" title="ひとこと">http://jrf.cocolog-nifty.com/statuses/2011/11/javas-2.html</a>
+
+JavaScript の Canvas にもオリジン制限があることを知る。開発者向けにブラウザ起動時にそれを無視するオプションはあるようだが、サーバーオーナーやブロガーが回避する方法はなさそう。 
+
+受信： 2012-01-04 14:58:44 (JST)</pre>
+
+
+<section class="backrefs" data-pagefind-ignore>
+<h2>後方参照 (2 件)</h2>
+<ul>
+<li><span class="backref-label">[aboutme:139035]参照</span> <a href="../../../articles/2011/11/statuses_cocolog_70722096.html">ひとこと</a> <span class="backref-date">2011年11月29日</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2011/05/statuses_aboutme_139032.html">ひとこと</a> <span class="backref-date">2011年05月30日</span></li>
+</ul>
+</section>
+
+</article>
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2011/05.html">2011年05月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+</body>
+</html>

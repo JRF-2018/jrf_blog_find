@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>Perl でオブジェクト指向 C++風 - JRF Blog Archive</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2010/12.html">2010年12月</a> | <a href="../../../index/software.html">ソフトウェア Tips</a></nav>
+<article data-pagefind-body>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[software] <span class="cocolog-id">cocolog:66486034</span></td></tr>
+<tr><th>セクション</th><td>JRF のソフトウェア Tips</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2010/12.html">2010年12月31日 09:42:55</a></td></tr>
+<tr><th>元URL</th><td><a href="http://jrf.cocolog-nifty.com/software/2010/12/post.html" class="ext-link"><span class="original-url">http://jrf.cocolog-nifty.com/software/2010/12/post.html</span></a></td></tr>
+<tr><th>タグ</th><td>[Perl]</td></tr>
+</table>
+</div>
+<h1>Perl でオブジェクト指向 C++風</h1>
+<pre class="body">Perl でオブジェクト指向っぽいコードを書こうとすると、一つの「パッケージ」の中に複数の「クラス」が存在するとき、「パッケージ」でインポートしたはずの関数などが、「クラス」内で使えないことが不満だった。かといってすべて「パッケージ」にするのはちょっとしたシミュレーションを作るときなどに不便である。BEGIN や import、eval、Exporter などを組み合わせてなんとかできないかと試したところ、そこそこ満足できる解を見つけた。
+
+最初に断っておくが、私は「プロ」プログラマではないため、Perl も C++ もオブジェクト指向も、知識が不十分の半可通である。また、タイトルではわかりやすさを重視して「C++風」と書いたが、単に最初に書いたように「クラス」内でいちいち use せずに「パッケージ」で一活して use したいというだけの話である。
+
+■失敗例
+  
+どういうことがやりたいかを説明するために、まず失敗例を書こう。
+
+#!/usr/bin/perl
+
+use strict;
+use warnings;
+use utf8;
+
+use Math::Trig; # for pi
+use Storable qw(dclone);
+
+our $DEBUG = 0;
+
+{
+  package Simple;
+  
+  our $template = {};
+  
+  sub new {
+    my $class = shift;
+    my $obj = dclone($template);
+    bless $obj, $class;
+    return $obj;
+  }
+}
+
+
+{
+  package A;
+  use base qw(Simple);
+  
+  our $template = {data =&gt; 0.0};
+  
+  sub method_1 {
+    my $self = shift;
+    my ($arg1) = @_;
+    $self-&gt;{data} = $self-&gt;{data} + pi / $arg1;
+    return $self-&gt;{data};
+  }
+}
+
+{
+  package B;
+  use base qw(Simple);
+  
+  our $template = {data =&gt; 1.0};
+  
+  sub method_1 {
+    my $self = shift;
+    my ($arg1) = @_;
+    $self-&gt;{data} = $self-&gt;{data} + pi / $arg1;
+    return $self-&gt;{data};
+  }
+}
+
+MAIN: {
+  my $a = A-&gt;new();
+  my $b = B-&gt;new();
+  
+  print $a-&gt;method_1(7.0) . &quot;\n&quot;;
+  print $b-&gt;method_1(7.0) . &quot;\n&quot;;
+}
+
+以上を実行するとエラーが出る。
+
+$ perl example_oo_0.pl
+Bareword &quot;pi&quot; not allowed while &quot;strict subs&quot; in use at /cygdrive/c/home/tahi/doc/blog/archive/example_oo_0.pl line 35.
+BEGIN not safe after errors--compilation aborted at /cygdrive/c/home/tahi/doc/blog/archive/example_oo_0.pl line 42.
+
+「クラス」A の中でも pi を使いたいが、Perl のパッケージシステムはそのようなことをするためには、「クラス」ごとに use を指定する必要があるようだ。
+
+(一応断っておくと、変数ではそのような意図がうまく機能するものがあり、上のコードの $DEBUG は「クラス」 A 内からも参照できる。)
+
+いろいろ試した結果、package は一度閉じたあともう一度開いたときに、前開いたときに use したものを覚えていることがわかった。この性質を使い、やっていることはキタナイがコードはそれなりに美しく書けて、意図を実現したのが次のコードである。(なお、リンク先のコードでは、もう少しコメントを増やしたり、コンストラクタの例を足したりしている。)
+
+#!/usr/bin/perl
+
+use strict;
+use warnings;
+use utf8;
+
+BEGIN {
+  my @mypackage = qw(
+                    Main
+                    Main::_Simple
+                    Main::_A
+                    Main::_B
+                  );
+  foreach my $p (@mypackage) {
+    eval &lt;&lt;&quot;EOM&quot;; # eval the string til &quot;End Of Macro&quot;.
+    {
+      package $p;
+      use Math::Trig; # for pi
+      use Storable qw(dclone);
+    }
+EOM
+    die $@ if $@; # check error of eval.
+  }
+}
+
+package Main;
+
+our $DEBUG = 0;
+
+{
+  package Main::_Simple;
+  
+  my %template = (&quot;Main::_Simple&quot; =&gt; {});
+  
+  sub extend_template {
+    my $class = shift;
+    my @hash = @_;
+    if (exists $template{$class}) {
+      $template{$class} = {%{$template{$class}}, @hash} if @hash;
+    } else {
+      $template{$class} = 
+        {(map {
+                $_-&gt;extend_template() if ! exists $template{$_};
+                %{$template{$_}};
+              } (eval '@{' . $class . '::ISA}')),
+          @hash
+        };
+    }
+    return $template{$class};
+  }
+  
+  sub get_template {
+    my $class = shift;
+    return $class-&gt;extend_template();
+  }
+  
+  sub new {
+    my $class = shift;
+    my $obj = dclone($class-&gt;get_template());
+    bless $obj, $class;
+    return $obj;
+  }
+}
+
+
+{
+  package Main::_A;
+  use base qw(Main::_Simple);
+  
+  __PACKAGE__-&gt;extend_template
+    (
+      ## 以下に基礎となる structure を書く。
+      
+      data =&gt; 0.0, # ここに data の説明を書こう！
+      data2 =&gt; 2.0, # ここに data2 の説明を書こう！
+    );
+    
+  sub method_1 {
+    my $self = shift;
+    my ($arg1) = @_;
+    $self-&gt;{data} = $self-&gt;{data} + pi / $arg1;
+    return $self-&gt;{data};
+  }
+}
+
+{
+  package Main::_B;
+  use base qw(Main::_Simple);
+  
+  __PACKAGE__-&gt;extend_template
+    (
+      data =&gt; 1.0, # ここに data の説明を書こう！
+    );
+    
+  sub method_1 {
+    my $self = shift;
+    my ($arg1) = @_;
+    $self-&gt;{data} = $self-&gt;{data} + pi / $arg1;
+    return $self-&gt;{data};
+  }
+}
+
+## 下の MAIN: はラベルで、特に必要はない。私のクセ。
+
+MAIN:
+{
+  my $a = Main::_A-&gt;new();
+  my $b = Main::_B-&gt;new();
+  
+  print $a-&gt;method_1(7.0) . &quot;\n&quot;;
+  print $b-&gt;method_1(7.0) . &quot;\n&quot;;
+}
+
+実行結果は次のようになる。
+
+$ perl example_oo.pl
+0.448798950512828
+1.44879895051283
+
+では、成功したほうのコードを少し解説しよう。
+
+まず、「クラス」の名前が変わっているが、これは重要ではなく、 Main::_Simple, Main::_A, Main::_B を、それぞれ元の Simple, A, B に書き換えてもらっても動く。この名前にした理由は、後に「パッケージ」を別のファイルにするときなどの拡張性を考慮したためである。Perl の「パッケージ」にはよくサブパッケージを作ることが多いので、それと「クラス」を区別するため、アンダースコア &quot;_&quot; を付けた。
+
+(さらにローカルな「クラス」を区別する需要は Perl プログラマには少ないとは思うが、その場合は二重のアンダースコアを使い &quot;SomeModule::__LocalClass&quot; などとすればよいのではないか。)
+
+BEGIN 節の中は、すべての「クラス」を一度開いて、その中でいちいち use をして、「クラス」を閉じるという作業をループでしているだけである。 package は bareword しか取らないので、eval を使う必要がある。
+
+use を書くのは一度で良いので、目的は達成されていると思うが、難点があるとすれば、こういう書き方なので eval 内の use にエディタのハイライトが効かないという点が挙げられる。
+
+もちろん、速度的な問題は考慮していない。(^^;
+
+あと、メイントピックからは外れるが、先の失敗例で $template へ格納されるのは「メンバ変数」たるべき structure を意図している。しかし、our のスコープは記述されたパッケージによるので、クラス A からクラス Simple の new が呼ばれても、そこで読まれる $template は、クラス Simple で our で指定したものにしかならない。……まぁ、この説明ではわからないかもしれないが、とにかく、C++ 風に、SUPER な new が子の「メンバ変数」を初期化できるよう、成功例では HASH テーブルを用いて実装している。
+
+■関連
+  ●example_oo_pl.shar。上で「次のコード」と示したサンプルやその他の例をまとめたアーカイブ。(シェルアーカイブ形式。シェルコマンドとして実行するか unshar を使う。)
+  ●《perltoot - トムによるPerlオブジェクト指向チュートリアル》。基本文書。
+  ●《いま Perl で一番イケてるオブジェクト指向プログラミングを学ぶ - bricklife.weblog.》。同じようなことを考えている人はいると思うのだが、私には見つからなかった。本とか読んでないし。このサイトで示されているソースを読めば、そういう例があるのかな？調べていない。
+  ●《Perlオブジェクト基礎文法最速マスター - 燈明日記》。仕組みから説明していて、コメント欄にはカプセル化をするためのモジュールも紹介されている。
+    
+更新：2010-12-31--2011-01-01
+初公開：2010年12月31日 09:42:55
+最新版：2011年01月07日 14:22:34</pre>
+<details class="trackbacks" data-pagefind-ignore><summary>Trackbacks (4 件)</summary><pre>
+Trackbacks:
+
+《<a href="http://jrf.cocolog-nifty.com/software/2011/01/post.html">Perl でオブジェクト指向 C  風 その２ クラス変数</a>》 from JRF のソフトウェア Tips
+先の記事で「パッケージ」でインポートした関数などを、「クラス」で使う方法を書いた。本稿では同方法で、「クラス変数」をどのように実現するか例示する。 
+
+受信： 2011-01-06 13:14:05 (JST)
+
+
+《<a href="http://jrf.cocolog-nifty.com/software/2011/01/post-1.html">Perl でオブジェクト指向 Ｃ＋＋風 その３ ローカル関数</a>》 from JRF のソフトウェア Tips
+先の記事で「パッケージ」でインポートした関数などを、「クラス」で使う方法を書いたが、インポートした関数の他に、Main パッケージで定義した「ローカル関数」も「クラス」で使いたくなるのが当然である。(というより、それができないことにさっき気付いた。)本稿ではほぼソースだけだがその方法を示す。... 
+
+受信： 2011-01-07 22:42:17 (JST)
+
+
+《<a href="http://jrf.cocolog-nifty.com/society/2011/01/post.html">外作用的簡易経済シミュレーションのアイデアと Perl による実装</a>》 from JRF の私見：税・経済・法
+抽象化された確率モデルにおいて、内的作用(内作用)により作られたモデルと外的作用(外作用)から作られたモデルが同じ臨界をもたらすことがある。経済に関するモデルを作るとき、ミクロな部分でなしたことがマクロに影響するということがいいたいことがあるが、マクロの大きな数と複雑な動きを表すにはコンピュータを用いても限界がある。確率モデルのようなアイデアをもってすれば、コンピュータシミュレーションなどで解析で... 
+
+受信： 2011-01-09 00:33:37 (JST)
+
+
+《<a href="http://jrf.cocolog-nifty.com/software/2014/03/post-2.html">Perl でオブジェクト指向 Ｃ＋＋風 その４ HashFreezer</a>》 from JRF のソフトウェア Tips
+このシリーズの最初の記事からもう３年は経過した。先日、 jrf_semaphore.pl (紹介記事へのリンク)を公開し、そこで、デバッグに便利なテクニックを構築したので、今回はその紹介をする。 このシリーズの方法では、メンバ変数へのアクセスは直接、オブジェクト本体であるハッシュ(のリファレンス)をいじって行う。そのため、メンバ名のミススペルがあると、参照時は undefined なので警告がある... 
+
+受信： 2014-03-17 18:20:56 (JST)
+
+
+Comments:
+
+[E:paper] 更新： わかりにくくなりますが、get_template を足して雛形として使いやすくしました。template の継承(コンストラクタの継承)については上の「次のコード」で示したリンクに、簡単な例を補足しておきました。
+
+投稿: JRF | 2010-12-31 10:59:07 (JST)
+
+[E:despair] 更新：extend_template を導入し、$template{$class} でやりたかったことの説明を足し、その意図を遡って失敗例に反映しました。example_oo.pl にコメントをいっぱい足しました。
+
+投稿: JRF | 2011-01-01 17:07:11 (JST)
+
+[E:wrench] 更新：example_oo.pl を 0.06 にバージョンアップ。ただし、「クラス変数」の例を足したぐらい。逆に例としては冗長になってしまったかもしれない。例を分けるべきか…。
+
+投稿: JRF | 2011-01-05 17:47:10 (JST)
+
+[E:catface] 更新：やはり「クラス変数」の例は分けたほうがいいと判断し、別記事を書いた。上にトラックバックしてある。それにつれて、ファイルのリンクに一段ディレクトリをかまし、shar アーカイブへのリンクを足した。なお、バージョンアップ後、example_oo_pl.shar は書き換えていくつもりだが、今回のアーカイブは example_oo_pl-20110106.shar で参照できる。
+
+投稿: JRF | 2011-01-06 13:43:36 (JST)
+
+[E:flair] 更新：最初の eval のところで、エラーチェックをするようにした。記事のソースにその部分を足し、shar やファイルも更新した。今回のアーカイブは example_oo_pl-20110107.shar。
+
+投稿: JRF | 2011-01-07 14:34:29 (JST)
+
+[E:game] 更新：使ってみて、「ローカル関数」も「クラス」で使えないことに気付いて、その対策を「その３ ローカル関数」として記事に書いた。上にトラックバックしてある。今回のアーカイブは example_oo_pl-20110107_2.shar。
+
+「パッケージ」で「クラス」を使うのが便利な方は、「ローカル関数」を「クラス」で使うことも必要にちがいないから「その３」を読むことを強くお勧めする。
+
+投稿: JRF | 2011-01-07 22:50:52 (JST)
+
+[E:apple] 更新：「その３ ローカル関数」を少しだけ改良。詳しくはそちらに。今回の shar は example_oo_pl-20110114.shar。
+投稿: JRF | 2011-01-14 18:49:52 (JST)
+
+[E:club] 更新：「その４ HashFreezer」の記事を書いた。この記事にトラックバックしてある。その例の example_oo_hsh.pl が入ったアーカイブを作る。今回の shar は example_oo_pl-20140317.shar。
+
+投稿: JRF | 2014-03-17 18:37:01 (JST)
+
+
+Links:
+
+次のコード: /archive/example_oo/example_oo.pl
+example_oo_pl.shar: /archive/example_oo/example_oo_pl.shar
+perltoot - トムによるPerlオブジェクト指向チュートリアル: http://perldoc.jp/docs/perl/5.8.0/perltoot.pod
+いま Perl で一番イケてるオブジェクト指向プログラミングを学ぶ - bricklife.weblog.: http://www.bricklife.com/weblog/000679.html
+Perlオブジェクト基礎文法最速マスター - 燈明日記: http://d.hatena.ne.jp/chaichanPaPa/20100206/1265436393
+example_oo_pl-20110106.shar: http://jrf.cocolog-nifty.com/archive/example_oo/example_oo_pl-20110106.shar
+example_oo_pl-20110107.shar: http://jrf.cocolog-nifty.com/archive/example_oo/example_oo_pl-20110107.shar
+example_oo_pl-20110107_2.shar: http://jrf.cocolog-nifty.com/archive/example_oo/example_oo_pl-20110107_2.shar
+example_oo_pl-20110114.shar: http://jrf.cocolog-nifty.com/archive/example_oo/example_oo_pl-20110114.shar
+example_oo_pl-20140317.shar: http://jrf.cocolog-nifty.com/archive/example_oo/example_oo_pl-20140317.shar
+
+
+
+</pre></details>
+
+<section class="backrefs" data-pagefind-ignore>
+<h2>後方参照 (4 件)</h2>
+<ul>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2015/11/statuses_cocolog_83987064.html">ひとこと</a> <span class="backref-date">2015年11月26日</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2014/03/software_79204061.html">Perl でオブジェクト指向 Ｃ＋＋風 その４ HashFreezer</a> <span class="backref-date">2014年03月17日 18:20:35</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2012/09/statuses_cocolog_74037700.html">ひとこと</a> <span class="backref-date">2012年09月14日</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2011/01/software_66597125.html">Perl でオブジェクト指向 Ｃ＋＋風 その３ ローカル関数</a> <span class="backref-date">2011年01月07日 22:40:08</span></li>
+</ul>
+</section>
+
+</article>
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2010/12.html">2010年12月</a> | <a href="../../../index/software.html">ソフトウェア Tips</a></nav>
+</body>
+</html>

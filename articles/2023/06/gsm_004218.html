@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>共有メモ - JRF Blog Archive</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2023/06.html">2023年06月</a> | <a href="../../../index/gsm.html">共有メモ</a></nav>
+<article data-pagefind-body>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[gsm] 2023-06-17T18:04:34Z</td></tr>
+<tr><th>セクション</th><td>グローバル共有メモ</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2023/06.html">2023-06-17T18:04:34Z</a></td></tr>
+<tr><th>元URL</th><td>(URLなし)</td></tr>
+
+</table>
+</div>
+<h1>共有メモ</h1>
+<pre class="body">jrf&gt; 簡単な易占いをオープンな LLM AI の Rinna 3.6B にやらせてみた。Rinna はどうも元々、易占いを知ってるようす。簡単な指示に割と合ってる答えを返す。逆に詳しい指示を与えたほうがダメだった。
+
+まず、ChatGPT は、易占いでかなり優れた結果を残すことが知られている。1月に私が試したときはうまくいってなかったのは、私のプロンプトがまずかったということか…。
+
+《【AI占い】意外な真実！ChatGPTは「易」が得意だった.. | ～ 人生を変えたいあなたへ 〜 あなたの未来に輝きを与えるブログ》  
+<a href="https://ameblo.jp/uranai-tenkyu/entry-12791858182.html" class="ext-link">https://ameblo.jp/uranai-tenkyu/entry-12791858182.html</a>
+
+それはそれとして、オープンな AI を使って易占いができるかやってみようとした。OpenCALM か Rinna かどちらにやらせるか迷ったが、OpenCALM は質疑用にはユーザーがファインチューンしたモデルしかなく、Rinna は質疑用にファインチューンしたモデルがあらかじめあるので、Rinna を選んだ。
+
+Rinna の sft-v2 を使った結果が↓。まず few-shot learning 用に詳しい指示を、次に最初から知識があることを前提に簡単な指示を試したが、詳しい指示を与えたとき否の卦での占いが失敗しているように見える。
+
+《rinna_yijing_test.ipynb》  
+<a href="https://gist.github.com/JRF-2018/92e0099c357d8aa7302ebf8ac961b366" class="ext-link">https://gist.github.com/JRF-2018/92e0099c357d8aa7302ebf8ac961b366</a>
+
+Rinna の ppo を使った結果が↓。詳しい指示を与えたとき否の卦での占いはやはり失敗している。簡単な指示も比の卦が「天火同人」(同人の卦の説明)と説明され失敗している。否の卦でも失敗している。
+
+《rinna_yijing_test_ppo.ipynb》  
+<a href="https://gist.github.com/JRF-2018/1d93efb9b85a95ea8fc771b4af818070#file-rinna_yijing_test_ppo-ipynb" class="ext-link">https://gist.github.com/JRF-2018/1d93efb9b85a95ea8fc771b4af818070#file-rinna_yijing_test_ppo-ipynb</a></pre>
+
+
+</article>
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2023/06.html">2023年06月</a> | <a href="../../../index/gsm.html">共有メモ</a></nav>
+</body>
+</html>

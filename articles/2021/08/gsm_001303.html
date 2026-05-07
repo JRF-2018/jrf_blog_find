@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>共有メモ - JRF Blog Archive</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2021/08.html">2021年08月</a> | <a href="../../../index/gsm.html">共有メモ</a></nav>
+<article data-pagefind-body>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[gsm] 2021-08-08T08:10:32Z</td></tr>
+<tr><th>セクション</th><td>グローバル共有メモ</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2021/08.html">2021-08-08T08:10:32Z</a></td></tr>
+<tr><th>元URL</th><td>(URLなし)</td></tr>
+
+</table>
+</div>
+<h1>共有メモ</h1>
+<pre class="body">jrf&gt; [仏教の最適化プログラムの続き。]
+
+相続するときに、被扶養者を普通は相続するが、そこに仮の人物(id が '' の者)が含まれていれば、それらは除かれるようにした。扶養の '' は最初の世代のみ考慮すれば十分だろうから。
+
+……。
+
+test_of_matching_2.py と simbdp1.py について add_supporting や remove_supported や check_support_consistent を使うように変えた。
+
+また、test_of_matching_2.py の経済を評価するところ(update_economy)は、12ヶ月目の期首に行っていたが、simbdp*.py と同じく期末に行うように変えた。
+
+(test_of_matching_2.py はバージョン 0.0.20。simbdp1.py は バージョン 0.0.8。)
+
+《simbd/test_of_matching_2.py at master - JRF-2018/simbd》  
+<a href="https://github.com/JRF-2018/simbd/blob/master/test_of_matching_2.py" class="ext-link">https://github.com/JRF-2018/simbd/blob/master/test_of_matching_2.py</a>
+
+《simbd/simbdp1.py at master - JRF-2018/simbd》  
+<a href="https://github.com/JRF-2018/simbd/blob/master/simbdp1.py" class="ext-link">https://github.com/JRF-2018/simbd/blob/master/simbdp1.py</a>
+
+……。
+
+test_of_domination_3.py が simbdp1.pickle でも動くようになった。前は、pickle のモジュールシステムに関する仕様が難しいと書いていたが、ちゃんとググると実に簡単にできるようなのでやった。simbdp1.pickle を使う場合はオプションに --pickle=simbdp1.pickle を指定すればよい。(バージョン 0.0.3)
+
+《simbd/test_of_domination_3.py at master - JRF-2018/simbd》  
+<a href="https://github.com/JRF-2018/simbd/blob/master/test_of_domination_3.py" class="ext-link">https://github.com/JRF-2018/simbd/blob/master/test_of_domination_3.py</a>
+
+……。
+
+結婚相手・不倫相手を探すときに支配層であることを加味する。その効果は、資産をある程度持っている層と同等の層になるということである。結婚の場合は、王で上位 1 % と同じ、知事・閣僚で 5% と同じ、部下で 15% と同じとする。不倫の場合は、王で 5%、知事閣僚で 10%、部下で 30% と同じとする。
+
+結婚・不倫以外で資産を参照する誕生・災害・養子等については、支配層であることはとりあえず加味しないことにした。
+
+……。
+
+支配層の代替わり…後任指名が下位の者から取る場合、その下位の者は優秀であることが予想される。そこで、国民から取られた場合は +2、部下の指名で取られた場合は +1 の修正をするものとする。+1 ごとに各能力値について 0 から 0.1 の範囲の一様乱数の値をプラスされる。
+
+……。
+
+以前、支配層は没落がありうる。…と書いていた。そのころは支配層はもっと数を多くするつもりでいた。そして底辺で没落が起こると考えていた。
+
+しかし、今の実装だと、この少ない支配層のうち、没落するものが出るとは考えにくい。もし、経済的に厳しい者が支配層にいるとしても、それは一種の「個性」になると考えられる。また、経済的に優れた者を支配層に取り立てるというのも、この支配層の少なさではリアルでない気がする。
+
+この点については、支配層がこのような仕様である限り、実装を見送りたい。
+
+……。
+
+以上の軽微な変更をした simbdp2.py も公開しておく。(バージョン 0.0.5)
+
+《simbd/simbdp2.py at master - JRF-2018/simbd》  
+<a href="https://github.com/JRF-2018/simbd/blob/master/simbdp2.py" class="ext-link">https://github.com/JRF-2018/simbd/blob/master/simbdp2.py</a></pre>
+
+
+</article>
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2021/08.html">2021年08月</a> | <a href="../../../index/gsm.html">共有メモ</a></nav>
+</body>
+</html>

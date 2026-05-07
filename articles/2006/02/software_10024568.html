@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>Ghostscript で -dSAFER にすると日本語が使えない - JRF Blog Archive</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2006/02.html">2006年02月</a> | <a href="../../../index/software.html">ソフトウェア Tips</a></nav>
+<article data-pagefind-body>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[software] <span class="cocolog-id">cocolog:10024568</span></td></tr>
+<tr><th>セクション</th><td>JRF のソフトウェア Tips</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2006/02.html">2006年02月16日 04:46:59</a></td></tr>
+<tr><th>元URL</th><td><a href="http://jrf.cocolog-nifty.com/software/2006/02/post_12.html" class="ext-link"><span class="original-url">http://jrf.cocolog-nifty.com/software/2006/02/post_12.html</span></a></td></tr>
+<tr><th>タグ</th><td>[Cygwin] [TeX]</td></tr>
+</table>
+</div>
+<h1>Ghostscript で -dSAFER にすると日本語が使えない</h1>
+<pre class="body">gs で -dSAFER にすると、日本語関係でエラーが出る。これは FONTPATH が通っていないところは、読まないことになっているからで、例えば次のようにすると解決する。
+
+export GS_FONTPATH=/cygdrive/c/WINDOWS/fonts 
+
+更新：05/04/25
+初公開：2006年02月16日 04:45:38</pre>
+
+
+</article>
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2006/02.html">2006年02月</a> | <a href="../../../index/software.html">ソフトウェア Tips</a></nav>
+</body>
+</html>

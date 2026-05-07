@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>共有メモ - JRF Blog Archive</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2023/06.html">2023年06月</a> | <a href="../../../index/gsm.html">共有メモ</a></nav>
+<article data-pagefind-body>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[gsm] 2023-06-15T19:37:12Z</td></tr>
+<tr><th>セクション</th><td>グローバル共有メモ</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2023/06.html">2023-06-15T19:37:12Z</a></td></tr>
+<tr><th>元URL</th><td>(URLなし)</td></tr>
+
+</table>
+</div>
+<h1>共有メモ</h1>
+<pre class="body">jrf&gt; 読書。
+
+岡野原大輔『拡散モデル』に目を通した。画像生成AIなどで使われている数学の理論書。コンプレックスから購入。案の上、歯が立たなかったが、用語に関しては経済数学とかとも共通でわかる部分も多かった。ちゃんと数学してる人にはわかる本だと思う。
+
+『拡散モデル - データ生成技術の数理』(岡野原 大輔 著, 岩波書店, 2023年2月)
+<a href="https://www.amazon.co.jp/dp/400006343X" class="ext-link">https://www.amazon.co.jp/dp/400006343X</a>
+<a href="https://7net.omni7.jp/detail/1107364924" class="ext-link">https://7net.omni7.jp/detail/1107364924</a>
+<a href="https://www.iwanami.co.jp/book/b619864.html" class="ext-link">https://www.iwanami.co.jp/book/b619864.html</a>
+
+私でもわかるハッとする記述がある。例えば…。
+
+＞(…)尤度関数や最尤推定を行うためには、分配関数 Z(θ) やその勾配∇_θ Z(θ) を計算しなければならない。これは入力データが高次元の場合は、計算量的に不可能である。
+
+(…)
+
+MCMC 法は、尤度比(…)さえ求まれば、サンプリングすることができる。尤度比には分配関数は打ち消されて登場しないため、分配関数を求められない場合でも MCMC 法は実行できる。敵対的生成モデルで分配関数が必要のない理由も、生成器は識別器の情報を使って学習し、識別器は尤度比を対象に学習するためである。
+＜(p.11-12)
+
+GAN のソースでいまいちこれがいいというのがわからない部分があったと(感覚で)覚えていて、そういう理屈だったのかと私はハッとした。
+
+これ以外の部分でも、わかる人にはハッとする部分があるものと思われる。私はこの辺そうかな…と思うぐらいだった。orz
+
+あと、私は、StableDiffusion に興味を持って、この本を読んだのだが、それに直接言及する記述はほとんどないながらも以下の部分にあった。
+
+＞拡散モデルは入力データと同じ空間上で拡散していき、完全なノイズになった時も、入力データの次元数と同じ次元数をもつ。拡散過程において入力次元数が変わらないことの問題点は３つある。
+
+(…)
+
+これらの問題を解決するための一つの方法として、あらかじめ自己符号化器を学習しておき、入力空間を潜在空間に変換する符号化器と、潜在空間を入力空間に変換する複号化器を学習し、次元数が少なくなった潜在空間上で生成された変数は、複号化器を使って元の入力空間に変換できる。例えば Stable Diffusion (…) などは、このアプローチをとって計算量や使用メモリ量を大きく減らすことに成功している。
+＜(p.89-90)</pre>
+
+
+</article>
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2023/06.html">2023年06月</a> | <a href="../../../index/gsm.html">共有メモ</a></nav>
+</body>
+</html>

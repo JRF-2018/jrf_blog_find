@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>ひとこと - JRF Blog Archive</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2011/02.html">2011年02月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+<article data-pagefind-body>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[statuses] <span class="cocolog-id">aboutme:136350</span></td></tr>
+<tr><th>セクション</th><td>JRF のひとこと</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2011/02.html">2011年02月04日</a></td></tr>
+<tr><th>元URL</th><td><a href="http://jrf.cocolog-nifty.com/statuses/2011/02/aboutme136350.html" class="ext-link"><span class="original-url">http://jrf.cocolog-nifty.com/statuses/2011/02/aboutme136350.html</span></a></td></tr>
+
+</table>
+</div>
+<h1>ひとこと</h1>
+<pre class="body">「実数」で乱数を作るとき、値の重なりは普通無視して良い。しかし、「意志」により、ある乱数の値まで「価格低下」することを認めるなら、値が重なる者の「評価の順序」がシステムに与える影響を無視できない。だからといって別の乱数を持ってきて評価の順序を決めるのは「否」という感覚が私にある…
+JRF 2011年2月4日
+
+「自分」が何番目かが大事になってはいけないから乱数を使う…というのは何かが違うように感じる。
+
+「意志」を受けたことで n 個の「重合」が起きるなら、平均の値の実数乱数と、順序を決める整数乱数で解決するのではなく、n 個の実数乱数を、それらが関連(or 相関)あるように発生させねばならないように感じる。
+
+この場合の「順序を決める整数乱数」を敢えて使うなら、むしろ chaotic で、同じ値の乱数が無限に思えるほど続いたりすることのほうが自然であるとすら感じる。
+
+JRF 2011年2月4日
+
+他に方法がないだろうか？例えば、balance_mail_redirect (略してBMR)のソートバージョンを作って、一期ごとに固定した順番を使うなら、私は許容できるように思う。
+
+…でも、なぜ許容できるのだ？BMR を作った贔屓目か？BMR のほうは、乱数操作がかりになされても、ビットの都合でどこかで破綻せざるを得ない…また、内作用的にも同じものが次には来にくいという予想は成り立つのが、乱数操作のおかしさに関心を抱ける者を pinger として育てるからか…？(ただ、乱数操作で「均衡」または周期解を導く方法は存在しうるのではないか？)
+
+JRF 2011年2月4日
+
+乱数を操作されたとき自分の「健全性」が保てなくなり壊れるようなシステム。「アポトーシス」を持つようなシステムにしたいということか？
+
+JRF 2011年2月4日
+
+……。
+
+n 個の重合に「相関」をもたせる方法。例えば…
+
+x1 + (k/(n-1)) ・sgn(x1 - μ1) ・ (((x1 - μ1)/σ1)((x2 - μ2)/σ2) + … + ((x1 - μ1)/σ1)((x_n - μ_n)/σ_n))
+
+== x1 + (k/(σ1(n-1)))・abs(x1-μ1)・((x2 - μ2)/σ2 + … + (x_n - μ_n)/σ_n)
+
+JRF 2011年2月4日
+
+…みたいな感じか、つまり、二つ変数をとってきて、両者の付号が一致すれば、そのほう方向に余計にふくらみ、逆付号なら、平均の側に沈むようなもの。(かけ算だから、平均から離れるほうが影響が大きくなるけど。…ということは逆数にして使ったりしたほうがいいのかな？)
+
+でも、k (&lt; 1) って一体何の定数なんだろう？
+
+JRF 2011年2月4日
+
+一般性をもたせた問いにしたつもりだけど、いちおう対象として考えているのは↓。desire に関する部分を考えていて、値の重なりが気になり出した。
+
+《外作用的簡易経済シミュレーションのアイデアと Perl による実装》
+<a href="../../../articles/2011/01/society_66612185.html" class="int-link" title="外作用的簡易経済シミュレーションのアイデアと Perl による実装">http://jrf.cocolog-nifty.com/society/2011/01/post.html</a>
+
+JRF 2011年2月4日
+
+ところで、BMR は上の言い訳でいいとして、なんで「重合」ならいいんだ？
+
+こちらはむしろ実数乱数が同じ値にならないことを強く信じている実装になるからか？整数乱数だと同じのが続くのはありえないことではないが、実数乱数(の積和)だと二、三個記録して同じならもうかなりおかしいと言える。内作用のプレイヤーが「異変」に気づきやすいから…だろうか？
+
+JRF 2011年2月5日
+
+…また、逆に操作がなされたとき、整数だと調査による「学習」が容易でイチャモンを付けるためのプログラムを書きやすいが、実数だと分布さえ合ってれば、その乱数の並びはそういうものだと納得せざるを得ないから？
+
+JRF 2011年2月5日</pre>
+
+
+<section class="backrefs" data-pagefind-ignore>
+<h2>後方参照 (1 件)</h2>
+<ul>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2011/07/software_68888436.html">Exhaustive Lock Dependency Emulator その２ wait_and_lock</a> <span class="backref-date">2011年07月01日 22:37:18</span></li>
+</ul>
+</section>
+
+</article>
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2011/02.html">2011年02月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+</body>
+</html>

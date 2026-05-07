@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>HLPVIEW: プチコンmkII用の簡易アドヴェンチャーゲーム用ルーチン - JRF Blog Archive</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2013/02.html">2013年02月</a> | <a href="../../../index/software.html">ソフトウェア Tips</a></nav>
+<article data-pagefind-body>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[software] <span class="cocolog-id">cocolog:75696191</span></td></tr>
+<tr><th>セクション</th><td>JRF のソフトウェア Tips</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2013/02.html">2013年02月23日 09:53:30</a></td></tr>
+<tr><th>元URL</th><td><a href="http://jrf.cocolog-nifty.com/software/2013/02/post-4.html" class="ext-link"><span class="original-url">http://jrf.cocolog-nifty.com/software/2013/02/post-4.html</span></a></td></tr>
+<tr><th>タグ</th><td>[JRF 作成ソフトウェア] [プチコン]</td></tr>
+</table>
+</div>
+<h1>HLPVIEW: プチコンmkII用の簡易アドヴェンチャーゲーム用ルーチン</h1>
+<pre class="body">ハイパーテキストという概念があり、現在の Web が(一部)実現したハイパーリンクのもとになった考え方という見方もある。NCSA Mosaic という最初のネットブラウザーがでてくる以前にも、Mac には HyperCard があったし、90年代のエロゲーの中には、システムを一般化して内部でリンクを辿っていくような処理をしているものもあった。
+
+なんでエロゲーの話が出てくるかというと、私が最初にこの概念に触れたのがそのエロゲーの解析をしていたときだからであるというのは、内緒だ！と宣言しておく。(^^)
+
+ゲーム作りに関心のあるようなゲーマーにとってみれば、そういうストーリーを選択して追うだけの「アドヴェンチャーゲーム」ならば、「プログラム」をしなくても良いという点に売りがある。この点、Web が広まるにつれて、そこかしこでそういうゲームにもっと出くわすようにも私は考えたんだが、そうならなかった。
+
+そういったハイパーテキスト風のリンクを辿って文書を読むしくみを、簡単なものだが、プチコンmkII 用にも実装した。それが STACKLIB に含まれる hlpview.prg である。実際の文書例としては『易双六 PTC』の YSCHELP プログラムがそれになる。
+
+■関数 @HLP_VIEW
+  
+@HLP_VIEW は読み出すデータのラベルのみを引数に取る関数で、終了を表すリンクをユーザーがクリックするまで、ループしている。
+
+「文書」はつまり、DATA 文に書かれているという体裁になる。簡単な例を見よう。
+
+  R$ = &quot;@TST_START_JA&quot;: GOSUB @PUSH_RS
+  GOSUB @HLP_VIEW
+  
+  END
+  
+@TST_START_JA
+DATA &quot;ワタシ ハ バカ？\n\n&quot;
+DATA &quot;●\L[@TST_YES_JA]ハイ。\n\n&quot;
+DATA &quot;●\L[@TST_NO_JA]イイエ。\n\n&quot;
+DATA &quot;&quot;
+
+@TST_YES_JA
+DATA &quot;バカ ッテ イウ ホウ ガ バカ。バーカ。\n\n&quot;
+DATA &quot;\L[R:@TST_START_JA]&quot;
+DATA &quot;&quot;
+
+@TST_NO_JA
+DATA &quot;ワカッテルジャーン。\n\n&quot;
+DATA &quot;\L[R:@]&quot;
+DATA &quot;&quot;
+
+上の DATA 文で、\n は改行を意味する。\L[] がリンクを指定するもので、改行(次のエスケープキャラクタ)までが、リンク用の「ボタン」になる。一ページの最後は空文字列 &quot;&quot; で示す。
+
+\L[R:@...] というのは、R ボタンを押したときのリンクで、画面下の NEXT のタッチでも、そこを辿ることになる。リンクの行き先が、&quot;@&quot; であるときは、関数を終了することになる。
+
+■エスケープシーケンス
+  
+@HLP_VIEW が読む DATA 文の中では様々な「エスケープシーケンス」が使え、よく「フラグが立った」とか言うスラングがあるが、そのそもそもの意味であるフラグを使った条件分岐を行える。
+
+  &lt;b&gt;\F[F1],\F[!F1]&lt;/b&gt;フラグ F1 のセット(立たせる)、消去。
+  &lt;b&gt;\C[F1]&lt;/b&gt;フラグ F1 が立ってるときのみ、これに続く文字列は評価される。
+  &lt;b&gt;\C[!F1]&lt;/b&gt;フラグ F1 が立ってれば、これに続く文字列は評価されない。
+  &lt;b&gt;\C[G:FN1]&lt;/b&gt;GRP:FN1 というファイルがあるかどうかを一度裏でロードしてみてチェック。
+  &lt;b&gt;\L[@L1]T1&lt;/b&gt;リンク。
+  &lt;b&gt;\L[F1@L1,F2,!F3@L1,@L2]T1&lt;/b&gt;条件付きリンク。
+  &lt;b&gt;\L[@L1:F1]T1&lt;/b&gt;リンクしたときに F1 というフラグをセット。
+  &lt;b&gt;\L[@]T1&lt;/b&gt;@HLP_VIEW から帰るときのリンク。
+  &lt;b&gt;\L[@:V1]T1&lt;/b&gt;@HLP_VIEW から帰るとき R$ = &quot;V1&quot; として返す。
+  &lt;b&gt;\L[B:@L1]T1&lt;/b&gt;B ボタン(BACKボタン)用リンク。
+  &lt;b&gt;\L[R:@L1]T1&lt;/b&gt;R ボタン(NEXTボタン)用リンク。
+  &lt;b&gt;\L[L:@L1]T1&lt;/b&gt;L ボタン(PREV.ボタン)用リンク。
+  &lt;b&gt;\L[@PREV]T1&lt;/b&gt;履歴の一つ前へのリンク。
+  &lt;b&gt;\L[@SAVE]T1&lt;/b&gt;現在のラベルとフラグをセーブ(、履歴は保存されない)。
+  &lt;b&gt;\L[@LOAD]T1&lt;/b&gt;セーブしたものをロード。
+  &lt;b&gt;\P[@L1:S1]&lt;/b&gt;@L1 に GOSUB する。2番目の引数として S1 を渡す。(後述)
+  &lt;b&gt;\M[N1]&lt;/b&gt;BGMPLAY N1
+  &lt;b&gt;\M[@STOP]&lt;/b&gt;BGMSTOP
+  &lt;b&gt;\I[FN1,D1]&lt;/b&gt;GRP:FN1 というイメージファイルを D1 画面に表示。
+  &lt;b&gt;\I[FN1,D1,N1,N2,N3,N4,N5,N6]&lt;/b&gt;GRP:FN1 というイメージファイルを D1 画面に GCOPY *,N1,N2,N3,N4,N5,N6,FALSE を使って描画。
+    
+なお、下画面(D1 == 1)の描画については、そのバックグラウンド描画を裏画面(R_GPAGE) に保存しておいて、ページが変わったとき自動的に復帰させる機能があるが、上画面(D1 == 0)については、そのような機能はなく描きっぱなしになる。
+
+これらを使った例は、『易双六 PTC』の yschlp.prg 内の @TST_START_JA からのものが参考になると思う。
+
+あと、「エスケープシーケンス」のうち、ここに書いたものと \n, \0 のみが @HLP_VIEW が解釈するもので、あとはそのまま @CON_PRINT に渡される。逆にいうと、\0 は空文字列でしかないが @HLP_VIEW に解釈されるので、 ABC\L[@L1]D\0EFG といったように文中でリンクテキストの終りを示すのに使うのがテクニックになる。
+
+■プロシージャ
+  
+\P[] は、Procedure call の P で、関数呼び出しを行う。プチコンのマニュアルなどでいうところの「上級者」向け機能となる。バージョン 0.05 から使えるようになった。
+
+呼び出しは、第1引数に HLP_VIEW が現在参照しているラベルが入り、第2引数に \P[@L1:S1] の S1 の文字列が入る。
+
+戻り値として、文字列を返さねばならず、&quot;@L2:F1&quot; といった文字列なら、フラグ F1 をセットしながら、@L2に「ジャンプ」する。つまり、それ以降そのページは「なかったこと」にして、特に入力を待たずにいきなり HLP_VIEW は @L2 のページを表示しはじめる。戻り値が &quot;#S2&quot; といった文字列なら、\P[] の場所に S2 が表示される。この S2 の表示は HLP_VIEW によってエスケープシーケンスが解釈される実装になっている。戻り値が空文字列 &quot;&quot; である場合は、特に何もせずにページの解釈が続く。なお、戻り値がそれ以外の形をしている場合については、いわゆる RESERVED で、まだ決まっておらず、将来に拡張の余地を残しておきたい。
+
+呼び出された関数は、@HLP_SET_FLAG, @HLP_GET_FLAG, @HLP_SAVE, @HLP_LOAD, HLP_FLAG$[] などの hlpview.prg 内の関数や変数を使っても良いが、このあたりの仕様は、HLP_VIEW のエスケープシーケンスよりは、変更の可能性があるぐらいに思っておいて欲しい。
+
+この機能を使うことで、体力の数値をランダムに増やしたり減らしたりその数値を表示したりするようなこともでき、簡単な RPG も作れるということになるのだが、ただ、そこまでやってなお、HLP_VIEW の枠組を使う意味があるのかはそもそも疑問である。
+
+また、\P[] を使わなければ、HLP_VIEW と同様に DATA 文を解釈できるルーチンさえ作れば、他のプログラミング言語にすぐ移殖できるが、\P[] を使ってしまうと、それが呼ぶ関数に相当するコードも個別に移殖せねばならなくなるのには注意を要する。
+
+■「コンパイル」
+  
+このプログラムに「ライブラリ」をいくつか足して、QR コードを生成する。
+
+他と違い hlpview.prg は、「ライブラリ」としても使えるが、メインプログラムとして先頭にもおけるようになっている。hlpview.prg をメインプログラムとして用いる場合は、@THIS_HLP_INIT がユーザー用の定義を行うためのものとして呼ばれるので、それを用意しておく必要がある。
+
+上を修飾してプログラムとして動けるようにすると、次のようになる。
+
+CLEAR: PNLTYPE &quot;OFF&quot;: KEY 1,&quot;LIST &quot;: KEY 2,&quot;ERL&quot;+CHR$(13)
+DEBUG = 1: KEY 3, &quot;FOR A=0 TO FSP:?FSTACK$[A]:NEXT&quot; + CHR$(13)
+ACLS
+
+GOSUB @STACKLIB_INIT
+GOSUB @STDLIB_INIT
+GOSUB @CTRLLIB_INIT
+GOSUB @HLPVIEW_INIT
+
+@MAIN
+  R$ = &quot;@TST_START_JA&quot;: GOSUB @PUSH_RS
+  GOSUB @HLP_VIEW
+  
+  END
+  
+@TST_START_JA
+DATA &quot;\C[B]ソンナ「バカ」ニ トウ。&quot;
+DATA &quot;ワタシ ハ バカ？\n\n&quot;
+DATA &quot;●\L[@TST_YES_JA]ハイ。\n\n&quot;
+DATA &quot;●\L[@TST_NO_JA]イイエ。\n\n&quot;
+DATA &quot;&quot;
+
+@TST_YES_JA
+DATA &quot;\F[B]&quot;
+DATA &quot;バカ ッテ イウ ホウ ガ バカ。バーカ。\n\n&quot;
+DATA &quot;\L[R:@TST_START_JA]&quot;
+DATA &quot;&quot;
+
+@TST_NO_JA
+DATA &quot;ワカッテルジャーン。\n\n&quot;
+DATA &quot;\L[R:@]&quot;
+DATA &quot;&quot;
+
+@THIS_HLP_INIT
+HLP_START_L$ = &quot;@TST_START_JA&quot;
+RETURN
+
+これを example_hlpview.prg として、EXAMPLEH というプチコン用プログラム QR コードを吐かせるには、次のようにする。
+
+perl gen_qrcode.pl -N EXAMPLEH example_hlpview.prg \
+  stacklib.prg stdlib.prg ctrllib.prg hlpview.prg
+  
+今回は、hlpview.prg を先にしてもいいように @THIS_HLP_INIT を定義し、そこでは、最初に読むべきラベルを指定している。次のように hlpview.prg を先頭にしてもプログラムは動く。
+
+perl gen_qrcode.pl -N EXAMPLEH hlpview.prg example_hlpview.prg \
+  stacklib.prg stdlib.prg ctrllib.prg
+  
+なお、NEXT ボタン等の位置が低すぎることが気になるかもしれないが、 HLP_VIEW の表示領域は @CON_PRINT の CLIP_C{X,Y,W,H}[1] のクリッピング領域なので、そこを調整すればいい。
+
+hlpview.prg にはリンクのテキスト色を変える変数もあるし、二重空行を防止するための変数や、シングルクォートとダブルクォートを置き換えることを指定する変数などもある。また、hlpview.prg を先頭のプログラムとして使うとき、背景やタイトルを描画するための「コールバック」を指定する変数もある。
+
+このあたりは hlpview.prg と『易双六 PTC』の yschlp.prg を参考にして欲しい。
+
+■ちなみに
+  
+構想の段階では @POPUP_MNU_RA を含む ctrllib.prg は hlpview.prg に含まれるべきものだったが、『易双六 PTC』を作っているうちに行数が足りなくなって、機能を分けた。
+
+フラグでの条件分岐などは『易双六 PTC』のマニュアルを作るだけなら必ずしも必要なかったが、作ってるうちに私もハイパーテキスト的なものを昔作りたかったことを思い出し、興に乗ってここまで作ってしまった。
+
+■配布物やライセンス、関連等
+  
+STACKLIBの記事をご参照ください。バージョン 0.02 から、そこに example_hlpview.prg も含まれています。
+
+更新：2013-02-23,2013-03-05
+初公開：2013年02月23日 09:53:37
+最新版：2013年03月05日 19:54:04
+
+
+Comments:
+
+[E:yacht] 更新：上の記事で改行位置のおかしい部分があったのを修正。
+
+投稿: JRF | 2013-03-02 14:24:04 (JST)
+
+[E:parking] 更新：バージョン 0.05 から HLP_VIEW で \P が使えるようになり、上の記事にそれに関する記述を足した。
+投稿: JRF | 2013-03-05 20:18:03 (JST)
+
+
+Links:
+
+ハイパーテキスト: <a href="../../../articles/2013/02/hbm_01667.html" class="int-link" title="ハイパーテキスト - Wikipedia">http://ja.wikipedia.org/wiki/%E3%83%8F%E3%82%A4%E3%83%91%E3%83%BC%E3%83%86%E3%82%AD%E3%82%B9%E3%83%88</a>
+エロゲー: <a href="http://ja.wikipedia.org/wiki/D.P.S" class="ext-link">http://ja.wikipedia.org/wiki/D.P.S</a>
+STACKLIB: <a href="../../../articles/2013/02/software_75676987.html" class="int-link" title="STACKLIB: プチコンmkII用スタックライブラリ">http://jrf.cocolog-nifty.com/software/2013/02/post-1.html</a>
+易双六 PTC: <a href="http://jrf.cocolog-nifty.com/archive/youscout/ptc/index.html" class="ext-link">http://jrf.cocolog-nifty.com/archive/youscout/ptc/index.html</a>
+@CON_PRINT: <a href="../../../articles/2013/02/software_75686369.html" class="int-link" title="CON_PRINT: プチコンmkII用コンソールPRINT">http://jrf.cocolog-nifty.com/software/2013/02/post-2.html</a>
+@POPUP_MNU_RA: <a href="../../../articles/2013/02/software_75690273.html" class="int-link" title="POPUP_MNU_RA: プチコンmkII用のポップアップメニュー">http://jrf.cocolog-nifty.com/software/2013/02/post-3.html</a></pre>
+
+
+</article>
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2013/02.html">2013年02月</a> | <a href="../../../index/software.html">ソフトウェア Tips</a></nav>
+</body>
+</html>

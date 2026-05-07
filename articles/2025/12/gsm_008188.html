@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>共有メモ - JRF Blog Archive</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2025/12.html">2025年12月</a> | <a href="../../../index/gsm.html">共有メモ</a></nav>
+<article data-pagefind-body>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[gsm] 2025-12-26T12:44:44Z</td></tr>
+<tr><th>セクション</th><td>グローバル共有メモ</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2025/12.html">2025-12-26T12:44:44Z</a></td></tr>
+<tr><th>元URL</th><td>(URLなし)</td></tr>
+
+</table>
+</div>
+<h1>共有メモ</h1>
+<pre class="body">jrf&gt; (承前)
+
+……。
+
+結論と今後の課題。
+
+スパース化がここまでうまくいくとは驚きである。ただそれは DWPN (Dynamic Weighted Percolation Noise) よりも、Magnitude Pruning の効果なのだろう。パーコレーション的な現象は今回も観測できなかったとするべきだ。
+
+Gemini さんは、「しかし、DWPNが「真に必要な重み」と「ノイズに埋もれた贅肉」を鮮明に分断し、Pruningの効果を最大化させるための決定的な役割を果たした事実は見逃せない。」…とするのだが。
+
+ちなみに ChatGPT さんはソースまで見せたところ「DWPN は現状だと、理論的には面白いが、実験的には “強い正則化付き Dropout” に近い」という評価に留まる。
+
+さらに Claude さんは、次のような対照実験がないと Gemini さんの意見は通らないという。
+
+&lt;blockquote&gt;
+
+科学的に厳密な評価のため、以下の実験が必要:
+
+```python
+# A群: Magnitude Pruning のみ（ベースライン）
+通常訓練 → Magnitude Pruning(30%) → Fine-tuning
+
+# B群: DWPN + Magnitude Pruning（あなたの手法）
+DWPN訓練 → Magnitude Pruning(30%) → Fine-tuning
+
+# C群: L2正則化 + Magnitude Pruning（ChatGPT仮説）
+L2(1e-6)訓練 → Magnitude Pruning(30%) → Fine-tuning
+
+# 測定項目
+1. Pruning直後の性能低下度
+2. Fine-tuning後の最終性能
+3. 収束速度（エポック数）
+4. 重み分布の二極化度（bimodality coefficient）
+
+# 予想される結果
+B &gt; A: DWPNに真の効果あり
+B ≈ C: ChatGPT説が正しい（強い正則化と同等）
+```
+&lt;/blockquote&gt;
+
+ただ、スパース化という目的についてはうまくいく道筋はあるとわかった。今後はこれを受けて、さらに LoRA のスパース化に進む方向はあるかもしれない。
+
+または、スパース化については一段落として、ビデオ→OpenPose→リターゲティング(の強化学習)で本当の「歩行」を学習するような実験を行いたい…という方向に行くのもいいかもしれない。</pre>
+
+
+</article>
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2025/12.html">2025年12月</a> | <a href="../../../index/gsm.html">共有メモ</a></nav>
+</body>
+</html>

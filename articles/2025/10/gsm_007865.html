@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>共有メモ - JRF Blog Archive</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2025/10.html">2025年10月</a> | <a href="../../../index/gsm.html">共有メモ</a></nav>
+<article data-pagefind-body>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[gsm] 2025-10-24T10:00:31Z</td></tr>
+<tr><th>セクション</th><td>グローバル共有メモ</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2025/10.html">2025-10-24T10:00:31Z</a></td></tr>
+<tr><th>元URL</th><td>(URLなし)</td></tr>
+
+</table>
+</div>
+<h1>共有メモ</h1>
+<pre class="body">jrf&gt; 「ニューラルネットを構造的学習で代替する二足歩行実験」を行った。前回はコンセプト的な失敗だったが、今回はまったく歩行ができず、まったくの失敗だった。
+
+《llm_bipedal_walker_structural_learning.ipynb - GitHub Gist》  
+<a href="https://gist.github.com/JRF-2018/8068e4464db9747c2989c34f6edf3506" class="ext-link">https://gist.github.com/JRF-2018/8068e4464db9747c2989c34f6edf3506</a>
+
+……。
+
+経緯。
+
+「ニューラルネットを構造的学習で代替する二重振り子実験」を行ったあと、私は気づいた。制御の中心は「偽装 LLM」にあるのだが、たとえ劣化 PID 制御であっても AI さんが設計した「偽装 LLM」でうまく動くなら、それはその AI さんこそが「偽装 LLM」の実装を通じて「構造的学習」を行ったことになるということを。 
+
+そこで劣化 PID 制御では解けない問題である「二足歩行」の問題を対象にすることで、そのような「構造的学習」がうまくいくのか実際にみてみよう…となった。それが今回の `llm_bipedal_walker_structural_learning.ipynb` になる。
+
+……。
+
+結論。
+
+Gemini さんは次々に偽装 LLM を作って構造的学習を試してくれた。最終的には LLM_API_PSEUDO_CORE6 という強化学習を使ったバージョンも作ってくれた。
+
+しかし、「歩行」はまったく創発しなかった。実行ログを見ると、Step 1000 まで耐えていることもあるので、少しはうまくいっているのかと思ったのだが、そのビデオを見るとたいてい片膝立ちで固定されている。それが報酬ハック的に優れていると判断されるようだ。
+
+実験はまったくの失敗である。
+
+「構造的学習」を人間(私)と AI さんが協調して行う…というそういう試みはできた。でも、ただそれだけである。
+
+今後の課題としては、そもそもの私のアイデアは警告構造だと限らないし、ましては警告を微分要素的に使うことでもない。そのタスク構造こそが創発を導くとしていたのだったが、そういう要素はこの実験にはなかった。そこはまだいろいろ試す余地があると思う。しかし、「歩行」を実現するのに、そのようなタスク構造を生成する「偽装LLM」はもっととんでもなく複雑でなければならないだろう。それを AI さんが作ってくれないかと期待したわけだが、そこまでは現状では無理のようだ。もっと私がそういうプログラムのアイデアを煮詰めるべきなのかもしれない。</pre>
+
+
+</article>
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2025/10.html">2025年10月</a> | <a href="../../../index/gsm.html">共有メモ</a></nav>
+</body>
+</html>

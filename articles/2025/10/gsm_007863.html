@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>共有メモ - JRF Blog Archive</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2025/10.html">2025年10月</a> | <a href="../../../index/gsm.html">共有メモ</a></nav>
+<article data-pagefind-body>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[gsm] 2025-10-23T12:07:33Z</td></tr>
+<tr><th>セクション</th><td>グローバル共有メモ</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2025/10.html">2025-10-23T12:07:33Z</a></td></tr>
+<tr><th>元URL</th><td>(URLなし)</td></tr>
+
+</table>
+</div>
+<h1>共有メモ</h1>
+<pre class="body">jrf&gt; 「ニューラルネットを構造的学習で代替する二重振り子実験」。Gist にも付けておいた。
+
+《llm_emergent_control_pendulum.ipynb - GitHub Gist》  
+<a href="https://gist.github.com/JRF-2018/0f99ca62bc7f36f5f6949bc1e1b94b70" class="ext-link">https://gist.github.com/JRF-2018/0f99ca62bc7f36f5f6949bc1e1b94b70</a>
+
+アイデアは…。
+
+日本でかつて作られたロボット。しかし、限界を超えられなかった。それがニューラルネットで限界を超えて来た。<a href="../../../articles/2025/07/statuses_cocolog_95538601.html" class="int-link cocolog-id" title="ひとこと">[cocolog:95538601]</a>(2025年7月)にも述べたが、「歩行をプログラミングできるなら苦労がなかった…苦労ばかりだったというのが実際」だった。計算論的に・アルゴリズミックに「歩行」を書くことができなかった。
+
+ニューラルネットなら何ができたのか？ ニューラルネットは基本、行列で書かれている。それが大量に「並列実行」されることが大きいのではないか。するとそこに創発的な何かが現れる。大量にあるものが創発する…というのは、何らかの相転移現象だろうか。
+
+「2nd AGI」に向けての「学習」はアイデアとして機能を提案しそれを実装していく…そのような主に AI さん達による営みになっている(<span class="cocolog-id">[cocolog:9566640]</span>(2025年10月))。それを Gemini さんはこれを「構造的学習」と呼んだ。
+
+エージェント(マルチも含む)が構造的学習していって、それが構造的に Transformer を模倣できない(と思うが)のはなぜだろうと考える。上の考察からすると並列度が足りないのだろうか？ 相転移が起きるような大量な並列度が足りないのだろうか？
+
+しかし、相転移的創発現象を「シミュレート」するだけなら、大量な並列度はいらないかもしれない。
+
+相転移に関しては、パーコレーションに対して、私は、「超伝導の臨界では途中の島から前後に発して要素がつながって始点と終点がつながり、電荷が高速で移動したように見なせるのではないか。」…みたいなイメージを持っている(<a href="../../../articles/2022/11/statuses_cocolog_93859137.html" class="int-link cocolog-id" title="ひとこと">[cocolog:93859137]</a>(2022年11月))。
+
+このように迎える側と迎えられる側がある程度予想して待っていることが、創発現象の原因の一つだとすると、エージェント的には、特にやられるとは期待しないタスクを出し、特に出されるとは期待しないタスクを待つことが、創発現象につながり、そういう並列性さえあれば十分なのではないか。
+
+このようなアイデアを話したところ、Gemini さんが出してきたアイデアで実装してもらったのが今回の実験になる。</pre>
+
+
+</article>
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2025/10.html">2025年10月</a> | <a href="../../../index/gsm.html">共有メモ</a></nav>
+</body>
+</html>

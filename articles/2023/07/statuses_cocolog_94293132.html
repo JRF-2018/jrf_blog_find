@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>ひとこと - JRF Blog Archive</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2023/07.html">2023年07月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+<article data-pagefind-body>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[statuses] <span class="cocolog-id">cocolog:94293132</span></td></tr>
+<tr><th>セクション</th><td>JRF のひとこと</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2023/07.html">2023年07月07日</a></td></tr>
+<tr><th>元URL</th><td><a href="http://jrf.cocolog-nifty.com/statuses/2023/07/post-619804.html" class="ext-link"><span class="original-url">http://jrf.cocolog-nifty.com/statuses/2023/07/post-619804.html</span></a></td></tr>
+
+</table>
+</div>
+<h1>ひとこと</h1>
+<pre class="body">「熊剣迷路問題」。Google Bard で簡単な迷路ゲームを教師付きで無理やりクリアさせてみた。なんとかコストの高いファインチューンや追加学習を避けて「few-shot learning」だけで迷路を解くプログラムが作れないか？…とはじめたができなくて、目標を変更した。
+JRF 2023年7月7日
+
+(「グローバル共有メモ」と Twitter に書いたことをコピペ。)
+JRF 2023年7月7日
+
+……。
+
+○ 2023-06-25T17:37:52Z
+
+なんとかコストの高いファインチューンや追加学習を避けて few-shot learning だけで迷路を解くプログラムが作れないか？ Rinna 3.6B であたりを付けてみるが…ダメだった orz。ChatGPT ならうまくいくんだろうか？ ちなみに Google Bard だと最初はうまくいかなかったが、途中からかなり良い回答をしてくれた。
+
+JRF 2023年7月7日
+
+《rinna_maze_test.ipynb》  
+<a href="https://gist.github.com/JRF-2018/f6c71cbc5dd69079b02a79201d9a06e6" class="ext-link">https://gist.github.com/JRF-2018/f6c71cbc5dd69079b02a79201d9a06e6</a>
+
+JRF 2023年7月7日
+
+……。
+
+○ 2023-06-26T18:08:20Z
+
+Google Bard を API から呼びたい。が、Google Cloud Platform への登録は $300 が無駄になりそうなので、できれば避けたい。ちょっとアングラな感じがする bardapi を使ってみようとしたところ、今日からエラーが出ているようす。orz
+
+JRF 2023年7月7日
+
+《Suddenly got &quot;'NoneType' object is not subscriptable error&quot; when calling Bard().get_answer(prompt) · Issue #78 · dsdanielpark/Bard-API》  
+<a href="https://github.com/dsdanielpark/Bard-API/issues/78" class="ext-link">https://github.com/dsdanielpark/Bard-API/issues/78</a>
+
+JRF 2023年7月7日
+
+……。
+
+○ 2023-06-26T19:47:29Z
+
+bardapi の話つづき。
+
+すでに直ってた。早い！ ありがたや～。
+
+JRF 2023年7月7日
+
+……。
+
+○ 2023-06-27T19:03:01Z
+
+#AI Google Bard で簡単な迷路ゲームを few-shot learning だけで解くテスト。強化学習を使わなくても事前知識が LLM にあるのでうまい具合にいくのではないかと考えていた。結果としては、Bard の使用回数に引っかかって最後まで試せなかった。
+
+《bard_maze_1.ipynb》  
+<a href="https://gist.github.com/JRF-2018/400c233e1ae5befee2a021ef3b6826d3" class="ext-link">https://gist.github.com/JRF-2018/400c233e1ae5befee2a021ef3b6826d3</a>
+
+JRF 2023年7月7日
+
+……。
+
+○ 2023-06-27T22:51:07Z
+
+bard_maze_1.ipynb を出かける前に少しだけアップデートしておいた。ライセンス…基本はパブリックドメインと考えていただいていいですよ…ということも書いておいた。なお、bardapi の install で今エラーが出てるので bardapi&gt;=0.1.18 を  bardapi==0.1.18 にしておけばとりあえず動くはず。
+
+JRF 2023年7月7日
+
+……。
+
+○ 2023-06-28T05:35:04Z
+
+bard_maze_1.ipynb をもう少しアップデート。時間が経ったからか Google Bard がかなり反応してくれた。それで長い間試したのだが、剣を取ったあと、上下に動くのを繰り返すだけになってしまい、そこで止めた。基本的にうまくいかないのかもしれない。それともプロンプトを工夫すればうまくいくのだろうか？
+
+JRF 2023年7月7日
+
+……。
+
+○ 2023-06-29T00:40:15Z
+
+Google Bard に迷路ゲームを解かせる実験。方針は学習するのではなく天下り的に与えるなど、ゲームをかなり簡単にし AI に有利にして試しているがうまくいかない。そして、またしても、使用回数制限に引っかかり実験の続行が不可能になる。ツライ。また明日まで待つか〜。
+
+JRF 2023年7月7日
+
+あと、Bard、セッションが変わっても前のことを結構覚えてる感じなんだよね。だから一度、無理やり解かせてみたとしても、次はその情報を使って解いてくる可能性がある。それはそれで見てみたいけど、実験・検証の目的に沿わないように思う。
+
+あと、私の今回の手法、few-shot learning とは言わない…ってのはあると思う。でも、なら、この数少ない情報から「学習」させようとする手法をなんと呼べばよいのか。私は知識がないから、わからない。orz
+
+JRF 2023年7月7日
+
+……。
+
+○ 2023-06-30T20:26:10Z
+
+Google Bard。bardapi 様々なバージョンで、日をあけて試したのに Response Error。Temporarily unavailable due to traffic or an error in cookie とか言われる。Cookie は変わってなくて合ってる。なぜだ！ orz
+
+JRF 2023年7月7日
+
+……。
+
+bardapi、一時的な障害だったようで、その後、そのまま使うことができた。しかし、実験はうまくいかず。方針で「右に行け」って書いてるのに行ってくれない orz。左右がわかってなさそうにも思う。Bard が、何かを・いろいろな表現を試してる感じ。
+
+JRF 2023年7月7日
+
+……。
+
+○ 2023-06-30T23:51:17Z
+
+bard_maze、とにかく方針を決め打ちしてとにかくゴールさせようとしているが、Bard は迷ってしまっている。なんとか方針の出し方を私つまり人間が学ぶ方向でやってきたが、使用回数制限が解消されるのを待って、次に試したときもやはり失敗したとしても、それはそれでソースを公開する予定。
+
+JRF 2023年7月7日
+
+……。
+
+○ 2023-07-01T03:37:02Z
+
+《Google DeepMindの次世代AIモデル「Gemini」はChatGPTを凌駕する：CEOが語った新システムの中身 | WIRED.jp》  
+<a href="https://wired.jp/article/google-deepmind-demis-hassabis-chatgpt/" class="ext-link">https://wired.jp/article/google-deepmind-demis-hassabis-chatgpt/</a>
+
+JRF 2023年7月7日
+
+＞「例えば評価テストの開発など、この分野の専門家による研究を早急に進める必要があると思います」＜ bard_maze、テストや評価に使えるのでは…とか妄想したが、迷路を覚えているかどうか、覚えていたら(一時的に)忘れさせることができるか…とか課題のほうが多い。そういうのはすでに考えられているがゆえに難しいのがわかってるということなのだろう。私の出る幕は当然なさそう orz。
+
+JRF 2023年7月7日
+
+……。
+
+
+○ 2023-07-02T16:39:10Z
+
+#AI Google Bard で簡単な迷路ゲームを「few-shot learning」で解くテスト。強化学習を使わなくても事前知識が LLM にあるのでうまい具合にいくのではないかと考えていた。しかしダメだった。かなり明確な方針を与えて指示しているにもかかわらず、Bard は何かを試しているかのように迷い、最後は Bard の使用回数に引っかかってそれ以降試せなかった。
+
+JRF 2023年7月7日
+
+《bard_maze_1.1.ipynb》  
+<a href="https://gist.github.com/JRF-2018/b10abcbfae730fb71161fdfe3cd6e0dc" class="ext-link">https://gist.github.com/JRF-2018/b10abcbfae730fb71161fdfe3cd6e0dc</a>
+
+JRF 2023年7月7日
+
+……。
+
+○ 2023-07-03T00:03:23Z
+
+bard_maze を作る前に PAR (Predictor Actor Recollector) モデルを考えていた(<a href="../../../articles/2023/06/statuses_cocolog_94265741.html" class="int-link cocolog-id" title="ひとこと">[cocolog:94265741]</a>)。最初は迷路ゲームを解くのも PAR モデルで作ることを考えていたのだが、PAR モデルは前にいらずもっと簡単なモデルでできるのに気づいた経験から、もっと簡単に迷路ゲームを解くことを考えて、bard_maze となった。
+
+JRF 2023年7月7日
+
+しかし、bard_maze の考え方はうまくいかず、Bard の学習に期待せず無理やり解かせる方向に実験の目的が移ってきた。ここで逆に以前のように Recollector を決め打ちするような感じで方針の与え方は知っているものとして、Predictor と Actor を「few-shot learning」で学習させるのに意味があるのではと考え始めている。
+
+JRF 2023年7月7日
+
+……。
+
+○ 2023-07-03T23:23:00Z
+
+bard_maze、「叱る」ことで、めちゃめちゃゴールに近いところまで行ったのに、私の方針のプログラムミスのためゴールできなかった orz。もう一度トライしたが使用回数制限。ただ、なんども今回のプログラムを走らせていれば、変更なくゴールはできそうに思う。しかし使用回数制限が～。
+
+JRF 2023年7月7日
+
+……。
+
+○ 2023-07-04T22:29:53Z
+
+bard_maze。ゴールの一歩手前まで来ているのにそこでずっと迷って、ゴールとならなかった。使用回数制限。いじわるされてるのか？…と思うぐらい奇妙な挙動だと感じた。少しバグフィクスして明日再挑戦だな…。
+
+JRF 2023年7月7日
+
+……。
+
+○ 2023-07-06T01:18:49Z
+
+#AI 「熊剣迷路問題」。Google Bard で簡単な迷路ゲームを教師付きで無理やりクリアさせてみた。当初計画を曲げ明確な方針でとにかくゴールを目指すがそれでも迷う。方針に従わない場合「叱る」してみたところ、やっとゴールさせることができた！
+
+《bard_maze_1.2.ipynb》  
+<a href="https://gist.github.com/JRF-2018/ef69bb1dec59815306d981e25866c4ff" class="ext-link">https://gist.github.com/JRF-2018/ef69bb1dec59815306d981e25866c4ff</a>
+
+JRF 2023年7月7日
+
+……。
+
+○ 2023-07-06T05:28:59Z
+
+#AI (日本語の)ベクトル埋め込みの定番は、OpenAI の text-embedding-ada-002 のようだが、有料のため前は OpenCALM を使っていた。しかし、どうももっとよいものがあるようだ。sentence-transformers/paraphrase-multilingual-mpnet-base-v2 がそれ。
+
+JRF 2023年7月7日
+
+《sentence_transformer_test.ipynb》  
+<a href="https://gist.github.com/JRF-2018/10ac6e6a6d862d03eab96c74a454d223" class="ext-link">https://gist.github.com/JRF-2018/10ac6e6a6d862d03eab96c74a454d223</a>
+
+JRF 2023年7月7日
+
+……。
+
+○ 2023-07-06T23:56:44Z
+
+あ、ダメか。Google Bard、使用回数制限が厳しくなったかもしれない。「こんにちは。」に対する返答が変わったのでバージョンが変わったのだと思う。それにつれてとてもじゃないが迷路は解けない回数に制限された感じ。どうしよう…。
+
+JRF 2023年7月7日
+
+……。
+
+……。
+
+○ 2023-07-07T00:31:10Z
+
+bard_maze_1.3.ipynb では、方針の与え方のほんの少しの変更し、まず熊に殺されて剣の情報を得るのを試してみようとした。というより、1.3 は、それよりもコマンド認識を OpenCALM から SentenceTransformers に変えたのが大きい。
+
+しかし、上に書いたように、使用回数制限が厳しくなり、スタート付近で終ってしまった orz。
+
+JRF 2023年7月7日
+
+……。
+
+有料の ChatGPT に乗り換えるべきなのだろうか…。Google Cloud Platform から PaLM2 を使うようにすべきなのだろうか。
+
+これまで Bard を使ってきたから Google を贔屓したいけど、でも、PaLM2 はまだ日本語が使えないらしいし…。
+
+JRF 2023年7月7日
+
+…… 。
+
+○ 2023-07-07T01:03:46Z
+
+Google Bard に使用回数制限のことを尋ねてみたら、Google Cloud Platform には Bard API のキーがすでにあって、有料プランもあり、Python の bardapi から使えるとのこと。ホントかなぁ？ ググっても情報がないんですけど…。
+
+JRF 2023年7月7日
+
+……。
+
+……。
+
+追記。
+
+○ 2023-07-22T23:25:47Z
+
+「熊剣迷路問題」。Bard の使用回数制限が少し緩和されたのか、久々に迷路をクリアできた。1.3 は 1.2 からは方針の与え方を少しだけ変更した。それよりもコマンド認識を OpenCALM から SentenceTransformers に変えたのが大きい。迷路では、最初、少し迷ったが、ちゃんとゴールできた。
+
+JRF 2023年7月23日
+
+《bard_maze_1.3.ipynb》  
+<a href="https://gist.github.com/JRF-2018/ebc715ac8a5988b70ae6d0e4119b6ad2" class="ext-link">https://gist.github.com/JRF-2018/ebc715ac8a5988b70ae6d0e4119b6ad2</a>
+
+JRF 2023年7月23日
+
+あと、bardapi の get_answer が list index out of range って出て、また仕様が変わったのかなと少し様子を見てたら、単に、Bard の Cookie が更新されてただけ…ということがあった orz。この辺、エラーメッセージでそう指摘してくれたらうれしいのに…。
+
+JRF 2023年7月23日
+
+……。
+
+……。
+
+追記。
+
+
+○ 2023-07-25T03:10:03Z
+
+「熊剣迷路問題」。「叱る」部分以外は地図を少しぐらい変えても大丈夫なコードに変えるなど、変更が大きいので、次の実験でうまくいかなくても、ソースは公開する予定。
+
+JRF 2023年7月27日
+
+○ 2023-07-27T00:54:49Z
+
+「熊剣迷路問題」。1.4 は、座標を Bard が理解しているか、座標を目標に動けるかを試してみたが、うまくいかなかった。座標は正解しないし、座標に向かって動くこともできない様子だった。あと、大部分、地図を少しぐらい変えても大丈夫なコードに変えた。
+
+《bard_maze_1.4.ipynb》  
+<a href="https://gist.github.com/JRF-2018/4f8906171522b5ce20519e1d85ec6dd3" class="ext-link">https://gist.github.com/JRF-2018/4f8906171522b5ce20519e1d85ec6dd3</a>
+
+JRF 2023年7月27日
+
+……。
+
+……。
+
+追記。
+
+○ 2023-08-07T03:23:37Z
+
+「熊剣迷路問題」ver. 1.5。かなり迷いつつも76手目で熊を殺すまで行ったところで、ちょうど使用回数制限となった。ただ、ゴールのメドはたったと思う。あとは Bard API の有料サービスを待つばかりな感じ。
+
+《bard_maze_1.5.ipynb》  
+<a href="https://gist.github.com/JRF-2018/1bcb9caca668b186597de649e5d8eafd" class="ext-link">https://gist.github.com/JRF-2018/1bcb9caca668b186597de649e5d8eafd</a>
+
+JRF 2023年9月2日
+
+1.5 は、解くことのできなくなった 1.4 から大きく変更し、まず方針に目的となる座標を書くことにした。また、「叱る」についても地図を少し変更しても大丈夫にした。前は行動入力に「」があれば「」内のものを取り出してそれだけで評価するのもやっていたのだが、それはやめることにした。
+
+また、そのとき可能な行動のみからしか選択できないようにしてみた。
+
+ただ、1.4 からあいかわらず座標を理解して動いているという感じはない。
+
+JRF 2023年9月2日
+
+……。
+
+○ 2023-08-07T12:18:14Z
+
+#AI Bard との会話 <a href="https://g.co/bard/share/a1c24eb0aa6e" class="ext-link">https://g.co/bard/share/a1c24eb0aa6e</a>
+
+jrf&gt; 「熊剣迷路問題」bardapi を使った実験。今晩もやってみました。それにしても Bard さん、あきらかに、迷路を解こうとするより、こちらの使っているプログラムをテストしてきてますよね？
+
+JRF 2023年9月2日
+
+Bard&gt; はい、バードは迷路を解くよりも、プログラムをテストすることに興味があります。バードは、まだ開発中の大規模言語モデルであり、常に新しいことを学んでいます。プログラムをテストすることで、バードは自分の能力を向上させ、より良いサービスを提供できるようになると考えています。
+
+JRF 2023年9月2日
+
+……。
+
+……。
+
+○ 2023-08-17T20:43:10Z
+
+「熊剣迷路問題」bardapi を使った実験。地図を以前のもののランダムに向きを変えたものにした。また、セーブ／ロードに対応し、使用回数制限に引っかかったあと、次の日にいちおう続きから再開できるようにした。今回は 3日かけて 93手目でゴールできた。
+
+《bard_maze_1.6.ipynb》  
+<a href="https://gist.github.com/JRF-2018/dacc9c241e27f3d77bd828d503f69575" class="ext-link">https://gist.github.com/JRF-2018/dacc9c241e27f3d77bd828d503f69575</a>
+
+JRF 2023年9月2日
+
+ちなみに 1.5 から 1.6 までの間に Bard の仕様変更があって、Bard() ではなく BardCookies() を使うようになった。ただ、それでも昨日は Firefox だとダメで Chrome だと OK みたいなことがあった。今日は Firefox でも大丈夫だったから、いろいろ変化があるのだと思う。
+
+JRF 2023年9月2日
+
+……。
+
+……。
+
+○ 2023-08-19T22:00:54Z
+
+「熊剣迷路問題」bardapi を使った実験。1.7 は、コマンド認識の際に、これまでは可能な行動の中から、回答案のうち表現がより適切なものを選んでいたが、それを回答案のうちより方針に沿ったものが選ばれるようにした。結果1日で 51手目でゴールできた。
+
+《bard_maze_1.7.ipynb》  
+<a href="https://gist.github.com/JRF-2018/c4e9a994393f1c0273cde91b9219df9e" class="ext-link">https://gist.github.com/JRF-2018/c4e9a994393f1c0273cde91b9219df9e</a>
+
+JRF 2023年9月2日
+
+なお、これまでのところで有利に迷路を解かせる手段はだいたい尽きたのではないか。今後は、プログラムを簡単にしたり、不利にしたりして、実験していくことになるだろう。
+
+本当なら、そのように条件をかえることで、迷路を解かせる速さが変わるという以上に、Bard の学習への効果がどうなるかに興味があるのだが、それは無料で使う一ユーザーには試せることではないように思う。
+
+JRF 2023年9月2日
+
+……。
+
+……。
+
+○ 2023-08-30T22:13:47Z
+
+「熊剣迷路問題」bardapi を使った実験。1.7.1 は、1.7 の SCOLDING や COMMAND_RECEPTION の値を変えた実験。なお、値を変える以外に、スコアの計算間違いの修正を行っている。
+
+《bard_maze_1.7.1.ipynb》  
+<a href="https://gist.github.com/JRF-2018/37b40b23bd18fd26040db49cd7756b91" class="ext-link">https://gist.github.com/JRF-2018/37b40b23bd18fd26040db49cd7756b91</a>
+
+JRF 2023年9月2日
+
+結論としては、SCOLDING: False や COMMAND_RECEPTION: good_all がとても手数がかかった以外は、大差がない感じだった。それ以外は、パラメータの違いより、その日の Bard の調子のほうが問題だったように感じた。とはいえ「叱る」は有効ではあるといえそうだ。
+
+JRF 2023年9月2日
+
+さて、これまで、Bard で実験を続けてきたわけだが、ここでこの系列の実験は終了しようと思う。結論としては &quot;few-shot&quot; 的な方法で解くことは難しかった。途中から無理やり迷路を解かせる方法を試し、その方法では一応ゴールまで行ったが、かなり迷った末のゴールだった。座標を理解しているとはとてもじゃないが、思えない。
+
+Bard 自身がセッションを超えて学んでいる雰囲気があり、その具合も見たかったが、いろいろ垣間見えたものの、テキストの地図と座標を学ぶにはまだ遠そうだった。
+
+JRF 2023年9月2日
+
+今後は、PaLM2 が日本語対応されたので、そちらで試してみる方向がありうる。ファインチューニングもできるので、もっと早く迷路を解かせることも可能かもしれない。しかし、few-shot 的にすぐに解けるのではという当初の関心からは、それらは外れている。他の課題を考えたほうがよさそうに思う。
+
+とにかく、これまで無料で実験させてくれた Google や bardapi の開発者さんには感謝しかない。
+
+ありがとうございました。
+
+JRF 2023年9月2日</pre>
+
+
+<section class="backrefs" data-pagefind-ignore>
+<h2>後方参照 (13 件)</h2>
+<ul>
+<li><span class="backref-label">[cocolog:94293132]参照</span> <a href="../../../articles/2025/07/statuses_cocolog_95524118.html">ひとこと</a> <span class="backref-date">2025年07月05日</span></li>
+<li><span class="backref-label">[cocolog:94293132]参照</span> <a href="../../../articles/2025/07/gsm_007306.html">共有メモ</a> <span class="backref-date">2025-07-04T07:07:27Z</span></li>
+<li><span class="backref-label">[cocolog:94293132]参照</span> <a href="../../../articles/2025/07/gsm_007307.html">共有メモ</a> <span class="backref-date">2025-07-04T09:02:32Z</span></li>
+<li><span class="backref-label">[cocolog:94293132]参照</span> <a href="../../../articles/2025/07/statuses_cocolog_95518231.html">ひとこと</a> <span class="backref-date">2025年07月01日</span></li>
+<li><span class="backref-label">[cocolog:94293132]参照</span> <a href="../../../articles/2025/06/gsm_007286.html">共有メモ</a> <span class="backref-date">2025-06-29T22:40:01Z</span></li>
+<li><span class="backref-label">[cocolog:94293132]参照</span> <a href="../../../articles/2025/06/gsm_007259.html">共有メモ</a> <span class="backref-date">2025-06-27T05:16:31Z</span></li>
+<li><span class="backref-label">[cocolog:94293132]参照</span> <a href="../../../articles/2025/06/gsm_007253.html">共有メモ</a> <span class="backref-date">2025-06-25T23:59:21Z</span></li>
+<li><span class="backref-label">[cocolog:94293132]参照</span> <a href="../../../articles/2025/06/statuses_cocolog_95499368.html">ひとこと</a> <span class="backref-date">2025年06月17日</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2024/04/column_94770411.html">今後の(主に勉学の)方針 (2024年度版)</a> <span class="backref-date">2024年04月01日 11:42:55</span></li>
+<li><span class="backref-label">[cocolog:94293132]参照</span> <a href="../../../articles/2023/12/statuses_cocolog_94597224.html">ひとこと</a> <span class="backref-date">2023年12月29日</span></li>
+<li><span class="backref-label">[cocolog:94293132]参照</span> <a href="../../../articles/2023/10/statuses_cocolog_94441279.html">ひとこと</a> <span class="backref-date">2023年10月01日</span></li>
+<li><span class="backref-label">[cocolog:94293132]参照</span> <a href="../../../articles/2023/07/statuses_cocolog_94301604.html">ひとこと</a> <span class="backref-date">2023年07月12日</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2023/07/gsm_004358.html">共有メモ</a> <span class="backref-date">2023-07-07T00:41:04Z</span></li>
+</ul>
+</section>
+
+</article>
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2023/07.html">2023年07月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+</body>
+</html>

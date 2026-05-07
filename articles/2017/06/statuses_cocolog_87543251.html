@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>ひとこと - JRF Blog Archive</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2017/06.html">2017年06月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+<article data-pagefind-body>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[statuses] <span class="cocolog-id">cocolog:87543251</span></td></tr>
+<tr><th>セクション</th><td>JRF のひとこと</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2017/06.html">2017年06月08日</a></td></tr>
+<tr><th>元URL</th><td><a href="http://jrf.cocolog-nifty.com/statuses/2017/06/quail.html" class="ext-link"><span class="original-url">http://jrf.cocolog-nifty.com/statuses/2017/06/quail.html</span></a></td></tr>
+
+</table>
+</div>
+<h1>ひとこと</h1>
+<pre class="body">quail-naggy.el と jrf_semaphore.pl をアップデートした。バグ取りのみ… naggy-backend.pl の単漢字変換で a とか i とかがうまくいかなかったことの修正など。
+JRF 2017年6月8日
+
+《quail-naggy.el: 単漢字変換 Input Method for Emacs.》
+<a href="../../../articles/2015/10/software_83641133.html" class="int-link" title="quail-naggy.el: 単漢字変換 Input Method for Emacs.">http://jrf.cocolog-nifty.com/software/2015/10/post.html</a>
+
+《JRF Flag Semaphore for NES Emulator を作った》
+<a href="../../../articles/2014/03/software_79149901.html" class="int-link" title="JRF Flag Semaphore for NES Emulator を作った">http://jrf.cocolog-nifty.com/software/2014/03/post-1.html</a>
+
+quail-naggy.el のほうは、バージョン 0.08 に、jrf_semaphore.pl のほうは、バージョン 0.09 になった。
+
+JRF 2017年6月8日
+
+……。
+
+quail-naggy.el については、まず、Naggy::TankanjiDic を変更。場合により日本語読み(い や まん)を英語読み(i や man)より優先度を高くした。tankanji.txt や Wind2.txt などの辞書をいじるのを嫌って、アルゴリズムを複雑にしたが、よくない方策を取ってしまったかもしれない。
+
+また、quail-naggy.el において変換時 backspace が naggy-convert-prev-page に割り当たっていなかったのを修正。
+
+JRF 2017年6月8日
+
+……。
+
+jrf_semaphore.pl については変更は基本的にはない。…のだが、上の Naggy::TankanjiDic をいじった影響が出る場合もある。ほぼ影響はないものと思われるが…。
+
+とはいえ、前回(<a href="../../../articles/2017/05/statuses_cocolog_87451120.html" class="int-link cocolog-id" title="ひとこと">[cocolog:87451120]</a>)の更新が jrf_semaphore.pl に関しては割と意味のある変更だったのにバージョンナンバーを上げなかったので、そのかわりに、今回は、意義の少ない変更でも、バージョンナンバーを 0.09 に上げることにした。
+
+JRF 2017年6月8日
+
+……。
+
+テストは正直、あまりしていない。ただ、quail-naggy.el はしばらく使ってみてからのリリース。前(々)回よりはマシなはず。
+
+JRF 2017年6月8日
+
+Trackbacks:
+
+《cocolog:87731566》 from JRF のひとこと
+<a href="../../../articles/2017/07/statuses_cocolog_87731566.html" class="int-link" title="ひとこと">http://jrf.cocolog-nifty.com/statuses/2017/07/quail.html</a>
+
+quail-naggy.el をアップデートした。バージョン 0.09。ほんの少しのバグ取りと、罫線がらみのほとんど意味のない変更。 
+
+受信： 2017-09-30 06:56:50 (JST)</pre>
+
+
+<section class="backrefs" data-pagefind-ignore>
+<h2>後方参照 (2 件)</h2>
+<ul>
+<li><span class="backref-label">[cocolog:87543251]参照</span> <a href="../../../articles/2017/07/statuses_cocolog_87731566.html">ひとこと</a> <span class="backref-date">2017年07月13日</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2017/05/statuses_cocolog_87451120.html">ひとこと</a> <span class="backref-date">2017年05月23日</span></li>
+</ul>
+</section>
+
+</article>
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2017/06.html">2017年06月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+</body>
+</html>

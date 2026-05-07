@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>ひとこと - JRF Blog Archive</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2011/09.html">2011年09月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+<article data-pagefind-body>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[statuses] <span class="cocolog-id">cocolog:69727785</span></td></tr>
+<tr><th>セクション</th><td>JRF のひとこと</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2011/09.html">2011年09月08日</a></td></tr>
+<tr><th>元URL</th><td><a href="http://jrf.cocolog-nifty.com/statuses/2011/09/post-1d5e.html" class="ext-link"><span class="original-url">http://jrf.cocolog-nifty.com/statuses/2011/09/post-1d5e.html</span></a></td></tr>
+
+</table>
+</div>
+<h1>ひとこと</h1>
+<pre class="body">二者の物理的衝突をそれぞれにプロセスを割り当て並列処理でシミュレーションすることを考える。相手の動きを完全に知ってエミュレート計算を行えるなら、lock してお互いのデータをすり合せる必要はない。lock が必要なのはそこに「確率」的事象が関与するから。
+JRF 2011年9月8日
+
+これを、並列処理の相手の動きのエミュレートを「確率」的事象に「圧縮」する効果と見れば、このとき「負のエントロピー」が排出されるのだろうか。
+
+(マクスウェルの悪魔のように)誰かがエミュレートの「エネルギー」を取り出してもわからない。…それが、「確率」に「圧縮」することだが、そういうのって今の物理学でどこに現れるか…というと、臨界現象の式で、パラメータが落ちるところに現れているのではないか。
+
+JRF 2011年9月8日
+
+負のエントロピーが議論にのぼりにくいというのは、本当は、そういったことが頻繁に起きているというのを物理の式だとなかなか表せないというだけのことなのかな。(そのあたり↓所収の短編『あなたの人生の物語』ふうに。)
+
+テッド・チャン 著、浅倉 久志 訳『あなたの人生の物語』 (2003, ハヤカワ文庫SF)
+<a href="http://www.amazon.co.jp/dp/4150114587" class="ext-link">http://www.amazon.co.jp/dp/4150114587</a>
+
+《[書評]あなたの人生の物語（テッド・チャン）: 極東ブログ》
+<a href="http://finalvent.cocolog-nifty.com/fareastblog/2009/06/post-5451.html" class="ext-link">http://finalvent.cocolog-nifty.com/fareastblog/2009/06/post-5451.html</a>
+
+JRF 2011年9月8日
+
+「式でパラメータが落ちる」はちょうど私にとっての「弁証法」の逆になるわけだが、lock と(高階論理で使われる)ラムダ式の関係みたいなのが私には見えはじめてる。強い単一の lock の式への変換みたいなのもありそうで、そうすると計算オーダーみたいに lock にオーダーがあるという話になり、その量を「負のパラメータ」につなげられたりするのだろうか？
+
+JRF 2011年9月8日
+
+《Exhaustive Lock Dependency Emulator その１ 並列処理の総当り》
+<a href="../../../articles/2011/06/software_68738226.html" class="int-link" title="Exhaustive Lock Dependency Emulator その１ 並列処理の総当り">http://jrf.cocolog-nifty.com/software/2011/06/post-1.html</a>
+
+《コンピュータ定理証明における弁証法 － 私が作りたいシステム》
+<a href="../../../articles/2006/09/column_13967226.html" class="int-link" title="コンピュータ定理証明における弁証法 − 私が作りたいシステム">http://jrf.cocolog-nifty.com/column/2006/09/post_2.html</a>
+
+JRF 2011年9月8日
+
+<a href="../../../articles/2010/05/statuses_aboutme_123928.html" class="int-link cocolog-id" title="ひとこと">[aboutme:123928]</a>
+＞そのモデルの内のモデルの内にも同じモデルが造れるということであり、さらに言ってしまえば、そのモデルの外にもそういうモデルがあること、つまり「自己」が超人的なものにモデルとして扱われている可能性を示唆する。(…)この方向感のなさがすなわち臨界の特徴と重なる。＜
+
+↑のひとことの補足というか外伝というかが↓。
+
+《七支刀って剣？ その3 ― 七芒星の埋め込み》
+<a href="../../../articles/2010/12/column_66440828.html" class="int-link" title="七支刀って剣？ その３ ― 七芒星の埋め込み">http://jrf.cocolog-nifty.com/column/2010/12/post.html</a>
+
+JRF 2011年9月8日
+
+keyword: 負のエントロピー
+
+……。
+
+ということで、この「ひとこと」はちょっと物理の話っぽくみえるかもしれないけど、要は「トンデモ」な話。念のため。
+
+そもそも「二者」がいきなり出てきてシミュレーションってのがエントロピーの話としては、あやしいところ、無理スジ。
+
+JRF 2011年9月8日
+
+……。
+
+「弁証法の逆」と上で書いたが…、任意のパラメータで良いようにするというのは、まさに「汎化」すなわちパラメータを導入することとも言える。
+
+記号論理を知る方なら、論理記号の導入と削除が一対としてあるのは想像できるだろうが、「逆」というと削除の逆を無理やりにやって、例にすぎないところを汎化するというのがある(流派によっては abduction とかいわれることもある)。が、臨界によるパラメータの落ち方は、abduction よりはちゃんとした induction の汎化のほうだろう。
+
+JRF 2011年9月8日
+
+とはいえ、細かな事象を無視していくという点では abduction 的でもあり…、束縛変数がどっかにでてきてそれを含めて論じるというのが微妙なところは、普通の汎化でもなさそう。
+
+lock に関しては束縛変数をもってきて、それに関していろいろ言える…というのをやりたいんだけど、そこをどうするかが詰め切れてない。
+
+「確率」的事象は物理で言えば普通「量子」で捉えるんだけど、lock を使うときはプログラムは確定してないと話にならない。…その確定した替わりを束縛変数の導入みたいなのでカバーできるのか…？
+
+JRF 2011年9月8日
+
+……。
+
+↑の「その１ 並列処理の総当り」にアイデアだけ書いた「accessor」というのは、ランダムな ID を与えて、それが同じ場合と違う場合で総当りするといったものだが、そういうチェックをしておけば、アクセッサがどんなものでも対応したとできるということで、上の束縛変数を汎化する的な話になるか…。ランダムというところで「確率」的にもなる…。
+
+JRF 2011年9月9日
+
+でも、アクセッサ ID をオブジェクト指向的に扱ってくれるなら、ランダムではなく連続付番でも十分で、それが「攻撃」により破られうるというなら、そもそものこのフレームワークにおいてプログラムが「関数的」であるかどうかも疑わねばならなくなる。ランダムにしたところで、特定の乱数のときのみ～といった条件分岐は、攻撃する意図等があればすぐに書ける。…そこに迷いがある。
+
+JRF 2011年9月9日
+
+ただ、「攻撃」ではなく、デバッグのためのわかりやすさを考えれば、連続付番よりランダムのほうが誤解が少ないだろうという読みはある。
+
+…その、最初 debug_symbol というデバッグをわかりやすくするために導入した機構が、その後、wait_and_lock からの展開において、制御の本質に関わらせることができそうだと考えるようになってきている。
+
+それと同じようにデバッグのわかりやすさのためのランダム ID を、「内作用」的な機能に持っていくことができるのだろうか…？
+
+JRF 2011年9月9日
+
+……。
+
+ちなみに乱数でいいと定義されているのを逆手にとって「実用」につなげたのは、私の記事だと↓があるか…。が、そんなとこまで lock に関係させるのは展望し難い。
+
+《電子署名の替わりに Loaded Magic [ JRF のソフトウェア Tips ]》
+<a href="../../../articles/2011/05/software_68180670.html" class="int-link" title="電子署名の替わりに Loaded Magic">http://jrf.cocolog-nifty.com/software/2011/05/post.html</a>
+
+JRF 2011年9月10日
+
+…掲示板に書き込んだ内容によって、同じスレに書き込みが起こる…というのは、次にプロセスが起動するとき、アクセッサが実は前回のアクセッサと同じといった状況に相当する。書き込みに実は署名に相当するものがあることを知っている者と知らない者がいるというのは、ある種の広がりを感じさせる。
+
+アクセッサが前回のアクセッサと同じ…みたいな「ループ」…とういうのは、コードのメッセージダイジェストを使った不動点定理みたいなものを考えるべきようにも思う。
+
+でも、「広がり」まで考慮すると、一次元的になりがちな「不動点定理」よりも、rot や div などを使う流体力学的イメージが私には浮かぶんだが…？
+
+JRF 2011年9月13日
+
+Trackbacks:
+
+《cocolog:72947619》 from JRF のひとこと
+<a href="../../../articles/2012/06/statuses_cocolog_72947619.html" class="int-link" title="ひとこと">http://jrf.cocolog-nifty.com/statuses/2012/06/post-4c36.html</a>
+
+シェイクスピアの『ヴェニスの商人』を読んだ。 
+
+受信： 2012-06-27 03:53:17 (JST)</pre>
+
+
+<section class="backrefs" data-pagefind-ignore>
+<h2>後方参照 (2 件)</h2>
+<ul>
+<li><span class="backref-label">[cocolog:69727785]参照</span> <a href="../../../articles/2012/06/statuses_cocolog_72947619.html">ひとこと</a> <span class="backref-date">2012年06月06日</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2010/05/statuses_aboutme_123928.html">ひとこと</a> <span class="backref-date">2010年05月05日</span></li>
+</ul>
+</section>
+
+</article>
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2011/09.html">2011年09月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+</body>
+</html>

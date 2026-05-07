@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>PP Interrupter: 健全なサイトをブロック!? - JRF Blog Archive</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2017/12.html">2017年12月</a> | <a href="../../../index/software.html">ソフトウェア Tips</a></nav>
+<article data-pagefind-body>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[software] <span class="cocolog-id">cocolog:88550402</span></td></tr>
+<tr><th>セクション</th><td>JRF のソフトウェア Tips</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2017/12.html">2017年12月08日 16:17:00</a></td></tr>
+<tr><th>元URL</th><td><a href="http://jrf.cocolog-nifty.com/software/2017/12/post.html" class="ext-link"><span class="original-url">http://jrf.cocolog-nifty.com/software/2017/12/post.html</span></a></td></tr>
+<tr><th>タグ</th><td>[JRF 作成ソフトウェア] [Firefox] [JavaScript]</td></tr>
+</table>
+</div>
+<h1>PP Interrupter: 健全なサイトをブロック!?</h1>
+<pre class="body">This is a support page of the PP Interrupter.  You can write comments on this page, even if you can't understand Japanese blow. If you need explanation of the extension in English, show the English main page of the PP Interrupter.
+
+ブラウザ拡張 PP Interrupter を作った。Web Extension 規格に順って作ったので今後、様々なブラウザで利用できるようになるかもしれないが、今のところ Mozilla Firefox でしか動かないようだ。
+
+PP Interrupter の説明は、専用ページで行った。まずそちらを読んで欲しい。このページは「サポート」を行うのがメインである。
+
+Google Chrome 用または Firefox for Android 用に機能制限版の PP Interrupter Lite がある。そちらについてはそれ専用のサポートページがあるが、こちらに要望・質問を書き込んでもらってかまわない。
+
+一応、ここでも軽く説明しておくと、PP Interrupter は特定の URL へのアクセスを一旦ブロックし、アドレスバーに表示されるアイコンのクリックによってそのブロックを解除するという汎用のアドオンである。このアドオンにより、自動的なリダイレクトの前に一旦ストップする習慣を作ることができる。このアドオンは、他のブロッカーと違い、悪意のあるサイトではなく、健全なサイトをブロックすることを目的とする。
+
+PP Interrupter は PP Authorizer の姉妹品で、現在の PP Authorizer が一般に使えない状況で、認証の前でアドレスバーのアイコンをクリックしなければならないという点で、PP Authorizer と似た操作を PP Interrupter は実現する。もし、将来、健全なサイトが自動的なリダイレクトを禁じるようになったときには PP Authorizer の出番が来る。
+
+PP Interrupter は現実への対応だが、PP Authorizer は未来への投資である。しかし、PP Interupter は汎用のため、PP Authorizer がなくても、PP Interrupter は動く。
+
+このアドオンを作るキッカケとなったアイデアは <a href="../../../articles/2017/11/statuses_cocolog_88492515.html" class="int-link cocolog-id" title="ひとこと">[cocolog:88492515]</a> に書いてある。そこでは、webRequest に関する拡張を調べていて難しそうだ…と書いていたが、よく読んでいるうちにどうもできそうなので作ってみた。当初は、ストップしたときにページが表示されるようにしたかったのだが難しく、 notifications の表示に留めた。
+
+なお、このアドオンを作ったときの感想が <a href="../../../articles/2017/12/statuses_cocolog_88550595.html" class="int-link cocolog-id" title="ひとこと">[cocolog:88550595]</a> に書いてある。
+
+■配布物
+  
+アドオンは、AMO (Mozilla Add-ons)の PP Interrupter のページから手に入る。このページでは、一応、提出した際のソースのアーカイブを公開しておく。次のリンクが最新のもののはずだが、より以前のものはコメント欄をご参照いただきたい。
+
+  ●pp-interrupter.zip
+    
+GitHub にも登録してあるが、更新は、ここの更新のあと1日から3日遅れるかもしれない。
+
+  ●《GitHub - JRF-2018/pp-interrupter》。
+    
+更新：2017-12-08,2017-12-27,2020-11-03
+初公開：2017年12月08日 16:17:00
+最新版：2020年11月03日 15:11:14
+
+
+Comments:
+
+[E:club] 初公開: pp-interrupter-20171207.zip。バージョン 0.2。
+
+二つ目のアドオンの製作。単機能でとてもシンプル。
+
+なお、1時間もせずに取り換えたバージョン 0.1 も、いちおう pp-interrupter-20171207-tmp.zip にアップロードしておく。
+
+投稿: JRF | 2017-12-08 16:34:38 (JST)
+
+[E:baseball] 更新: pp-interrupter-20171212.zip。バージョン 0.3。
+
+内部的なとても小さな変更。非同期性に関するミスを一箇所修正。
+
+投稿: JRF | 2017-12-12 19:39:41 (JST)
+
+[E:motorsports] 更新: pp-interrupter-20171215.zip。バージョン 0.4。
+
+内部的なとても小さな変更。外部アプリからのブロックしない許可に関する修正。あと、Allowing Extensions から PP Authorizer を削除しても、Add from PP Authorizer ボタンで、リカバーできるようにした。
+
+投稿: JRF | 2017-12-15 16:50:02 (JST)
+
+[E:foot] 更新: pp-interrupter-20171216.zip。バージョン 0.5。
+
+小さな変更。だが、ややクリティカル。ブロック中に他への移動やタブの削除を行った場合のキャンセル処理をミスしていた。
+
+投稿: JRF | 2017-12-16 16:53:53 (JST)
+
+[E:xmas] 更新: pp-interrupter-20171223.zip。バージョン 0.6。
+
+変更は軽微。ソース上の関数の表記などを整理した。
+
+投稿: JRF | 2017-12-23 08:12:30 (JST)
+
+[E:sports] 更新: pp-interrupter-20171226.zip。バージョン 0.7。
+
+Google Chrome や Firefox for Android に対応しようとして大きく変更を行ったが、API や UI の違いによりうまくいかず、結局、上で追記したように機能制限版の PP Interrupter Lite にフォークさせた。その書き換えの際に見つけた細かなバグ等を取ったのが、こちらのアドオンではメリットと言えるか。
+
+投稿: JRF | 2017-12-27 20:53:00 (JST)
+
+更新: pp-interrupter-20201103.zip。バージョン 0.8。
+
+pp-interrupter-20201103.zip に相当するものは↓からどうぞ。
+
+<a href="https://github.com/JRF-2018/pp-interrupter/releases/tag/v0.8" class="ext-link">https://github.com/JRF-2018/pp-interrupter/releases/tag/v0.8</a>
+
+サイトに接続するときアイコンが表示されなくなっていたので、pageAction から browserAction に変更した。
+
+あと、ドメイン指定に関して若干の改善をした。
+
+投稿: JRF | 2020-11-03 15:17:32 (JST)
+
+
+Links:
+
+PP Interrupter: <a href="https://addons.mozilla.org/firefox/addon/pp-interrupter/" class="ext-link">https://addons.mozilla.org/firefox/addon/pp-interrupter/</a>
+the English main page of the PP Interrupter: <a href="http://jrf.cocolog-nifty.com/archive/pp-interrupter/README_en.html" class="ext-link">http://jrf.cocolog-nifty.com/archive/pp-interrupter/README_en.html</a>
+専用ページ: <a href="http://jrf.cocolog-nifty.com/archive/pp-interrupter/README_ja.html" class="ext-link">http://jrf.cocolog-nifty.com/archive/pp-interrupter/README_ja.html</a>
+それ専用のサポートページ: <a href="../../../articles/2017/12/software_88646059.html" class="int-link" title="PP Interrupter Lite: GET をブロック">http://jrf.cocolog-nifty.com/software/2017/12/post-1.html</a>
+PP Authorizer: <a href="http://jrf.cocolog-nifty.com/archive/pp-authorizer/README_ja.html" class="ext-link">http://jrf.cocolog-nifty.com/archive/pp-authorizer/README_ja.html</a>
+pp-interrupter.zip: <a href="https://www.sugarsync.com/pf/D252372_79_67888824567" class="ext-link">https://www.sugarsync.com/pf/D252372_79_67888824567</a>
+GitHub - JRF-2018/pp-interrupter: <a href="https://github.com/JRF-2018/pp-interrupter" class="ext-link">https://github.com/JRF-2018/pp-interrupter</a>
+pp-interrupter-20171207.zip: <a href="http://jrf.cocolog-nifty.com/archive/pp-interrupter/pp-interrupter-20171207.zip" class="ext-link">http://jrf.cocolog-nifty.com/archive/pp-interrupter/pp-interrupter-20171207.zip</a>
+pp-interrupter-20171207-tmp.zip: <a href="http://jrf.cocolog-nifty.com/archive/pp-interrupter/pp-interrupter-20171207-tmp.zip" class="ext-link">http://jrf.cocolog-nifty.com/archive/pp-interrupter/pp-interrupter-20171207-tmp.zip</a>
+pp-interrupter-20171212.zip: <a href="http://jrf.cocolog-nifty.com/archive/pp-interrupter/pp-interrupter-20171212.zip" class="ext-link">http://jrf.cocolog-nifty.com/archive/pp-interrupter/pp-interrupter-20171212.zip</a>
+pp-interrupter-20171215.zip: <a href="http://jrf.cocolog-nifty.com/archive/pp-interrupter/pp-interrupter-20171215.zip" class="ext-link">http://jrf.cocolog-nifty.com/archive/pp-interrupter/pp-interrupter-20171215.zip</a>
+pp-interrupter-20171216.zip: <a href="http://jrf.cocolog-nifty.com/archive/pp-interrupter/pp-interrupter-20171216.zip" class="ext-link">http://jrf.cocolog-nifty.com/archive/pp-interrupter/pp-interrupter-20171216.zip</a>
+pp-interrupter-20171223.zip: <a href="http://jrf.cocolog-nifty.com/archive/pp-interrupter/pp-interrupter-20171223.zip" class="ext-link">http://jrf.cocolog-nifty.com/archive/pp-interrupter/pp-interrupter-20171223.zip</a>
+pp-interrupter-20171226.zip: <a href="http://jrf.cocolog-nifty.com/archive/pp-interrupter/pp-interrupter-20171226.zip" class="ext-link">http://jrf.cocolog-nifty.com/archive/pp-interrupter/pp-interrupter-20171226.zip</a></pre>
+
+
+<section class="backrefs" data-pagefind-ignore>
+<h2>後方参照 (3 件)</h2>
+<ul>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2017/12/software_88646059.html">PP Interrupter Lite: GET をブロック</a> <span class="backref-date">2017年12月27日 20:30:50</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2017/12/statuses_cocolog_88550595.html">ひとこと</a> <span class="backref-date">2017年12月08日</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2017/11/software_88492149.html">PP Authorizer: 匿名的ログイン・匿名的支払いをサポートするアドオン</a> <span class="backref-date">2017年11月27日 11:55:00</span></li>
+</ul>
+</section>
+
+</article>
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2017/12.html">2017年12月</a> | <a href="../../../index/software.html">ソフトウェア Tips</a></nav>
+</body>
+</html>

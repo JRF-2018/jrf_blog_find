@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>ひとこと - JRF Blog Archive</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2012/04.html">2012年04月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+<article data-pagefind-body>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[statuses] <span class="cocolog-id">cocolog:72344690</span></td></tr>
+<tr><th>セクション</th><td>JRF のひとこと</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2012/04.html">2012年04月15日</a></td></tr>
+<tr><th>元URL</th><td><a href="http://jrf.cocolog-nifty.com/statuses/2012/04/post-39db.html" class="ext-link"><span class="original-url">http://jrf.cocolog-nifty.com/statuses/2012/04/post-39db.html</span></a></td></tr>
+
+</table>
+</div>
+<h1>ひとこと</h1>
+<pre class="body">数日前から「ハードウェアの取り外し」をやったあとのバルーンヘルプ「'USB大容量...' をコンピューターから安全に取り外すことができます。」が表示されなくなった。その症状が出ないところまで復元しようとしてドツボった。
+JRF 2012年4月15日
+
+バルーンヘルプが表示されないことについてググると、それがレジストリを変更すれば解決するという意見を読んだ。
+
+《USBメモリなどを取り外した際の「～～は安全に取り外すことができます」が表示され... - Yahoo!知恵袋》
+<a href="http://detail.chiebukuro.yahoo.co.jp/qa/question_detail/q1225334262" class="ext-link">http://detail.chiebukuro.yahoo.co.jp/qa/question_detail/q1225334262</a>
+
+《WinXP: バルーンヘルプを消す方法 - seclan のほえほえルーム》
+<a href="http://seclan.dll.jp/dtdiary/2001/dt20011205.htm" class="ext-link">http://seclan.dll.jp/dtdiary/2001/dt20011205.htm</a>
+
+JRF 2012年4月15日
+
+↑によると、regedit で＞HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\Advance」の中に「EnableBalloonTips」＜があるので、その DWORD を 0 から 1 にすればいいとのことだった。
+
+見ると、確かに、それが 0 になっていて、いろいろハードウェア(ドライバ)のインストールを行ったから、それかな…と思って、システムの復元をとりあえず行った。
+
+JRF 2012年4月15日
+
+最後にもっともアヤしいハード(NDS バックアップツール)のインストールを行ったので、それより前に戻す…ダメ。
+
+<a href="../../../articles/2012/04/statuses_cocolog_72307205.html" class="int-link cocolog-id" title="ひとこと">[cocolog:72307205]</a> に書いた無線 LAN アダプタの導入と、SD カード＆スマートカードリーダーの導入をほぼ同時に行ったので、それより前に戻す…まだ、バルーンヘルプが回復しない。
+
+そして、↑の導入直前に Windows Update を見ると、ずっと前に買った Micrsoft マウスの IntelliPoint のドライバがあったので、それを入れたのだが、その前まで復元…。
+
+…あれ？変な表示になるんですが？
+
+JRF 2012年4月15日
+
+なんか、Windows が起動したあと、「ようこそ」画面のあと、デスクトップ(スタートメニューとか)が表示されない。「C:\ごみ箱が壊れています」と出て空にするか聞いてくる。それは声いので「いいえ」にする。すると、diskutil？ちょっと忘れたが何かのダイアログが複数出て、取り合えずそれは OK で消すしかなく、消したあとに「個人の設定を読み込んでます」とかいったウィンドウが、左上に出ている。…なのに、復元には成功というダイアログが出てる！明らかに失敗してるよ！
+
+JRF 2012年4月15日
+
+Ctrl+Alt+Delete からタスクマネージャを起動することはできて、見るとほとんどプログラムは起動してない。「個人の設定を読み込んでます」も見てると、いくつかの Windows 標準プログラム(IE とか)について設定の読み込みが終ったようで、ウィンドウが消えた。
+
+あとは、水色の背景にスタートメニューなどのエクスプローラバーもなく、タスクマネージャの画面のみ。…不吉すぎる。
+
+怖くなって、Ctr+Alt+Delete をして右下にあるシャットダウンボタンからシャットダウン。…正常に終了。
+
+JRF 2012年4月15日
+
+再起動時に F8 キーを起して、セーフモードで起動。ちゃんと起動する…かと思ったら、今度はスタートメニューとかは表示されているが、やっぱり、「C:\ごみ箱が壊れています」のエラーが出る。怖いのでそれは「いいえ」で閉じておく。でも、そのせいか、スタートメニューはあるのに、バーのフォルダボタンをクリックしてもエクスプローラが C: が壊れてるか権限がないみたいなことをぬかしやがる。
+
+JRF 2012年4月15日
+
+でも、コントロールパネルは正常に起動して、そこからシステムの復元を選ぶ。直前と同様に、IntelliPoint の前に指定する。…しばらくして「システムの復元中に不明なエラーが発生しました (0x8000ffff)」と表示。…うわっ、これってメチャメチャやばい？
+
+JRF 2012年4月15日
+
+祈るような気持ちで、もう一度システムの復元を選ぶ。ただし、どうせ最初の問題が解決しないんだからということで復元操作をやる前のところへダメモトで復元させることにした。…おおっ、成功!?
+
+JRF 2012年4月15日
+
+再起動すると…おお、まともに起動している、アクセスポイントもドライバが導入された状態になってる。
+
+…そして、なぜかバルーンヘルプも復活していた。…なして??
+
+JRF 2012年4月15日
+
+typo 「声い」→「怖い」。
+
+JRF 2012年4月15日</pre>
+
+
+<section class="backrefs" data-pagefind-ignore>
+<h2>後方参照 (1 件)</h2>
+<ul>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2012/04/statuses_cocolog_72307205.html">ひとこと</a> <span class="backref-date">2012年04月12日</span></li>
+</ul>
+</section>
+
+</article>
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2012/04.html">2012年04月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+</body>
+</html>

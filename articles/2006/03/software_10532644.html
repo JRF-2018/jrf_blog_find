@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>Mew でパスワード入力時 C-g を押しても止まってくれない - JRF Blog Archive</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2006/03.html">2006年03月</a> | <a href="../../../index/software.html">ソフトウェア Tips</a></nav>
+<article data-pagefind-body>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[software] <span class="cocolog-id">cocolog:10532644</span></td></tr>
+<tr><th>セクション</th><td>JRF のソフトウェア Tips</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2006/03.html">2006年03月15日 13:36:57</a></td></tr>
+<tr><th>元URL</th><td><a href="http://jrf.cocolog-nifty.com/software/2006/03/post_3.html" class="ext-link"><span class="original-url">http://jrf.cocolog-nifty.com/software/2006/03/post_3.html</span></a></td></tr>
+<tr><th>タグ</th><td>[Emacs/Meadow]</td></tr>
+</table>
+</div>
+<h1>Mew でパスワード入力時 C-g を押しても止まってくれない</h1>
+<pre class="body">普通 Mew の Summary では 'i' [mew-summary-retrieve] を押したあと、パスワードの入力を求められる。私は複数の case を使い分けているのでこの入力を'C-g' [keyboard-quit] で止めようとすることがしばしばあるが、残念ながら止まってくれない。
+
+特に今の Mew は  +queue を flush する際に draft の case を使ってくれないので、case ごとに SMTP サーバを切り換えたりする私にとっては、'C-g' で +queue が flush されるのを阻止できないのが非常に不満だった。
+
+この原因の一つは、Mew が inhibit-quit を真にして他のバッファでエディット中に'C-g' が押されてもバックグラウンドプロセスが影響を受けないようにしていることにある。mew-read-passwd を使うときには一時的に inhibit-quit を nil にして 'C-g' を使えるようにしているのだが、その返り値が 'C-g' を押された結果の空文字列であったとしても、その後の関数内で処理を怠っているのだ。
+
+原因のもう一つは、flush が処理が完了してなかろうとも実行されてしまうことにある。
+
+そこで、少しダーティだが、mew-read-passwd に advice して 'C-g' が押されているかもしれないなら大域脱出し、process 終了後の hook を使い、処理が完了していなければflush しないようにした。以下のようにすれば良いようだ。
+
+;; パスワードが入力されなかった場合、+inbox フォルダのプロセスを kill し、
+;; エラーを signal する。
+(defadvice mew-read-passwd
+    (around mew-read-passwd-enable-quit (prompt) activate)
+    (let ((pass ad-do-it))
+      (when (or (null pass) (string= pass &quot;&quot;))
+        (save-excursion
+          (set-buffer (mew-inbox-folder))
+          (when mew-summary-buffer-process
+            (mew-summary-kill-subprocess)))
+        (error &quot;Empty Password or Keyboard quit.&quot;))))
+        
+;; 実行時スコープが甘い Lisp だからこそできる荒業
+(add-hook 'mew-pop-sentinel-hook
+            (lambda ()
+              (if (or error (not done))
+                  (setq flush nil))))
+                  
+副作用としてパスワードに空文字列が使えなくなるが、多くの場合問題ないものと思う。
+
+更新：2006-03-15
+初公開：2006年03月15日 13:37:02
+最新版：2006年03月18日 10:53:18</pre>
+<details class="trackbacks" data-pagefind-ignore><summary>Trackbacks (2 件)</summary><pre>
+Trackbacks:
+
+《<a href="http://hhh.tn.st/gogo/AV/AV050513201005.html">ＭＥＷ</a>》 from AVの
+ＭＥＷ 
+
+受信： 2006-04-04 02:21:41 (JST)
+
+
+《<a href="http://jrf.cocolog-nifty.com/column/2006/02/post_20.html">このサイトの参考文献とリンク、トラックバックとコメントについて</a>》 from JRF の私見：雑記
+ このサイトの管理について主に外部との連携に関するポリシーを述べます。 
+
+受信： 2006-04-04 10:24:36 (JST)
+
+
+Links:
+
+Mew: http://www.mew.org/
+
+
+
+</pre></details>
+
+</article>
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2006/03.html">2006年03月</a> | <a href="../../../index/software.html">ソフトウェア Tips</a></nav>
+</body>
+</html>

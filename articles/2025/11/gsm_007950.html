@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>共有メモ - JRF Blog Archive</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2025/11.html">2025年11月</a> | <a href="../../../index/gsm.html">共有メモ</a></nav>
+<article data-pagefind-body>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[gsm] 2025-11-11T17:13:29Z</td></tr>
+<tr><th>セクション</th><td>グローバル共有メモ</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2025/11.html">2025-11-11T17:13:29Z</a></td></tr>
+<tr><th>元URL</th><td>(URLなし)</td></tr>
+
+</table>
+</div>
+<h1>共有メモ</h1>
+<pre class="body">jrf&gt; 「「多層目的＝アテンション」を確かめる二足歩行の実験 その4」を行った。起立も同時に学ばせることで歩行を安定化することに成功した。下層目的でバランスを取ることが学習されたからであろう。
+
+《humanoid_nested_attention_dt_4.ipynb - Colab》  
+<a href="https://colab.research.google.com/drive/1E4tYAkDW5L_TctiKfGReYCCOOt3jJv0n?hl=ja#scrollTo=qPjZMvYxeSJ2" class="ext-link">https://colab.research.google.com/drive/1E4tYAkDW5L_TctiKfGReYCCOOt3jJv0n?hl=ja#scrollTo=qPjZMvYxeSJ2</a>
+
+……。
+
+その4 で何が変わったか。
+
+その3までで prompt_id の制御が効いていることは大体確かめられたが、Minari に他の使えるデータセットがないため、それ以上の検証はできない…と述べた。しかし、それは誤解だった。
+
+Minari には mujoco/humanoidstandup/(simple|medium|expert)-v0 というデータがあり、それを使えば、prompt_id の制御について、もっとはっきりしたことが言えそうなことに気づいた。前はその場合の開始が寝た状態なので、データが共存できないと私が誤解していたのだ。Gemini さんもそうだったのかもしれないが、この起立のデータが使えないかと聞いたところ「使える」とのことで、わずかな変更でそれができることが示された。
+
+そうして実験した結果、確かに prompt_id の制御は効いていることがわかった。
+
+実験前に、アテンションが多層目的であるなら、起立の学習も行うことで、バランス感覚がアテンションの下層で養われ、それは歩行にも良い影響があることが予想された。
+
+そして、確かにそのような実験結果が出たようだ。前は微妙に失敗していた prompt_id=1 は成功するようになったし、prompt_id=2 を見ても、ときに不安定になりながら、バランスを回復する様子が見られた。不安定になったのは、prompt_id=3 の起立を学んだため、逆に歩行専心より少し不安定になったのだと解釈できる。
+
+結果的に prompt_id=1 と prompt_id=2 がほぼ変わらないようになってしまったが、今回は許容できる結果だと思われる。
+
+問題の prompt_id=3 の起立は、ただ、完全な起立にはならなかった。これはどうも学習データそのものが完全な起立にはならないようだ。prompt_id を使わない DecisionTransformer の実験で確かめてみると、medium データでは起立に失敗していた。ただ、その場合の起立の試みは、今回の prompt_id=3 よりも勢いがあった。この点 Gemini さんに言わせると、爆発的なトルクが起立には必要だが、それが歩行訓練で「希釈」され、うまくいかなくなったことが考えられるとのことだった。
+
+ただ、「希釈」もある程度想定内であり、prompt_id で分ける実験そのものは成功したと私は解釈する。もちろん、n=1 とか 2 で統計的にちゃんとした結果ではないけれども。
+
+……。
+
+今後の課題。
+
+おもしろい実験が思いついたのでそれを近々やる予定。成功するかはわからないが、失敗したとしてもアイデアは発表したいので、公開することになると思う。それをお楽しみに…ということで。</pre>
+
+
+</article>
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2025/11.html">2025年11月</a> | <a href="../../../index/gsm.html">共有メモ</a></nav>
+</body>
+</html>

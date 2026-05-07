@@ -1,0 +1,42 @@
+\documentclass{article}
+\usepackage[dvips,dvipsnames]{color}
+\usepackage[leqno]{amsmath}
+\usepackage{amsfonts,amssymb}
+\usepackage{txfonts}
+
+\pagestyle{empty}
+%\pagecolor[gray]{0.75}
+%\pagecolor[rgb]{0.80 0.20 0.20}
+%\pagecolor[named]{Gray}
+\makeatletter
+\newcommand{\deftheequation}{%
+  \ifx\ID\@empty\relax\else
+  \@ifundefined{@equation@\thepage @single}%
+      {\renewcommand{\theequation}{\ID--\arabic{equation}}}%
+      {\renewcommand{\theequation}{\ID}}%
+  \fi
+}
+\newcommand{\@setequationsingle}[1]{%
+ \expandafter\xdef\csname @equation@#1@single\endcsname{\@ne}%
+}
+\newcommand{\refreshequation}{%
+  \ifnum\c@equation=\@ne
+    \protected@write\@auxout{}%
+      {\string\@setequationsingle{\thepage}}%
+  \fi
+  \setcounter{equation}{\z@}%
+}
+
+\makeatother
+\begin{document}
+
+\def\ID{}%
+%\def\BLOGSET{} % Not supported yet.
+%\def\INDENT{} % Not supported yet.
+\def\ISINLINE{1}%
+\deftheequation
+テスト$2\pi \times e$
+\refreshequation
+% \newpage (automatically inserted)
+
+\end{document}

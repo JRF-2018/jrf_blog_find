@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>共有メモ - JRF Blog Archive</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2021/09.html">2021年09月</a> | <a href="../../../index/gsm.html">共有メモ</a></nav>
+<article data-pagefind-body>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[gsm] 2021-09-09T22:07:22Z</td></tr>
+<tr><th>セクション</th><td>グローバル共有メモ</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2021/09.html">2021-09-09T22:07:22Z</a></td></tr>
+<tr><th>元URL</th><td>(URLなし)</td></tr>
+
+</table>
+</div>
+<h1>共有メモ</h1>
+<pre class="body">jrf&gt; [仏教の最適化プログラムの続き。]
+
+さて、これまで取ったログの取り直しの続き。まずは mwarfpr から。
+
+run_simbdp3.sh mwarfpr 10 -L -t 360 --invasion-average-term-min=60 --priests-rate-max=0.005 --priests-rate-min=0.005
+
+python plot_logs.py normal mwar mwarfpr -p AccDeath -o fig-20210910_01.png
+python plot_logs.py normal mwar mwarfpr -p AccAbortion -o fig-20210910_02.png
+python plot_logs.py normal mwar mwarfpr -p Education -o fig-20210910_03.png
+python plot_logs.py normal mwar mwarfpr -p Power -o fig-20210910_04.png
+
+《グラフ集: 2021-09-06 から - Issue #2 - JRF-2018/simbd》  
+<a href="https://github.com/JRF-2018/simbd/issues/2" class="ext-link">https://github.com/JRF-2018/simbd/issues/2</a>
+
+前は mwar と mwarfpr に差が出なかったのに、今回はかなり差が出ている。くじ運の問題だろうか。mwarfpr、AccDeath は予定通り上、AccAbortion は予定通り下、Education は予定通り変化が少ない。そのわりに、Power はなぜか mwarfpr が最後一番良いという結果になって、この理由がわからない。戦争で疲弊したにもかかわらず、political_hating に soothe がかかったためそれが国力にプラスの影響を及ぼしたとかなんだろうか？</pre>
+
+
+</article>
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2021/09.html">2021年09月</a> | <a href="../../../index/gsm.html">共有メモ</a></nav>
+</body>
+</html>

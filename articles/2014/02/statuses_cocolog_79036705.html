@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>ひとこと - JRF Blog Archive</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2014/02.html">2014年02月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+<article data-pagefind-body>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[statuses] <span class="cocolog-id">cocolog:79036705</span></td></tr>
+<tr><th>セクション</th><td>JRF のひとこと</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2014/02.html">2014年02月24日</a></td></tr>
+<tr><th>元URL</th><td><a href="http://jrf.cocolog-nifty.com/statuses/2014/02/javas.html" class="ext-link"><span class="original-url">http://jrf.cocolog-nifty.com/statuses/2014/02/javas.html</span></a></td></tr>
+
+</table>
+</div>
+<h1>ひとこと</h1>
+<pre class="body">JavaScirpt 内でも password とかは参照できないようにするべきでは？File (Reader) API がなければ、ファイルの操作は JavaScript からは難しかったんで、それで代替できたかもしれないけど、すでに暗号化したのを入力させるのもなんかね…。
+JRF 2014年2月24日
+
+欲しいのは、form は、そのままサーバーに送るしかない…といった感じ…または、送るフォームのフォーマットは、ヘッダに指定していて、ブラウザが GET した段階で指定があるものしかいじれず、そのフォーマットにしたがってサーバーに送るしかない… Ajax でも。って感じ。
+
+JRF 2014年2月24日
+
+以前 simple_market_0.pl (↓)を作ったとき、オブジェクトのコピーを作ってそれをいじらせ、いじらせたコピーの情報のみをピックアップして使ってカプセル化…みたいなことをやったんだけど、そういうのができないか？ …つまり、JSActions 内(とか Greasemonkey)でも、dom 操作の前に全 dom をコピーしてしまって、password とかの textContent とかを削り、コピー後のやつは、そのまま動くんじゃなく、あとから必要なものだけを元の dom に代入しなおす感じかな？
+
+JRF 2014年2月24日
+
+《外作用的簡易経済シミュレーションのアイデアと Perl による実装》
+<a href="../../../articles/2011/01/society_66612185.html" class="int-link" title="外作用的簡易経済シミュレーションのアイデアと Perl による実装">http://jrf.cocolog-nifty.com/society/2011/01/post.html</a>
+
+JRF 2014年2月24日
+
+もちろん、それだと速度的に遅くなりすぎるから、Firefox の大元でそういうのに相当する機能を提供して、それを Overlay 系のスクリプトエンジンが使う…って感じにできれば一番いいんだろうけど。(でも、確かこの辺、Firefox のバージョンアップで Greasemonkey まわりがメチャメチャになったりしたこととかあったから、何か対策はすでにあるにはあるんだろうけど…。)
+
+JRF 2014年2月24日
+
+<a href="../../../articles/2014/01/statuses_cocolog_78739712.html" class="int-link cocolog-id" title="ひとこと">[cocolog:78739712]</a> とかで JSActions で私がいじったセレクションに関する部分は、実はそういう拡張が来ることを想定して、password とかのセレクションは最初から見ないようにしてあった。
+
+《JSActions - + HideAway Firefox +》
+<a href="http://hideaway.cc/FirefoxOLD/wiki.cgi?page=JSActions" class="ext-link">http://hideaway.cc/FirefoxOLD/wiki.cgi?page=JSActions</a>
+
+《Greasemonkey - Greasespot》
+<a href="../../../articles/2012/05/hbm_01572.html" class="int-link" title="Greasespot">http://www.greasespot.net/</a>
+
+JRF 2014年2月24日
+
+パスワードが簡単になり過ぎないようなチェックぐらいサーバーに渡す前にしたいというニーズはわかるんだけど、でも、それは新しく設定するときだけなんだから、スタートアップ企業みたいに最初にユーザー数を稼ぎたいけどサーバーが用意できないという状況以外なら、いちいちその部分もサーバーに問い合わせてチェックしたほうがいいんじゃないかな？
+
+JRF 2014年2月24日
+
+……。
+
+昔のブラウザに対応するのは、サーバーレベルでは、そのブラウザが対応しているか JavaScript でチェックしてから、もうちょっと新しいバージョン使えと警告するなりなんなりすればいい。
+
+拡張入れさせるとか…。
+
+あ、それだったら、逆転の発想で上のような機構を Greasemonkey とかで実現すればいいのかな？つまり、ここがパスワードフォルダーというクラス指定された span 要素があると、サーバー管理者がユーザーにインストールさせた拡張(Greasemonkey スクリプト)が、そこにパスワードウィジェットをプレースする…と。
+
+JRF 2014年2月24日
+
+すると、Greasemonkey の内容は、クライアント側の JavaScript からは見れないから、上の目的は達成できたようなもの…。サーバーへの送信も実は Greasemonkey 側がやってる…と。
+
+…でも、「インストール」が必要なんだよね。No_Ad_URL (<a href="../../../articles/2013/06/statuses_cocolog_76692463.html" class="int-link cocolog-id" title="ひとこと">[cocolog:76692463]</a>)みたいにそういうフレームワーク作っちゃうべきなのかな…。またそんな(セキュリティ的)穴堀りまで私がやっちゃうのか…？
+
+JRF 2014年2月24日</pre>
+
+
+<section class="backrefs" data-pagefind-ignore>
+<h2>後方参照 (2 件)</h2>
+<ul>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2014/01/statuses_cocolog_78739712.html">ひとこと</a> <span class="backref-date">2014年01月21日</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2013/06/statuses_cocolog_76692463.html">ひとこと</a> <span class="backref-date">2013年06月04日</span></li>
+</ul>
+</section>
+
+</article>
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2014/02.html">2014年02月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+</body>
+</html>

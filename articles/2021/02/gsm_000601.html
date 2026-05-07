@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>共有メモ - JRF Blog Archive</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2021/02.html">2021年02月</a> | <a href="../../../index/gsm.html">共有メモ</a></nav>
+<article data-pagefind-body>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[gsm] 2021-02-07T23:22:23Z</td></tr>
+<tr><th>セクション</th><td>グローバル共有メモ</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2021/02.html">2021-02-07T23:22:23Z</a></td></tr>
+<tr><th>元URL</th><td>(URLなし)</td></tr>
+
+</table>
+</div>
+<h1>共有メモ</h1>
+<pre class="body">jrf&gt; Python の型システム… typing 関連は、まだ私には使えなさそうだな。
+
+Haskell とか SML とか使ったことがあるから、型システム自体はわかるんだが、それと Python との組み合わせがどうも気持ち悪い。また、今 Python のバージョン 3.7 系を使っているのだけど、3.9 系あたりになるとかなり違って、発展途上で、日本語サイトとかがあまり役に立たない感じだし…。
+
+↓の Frozen を使い出してるけど、
+
+《How to freeze Python classes « Python recipes « ActiveState Code》  
+<a href="https://code.activestate.com/recipes/252158-how-to-freeze-python-classes/" class="ext-link">https://code.activestate.com/recipes/252158-how-to-freeze-python-classes/</a>
+
+frozen attribute をググると dataclass を使え…っぽくサジェストされる。
+
+これを dataclass で書けば…
+
+@dataclass(frozen=True)
+Class Economy:
+    x: int = 0
+    people: list[Person] = []
+
+…みたいなことになるのかな…だったらいいな…と思って試すと、3.7系だと list が typing.List でないといけないとかある上に、これは 3.9系でも初期値に [] は使えないらしい。代わりに dataclasses.field(default_factory=list) を使えということらしいんだけど、それをしても、economy.people に Person のリストを代入しようとするとダメなんだよね(.append とかなら OK)。実は economy.x への代入もできないので、上の Frozen とは目的が違う感じ。
+
+「気持ち悪い」というのはイイワケで、要は老いた私には難しくて使えないというのが正直なところなのかな…。</pre>
+
+
+</article>
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2021/02.html">2021年02月</a> | <a href="../../../index/gsm.html">共有メモ</a></nav>
+</body>
+</html>

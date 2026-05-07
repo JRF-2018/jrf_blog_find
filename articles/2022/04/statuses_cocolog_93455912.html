@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>ひとこと - JRF Blog Archive</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2022/04.html">2022年04月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+<article data-pagefind-body>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[statuses] <span class="cocolog-id">cocolog:93455912</span></td></tr>
+<tr><th>セクション</th><td>JRF のひとこと</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2022/04.html">2022年04月26日</a></td></tr>
+<tr><th>元URL</th><td><a href="http://jrf.cocolog-nifty.com/statuses/2022/04/post-675aa7.html" class="ext-link"><span class="original-url">http://jrf.cocolog-nifty.com/statuses/2022/04/post-675aa7.html</span></a></td></tr>
+
+</table>
+</div>
+<h1>ひとこと</h1>
+<pre class="body">村田安雄『動的経済システムの最適制御』に目を通した。リカッチ方程式とかシュタッケルベルク解とか、離散型最大原理・離散型ハミルトニアンなど様々な概念が出てきて、それをググったりすることでいろいろ知ることができた。
+JRF 2022年4月26日
+
+『動的経済システムの最適制御』(村田 安雄 著, 関西大学出版局, 1998年)
+<a href="https://www.amazon.co.jp/dp/4873542634" class="ext-link">https://www.amazon.co.jp/dp/4873542634</a>
+<a href="https://7net.omni7.jp/detail/1101522662" class="ext-link">https://7net.omni7.jp/detail/1101522662</a>
+
+JRF 2022年4月26日
+
+……。
+
+○ 2022-04-25T17:04:49Z
+
+村田安雄『動的経済システムの最適制御』に目を通した。
+
+様々な概念が説明なしに出てくるため、ネットのない時代はこれを読み切ることは超困難だったと思われる。しかし、ググれば説明の出てくる現代においては、むしろ、様々な概念を知るチャンスとなる側面があり、ググったあと読めばそれなりにわかるような書きぶりであり、興味深く目を通すことができた。
+
+JRF 2022年4月26日
+
+しかし、あくまでも「目を通した」だけで、「読んだ」と言い難いのは数学書を読む私のいつものこと。式の導出とかをやったわけではなく、後半のシュタッケルベルク解とかのところは、何をやってるかも正直理解できてない。
+
+JRF 2022年4月26日
+
+出てきた概念を列挙すると、南裕樹『Python による制御工学入門』(<a href="../../../articles/2022/04/statuses_cocolog_93421636.html" class="int-link cocolog-id" title="ひとこと">[cocolog:93421636]</a>)に出てきた (行列)リカッチ(Ricatti)(差分)方程式(p.53)なんかはその本にはなかった導出まで書かれていたし、オイラー方程式(p.92)とか、クルーノー＝ナッシュ均衡(p.173)やシュタッケルベルク解(p.173)とか、行列が非特異(p.286)とか。このうちオイラー方程式はググっても何をそういうのかよくわからなかったが。
+
+JRF 2022年4月26日
+
+ベルマン方程式に確率を持ち込むところ(p.42 あたり)は、強化学習でも出てきた気がするが、確率計画法とかにつながるのだろうか…とか思って読んだ。
+
+JRF 2022年4月26日
+
+伴 金美『マクロ計量モデル分析』(有斐閣, 1991年)に目を通そうとしたとき( <a href="../../../articles/2020/10/gsm_000277.html" class="int-link gsm-tsref" title="jrf&gt; 伴 金美『マクロ計量モデル分析』(有斐閣 1991年)の第1章をとりあ">>>2020-10-14T12:04:19Z</a> )、「離散型のハミルトニアン」って何？…と思ったが、この本にはそれらしきものが出ていた。p.118 のホルムズ(Holmes 1968)の離散型最大原理というのがそれ。ただし、ハミルトニアンは出てくるが、それを直接にいじる形ではないが、ラグランジュ関数からハミルトニアンがすぐに出る感じ。ググっても見つからないので、これは必要な人がいるのではいか。
+
+JRF 2022年4月26日
+
+ハッとする記述としては、国内財への需要を説明する(p.202)のところ＞実質為替レートの下落(r_t の上昇)、実質国内利子率の低下、および外国産出水準の上昇によって国内財需要は増加する。＜という文。為替レートと利子率はわかるが、外国産出水準が影響するというのが意外だった。つまり、海外で売れてるようなものが国内でも欲しがられるということだろうか。ひょっとしてここがコロナ後に日本経済が問題となっているところではないか…とか思った。
+
+JRF 2022年4月26日
+
+ところで、この本では最適化を扱って、ラグランジアンなどを多用する。しかし、今の時代、最適化は Python で scipy.optimize.minimize (SLSQP?)とかを使えばできることである。この scipy.optimize.minimize を使ったものとこの本のラグランジアンを使った結果が一致するのか、興味が沸く。
+
+ものによっては変数が多過ぎ、scipy.optimize.minimize は使えないかもしれないが、使えるものもあるだろう。
+
+JRF 2022年4月26日
+
+また、式の導出について、SymPy を使って検算できないかと思う。ついさっき、 <a href="../../../articles/2022/04/statuses_cocolog_93455907.html" class="int-link cocolog-id" title="ひとこと">[cocolog:93455907]</a> に書いたような方法を使えば、行列計算しているところも検算できるのではないか。
+
+このあたり、少し時間を作ってやってみたいが…、先に別の本を読むかもしれない。
+
+JRF 2022年4月26日
+
+……。
+
+追記。
+
+グラフがあるやつについて検算的なものをどうすればいいのだろうと眺めていたら、第4章、A_T を A_22 から計算する手段が書かれてないじゃないか！ 私が手計算でそれを求めるのは不可能そうなので、私がやるとすれば、A_22 に相当する A_T を root finding とかしないとダメか？
+
+JRF 2022年4月26日
+
+……。
+
+……。
+
+追記。
+
+《<a href="../../../articles/2022/05/statuses_cocolog_93495591.html" class="int-link cocolog-id" title="ひとこと">[cocolog:93495591]</a> 村田安雄『動的経済システムの最適制御』の検算＆シミュレーションを少し行った。今のところ第2章、第4章、第3章2節b の検算のみで、Google Colab で Python のノートブックを作成して行った。》  
+<a href="../../../articles/2022/05/statuses_cocolog_93495591.html" class="int-link" title="ひとこと">http://jrf.cocolog-nifty.com/statuses/2022/05/post-3b108d.html</a>
+
+JRF 2022年5月15日
+
+実際に作ったものに直接行くのは↓から。
+
+《JRF-2018/economy_control: 村田安雄『動的経済システムの最適制御』の検算＆シミュレーション。》  
+<a href="https://github.com/JRF-2018/economy_control" class="ext-link">https://github.com/JRF-2018/economy_control</a>
+
+JRF 2022年5月15日</pre>
+
+
+<section class="backrefs" data-pagefind-ignore>
+<h2>後方参照 (4 件)</h2>
+<ul>
+<li><span class="backref-label">[cocolog:93455912]参照</span> <a href="../../../articles/2022/06/statuses_cocolog_93557974.html">ひとこと</a> <span class="backref-date">2022年06月15日</span></li>
+<li><span class="backref-label">[cocolog:93455912]参照</span> <a href="../../../articles/2022/06/statuses_cocolog_93532295.html">ひとこと</a> <span class="backref-date">2022年06月02日</span></li>
+<li><span class="backref-label">[cocolog:93455912]参照</span> <a href="../../../articles/2022/05/gsm_002183.html">共有メモ</a> <span class="backref-date">2022-05-24T10:54:22Z</span></li>
+<li><span class="backref-label">[cocolog:93455912]参照</span> <a href="../../../articles/2022/05/statuses_cocolog_93495591.html">ひとこと</a> <span class="backref-date">2022年05月15日</span></li>
+</ul>
+</section>
+
+</article>
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2022/04.html">2022年04月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+</body>
+</html>

@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>ひとこと - JRF Blog Archive</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2025/06.html">2025年06月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+<article data-pagefind-body>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[statuses] <span class="cocolog-id">cocolog:95490652</span></td></tr>
+<tr><th>セクション</th><td>JRF のひとこと</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2025/06.html">2025年06月13日</a></td></tr>
+<tr><th>元URL</th><td><a href="http://jrf.cocolog-nifty.com/statuses/2025/06/post-065a8c.html" class="ext-link"><span class="original-url">http://jrf.cocolog-nifty.com/statuses/2025/06/post-065a8c.html</span></a></td></tr>
+
+</table>
+</div>
+<h1>ひとこと</h1>
+<pre class="body">jrf_pdb_agent_lib の姉妹品として simplest-pal コマンドを作った。simplest-pal は、PDB (Python Debugger) を AI でラップする場合の「AI」の最もシンプルな実装。
+JRF 2025年6月13日
+
+simplest-pal は、`pal.do` に current_code が指定されていれば `c` (continue) し、それ以外なら、単にデバッガの制御に移るだけのプログラム。
+
+`--pal-quit-on-stop` というオプションもあり、デバッガに制御が移る必要が出てきたらそこで強制終了してしまうこともできる。その後、出力したログを本物の AI が調べるみたいなワークフローが考えられる。
+
+JRF 2025年6月13日
+
+《JRF-2018/simplest-pal - The Simplest PDB Automation Layer for AI-Driven Debugging - GitHub》  
+<a href="https://github.com/JRF-2018/simplest-pal" class="ext-link">https://github.com/JRF-2018/simplest-pal</a>
+
+「使える実装」になっているとは思うが、「コンセプト実装」レベルであることは認めざるを得ない。
+
+jrf_pdb_agent_lib ともども、AI の発展に役立てばよいのだが…。
+
+JRF 2025年6月13日
+
+……。
+
+基本は Gemini 2.5 Flash さんに作ってもらったのだが、パッと出しはかなりバギーで、けっこう指示を出す必要があった。
+
+特に Ctrl-c 周りでは苦戦して、Claude さんや ChatGPT さんにも相談したのだが解決しなかったところ Gemini 2.5 Pro さんがなんとか、解決してくれた。それまでスレッドを使った実装だったけど、スレッドレスな見通しの良い実装になった。
+
+JRF 2025年6月13日
+
+その後、Gemini 2.5 Flash さんに Gemini 2.5 Pro さんの作ったコードを渡して、改善してもらおうとしたのだが、かたくなに自分のスレッドありのコードにこだわったため、会話をいったん打ち切って、しきり直しする必要があった。
+
+しきり直しの後は、Flash さんも存分に働いてくれて、README.md の作成などもやってくれた。
+
+いちおう、今回は特に、私のアイデアや苦労も結構入っている感じ。
+
+JRF 2025年6月13日
+
+あと、途中、私が理想として、system 関数を使って python -m pdb を呼ぶような実装を頼んだのだが、(私が使っている) Windows の問題で、うまくいかず、Flash さんの初期構想のように、runpy を使う実装になった。
+
+JRF 2025年6月13日
+
+……。
+
+姉妹品 jrf_pdb_agent_lib の構想は↓にひとことがある。構想としては simplest-pal は jrf_pdb_agent_lib 構想の一部な感じ。
+
+JRF 2025年6月13日
+
+<a href="../../../articles/2025/05/statuses_cocolog_95466253.html" class="int-link cocolog-id" title="ひとこと">[cocolog:95466253]</a>(2025年5月)
+《AI エージェントはデバッガを好むのではないか？ AI 専用デバッガ、またはデバッガを使うことが前提の agent ライブラリ(Python モジュール)の登場が待たれる。… pdb_agent_lib 構想。 - JRF のひとこと》  
+<a href="../../../articles/2025/05/statuses_cocolog_95466253.html" class="int-link" title="ひとこと">http://jrf.cocolog-nifty.com/statuses/2025/05/post-617bf0.html</a>
+
+JRF 2025年6月13日
+
+GitHub は↓。
+
+《JRF-2018/jrf_pdb_agent_lib - A library for AI-driven debugging and human-AI collaboration using PDB. 》  
+<a href="https://github.com/JRF-2018/jrf_pdb_agent_lib" class="ext-link">https://github.com/JRF-2018/jrf_pdb_agent_lib</a>
+
+JRF 2025年6月13日
+
+……。
+
+simplest-pal。とりあえずバージョン 0.0.1 の段階は、いろいろ実験中な感じで、今はバージョン 0.0.2 になっている。
+
+JRF 2025年6月13日
+
+……。
+
+追記。
+
+更新: simplest-pal。バージョン 0.0.3。.apy に対応。example_*.py で textwrap.dedent を d_py として使用。将来を見越したコンセプト実装らしい変更かな。
+
+JRF 2025年6月14日
+
+.apy は AI Python または Agent Python の略として、AI エージェントが変更しながら作っていくことを想定。ただの Python コードではなく、simplest-pal のような AI ラップしたデバッガで実行されることを想定していることを示す拡張子。…としたい。
+
+JRF 2025年6月14日
+
+textwrap.dedent を d_py または d_md として使用するのは、次のような理由から。もし (jrf_)pdb_agent_lib が広く使われるようになるなら、current_code や order を dedent するのが普通になるのだと思うが、そのとき、読みやすいようにエディタでカラーがつくようになって欲しい。このとき dedent だけだとそれが示すのが何なのかわからない。そこで dedent を単に変名して d_py や d_md としてエディタに情報を渡すのを目的としている。
+
+JRF 2025年6月14日
+
+……。
+
+追記。
+
+更新: simplest-pal。バージョン 0.0.4。将来的に心配だった冗長な部分を除去。あと Gemini 2.5 Flash さんに頼んでコメントとメッセージの改善。
+
+JRF 2025年6月14日
+
+……。
+
+追記。
+
+更新: simplest-pal。バージョン 0.0.5。0.0.4 で削った部分に対応する冗長な部分をさらに除去。
+
+JRF 2025年6月14日
+
+……。
+
+追記。
+
+更新: simplest-pal。バージョン 0.0.6。冗長な部分をさらに除去。
+
+JRF 2025年6月15日
+
+……。
+
+追記。
+
+更新: simplest-pal。バージョン 0.0.7。冗長な部分を Gemini 2.5 Pro さんに手伝ってもらってさらに除去。
+
+JRF 2025年6月22日
+
+……。
+
+追記。
+
+更新: simplest-pal。バージョン 0.1.0。少し安定したと判断し、バージョンナンバーを上げただけのリリース。中身は 0.0.7 と同じ。
+
+JRF 2025年6月26日</pre>
+
+
+<section class="backrefs" data-pagefind-ignore>
+<h2>後方参照 (2 件)</h2>
+<ul>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2025/06/gsm_007149.html">共有メモ</a> <span class="backref-date">2025-06-13T10:14:13Z</span></li>
+<li><span class="backref-label">[cocolog:95490652]参照</span> <a href="../../../articles/2025/05/statuses_cocolog_95466253.html">ひとこと</a> <span class="backref-date">2025年05月28日</span></li>
+</ul>
+</section>
+
+</article>
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2025/06.html">2025年06月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+</body>
+</html>

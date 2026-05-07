@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>lwp-request のオプション -m を忘れて http://www.GET.com が表示されていた - JRF Blog Archive</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2006/02.html">2006年02月</a> | <a href="../../../index/software.html">ソフトウェア Tips</a></nav>
+<article data-pagefind-body>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[software] <span class="cocolog-id">cocolog:10125918</span></td></tr>
+<tr><th>セクション</th><td>JRF のソフトウェア Tips</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2006/02.html">2006年02月21日 04:31:05</a></td></tr>
+<tr><th>元URL</th><td><a href="http://jrf.cocolog-nifty.com/software/2006/02/post_15.html" class="ext-link"><span class="original-url">http://jrf.cocolog-nifty.com/software/2006/02/post_15.html</span></a></td></tr>
+<tr><th>タグ</th><td>[Perl] [HTML/XML/CSS]</td></tr>
+</table>
+</div>
+<h1>lwp-request のオプション -m を忘れて http://www.GET.com が表示されていた</h1>
+<pre class="body">さっき気付いた。ここに載っていた 'lwp-request GET' をそのまま使うと、何か変な HTML データが先に表示される。よく見ると、'lwp-request -m GET' じゃないとダメだった。
+
+参考に次のような感じになる。
+
+$ /usr/bin/lwp-request GET | head
+&lt;html&gt;
+&lt;head&gt;
+&lt;title&gt;Great Eastern Technology - Sun, Silicon Graphics, SGI, Sales, Repair, Maintenance and Alias/Wavefront 3D Animation and Graphics&lt;/title&gt;
+&lt;meta http-equiv=&quot;Content-Type&quot; content=&quot;text/html; charset=iso-8859-1&quot;&gt;
+&lt;META name=&quot;keywords&quot; value=&quot;Sun, Sun Microsystems, Sun Microsystems, SGI, Silicon Graphics, SGI
+Maintenance, Silicon Graphics Maintenance, Sell,
+Buy, Repair, Support, Maintenance Contract,
+Refurbished SGI, Rapid Prototyping, Rapid Prototype, ZCorp Printer, Alias, Alias/Wavefront, Maya, 3D
+Software, Network Services, System Integration,
+SGI Maintenance Training, Animation Software, 
+
+lwp-request 内で URI::Heuristic::uf_uri を使って GET を <a href="http://www.GET.com" class="ext-link">http://www.GET.com</a> に展開しているため、このようなことが起きている。
+
+さすがに GET を展開するのは、いくらなんでも要らんだろう。
+
+更新：06/02/21
+初公開：2006年02月21日 04:29:27</pre>
+
+
+</article>
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2006/02.html">2006年02月</a> | <a href="../../../index/software.html">ソフトウェア Tips</a></nav>
+</body>
+</html>

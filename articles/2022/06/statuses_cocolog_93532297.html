@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>ひとこと - JRF Blog Archive</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2022/06.html">2022年06月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+<article data-pagefind-body>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[statuses] <span class="cocolog-id">cocolog:93532297</span></td></tr>
+<tr><th>セクション</th><td>JRF のひとこと</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2022/06.html">2022年06月02日</a></td></tr>
+<tr><th>元URL</th><td><a href="http://jrf.cocolog-nifty.com/statuses/2022/06/post-3e0e5b.html" class="ext-link"><span class="original-url">http://jrf.cocolog-nifty.com/statuses/2022/06/post-3e0e5b.html</span></a></td></tr>
+
+</table>
+</div>
+<h1>ひとこと</h1>
+<pre class="body">資本家に有利すぎる財政モデルを批判する。蓮見 亮『動学マクロ経済学へのいざない』に目を通した。特にその第3章の財政モデルが資本税を否定し消費税を肯定するところに問題を感じたのでそれを批判する。
+JRF 2022年6月2日
+
+このページの主な目的はラムゼイモデルから発展した財政モデルの批判にあるが、それの説明が載ってるネタ本をまず紹介する。
+
+『動学マクロ経済学へのいざない』(蓮見 亮 著, 日本評論社, 2020年)
+<a href="https://www.amazon.co.jp/dp/453555949X" class="ext-link">https://www.amazon.co.jp/dp/453555949X</a>
+<a href="https://7net.omni7.jp/detail/1107082430" class="ext-link">https://7net.omni7.jp/detail/1107082430</a>
+
+作者の本のサポートページは↓。
+
+《dynamicmodels - Wiki》  
+<a href="https://www.rhasumi.net/wiki/wiki.cgi?page=dynamicmodels" class="ext-link">https://www.rhasumi.net/wiki/wiki.cgi?page=dynamicmodels</a>
+
+JRF 2022年6月2日
+
+この本では、微分・積分・行列・確率といったことまで説明しているが、それを学んだことがない者はたぶんこれだけでは理解不能だろう。しかし、それが分かってないテイで話が進むのでそれらが分かってる人にはわかりやすいのかな…と思う。
+
+わからない部分も結構あるので、「読んだ」というより「目を通した」というべきなのは数学の強い本に対する私のいつものスタンスだが、この本は割と「わかる」部分が多かったように思う。
+
+JRF 2022年6月2日
+
+MCMC 法とかも説明されていて私は JAGS を学んだことがあった(<a href="../../../articles/2020/05/statuses_cocolog_91888253.html" class="int-link cocolog-id" title="ひとこと">[cocolog:91888253]</a>)からイメージがわかったものの、普通は理解できないのではないか。ただ、最近学んだカルマンフィルタのアイデア(参: <a href="../../../articles/2022/06/statuses_cocolog_93532295.html" class="int-link cocolog-id" title="ひとこと">[cocolog:93532295]</a>)と MCMC の合わせわざはスゴイと思った。この第8章は Dynare ではなく JAGS などを用いて、自分でプログラムできれば…と思った。いつかやりたい。
+
+JRF 2022年6月2日
+
+「どうしてもわからない」とすぐわかったのが、p.128「コミットメント型金融政策」のところ、「θ_{t+j} = 0 を用い、ψ_{t-1} = 0」のところがわからなかった。ラグランジアンからこれが出るという書き振りだが、他は「わかる」のにこれはどうしてそうなるのかがわからなかった。t-1 の時のことってどこから出るんだ？
+
+JRF 2022年6月2日
+
+あと「わかった」けど、納得しづらいのが、p.84 ぐらいの 5.29 の導出における積分の偏微分。p.85 で説明される前から、まぁ、これまでのラグランジアンのパターンからそういうことなのかな…と類推はできたが、本当にそれをして良いかは疑問を持たざるを得ない。ただ、物理学でこれまで偏微分なのに理解できない式があった気がするが、あれはこれのような話だったのかな…と思った。一つエラくなった気はする。
+
+JRF 2022年6月2日
+
+あと、「それでいいの？」ってのは、p.72 の図4.2 の L_t について、これマイナスになってるけど、これってアリなんだろうか？ マイナスの労働…って定義が別にないと意味不明のように思うのだけど…。
+
+JRF 2022年6月2日
+
+……。
+
+さて本題の第3章の財政モデルの批判である。
+
+本では第3章の結論として次のように言われる…
+
+＞モデルによるシミュレーション結果は、税収が足りない場合に消費税と資本所得税という2種類の選択肢があったとき、総合的に判断して消費税率を引き上げて税収を確保するほうが望ましいという結論を示唆していると解釈すべきである。＜(p.61)
+
+これはモデルが恣意的なためそういう結論になったと私は主張する。
+
+JRF 2022年6月2日
+
+二つの方向がある。
+
+まず、(1) 消費税 τ_c は、物価の上昇を通じて、蓄積された資本の必要量を実質的に減らすのではないか。つまり、例えば Y_t を計算するときに、K_t は (1 + τ_c) ** b' で割る必要があるのではないか。これは結局、結論部において A := A/((1+τ_c) ** b) とすることに相当する。よって、K^* の式にも τ_c が含まれることになる。
+
+JRF 2022年6月2日
+
+そして (2) 個人の資本と国全体の資本を混同して K_t としているが、ならば、国費から投資がなされるときそれは個人の資本に含まれるべきではないか。私の論に都合がよいように、国費から τ_k * r_t * K_t よりも大きい γ_t * r_t * K_t (γ_t &gt; τ_k) が公共投資されたと考える。つまり、予算制約式 (3.2) は…
+
+JRF 2022年6月2日
+
+(3.2)の左辺 = (3.2)の右辺 + γ_t * r_t * K_t
+
+…と考える。これは結局、結論部において、τ_k := τ_k - γ とすることに相当する。よって、γ = τ_k とすれば、逆に K^* の式に τ_k が含まれないようにすることができる。
+
+JRF 2022年6月2日
+
+つまり、「資本税を取る以上に公共投資をしている限り、消費税を引き上げるほうが、更生は悪化する」と言えることになる。
+
+ただ、特に私の (2) は恣意的過ぎるように思えるかもしれない。予算制約には、消費も含まれているため、公共投資だけでなく全支出 g_t をむしろ足すべきではないか…と考えることのほうが自然に思える。
+
+JRF 2022年6月2日
+
+(3.2)の左辺 = (3.2)の右辺 + g_t
+
+…とすると、実はこれを整理すると、(2.28) 式のラムゼイモデルに戻ることになる。ここから、(2) は恣意的かもしれないが、そもそもの財政モデルが恣意的であったと私は考える。
+
+JRF 2022年6月2日
+
+……。
+
+第3章については検算を Python で行ってみた。その結果が↓であり、この「ひとこと」の続きなので、まず、↓はクリックして見ていただきたい。
+
+《蓮見 亮『動学マクロ経済学へのいざない』第3章「財政モデル: 税制と経済成長」の検算と批判 - dynamic_macro_economics_03.ipynb》  
+<a href="https://gist.github.com/JRF-2018/e59fff66621f93f4e5f832aef9922720" class="ext-link">https://gist.github.com/JRF-2018/e59fff66621f93f4e5f832aef9922720</a>
+
+JRF 2022年6月2日
+
+本の元のソースは↓にある。
+
+《dynamicmodels/Ramsey_tax.R at master - rhasumi/dynamicmodels》  
+<a href="https://github.com/rhasumi/dynamicmodels/blob/master/ch3/Ramsey_tax.R" class="ext-link">https://github.com/rhasumi/dynamicmodels/blob/master/ch3/Ramsey_tax.R</a>
+
+上の ipynb に書いたことを繰り返すが…。
+
+JRF 2022年6月2日
+
+ソースを読んではじめてわかったこととして、「t = 0 には定常状態にあって」…と書いているが、このとき定常状態からスタートするのは K_t のみで、C_t については、定常状態は無視して、C_{T+1} から逆算される C_1 を用いるということである。
+
+JRF 2022年6月2日
+
+思うのだが、モデルには「期待」が明示的にはないのにどうして「駆け込み需要」というものが起こるのか？ 単にたまたま などを設定した結果そうなっただけではないか。と考えて実験してみたところ、ほとんど「駆け込み需要」は見えないようにもなるが、しかし なにがしかの反応はあり、それがなだらかに効いているのはわかる。「期待」がなくても一期後の情報を含むので、それが累積的に効いてくることはあるといえるのかもしれない。…とわかった。
+
+JRF 2022年6月2日
+
+上の私の批判に関して数値例も計算している。b = 1 とすると、 τ_c と τ_k はどちらを上げるのがよいかは、 C_{T+1} を重視するか K_{T+1} を重視するかで違ってきそうで、どちらがいいとは言えない。…となった。
+
+JRF 2022年6月2日
+
+……。
+
+……。
+
+追記。
+
+第8章「DSGE モデルのパラメー推定」について「検算」を行った。
+
+本の著者は、MCMC 法を説明しながら、Dynare という経済モデル用のソフトを使ったが、私は、一般的なソフト… JAGS や Stan を使うことはできないのか？ …と考え、その疑問に自ら応えるべく PyStan や PyMC3 で実装した。なお、JAGS については、逆行列をとる際の制限が厳しく今回は実装にいたらなかった。
+
+JRF 2022年6月9日
+
+結果としては、特に ψ_y について、本では 3.137 であるのに対し、PyStan でも PyMC3 でも 0.19 ぐらいにしかならず、どうも私の実験は失敗していると判断せざるを得ないようだ。
+
+今回は、インストールやバージョンの違いに苦労した。
+
+JRF 2022年6月9日
+
+……。
+
+PyStan は PyMC3 をアップデートしたところでさっきまで動いていたのが動かなくなった。
+
+WARNING:pystan:MSVC compiler is not supported
+
+…というエラーが出る。ググってみると、distutils.cfg に mingw32 を使うよう設定すべきだとあるが、もともと install 時にそう設定されていた。そうであるにもかかわらずこのようなエラーが出た。
+
+JRF 2022年6月9日
+
+エラーをよく見ると、setuptools のところで死んでいる。そこで setuptools のバージョンを下げてみると…動いた！
+
+今 conda の setuptools は 61.2.0 なのだが、そのバージョンを下げる…
+
+conda install setuptools=58.0.4
+
+…するとちゃんと動くようになった。
+
+JRF 2022年6月9日
+
+あと、Windows のマルチプロセスがらみのバグとして…、
+
+if __name__ == &quot;__main__&quot;:
+
+…以下にマルチプロセスがらみの命令を入れないといけない。…というのにも少しはまった。
+
+JRF 2022年6月9日
+
+……。
+
+PyMC3 は、バージョン違いや、なぜかマルチプロセス周りでエラーが出たり、意味不明なエラーが多かった。そして何より PyStan に比べて格段に遅いというのもあった。
+
+WARNING (theano.tensor.blas): Using NumPy C-API based implementation for BLAS functions.
+
+まず、上のような警告が出るのだが、
+
+JRF 2022年6月9日
+
+1.  次の内容のテキストファイル .theanorc.txt を作る。
+
+[blas]
+ldflags=-lmkl_rt
+
+2. この .theanorc.txt を C:\Users\*username* の下に置く。
+
+…とすれば警告が表示されなくなった。
+
+…ため、一時はそれで良いかと思ったが、簡単な例を実行しても、
+
+JRF 2022年6月9日
+
+library mkl_rt is not found
+
+…と表示されてしまう。結局 .theanorc.txt は使わないようにするしかなさそうだ。
+
+そこで
+
+del .theanorc.txt
+
+…として、上の警告は表示されるがままにした。
+
+JRF 2022年6月9日
+
+次に行列を np.array でまず実装しようとしたが、それではうまくいかず、tt.stacklists を使うように変えた。
+
+また、pm.sample するとき、initvals=[...] というのを使おうとすると、途中でエラーとなり、変わりに start=[...] と書かねばならなかった。新しいバージョンでは initvals にしないといけないらしいのだが、まだ、ちゃんと切り換わってない様子だった。
+
+JRF 2022年6月9日
+
+また、cores=1 以外の値を設定すると、
+
+TypeError: cannot pickle 'fortran' object
+
+…が出た。
+
+JRF 2022年6月9日
+
+そして、ローカルの Windows ではやっと動くようになったにもかかわらず、それをほぼそのまま Google Colab に持っていくと、theano/link/vm.py の…
+
+assert c0 == sys.getrefcount(node_n_inputs)
+
+JRF 2022年6月9日
+
+…のところで、AssertionError が出るという謎の症状に悩まされた。ここも start がらみのバグらしいのだが、start を変えることではうまくいかず、init=&quot;adapt_diag&quot; を指定することでそのエラーが出る部分は過ぎることが多くなった。(init のデフォルトは &quot;jitter+adapt_diag&quot;。) ただ、この設定でも何度か実行していると、再現性なく何度かに一度、AssertionError が出るようだった。
+
+JRF 2022年6月9日
+
+ただ、そのエラーが出なくても、とんでもなく時間がかかり、10時間たっても計算が終らない。途中 Firefox から Chrome に切り換えたが、Chrome のほうが途中で中途半端に接続が切れるみたいなこともあったりした。
+
+結局、ローカルな Jupyter Notebook で実行してお茶をにごすことにした。
+
+JRF 2022年6月9日
+
+……。
+
+最終的に作ったのは次のように Gist にしてある。
+
+《dme_08_pystan.ipynb - NK DSGE モデルのカルマンフィルタによる推定の PyStan による実装実験→失敗》  
+<a href="https://gist.github.com/JRF-2018/b36ad27498a06d0da9bba40e5626a554" class="ext-link">https://gist.github.com/JRF-2018/b36ad27498a06d0da9bba40e5626a554</a>
+
+JRF 2022年6月9日
+
+《dme_08_pymc3.ipynb - NK DSGE モデルのカルマンフィルタによる推定の PyMC3 による実装実験→失敗》  
+<a href="https://gist.github.com/JRF-2018/2bac8036175f9093c58bf514c21a7b49" class="ext-link">https://gist.github.com/JRF-2018/2bac8036175f9093c58bf514c21a7b49</a>
+
+JRF 2022年6月9日
+
+……。
+
+追記。
+
+第8章の検算を少しだけアップデート (バージョン 0.0.2)。T+1 期の x, ppi, ii の予想を図示するようにした。
+
+JRF 2022年6月10日
+
+……。
+
+……。
+
+追記。
+
+「グローバル共有メモ」で、<a href="../../../articles/2022/06/gsm_002246.html" class="int-link gsm-tsref" title="jrf&gt; 経済シミュレーションの話。つづき？ micro_economy_*.">>>2022-06-15T12:05:41Z</a> で「経済シミュレーションの話。つづき？」として考えたことを少しまとめて、さらに「メモ」した。それをこちらにも書き移しておく。
+
+JRF 2022年6月15日
+
+○ 2022-06-15T12:32:06Z
+
+蓮見 亮『動学マクロ経済学へのいざない』を読みながら、RBC モデルの変形を考える。主に子に対する資産所得の分配 ζ_t * K_t があるとする。これは市場利子率 r_t を r_t := r_t - ζ_t とするような変形になる。割引率βが一定なら、r_t - ζ_t 一定で、金利が高くなれば、子を増やすようになる。逆は子を減らすという結果になる。
+
+JRF 2022年6月15日
+
+RBC モデルではβを上げたほうが均衡における r が下がり、所得 Y が増える。市場金利でなく政策金利を下げることは、未来より現在の重視でβを下げることになろう。すると所得が下がる。所得を下がらないようにするには、ζを減らす…子供を減らす必要がある。…と考える。
+
+ただ、βを上げる…現在より未来を重視する…には、均衡へ向けて r が上がってきてそれにつれて政策金利を上げる必要があるのだと思う。まずは市場金利が上がる状況が必要で、それが日本ではなかなかなかった…ということか。ただ、それは均衡所得を減らさず子供を減らしたところに問題があったのではないか。
+
+JRF 2022年6月15日</pre>
+
+
+<section class="backrefs" data-pagefind-ignore>
+<h2>後方参照 (7 件)</h2>
+<ul>
+<li><span class="backref-label">[cocolog:93532297]参照</span> <a href="../../../articles/2025/11/gsm_007914.html">共有メモ</a> <span class="backref-date">2025-11-06T06:09:08Z</span></li>
+<li><span class="backref-label">[cocolog:93532297]参照</span> <a href="../../../articles/2025/06/gsm_007063.html">共有メモ</a> <span class="backref-date">2025-06-01T14:53:17Z</span></li>
+<li><span class="backref-label">[cocolog:93532297]参照</span> <a href="../../../articles/2025/05/statuses_cocolog_95459644.html">ひとこと</a> <span class="backref-date">2025年05月24日</span></li>
+<li><span class="backref-label">[cocolog:93532297]参照</span> <a href="../../../articles/2025/05/gsm_006993.html">共有メモ</a> <span class="backref-date">2025-05-20T03:41:08Z</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2025/05/gsm_006987.html">共有メモ</a> <span class="backref-date">2025-05-17T13:26:38Z</span></li>
+<li><span class="backref-label">[cocolog:93532297]参照</span> <a href="../../../articles/2025/04/statuses_cocolog_95358180.html">ひとこと</a> <span class="backref-date">2025年04月04日</span></li>
+<li><span class="backref-label">[cocolog:93532297]参照</span> <a href="../../../articles/2022/06/gsm_002246.html">共有メモ</a> <span class="backref-date">2022-06-15T12:05:41Z</span></li>
+</ul>
+</section>
+
+</article>
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2022/06.html">2022年06月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+</body>
+</html>

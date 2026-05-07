@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>ひとこと - JRF Blog Archive</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2011/05.html">2011年05月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+<article data-pagefind-body>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[statuses] <span class="cocolog-id">aboutme:138720</span></td></tr>
+<tr><th>セクション</th><td>JRF のひとこと</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2011/05.html">2011年05月11日</a></td></tr>
+<tr><th>元URL</th><td><a href="http://jrf.cocolog-nifty.com/statuses/2011/05/aboutme138720.html" class="ext-link"><span class="original-url">http://jrf.cocolog-nifty.com/statuses/2011/05/aboutme138720.html</span></a></td></tr>
+
+</table>
+</div>
+<h1>ひとこと</h1>
+<pre class="body">昨晩、Firefox 4.0.1 にアップデートしてみたのだが、Greasemonkey との絡みなどで、いろいろ不具合が出たので、とりあえず 3.6.17 に戻した。
+JRF 2011年5月11日
+
+こちらの問題だと納得でき対策可能なのは、E4X を使っているところで、それをそのまま渡すというのができず、toString() したから渡さないといけないというのがあった。
+
+《Firefox4でcan’t wrap XML objectsというエラーが出る件について | Web scratch》
+<a href="http://efcl.info/2011/0326/res2406/" class="ext-link">http://efcl.info/2011/0326/res2406/</a>
+
+JRF 2011年5月11日
+
+この点では、私は↓で書いた cocolog_print_fix.user.js を公開していたので、まず、それだけ直しておいた。
+
+《Firefox でココログを印刷しようとすると本文が１ページ目しか表示されない [ JRF のソフトウェア Tips ]》
+<a href="../../../articles/2006/03/software_10750678.html" class="int-link" title="Firefox でココログを印刷しようとすると本文が１ページ目しか表示されない">http://jrf.cocolog-nifty.com/software/2006/03/post_4.html</a>
+
+JRF 2011年5月11日
+
+また、今作っている Greasemonkey がらみのスクリプトは両方とも問題があるようだった。
+
+《aboutme2cocolog: アバウトミーの「ひとこと」をココログプロへ移転するツール》
+<a href="../../../articles/2011/04/software_67976071.html" class="int-link" title="aboutme2cocolog: アバウトミーの「ひとこと」をココログプロへ移転するツール">http://jrf.cocolog-nifty.com/software/2011/04/post.html</a>
+
+《電子署名の替わりに Loaded Magic》
+<a href="../../../articles/2011/05/software_68180670.html" class="int-link" title="電子署名の替わりに Loaded Magic">http://jrf.cocolog-nifty.com/software/2011/05/post.html</a>
+
+JRF 2011年5月11日
+
+statuses_editor.user.js のほうは、おそらく GM_xmlhttpRequest がらみで落ちていて、summoner_trusted.js のほうは、alert + setTimeout でもろに実験をしていたから、これは↓がズバリだと思う。
+
+《alert + setTimeout = failure (was: GM_xmlhttpRequest fails silently) - GitHub》
+<a href="https://github.com/greasemonkey/greasemonkey/issues/1318#comment_975522" class="ext-link">https://github.com/greasemonkey/greasemonkey/issues/1318#comment_975522</a>
+
+JRF 2011年5月11日
+
+《GM_xmlhttpRequest and Firefox 4 - greasemonkey-users | Google グループ》
+<a href="http://groups.google.com/group/greasemonkey-users/browse_thread/thread/5dcab19d2fdd8ca5" class="ext-link">http://groups.google.com/group/greasemonkey-users/browse_thread/thread/5dcab19d2fdd8ca5</a>
+
+《Bug 647727 ? setTimeout doesn't work after calling alert from evalInSandbox》
+<a href="https://bugzilla.mozilla.org/show_bug.cgi?id=647727" class="ext-link">https://bugzilla.mozilla.org/show_bug.cgi?id=647727</a>
+
+JRF 2011年5月11日
+
+ただ、他にも思いあたることがあって、Firefox 4 になってから unsafeWindow と window の関係がちょっと変わったらしく、そこでちょっとおかしなことになってる可能性もある。
+
+《Firefox 4.0b10でGreasemonkey 0.9.1のユーザスクリプトのwindowを共通にする改造（開発者orVimper向け） - wltの日記》
+<a href="http://d.hatena.ne.jp/wlt/20110130/1296359063" class="ext-link">http://d.hatena.ne.jp/wlt/20110130/1296359063</a>
+
+JRF 2011年5月11日
+
+さらに、summoner_tursted.js がらみでは arguments.callee.caller が undefined になるという事態にも会った。ただ、そのチェックはちょうど、caller がGreasemonkey の「見えない」関数になるものだったのでそこだけの問題なのかもしれない。
+
+JRF 2011年5月11日
+
+↓の「杜甫々」氏は caller は obsolete のようなことを書いているが、MDC や、その下の記事を見ると、arguments.caller はなくなるが、arguments.callee.caller はいいということになるのかと思っていたのだが…。
+
+《関数（Function）》
+<a href="http://www.tohoho-web.com/js/function.htm" class="ext-link">http://www.tohoho-web.com/js/function.htm</a>
+
+JRF 2011年5月11日
+
+《function - Why was the arguments.callee.caller property deprecated in JavaScript? - Stack Overflow》
+<a href="http://stackoverflow.com/questions/103598" class="ext-link">http://stackoverflow.com/questions/103598</a>
+
+JRF 2011年5月11日
+
+summoner_trusted.js がらみの検討(↓)の結果、JavaScript では caller はセキュリティのためには、これまで「必要」と言えたと思う。ただ、defineProperty の方法ができたので、もしかすると「必要」とまではされなくなったとか…？
+
+《JavaScript で、読み込んだ二つのソースの間(inter-script)で安全に関数を渡す(delegation)の方法を考えていたのだが、現行のバージョンである限り、できなさそうだった。》
+<a href="http://jrf.aboutme.jp/user_statuses/show/138721" class="ext-link">http://jrf.aboutme.jp/user_statuses/show/138721</a>
+
+JRF 2011年5月11日
+
+Trackbacks:
+
+《aboutme:138721》 from JRF のひとこと
+<a href="../../../articles/2011/05/statuses_aboutme_138721.html" class="int-link" title="ひとこと">http://jrf.cocolog-nifty.com/statuses/2011/05/aboutme138721.html</a>
+
+JavaScript で、読み込んだ二つのソースの間(inter-script)で安全に関数を渡す(delegation)の方法を考えていたのだが、現行のバージョンである限り、できなさそうだった。 
+
+受信： 2012-01-04 20:36:03 (JST)</pre>
+
+
+<section class="backrefs" data-pagefind-ignore>
+<h2>後方参照 (1 件)</h2>
+<ul>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2011/05/statuses_aboutme_138721.html">ひとこと</a> <span class="backref-date">2011年05月11日</span></li>
+</ul>
+</section>
+
+</article>
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2011/05.html">2011年05月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+</body>
+</html>

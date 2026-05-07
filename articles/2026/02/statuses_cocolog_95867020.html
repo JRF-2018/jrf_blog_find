@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>ひとこと - JRF Blog Archive</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2026/02.html">2026年02月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+<article data-pagefind-body>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[statuses] <span class="cocolog-id">cocolog:95867020</span></td></tr>
+<tr><th>セクション</th><td>JRF のひとこと</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2026/02.html">2026年02月20日</a></td></tr>
+<tr><th>元URL</th><td><a href="http://jrf.cocolog-nifty.com/statuses/2026/02/post-2ce7c3.html" class="ext-link"><span class="original-url">http://jrf.cocolog-nifty.com/statuses/2026/02/post-2ce7c3.html</span></a></td></tr>
+
+</table>
+</div>
+<h1>ひとこと</h1>
+<pre class="body">MemoryBanditWorkflow (参:<a href="../../../articles/2026/01/statuses_cocolog_95822546.html" class="int-link cocolog-id" title="ひとこと">[cocolog:95822546]</a>(2026年1月))のワークフロー(workflow)機能は、YAML を使って制御構文を許すように発展させたほうがいいのだろう。まぁ、自分では実装しないだろうが、そういう発展が自然なように思う。
+JRF 2026年2月20日
+
+(「グローバル共有メモ」と Twitter (X) に書いたことを中心として。)
+
+JRF 2026年2月20日
+
+キッカケは新しい Gemini 3.1 Pro の「問題」だった。
+
+《月読いおり:X:2026-02-20》  
+<a href="https://x.com/tukiyomiiori/status/2024676131291746431" class="ext-link">https://x.com/tukiyomiiori/status/2024676131291746431</a>
+＞Gemini 3.1 proについてのポストをざっと眺めていた。
+
+端的によくわかるのは、中の人達のポストは少なく、あっても素晴らしいベンチマークの画像を添付しているのばかりだ。
+
+JRF 2026年2月20日
+
+Coding方面では、元々がGeminiモデルが使われていないということもあって、ポストはとても少ない。
+そんななかで気になったのは「bashで作業したがる」というポスト。
+これは私も感じた。これは、Gemini 3.1 proが、ハーネスの用意しているToolsを上手く使えないということを言っている。（一昔前のGPTモデルみたいにPythonを使いたがるほど酷いことではないが、Codingの効率も能力も悪くなる）
+ちなみに、Gemini 3 Flashは用意されたToolsをきちんと使いこなせるモデルだ。多くの開発者はその能力を今回の3.1 Proに求めたが、果たせなかった。
+
+JRF 2026年2月20日
+
+結局、今回のモデルは「ベンチマーク（svgベンチ含む）で、他社の主要モデルよりも良い成績を出したモデルをリリースした」という以上のものは見いだしにくかった。
+
+素晴らしいベンチマークが示す能力というのは、すでに、知能限界に近く、一般的な利用においてはその価値を見出すのは難しいのだ。
+＜
+
+JRF 2026年2月20日
+
+……。
+
+○ 2026-02-20T06:18:13Z
+
+Gemini 3.1 Pro がハーネス的 Tools でなく bash を使いたがる点について。私の MemoryBanditWorkflow で何が足りないかと考えた。おそらく AI さんは、制御構文が欲しい課題については、それを AI 自身の作業過程でなく(計算機的確実性のある)プログラム的に実行したいのではないか。Tool を使いつつ、if や while を許すようなものが欲しいのかもしれない。
+
+JRF 2026年2月20日
+
+その制御構文の際、AI さん達の判断・介入を許したいということであれば、MemoryBanditWorkflow では workflow の機能が近い。ただそれは順次実行のみで if や while を許してなかった。それを許せばいいのか？ むしろそこまでするなら、サブエージェントを作って(コールして)指示ができるようにしたほうが素直なのではないか？
+
+それとも YAML を AI が自分でインタープリットしながら実行するという方向がいいのかな？
+
+JRF 2026年2月20日
+
+……。
+
+○ 2026-02-20T06:30:02Z
+
+将来的には yaml_helper みたいなものがツールライブラリとして提供されるのかもしれない。mcp にもできそうだが。Gemini さんによると yaml_helper の機能は…。
+
+Gemini:&gt; もし私が yaml_helper MCP Serverを設計するなら、以下のようなツールをAIに提供します。
+
+JRF 2026年2月20日
+
+* load_workflow(yaml_content): ワークフローを登録し、ポインタを初期化する。
+
+  * get_next_action(): 現在のポインタにあるステップを解析。if 文なら変数を照らし合わせてジャンプ先を決定し、AIには「今やるべきタスク」だけを提示する。
+
+  * update_variable(name, value): ツール実行の結果得られた値をサーバー側に保存する。
+
+JRF 2026年2月20日
+
+……。
+
+○ 2026-02-20T07:40:01Z
+
+YAML を使ってワークフローを書くのは、MCP じゃなくメインツールとして取り込むべきなのだろう。MemoryBanditWorkflow では workflow の定義はとても難しく、AI さん達が使えるものでなかった。ワークフロー定義の YAML でも AI さん達には難しいだろうが、まだ書きやすいかもしれない。MemoryBanditWorkflow の workflow は YAML を前提としたものに書き換えるべきなのだろう。
+
+JRF 2026年2月20日
+
+確率的実行(bandit)に相当する構文を決めれば、あとは GitHub Actions を参考にちょこちょこ変えれば、仕様はできるだろう。まぁ、私が実装することはないと思うが。
+
+メモリ、サブツール、YAML ワークフローがツールライブラリとして LangChain などでそれぞれ使えるようになれば、MemoryBanditWorkflow は発展的に解消する感じか。もともと使われてなかったけど orz。
+
+JRF 2026年2月20日
+
+……。
+
+○ 2026-02-20T08:02:49Z
+
+ああ、でも GitHub Actions はシェル前提だから、そのまま流用したら AI さん達が混乱するかな？ すると、ほぼ独自仕様の YAML を定義することになるか？ while とかも欲しいしね。でも、すると、AI さん達は難しくて使ってくれないだろうな…。
+
+JRF 2026年2月20日
+
+……。
+
+YAML はこんな感じかな？
+
+&lt;pre&gt;
+name: キーワード追記
+env:
+  subwork_done: False
+steps:
+  - name: 指令書 memory:1002 を読む
+    tool: memory_read
+    with:
+      memory_id: 1002
+  - name: ときどき統計を読む
+    prob: 0.1
+    tool: /sys/bandit_statistics
+&lt;/pre&gt;
+JRF 2026年2月20日
+
+&lt;pre&gt;
+  - name: 指令を実行
+    while:
+      on: not ${{subwork_done}}
+      max_iterations: 5
+      steps:
+        - name: ランダムに読むものを選ぶ
+          tool: memory_list_random
+        - name: 何か読む
+          tool: memory_read
+          aux_prompt: &quot;めぼしいものを読んでください。&quot;
+&lt;/pre&gt;
+
+JRF 2026年2月20日
+
+&lt;pre&gt;
+        - name: キーワード更新
+          if: listen_ai &quot;良いキーワードがあるか&quot;
+          tool: memory_update
+          aux_prompt: &quot;キーワードを何か足してください。&quot;
+&lt;/pre&gt;
+
+JRF 2026年2月20日
+
+または最後は、
+
+&lt;pre&gt;
+        - name: キーワード更新
+          tool: memory_update OR skip
+          aux_prompt: &quot;良いキーワードがあれば足し、なければ skip してください。&quot;
+&lt;/pre&gt;
+
+JRF 2026年2月20日
+
+……。
+
+上のような while 文を許すなら、if 文は上のような構文の他に次のような構文も許すべきなのだろう。
+
+&lt;pre&gt;
+if:
+  on:
+  steps:
+  else_steps:
+&lt;/pre&gt;
+
+JRF 2026年2月21日
+
+……。
+
+……。
+
+追記。
+
+リザルトを変数に代入する機能とかいるだろうか…とか考えていて気付いた。
+
+わかった。そうか。AIエージェントさん達が欲しいのは「ファイル」なんだな。
+
+出力された絵をそのまま検索のキーとして渡す…みたいなことをするにはファイルしかないんだ。
+
+でも、ファイルを一般に扱おうと思えば、素直にはシェルか REPL を認めるしかない。せいぜい、それをサンドボックスで実行させて、結果だけ show できるようにするのが安全策だろう。
+
+JRF 2026年2月21日
+
+しかし、ダウンロード(→インストール)をできるようにすれば、そこから通信で情報をもらすことはできるわけで、結局は、AI エージェントを信用できるかになる。そして信用するなら、シェルや REPL をサンドボックス外でも認めてしまっても変わらん…と。
+
+だから、ハーネスを効かせるなら、ファイルというのはかなり特殊な領域でしか使えないようにする感じなんだろうね。特殊な実験でツールがすごく制限されてる環境で、結果を A に保存してそれを別のツールに渡すとか、そういう感じで。
+
+JRF 2026年2月21日
+
+だから、リザルトを変数に代入するみたいなのも結局、ファイル的で、そういうのは基本的にはいらないのだろう。せいぜい setvar ツールを用意して、ツールから得られた結果を保存したければ setvar ツールに AI が結果をコピペして渡す…というだけでいいのだろう。そして if 文とかでは変数チェックが行えるし getvar ツールも用意するが、YAML から AI に渡すときはすでに変数が展開されたものしか渡さない。それ以上は安全策に倒す限りできない…と。
+
+JRF 2026年2月21日
+
+……。
+
+……。
+
+追記。
+
+私のフレームワークだと、(YAML)変数は新たに足してもいいが、ファイルに代わるものとしては変数の他にすでにメモリがある。
+
+今の AI さん達は入力のコンテクスト長が長いが、出力のコンテクスト長が短い。それもあり、いくら超短期記憶が優秀でも「コピペ」が機能しないことがありうる。だから、私のフレームワークで最低限必要なのは、memory_save_result なのだろう。先のリザルトをメモリにセーブするもの。
+
+JRF 2026年2月21日
+
+ただ、これが意外に難しいのが、どうも今の LangChain だとツールの同時実行を許してる局面があるようで、そこでどのリザルトを残せばいいかわからないことがある…というところだろう。ただ、これは「なんちゃって」の機能でとにかく stream 中で memory_save_result があれば、その前のリザルトを保存するというだけにするしかないだろう。
+
+JRF 2026年2月21日
+
+memory_save_result は受けるべきメモリID(または &quot;new&quot; や &quot;scratchpad&quot;)とタイトルを指定して、受け取ったメモリIDを返すような感じかな。(保存形式に &quot;repr&quot; か &quot;auto&quot;(str はそのままでそれ以外は repr を保存)も指定できるようにするかな？)
+
+あと、YAMLルーチンでは、変数参照と同じような感じでメモリも参照できるようにすべきなのだろう。(${{&quot;memory:ID&quot;}} でも YAML 風に ${{memory.ID}} でも。)
+
+JRF 2026年2月21日
+
+……。
+
+保存形式には &quot;repr&quot; と &quot;auto&quot; の他に &quot;memory&quot; もあったほうがいいな。前の結果が memory_read (など)のとき、そのメモリ内容をそのままストアし、memory_copy 相当ができるように。そして &quot;auto&quot; の場合、前がメモリの内容を返してるときは &quot;memory&quot; を指定したのと同じになるようにすべきだろう。
+
+JRF 2026年2月21日
+
+……。
+
+……。
+
+追記。
+
+コアコンテクスト core や計画 plan は「変数」で setvar getvar を介しても使えるようにする。コールされた内側で core や plan を全体効果として変えたい場合は Python のように global 宣言を必要とする。
+
+JRF 2026年2月22日
+
+スクラッチパッド scratchpad は、setvar getvar でも変えられるが memory_read memory_save_result などでもアクセスできるメモリと変数の両方の性質を持った特殊な記憶域で、これはレジスタのようにどこでも global 宣言がすでになされたものとして扱う。
+
+…といった感じにすればいいと思う。今のところ。
+
+JRF 2026年2月22日</pre>
+
+
+<section class="backrefs" data-pagefind-ignore>
+<h2>後方参照 (1 件)</h2>
+<ul>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2026/02/gsm_008497.html">共有メモ</a> <span class="backref-date">2026-02-20T09:05:44Z</span></li>
+</ul>
+</section>
+
+</article>
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2026/02.html">2026年02月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+</body>
+</html>

@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>共有メモ - JRF Blog Archive</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2025/09.html">2025年09月</a> | <a href="../../../index/gsm.html">共有メモ</a></nav>
+<article data-pagefind-body>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[gsm] 2025-09-23T20:02:01Z</td></tr>
+<tr><th>セクション</th><td>グローバル共有メモ</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2025/09.html">2025-09-23T20:02:01Z</a></td></tr>
+<tr><th>元URL</th><td>(URLなし)</td></tr>
+
+</table>
+</div>
+<h1>共有メモ</h1>
+<pre class="body">jrf&gt; (承前)
+
+workflow に条件分岐やループを認める方向。なぜ「フレームワーク内部」でそれをやるのがいいかというと AI さん達がそのワークフローを参照して参考にできるから…なんだよね。うーん、今ある workflow 機能は bandit workflow ということにして、それとは別に RagAgent でやった _execute と main_loop (または resume) を取り出したような execution workflow というのを定義できるようにして、それを show_execution_workflow というツールで見れるようにする…という方向はあるのかな？
+
+なんか、bandit workflow の外にさらにメタな execution workflow を設定するという話で、だんだんメタな方向に拡張する…となって、それなら、普通にコンピュータ言語でいいじゃん、今実行する Python コードを AI さん達に見せようよ…という話になっていきそうにも思うのだけど。
+
+とりあえずなら、show_execution(_workflow) は、仕様を文章で記述でもいいのかもしれない。とにかく用意するのを推奨するという方向はあるのかも。</pre>
+
+
+</article>
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2025/09.html">2025年09月</a> | <a href="../../../index/gsm.html">共有メモ</a></nav>
+</body>
+</html>

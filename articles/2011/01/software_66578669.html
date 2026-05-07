@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>Perl でオブジェクト指向 C++風 その２ クラス変数 - JRF Blog Archive</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2011/01.html">2011年01月</a> | <a href="../../../index/software.html">ソフトウェア Tips</a></nav>
+<article data-pagefind-body>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[software] <span class="cocolog-id">cocolog:66578669</span></td></tr>
+<tr><th>セクション</th><td>JRF のソフトウェア Tips</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2011/01.html">2011年01月06日 13:13:55</a></td></tr>
+<tr><th>元URL</th><td><a href="http://jrf.cocolog-nifty.com/software/2011/01/post.html" class="ext-link"><span class="original-url">http://jrf.cocolog-nifty.com/software/2011/01/post.html</span></a></td></tr>
+<tr><th>タグ</th><td>[Perl]</td></tr>
+</table>
+</div>
+<h1>Perl でオブジェクト指向 C++風 その２ クラス変数</h1>
+<pre class="body">先の記事で「パッケージ」でインポートした関数などを、「クラス」で使う方法を書いた。本稿では同方法で、「クラス変数」をどのように実現するか例示する。
+
+■方法１：$class-&gt;get_template()-&gt;{cvar} を使う。
+  
+Main::_Simple までは先の記事とほぼ同じで、次のようにすれば「クラス変数」を継承先で共有できる。(動くソースはexample_oo_c1.pl。)
+
+{
+  package Main::_C1;
+  use base qw(Main::_Simple);
+  
+  our $classvar_1 = 0; # クラス変数の実体、このままでは「継承」されない。
+  
+  __PACKAGE__-&gt;extend_template
+    (
+      member_1 =&gt; 1.0, # ここに member_1 の説明を書こう！
+      cvar_1 =&gt; \$classvar_1, # クラス変数の登録
+    );
+    
+  sub method_2 { # クラス変数を print するだけ。
+    my $self = shift;
+    print ${ref($self)-&gt;get_template()-&gt;{cvar_1}} . &quot;\n&quot;;
+  }
+}
+
+{
+  package Main::_C2;
+  use base qw(Main::_C1);
+}
+
+MAIN:
+{
+  my $c1 = Main::_C1-&gt;new();
+  my $c2 = Main::_C2-&gt;new();
+  
+  $c1-&gt;method_2(); # 0 と表示。
+  $c2-&gt;method_2(); # 0 と表示。
+  ${Main::_C1-&gt;get_template()-&gt;{cvar_1}} = 1;
+  $c2-&gt;method_2(); # C1 を変えたのに c2 が 1 と表示。
+  ${Main::_C2-&gt;get_template()-&gt;{cvar_1}} = 2;
+  $c1-&gt;method_2(); # C2 を変えたのに c1 が 2 と表示。
+}
+
+実行結果はなんの&lt;ruby&gt;&lt;rb&gt;衒&lt;/rb&gt;&lt;rt&gt;てら&lt;/rt&gt;&lt;/ruby&gt;いもなく以下のようになる。
+
+$ perl example_oo_c1.pl
+0
+0
+1
+2
+
+extend_template は dclone していないため、このようなことができる。
+
+もちろん、$c1 を new するときは、dclone が呼ばれているため、 $c1-&gt;{cvar_1} は Main::_C2-&gt;get_template()-&gt;{cvar_1} とは別の(スカラ変数の)参照を持ってしまい、その分、メモリが無駄になる。
+
+肯定的にとらえれば、$c1 が生成されたときのクラスの状況は自動的に転写されるため、当初との違いが必ず比較されうるというプレッシャーをクラスの管理人(だいたい自分)に与えることができるといえよう。
+
+■方法２：コンストラクタを使う。
+  
+Main::_Simple までは先の記事とほぼ同じで、今度はコンストラクタを使って、「クラス変数」の格納場所を一種のオブジェクトとみなし、常にコンストラクタで登録していく。(動くソースはexample_oo_c2.pl。)
+
+{
+  package Main::_C1;
+  use base qw(Main::_Simple);
+  
+  our $classvar_1 = 0; # クラス変数の実体、このままでは「継承」されない。
+  
+  __PACKAGE__-&gt;extend_template
+    (
+      member_1 =&gt; 1.0, # ここに member_1 の説明を書こう！
+      cvar_1 =&gt; undef, # ここにはクラス変数の参照が入る。
+    );
+    
+  sub method_2 { # クラス変数を print するだけ。
+    my $self = shift;
+    print ${$self-&gt;{cvar_1}} . &quot;\n&quot;;
+  }
+  
+  sub new {
+    my $class = shift;
+    my $obj = $class-&gt;SUPER::new(@_);
+    $obj-&gt;{cvar_1} = \$classvar_1;
+    return $obj;
+  }
+}
+
+{
+  package Main::_C2;
+  use base qw(Main::_C1);
+}
+
+MAIN:
+{
+  my $c1 = Main::_C1-&gt;new();
+  my $c2 = Main::_C2-&gt;new();
+  
+  $c1-&gt;method_2(); # 0 と表示。
+  $c2-&gt;method_2(); # 0 と表示。
+  ${$c1-&gt;{cvar_1}} = 1;
+  $c2-&gt;method_2(); # C1 を変えたのに c2 が 1 と表示。
+  ${$c2-&gt;{cvar_1}} = 2;
+  $c1-&gt;method_2(); # C2 を変えたのに c1 が 2 と表示。
+}
+
+実行結果は上の例と同じである。
+
+ただ、この方法を使うなら、わざわざ「クラス変数」の参照にする必要はない。つまり、our $classvar_1 に直接、オブジェクトを代入しておき、それをコンストラクタで常に新しいオブジェクトに登録するようにすればいいのである。
+
+「クラス変数」にオブジェクトを入れたくなったら、その前に、少し考えて欲しい。コンストラクタを使うなら、あるオブジェクトを、継承された全オブジェクトで共有するのは簡単なのだから。
+
+逆に考えれば、「クラス変数」は、文字列や数値を「環境変数」的に利用したい場合にのみ使うに留めるべきだと、私は、思う。
+
+■関連
+  ●example_oo_pl.shar。上のリンクしたソースやその他の例をまとめたアーカイブ。(シェルアーカイブ形式。シェルコマンドとして実行するか unshar を使う。)
+  ●《Perl でオブジェクト指向 C++風》。「先の記事」。
+  ●《404 Blog Not Found:perl - Inside-out Object》。簡単なシミュレーションが私の目的で、その場合、勝手にクラスは定義するけど、デフォルトにないモジュールは使わず、一つのファイルを見れば済むもののほうが良い…という思いを私は強くしている。ただ、複数人で開発するなど、モジュール分割が必要で、速度や様式を揃える必要があるというなら、このリンク先にチラと紹介されてる Class::Std など、すでにあるものを元にすべきなのだろう。(同ブログは、日本の Perl プログラマの集るところ。私の記事が理解できるならもう知っているだろうが、一つぐらいはリンクしておきたかった。この記事の関連だと、次の記事の理論が興味深い。《404 Blog Not Found:オブジェクトは難しくない。難しいのはクラス》。)
+    
+更新：2011-01-06
+初公開：2011年01月06日 13:13:56
+最新版：2011年01月06日 22:27:12</pre>
+<details class="trackbacks" data-pagefind-ignore><summary>Trackbacks (1 件)</summary><pre>
+Trackbacks:
+
+《<a href="http://jrf.cocolog-nifty.com/software/2011/01/post-1.html">Perl でオブジェクト指向 Ｃ＋＋風 その３ ローカル関数</a>》 from JRF のソフトウェア Tips
+先の記事で「パッケージ」でインポートした関数などを、「クラス」で使う方法を書いたが、インポートした関数の他に、Main パッケージで定義した「ローカル関数」も「クラス」で使いたくなるのが当然である。(というより、それができないことにさっき気付いた。)本稿ではほぼソースだけだがその方法を示す。... 
+
+受信： 2011-01-07 22:45:05 (JST)
+
+
+Links:
+
+先の記事: http://jrf.cocolog-nifty.com/software/2010/12/post.html
+example_oo_c1.pl: /archive/example_oo/example_oo_c1.pl
+example_oo_c2.pl: /archive/example_oo/example_oo_c2.pl
+example_oo_pl.shar: /archive/example_oo/example_oo_pl.shar
+Perl でオブジェクト指向 C++風: http://jrf.cocolog-nifty.com/software/2010/12/post.html
+404 Blog Not Found:perl - Inside-out Object: http://blog.livedoor.jp/dankogai/archives/50783623.html
+404 Blog Not Found:オブジェクトは難しくない。難しいのはクラス: http://blog.livedoor.jp/dankogai/archives/50689356.html
+
+
+
+</pre></details>
+
+<section class="backrefs" data-pagefind-ignore>
+<h2>後方参照 (2 件)</h2>
+<ul>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2014/03/software_79204061.html">Perl でオブジェクト指向 Ｃ＋＋風 その４ HashFreezer</a> <span class="backref-date">2014年03月17日 18:20:35</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2011/01/software_66597125.html">Perl でオブジェクト指向 Ｃ＋＋風 その３ ローカル関数</a> <span class="backref-date">2011年01月07日 22:40:08</span></li>
+</ul>
+</section>
+
+</article>
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2011/01.html">2011年01月</a> | <a href="../../../index/software.html">ソフトウェア Tips</a></nav>
+</body>
+</html>

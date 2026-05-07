@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>ひとこと - JRF Blog Archive</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2025/10.html">2025年10月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+<article data-pagefind-body>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[statuses] <span class="cocolog-id">cocolog:95656351</span></td></tr>
+<tr><th>セクション</th><td>JRF のひとこと</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2025/10.html">2025年10月01日</a></td></tr>
+<tr><th>元URL</th><td><a href="http://jrf.cocolog-nifty.com/statuses/2025/10/post-5b740a.html" class="ext-link"><span class="original-url">http://jrf.cocolog-nifty.com/statuses/2025/10/post-5b740a.html</span></a></td></tr>
+
+</table>
+</div>
+<h1>ひとこと</h1>
+<pre class="body">太田 他『現場で活用するためのAIエージェント実践入門』を読んだ。私のなんちゃってエージェントフレームワーク MemoryBanditWorkflow の実装経験を思い出しながら読んだ。大変参考になった。
+JRF 2025年10月1日
+
+『現場で活用するためのAIエージェント実践入門』(太田 真人 ＆ 宮脇 峻平 ＆ 西見 公宏 ＆ 後藤 勇輝 ＆ 阿田木 勇八 著, 講談社 KS情報科学専門書, 2025年7月)
+<a href="https://www.amazon.co.jp/dp/4065401402" class="ext-link">https://www.amazon.co.jp/dp/4065401402</a>
+<a href="https://7net.omni7.jp/detail/1107617518" class="ext-link">https://7net.omni7.jp/detail/1107617518</a>
+
+JRF 2025年10月1日
+
+まず私の自己紹介から。
+
+最近、私はエージェントに汎用に使えるメモリシステムとして、MemoryBanditWorkflow というちょっとしたクラス、なんちゃってフレームワーク…を作った。ツールによってメモリ機能を実現し、その利用の足りなさを強制させるバンディット機能を有するものである。基本的には迷路問題を解くために作ったのだが、汎用に動くことを心掛けて作り、実際、RAG エージェントも同フレームワークをそのまま使って書けることを実証している。
+
+JRF 2025年10月1日
+
+RAG エージェントの例がわかりやすいと思うので、まずそちらの ipynb にリンクを貼っておく。
+
+《MemoryBanditWorkflow を使った RAG の試験実装 - langchain_maze/experimental_rag_0_0_2.ipynb - GitHub》  
+<a href="https://github.com/JRF-2018/langchain_maze/blob/master/experimental_rag_0_0_2.ipynb" class="ext-link">https://github.com/JRF-2018/langchain_maze/blob/master/experimental_rag_0_0_2.ipynb</a>
+
+JRF 2025年10月1日
+
+その経緯は↓にあるが、バージョンアップの情報やそれに向けての考察などかなり長くなってしまったため、読むのはあまりオススメしない。
+
+<a href="../../../articles/2025/09/statuses_cocolog_95619779.html" class="int-link cocolog-id" title="ひとこと">[cocolog:95619779]</a>(2025年9月)
+《「LLM のメモリ機能を強制的に使うバンディットマシンの試験実装」と「LLM のメモリ機能とバンディット機能の試験実装」を行った。後者がメインの成果物で、メモリ機能の使用増加をどう強制するかから拡張したフレームワーク。 - JRF のひとこと》
+<a href="../../../articles/2025/09/statuses_cocolog_95619779.html" class="int-link" title="ひとこと">http://jrf.cocolog-nifty.com/statuses/2025/09/post-8225e2.html</a>
+
+JRF 2025年10月1日
+
+……。
+
+このようなフレームワークを作って一段落した上で、今のエージェントプログラミングの実際はどのようなものかと関心を抱いて手に取ったのがこの本ということになる。Amazon ランキングの上位にあり、目に付いた。
+
+読んでみて、LangGraph が使われていて、LangGraph にあまり良い印象のない私は少し辟易した。LangGraph が使われているのも、この本を選んだ理由の一つだったが、それにかなり肯定的という現代の雰囲気はよくわかった。
+
+JRF 2025年10月1日
+
+LangGraph のグラフはあまりわかりやすいと私には思えない。for などを使った制御文のほうがプログラマには見通ししやすいというのがこれまでの流れでなかったか。グラフアプローチは初心者向けにはよく使われるが、それきりというのがこれまでの流れでなかったか。
+
+JRF 2025年10月1日
+
+ただ、確かに、非同期プログラミングには、状態を持つオブジェクト指向はあまり適していないというのは事実で、それで LangGraph を用いているのかな…というのが私の直近の理解である。しかし、非同期の並列化で時間短縮するのがどこまで求められているかはあやしく、普通は、タスクキューとデータベースで、あとは、シングルタスクのオブジェクトが複数走っている…というので十分でないか…という疑念が私にはある。私の MemoryBanditWorkflow の設計はそのようにシングルタスクのオブジェクトが前提となっている。
+
+JRF 2025年10月1日
+
+……。
+
+他にこの本には時代的制約があったのかな…とも思った。私の MemoryBanditWorkflow では豊富なツールを用意して、特殊なツールを使うのを検知して状態遷移させる。subwork_done か subwork_not_done かのどちらかをサブワークの最後に呼ぶようにさせてそれで条件分岐をさせたりもしている。全体チェックのときもそういう感じなので、ステートを多く分ける必要がない。
+
+JRF 2025年10月1日
+
+また、Structured Output をまるで知らないかのように、それが必要なときは私は、ツールに Structured な引数を渡して呼び出すことをさせている。それで状態遷移が必要なら、そのツールを呼んだことを app.stream から検知してそこで止めて状態遷移みたいなことをする。
+
+そこからすると LangGraph のステートで一々止まっているのはかなり冗長に感じた。ツール実行がいろいろ難しすぎる。その辺、かつては、ツールの登録数が制限されていたり、ツールの利用が安定的でなかったころのなごりが、今回の本にはかなりあるように読んだ。
+
+JRF 2025年10月1日
+
+……。
+
+サブタスクに分けるのは、並列で実行させるには必要なことだが、LLM にそれをやらせるのは安定的でないように思った。
+
+私も RAG エージェントでは、1章づつ処理させるよう指示するようにした。それは MemoryBanditWorkflow 的 Brain が、記憶処理をループのはじめに行うようにしたため、粒度を小さくしたほうが、Brain 的処理が多くなると考えたからである。
+
+JRF 2025年10月1日
+
+より汎用には、小さなサブワークが完了したと AI が判断したら subwork_done を呼ぶように指示して、そこでループさせ、Brain 的処理を挟み、最後は mainwork_done を呼ばせて終了する…だけのプログラムを書けばいいのかな…と思うが、それで、いろいろなタスクが動くのかは自信がない。
+
+JRF 2025年10月1日
+
+……。
+
+このように、私がやったことを振り返るのによかった他、この本には、どういうライブラリが使えるかでも参考になった。例えば、Elasticsearch のオープン版を docker で使ったりというのは、Colab での制限もある中、試してなかったことで、それが一般には割と手軽にできそうだとわかっただけでも収穫であった。
+
+JRF 2025年10月1日
+
+一方、エージェントの評価という最後の章のほうの情報は期待していたものとは違った。評価によって、エージェントのファインチューニングや学習などをどう行うかに関心があったのだが、そういうものとは違い、あくまで人間による評価の話題が中心だった。
+
+とはいえ、不満と言えばそれぐらいで、この本は買ってよかったと思う。
+
+JRF 2025年10月1日</pre>
+
+
+<section class="backrefs" data-pagefind-ignore>
+<h2>後方参照 (1 件)</h2>
+<ul>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2025/10/gsm_007739.html">共有メモ</a> <span class="backref-date">2025-10-01T13:58:51Z</span></li>
+</ul>
+</section>
+
+</article>
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2025/10.html">2025年10月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+</body>
+</html>

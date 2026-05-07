@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>Perl でオブジェクト指向 Ｃ＋＋風 その３ ローカル関数 - JRF Blog Archive</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2011/01.html">2011年01月</a> | <a href="../../../index/software.html">ソフトウェア Tips</a></nav>
+<article data-pagefind-body>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[software] <span class="cocolog-id">cocolog:66597125</span></td></tr>
+<tr><th>セクション</th><td>JRF のソフトウェア Tips</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2011/01.html">2011年01月07日 22:40:08</a></td></tr>
+<tr><th>元URL</th><td><a href="http://jrf.cocolog-nifty.com/software/2011/01/post-1.html" class="ext-link"><span class="original-url">http://jrf.cocolog-nifty.com/software/2011/01/post-1.html</span></a></td></tr>
+<tr><th>タグ</th><td>[Perl]</td></tr>
+</table>
+</div>
+<h1>Perl でオブジェクト指向 Ｃ＋＋風 その３ ローカル関数</h1>
+<pre class="body">先の記事で「パッケージ」でインポートした関数などを、「クラス」で使う方法を書いたが、インポートした関数の他に、Main パッケージで定義した「ローカル関数」も「クラス」で使いたくなるのが当然である。(というより、それができないことにさっき気付いた。)本稿ではほぼソースだけだがその方法を示す。
+
+先の記事と発想はほぼ同じだが、「型グロブ」という機能を使って実現できる。
+
+#!/usr/bin/perl
+
+use strict;
+use warnings;
+use utf8; # Japanese
+
+BEGIN {
+  my @mypackage = qw(
+                    Main
+                    Main::_Simple
+                    Main::_B
+                  );
+                  
+  foreach my $p (@mypackage) {
+    eval &lt;&lt;&quot;EOM&quot;;
+    {
+      package $p;
+      use Math::Trig; # for pi
+      use Storable qw(dclone);
+    }
+EOM
+    die $@ if $@;
+  }
+  
+  my @myfunction = qw(
+                        Main::local_function_1
+                    );
+  {
+    no strict; ## 型グロブの警告を停止。
+    
+    foreach my $p (@mypackage) {
+      for my $f (@myfunction) {
+        my @f = split(&quot;::&quot;, $f);
+        *{$p . &quot;::&quot; . $f[$#f]} = \&amp;{$f};
+      }
+    }
+  }
+}
+
+package Main;
+
+{
+  package Main::_Simple;
+  ## Main::_Simple の定義はこれまでどおり。
+  
+  my %template = (&quot;Main::_Simple&quot; =&gt; {});
+  
+  sub extend_template {
+    my $class = shift;
+    my @hash = @_;
+    if (exists $template{$class}) {
+      $template{$class} = {%{$template{$class}}, @hash} if @hash;
+    } else {
+      $template{$class} = 
+        {(map {
+                $_-&gt;extend_template() if ! exists $template{$_};
+                %{$template{$_}};
+              } (eval '@{' . $class . '::ISA}')),
+          @hash
+        };
+    }
+    return $template{$class};
+  }
+  
+  sub get_template {
+    my $class = shift;
+    return $class-&gt;extend_template();
+  }
+  
+  sub new {
+    my $class = shift;
+    my $obj = dclone($class-&gt;get_template());
+    bless $obj, $class;
+    return $obj;
+  }
+}
+
+
+{
+  package Main::_B;
+  use base qw(Main::_Simple);
+  
+  __PACKAGE__-&gt;extend_template
+    (
+      data =&gt; 1.0, # ここに data の説明を書こう！
+    );
+    
+  sub method_1 {
+    my $self = shift;
+    my ($arg1) = @_;
+    $self-&gt;{data} = $self-&gt;{data} + pi / $arg1;
+    
+    ## ここで「ローカル関数」を使う。
+    local_function_1();
+    
+    return $self-&gt;{data};
+  }
+}
+
+
+## ただ print するだけの「ローカル関数」。
+sub local_function_1 {
+  print &quot;OK\n&quot;;
+}
+
+MAIN:
+{
+  ## Main::_B::method_1 から local_function がちゃんと呼ばれる。
+  
+  my $b = Main::_B-&gt;new();
+  
+  print $b-&gt;method_1(7.0) . &quot;\n&quot;;
+}
+
+つまり、「プロトタイプ宣言」のようなものが必要でいいという発想である。ソースの「頭」が重い感じがするが、慣れの問題だろうと思いたい。
+
+「ローカル関数」のモジュール名を Main と想定してあるので、変更する際はそのあたりに注意する必要がある。
+
+■関連
+  ●example_oo_pl.shar。上のソースの元ととなった example_oo_fun.pl やその他の例をまとめたアーカイブ。(シェルアーカイブ形式。シェルコマンドとして実行するかunshar を使う。)
+  ●《Perl でオブジェクト指向 C++風》。「先の記事」。冗長になるのでまとめなかったが、先の記事が便利な方は必ず本稿のところでつまずくにちがいない。
+  ●《Perl でオブジェクト指向 C++風 その２ クラス変数》。クラス変数を使ってみる例。
+    
+更新：2011-01-07
+初公開：2011年01月07日 22:40:11
+最新版：2011年01月14日 18:42:25
+
+
+Comments:
+
+[E:banana] 更新：@myfunction の関数名にパッケージ名を足すようにした。一つのパッケージ内に利便性のため別のパッケージにできるものも書いておくとき必要で、@mypackage と表現も揃うのでこうした。それにつれ、shar が変わっている。今回のものは example_oo_pl-20110114.shar。
+投稿: JRF | 2011-01-14 18:48:10 (JST)
+
+
+Links:
+
+先の記事: <a href="../../../articles/2010/12/software_66486034.html" class="int-link" title="Perl でオブジェクト指向 C++風">http://jrf.cocolog-nifty.com/software/2010/12/post.html</a>
+example_oo_pl.shar: /archive/example_oo/example_oo_pl.shar
+Perl でオブジェクト指向 C++風: <a href="../../../articles/2010/12/software_66486034.html" class="int-link" title="Perl でオブジェクト指向 C++風">http://jrf.cocolog-nifty.com/software/2010/12/post.html</a>
+Perl でオブジェクト指向 C++風 その２ クラス変数: <a href="../../../articles/2011/01/software_66578669.html" class="int-link" title="Perl でオブジェクト指向 C++風 その２ クラス変数">http://jrf.cocolog-nifty.com/software/2011/01/post.html</a>
+example_oo_pl-20110114.shar: <a href="http://jrf.cocolog-nifty.com/archive/example_oo/example_oo_pl-20110114.shar" class="ext-link">http://jrf.cocolog-nifty.com/archive/example_oo/example_oo_pl-20110114.shar</a></pre>
+
+
+<section class="backrefs" data-pagefind-ignore>
+<h2>後方参照 (1 件)</h2>
+<ul>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2014/03/software_79204061.html">Perl でオブジェクト指向 Ｃ＋＋風 その４ HashFreezer</a> <span class="backref-date">2014年03月17日 18:20:35</span></li>
+</ul>
+</section>
+
+</article>
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2011/01.html">2011年01月</a> | <a href="../../../index/software.html">ソフトウェア Tips</a></nav>
+</body>
+</html>

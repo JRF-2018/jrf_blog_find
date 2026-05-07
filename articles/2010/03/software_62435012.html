@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>Cygwin 上で dvdauhor を使い、字幕付き DVD を作る - JRF Blog Archive</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2010/03.html">2010年03月</a> | <a href="../../../index/software.html">ソフトウェア Tips</a></nav>
+<article data-pagefind-body>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[software] <span class="cocolog-id">cocolog:62435012</span></td></tr>
+<tr><th>セクション</th><td>JRF のソフトウェア Tips</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2010/03.html">2010年03月15日 23:56:09</a></td></tr>
+<tr><th>元URL</th><td><a href="http://jrf.cocolog-nifty.com/software/2010/03/post.html" class="ext-link"><span class="original-url">http://jrf.cocolog-nifty.com/software/2010/03/post.html</span></a></td></tr>
+<tr><th>タグ</th><td>[Cygwin] [ハード]</td></tr>
+</table>
+</div>
+<h1>Cygwin 上で dvdauhor を使い、字幕付き DVD を作る</h1>
+<pre class="body">90 年代に中古で買った LaserDisc プレイヤーの挙動が、「今になって」といおうか「さすがに」といおうか、とにかくおかしくなったので、今のうちに LD を DVD-R にバックアップしようとした。ある LD について、ついでに字幕も付けてみようかと思ったが、キャプチャ付属のオーサリングソフトでは、字幕を付けることができなった。Windows のフリーのソフトは使いにくく、市販のソフトも、字幕を付けられるようなものは高い。
+
+しかも、Windows のフリーのソフトは、Cygwin のコマンドを用いているが、そういう場合の常として、すでに Cygwin のある私の環境では、新旧ライブラリが混同されるらしくうまく動かない。
+
+でも、Cygwin でできるということはマニアックなこともできるだろうし、かねて、DVD で認証みたいなことができないものかと思っていたので、その実験も兼ねて、Unix 伝統のコマンドラインで、オーサリングを行う dvdauthor 等を使ってみた。
+
+結果、メニュー等を市販ハードで見ると汚ないという不満があるものの、目的としたような仕様の字幕付き DVD を作ることができた。本稿は(主に、方法を忘れるであろう自分の)後学のために、その経験をまとめたものである。 Cygwin 以外、Linux などで使う場合にも参考にできるだろう。
+
+本稿では、字幕付き DVD の作り方を一連に紹介したあと、実験的・応用的利用法について簡単に述べる。
+
+■作業の流れ
+  1.LaserDisc のキャプチャ等、素材を用意する。
+  2.キャプチャした MPEG-2 ファイルを DVD 用に(少し)変換する。
+  3.字幕を付ける。
+  4.メニューを作る。
+  5.DVD イメージを作る。(完成)
+    
+■LaserDisc のキャプチャ等、素材を用意する
+  
+キャプチャはキャプチャハードに添付けの Windows アプリケーションで行った。不要部分をカットし、メニューで使うためにチャプターの時間を調べ、チャプター用のサムネイルを jpg で保存した。
+
+私の使ったマシンおよびツール類はだいたい次の通りである。現在では、ほぼすべて「時代遅れ」であろう。
+
+  ●CPU:Intel Celeron(R) CPU 2.80GHz 1.5GB RAM
+  ●OS:Windows XP Home Edition SP3
+  ●キャプチャ: I-O DATA GV-MVP/RX2
+  ●キャプチャソフト: I-O DATA mAgicTV Version 5.20.00
+  ●LDプレイヤー：マランツ CDV390
+    
+私のキャプチャは中古で手に入れ易く、安いという大事な長所があるのだが、ビデオの品質にコダワる方の評判は良くないようだ。LaserDisc も大学時代の先輩から中古で譲ってもらったもので、「ハイクラス」なものではない。S端子はなく、コンポジット RCA 端子で繋いでいる。
+
+Cygwin のバージョンは 1.7.1。Cygwin (または Windows コマンド)の標準的なインストーラでインストールできないものとして、DVD用のエンコードに MJPEGTools 1.9.0 (mingw のバイナリ)、メニュー作りとオーサリングに dvdauthor 0.6.17 を使った。
+
+メニューの生成等に Perl 5.10.1 を使い、ImageMagick 6.4.0 とその Cygwin 用の Perl モジュールを使っている。
+
+チェックには Media Player Classic 等様々なツールや、DVDプレイヤー(ハード)を使った。
+
+今回(例として)キャプチャした LD は次の物である。
+
+マーラー：交響曲 第２番《復活》
+    レナード・バーンスタイン指揮
+    ロンドン交響楽団
+    シーラ・アームストロング(ソプラノ)
+    ジャネット・ベイカー(メゾ・ソプラノ)
+    1973年9月 英国イーリー大聖堂
+    Gramophone GmbH. POLYDOR KK. 1988
+    
+日本盤だが、字幕は付いていない。歌詞対訳付き解説は封入されてあった。なお、これに対応する DVD 版はセット内容等を変えて何度か発売されているが、今現在は、日本盤としては入手困難になっているようだ。ただし、輸入盤は、全集、または 1・2・3番のセットとして手に入る。
+
+キャプチャしたビデオは c:/MyWorks/Resurrection.mpg に保存し、チャプター用の jpg は、別の作業ディレクトリに背景用、タイトルクレジット部分、第１〜５楽章部分をそれぞれ次のような名前で保存した。(公正な利用または引用の範囲にあると思うので、いちおうアップしておく。)
+
+  ●Background.jpg
+  ●Title.jpg
+  ●C1.jpg
+  ●C2.jpg
+  ●C3.jpg
+  ●C4.jpg
+  ●C5.jpg
+    
+ツールが Cygwin 等なので日本語ファイル名を避けたほうが無難である。
+
+■キャプチャした MPEG-2 ファイルを DVD 用に(少し)変換する。
+  
+キャプチャは 720x480 の DVD でよく使う MPEG-2 を出力するが、そのままでは dvdauthor コマンド用にはならないようなので、変換を必要とする。サイズはほぼ変わらないので「再エンコード」はしていないのだと思うが、詳しくはわからない。
+
+mpeg2desc で一度、映像と音声を分け、それを mplex で統合しながら DVD 用にする。次のように(c:/MyWorks 上で)コマンドを実行する。
+
+a=&quot;Resurrection.mpg&quot;				       
+mpeg2desc -v0 -o tmp.m2v -a0 -o tmp.m2a &lt; $a &gt; /dev/null 2&gt;&amp;1
+mplex -f 8 -o converted.mpg tmp.m2v tmp.m2a
+mv $a $a~
+mv converted.mpg $a
+rm tmp.m2v tmp.m2a
+
+Resurrection.mpg~ は消して良い。(失敗などで再び作るときは、tmp.m2v と tmp.m2a の削除を忘れると↓のようなエラーが出る。自動でマルチパスなんだろうか？)
+
+**ERROR: [mplex.exe] Need to split output but there appears to be no %d in the filename pattern converted.mpg
+
+以後は c:/MyWorks 以外の作業ディレクトリで行った。
+
+■字幕を付ける。
+  
+字幕ファイルを作り spumux で mpg に合成する。字幕はツールを使わず、メディアプレイヤー等で時間を確かめながら、Subtitle.txt をエディタで書き、それを txt2srt.pl という自作のトイプログラムを使って Subtitle.srt にした。
+
+SRT という形式は次のようなとても単純なテキスト形式で、spumux で使う場合は iconv がリンクされているので、どんな文字コードも気にすることはない。私は UTF-8 を使った。
+
+1
+0:49:47.500 --&gt; 0:50:07.000
+O Röschen rot!
+おお、くれないの小さなバラよ！
+
+2
+0:50:57.000 --&gt; 0:51:07.500
+Der Mensch liegt in größer Not!
+人間は大きな苦難に横たわっている！
+
+(…以下このようなテキストが続く。)
+
+ただ、今回、ドイツ語を日本語と同時に表示することにしたが、ドイツ語の入力は面倒。さらに付番もいちいち面倒なので、次のようなテキストで入力してあとから、上の SRT の形式に変換した。
+
+# Chapters = 0,01:02.00,25:40.50,38:12.00,49:47.00,55:18.800
+
+49:47.50 --&gt; 50:07.00
+O Ro&quot;schen rot!
+おお、くれないの小さなバラよ！
+
+50:57.00 --&gt; 51:07.50
+Der Mensch liegt in gro&quot;{ss}er Not!
+人間は大きな苦難に横たわっている！
+
+(…以下このようなテキストが続く。)
+
+txt2srt.pl はただのフィルタなので変換は次のようにする。
+
+perl txt2srt.pl &lt; Subtitle.txt &gt; Subtitle.srt
+
+なお、LD からのカットのしかたによって、当然、字幕の時間がずれるだろう。ただ、今回、字幕を付けたのは LD の裏面にあたる部分だけなので、txt2srt.pl の norm_time に関する部分を書き換えるだけで対応できる。たとえば 11.500 秒ずれただけなら、txt2srt.pl 内を次のように替えればいい。
+
+our $SHIFT_TIME = 11.5;
+
+spumux を使うには設定の xml を次のように書く。名前は subtitle.xml とした。ほぼ《dvdauthor》のサイトの例どおりだが、表示／非表示を選択できるようにしたいので、force=&quot;yes&quot; は付けてはいけない。
+
+&lt;subpictures&gt;
+&lt;stream&gt;
+    &lt;textsub
+      filename=&quot;Subtitle.srt&quot;
+      characterset=&quot;UTF-8&quot;
+      fontsize=&quot;28.0&quot;
+      font=&quot;MSgothic.ttf&quot;
+      horizontal-alignment=&quot;left&quot;
+      vertical-alignment=&quot;bottom&quot;
+      left-margin=&quot;60&quot;
+      right-margin=&quot;60&quot;
+      top-margin=&quot;20&quot;
+      bottom-margin=&quot;30&quot;
+      subtitle-fps=&quot;29.96&quot; 
+      movie-fps=&quot;29.96&quot; movie-width=&quot;720&quot; movie-height=&quot;480&quot;
+    /&gt;
+&lt;/stream&gt;
+&lt;/subpictures&gt;
+
+元の mpg を spumux に渡して、Resurrection-muxed.mpg を作る。
+
+cp c:/Windows/Fonts/MSgothic.ttf .
+spumux subtitle.xml &lt; c:/MyWorks/Resurrection.mpg &gt; Resurrection-muxed.mpg
+
+さて、フォントをコピーしないと、次のエラーが出るかもしれない。
+
+ERR: New_Face failed. Maybe the font path is wrong.
+Please supply the text font file (c:/Windows/Fonts/MSgothic.ttf).
+WARN: subtitle font: load_sub_face failed.
+Segmentation fault (core dumped)
+
+spumux を使って字幕をつけるとき、なぜかフォントにフルパスを指定するとこのようなエラーを出して落ちる。よって、フォントをローカルにコピーして持つ必要がある。Linux だと ~/.spumux などにフォントをコピーして置けばいいそうだ。
+
+また、字幕の日本語で１行が長いと警告が出る。英語などでは長い行は、単語の後ろのスペースで自動的に改行される。よって、警告が出たところは、明示的に改行するなりスペースを挿入するなりすれば良い。おすすめしないが、subtitle.xml 内でフォントサイズを小さく指定することもできる。
+
+■メニューを作る。
+  
+メニュー画面を Perl の Image::Magick モジュールを使って作成する。変換は ppmtoy4m と mpeg2enc を主に使い、統合に上で使った mplex と spumux を使う。
+
+まず、準備として、メニューを無音にする場合は、無音の wav が必要となる。これは 例えば、SoundEngineFree で適当に録音したあと、すべて無音に編集し、セーブすればできる。この wav を mp2 に変換するには次のようにする。(できたファイル nosound-1second.m2a も上げておく。)
+
+mp2enc -b 224 -r 48000 -o nosound-1second.m2a nosound-1second.wav
+
+メニューには、下地の画面とボタンのカーソルになるべき画面の二つが最低必要で、別に GIMP などを使ってもいいのだが、Perl を使ったのは、位置等の指定がやりやすいため。いちおうそのプログラム drawmenu.pl をこのサイトに上げておく。
+
+drawmenu.pl で menuC.png、menuC2.png、menuCh.png、後述の menuC.xml を生成した。menuC.png は字幕ONのときの画面、menuC2.png は字幕OFFのときの画面、menuCh.png は両方で共通に用いるボタンのカーソル(すべて)の画面である。
+
+注意すべき点がいくつかある。まず、ボタンのカーソル用の画面を書くときは antialias を切って描画しないといけないことである。メニューボタンはサブタイトルと同じカラーパレットを用い、そのカラーパレットは 16 色しか使えないらしいからである。
+
+画像フォーマットには、透過色が自然に扱えるよう PNG を使ったが、実はここに落とし穴があった。PNG を ppmtoy4m で使うため ppm 系のフォーマットに直す必要があるのだが、二つ目の注意すべき点は、このとき、png2pnm (png2pam) を使っては&lt;b&gt;いけない&lt;/b&gt;ということである。ppmtoy4m は 8bit チャンネルが必要なのに、pngtopnm や pngtopam はアルファチャンネルをはずすうまい方法がないのか、16bit チャンネルになるようで使えない。以下のエラーが出る。
+
+**ERROR: [ppmtoy4m.exe] Expecting maxval == 255, not 65535
+
+ボタンの位置等を記述する menuC.xml は次のようになる。
+
+&lt;subpictures&gt;
+&lt;stream&gt;
+    &lt;spu
+          force=&quot;yes&quot;
+          start=&quot;00:00:00.00&quot;
+          select=&quot;menuCh.png&quot;
+          highlight=&quot;menuCh.png&quot;
+      &gt;
+          &lt;button name=&quot;BCTitle&quot; x0=&quot;76&quot; y0=&quot;196&quot; x1=&quot;184&quot; y1=&quot;294&quot; /&gt;
+          &lt;button name=&quot;BCC1&quot; x0=&quot;186&quot; y0=&quot;196&quot; x1=&quot;294&quot; y1=&quot;294&quot; /&gt;
+          &lt;button name=&quot;BCC2&quot; x0=&quot;296&quot; y0=&quot;196&quot; x1=&quot;404&quot; y1=&quot;294&quot; /&gt;
+          &lt;button name=&quot;BCC3&quot; x0=&quot;76&quot; y0=&quot;316&quot; x1=&quot;184&quot; y1=&quot;414&quot; /&gt;
+          &lt;button name=&quot;BCC4&quot; x0=&quot;186&quot; y0=&quot;316&quot; x1=&quot;294&quot; y1=&quot;414&quot; /&gt;
+          &lt;button name=&quot;BCC5&quot; x0=&quot;296&quot; y0=&quot;316&quot; x1=&quot;404&quot; y1=&quot;414&quot; /&gt;
+          &lt;button name=&quot;BCAll&quot; x0=&quot;76&quot; y0=&quot;146&quot; x1=&quot;180&quot; y1=&quot;180&quot; /&gt;
+          &lt;button name=&quot;BCSubtitle&quot; x0=&quot;186&quot; y0=&quot;146&quot; x1=&quot;290&quot; y1=&quot;180&quot; /&gt;
+      &lt;/spu&gt;
+&lt;/stream&gt;
+&lt;/subpictures&gt;
+
+ボタンを移動するときのカーソル画像 highlight だけあれば、選択されたときの「アニメーション」 select の指定はいらないかもしれない。ボタン位置は自動抽出もできるそうだが、Perl で画面を生成した私は使わなかった。
+
+以下を実行して、メニューの mpg を作る。
+
+png2bmp menuC.png | bmptopnm | ppmtoy4m -S 420mpeg2 -n 1 -I p -A 10:11 | mpeg2enc -f 8 -n n -o tmp.m2v
+mplex -f 8 -o tmp.mpg tmp.m2v nosound-1second.m2a
+spumux menuC.xml &lt; tmp.mpg &gt; menuC.mpg
+rm tmp.m2v tmp.mpg
+
+png2bmp menuC2.png | bmptopnm | ppmtoy4m -S 420mpeg2 -n 1 -I p -A 10:11 | mpeg2enc -f 8 -n n -o tmp.m2v
+mplex -f 8 -o tmp.mpg tmp.m2v nosound-1second.m2a
+spumux menuC.xml &lt; tmp.mpg &gt; menuC2.mpg
+rm tmp.m2v tmp.mpg
+
+ppmtoy4m のフラグは -S や -A はあまり関係ないようだが、-I＝インターレースモードについてプログレッシブにしないと静止画の表示がかなり汚なくなるハードがあった。-I t などとするときは -L を付ける必要もあるようだ。
+
+ただし、関係がなかったフラグも環境に依存する可能性が強く、もしかすると(将来の)他のプレイヤーなどでは、強い意味を持つかもしれない。
+
+■DVD イメージを作る。(完成)
+  
+dvdauthor 用の設定 XML を書き、dvdauthor を実行し、DVD のディレクトリ構造を作る。Media Player Classic などで dvd/VIDEO_TS/VIDEO_TS.IFO をチェックしたあと、mkisofs で ISO ファイルを作り、それを適当なツールで DVD に焼けば完成である。
+
+dvdauthor 用の設定 XML は次のようにし、名を ResurrectionDVD.xml とした。
+
+&lt;dvdauthor dest=&quot;dvd/&quot; &gt;
+
+&lt;vmgm&gt;
+&lt;fpc&gt; g3 = 1; jump titleset 1 menu; &lt;/fpc&gt;
+&lt;/vmgm&gt;
+
+&lt;titleset&gt;
+&lt;menus lang=&quot;JA&quot;&gt;
+&lt;video format=&quot;ntsc&quot; aspect=&quot;4:3&quot; resolution=&quot;720x480&quot; /&gt;
+&lt;audio format=&quot;mp2&quot; lang=&quot;DE&quot;/&gt;
+&lt;subpicture lang=&quot;JA&quot; /&gt;
+
+&lt;pgc entry=&quot;root&quot; &gt;
+&lt;pre&gt; subtitle = 64; if (g3 == 0) { jump menu 2; }  &lt;/pre&gt;
+&lt;vob file=&quot;menuC.mpg&quot; pause=&quot;inf&quot; /&gt;
+&lt;button name=&quot;BCAll&quot;&gt; jump title 1 chapter 1; &lt;/button&gt;
+&lt;button name=&quot;BCSubtitle&quot;&gt; g3 = 0; jump menu 2; &lt;/button&gt;
+&lt;button name=&quot;BCTitle&quot;&gt; jump title 1 chapter 1; &lt;/button&gt;
+&lt;button name=&quot;BCC1&quot;&gt; jump title 1 chapter 2; &lt;/button&gt;
+&lt;button name=&quot;BCC2&quot;&gt; jump title 1 chapter 3; &lt;/button&gt;
+&lt;button name=&quot;BCC3&quot;&gt; jump title 1 chapter 4; &lt;/button&gt;
+&lt;button name=&quot;BCC4&quot;&gt; jump title 1 chapter 5; &lt;/button&gt;
+&lt;button name=&quot;BCC5&quot;&gt; jump title 1 chapter 6; &lt;/button&gt;
+&lt;/pgc&gt;
+
+&lt;pgc&gt;
+&lt;pre&gt; subtitle = 0; if (g3 != 0) { jump menu 1; } &lt;/pre&gt;
+&lt;vob file=&quot;menuC2.mpg&quot; pause=&quot;inf&quot; /&gt;
+&lt;button name=&quot;BCAll&quot;&gt; jump title 1 chapter 1; &lt;/button&gt;
+&lt;button name=&quot;BCSubtitle&quot;&gt; g3 = 1; jump menu 1; &lt;/button&gt;
+&lt;button name=&quot;BCTitle&quot;&gt; jump title 1 chapter 1; &lt;/button&gt;
+&lt;button name=&quot;BCC1&quot;&gt; jump title 1 chapter 2; &lt;/button&gt;
+&lt;button name=&quot;BCC2&quot;&gt; jump title 1 chapter 3; &lt;/button&gt;
+&lt;button name=&quot;BCC3&quot;&gt; jump title 1 chapter 4; &lt;/button&gt;
+&lt;button name=&quot;BCC4&quot;&gt; jump title 1 chapter 5; &lt;/button&gt;
+&lt;button name=&quot;BCC5&quot;&gt; jump title 1 chapter 6; &lt;/button&gt;
+&lt;/pgc&gt;
+&lt;/menus&gt;
+
+&lt;titles&gt;
+&lt;video format=&quot;ntsc&quot; aspect=&quot;4:3&quot; resolution=&quot;720x480&quot; /&gt;
+&lt;audio format=&quot;mp2&quot; lang=&quot;DE&quot;/&gt;
+&lt;subpicture lang=&quot;JA&quot; /&gt;
+
+&lt;pgc&gt;
+&lt;vob file=&quot;Resurrection-muxed.mpg&quot;
+        chapters=&quot;0,01:02.00,25:40.50,38:12.00,49:47.00,55:18.80&quot; /&gt;
+&lt;post&gt; call menu; &lt;/post&gt;
+&lt;/pgc&gt;
+
+&lt;/titles&gt;
+&lt;/titleset&gt;
+&lt;/dvdauthor&gt;
+
+詳しくは《dvdauthor》のサイト等で見るべきだが、変数の利用について、いくつか説明すると、g3 を字幕のON/OFF を指定するのに使っている。本来、これは subtitle 変数でそのままできそうなものだが、なぜか、うまくいかなかった。
+
+この XML の作り方には様々な Tips がある。作っているといろいろエラーや警告がでて、ドキュメントに必ずしも載らない決まりを教えられることになるが、そのいくつかを紹介すると…。
+
+  ●jump 等の行き先には制限がある。fpc を含め vmgm からは vmgm 内の menu X か titleset のうちのルートメニュー(titleset X menu)にしか行けない。titleset 内の call menu もルートメニューにしか帰れない。
+  ●fpc を指定したときは、その後自動的に vmgm の最初のメニューに行くということがなくなる。よって、そういう動作が必要なときは、明示的に jump menu 1 などとする必要がある。
+  ●vmgm 内に titles は置けない。
+  ●メニューしかなくても titleset 内には titles が必要である。ただし、空の pgc 要素まであれば十分である。
+  ●変数 subtitle は直前最速でも pre のときにセットしないとダメなようだ。まず、g3 などに状態を保存しておき、subtitle を表示するときは、 subtitle = ID + 64、そうでないときは subtitle = ID にすればいい。デフォルトの字幕のストリーム番号は 0 番であるが 1 番としてもアクセスできた。
+  ●ボタン位置の番号は button レジスタに指定するが、1024 を掛ける必要がある。例えば二番目のボタンは button = 2048 と指定する。(式が使えるので button = 2 * 1024 と書くとわかりやすい。)
+  ●vmgm 内の titlemap という要素はなくなったらしい。そのため、menu にいく前にロゴを再生するということはやりにくくなった。ただ、menus に複数の pgc を指定でき、ある menu を再生したあと、post で次の menu に移るということは簡単にできるので、似たことは可能である。
+    
+コマンドとして dvdauthor を使う注意点として、ターゲットとなる dvd/ のディレクトリにすでにファイルがあると、いろいろ問題があるようだ。まず dvd/ 以下を消去する必要がある。
+
+ISO を作るまで一連のコマンドは次のようになる。
+
+rm -rf dvd; mkdir dvd
+dvdauthor -x ResurrectionDVD.xml
+mkisofs -dvd-video -udf -V &quot;RESURRECTION&quot; -o RESURRECTION.iso dvd/
+
+ISO の前の確認は Media Player Classic があり、パスが通っているなら、次のようにすればいい。
+
+mplayerc dvd/VIDEO_TS/VIDEO_TS.IFO
+
+できあがった ISO イメージは、適当なソフト(NERO などの PC 付属のライタなり DVD Decrypter なり)で DVD に焼けばよい。
+
+完成である。
+
+■実験的・応用的利用法
+  
+どうも私の家の国産プレイヤーだとメニューが汚いのでインターレース周りを疑い、ppmtoy4m のオプションがどのように作用するか確める DVD も作った。上のチャプター等の jpg 素材を使った drawmenutest.pl も上げておく。このファイルは XML ファイル等も生成する。次のコマンドで ISO イメージまで作る。(何枚も PNG を作るのでわりと時間がかかる。上の jpg 素材と menuCh.png、menuC.xml があれば、ISO まで他の素材がなくても作れるはず。)
+
+perl drawmenutest.pl
+sh makemenutest.sh
+rm -rf dvd; mkdir dvd
+dvdauthor -x menutestdvd.xml
+mkisofs -dvd-video -udf -V &quot;MENUTEST&quot; -o MENUTEST.iso dvd/
+rm menuT* menutestdvd.xml makemenutest.sh
+
+dvdauthor ではレジスタ等も使えるのでかなり複雑なことができそうだ。パスワード(というより合言葉)の入力を求めたり、ランダムで警告や宣伝を流すこともできる。数値キーの入力は使えないが、上下左右のボタンは使える。DVD でゲームを作ったり、同人ソフトの配布に使えるのではないだろうか。
+
+方向キーの使い方は、ドキュメントではわかりにくい。例えば &quot;BCAll&quot; ボタン上で「上」のキーが押されたことを検出するには、次のように spumux に渡す xml で button 要素の属性で指定した名前 &quot;BCUp&quot; を action 要素に書き、その次のように dvdauthor に渡す xml でその名前 &quot;BCUp&quot; をボタンであるかのように書けばよい。
+
+&lt;subpictures&gt;
+…
+          &lt;button name=&quot;BCAll&quot; x0=&quot;76&quot; y0=&quot;146&quot; x1=&quot;180&quot; y1=&quot;180&quot;
+                  up=&quot;BCUp&quot; /&gt;
+          &lt;action name=&quot;BCUp&quot; /&gt;
+…
+&lt;/subpictures&gt;
+
+&lt;dvdauthor dest=&quot;dvd/&quot; &gt;
+…
+&lt;button name=&quot;BCAll&quot;&gt; jump title 1 chapter 1; &lt;/button&gt;
+&lt;button name=&quot;BCUp&quot;&gt; button = 6 * 1024; &lt;/button&gt;
+…
+&lt;/dvdauthor&gt;
+
+あと、レジスタの s12 や s13 を使えば、Parental Control もできそうなのだが、それは、私はうまくできなかった。
+
+■参考
+  ●《dvdauthor》。dvdauthor のメインサイト。dvdauthor や spumux の説明もあるが、少し説明の場所がわかりにくいかも。
+  ●《DVDAuthor Wiki | DVDAuthor / XML》。上の説明を少し補完してくれるサイト。
+  ●《dvdauthorを使う その１: 落穂拾い》。《dvdauthorを使う その２: 落穂拾い》。主にこのページを参考にした。ただし、NTSC ではなく PAL 用のような気がする。
+  ●《[MPlayer-users] Making VCD / SVCD from rendered animation?》。 pngtopnm でハマったとき、ここに書かれたことが参考になった。
+  ●《spumuxとDVDauthorで4:3のTVにも対応した16:9メニューを作る方法 - shin_emonの日記》。ボタンの例はここで学んだ。
+  ●《DVDAuthor - DVDAuthor》。dvdauthor の MinGW、Cygwin それぞれのバイナリが配布されている。
+  ●《The MJPEG/Linux square | Get The MJPEG/Linux square at SourceForge.net》。mpeg2enc 等の MinGW 用のバイナリが配布されている。
+  ●《Kazuhiro's blog - Image::Magick for Cygwin Perl 5.10》。Cygwin 用の Perl::Magick の新しいバージョンが配布されている。
+  ●《Linuxツール群で行うオリジナルDVDでの字幕作成 - SourceForge.JP Magazine》。作ったあと知った。spumux で 29.96 となっているところは 29.97 のほうがいいのかな？
+  ●《マーラー：交響曲第2番「復活」 - Wikipedia》。今回の LD から作った DVD は、私の再生環境では、音質は決してよくないが、バーンスタインの勇姿を再び見て感動した。
+    
+更新：2010-03-11--2010-03-16
+初公開：2010年03月15日 23:56:16
+最新版：2010年03月16日 22:06:24</pre>
+<details class="trackbacks" data-pagefind-ignore><summary>Trackbacks (1 件)</summary><pre>
+Trackbacks:
+
+《<a href="http://classicalmusic.livedoor.biz/archives/51388004.html">バーンスタイン/最後の演奏会</a>》 from クラシック音楽ぶった斬り
+ここに聴かれるような静寂さと思索に満ちた演奏は皆無であったと言っても過言ではないだろう。
+
+
+ 
+
+受信： 2010-03-25 03:53:26 (JST)
+
+
+Comments:
+
+[E:upwardright] 更新：方向キーの使い方について例を追記した。
+
+投稿: JRF | 2010-03-16 21:49:28 (JST)
+
+
+Links:
+
+Background.jpg: /archive/dvdauthor/Background.jpg
+Title.jpg: /archive/dvdauthor/Title.jpg
+C1.jpg: /archive/dvdauthor/C1.jpg
+C2.jpg: /archive/dvdauthor/C2.jpg
+C3.jpg: /archive/dvdauthor/C3.jpg
+C4.jpg: /archive/dvdauthor/C4.jpg
+C5.jpg: /archive/dvdauthor/C5.jpg
+txt2srt.pl: /archive/dvdauthor/txt2srt.pl
+subtitle.xml: /archive/dvdauthor/subtitle.xml
+dvdauthor: http://dvdauthor.sourceforge.net/
+SoundEngineFree: http://www.cycleof5th.com/products/soundengine/
+nosound-1second.m2a: /archive/dvdauthor/nosound-1second.m2a
+drawmenu.pl: /archive/dvdauthor/drawmenu.pl
+menuCh.png: /archive/dvdauthor/menuCh.png
+menuC.xml: /archive/dvdauthor/menuC.xml
+ResurrectionDVD.xml: /archive/dvdauthor/ResurrectionDVD.xml
+drawmenutest.pl: /archive/dvdauthor/drawmenutest.pl
+DVDAuthor Wiki | DVDAuthor / XML: http://nfs.shawnfumo.com/wiki/DVDAuthor/XML
+dvdauthorを使う その１: 落穂拾い: http://napple.asablo.jp/blog/2008/11/16/3939376
+dvdauthorを使う その２: 落穂拾い: http://napple.asablo.jp/blog/2008/11/16/3939766
+[MPlayer-users] Making VCD / SVCD from rendered animation?: http://lists.mplayerhq.hu/pipermail/mplayer-users/2003-April/032411.html
+spumuxとDVDauthorで4:3のTVにも対応した16:9メニューを作る方法 - shin_emonの日記: http://d.hatena.ne.jp/shin_emon/20090104/1231079481
+DVDAuthor - DVDAuthor: http://www.paehl.com/open_source/?DVDAuthor
+The MJPEG/Linux square | Get The MJPEG/Linux square at SourceForge.net: http://sourceforge.net/projects/mjpeg/
+Kazuhiro's blog - Image::Magick for Cygwin Perl 5.10: http://ikazuhiro.s206.xrea.com/article.php/20081226135848821
+Linuxツール群で行うオリジナルDVDでの字幕作成 - SourceForge.JP Magazine: http://sourceforge.jp/magazine/08/07/03/025252
+マーラー：交響曲第2番「復活」 - Wikipedia: http://ja.wikipedia.org/wiki/%E4%BA%A4%E9%9F%BF%E6%9B%B2%E7%AC%AC2%E7%95%AA_(%E3%83%9E%E3%83%BC%E3%83%A9%E3%83%BC)
+バーンスタインの勇姿を再び見て感動した: http://jrf.aboutme.jp/user_statuses/show/120523
+
+
+
+</pre></details>
+
+<section class="backrefs" data-pagefind-ignore>
+<h2>後方参照 (3 件)</h2>
+<ul>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2010/10/column_65238931.html">前期の翌日(2010-07-01)から昨日(2010-09-30)まで 92 日間のアクセス解析・近況など</a> <span class="backref-date">2010年10月01日 00:50:45</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2010/03/statuses_aboutme_120990.html">ひとこと</a> <span class="backref-date">2010年03月15日</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2010/03/statuses_aboutme_120523.html">ひとこと</a> <span class="backref-date">2010年03月06日</span></li>
+</ul>
+</section>
+
+</article>
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2010/03.html">2010年03月</a> | <a href="../../../index/software.html">ソフトウェア Tips</a></nav>
+</body>
+</html>

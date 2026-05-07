@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>共有メモ - JRF Blog Archive</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2022/10.html">2022年10月</a> | <a href="../../../index/gsm.html">共有メモ</a></nav>
+<article data-pagefind-body>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[gsm] 2022-10-06T16:04:04Z</td></tr>
+<tr><th>セクション</th><td>グローバル共有メモ</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2022/10.html">2022-10-06T16:04:04Z</a></td></tr>
+<tr><th>元URL</th><td>(URLなし)</td></tr>
+
+</table>
+</div>
+<h1>共有メモ</h1>
+<pre class="body">jrf&gt; 多目的最適化には、大きくわけて、チェビシェフ(Tchebyshev)関数のように多変数の重み付き最大値を使う方法と、重み付き和を使う方法がある。中山＆岡部＆荒川＆尹『多目的最適化と工学設計』(<a href="../../../articles/2022/08/statuses_cocolog_93683698.html" class="int-link cocolog-id" title="ひとこと">[cocolog:93683698]</a>)や穴井宏和『数理最適化の実践ガイド』(<a href="../../../articles/2019/10/statuses_cocolog_91372755.html" class="int-link cocolog-id" title="ひとこと">[cocolog:91372755]</a>) によれば、チェビシェフ関数のほうが本筋のように書いているが、しかし、私は『「シミュレーション仏教」の試み』では、＞同時に最適化をするとは、プログラムをするときは、両者の和などを最適化することになる。＜…と書き和を先に出している。これには理由がある。
+
+最大値を使う場合、重みをかなり慎重に選ばないと、一つの目的のスコアのみ最適化されるが、それ以外のスコアについては最適化されないということが頻繁に起こると予想できる。
+
+独立な二つのスコアが、大きいほうの一方で最適に近付いたあと、もう一方も最適に近付くためには、和によって傾斜を付けるしかないのではないか。重みの付け方によっては回避できるのかもしれないが、一般に最適化をゴソッと使うような場面では重みはよくわかっていないことのほうが多いだろう。
+
+よって私は和を重視するのである。</pre>
+
+
+</article>
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2022/10.html">2022年10月</a> | <a href="../../../index/gsm.html">共有メモ</a></nav>
+</body>
+</html>

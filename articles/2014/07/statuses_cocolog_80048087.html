@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>ひとこと - JRF Blog Archive</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2014/07.html">2014年07月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+<article data-pagefind-body>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[statuses] <span class="cocolog-id">cocolog:80048087</span></td></tr>
+<tr><th>セクション</th><td>JRF のひとこと</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2014/07.html">2014年07月01日</a></td></tr>
+<tr><th>元URL</th><td><a href="http://jrf.cocolog-nifty.com/statuses/2014/07/firef.html" class="ext-link"><span class="original-url">http://jrf.cocolog-nifty.com/statuses/2014/07/firef.html</span></a></td></tr>
+
+</table>
+</div>
+<h1>ひとこと</h1>
+<pre class="body">Firefox の JavaScript の Date の toLocaleString や toLocaleDateString の挙動が変わった。
+JRF 2014年7月1日
+
+おそらく４月下旬リリースの Firefox 29 からの仕様変更だと思う。集計作業してて今ごろやっと気付いた。このメソッドはブラウザによって動作が違うとのことだったけど、Greasemonkey で使ってるから、まぁ、いいかと思って使ってた。
+
+《Firefox 29 for developers - Mozilla | MDN》
+<a href="https://developer.mozilla.org/ja/docs/Mozilla/Firefox/Releases/29" class="ext-link">https://developer.mozilla.org/ja/docs/Mozilla/Firefox/Releases/29</a>
+
+JRF 2014年7月1日
+
+(new Date).toLocaleDateString() とすると、それまでは「2014年7月1日」とかいう値が返ってきてたのに、今は「2014/7/1」とかいう値になっている。
+
+↓を参考に toLocaleDateString(&quot;ja-JP&quot;) とかしても元のようにはならない。
+
+《ECMA-402 Internationalization API - hogehoge @teramako》
+<a href="http://d.hatena.ne.jp/teramako/20130521/p1" class="ext-link">http://d.hatena.ne.jp/teramako/20130521/p1</a>
+
+JRF 2014年7月1日
+
+どうしても元の値が欲しいなら、「var d = new Date; var s = d.getFullYear() + &quot;年&quot; + (d.getMonth() + 1) + &quot;月&quot; + d.getDate() + &quot;日&quot;;」とかを使ってやれば問題ないはず。
+
+新しい toLocaleDateString() を使って &quot;/&quot; で split して結合ってのは、また仕様が元に戻ったりするのが怖い…。
+
+[google:2038年問題]とかあるから、それに向けて日付担当にそろそろ仕事を覚えさせようとしているのか？…というのは気が早過ぎか。
+
+JRF 2014年7月1日
+
+……。
+
+私が作ったもので関連としては↓。これはでも年月日表示なのが前提。変えるのは簡単(rewrite_gengou 関数をちょっと変えるだけ)だけど、日付ってほんといろいろフォーマットがあるからね…、まぁ、私がやる必要性は感じないな…。
+
+《gengou.js：日付を後付けで元号表示にする》
+<a href="../../../articles/2014/02/software_78888769.html" class="int-link" title="gengou.js：日付を後付けで元号表示にする">http://jrf.cocolog-nifty.com/software/2014/02/post.html</a>
+
+JRF 2014年7月1日</pre>
+
+
+</article>
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2014/07.html">2014年07月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+</body>
+</html>

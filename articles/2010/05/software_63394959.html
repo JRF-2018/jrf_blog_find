@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>日本語IME「風」をVistaにインストールするとき、解除キーを登録するところで失敗する - JRF Blog Archive</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2010/05.html">2010年05月</a> | <a href="../../../index/software.html">ソフトウェア Tips</a></nav>
+<article data-pagefind-body>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[software] <span class="cocolog-id">cocolog:63394959</span></td></tr>
+<tr><th>セクション</th><td>JRF のソフトウェア Tips</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2010/05.html">2010年05月19日 18:48:50</a></td></tr>
+<tr><th>元URL</th><td><a href="http://jrf.cocolog-nifty.com/software/2010/05/post-1.html" class="ext-link"><span class="original-url">http://jrf.cocolog-nifty.com/software/2010/05/post-1.html</span></a></td></tr>
+<tr><th>タグ</th><td>[Windows アプリ]</td></tr>
+</table>
+</div>
+<h1>日本語IME「風」をVistaにインストールするとき、解除キーを登録するところで失敗する</h1>
+<pre class="body">昨年、Windows 7 の発売前に折悪しくというか、母の PC が故障してデータの復活もできない状況に陥り、新しい Windows Vista のノート PC を購入した。
+
+未整備に近いテスト環境として、母の PC に自分が使っているソフトは極力入れない方針にしたのだが、Firefox と IME ぐらいは入れておこうとして、両者のインストールを試みた。Firefox は、アドオン周りのバージョン違いの不満を除けば、もちろん、インストールはすんなりできた。
+
+IME として、私は、日本語単漢字変換 IME 『風』を使っている。ただ、これは公式ページでは Vista への対応はうたっておらず、Vista 後の更新はほぼ止まっているというべきで、このインストールがうまくいくかはやってみなければわからない状態だった。
+
+インストールしたところ、IME としてタスクバーに表示されるところまではいくが、解除キーを登録しようとするところで、何度入力しても登録されてない状態になった。
+
+他のソフトに関する類似症例を見つけて、解決した。その方法は、[ユーザーアカウント制御(UAC)を使って コンピュータの保護に役立たせる]をいったん無効にしたあと、登録(し、再度、UAC を有効に)するというものである。
+
+[ユーザーアカウント制御(UAC)を使って コンピュータの保護に役立たせる]は、次のような順で辿る。
+
+［スタート］⇒［コントロールパネル］⇒［ユーザーアカウントと家族のための安全設定］⇒［ユーザーアカウント］⇒［ユーザーアカウント制御の有効化または無効化］。
+
+これを無効にして再起動、『風』の解除キーを登録して再起動、再度有効化して再起動……すれば良いはず。
+
+■マメ知識
+  
+ついでなので、『風』使いが知っておくべきいくつかのマメ知識を紹介。
+
+  ●『風』は Alt+［半角/全角］ が標準の漢字モード切り換え。いつもは Alt なしの［半角/全角］にしていたので、少しハマった。
+  ●Windows の『風』使いなら当然知っているように、Shift+Ctrl で IME を切り換えられる。キー位置がわかりにくい漢字などは、MS-IME に切り換えて使えば急場は凌げる。
+  ●Meadow や Firefox でときどき仮想鍵盤が出たままになったり、出なくなったりすることがある。このとき、『風』の設定画面を呼び出そうとすると、この呼び出し自体は失敗するが、その後、仮想鍵盤が出るよう復活することが多い。このときの設定画面の呼び出しは、アプリケーションからする必要があり、タスクバーからのものでは無意味なようなので、機能キーとして「環境設定」に何かのキー(私は［ひらがな］キー)を割り当てておけば良い。
+    
+■感想＆後日談
+  
+Windows Vista は互換性がないと言われてビビってたけど、これが動くなら他も望みがあるかな。Cygwin、Meadow、TeX あたりが入ればかなりしあわせだが……まだ、入れてない。
+
+この後、Windows 7 が発売された。アップグレードキャンペーンが相当安くあったので、「人柱上等」(どうせ母の PC だし)ということで、アップグレードした。『風』はインストールしなおす必要もなく、使えていた。
+
+さらに、その PC のハードディスクがクラッシュしたのち、Windows 7 にアップグレードにしてから『風』のインストールを試すことになった。最初何もせずにうまくいったかと思ったが、やはり、UAC を切る必要があった。すなわちコントロールパネルをUAC で検索して出てくる「ユーザー アカウント制御の変更」で最低の「通知しない」に設定したあと再起動し、シリアルを入力して、再度 UAC を元に戻す必要があった。
+
+■参考
+  ●《風のくに》。超多段シフト方式日本語入力システム『風』の作成者のページ。
+  ●《超驚録オンラインサポート：WindowsVistaで超驚録のライセンスキーが登録できない。》。他のソフトに関する類似症例が載っていたところ。
+  ●《JRFのひとこと：日本語IME『風』をVistaにインストールしたが、解除キーを登録するところで失敗する。》。この記事の元となったひとこと。このひとことがググッてもひっかからないようになっているよなので、記事にした。
+  ●《「風」の wnd ファイルを Meadow でエディットすると起動しない！》。以前の『風』関連記事。
+    
+更新：2009-08-24,2010-05-19,2010-06-01
+初公開：2010年05月19日 18:48:54
+最新版：2010年06月02日 01:48:19</pre>
+<details class="trackbacks" data-pagefind-ignore><summary>Trackbacks (1 件)</summary><pre>
+Trackbacks:
+
+《<a href="http://jrf.cocolog-nifty.com/pr/2012/04/post-4.html">まさか!の単漢字入力。IME『風』</a>》 from JRF の勝手に PR
+ATOK がバカになったって？MS IME がやっぱり使えないって？Google 日本語入力が日本語を提案しないって？そんなに「人工知能」がいやだったら、漢字一文字づつ選んで入力しやがれ！ → やってみました。... 
+
+受信： 2012-05-23 01:34:07 (JST)
+
+
+Comments:
+
+[E:pen] 更新：マメ知識として、仮想鍵盤がうまく表示されなくなったときに「設定キー」を押すという策を書き足し、マメ知識を一つの節にまとめた。
+投稿: JRF | 2010-05-20 12:26:23 (JST)
+
+[E:despair] 更新：後日談として Windows 7 にインストールした経験談を足した。
+
+投稿: JRF | 2010-06-01 21:48:29 (JST)
+
+
+Links:
+
+風のくに: http://homepage3.nifty.com/togasi/
+超驚録オンラインサポート：WindowsVistaで超驚録のライセンスキーが登録できない。: http://blog.ryusys.com/av/faq/windows-vista/windowsvista.html
+JRFのひとこと：日本語IME『風』をVistaにインストールしたが、解除キーを登録するところで失敗する。: http://jrf.aboutme.jp/user_statuses/show/107906
+「風」の wnd ファイルを Meadow でエディットすると起動しない！: http://jrf.cocolog-nifty.com/software/2006/02/post_1.html
+
+
+
+</pre></details>
+
+<section class="backrefs" data-pagefind-ignore>
+<h2>後方参照 (2 件)</h2>
+<ul>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2011/05/statuses_aboutme_138754.html">ひとこと</a> <span class="backref-date">2011年05月12日</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2010/05/statuses_aboutme_124744.html">ひとこと</a> <span class="backref-date">2010年05月20日</span></li>
+</ul>
+</section>
+
+</article>
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2010/05.html">2010年05月</a> | <a href="../../../index/software.html">ソフトウェア Tips</a></nav>
+</body>
+</html>

@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>JRF Flag Semaphore for NES Emulator を作った - JRF Blog Archive</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2014/03.html">2014年03月</a> | <a href="../../../index/software.html">ソフトウェア Tips</a></nav>
+<article data-pagefind-body>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[software] <span class="cocolog-id">cocolog:79149901</span></td></tr>
+<tr><th>セクション</th><td>JRF のソフトウェア Tips</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2014/03.html">2014年03月11日 08:00:00</a></td></tr>
+<tr><th>元URL</th><td><a href="http://jrf.cocolog-nifty.com/software/2014/03/post-1.html" class="ext-link"><span class="original-url">http://jrf.cocolog-nifty.com/software/2014/03/post-1.html</span></a></td></tr>
+<tr><th>タグ</th><td>[Perl] [ハード] [JRF 作成ソフトウェア] [JavaScript]</td></tr>
+</table>
+</div>
+<h1>JRF Flag Semaphore for NES Emulator を作った</h1>
+<pre class="body">私は『Monty Python』(日本版)の VHS ビデオを持っている。そのコントの中に大小さまざまな手旗で、会話というかストーリー(『嵐ヶ丘』)を紡ぐというものがあった。
+
+大学時代、ブラウザは xmosaic か最新の netscape かというころ、ウェブのウィジェットを作るネタを考えていて、ふとそのコントを思い出した。そのころの知り合いが、入力された文字列を元に 3D で文字を表示できるようにしたりしたと聞いていた。私は、そういう技術面でのすごさを出せなくても、ネタ的にクスッと笑えるようなものとして、「手旗フォント」みたいなものを作りたいと思った。
+
+&lt;b&gt;[ とりあえずブラウザで“JRF Flag Semaphore”をやってみる ]&lt;/b&gt;
+
+でも、ネタはネタでしかなく、研究の片手間で、しかもそのころは(セキュリティ等の問題で) JavaScript なんてあってないようなものだったし、サーバーは個人でそんな自由にならないし…と何かと理由を付けて先に伸ばしていくうちに、すっかりそんな気はなくなっていた。(というかそれどころじゃなくなった。)
+
+最近、No_Ad_URL を作って、それがたまたま小切手や手形のように使えるような感じになったことから、その周りの妄想を膨らましていくうちに、クレジットカードが「サイン」の発展形だとするなら、「印鑑」はどの辺の技術だろうと考えたところ、ファミコンなどの ROM が近いのではないかと思うようになった。
+
+最近の JavaScript はローカルファイルも扱えるという凄いんだか、怖いんだかの機能もあって、例えば、ROM がデバイスに差さっていたら、その内容等を使って(No_Ad_URLの)電子署名を Tweet などすれば、印鑑のように使えるのではないか？もちろん、偽造の心配はあるが、印鑑もそもそも偽造の心配はあるもので、ROM のゲーム性(ゲーマーの嫉妬心)などと組み合わせれば、社会的に機能できたりしないか？…とか考えてた。
+
+ただ、現実の JavaScript はまだデバイス名までは知ることができず、とにかくその方向で実証できることはないか？それには何かと自由にできる自分で作った ROM データが簡単なものでもあったほうがいい。一からゲームを作るのはしんどいが、「簡単」でもそれなりにネタになるものがいい。そういえば昔、手旗に関していろいろやろうとしてたな。…と思い出した。
+
+そう思い立って一ヶ月、習慣を崩してでも集中して打ち込んで、やっと形になってきて、今回、それを公開するところまで来た。
+
+とはいえ、実は、今回のは、区切りを急いだ「暫定公開」という色彩が強い。ここのブログがお世話になってるココログのアクセス解析のシステム変更がこの12月から2月にかけてあった。私は習慣としてアクセス解析の概要を三ヶ月ごとに公開するのを続けていて、それはやっぱり続けたいから、その変更に合わせた開発をせねばならない。その開発のために、今回の「プロジェクト」は一端中断せねばならず、とにかく区切りを急いだ。
+
+■実装
+  
+jrf_semaphore.html に、JSNES というファミコンエミュレータ上で動いている実装がある。最近の JavaScript の機能を多く使っている上に、「実証」が目的であることから、クロスブラウザ的な部分は考慮が薄く、Firefox と Google Chrome でしか動作確認をしていない。
+
+そこの説明にあるように、手旗信号と組み合わせる Transliteration ルーチンなどが入った jrf_semaphore.pl も提供している。NES の ROM データがあくまでメインで、この Perl スクリプトは今回は「おまけ」的な性格になるため、その実装をはしょって、もうちょっと、早く公開する予定だったが、完成度を上げてるうちに時間がたってしまった。
+
+メインのソースがアセンブラで、当然、「構造化」すらなくパッと見て何やってるかわかりにくいから、コメント等を充実するべきなのだが、そこが犠牲になってしまった。中断後、開発を再開してから、ドキュメント等の充実をはかりたい。
+
+更新情報はブログ記事のコメント欄に書いていくのが私のいつもの流儀だが、この記事は、もしかすると「暫定公開」版の更新情報までで、それ以降は開発再開時に書く予定の別の解説記事の下にコメントする形になるかもしれない。
+
+上の HTML にもあるが、こちらにもアーカイブのリンクをしておく。
+
+  ●jrf_semaphore.shar。今回は shar も zip も tar.gz も(00_URI.txt の ID 以外は)内容物は同じもの。
+  ●jrf_semaphore.tar.gz。
+  ●jrf_semaphore.zip。
+  ●GitHub - JRF-2018/jrf_semaphore。レポジトリ。
+  ●jsnes-master-20140213.zip。私の JSNES の GitHub コピー。JSNES は GPLv3 らしい。その JSNES を使ってるけど、私のは GPL 下にはなく、下で書くように「パブリックメイン」。
+    
+「数式」的と言えるほどシンプルではなく、私の個性が強く出たプログラム群なので、マネタイズも考えずに「パブリックドメイン」にするのは、技術者集団的に問題があるかもしれないが、そこが気になる方は、上に書いたように電子金融というマネーの根幹に関わる狙いがあっての、道ならしの公共事業的なものとご納得いただけないかと願う。
+
+■参考
+  
+アセンブラは Z80 から 8086 系までを趣味でしかやったことがなく、ファミコン(NES)の 6502 のモトローラ系は(ほぼ)はじめてでいろいろとまどいながら、やった。NES に関しては、ネット上に情報も多く、それを大いに参考にした。
+
+モンティ・パイソンのコントで知った程度なので、手旗(やモールス信号)に関する知識もないに等しい。下記のように書籍は一冊買ったが、Wikipedia を中心に、それもネット上の情報を大いに参考にしている。
+
+JavaScript や Perl に関しては、いつものごとくネットに頼って開発している。「趣味」レベルではあっても、私もこれまでいろいろ開発して以前からの蓄積もあり、これらはもういちいち書いてられない。
+
+もちろん、リアルでも暗に陽に様々なサポートを受けている。私は本当に恵まれていると感じる。
+
+諸々、改めて感謝の意を表する。ありがとうございます。
+
+  ●《JSNES：A JavaScript NES emulator - Ben Firshman》。他にも JavaScript による NES エミュレーター実装はあったが、いじりやすさ、 2P コントローラへの対応などから、これを選んだ。ちなみに、速度を重視するなら、別の実装のほうがいいらしい。
+  ●《NESASM：MagicKit Homepage》。6502 アセンブラ。make 用にパッチをあてて使っている。ROM のプログラムを確認するためのエミュレータは、メモリビューアが見れてデバッグに便利な《VirtuaNES》を使っている。
+  ●《ｷﾞｺ猫でもわかるファミコンプログラミング》と《NES研究室》。この二つはファミコンプログラミングの入門として基礎的なところ。NES 研究室の sample1.nes が CC65 用に作られているのを NESASM 用に書き換えるのが、私の入門の第一歩だった。いちおう <a href="../../../articles/2014/02/statuses_cocolog_79037946.html" class="int-link cocolog-id" title="ひとこと">[cocolog:79037946]</a> で私が NESASM でアセンブルできるようにしたものを公開してるが、つまづきながらでも、自分でやったほうが勉強になると思う。
+  ●《YY-CHR.NET：わいわいの巣 / Yy's Utilities》。ファミコンカラーは RGB 指定じゃなく、いろんな人がいろいろな設定をしている。ライセンス的なことを気にすると、なかなかスッキリ使えそうなものがない。これは「キャラクタ用グラフィックエディタ」である以上、そこで使った色を「引用」しても問題が少ないだろうという判断で、ここからパレットデータを取った。
+  ●《Enri's Home PAGE （ファミリーコンピュータ）》。ハード面ではこちらのページに詳しいデータが載っていてかなり助かった。
+  ●《Nesdev wiki》が海外だと定番のようで、.nes (iNES 形式)の詳しいフォーマットの情報はここで得た。
+  ●『ファミコンの驚くべき発想力 - 限界を突破する技術に学べ -』(松浦健一郎＆司ゆき 著, 技術評論社, 2010年)。過去の技術者らしい細部への変なこだわりみたいなのがないのに、勘どころを得た簡潔な説明…。最近話題の「ゴーストライター」の逆で、高位の人物が身分を隠した別ペンネームで書いてるとか、矢立肇みたくそういうのの意を受けて書いてんじゃないかとすら疑う。
+  ●『旗と船舶通信』(三谷 末治＆古藤 泰美 著, 成山堂書店, 2000年)。私が買ったのは５訂版。チラと読んだだけ。Wikipedia にモールス信号を手旗でやる方法がこの本に載ってるとあって、ROM データをだいたい作り上げたころに買った。私の実装の手旗モールス信号は厳密にはその「国際標準」とは結局違うのだが、参考にした部分もありかなり似ている。
+    
+■FAQ (想定)質問解答集
+  Q.text-gif の出力、cols (一行の文字数)指定できるようにするの忘れたでしょ。or 改行やタブぐらい処理しようよ。
+  A.プチコン・ファミコンでローレベルな実装をたて続けに行う中、行末・改行の扱いがガンになってるのを実感した。日本語の禁則処理とかも難しいのだが、それ以前に、行末の改行を一文字と数えるかとかから問題になる。処理が複雑になるからはしょるみたなことはもちろん私もすることがあるが、今回のこれに関してはポリシーを持ってやってる。仕様。
+  Q.The JRF Tarot 売るってくらいなんだから、あの変な旗を売りゃいいじゃん？
+  A.こんなデザイン性の薄い物に、「個性」みたいなものを与えるには国家…最低でもデカい団体がないとダメで、そうではなしに軍装備としてコネで搬入するみたいな中小ビジネスモデルも、「私がやる」という可能性はもうない。デカい団体を求めると、逆にそれ以外の団体が使いにくくなって「通信」という目的からすると痛すぎるし、コネの構築なんて難度高すぎな上に権利商売にしちゃうとやっぱり派閥性が出ちゃう。権利を持ってない前提での他の「有名人」でもできる金品もらってのステマが上限…。いずれにせよ今の私のあり方からは遠く、そこを商売にする無理をするぐらいなら、別のことをやる。
+  Q.「著作者へのリンク」はあるのに「著作者」書くの忘れてるよ。
+  A.短く答えれば…、現代の法律だと「著作者」という身分の権限が強過ぎ、それに&lt;ruby&gt;&lt;rb&gt;相応&lt;/rb&gt;&lt;rt&gt;ふさわ&lt;/rt&gt;&lt;/ruby&gt;しい責任を執れない者がその身分にあると述べることが身分法の伝統からすると将来「詐称」とされる危険がある。また、正体不明な著作者よりも、リンクが一元的で明確なほうが、事務管理人にリスクが増えても、リンクから遠ざけられた臨時使用者の供託額の算定等に便利である。…といったところ。
+    
+      もちろん、法に書いてんだし、その権限を使わなければ問題ないとしていいとは私も思うが、私は私なりの「市民的不服従」…場合によっては法の精神に沿いながらも、法を越えるのも市民の責務…といった考え方を持っていて、その立場からは「強過ぎる権限」が法にあるなら、そこから距離をおく必要があるように感じるから。
+  Q.NesSemaphore だっけ？Stop かけたり乱数渡したりするやつ、見たことがある気がするんだけど…。
+  A.創ってみて私の中では偶然なんだけど、昔私がいた大学院でやってた「GUI プログラミング」…的なやつの &quot;set&quot;, &quot;gimme&quot;, &quot;update&quot; のプロトコルに似てしまった。当時の研究室の教授がそのプロトコルにこだわってて、私はそこまでこだわる理由が見えなかったのだが、今になってうっすら何かを掴んだということなのか…。ただ、「いっしょ」とか「似せた」というには違い過ぎ、そこの影響を受けたと言っちゃうのは『オズの魔法使い』が『西遊記』や『桃太郎』のパクリだというようなもの。「元型」としての何かが別にあるということなのだと思う。変にあちらに迷惑がかかってもいけないので、その Meme Media な「GUI プログラミング」が何かについて明示はしないでおく。
+    
+      ちなみに、私は院卒なんだけど、私が大学院に入った年、ちょうど制度の切り替わりがあって、「修士課程」ではなく「博士課程前期」の修了になるから、厳密なことを言うと「工学修士相当」となる。これを国際的な基準で「修士」でないということになると(道を外れた私と違う普通の他の院卒者にとって)大問題になるから、「修士」ってことでいいはず。が、 統合失調症を経た私は、ちょっとハメくさいものを感じるので、予防線張れる人は張っておいたほうがいいと思う。
+      
+  Q.確認だけど、実用性ないよね？
+  A.Transliteration に関する部分は、「ネタ」ではなく、他に使うはずだったのがお蔵入りしていたもの。それは今回、公開が初なんで、そこの部分だけ取り出せば多少意味はあるかもしれないが、(私が知らないだけで、)そういうのはすでにデファクトスタンダードがありそうな気はする。
+    
+      ただ、公開時に、やたらと光学ディスクがらみのニュースが目についた。まさか、光学ディスクの規格に手旗のプロトコルとか使ってないよね？パイオニア計画とかボイジャーとかに、Leonardo da Vinci の《ウィトルウィウス的人体図 - Wikipedia》を記したディスクが乗ってる(←これ記憶違いみたい…？)のってひょっとして、そういうことなの？でも、確か、微細な溝(穴)にビットデータがあったはずで、魔鏡の手旗信号だったらおもしろいという私の七芒星の記事と同じような「ファンタジー」に過ぎない…よね？(^^;
+  Q.ROM のほうでは、キャンセルすると単語が削除されるけど、 jrf_semaphore.pl じゃそうなってない。映像に撮ったやつとかから再構成みたいなとき不便じゃない？
+  A.いちおう pl の中の flag_code_to_string では、キャンセルがあったら、削除はしないまでも、その記録を残せるようにはしてある(バージョン 0.02 から)。
+    
+      もちろん、そのあたりを凝ることは可能。だが、そういうことがしたいなら、-T ed (or -T sed) みたいなのが実現可能であることに気付くべきだ。制御文字でエディットモードに切り換えたり、最初の改行コードまでをコマンドとして編集を行わせることは不可能ではない。そして、それをやるなら -T sh や -T perl まで視野に入ってくる。つまり、GUI の世界になったからわかりにくくなったが、コンピュータはキーボードによるシリアル入力の世界であり、コマンド等もそういう一連のキーボード入力の延長線上にしかない。モニタがあるから、そうでないという印象が強いだけで、結局は、入力はずっと続く文字列にすぎない。それをすべてこのフレームワークでやる必要はなく、このソフトは一部の機能に特化して意味を出さねばならない。
+      
+      ただし、一つ、そういったからみで実装したいアイデアはあるので、エディタみたなのはいずれ用意するときが来るかもしれない。(開発名はおそらく naggy-ed や Naggy::Front。)
+      
+■追記 (2017-04-29)
+  
+開発中に入院などもあったが、退院してもう三年ぐらい経つ。更新にあたって、アーカイブに含まれる文章をなおしたりしたが、上の記事を直すまではしなかった。開発に時間はとれるけど、もうやる気はあまりなく、「暫定公開」という性格は今も変わりないから。
+
+このプロジェクトのあとに作った quail-naggy.el で、jrf_semaphore.pl で使っていた Naggy:Backend の完成度を上げることになった。 jrf_semaphore.pl の段階でバグがあったことも気付き、いつか、その変更をこちらのプロジェクトに持ち帰りたいと思っていたが、なかなか手がつかなかった。そうこうしているうちに quail-naggy.el に大きな変更を加えることになったので、それに合わせて、こちらも更新することにした。
+
+上でちょっと述べた Naggy::Front という感じにまでは致らなかったが、-T naggy と指定して日本語変換ができるようにしたのが大きな変更である。ただ、それを使うには quail-naggy.el で使っている辞書類を別途コピーする必要がありインストールが難しい。がんばれば、quail-naggy.el のディレクトリとの共通化もできるはずだが、あまりおすすめしない。
+
+使い方の例は jrf_semaphore.html で書いた。少し詳しく説明すると、 koreha,h. とすると「これは」に変換される。,h. の部分で変換方法をひらがなにするように指定している。同様に ,a. で ascii 変換、,k. でカタカナ変換。例にはないが ,u. で Unicode 変換、,greek. でギリシャ語変換など、 quail-naggy.el の方式指定変換で使えるものが #greek と ,greek. という違いはあるが、使える。,j. で SKK 漢字変換、,J. で単漢字変換をする。変換候補は j に , を続けることで、例えば ,j,,. として選ぶことができる。第一変換候補については特別で ,j,. は ,j. と同じとした。単漢字変換でキーボード位置での指定は例えば2ページ目の m なら ,J,,m. とする。キーボードの&quot;,&quot; &quot;.&quot;  &quot;/&quot; &quot;;&quot; は入力がかぶるので、替わりに &quot;C&quot; &quot;V&quot; &quot;B&quot; &quot;G&quot; を使う。コンマ(,)を入力したいときは二つつなげて ,, と入力する。「、」を入力したければ ,,,h. とすればいい。
+
+まぁ、この機能をまともに使おうとする人はいないと思うが、作れるので作ってみたといったところ。
+
+更新：2014-03-11,2014-03-12,2014-03-18,2014-03-21,2017-04-29,2020-01-23,2020-05-14
+初公開：2014年03月11日 08:02:03
+最新版：2020年05月14日 04:22:52
+
+
+Comments:
+
+[E:watch] 初公開。jrf_semaphore-20140311.tar.gz。バージョン 0.01。
+
+…だった。別に、東日本大震災から３年の日に合わせるつもりはなかったが、ちょうどその時期になったので、がんばって日を合わせてみた。
+
+投稿: JRF | 2014-03-18 01:34:13 (JST)
+
+[E:denim] 更新：jrf_semaphore-20140318.tar.gz。バージョン 0.02。
+
+バージョンの数値は、jrf_semaphore.asm や jrf_semaphore.pl のバージョンのうちの一番大きいものになる予定。
+
+今回の更新は、とりあえず一週間たったので、いちおうの review といったところ。以前書いたように、今は他の作業をメインにしているので、大きな更新はない…はずだったんだが、結構いじってしまっている。
+
+でも、この更新は jrf_semaphore.pl の parse_int でやらかしたポカの修正がメインということにしておく。中を見たらいろいろ変なのが加わってるので、楽しめる(?)人がいるかも。
+
+投稿: JRF | 2014-03-18 01:43:05 (JST)
+
+[E:notes] 更新：jrf_semaphore-20140318_2.tar.gz。バージョン 0.02 のまま。
+
+失敗。さっきのアーカイブ、ファイルを一個入れ忘れてた。ちょっと行儀よくないけど、それ以外の変更はないので、バージョンはそのままということで。
+
+ごめんなさい。
+
+投稿: JRF | 2014-03-18 03:13:23 (JST)
+
+[E:cd] 更新：jrf_semaphore-20140321.tar.gz。バージョン 0.03。
+
+暫定バージョンはこれが最後の予定。細かな改良のみだが、これから大きくいじるため、その前に一旦、公開しておくことにした。
+
+あと、このページの記事は、初公開からこっちずっといろいろ書き足していっている。初公開時には、暫定公開が終ったら別の記事で…みたいなことを書いてたが、たぶん、更新情報はあいかわらずこちらで続け、機能の解説を分けて少しずつ別の記事でやっていくような形にしそうな気がする。
+
+投稿: JRF | 2014-03-21 07:22:48 (JST)
+
+[E:typhoon] jrf_semaphore-20140424.tar.gz。バージョン 0.05。
+
+本当は、新機能満載のバージョン 0.10 にしてから公開するつもりだったが、今回は、このアーカイブにも書いたとおり入院したため、中途半端なところで公開となった。申し訳ない。
+
+でも、技術的には(自分的には？)おもしろい要素を盛り込んでるので、ソース読める人は読んで欲しいかな…って贅沢すぎる願いだな(^^;
+
+投稿: JRF | 2014-04-24 16:16:57 (JST)
+
+[E:denim] また、一時帰宅中。で、上の 0.05 がファイルの入れ忘れでアセンブルできないのの修正。下のパッチでアセンブラが通るようになる。
+
+
+diff -uNr jrf_semaphore/jrf_semaphore.asm jrf_semaphore.fixed/jrf_semaphore.asm
+--- jrf_semaphore/jrf_semaphore.asm     2014-04-24 15:40:20.000000000 +0900
++++ jrf_semaphore.fixed/jrf_semaphore.asm       2014-05-01 12:53:49.673785600 +0900
+@@ -65,7 +65,7 @@
+        \1 &quot;jrf_semaphore.chr&quot;
+   .endif
+   .if \2 = 3
+-       \1 &quot;jrf_semaphore16p.chr&quot;
++       \1 &quot;jrf_semaphore16b.chr&quot;
+   .endif
+   .if \2 = 4
+        \1 &quot;jrf_semaphore.chr&quot;
+
+
+つまり、jrf_semaphore16p.chr ってのが、発音を変化させる符号等でこれをアルファベットに重ねて使えば Latin-1 ができる…といったものだった。
+
+でも、まだ、並べ方とかむちゃくちゃで、Latin-1 は二枚じゃなく三枚重ねるのを前提にしたほうがいいんじゃないかという思いもあって、jrf_semaphore16p.chr を今追加して バージョン 0.06 にするのはやめた次第。申し訳ないが、今後に期待して下さい。(別にデータ取り出して使ってもわたしゃ怒らんけど。)
+
+投稿: JRF | 2014-05-01 13:19:42 (JST)
+
+[E:art] jrf_semaphore-20140524.tar.gz。バージョン 0.06。
+
+新機能はほぼなし。LOG に言い訳を増やした感じ。もう今は精神病のほうがキツくって、開発できない。ひょっとすると、このアプリに関してはこれを最終バージョンにしちゃうかも。
+
+投稿: JRF | 2014-05-25 08:31:32 (JST)
+
+[E:tennis] jrf_semaphore-20140607.tar.gz。バージョン 0.07。
+
+少しの改善で済まそうとしたら、前のバージョンでセーブができなくなってる等致命的なバグがあったため、そこだけ早く直して緊急リリース。あと、latin-1 の実装が中途半端なままの申し訳なさから、昔試験的に作ったアラビア文字の trl をおまけにつけた。
+
+一つ前のバージョン 0.06 はとても「最終バージョン」と呼べるものではなかった。ただ、新機能実装への意欲は今はほとんどないのは変わらない。
+
+投稿: JRF | 2014-06-07 10:16:27 (JST)
+
+[E:clover] 更新：jrf_semaphore-20170429.tar.gz。バージョン 0.08。
+
+上の記事に追記したように quail-naggy.el のバージョンアップに合わせて、少しいじった。「最終バージョン」とか前に言ってて、確かにこれ以上の機能追加は無意味だと思っているところに、「蛇足」することになった。この先は、やはりやる気はないが、どうなるかわからない。
+
+投稿: JRF | 2017-04-29 13:59:58 (JST)
+
+[E:art] 更新：jrf_semaphore-20170523.tar.gz。バージョン 0.08_1。
+
+japanese-roman-period.trl と japanese-roman-kutouten.trl の N と NN の定義位置を入れ換えた。それにより「おおばんやき」というのを(逆)変換して「OOBANYAKI」としてしまうのを「OOBANNYAKI」とするように修正した。0.08 で混入したバグ。
+
+Perl や ASM などのプログラムはいじっていないため、バージョン番号を上げずにアップデートという行儀の悪いことをしている。jrf_semaphore.pl も quail-naggy.el も前回のアップデートからあまり私が使用していない。そのためバグに気付くこともほとんどないし、大きな更新へのアイデアも思い浮かんでいない。今回の変更は使われてないであろう機能に関するものだったので、次の大きな更新まで黙っておこうかとチラと思ったが、そうするとかなり先までバグが放っておかれそうだったので、とりあえずの修正だけはしておこうと今回の更新になった。
+
+投稿: JRF | 2017-05-23 17:02:20 (JST)
+
+[E:ribbon] 更新：jrf_semaphore-20170608.tar.gz。バージョン 0.09。
+
+quail-naggy.el のバージョンアップに合わせて、日本語変換の部分が変更になっているが、ほぼ影響はないものと思われる。しかし、2017-05-23 分の更新が jrf_semaphore.pl に関しては割と意味のある変更だったのにバージョンナンバーを上げなかったので、そのかわりに、今回は、意義の少ない変更でも、バージョンナンバーを 0.09 に上げることにした。
+
+投稿: JRF | 2017-06-08 19:43:39 (JST)
+
+[E:run] 更新：jrf_semaphore-20170713.tar.gz。バージョン 0.10。
+
+quail-naggy.el のバージョンが 0.09 になるのとあわせて、ほとんど影響はないが、jrf_semaphore.pl もいちおうバージョンナンバーだけ 0.10 に上げておく。
+
+投稿: JRF | 2017-07-13 00:42:06 (JST)
+
+[E:diamond] 更新：jrf_semaphore-20171113.tar.gz。バージョン 0.11。
+
+ローマ字カナ変換で、FYA = フャ、FYU = フュ、FYO = フョ に対応して、trl/japanese-roman-*.trl を変更しただけの小さいバージョンアップ。
+
+投稿: JRF | 2017-11-13 00:49:47 (JST)
+
+更新：jrf_semaphore-20200123.tar.gz。バージョン 0.15。
+
+地味だが大きな変更。
+
+J で convert する際も、先頭が大文字の場合は、tankanji ではなく skk 辞書が選択されるようにした。j で convert する際は、以前のまま。
+
+すでに大文字を使って符号化されたものがあれば、変更が必要になる。
+
+ココログにアップロードできなくなっているため SugarSync にアップロード(↓)。
+
+《jrf_semaphore-20200123.tar.gz》
+<a href="https://www.sugarsync.com/pf/D252372_79_7919575856" class="ext-link">https://www.sugarsync.com/pf/D252372_79_7919575856</a>
+
+その影響で困ったことにネット上の jrf_semaphore.html の更新ができない！
+
+投稿: JRF | 2020-01-23 19:41:54 (JST)
+
+更新：jrf_semaphore-20200124.tar.gz。バージョン 0.16。
+
+J で convert する際に、先頭が大文字の場合の処理を元の tankanji に戻した。内部的に、先頭が大文字の単漢字変換を SKK にするかどうかを default-init.nginit 内で指定するようにした。
+
+これでバージョン 0.15 の悪影響はなくなったはず。
+
+《jrf_semaphore-20200124.tar.gz》
+<a href="https://www.sugarsync.com/pf/D252372_79_7911292622" class="ext-link">https://www.sugarsync.com/pf/D252372_79_7911292622</a>
+
+投稿: JRF | 2020-01-24 12:28:55 (JST)
+
+更新：ドキュメントのみ更新。
+
+ココログにはアップロードできないため、XREA を利用することにした。
+
+「とりあえずブラウザで“JRF Flag Semaphore”をやってみる」のリンク先を↓にした。
+
+<a href="http://jrockford.s1010.xrea.com/archive/nes_semaphore/jrf_semaphore.html" class="ext-link">http://jrockford.s1010.xrea.com/archive/nes_semaphore/jrf_semaphore.html</a>
+
+また、GitHub にリポジトリを設けた。
+
+<a href="https://github.com/JRF-2018/jrf_semaphore" class="ext-link">https://github.com/JRF-2018/jrf_semaphore</a>
+
+今回の更新のアーカイブは作っていない。どうしてもという方は GitHub を辿ればいいと思う。
+
+投稿: JRF | 2020-05-14 04:27:16 (JST)
+
+更新：jrf_semaphore-20201201.tar.gz。バージョン 0.17。
+
+jrf_semaphore-20201201.zip に相当するものは↓からどうぞ。
+
+<a href="https://github.com/JRF-2018/jrf_semaphore/releases/tag/v0.17" class="ext-link">https://github.com/JRF-2018/jrf_semaphore/releases/tag/v0.17</a>
+
+quail-naggy のバージョンアップに合わせて。
+
+先頭が大文字の単漢字変換を SKK 変換にするとき、大文字だけでなく @ の場合もそうするようにした。が、その機能は普通使わないので、基本、こちらに影響はないはず。
+
+投稿: JRF | 2020-12-01 04:43:21 (JST)
+
+更新：jrf_semaphore-2021124.tar.gz。バージョン 0.18。
+
+jrf_semaphore-20211224.zip に相当するものは↓からどうぞ。
+
+<a href="https://github.com/JRF-2018/jrf_semaphore/releases/tag/v0.18" class="ext-link">https://github.com/JRF-2018/jrf_semaphore/releases/tag/v0.18</a>
+
+quail-naggy のバージョンアップに合わせて。
+
+変換時の : の使い方が少し変わり、二度続けての : (::) は : になるようにした。また、最後が : の扱いは最初が :であるものと同じにした。
+
+投稿: JRF | 2021-12-24 17:29:56 (JST)
+
+
+Links:
+
+Monty Python: <a href="../../../articles/2014/03/hbm_01767.html" class="int-link" title="Daily Python | Monty Python - Pythonline.com">http://pythonline.com/</a>
+[ とりあえずブラウザで“JRF Flag Semaphore”をやってみる ]: <a href="http://jrockford.s1010.xrea.com/archive/nes_semaphore/jrf_semaphore.html" class="ext-link">http://jrockford.s1010.xrea.com/archive/nes_semaphore/jrf_semaphore.html</a>
+No_Ad_URL: <a href="../../../articles/2013/06/statuses_cocolog_76692463.html" class="int-link" title="ひとこと">http://jrf.cocolog-nifty.com/statuses/2013/06/post-d008.html</a>
+jrf_semaphore.html: <a href="http://jrockford.s1010.xrea.com/archive/nes_semaphore/jrf_semaphore.html" class="ext-link">http://jrockford.s1010.xrea.com/archive/nes_semaphore/jrf_semaphore.html</a>
+jrf_semaphore.shar: <a href="https://www.sugarsync.com/pf/D252372_79_6958857175" class="ext-link">https://www.sugarsync.com/pf/D252372_79_6958857175</a>
+jrf_semaphore.tar.gz: <a href="https://www.sugarsync.com/pf/D252372_79_7918491888" class="ext-link">https://www.sugarsync.com/pf/D252372_79_7918491888</a>
+jrf_semaphore.zip: <a href="https://www.sugarsync.com/pf/D252372_79_6958857883" class="ext-link">https://www.sugarsync.com/pf/D252372_79_6958857883</a>
+GitHub - JRF-2018/jrf_semaphore: <a href="https://github.com/JRF-2018/jrf_semaphore" class="ext-link">https://github.com/JRF-2018/jrf_semaphore</a>
+jsnes-master-20140213.zip: <a href="http://jrf.cocolog-nifty.com/archive/collabo/gnu/jsnes-master-20140213.zip" class="ext-link">http://jrf.cocolog-nifty.com/archive/collabo/gnu/jsnes-master-20140213.zip</a>
+GPLv3: <a href="http://jrf.cocolog-nifty.com/archive/collabo/gnu/gpl-3.0.txt" class="ext-link">http://jrf.cocolog-nifty.com/archive/collabo/gnu/gpl-3.0.txt</a>
+JSNES：A JavaScript NES emulator - Ben Firshman: <a href="../../../articles/2014/03/hbm_01766.html" class="int-link" title="JSNES: A JavaScript NES emulator – Ben Firshman">http://fir.sh/projects/jsnes/</a>
+NESASM：MagicKit Homepage: <a href="../../../articles/2014/03/hbm_01765.html" class="int-link" title="MagicKit Homepage">http://www.magicengine.com/mkit/</a>
+VirtuaNES: <a href="../../../articles/2014/03/hbm_01764.html" class="int-link" title="VirtuaNES Official Site">http://virtuanes.s1.xrea.com/</a>
+ｷﾞｺ猫でもわかるファミコンプログラミング: <a href="../../../articles/2014/03/hbm_01763.html" class="int-link" title="ギコ猫でもわかるファミコンプログラミング">http://gikofami.fc2web.com/</a>
+NES研究室: <a href="../../../articles/2014/03/hbm_01762.html" class="int-link" title="NES研究室">http://hp.vector.co.jp/authors/VA042397/nes/index.html</a>
+YY-CHR.NET：わいわいの巣 / Yy's Utilities: <a href="../../../articles/2014/03/hbm_01761.html" class="int-link" title="YY-CHR.NET">http://www.geocities.co.jp/Playtown-Denei/4503/yychr/index.html</a>
+Enri's Home PAGE （ファミリーコンピュータ）: <a href="../../../articles/2014/03/hbm_01760.html" class="int-link" title="Enri's Home PAGE (ファミリーコンピュータ)">http://www43.tok2.com/home/cmpslv/Famic/Famic.htm</a>
+Nesdev wiki: <a href="../../../articles/2014/03/hbm_01756.html" class="int-link" title="Nesdev wiki">http://wiki.nesdev.com/w/index.php/Nesdev_Wiki</a>
+ファミコンの驚くべき発想力 - 限界を突破する技術に学べ -: <a href="http://www.amazon.co.jp/dp/4774144290" class="ext-link">http://www.amazon.co.jp/dp/4774144290</a>
+矢立肇: <a href="../../../articles/2014/03/hbm_01758.html" class="int-link" title="矢立肇 - Wikipedia">http://ja.wikipedia.org/wiki/%E7%9F%A2%E7%AB%8B%E8%82%87</a>
+旗と船舶通信: <a href="http://www.amazon.co.jp/dp/4425480163" class="ext-link">http://www.amazon.co.jp/dp/4425480163</a>
+The JRF Tarot: <a href="http://jrf.cocolog-nifty.com/archive/youscout/" class="ext-link">http://jrf.cocolog-nifty.com/archive/youscout/</a>
+統合失調症を経た私: <a href="http://jrf.cocolog-nifty.com/column/cat2946417/index.html" class="ext-link">http://jrf.cocolog-nifty.com/column/cat2946417/index.html</a>
+ウィトルウィウス的人体図 - Wikipedia: <a href="../../../articles/2014/03/hbm_01776.html" class="int-link" title="ウィトルウィウス的人体図 - Wikipedia">http://ja.wikipedia.org/wiki/%E3%82%A6%E3%82%A3%E3%83%88%E3%83%AB%E3%82%A6%E3%82%A3%E3%82%A6%E3%82%B9%E7%9A%84%E4%BA%BA%E4%BD%93%E5%9B%B3</a>
+魔鏡: <a href="../../../articles/2014/03/hbm_01775.html" class="int-link" title="魔鏡 - Wikipedia">http://ja.wikipedia.org/wiki/%E9%AD%94%E9%8F%A1</a>
+私の七芒星の記事: <a href="../../../articles/2010/12/column_66440828.html" class="int-link" title="七支刀って剣？ その３ ― 七芒星の埋め込み">http://jrf.cocolog-nifty.com/column/2010/12/post.html</a>
+quail-naggy.el: <a href="../../../articles/2015/10/software_83641133.html" class="int-link" title="quail-naggy.el: 単漢字変換 Input Method for Emacs.">http://jrf.cocolog-nifty.com/software/2015/10/post.html</a>
+jrf_semaphore-20140311.tar.gz: <a href="http://jrf.cocolog-nifty.com/archive/nes_semaphore/jrf_semaphore-20140311.tar.gz" class="ext-link">http://jrf.cocolog-nifty.com/archive/nes_semaphore/jrf_semaphore-20140311.tar.gz</a>
+jrf_semaphore-20140318.tar.gz: <a href="http://jrf.cocolog-nifty.com/archive/nes_semaphore/jrf_semaphore-20140318.tar.gz" class="ext-link">http://jrf.cocolog-nifty.com/archive/nes_semaphore/jrf_semaphore-20140318.tar.gz</a>
+jrf_semaphore-20140318_2.tar.gz: <a href="http://jrf.cocolog-nifty.com/archive/nes_semaphore/jrf_semaphore-20140318_2.tar.gz" class="ext-link">http://jrf.cocolog-nifty.com/archive/nes_semaphore/jrf_semaphore-20140318_2.tar.gz</a>
+jrf_semaphore-20140321.tar.gz: <a href="http://jrf.cocolog-nifty.com/archive/nes_semaphore/jrf_semaphore-20140321.tar.gz" class="ext-link">http://jrf.cocolog-nifty.com/archive/nes_semaphore/jrf_semaphore-20140321.tar.gz</a>
+jrf_semaphore-20140424.tar.gz: <a href="http://jrf.cocolog-nifty.com/archive/nes_semaphore/jrf_semaphore-20140424.tar.gz" class="ext-link">http://jrf.cocolog-nifty.com/archive/nes_semaphore/jrf_semaphore-20140424.tar.gz</a>
+jrf_semaphore-20140524.tar.gz: <a href="http://jrf.cocolog-nifty.com/archive/nes_semaphore/jrf_semaphore-20140524.tar.gz" class="ext-link">http://jrf.cocolog-nifty.com/archive/nes_semaphore/jrf_semaphore-20140524.tar.gz</a>
+jrf_semaphore-20140607.tar.gz: <a href="http://jrf.cocolog-nifty.com/archive/nes_semaphore/jrf_semaphore-20140607.tar.gz" class="ext-link">http://jrf.cocolog-nifty.com/archive/nes_semaphore/jrf_semaphore-20140607.tar.gz</a>
+jrf_semaphore-20170429.tar.gz: <a href="http://jrf.cocolog-nifty.com/archive/nes_semaphore/jrf_semaphore-20170429.tar.gz" class="ext-link">http://jrf.cocolog-nifty.com/archive/nes_semaphore/jrf_semaphore-20170429.tar.gz</a>
+jrf_semaphore-20170523.tar.gz: <a href="http://jrf.cocolog-nifty.com/archive/nes_semaphore/jrf_semaphore-20170523.tar.gz" class="ext-link">http://jrf.cocolog-nifty.com/archive/nes_semaphore/jrf_semaphore-20170523.tar.gz</a>
+jrf_semaphore-20170608.tar.gz: <a href="http://jrf.cocolog-nifty.com/archive/nes_semaphore/jrf_semaphore-20170608.tar.gz" class="ext-link">http://jrf.cocolog-nifty.com/archive/nes_semaphore/jrf_semaphore-20170608.tar.gz</a>
+jrf_semaphore-20170713.tar.gz: <a href="http://jrf.cocolog-nifty.com/archive/nes_semaphore/jrf_semaphore-20170713.tar.gz" class="ext-link">http://jrf.cocolog-nifty.com/archive/nes_semaphore/jrf_semaphore-20170713.tar.gz</a>
+jrf_semaphore-20171113.tar.gz: <a href="http://jrf.cocolog-nifty.com/archive/nes_semaphore/jrf_semaphore-20171113.tar.gz" class="ext-link">http://jrf.cocolog-nifty.com/archive/nes_semaphore/jrf_semaphore-20171113.tar.gz</a></pre>
+
+
+<section class="backrefs" data-pagefind-ignore>
+<h2>後方参照 (15 件)</h2>
+<ul>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2021/12/statuses_cocolog_93207725.html">ひとこと</a> <span class="backref-date">2021年12月24日</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2020/12/statuses_cocolog_92386304.html">ひとこと</a> <span class="backref-date">2020年12月01日</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2020/01/statuses_cocolog_91629517.html">ひとこと</a> <span class="backref-date">2020年01月23日</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2017/11/statuses_cocolog_88417297.html">ひとこと</a> <span class="backref-date">2017年11月13日</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2017/07/statuses_cocolog_87731566.html">ひとこと</a> <span class="backref-date">2017年07月13日</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2017/06/statuses_cocolog_87543251.html">ひとこと</a> <span class="backref-date">2017年06月08日</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2017/05/statuses_cocolog_87451120.html">ひとこと</a> <span class="backref-date">2017年05月23日</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2017/04/statuses_cocolog_87304791.html">ひとこと</a> <span class="backref-date">2017年04月29日</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2017/04/column_87140463.html">今後の(主に勉学の)方針 (2017年度版)</a> <span class="backref-date">2017年04月01日 02:03:10</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2015/10/software_83641133.html">quail-naggy.el: 単漢字変換 Input Method for Emacs.</a> <span class="backref-date">2015年10月16日 20:05:48</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2015/02/statuses_cocolog_81722226.html">ひとこと</a> <span class="backref-date">2015年02月02日</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2014/06/statuses_cocolog_79931287.html">ひとこと</a> <span class="backref-date">2014年06月16日</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2014/06/statuses_cocolog_79816111.html">ひとこと</a> <span class="backref-date">2014年06月01日</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2014/03/statuses_cocolog_79241255.html">ひとこと</a> <span class="backref-date">2014年03月22日</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2014/03/software_79204061.html">Perl でオブジェクト指向 Ｃ＋＋風 その４ HashFreezer</a> <span class="backref-date">2014年03月17日 18:20:35</span></li>
+</ul>
+</section>
+
+</article>
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2014/03.html">2014年03月</a> | <a href="../../../index/software.html">ソフトウェア Tips</a></nav>
+</body>
+</html>

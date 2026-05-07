@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>共有メモ - JRF Blog Archive</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2026/01.html">2026年01月</a> | <a href="../../../index/gsm.html">共有メモ</a></nav>
+<article data-pagefind-body>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[gsm] 2026-01-29T17:06:52Z</td></tr>
+<tr><th>セクション</th><td>グローバル共有メモ</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2026/01.html">2026-01-29T17:06:52Z</a></td></tr>
+<tr><th>元URL</th><td>(URLなし)</td></tr>
+
+</table>
+</div>
+<h1>共有メモ</h1>
+<pre class="body">jrf&gt; (承前)
+
+どうも Grok さんに調べてもらうと、LangChain の Skills では指示またはコードが読めるだけで、その実行はほぼシェルや Python が自由に使えることが前提となっているようだ。それではハーネスとして意味がない。するとコンテクスト汚染を防ぐための skill_do などは独自に実装するしかないようだ。
+
+要は、例えば bandit_schedule というオブジェクト(クラス)に定義された tool を SKILLS という TypeDict に登録する方法は「ない」ようだ。実質的には。これをしようとすれば、単に、bandit_schedule_skills というのをドキュメントとして提供して、create_agent に渡すツールには bandit_schedule そのものも含めるしかないが、これでは bandit_schedule をツールに登録しないことでコンテクスト汚染を減らし、Skills に逃がすという目的が果たせなくなっている。これではダメだ。
+
+しかし、skill_do のようなそれを可能とするような枠組みを作って、果たして、LLM さん達がそれを理解して使ってくれるだろうか…。</pre>
+
+
+</article>
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2026/01.html">2026年01月</a> | <a href="../../../index/gsm.html">共有メモ</a></nav>
+</body>
+</html>

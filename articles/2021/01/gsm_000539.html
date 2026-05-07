@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>共有メモ - JRF Blog Archive</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2021/01.html">2021年01月</a> | <a href="../../../index/gsm.html">共有メモ</a></nav>
+<article data-pagefind-body>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[gsm] 2021-01-15T18:52:39Z</td></tr>
+<tr><th>セクション</th><td>グローバル共有メモ</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2021/01.html">2021-01-15T18:52:39Z</a></td></tr>
+<tr><th>元URL</th><td>(URLなし)</td></tr>
+
+</table>
+</div>
+<h1>共有メモ</h1>
+<pre class="body">jrf&gt; [仏教の最適化プログラムの続き。]
+
+言葉で説明するよりもプログラムを見たほうが早いと思うので、とりあえず「債券」「株式」「農地」「大バクチ」について、分布を表示する実験プログラムを Github Gist に置いた。
+
+《test_normal_levy_3.py - 正規分布+マイナスのレヴィ分布の実験。「株式」「債券」「農地」「大バクチ」それぞれの分布の形を見てみる。》  
+<a href="https://gist.github.com/JRF-2018/50b29e2d95d067483c3e9465c9b510ad" class="ext-link">https://gist.github.com/JRF-2018/50b29e2d95d067483c3e9465c9b510ad</a>
+
+使う人がいるとはあまり想定していないが、test_normal_levy_3.py は -f に stock, bond, gamble, land のいずれかを指定し、--cut で財産額についてマイナスで設定する。プロット画面で分布の端が切れるときは --max の数値を変えればよい。ただし、実行する前に最初に一度、python generate_normal_levy_csv.py を実行する必要がある。
+
+プログラムを読めることが前提みたいなところがある。これを使って分布を見るより、どのようにパラメータを設定しているか、プログラムから読み取って欲しいという願いをこめて今回、半端な実験でしかないものを公開している。
+
+(ちなみにファイル名についてる _3 は、未公開の _1 や _2 の実験が前にあったことを示しているだけ。)</pre>
+
+
+</article>
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2021/01.html">2021年01月</a> | <a href="../../../index/gsm.html">共有メモ</a></nav>
+</body>
+</html>

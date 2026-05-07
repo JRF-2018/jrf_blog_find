@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>ひとこと - JRF Blog Archive</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2013/01.html">2013年01月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+<article data-pagefind-body>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[statuses] <span class="cocolog-id">cocolog:75258004</span></td></tr>
+<tr><th>セクション</th><td>JRF のひとこと</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2013/01.html">2013年01月10日</a></td></tr>
+<tr><th>元URL</th><td><a href="http://jrf.cocolog-nifty.com/statuses/2013/01/post-17f8.html" class="ext-link"><span class="original-url">http://jrf.cocolog-nifty.com/statuses/2013/01/post-17f8.html</span></a></td></tr>
+
+</table>
+</div>
+<h1>ひとこと</h1>
+<pre class="body">正月に来た甥達が 3DS (と 3DS LL) を手に入れていた。その親に頼んで、プチコンmkIIを彼らの 3DS に入れておくことができた。「プラットフォーム」が整ったので、一念発起し、私も 3DS LL を購入。現在、プチコンでプログラミング中。
+JRF 2013年1月10日
+
+プチコン自体は DSi ウェアとして売っていて、3DS じゃない Nintendo DSi (LL) でも動く。が、将来のバージョンアップに備え、甥達と同じ 3DS を選んだ。
+
+《プチコンmkII - スマイルブーム》
+<a href="../../../articles/2013/02/hbm_01666.html" class="int-link" title="プチコンmkII">http://smileboom.com/special/ptcm2/</a>
+
+JRF 2013年1月10日
+
+しかし、制限が多い。ラベル名や変数名の文字数が限られてるなんてのはかわいいほうで、文字列変数が256バイトまでしか入らないとか、文字列操作ですら遅すぎるとか。
+
+が、なんとか《易双六》を移殖しようとがんばっている。カードの絵を小さくして、プチコンに転送するだけで、プチコンにとってはかなりのデータ量になっており、途中でめげちゃう気配もないわけではないが、今は、そこに集中している。
+
+JRF 2013年1月10日
+
+……。
+
+プチコンを DS 内だけで組むというわけではなく、パソコンで基本的にはエディットするわけだが、ファイルの読み込みが QR コードでしかできない(といってもできるだけありがたいのだが…)という変態的仕様のため、ソースからQR コードを生成するツールが必要になる。
+
+「統合環境」を目指している PTCUtilities とかが有名どころのようだが、うちではファイルサイズが大きくなると動かないことがあり、使わなくなった。
+
+JRF 2013年1月10日
+
+Web 上の《プチコン文法チェッカー》はローカルに保存して使ってるが、PetitEditor はローカルに保存すると使えず、いちいちネットにアクセスしてソース読まれるのは、ヤな感じなので、代替物を探しつつ、なければ作るかと、QR コードの仕様は PetitEditor のソースでも読めばわかるだろうから、まずは、Perl の QR コード生成モジュールでもダウンロードしようかと CPAN で検索をかけると、なんと、Data::Petitcom というモジュールがあるではないか！
+
+今はこの Data::Petitcom を使った簡単なコマンドを作って QR コードを生成している。
+
+JRF 2013年1月10日
+
+《プチコン文法チェッカー》
+<a href="../../../articles/2013/02/hbm_01664.html" class="int-link" title="プチコン文法チェッカー">http://www016.upp.so-net.ne.jp/Khnum/petitcom/SBChecker.html</a>
+
+《PetitEditor - QR code Generator for Petitcom》
+<a href="http://www2.u-netsurf.ne.jp/~ozawa/petitcom/petiteditor.html" class="ext-link">http://www2.u-netsurf.ne.jp/~ozawa/petitcom/petiteditor.html</a>
+
+JRF 2013年1月10日
+
+《PTCUtilities》
+<a href="http://micutil.com/ptcutilities/top.html" class="ext-link">http://micutil.com/ptcutilities/top.html</a>
+
+《hayajo/p5-Data-Petitcom - GitHub》
+<a href="../../../articles/2013/02/hbm_01663.html" class="int-link" title="hayajo/p5-Data-Petitcom · GitHub">https://github.com/hayajo/p5-Data-Petitcom</a>
+
+JRF 2013年1月10日</pre>
+
+
+</article>
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2013/01.html">2013年01月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+</body>
+</html>

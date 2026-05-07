@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>Perl でオブジェクト指向 Ｃ＋＋風 その４ HashFreezer - JRF Blog Archive</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2014/03.html">2014年03月</a> | <a href="../../../index/software.html">ソフトウェア Tips</a></nav>
+<article data-pagefind-body>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[software] <span class="cocolog-id">cocolog:79204061</span></td></tr>
+<tr><th>セクション</th><td>JRF のソフトウェア Tips</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2014/03.html">2014年03月17日 18:20:35</a></td></tr>
+<tr><th>元URL</th><td><a href="http://jrf.cocolog-nifty.com/software/2014/03/post-2.html" class="ext-link"><span class="original-url">http://jrf.cocolog-nifty.com/software/2014/03/post-2.html</span></a></td></tr>
+<tr><th>タグ</th><td>[Perl]</td></tr>
+</table>
+</div>
+<h1>Perl でオブジェクト指向 Ｃ＋＋風 その４ HashFreezer</h1>
+<pre class="body">このシリーズの最初の記事からもう３年は経過した。先日、 jrf_semaphore.pl (紹介記事へのリンク)を公開し、そこで、デバッグに便利なテクニックを構築したので、今回はその紹介をする。
+
+このシリーズの方法では、メンバ変数へのアクセスは直接、オブジェクト本体であるハッシュ(のリファレンス)をいじって行う。そのため、メンバ名のミススペルがあると、参照時は undefined なので警告があることもあるが、代入時には何の警告も起きない。しかも、こういうときのミススペルに限ってとても見つけにくい。代入したはずのものが、undefined で参照されて警告があっても、そこから、どの代入にミスがあったか、その推理が簡単にできるとは限らない。
+
+これを避けるには、メンバ変数へのアクセスに、setter や getter の関数をいちいち定義していくという方法もありえるのだが、setter が関数になるのはカッコ悪く、かといって lvalue を取るようにするのは、Perl 5.18.1 の perlsub ですら未だに「実験的」という記述が抜けてなくて怖い。caller でメンバ変数名を判断する実装だと、関数渡しにミスが出る可能性も出てくる。
+
+そこで、思い付いたのが Perl の tie の仕組みを使う今回の方法。ハッシュの代入や参照をいちいちチェックするから速度面で不利になる(はずではある)のだが、$DEBUG 変数で、new のときに使わないよう設定できるようにすることで軽くした(つもり)。
+
+最初の記事からデバッグ用途以外の変更はない。Main::_Simple に相当するものが、元ネタの jrf_semaphore.pl では、JRF::MyOO という名になっていて、Main::_HashFreezer は、JRF::Utils::HashFreezer にしている。 HashFreezer は同じだが、MyOO のほうは、クラス変数の扱いをがっちり決めてかかっている。ただ、その分難しくなるので、こちらではクラス変数の扱いを除いたコードに戻してある。
+
+#!/usr/bin/perl
+
+use strict;
+use warnings;
+use utf8; # Japanese
+
+no autovivification qw(strict warn fetch exists delete store);
+
+BEGIN {
+  my @mypackage = qw(
+                    Main
+                    Main::_Simple
+                    Main::_B
+                  );
+  foreach my $p (@mypackage) {
+    eval &lt;&lt;&quot;EOM&quot;;
+    {
+      package $p;
+      use Math::Trig; # for pi
+      use Storable qw(dclone);
+    }
+EOM
+    die $@ if $@;
+  }
+}
+
+package Main;
+
+our $DEBUG = 1;
+
+{
+  package Main::_Simple;
+  ## 最初の記事のものを、$DEBUG 時には HashFreezer を使って
+  ## エラーチェックをするよう改良したもの。
+  
+  my %template = (&quot;Main::_Simple&quot; =&gt; {});
+  
+  sub extend_template {
+    my $class = shift;
+    my @hash = @_;
+    if (exists $template{$class}) {
+      $template{$class} = {%{$template{$class}}, @hash} if @hash;
+    } else {
+      $template{$class} = 
+        {(map {
+                $_-&gt;extend_template() if ! exists $template{$_};
+                %{$template{$_}};
+              } (eval '@{' . $class . '::ISA}')),
+          @hash
+        };
+    }
+    return $template{$class};
+  }
+  
+  sub get_template {
+    my $class = shift;
+    return $class-&gt;extend_template();
+  }
+  
+  sub new {
+    my $class = shift;
+    my $template = $class-&gt;get_template();
+    my $obj;
+    if ($DEBUG) {
+      $obj = {};
+      tie %$obj, 'Main::_HashFreezer', (template =&gt; $template);
+      %{$obj} = %{dclone($template)};
+    } else {
+      $obj = dclone($template);
+    }
+    bless $obj, $class;
+    return $obj;
+  }
+}
+
+{
+  package Main::_HashFreezer;
+  use Tie::Hash;
+  use Carp;
+  use base qw(Tie::ExtraHash);
+  
+  sub TIEHASH {
+    my $class = shift;
+    return (bless [{}, {@_}], $class);
+  }
+  
+  sub STORE {
+    if (! exists $_[0][1]-&gt;{template}-&gt;{$_[1]}) {
+      carp &quot;The key '$_[1]' doesn't exist in the hash.\n&quot;;
+    }
+    $_[0][0]{$_[1]} = $_[2];
+  }
+  
+  sub FETCH {
+    if (! exists $_[0][1]-&gt;{template}-&gt;{$_[1]}) {
+      carp &quot;The key '$_[1]' doesn't exist in the hash.\n&quot;;
+    }
+    return $_[0][0]{$_[1]};
+  }
+}
+
+{
+  package Main::_B;
+  use base qw(Main::_Simple);
+  
+  ## この「クラス」は最初の記事のものと同じ。
+  
+  __PACKAGE__-&gt;extend_template
+    (
+      data =&gt; 1.0, # ここに data の説明を書こう！
+    );
+    
+  sub method_1 {
+    my $self = shift;
+    my ($arg1) = @_;
+    $self-&gt;{data} = $self-&gt;{data} + pi / $arg1;
+    return $self-&gt;{data};
+  }
+}
+
+MAIN:
+{
+  my $b = Main::_B-&gt;new();
+  
+  ## data2 はメンバでないため HashFreezer が怒る。
+  $b-&gt;{data2} = 0.1;
+  ## ただし、警告のみで、代入はされている。
+  print &quot;data2 existence -&gt; &quot; . (exists $b-&gt;{data2}) . &quot;\n&quot;;
+  ## 存在していても、template にあるメンバじゃないので次は警告される。
+  print &quot;data2 == &quot; . $b-&gt;{data2} . &quot;\n&quot;;
+  
+  ## data はメンバのため何も起きない。
+  $b-&gt;{data} = 0.2;
+  print &quot;data existence -&gt; &quot; . (exists $b-&gt;{data}) . &quot;\n&quot;;
+  print &quot;data == &quot; . $b-&gt;{data} . &quot;\n&quot;;
+}
+
+出力は次のような感じになる。警告の行番号はソースのコメント等でも変わるので、&quot;***&quot; でつぶした。
+
+$ perl example_oo_hsh.pl
+
+The key 'data2' doesn't exist in the hash.
+  at example_oo_hsh.pl line ***
+data2 existence -&gt; 1
+The key 'data2' doesn't exist in the hash.
+  at example_oo_hsh.pl line ***
+data2 == 0.1
+data existence -&gt; 1
+data == 0.2
+
+上のソース、最初のほうに &quot;no autovivification&quot; というプラグマを入れてある。標準的な Perl 配布物には入ってないかもしれない。私は CPAN からインストールして、この記事のときの autovivification パッケージのバージョンは 0.12 だった。Perl 5.8.3 から対応しているらしい。上の例は「デバッグ後」のため、そのプラグマをコメントアウトしても問題なく動く。
+
+これは、HashFreezer が欲しいと思うような状況では必須とも言えるもので、メンバ変数に二段のハッシュ(つまりハッシュリファレンスのハッシュリファレンス)がありうるときに、初期化が終ってないのに代入をしてしまっても何も警告が置きない…といったのが本来の Perl の動作なのだが、それを、ちゃんと警告してくれるようにするものである。何言ってるかわからないと思うので、ちょっと例を見よう。
+
+$ perl -e 'use strict; use warnings; use Data::Dumper; '\
+    -e 'my $a = undef; $a-&gt;{a} = &quot;b&quot;; print Dumper($a);'
+    
+$VAR1 = {
+          'a' =&gt; 'b'
+        };
+        
+…と何も警告が出ない。$a に undef を代入したのは未定義状態をわかりやすくしただけが、その未定義なものをハッシュ(リファレンス)として使っても、 Perl は何も警告せずに、新しいハッシュを構築してしまう。これを Autovivification (Wikipedia) というらしい。意識してコントロールできれば便利な機能なんだろうが、私レベルのスキルの低さではむしろミスにつながることが多い。
+
+例えば、メンバ変数にオブジェクトを代入するつもりがミスで忘れていて、そのメンバ変数のオブジェクトのメンバ変数に何かを代入をしても、何も警告がないため「ドハマリ」してしまう。(そして、私はこのモジュールを見つけたわけだ。orz)
+
+CPANから autovivification モジュールを導入したあと、次のようにするとエラーを出してくれる。
+
+$ perl -e 'use strict; use warnings; use Data::Dumper; '\
+    -e 'no autovivification qw(store);'\
+    -e 'my $a = undef; $a-&gt;{a} = &quot;b&quot;; print Dumper($a);'
+    
+Can't vivify reference at -e line 3.
+
+■関連
+  ●example_oo_pl.shar。上のソースの元ととなった example_oo_hsh.pl やその他の例をまとめたアーカイブ。(シェルアーカイブ形式。シェルコマンドとして実行するか unshar を使う。)
+  ●《Perl でオブジェクト指向 C++風》。「最初の記事」。東日本大震災前だね。
+  ●《Perl でオブジェクト指向 C++風 その２ クラス変数》。クラス変数を使ってみる例。
+  ●《Perl でオブジェクト指向 Ｃ＋＋風 その３ ローカル関数》。ローカル関数を使う例。
+  ●《404 Blog Not Found:perl - Class vs. Closure》。例えば、ここのコードを拡張して警告を出すほうが「素直」な方法ではあると思う。
+    
+更新：2014-03-17
+初公開：2014年03月17日 18:20:33
+最新版：2014年03月17日 18:30:15
+
+
+Links:
+
+最初の記事: <a href="../../../articles/2010/12/software_66486034.html" class="int-link" title="Perl でオブジェクト指向 C++風">http://jrf.cocolog-nifty.com/software/2010/12/post.html</a>
+jrf_semaphore.pl: <a href="../../../articles/2014/03/software_79149901.html" class="int-link" title="JRF Flag Semaphore for NES Emulator を作った">http://jrf.cocolog-nifty.com/software/2014/03/post-1.html</a>
+Perl 5.18.1 の perlsub: <a href="../../../articles/2014/03/hbm_01769.html" class="int-link" title="perlsub - Perl のサブルーチン - perldoc.jp">http://perldoc.jp/docs/perl/5.18.1/perlsub.pod</a>
+Autovivification: <a href="../../../articles/2014/03/hbm_01771.html" class="int-link" title="Autovivification - Wikipedia, the free encyclopedia">http://en.wikipedia.org/wiki/Autovivification</a>
+example_oo_pl.shar: /archive/example_oo/example_oo_pl.shar
+Perl でオブジェクト指向 C++風: <a href="../../../articles/2010/12/software_66486034.html" class="int-link" title="Perl でオブジェクト指向 C++風">http://jrf.cocolog-nifty.com/software/2010/12/post.html</a>
+Perl でオブジェクト指向 C++風 その２ クラス変数: <a href="../../../articles/2011/01/software_66578669.html" class="int-link" title="Perl でオブジェクト指向 C++風 その２ クラス変数">http://jrf.cocolog-nifty.com/software/2011/01/post.html</a>
+Perl でオブジェクト指向 Ｃ＋＋風 その３ ローカル関数: <a href="../../../articles/2011/01/software_66597125.html" class="int-link" title="Perl でオブジェクト指向 Ｃ＋＋風 その３ ローカル関数">http://jrf.cocolog-nifty.com/software/2011/01/post-1.html</a>
+404 Blog Not Found:perl - Class vs. Closure: <a href="../../../articles/2014/03/hbm_01770.html" class="int-link" title="404 Blog Not Found:perl - Class vs. Closure">http://blog.livedoor.jp/dankogai/archives/51079991.html</a></pre>
+
+
+</article>
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2014/03.html">2014年03月</a> | <a href="../../../index/software.html">ソフトウェア Tips</a></nav>
+</body>
+</html>

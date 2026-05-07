@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>PP Authorizer: 匿名的ログイン・匿名的支払いをサポートするアドオン - JRF Blog Archive</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2017/11.html">2017年11月</a> | <a href="../../../index/software.html">ソフトウェア Tips</a></nav>
+<article data-pagefind-body>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[software] <span class="cocolog-id">cocolog:88492149</span></td></tr>
+<tr><th>セクション</th><td>JRF のソフトウェア Tips</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2017/11.html">2017年11月27日 11:55:00</a></td></tr>
+<tr><th>元URL</th><td><a href="http://jrf.cocolog-nifty.com/software/2017/11/post.html" class="ext-link"><span class="original-url">http://jrf.cocolog-nifty.com/software/2017/11/post.html</span></a></td></tr>
+<tr><th>タグ</th><td>[JRF 作成ソフトウェア] [Firefox] [JavaScript]</td></tr>
+</table>
+</div>
+<h1>PP Authorizer: 匿名的ログイン・匿名的支払いをサポートするアドオン</h1>
+<pre class="body">This is a support page of the PP Authorizer (for the Mozilla Firefox or for the Google Chrome).  You can write comments on this page, even if you can't understand Japanese blow. If you need explanation of the extension in English, show the English main page of the PP Authorizer.
+
+ブラウザ拡張 PP Authorizer を作った。Web Extension 規格に順って作ったので今後、様々なブラウザで利用できるようになるかもしれないが、今のところ Mozilla Firefox と Google Chrome でしか動かないようだ。
+
+PP Authorizer の説明は、専用ページで行った。まずそちらを読んで欲しい。このページは「サポート」を行うのがメインである。
+
+一応、ここでも軽く説明しておくと、PP Authorizer は、「Privacy-Protected なログインまたは支払いを実現するための構成要素の一つ」ということになっている。
+
+「PPログイン(pplogin, Privacy-Protected login)」や「PP支払い(pppayment, Privacy-Protected payment)」という概念自体はずっと以前に私は《保証付き匿名ログインと即時銀行振込を可能にして！ - プライバシープロバイダ API（仮称）》という記事で紹介し、また、《Statuses_Editor_Proxy.CGI - XMLRPC と OAuth を組み合わせた「ひとことサイト」ソリューション》で、その概念を使うためのブックマークレットを作ったりしていた。
+
+なお、このアドオンを作ったときの感想が <a href="../../../articles/2017/11/statuses_cocolog_88492515.html" class="int-link cocolog-id" title="ひとこと">[cocolog:88492515]</a> に書いてある。
+
+■配布物
+  
+アドオンは、AMO (Mozilla Add-ons) または Google Web Store のページから手に入る。このページでは、一応、提出した際のソースのアーカイブを公開しておく。次のリンクが最新のもののはずだが、より以前のものはコメント欄をご参照いただきたい。
+
+  ●pp-authorizer.zip
+    
+なお、ZIP には manifest.json が含まれていない。かわりに manifest_for_firefox.json と manifest_for_chrome.json が含まれている。どちらかを manifest.json にリネーム(またはコピー)して使っていただきたい。
+
+更新：2017-11-27,2017-12-27
+初公開：2017年11月27日 11:54:57
+最新版：2017年12月27日 20:42:35
+
+
+Comments:
+
+[E:gasstation] 初公開: pp-authorizer-20171126.zip。バージョン 0.1。
+
+アドオンの製作もはじめて。Greasemonkey や JSActions のユーザースクリプトはいろいろ作ってきたけど。
+
+投稿: JRF | 2017-11-27 12:37:13 (JST)
+
+[E:carouselpony] 更新: pp-authorizer-20171128.zip。バージョン 0.2。
+
+browserAction から pageAction に変更した。
+
+また、popup で browser_style を使うようにした。popup の表示が私の環境で崩れていたためそうしたのだが、改善されなかった。
+
+投稿: JRF | 2017-11-28 16:59:06 (JST)
+
+[E:memo] 更新: pp-authorizer-20171203.zip。バージョン 0.3。
+
+notification を表示するときに連続して何度も表示しようとすると逆に表示されないのが Firefox の動作らしい。前に notification を表示してから 10 秒間待ってから、次の表示をするようにした。小さな変更。
+
+投稿: JRF | 2017-12-03 18:11:42 (JST)
+
+[E:bicycle] 更新: pp-authorizer-20171204.zip。バージョン 0.4。
+
+大きな変更。
+
+http*://*/*/ppauth?* または http*://*/*.ppauth.html* というページに動作を限定できるオプションを選択できるようにした。デフォルトは「限定しない」。
+
+また、*.ppauth.js を開いたとき Authorizer データをインストールするのを禁止するオプションも作った。
+
+さらに、ストレージを storage.local から storage.sync に変更した。ディスク容量が 100KB と、アイコンイメージを data URL で登録することを考えると少ないが、利便性をとった。また、ストレージの変更で、これまで設定していたことがふいになるが、使っているのは私だけのようなので、設定の引き継ぎはしなかった。
+
+投稿: JRF | 2017-12-04 13:36:51 (JST)
+
+[E:club] 更新: pp-authorizer-20171207.zip。バージョン 0.5。
+
+内部的には小さな変更。PP Interrupter との相互作用を足した。
+投稿: JRF | 2017-12-08 16:31:30 (JST)
+
+[E:baseball] 更新: pp-authorizer-20171212.zip。バージョン 0.6。
+
+小さな変更。設定画面に Add Defaults ボタンを足した。Authorities のデフォルトで現在ない分を足すボタン。バージョンアップがあってデフォルトが増えたときとかに便利。また、ロケールごとにデフォルトを変えられるようにした。そこまでするのはちょっと誇大妄想的かとも思うが、やってしまった。
+
+投稿: JRF | 2017-12-12 17:17:46 (JST)
+
+[E:art] 更新: pp-authorizer-20171214.zip。バージョン 0.7。
+
+アイコンまわりの小さな変更。今回もちょっと誇大妄想的。
+
+投稿: JRF | 2017-12-14 21:43:16 (JST)
+
+[E:motorsports] 更新: pp-authorizer-20171215.zip。バージョン 0.8。
+
+小さな変更。クリックを促す通知をしないよう設定できるようにした。また、バージョンアップでデフォルト認証局が増えた際に、追加で足されるようにした。
+
+投稿: JRF | 2017-12-15 16:55:36 (JST)
+
+[E:xmas] 更新: pp-authorizer-20171223.zip。バージョン 0.9。
+
+変更は軽微。ソース上の関数の表記などを整理した。デバッグ時に出る警告が少なくなるようにした。
+
+投稿: JRF | 2017-12-23 08:09:57 (JST)
+
+[E:spa] 更新: pp-authorizer-20171225.zip。バージョン 0.10。
+
+Firefox for Android に(不完全ながら)対応した。
+
+投稿: JRF | 2017-12-25 20:03:20 (JST)
+
+[E:sports] 更新: pp-authorizer-20171226.zip。バージョン 0.11。
+
+Google Chrome に対応。上の記事もそのように書き換えた。かなり大きな変更。
+
+投稿: JRF | 2017-12-27 20:47:41 (JST)
+
+
+Links:
+
+for the Mozilla Firefox: <a href="https://addons.mozilla.org/firefox/addon/pp-authorizer/" class="ext-link">https://addons.mozilla.org/firefox/addon/pp-authorizer/</a>
+for the Google Chrome: <a href="https://chrome.google.com/webstore/detail/pp-authorizer/oknpogbkcakfonnjljamageafmjbmpck" class="ext-link">https://chrome.google.com/webstore/detail/pp-authorizer/oknpogbkcakfonnjljamageafmjbmpck</a>
+the English main page of the PP Authorizer: <a href="http://jrf.cocolog-nifty.com/archive/pp-authorizer/README_en.html" class="ext-link">http://jrf.cocolog-nifty.com/archive/pp-authorizer/README_en.html</a>
+専用ページ: <a href="http://jrf.cocolog-nifty.com/archive/pp-authorizer/README_ja.html" class="ext-link">http://jrf.cocolog-nifty.com/archive/pp-authorizer/README_ja.html</a>
+保証付き匿名ログインと即時銀行振込を可能にして！ - プライバシープロバイダ API（仮称）: <a href="../../../articles/2006/12/column_15631876.html" class="int-link" title="保証付き匿名ログインと即時銀行振込を可能にして！ ― プライバシープロバイダ API （仮称）">http://jrf.cocolog-nifty.com/column/2006/12/post_1.html</a>
+Statuses_Editor_Proxy.CGI - XMLRPC と OAuth を組み合わせた「ひとことサイト」ソリューション: <a href="../../../articles/2011/06/software_68520060.html" class="int-link" title="Statuses_Editor_Proxy.CGI - XMLRPC と OAuth を組み合わせた「ひとことサイト」ソリューション">http://jrf.cocolog-nifty.com/software/2011/06/post.html</a>
+AMO: <a href="https://addons.mozilla.org/firefox/addon/pp-authorizer/" class="ext-link">https://addons.mozilla.org/firefox/addon/pp-authorizer/</a>
+Google Web Store: <a href="https://chrome.google.com/webstore/detail/pp-authorizer/oknpogbkcakfonnjljamageafmjbmpck" class="ext-link">https://chrome.google.com/webstore/detail/pp-authorizer/oknpogbkcakfonnjljamageafmjbmpck</a>
+pp-authorizer.zip: <a href="http://jrf.cocolog-nifty.com/archive/pp-authorizer/pp-authorizer.zip" class="ext-link">http://jrf.cocolog-nifty.com/archive/pp-authorizer/pp-authorizer.zip</a>
+pp-authorizer-20171126.zip: <a href="http://jrf.cocolog-nifty.com/archive/pp-authorizer/pp-authorizer-20171126.zip" class="ext-link">http://jrf.cocolog-nifty.com/archive/pp-authorizer/pp-authorizer-20171126.zip</a>
+pp-authorizer-20171128.zip: <a href="http://jrf.cocolog-nifty.com/archive/pp-authorizer/pp-authorizer-20171128.zip" class="ext-link">http://jrf.cocolog-nifty.com/archive/pp-authorizer/pp-authorizer-20171128.zip</a>
+pp-authorizer-20171203.zip: <a href="http://jrf.cocolog-nifty.com/archive/pp-authorizer/pp-authorizer-20171203.zip" class="ext-link">http://jrf.cocolog-nifty.com/archive/pp-authorizer/pp-authorizer-20171203.zip</a>
+pp-authorizer-20171204.zip: <a href="http://jrf.cocolog-nifty.com/archive/pp-authorizer/pp-authorizer-20171204.zip" class="ext-link">http://jrf.cocolog-nifty.com/archive/pp-authorizer/pp-authorizer-20171204.zip</a>
+pp-authorizer-20171207.zip: <a href="http://jrf.cocolog-nifty.com/archive/pp-authorizer/pp-authorizer-20171207.zip" class="ext-link">http://jrf.cocolog-nifty.com/archive/pp-authorizer/pp-authorizer-20171207.zip</a>
+PP Interrupter: <a href="../../../articles/2017/12/software_88550402.html" class="int-link" title="PP Interrupter: 健全なサイトをブロック!?">http://jrf.cocolog-nifty.com/software/2017/12/post.html</a>
+pp-authorizer-20171212.zip: <a href="http://jrf.cocolog-nifty.com/archive/pp-authorizer/pp-authorizer-20171212.zip" class="ext-link">http://jrf.cocolog-nifty.com/archive/pp-authorizer/pp-authorizer-20171212.zip</a>
+pp-authorizer-20171214.zip: <a href="http://jrf.cocolog-nifty.com/archive/pp-authorizer/pp-authorizer-20171214.zip" class="ext-link">http://jrf.cocolog-nifty.com/archive/pp-authorizer/pp-authorizer-20171214.zip</a>
+pp-authorizer-20171215.zip: <a href="http://jrf.cocolog-nifty.com/archive/pp-authorizer/pp-authorizer-20171215.zip" class="ext-link">http://jrf.cocolog-nifty.com/archive/pp-authorizer/pp-authorizer-20171215.zip</a>
+pp-authorizer-20171223.zip: <a href="http://jrf.cocolog-nifty.com/archive/pp-authorizer/pp-authorizer-20171223.zip" class="ext-link">http://jrf.cocolog-nifty.com/archive/pp-authorizer/pp-authorizer-20171223.zip</a>
+pp-authorizer-20171225.zip: <a href="http://jrf.cocolog-nifty.com/archive/pp-authorizer/pp-authorizer-20171225.zip" class="ext-link">http://jrf.cocolog-nifty.com/archive/pp-authorizer/pp-authorizer-20171225.zip</a>
+pp-authorizer-20171226.zip: <a href="http://jrf.cocolog-nifty.com/archive/pp-authorizer/pp-authorizer-20171226.zip" class="ext-link">http://jrf.cocolog-nifty.com/archive/pp-authorizer/pp-authorizer-20171226.zip</a></pre>
+
+
+<section class="backrefs" data-pagefind-ignore>
+<h2>後方参照 (1 件)</h2>
+<ul>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2017/11/statuses_cocolog_88492515.html">ひとこと</a> <span class="backref-date">2017年11月27日</span></li>
+</ul>
+</section>
+
+</article>
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2017/11.html">2017年11月</a> | <a href="../../../index/software.html">ソフトウェア Tips</a></nav>
+</body>
+</html>

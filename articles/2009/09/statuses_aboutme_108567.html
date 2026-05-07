@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>ひとこと - JRF Blog Archive</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2009/09.html">2009年09月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+<article data-pagefind-body>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[statuses] <span class="cocolog-id">aboutme:108567</span></td></tr>
+<tr><th>セクション</th><td>JRF のひとこと</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2009/09.html">2009年09月05日</a></td></tr>
+<tr><th>元URL</th><td><a href="http://jrf.cocolog-nifty.com/statuses/2009/09/aboutme108567.html" class="ext-link"><span class="original-url">http://jrf.cocolog-nifty.com/statuses/2009/09/aboutme108567.html</span></a></td></tr>
+
+</table>
+</div>
+<h1>ひとこと</h1>
+<pre class="body">ヘブライ語は語末形だけなので、最後に語末を表す記号を常に挿入するようにすれば、まぁ、基本的には最長一致の transliteration table (逐字訳テーブル)で対応できる。アラビア語は最初と最後に挿入して 3pass ぐらいすればなんとかなるのか？
+JRF 2009年9月5日
+
+語中形もいろいろあるし、テーブルだけだと面倒そうだが…。
+
+母音記号がやっかいなんだよな。ヘブライ語も母音記号のことを考えると最後に挿入するだけじゃうまくいかない。
+
+とはいえ bi-direction (右から左に書いたりする)に emacs とかが対応してないんで、ほとんど無駄な作業なんだよな。
+
+でも xterm で、左右は逆でも nonspace に母音記号まで表示できるのにはちょっと感動。あと notepad.exe はすごい。
+JRF 2009年9月5日
+
+途中、変化がなくなるまで、同じテーブルをループして適用する…というのを認めたら母音があってもできそうだ。
+
+例として、アラビア語で alef を A、theh を th、lam を l で表すと、女性形の 3 は thalAatha と表せる。これを transliterate してみる。
+JRF 2009年9月7日
+
+thalAatha
+
+Step 0. 前に ^^、後ろに $ をつける。
+
+^^thalAatha$
+
+Step 1. 次にくる文字を語頭形にする文字にしるしをつける。すなわち A を A^^ に変換する。
+
+^^thalA^^atha$
+
+
+JRF 2009年9月7日
+
+Step 2. 母音記号の前にある ^^ をその後ろに、母音記号の後ろにある $ をその前に、すなわち ^^a を a^^ に、a$ を $a に変換する。(これは変換ができなくなるまで繰り返す。)
+
+^^thalAa^^th$a
+
+Step 3. ^^x$ なら独立形に ^^x なら語頭形に x$ なら語末形に、それ以外なら語中形に変換する。
+
+…として終了。
+
+JRF 2009年9月7日
+
+実は lA はアラビア語では合字で表すが、これは変換中は一つの文字として扱う。l の後ろにスクーンを表す e とかを入れて leAa とかも許すとテーブルを書くのが「さらに」やっかいになる。
+
+実は今テーブルを試しに書いてるんだけど、ここまで簡単だとわかってもやっぱり面倒くさい。
+
+JRF 2009年9月7日
+
+シャッダとかがあるし、いろいろ記号が入りうるから繰り返したほうが拡張性が高いけど、普通は修飾記号が重なっても 2 つぐらいなので、その組み合わせすべてをベタ書きしてしまったほうがいいのかもしれない…。ユーザーが書くかもしれないテーブルに、繰り返しを一般に認めるなんて実装はちょっと危険だから。
+JRF 2009年9月7日
+
+Unicode の Arabic Presentation Forms-B はレガシー対応で、実は notepad でも表示できないようだ。
+
+ところで、そのレガシーの論理だと、母音は TATWEEL が書けるところだとその上に書き、そうでないと、単独で書くというのが流儀と解釈するのが良さそうだ。するとオリジナルの TATWEEL - を -- に変換すると同時に後ろが TATWEEL となりうるものは th を th- などと変換しておき、最後に -a などを TATWEEL に載せたものとして変換し、-- は TATWEEL に変換し、残りの一つの - は空文字列に変換すれば良さそうだ。
+JRF 2009年9月8日
+
+そして、語末形につく母音 $-a は $a に変換する。つまり thalAatha は変換後の文字の区切りにスペースを入れると
+
+^^th -a lA a ^^th$ a
+
+となる。
+JRF 2009年9月8日
+
+Trackbacks:
+
+《cocolog:79931287》 from JRF のひとこと
+<a href="../../../articles/2014/06/statuses_cocolog_79931287.html" class="int-link" title="ひとこと">http://jrf.cocolog-nifty.com/statuses/2014/06/post-4687.html</a>
+
+電子書籍まわりの著作権について、また少し考えつつ、角川 歴彦 著の本を読んだ。 
+
+受信： 2014-06-28 17:28:47 (JST)</pre>
+
+
+<section class="backrefs" data-pagefind-ignore>
+<h2>後方参照 (1 件)</h2>
+<ul>
+<li><span class="backref-label">[aboutme:108567]参照</span> <a href="../../../articles/2014/06/statuses_cocolog_79931287.html">ひとこと</a> <span class="backref-date">2014年06月16日</span></li>
+</ul>
+</section>
+
+</article>
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2009/09.html">2009年09月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+</body>
+</html>

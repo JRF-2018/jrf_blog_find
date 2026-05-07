@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>ひとこと - JRF Blog Archive</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2024/04.html">2024年04月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+<article data-pagefind-body>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[statuses] <span class="cocolog-id">cocolog:94787819</span></td></tr>
+<tr><th>セクション</th><td>JRF のひとこと</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2024/04.html">2024年04月12日</a></td></tr>
+<tr><th>元URL</th><td><a href="http://jrf.cocolog-nifty.com/statuses/2024/04/post-1407bc.html" class="ext-link"><span class="original-url">http://jrf.cocolog-nifty.com/statuses/2024/04/post-1407bc.html</span></a></td></tr>
+
+</table>
+</div>
+<h1>ひとこと</h1>
+<pre class="body">斎藤康毅『ゼロから作るDeep Learning 5 - 生成モデル編』を読んだ。画像生成 AI の作り方が書いてある。VAE から拡散モデルを導くのが一つの流れで書かれているのがハッとさせられた。オススメ。
+JRF 2024年4月12日
+
+(「グローバル共有メモ」と Twitter (X) に書いたことをコピペする。)
+JRF 2024年4月12日
+
+『ゼロから作るDeep Learning 5 - 生成モデル編』(斎藤 康毅 著, オライリー・ジャパン, 2024年4月)
+<a href="https://www.amazon.co.jp/dp/4814400594" class="ext-link">https://www.amazon.co.jp/dp/4814400594</a>
+<a href="https://7net.omni7.jp/detail/1107487287" class="ext-link">https://7net.omni7.jp/detail/1107487287</a>
+
+サンプルコードは↓
+
+《GitHub - oreilly-japan/deep-learning-from-scratch-5》  
+<a href="https://github.com/oreilly-japan/deep-learning-from-scratch-5" class="ext-link">https://github.com/oreilly-japan/deep-learning-from-scratch-5</a>
+
+JRF 2024年4月12日
+
+私は『ゼロから作る Deep Learning』のシリーズの 1巻を <a href="../../../articles/2017/04/statuses_cocolog_87181973.html" class="int-link cocolog-id" title="ひとこと">[cocolog:87181973]</a> で、2巻を <a href="../../../articles/2018/11/statuses_cocolog_90214777.html" class="int-link cocolog-id" title="ひとこと">[cocolog:90214777]</a> で読んでいた。3 と 4 はまだ買っていない。なくても 5 は問題なく読めた。
+
+JRF 2024年4月12日
+
+……。
+
+○ 2024-04-11T14:59:24Z
+
+斎藤康毅『ゼロから作るDeep Learning 5 - 生成モデル編』を読んだ。画像生成 AI の作り方が書いてある。VAE から拡散モデルを導くのが一つの流れで書かれているのがハッとさせられた。オススメ。
+
+岡野原大輔『拡散モデル』を読んだときは(<a href="../../../articles/2023/06/statuses_cocolog_94256676.html" class="int-link cocolog-id" title="ひとこと">[cocolog:94256676]</a>)、数式が難しく歯が立たなかったが、これはサンプルコードも充実していて、かなりわかった(気にさせてくれた)。正規分布から説きはじめており、がんばれば高校生でも読めるのではないかと思う。
+
+JRF 2024年4月12日
+
+それでも私はレベルが低いため詰まったところが何箇所もあった。
+
+一例として、p.162 ぐらいで、VAE の ELBO に KL ダイバージェンスが含まれてるのはすでに ELBO を導く過程で KL ダイバージェンスを除いているので間違いじゃないかと思ったが、ちゃんと読み直すと、KL ダイバージェンスがまた必要になってるのがわかった。
+
+あとその部分のすぐあとで、正規乱数の ε にバックプロパゲーションがいらないというのには、そうなのかと驚いた。そうだったかもしれないが、知らなかったか忘れていた。
+
+JRF 2024年4月12日
+
+忘れていたということに関しては、p.219 の例で、v.view(N, C, 1, 1) にして x + v しているのがわからなかった。Gemini さんに聞いて、それが「ブロードキャスト」の機能であることをやっと思い出した。でも、なぜブロードキャストで OK なのかはわかってないが。
+
+p.239 の pθ(x0|y) の数式。p(xT) が p(xT|y) でないのも間違いじゃないかと一瞬思ったのだが、これは、p(xT) が y に関係ない乱数になるからそれでいいってことだよ…ね？
+
+JRF 2024年4月12日
+
+あと、p.289 の step8/hvae.py の reparameterize の eps は github を見ると式の書き忘れのはず。私が見つけた誤植はその程度で、まぁ、私はその程度の目しか持ってないということで…。
+
+この本自体はいい本だが、この本が「わかった」からと言って、概念そのものが数学的に難しく、この後、何か新しいアイデアにつなげられないのが、私の情けないところ。
+
+JRF 2024年4月12日</pre>
+
+
+<section class="backrefs" data-pagefind-ignore>
+<h2>後方参照 (3 件)</h2>
+<ul>
+<li><span class="backref-label">[cocolog:94787819]参照</span> <a href="../../../articles/2025/11/statuses_cocolog_95725020.html">ひとこと</a> <span class="backref-date">2025年11月16日</span></li>
+<li><span class="backref-label">[cocolog:94787819]参照</span> <a href="../../../articles/2024/04/statuses_cocolog_94801093.html">ひとこと</a> <span class="backref-date">2024年04月20日</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2024/04/gsm_005497.html">共有メモ</a> <span class="backref-date">2024-04-11T15:31:57Z</span></li>
+</ul>
+</section>
+
+</article>
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2024/04.html">2024年04月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+</body>
+</html>

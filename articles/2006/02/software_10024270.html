@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>「1607：InstallShield Scripting Runtime をインストールできません」 - JRF Blog Archive</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2006/02.html">2006年02月</a> | <a href="../../../index/software.html">ソフトウェア Tips</a></nav>
+<article data-pagefind-body>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[software] <span class="cocolog-id">cocolog:10024270</span></td></tr>
+<tr><th>セクション</th><td>JRF のソフトウェア Tips</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2006/02.html">2006年02月16日 03:16:33</a></td></tr>
+<tr><th>元URL</th><td><a href="http://jrf.cocolog-nifty.com/software/2006/02/post_8.html" class="ext-link"><span class="original-url">http://jrf.cocolog-nifty.com/software/2006/02/post_8.html</span></a></td></tr>
+<tr><th>タグ</th><td>[ハード] [Windows アプリ]</td></tr>
+</table>
+</div>
+<h1>「1607：InstallShield Scripting Runtime をインストールできません」</h1>
+<pre class="body">とある USB 無線 LAN クライアントを導入しようとするがドライバの install で失敗した。「Internal Error 2203. *.ipi, -2147287035」とか「1607： InstallShield Scripting Runtime をインストールできません」とか言われた。
+
+この原因は TeX や Cygwin を導入するときに設定した c:\tmp のパスのパーミッションが 700 となっていて、SYSTEM グループのユーザーも書けなくなっていたことにあった。
+
+環境変数 TEMP を使うインストールがそのような設定後はじめてだったことに気付かず、ドライバやインストーラのバージョンの違いによるバグと思い込み、かなりはまった。
+
+どうもこの記事が最近よく見られているようで、以上の情報だけでは申し訳ないので、いくつかリンクを。
+
+私は Cygwin を使っているため、Windows XP Home Edition でも簡単にアクセス制御ができます。しかし、普通は Home Edition の場合、フォルダのセキュリティタブからアクセス権を設定できません。
+
+次のリンクによると二つの方法があるようです。
+
+  《XP Home Edition では、マイドキュメント以外のセキュリティが設定できません》
+  方法 1.セーフモードを使う。
+  方法 2.コマンドプロンプトから cacls というコマンドを使う。
+    
+  ■方法 1.セーフモードを使う。
+      
+起動時に F8 キーを押してセーフモードで起動すると、Home Edition でもフォルダのプロパティのセキュリティタブからアクセス権の設定ができるようになります。そこで Temp のフォルダに Administrators と SYSTEM を追加して共にフルコントロールにします。英語でよろしければ次が参考になるかもしれません。
+
+  《InstallShield Consumer Central: Error -1607》
+  
+  ■方法 2.コマンドプロンプトから cacls というコマンドを使う。
+      
+「スタート→アクセサリ→コマンド　プロンプト」として次のコマンドを実行すれば、おそらく上と同じことができると思います。
+
+C:\&gt;cacls %TEMP% /E /P SYSTEM:F
+処理ディレクトリ: C:\Temp
+
+C:\&gt;cacls %TEMP% /E /P Administrators:F
+処理ディレクトリ: C:\Temp
+
+ただし、私はフルコントロールにできるところまでしか確認していません。 Cygwin なので chmod 777 しました。TEMP は普通、誰でも書けるようにしておくものですから……。chmod +t は Home Edition なんでやってませんでした。もちろん、方法 3 として Cygwin をインストールすることもできますが、すでにインストールしているような人以外は無用の長物です。
+
+他に iPod の FAQ として、Temp を消して作り直すというワザも紹介されていました。
+
+  《iPod および iTunes for Windows のインストール時のトラブルシューティング》
+  
+ところで、この記事だけアクセスが多いということは、やはり iPod が原因でここに来られているのでしょうか……
+
+更新：05/06/17,06/03/11
+初公開：2006年02月16日 03:13:45
+最新版：2006年03月11日 03:50:10
+
+
+Comments:
+
+私の環境で発生したケース情報です。
+
+・Windowsのレスポンス向上／セキュリティ対策として、不要サービスの停止（無効化）がありますが、「DCOM Server Process Launcher」サービスを停止している状態でもこのエラーが発生しました。
+
+対策としては、（インストール作業時のみでよいので）該当サービスを起動する事です。
+投稿: キトシナ | 2008-04-23 17:32:12 (JST)
+
+[E:good] (管理の権限がある状態で)[スタート]→[管理ツール]→[サービス]と開いたところで「DCOM Server Process Launcher」の開始等をできるようです。(ちなみに、私の場合は、このサービスの停止はおこなっていないので、この方法には該当していないはずです。)
+
+キトシナ様、貴重な情報、ありがとうございました。
+投稿: JRF | 2008-04-23 18:28:33 (JST)
+
+
+Links:
+
+XP Home Edition では、マイドキュメント以外のセキュリティが設定できません: <a href="../../../articles/2006/04/hbm_00076.html" class="int-link" title="w2k/XP:ディスク管理 - XP Home Edition では、マイドキュメント以外のセキュリティが設定できません">http://homepage2.nifty.com/winfaq/c/ntdisk.html#766</a>
+InstallShield Consumer Central: Error -1607: <a href="../../../articles/2006/04/hbm_00077.html" class="int-link" title="Error -1607: Unable to Install InstallShield Scripting Run Time">http://consumer.installshield.com/kb.asp?id=Q108340</a>
+iPod および iTunes for Windows のインストール時のトラブルシューティング: <a href="../../../articles/2006/04/hbm_00078.html" class="int-link" title="アップル - サポート - TIL">http://til.info.apple.co.jp/cgi-bin/WebObjects/TechInfo.woa/wa/showTIL?id=93976</a></pre>
+
+
+<section class="backrefs" data-pagefind-ignore>
+<h2>後方参照 (6 件)</h2>
+<ul>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2011/04/column_67685733.html">前期の翌日(2011-01-01)から昨日(2011-03-31)まで 90 日間のアクセス解析・近況など</a> <span class="backref-date">2011年04月01日 00:45:38</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2010/10/column_65238931.html">前期の翌日(2010-07-01)から昨日(2010-09-30)まで 92 日間のアクセス解析・近況など</a> <span class="backref-date">2010年10月01日 00:50:45</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2010/01/column_61407069.html">前期の翌日(2009-10-01)から昨日(2009-12-31)まで 92 日間のアクセス解析など</a> <span class="backref-date">2010年01月01日 00:59:49</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2009/01/column_55817991.html">前期の翌日(2008-10-01)から昨日(2008-12-31)まで 92 日間のアクセス解析など</a> <span class="backref-date">2009年01月01日 00:53:34</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2008/04/column_51230233.html">前期の翌日(2008-01-01)から昨日(2008-03-31)まで 91 日間のアクセス解析など</a> <span class="backref-date">2008年04月01日 18:23:39</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2008/01/column_22384925.html">前期の翌日(2007-10-01)から昨日(2007-12-31)まで 92 日間のアクセス解析など</a> <span class="backref-date">2008年01月01日 12:07:35</span></li>
+</ul>
+</section>
+
+</article>
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2006/02.html">2006年02月</a> | <a href="../../../index/software.html">ソフトウェア Tips</a></nav>
+</body>
+</html>

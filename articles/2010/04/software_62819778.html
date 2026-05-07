@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>間違った MIME Type の text/x-server-parsed-html を Firefox で読みたい - JRF Blog Archive</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2010/04.html">2010年04月</a> | <a href="../../../index/software.html">ソフトウェア Tips</a></nav>
+<article data-pagefind-body>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[software] <span class="cocolog-id">cocolog:62819778</span></td></tr>
+<tr><th>セクション</th><td>JRF のソフトウェア Tips</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2010/04.html">2010年04月08日 23:19:50</a></td></tr>
+<tr><th>元URL</th><td><a href="http://jrf.cocolog-nifty.com/software/2010/04/post.html" class="ext-link"><span class="original-url">http://jrf.cocolog-nifty.com/software/2010/04/post.html</span></a></td></tr>
+<tr><th>タグ</th><td>[Cygwin] [Perl] [Firefox]</td></tr>
+</table>
+</div>
+<h1>間違った MIME Type の text/x-server-parsed-html を Firefox で読みたい</h1>
+<pre class="body">知人のかなり旧いホームページは、HTTP ヘッダの Content-Type に text/x-server-parsed-html が帰ってくるが、これは .htaccess 等の間違いとされるものらしく、Firefox も IE6 も HTML として処理してくれない。最初、Firefox のユーザー設定ファイルである mimeTypes.rdf をいじって個人的な解決を図ったが、調べるうちにどうも不可能であることがわかった。そこで、次善の策として、外部プログラムに URL を渡し、そこで適当な処理をほどこしてから、Firefox に戻して表示させることにした。
+
+知人とは、今は申し訳なくも親交がなく、直してもらうよう交渉ができない。また、かなり旧いページで本人がこれからいきなり気付く、または、思い直すということも考えにくい。かといって、Firefox がそれだけのためにこれまで放っておいた機能を更新するとも思えないし、適当な add-on もなさそうだ。
+
+よって、個人的に text/x-server-parsed-html を処理するしかないと考えた。
+
+■mimeTypes.rdf がなぜ使えないか
+  
+素直に考えれば、text/x-server-parsed-html を text/html の別名のように指定すればよさそうである。しかし、Firefox 内部で text/html として処理するように mimeTypes.rdf の handler を設定する方法が、どうもないらしい。NC:useSystemDefault とか、NC:handleInternal とか、それらしいものはあるのだが、試してみたところことごとく意図したようにはならなかった。
+
+次に、「外部プログラム」として Firefox 自体を指定してしまう方向を考えた。確かにこれは可能だが、mimeTypes.rdf から呼び出されたプログラムの引数として渡されるのは(テンポラルに)ダウンロードされたファイルのみで、それを firefox に読ませた場合、相対リンクがサイトではなくファイルのディレクトリからの相対リンクになってしまい、すこぶる使い勝手が悪い。
+
+「相対リンク」だけが問題なのだから、読んだあと HTML をいじって head 要素に base タグを足せば良いだけだということはわかる。しかし、 mimeTypes.rdf から呼ばれたプログラムは、元のリンクを知る方法がないようで、base に指定すべき URL を構成できないのである。環境変数も調べて見たが、情報がなかった。
+
+Firefox の要望を出すべきところがわからなかったので、ここに書くが、今さらだが以下は是非実現して欲しい。
+
+  ●&lt;b&gt;mimeTypes.rdf からプログラムを呼び出すとき、環境変数(例えば、 MOZ_QUERY_URI)で、元の URL を渡して欲しい。&lt;/b&gt;第二引数などで指定されるようにするのは、他の Helper Application の妨げになるだろうから、環境変数として渡して欲しい。
+    
+ただ、mimeTypes.rdf 自体、手作業で触れるべきではないものと今はされているようだ。MIME Type に x- という接頭語が認められているのは、気軽に実験的フォーマットが足せるようにという配慮からだと思っていたのだが、もう随分前にそういう考え方は廃れていたのだろう。
+
+■Wget し base タグを足し Firefox に戻す
+  
+次善の策を考えた。HTML をいじって base を足して Firefox に表示させれば、まぁ、我慢できる範囲になるということは、mimeTypes.rdf をいじってる途中で悟ってきた。よって、外部アプリケーションを呼べる Firefox 拡張である launchy や JSActions にリンクを渡して、それで先のような処理をすれば十分であると想い致った。
+
+そこで、そのような外部プログラムを Perl スクリプトで書いた。 wget_addbase_firefox.pl がそれである。以下その骨格である。
+
+use File::Spec;
+use URI::file;
+use URI::Split qw(uri_split uri_join);
+
+our $FIREFOX = &quot;c:/Program Files/Mozilla Firefox/firefox.exe&quot;;
+our $WGET = &quot;c:/cygwin/bin/wget.exe&quot;;
+our $TMP = File::Spec-&gt;catfile($ENV{TEMP}, &quot;wget_addbase_firefox_tmp.html&quot;);
+die &quot;Usage: $0 URL\n&quot; if @ARGV &lt; 1;
+
+my $URL = shift @ARGV;
+
+system($WGET, &quot;-O&quot;, $TMP, $URL);
+open(FILE, &quot;&lt;&quot;, $TMP) or die $!;
+my $CONT = join(&quot;&quot;, &lt;FILE&gt;);
+close(FILE);
+
+if ($CONT =~ /(\&lt;\s*head\s*\&gt;)(.*)(\&lt;\s*\/\s*head\s*\&gt;)/is) {
+      my $pre = $` . $1;
+      my $post = $3 . $';
+      my $head = $2;
+      if ($head !~ /\&lt;\s*base\s*href/is) {
+        my $base = $URL;
+        my ($scheme, $auth, $path, $query, $frag) = uri_split($URL);
+        if ($path !~ /\/$/) {
+          $path =~ s/\/[^\/]*$/\//;
+        }
+        $base = uri_join($scheme, $auth, $path, $query, $frag);
+        my $prenewline = &quot;&quot;;
+        $prenewline = $1 if $head =~ /^(\n*)/s;
+        $head = $prenewline .= &quot;&lt;base href=\&quot;&quot; . $base . &quot;\&quot; /&gt;\n&quot; . $head;
+    }
+    $CONT = $pre . $head . $post;
+}
+open(FILE, &quot;&gt;&quot;, $TMP) or die $!;
+print FILE $CONT;
+close(FILE);
+my $TMPURI = URI::file-&gt;new_abs($TMP);
+system($FIREFOX, &quot;-remote&quot;, &quot;openURL($TMPURI, new-tab)&quot;);
+
+元のファイルは、これに Cygwin 関係のバッドノウハウ(cygpath などの挙動が未だにおかしい！)が加わる。上の例でも Cygwin じゃない Firefox から Cygwin を使うため、wget をフルパスで指定したりといった痕跡がある。
+
+やってることは wget したファイルの HTML ヘッダを調べて base タグがなければ足して、firefox に読み込ませるだけ。トイプログラムである。
+
+今では libwww-perl のない Perl はないだろうから、wget を使わずとも LWP::UserAgent を使えば良いのだろうが、私は以前それすらない環境下にあったことがあり、すべてを Perl にするよりは shell スクリプトの替わりに Perl を使うという感覚も大事にしたいと思っているので、今回は wget を使うプログラムにした。Firefox も system で呼び出してるしね。
+
+ちなみに、プログラムを呼ぶのに exec じゃなく system なのは、(昔の)マルチタスクじゃない Perl などで exec は失敗するが system なら成功するということがあった(ように覚えている)からである。
+
+■Launchy の設定
+  
+launchy を使う場合、launchy.xml に次のような application 要素を足す。
+
+&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;configurations xmlns=&quot;<a href="http://launchy.mozdev.org/configurations&amp;quot;&amp;gt;" class="ext-link">http://launchy.mozdev.org/configurations&amp;quot;&amp;gt;</a>
+...
+&lt;application&gt;
+    &lt;label&gt;Wget Addbase and Firefox&lt;/label&gt;
+    &lt;type&gt;1&lt;/type&gt;
+    &lt;command&gt;c:\Perl\bin\perl.exe&lt;/command&gt;
+    &lt;!-- インストールした Perl スクリプトに応じて設定してください。--&gt;
+    &lt;arguments&gt;c:/Temp/wget_addbase_firefox.pl #1&lt;/arguments&gt;
+&lt;/application&gt;
+...
+&lt;/configurations&gt;
+
+テストしたとき、どうも引数の関係からか、そのときは cygpath を使っていたからか、c:\cygwin\bin\perl.exe ではうまく動かなかった。よって、 ActivePerl のパスを指定している。(wget_addbase_firefox.pl は ActivePerl でも変更なく動く。)
+
+使うときは、リンクのところでいちいち右クリックから launchy のところを呼び出さねばならない。まぁ、いつものことじゃないのでこのあたりがトレードオフなのかもしれない。
+
+■JSActions の設定
+  
+JSActions を使う場合は、これ用にインストールしたスクリプトが入っているフォルダの中の link というところの下に wget_addbase_firefox.js を置けばよい。特に変わったところはないが、以下のトイプログラムである。
+
+// リンク先を wget で読み、base 情報を足して、firefox に戻す。
+
+jsa_WgetAddbaseFirefox();
+
+function jsa_WgetAddbaseFirefox() {
+    var perlPath = &quot;c:\\cygwin\\bin\\perl.exe&quot;;
+    // scriptPath はインストールした Perl スクリプトに応じて設定してください。
+    var scriptPath = &quot;c:/Temp/wget_addbase_firefox.pl&quot;;
+    
+    if(!_jsaCScript.context.onLink) return;
+    var uri = _jsaCScript.context.link.href;
+    _jsaCScript.exec(perlPath, scriptPath + &quot; &quot; + uri);
+}
+
+これも、使うときは、リンクのところでいちいち右クリックから辿って呼び出さねばならない。
+
+■おまけ
+  
+ちなみに Cygwin ユーザであれば、Firefox も IE もダメとなっても、w3m なら可能であることもある。launcy から emacs-w3m を呼び出すには次のように launchy.xml に application 要素を足す。
+
+&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;configurations xmlns=&quot;<a href="http://launchy.mozdev.org/configurations&amp;quot;&amp;gt;" class="ext-link">http://launchy.mozdev.org/configurations&amp;quot;&amp;gt;</a>
+...
+&lt;application&gt;
+    &lt;label&gt;emacs-w3m&lt;/label&gt;
+    &lt;type&gt;1&lt;/type&gt;
+    &lt;command&gt;C:\Meadow\bin\gnudoitw.exe&lt;/command&gt;
+    &lt;arguments&gt;(w3m&quot;#1&quot;t)&lt;/arguments&gt;
+&lt;/application&gt;
+...
+&lt;/configurations&gt;
+
+が、どうも w3m(w3mmee) もウチの環境ではそろそろガタが来ているらしく、最初に指定されたページしか読み込めなくなっていたりするのだが……。
+
+■参考
+  
+launchy や JSActions は、リンクしている本家サイトではなく、 Firefox のアドオン用サイトなどで手に入れたほうがいいのかな？
+
+  ●《MimeTypes.rdf - MozillaZine Knowledge Base》
+    
+更新：2010-04-08
+初公開：2010年04月08日 23:19:50
+最新版：2010年04月09日 03:04:32
+
+
+Comments:
+
+[E:sweat01] 更新：スクリプトのパスが例で違っていたのを Temp にあるように統一した。
+投稿: JRF | 2010-04-09 03:08:48 (JST)
+
+[E:paper] 機能から考えると、もしかすると「外部プログラム」を使わずとも JSActions だけでできるかもしれないが……、今後の課題ということで。
+
+あと mimeTypes.rdf に環境変数を足すなら、たとえば、XML 要素の属性やクリックされた画像のディスプレイ上の位置も渡すようにすれば、ブラウザの画像にオーバーレイする形で、外部プログラムの結果を表示するといったことも可能となる。そこから、スクロールで切れるのを防ぐために、ブラウザが仮想ディスプレイを持ちそこに X Window のプロトコルで直に描ける……という発展の方向もありえたのではないか。
+
+ただ、それは HTML を自分勝手に拡張していく方向につながる。検索エンジンの効率等を考えると、そういった x- でもたらされる HTML の混乱を嫌ったのかもしれない。そこまでやるなら「プラグイン」なり「ActiveX」なりを使え、テスト実装したいならソースを読み、オープンソースに協力しろ……あの時代を推察するに、そういうことだったのかもしれない。オープンソースの文化に EPS (Encapsulated PostScript) はあったのに、数式やグラフを表示するためのインライン PDF は現れなかったしね。(いや、ググると Safari ではできるらしい。)
+
+投稿: JRF | 2010-04-16 22:51:47 (JST)
+
+
+Links:
+
+launchy: <a href="../../../articles/2010/04/hbm_01325.html" class="int-link" title="gemal.dk - Mozilla - Launchy">http://gemal.dk/mozilla/launchy.html</a>
+JSActions: <a href="../../../articles/2010/04/hbm_01326.html" class="int-link" title="FrontPage - + HideAway Firefox +">http://hideaway.cc/Firefox/</a>
+wget_addbase_firefox.pl: <a href="http://jrf.cocolog-nifty.com/archive/wget_addbase_firefox/wget_addbase_firefox.pl" class="ext-link">http://jrf.cocolog-nifty.com/archive/wget_addbase_firefox/wget_addbase_firefox.pl</a>
+wget_addbase_firefox.js: <a href="http://jrf.cocolog-nifty.com/archive/wget_addbase_firefox/wget_addbase_firefox.js" class="ext-link">http://jrf.cocolog-nifty.com/archive/wget_addbase_firefox/wget_addbase_firefox.js</a>
+MimeTypes.rdf - MozillaZine Knowledge Base: <a href="../../../articles/2010/04/hbm_01327.html" class="int-link" title="MimeTypes.rdf - MozillaZine Knowledge Base">http://kb.mozillazine.org/MimeTypes.rdf</a></pre>
+
+
+<section class="backrefs" data-pagefind-ignore>
+<h2>後方参照 (2 件)</h2>
+<ul>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2011/04/column_67685733.html">前期の翌日(2011-01-01)から昨日(2011-03-31)まで 90 日間のアクセス解析・近況など</a> <span class="backref-date">2011年04月01日 00:45:38</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2010/10/column_65238931.html">前期の翌日(2010-07-01)から昨日(2010-09-30)まで 92 日間のアクセス解析・近況など</a> <span class="backref-date">2010年10月01日 00:50:45</span></li>
+</ul>
+</section>
+
+</article>
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2010/04.html">2010年04月</a> | <a href="../../../index/software.html">ソフトウェア Tips</a></nav>
+</body>
+</html>

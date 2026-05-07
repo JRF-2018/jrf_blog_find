@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>共有メモ - JRF Blog Archive</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2021/10.html">2021年10月</a> | <a href="../../../index/gsm.html">共有メモ</a></nav>
+<article data-pagefind-body>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[gsm] 2021-10-31T16:48:29Z</td></tr>
+<tr><th>セクション</th><td>グローバル共有メモ</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2021/10.html">2021-10-31T16:48:29Z</a></td></tr>
+<tr><th>元URL</th><td>(URLなし)</td></tr>
+
+</table>
+</div>
+<h1>共有メモ</h1>
+<pre class="body">jrf&gt; [仏教の最適化プログラムの続き。]
+
+バックポートした後の simbdp3.py についてログを取ってみた。make_logs.sh をやって make_figs.sh をやったことに相当。
+
+《グラフ集: 2021-11-01 - Issue #8 - JRF-2018/simbd》  
+<a href="https://github.com/JRF-2018/simbd/issues/8" class="ext-link">https://github.com/JRF-2018/simbd/issues/8</a>
+
+fana … 狂信が起こると、予言の効果が薄れて災害が起きやすくなり人が死ぬ。そして、寺の数が増えるということだった。simbdp3x1.py ほどではないがそうなっている。
+
+fanampr は狂信が起きて寺だけでなく僧も増えた場合で、fanamprmprs は僧が増えてもその効果がむなしい場合。fanampr のほうが死者が少なく、fanamprmprs は fana と変わらないぐらいというのが予定通りなのだが、fana と fana* の違いがあまりない感じか。
+
+mwar は、人口が増えると戦争を望みやすくなるということだった。確かに死者が増えている。そのかわりに人口の目標値が増えるとしたのが mwarmpop で、さらに ambition が増えて経済が活発になるとしたのが mwarmpopmamb である。死亡を率でみると、mwar より mwarmpop が大きく、なぜか、mwarmpopmamb が normal に近い。よくわからない。mwarmpopmamb が経済が活発で予算が多くなるというのはそうなってはいる。そのかわりに一家離散が増えるはずで増えてはいるが、今回の改良の成果でその数は少なくほとんど差がないと言える。予算が normal より mwar* のほうが少ないのは injured が増えているから…だが、ここでも mwarmpopmamb が normal より良く、それがなぜなのかよくわからない。
+
+「死が増えると僧が増えて教育などが改善し、それが国力となって、災害などに強くなり、死者が減る」…ということが起きるか？ 逆に mwarfpr では僧の増加を抑制して、死者が増えるか見てみようということだった。mwar と mwarfpr はほぼ同じ感じで、そのようなことが起きているとは言えない感じ。
+
+ltom は墓の数を減らすことで軽犯罪が起きにくく重犯罪が重くなるという効果を持つはずで、ledu は教育が減って軽犯罪が起きやすくなるはずだった。なんとなく予定通りになっているように見える。MeanAmplifier、いらなかったのではないか？
+
+予言の効果が直接減るというのが lpe だった。それにより災害が重くなり死者が増えるはずだが…そうなっている。lpe は ltom の副作用として現れるということで、ltomlpe ledultomlpe を試しているが、死者数がわりと変わっているのがよくわからない。カルマは lpe がないものとほぼ変わらない。
+
+lsth は hating が宥めれる度合が少ないというもので、カルマが強く出て欲しいのであるが、ほとんどそうなっていない。ltom はがくんとカルマがよくなるはずで、そうなっている。ここは simbdp3x1.py だとキレイに出ることもあったので、MeanAmplifier による改善がよくわかるところ。重犯罪について差が出ないのは simbdp3x1.py も同じだった。もっと長い期を見ないとダメなのか。
+
+
+もろもろの最悪の状態を試すのが worst1 で、そこからもろもろの「仏教的」改善をした normal に対し、非仏教的に改善を人口目標増の一点に集中したのが worst2 になる。今回はわりとキレイに出ているように思う。
+
+以上。</pre>
+
+
+</article>
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2021/10.html">2021年10月</a> | <a href="../../../index/gsm.html">共有メモ</a></nav>
+</body>
+</html>

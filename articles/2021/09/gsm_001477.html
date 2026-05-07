@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>共有メモ - JRF Blog Archive</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2021/09.html">2021年09月</a> | <a href="../../../index/gsm.html">共有メモ</a></nav>
+<article data-pagefind-body>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[gsm] 2021-09-20T00:19:10Z</td></tr>
+<tr><th>セクション</th><td>グローバル共有メモ</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2021/09.html">2021-09-20T00:19:10Z</a></td></tr>
+<tr><th>元URL</th><td>(URLなし)</td></tr>
+
+</table>
+</div>
+<h1>共有メモ</h1>
+<pre class="body">jrf&gt; [仏教の最適化プログラムの続き。]
+
+normal のログを求めるところからやり直す。前とパラメータは同じなので、run_simbdp3.sh と plot_logs.py のコマンドはこの先しばらく、示さない。グラフ集は Issue に新たなエントリを作った。
+
+あと、新たに worst1 と worst2 のログを作った。worst1 は ledu ltom lpe fana mwar 。worst2 は ledu ltom lpe fana mwar mpop mamb mpr。コマンドとしては…
+
+run_simbdp3.sh worst1 10 -L -t 360 --education-goal=0.35 --education-goal-max=0.5 --education-goal-min=0.20 --tombs-population=10000 --prophecy-effect=0.5 --nation-education-power-threshold=0.925 --faith-realization-power-threshold=0.925 --invasion-average-term-min=60
+
+run_simbdp3.sh worst2 10 -L -t 360 --education-goal=0.35 --education-goal-max=0.5 --education-goal-min=0.20 --tombs-population=10000 --prophecy-effect=0.5 --nation-education-power-threshold=0.925 --faith-realization-power-threshold=0.925 --invasion-average-term-min=60 --priests-rate-max=0.0125 --priests-rate=0.00666666666666667 --priests-rate-min=0.004 --invasion-average-term-min=60 --population=11000,11000,5500 --change-ambition --ambition-goal=0.70
+
+python plot_logs.py normal worst1 worst2 -p AccDeath
+python plot_logs.py normal worst1 worst2 -p AccAbortion
+python plot_logs.py normal worst1 worst2 -p AccKarma
+python plot_logs.py normal worst1 worst2 -p Education
+
+…になる。
+
+本当の worst は worst1。ただし、ltom は必ずしも悪い方向ではないが、ltom には lpe が必ず伴う…とするとすると、worst に ltom も現れるという感じでこれを worst に入れている。
+
+worst2 は、「仏教」がないとした場合の発展の方向といった感じになる。逆に normal は、人口上昇がどうしてもできない場合に、その「エネルギー」を「仏教」に振り向けたといった感じか。
+
+なお、simbdp3.py はこのログを取ったときから若干の変更がある。そのため、このログを取るのに、バージョン 0.0.8 ではこれまでのオプションにさらに、--soothe-political-hating-decay=1.0 --soothe-merchant-hating-decay=1.0 --soothe-merchant-hated-decay=1.0 を指定したのと同じことになる。
+
+《グラフ集: 2021-09-20 - Issue #3 - JRF-2018/simbd》  
+<a href="https://github.com/JRF-2018/simbd/issues/3" class="ext-link">https://github.com/JRF-2018/simbd/issues/3</a>
+
+次回は、これらの soothe に関するオプションなしのデフォルトで行い、諸行無常の効果が薄い low soothe の条件も試そうと思う。worst1 や worst2 は low soothe の条件付きになるので、それらも少し変わる予定。
+
+なお、グラフについてだが、fanamprmprs の死亡が大きく出過ぎている。このシミュレーションはどうしてもそういうことが起きることがあるらしい。カルマについて ltom の効果だと思うが、normal が worst1 や worst2 よりハッキリ悪いのはいかがなものか…といったところ。</pre>
+
+
+</article>
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2021/09.html">2021年09月</a> | <a href="../../../index/gsm.html">共有メモ</a></nav>
+</body>
+</html>

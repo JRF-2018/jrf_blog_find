@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>共有メモ - JRF Blog Archive</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2025/06.html">2025年06月</a> | <a href="../../../index/gsm.html">共有メモ</a></nav>
+<article data-pagefind-body>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[gsm] 2025-06-24T01:26:32Z</td></tr>
+<tr><th>セクション</th><td>グローバル共有メモ</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2025/06.html">2025-06-24T01:26:32Z</a></td></tr>
+<tr><th>元URL</th><td>(URLなし)</td></tr>
+
+</table>
+</div>
+<h1>共有メモ</h1>
+<pre class="body">jrf&gt; (承前)
+
+先の Tips を更新。若干ダーティだけど、以下のようにしたほうが、意図どおりの動作になると思う。
+
+&lt;pre&gt;
+(require 'quail-naggy)
+
+(defun quail-naggy-alt-convert-naggy-backend-command-advice
+    (old-function &amp;rest args)
+  (if (string= (caar args) &quot;convert&quot;)
+      (apply old-function
+	     (list (list &quot;convert&quot; (concat (cadar args) &quot;:&quot;))))
+    (apply old-function args)))
+
+(defun quail-naggy-alt-convert ()
+  (interactive)
+  (advice-add 'naggy-backend-command :around
+	      #'quail-naggy-alt-convert-naggy-backend-command-advice)
+  (unwind-protect
+      (quail-naggy-convert)
+    (advice-remove 'naggy-backend-command
+		   #'quail-naggy-alt-convert-naggy-backend-command-advice)))
+
+(add-hook 'input-method-activate-hook
+	  (lambda ()
+	    (if (string= (quail-name) &quot;japanese-naggy&quot;)
+		(progn
+		  (define-key (quail-conversion-keymap)
+			      [?\S- ] 'quail-naggy-alt-convert)
+		  (define-key (quail-conversion-keymap)
+			      [?\C- ] 'quail-naggy-insert-space)))))
+&lt;/pre&gt;</pre>
+
+
+</article>
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2025/06.html">2025年06月</a> | <a href="../../../index/gsm.html">共有メモ</a></nav>
+</body>
+</html>

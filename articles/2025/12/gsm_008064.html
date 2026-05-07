@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>共有メモ - JRF Blog Archive</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2025/12.html">2025年12月</a> | <a href="../../../index/gsm.html">共有メモ</a></nav>
+<article data-pagefind-body>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[gsm] 2025-12-02T05:57:08Z</td></tr>
+<tr><th>セクション</th><td>グローバル共有メモ</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2025/12.html">2025-12-02T05:57:08Z</a></td></tr>
+<tr><th>元URL</th><td>(URLなし)</td></tr>
+
+</table>
+</div>
+<h1>共有メモ</h1>
+<pre class="body">jrf&gt; 「「多層目的＝アテンション」を確かめる二足歩行の実験 その8」を行った。simple walk と expert run を混合したデータに LoRA を適用し、expert run を「復元」することを試み、成功した。またパラメータのスパース化のためL1正則化も試したが、こちらは失敗した。
+
+その8は 8_2 と 8_3 の二つの実験からなる。↓。
+
+《humanoid_nested_attention_dt_8_2.ipynb - Colab》  
+<a href="https://colab.research.google.com/drive/1bs7cr4C60Qf807YI4spMf_1u55JxRpSy" class="ext-link">https://colab.research.google.com/drive/1bs7cr4C60Qf807YI4spMf_1u55JxRpSy</a>
+
+《humanoid_nested_attention_dt_8_3.ipynb - Colab》  
+<a href="https://colab.research.google.com/drive/1F0RhRJcfcFVq9Vx_SvDEq29J-3m5D4RS" class="ext-link">https://colab.research.google.com/drive/1F0RhRJcfcFVq9Vx_SvDEq29J-3m5D4RS</a>
+
+……。
+
+今回のその8で何が変わったか。
+
+その8は後述のように 8_2 と 8_3 の二つの IPYNB からなる実験である。さらに実験の前に 4_4 の実験を行いそのモデルを生成しておく必要がある。
+
+今回のアイデアとしてはまず、アテンションの層ごとに LSP みたいなのを求めることはできないか…というところがあった。アテンションが多層目的であるなら、下層と上層をそれぞれ別に目的を指示することで細かな動作も指定できるのではないか…というアイデアである。それを実装するなら、アテンションの層の間になにかをかませて変調する…という方向になるだろう。そういう技術としてはすでに LoRA という技術がある。アテンションの特定のクエリ(に対するバリュー)を強調するような LoRA のようなもの…それができないか Gemini さんに聞いたところ「できる」という回答が得られ、生成してもらったのが今回のプログラムになる。
+
+LoRA 自体が状態を入力として変調されるべきかともちょっと思ったのだが、状態の変化もアテンションが認識していると信じて今回は状態の入力はせず、アテンションの変調だけに留めるコードとなっている。
+
+本来 LoRA は数少ないデータから学べるのが利点である。究極的には一つのデータから LoRA へと逆変換できるのがカッコイイ。しかし、それはあまりにも難しいためせめて LoRA をスパースにする L1正則化(Lasso)を試みた。こうすることで、LoRA にありがちな過学習も防げるし、多層目的のどこに作用しているかという説明可能性も上がるというのが、Gemini さんの話である。
+
+あと、私の構想の一つとして、RLRMDiffusion (Reinforcement Learning Result Model Diffusion)というコンセプトがある(<a href="../../../articles/2025/05/statuses_cocolog_95459644.html" class="int-link cocolog-id" title="ひとこと">[cocolog:95459644]</a>](2025年5月))。そこでは、強化学習の戦略記述を「コマンド」として強化学習で得たモデルを生成することを考えていた。ビデオのような大きなデータを生成できるぐらいだから、大きな学習済みモデルもいずれ生成できるのかもしれないが、今は、LoRA ぐらいがせいぜいではないかという考えている。今回、説明可能性の上がったスパースな LoRA のほうが、RLRMDiffusion で生成しやすいだろうという読みもあった。
+
+実験としては expert と simple を prompt_id=1 で、standup を prompt_id=3 で学習した「元のモデル」(humanoid_nested_attention_dt_4_4.ipynb で訓練したモデル)を固定し、そこから expert と standup を LoRA によって「回復」できるかを見ることになる。すでに「元のモデル」に「創発」されていたものの「発見」を目的とするのだ。だから、LoRA の再学習に元のモデルよりも学習コストがかかったとしても「創発」が「発見」されればその価値があると考え、学習コストは気にしない。LoRA だからといって、効率よく学べるかどうかは関係ないと考えた。</pre>
+
+
+</article>
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2025/12.html">2025年12月</a> | <a href="../../../index/gsm.html">共有メモ</a></nav>
+</body>
+</html>

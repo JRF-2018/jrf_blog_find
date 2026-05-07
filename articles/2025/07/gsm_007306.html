@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>共有メモ - JRF Blog Archive</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2025/07.html">2025年07月</a> | <a href="../../../index/gsm.html">共有メモ</a></nav>
+<article data-pagefind-body>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[gsm] 2025-07-04T07:07:27Z</td></tr>
+<tr><th>セクション</th><td>グローバル共有メモ</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2025/07.html">2025-07-04T07:07:27Z</a></td></tr>
+<tr><th>元URL</th><td>(URLなし)</td></tr>
+
+</table>
+</div>
+<h1>共有メモ</h1>
+<pre class="body">jrf&gt; LangChain を使って熊剣迷路問題(<a href="../../../articles/2023/07/statuses_cocolog_94293132.html" class="int-link cocolog-id" title="ひとこと">[cocolog:94293132]</a>(2023年7月))を解かせてみたのだが、うまくいかなかった。
+
+まず、ハマったのが、create_gemini_functions_agent がないということ。あるという情報とないという情報があって、錯綜していた。create_openai_functions_agent は確実にある。
+
+結局これは、create_tool_calling_agent を使えということらしい。
+
+ところが、create_tool_calling_agent にも問題がある。llm = GoogleGenerativeAI() の llm では使えなくて、llm = ChatVertexAI() の llm なら使えるという罠があった。(あとで Gemini さんに聞くと llm = GoogleGenerativeAI() じゃなくて llm = ChatGoogleGenerativeAI() なら使えるとのこと。使えた orz。)
+
+さらにどうも、ツールコールでない質疑などが間に挟まると、 Message's content is expected to be a dict, got &lt;class 'int'&gt;! …というエラーが出るときがあって、一度それが出ると、その後も同じエラーが invoke のごとに発生してしまう。
+
+これは、チャット履歴におかしなデータが混入しているのが問題であるらしく、agent_executor.memory.clear() みたいなことをすれば、その後は invoke が有効になった。
+
+で、そういうエラーに(ある程度手動で)対応できるようになって、迷路を解かせるのだが、これが全然うまくいかない。地図が読めない。テキストの地図の読み取りが下手なのだろう。
+
+方針と計画を AI がセットできるようにしたのだが、これが全然うまく方針を立てられない。
+
+結局、剣を取るところまでは進んだが、その後、熊を倒しにいくところまではいけなかった。剣を取ったところでチラと見えるゴールにどうしても向かおうとして、いつまでも迂回ができない様子だった。
+
+あれぇ、これじゃ AGI なんか無理だぞ…という感じ。もしかすると私のプロンプトやコンテクスト設計がマズイのかもしれないが…。
+
+(まだ迷路も解けてない段階では公開しても無意味なような気がするので迷ったのだが、一応他の人の参考になるかもしれないので公開しておく。)
+
+《langchain_maze_vertexai_0.0.1.ipynb - GitHub Gist》  
+<a href="https://gist.github.com/JRF-2018/be6a8cb85227aeccd048346d29fdc803" class="ext-link">https://gist.github.com/JRF-2018/be6a8cb85227aeccd048346d29fdc803</a></pre>
+
+
+</article>
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2025/07.html">2025年07月</a> | <a href="../../../index/gsm.html">共有メモ</a></nav>
+</body>
+</html>

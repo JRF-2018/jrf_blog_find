@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>ひとこと - JRF Blog Archive</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2017/11.html">2017年11月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+<article data-pagefind-body>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[statuses] <span class="cocolog-id">cocolog:88438901</span></td></tr>
+<tr><th>セクション</th><td>JRF のひとこと</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2017/11.html">2017年11月17日</a></td></tr>
+<tr><th>元URL</th><td><a href="http://jrf.cocolog-nifty.com/statuses/2017/11/firef.html" class="ext-link"><span class="original-url">http://jrf.cocolog-nifty.com/statuses/2017/11/firef.html</span></a></td></tr>
+
+</table>
+</div>
+<h1>ひとこと</h1>
+<pre class="body">Firefox 57 Quantum と Greasemonkey 4.0 の後方互換性のなさにイライラする。フリーで配布されているのはありがたく、そこに怒るのは筋違いではあるんだが、これまでの「資産」が使えなくなるのはやっぱり痛い。
+JRF 2017年11月17日
+
+Firefox 57 すなわち Firefox Quantum に自動更新されて、過去のアドオン(add-on)が使えなくなってしまったことにビビって、しばし Firefox 56 にダウングレードしたのだが、いろいろ整理した上で結局、Firefox 57 を使うことにした。
+
+JRF 2017年11月17日
+
+アドオンの話は後述するとして、Firefox 57 は、起動と新しいタブを 2,3 個開くのが遅い。新しいタブをたくさん開く場合は、前より少し遅い程度なのだが、最初の新しいタブを 1, 2 個開こうとするとなぜか動作が止まってしまう。
+
+JRF 2017年11月17日
+
+Firefox 57 の売りの一つはスピードアップのはずだが、その実感はなく、起動とタブの遅さのため、全体としてかなり遅く感じる。コア数が多い CPU とかだとメリットを享受できるんだろうか？ Firefox は寄付などに頼り金持ちの意見を聞きやすいのはしかたないことだから、こうなっちゃうのかな？
+
+JRF 2017年11月17日
+
+……。
+
+Greasemonkey もバージョン 4.0 に上がってしまった。そして後方互換性が切り捨てられ、GM まわりの関数がすべて「非同期」関数にされてしまった。GM.getValue まども値をそのまま返すのではなく、値に対して Promise というオブジェクトをラッパーでくるんだようにして返す。
+
+JRF 2017年11月17日
+
+それを値として使おうとしたら await GM.getValue(name, default) みたいに await が必要。しかし、await はどうも async なしですることはできないらしい。async された関数の中でのみ await ができるということで、await を使うときは、非同期関数の書き方をしないといけない。とても面倒くさい。
+
+JRF 2017年11月17日
+
+GM.xmlHttpRequest などは元から非同期で書き換える部分はなく、GM.openInTab とかは最後に出てくることが多いから、ほとんど書き換える必要はないんだけど、GM_setValue GM_getValue が GM.setValue GM.getValue になる部分については大きな書き換えが必要になる。
+
+JRF 2017年11月17日
+
+一応それをしてみた例が↓になる(バージョン 0.04)。「集計」はちゃんと動かなくなっているが…。
+
+《Cocolog_Pro_Analyzer：ココログプロ用アクセス解析補助 Greasemonkey》
+<a href="../../../articles/2014/03/software_79222541.html" class="int-link" title="Cocolog_Pro_Analyzer：ココログプロ用アクセス解析補助 Greasemonkey">http://jrf.cocolog-nifty.com/software/2014/03/post-3.html</a>
+
+JRF 2017年11月17日
+
+Firefox 57 &amp; Greasemonkey 4.0 に乗り換えるにあたって、私は Greasemonkey スクリプトをほとんどそのように書き換えたのだった。…しんどかった。
+
+JRF 2017年11月17日
+
+……。
+
+最初、あまりにも Greasemonkey の変更が大きいので Greasemonkey 4.0 のアナウンスに「いやならこれを使えばいいよ」という Violentmonkey や Tampermonkey も試してみた。
+
+Violentmonkey は Cocolog_Pro_Analyzer.user.js (バージョン 0.03)はまったく動かなかった。Tampermonkey は少し動いた。
+
+JRF 2017年11月17日
+
+が、Tampermonkey の GM_setValue GM_getValue は Greasemonkey のそれと動作に違いがあるようだった。少なくとも Firefox 57 においては。
+
+具体的にいうと、GM_setValue や GM_getValue はページやタブが違ってもその user.js スクリプトが同じなら同じ値を参照できるというのが Greasemonkey の動作で、それは Greasemonkey 4.0 の GM.setValue や GM.getValue でも同じである。
+
+JRF 2017年11月17日
+
+しかし、Tampermonkey の GM_setValue GM_getValue は実装に localStorage を使っているのか、タブやドメインが変わると値が参照できなくなっていた。
+
+それでは困る。そこで諦めて Greasemonkey 4.0 を使うことにし、スクリプトの書き換え作業をした。
+
+JRF 2017年11月17日
+
+……。
+
+しかも、Greasemonkey 4.0 は変更が大きいゆえか、UI が貧弱で使いにくい！
+
+外部エディタが使えないのはしかたないとしよう。それでも、セーブをするのに「保存」用アイコンすらなく、C-s しないとダメとか、今どきありえる？ わかりにくいよ！
+
+JRF 2017年11月17日
+
+さらに、新しいユーザースクリプトを一から入力する方法、ないよね？ また、ファイルから user.js を取り込むこともできないよね？ ネット上に user.js を置けば取り込むことはできる。だから、新しいユーザースクリプトもネット上にいったん名前だけでも置いとかないといけないように思うんだが？ これはどうにかして欲しい。
+
+まぁ、このあたりは Greasemonkey のバージョンが上がればすぐに解決するとは思うんだけど。
+
+JRF 2017年11月17日
+
+……。
+
+で、Firefox のアドオンの話。
+
+Firefox Quantum になって、Web Extensions ではない昔の XUI などを使ったアドオンは使えなくなった。Mozilla 側は、有名どころのアドオンとは連絡を取りあっており、アドオンが使えなくなったことに「多くのユーザーは(…)気づくことはないでしょう」と言っている(↓)が、私は多くのアドオンが使えなくなることに遭遇した。
+
+JRF 2017年11月17日
+
+《Firefox アドオン技術の現代化 | Firefox ヘルプ》
+<a href="https://support.mozilla.org/ja/kb/firefox-add-technology-modernizing" class="ext-link">https://support.mozilla.org/ja/kb/firefox-add-technology-modernizing</a>
+
+JRF 2017年11月17日
+
+ジェスチャ入力の All in One Gesture は、まぁ、いい。似たようなものはいくらでもある感じだ。アドオンページなど特殊なページでジェスチャが使えなくなるのは痛いがまぁ、がまんできる。
+
+RSS リーダーの Sage++ が使えなくなったのは痛い。Feedbro を代わりに入れたが、Scan のタイミングをこちらで指定できないとか、細かい部分で不満がある。
+
+Emacs ライクの key binding を実現してくれていた Firemacs が使えなくなったのは痛い。これはかえがなく、がまんするしかない。
+
+JRF 2017年11月17日
+
+テキストとリンクを同時にコピーする FireLink も使えなくなった。類似の Make Link というものもあるらしいが、それも以前に使えなくなっていたらしい。…これは、Greasemonkey スクリプトを書いた。それについては、↓のひとことで解説する。
+
+JRF 2017年11月17日
+
+<a href="../../../articles/2017/11/statuses_cocolog_88438902.html" class="int-link cocolog-id" title="ひとこと">[cocolog:88438902]</a>
+《Firefox の Greasemonkey で右クリックのコンテクストメニュー(contextmenu)を開くとき、コンテクストメニューのターゲットをどうやって取るか？ …やっと解決した。》
+<a href="../../../articles/2017/11/statuses_cocolog_88438902.html" class="int-link" title="ひとこと">http://jrf.cocolog-nifty.com/statuses/2017/11/firef-1.html</a>
+
+JRF 2017年11月17日
+
+……。
+
+不満が多いが私は Firefox Quantum を使うことを選択した。Firefox の代替として Waterfox や Pale Moon の名が上がっているが、Firefox ほどの信用＝ブランド力は私にとってはないため。Firefox を見捨てるには、これまで積み上げてきた「資産」が多過ぎるため。(でも、さすがに今回は、Google Chrome に乗り換えようかとも真剣に検討はしたけどね。)
+
+JRF 2017年11月17日
+
+ブラウザに金出してもいいんだけどね。でも、今のところ無料で使わせてもらっている以上、感謝しこそすれ文句はいうべきではないか。「資産」があるから、イライラしてしまうけどね。まぁ、その辺はこらえていかないと…。
+
+JRF 2017年11月17日
+
+……。
+
+追記。
+
+さっきググってて見つけたんだけど、FireLink の代わりのアドオンは私の場合、Format Link で充分そう。
+
+JRF 2017年11月17日
+
+……。
+
+追記。
+
+Firefox 57 での Greasemonkey 4、iframe まわりがおかしい気がする。上の Cocolog_Pro_Anlyzer.user.js の動作があやしくて、いろいろ試しているがはっきりしない。私のプログラムの書き換えでバグっている可能性もあるし…。
+
+さしあたってのご報告まで。
+
+JRF 2017年11月19日
+
+……。
+
+……。
+
+追記。
+
+「起動と新しいタブを 2,3 個開くのが遅い。」という点。2018年3月29日現在、Firefox のバージョンは、59.0.2で、何度かバージョンアップがあったが、バージョンアップのたびごとに、その症状が出て、しばらくすると解消していた。
+
+JRF 2018年3月29日
+
+そして、アンチウィルスソフト(私のところで問題となってるのはウィルスバスター)を一時的に切ると、その問題はなくなるようなので、アンチウィルス系と Firefox のプロセスまわりの衝突が原因なのだろう。このバージョンまで解消されないということは今後も期待薄だと思う。バージョンアップのたびごとにしばらくガマンするのは仕方ないのか…。このあたり、他のアンチウィルス系だとどうなるのかは知らない…。
+
+JRF 2018年3月29日
+
+Trackbacks:
+
+《cocolog:88524429》 from JRF のひとこと
+<a href="../../../articles/2017/12/statuses_cocolog_88524429.html" class="int-link" title="ひとこと">http://jrf.cocolog-nifty.com/statuses/2017/12/feedb.html</a>
+
+Feedbro を使っているが、一点、不満がある。すなわち、Inactive feed limit を never に設定できるようにして欲しい。 
+
+受信： 2017-12-29 18:13:13 (JST)
+
+《cocolog:88492515》 from JRF のひとこと
+<a href="../../../articles/2017/11/statuses_cocolog_88492515.html" class="int-link" title="ひとこと">http://jrf.cocolog-nifty.com/statuses/2017/11/firef-2.html</a>
+
+Firefox のブラウザ拡張(アドオン)である PP Authorizer を作って公開した。匿名的ログインや匿名的支払いをサポートするためのアドオン。2,3 日で終った突貫工事で、完成度は高くないとは思うが…。... 
+
+受信： 2017-12-29 18:13:44 (JST)</pre>
+
+
+<section class="backrefs" data-pagefind-ignore>
+<h2>後方参照 (3 件)</h2>
+<ul>
+<li><span class="backref-label">[cocolog:88438901]参照</span> <a href="../../../articles/2017/12/statuses_cocolog_88524429.html">ひとこと</a> <span class="backref-date">2017年12月03日</span></li>
+<li><span class="backref-label">[cocolog:88438901]参照</span> <a href="../../../articles/2017/11/statuses_cocolog_88492515.html">ひとこと</a> <span class="backref-date">2017年11月27日</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2017/11/statuses_cocolog_88438902.html">ひとこと</a> <span class="backref-date">2017年11月17日</span></li>
+</ul>
+</section>
+
+</article>
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2017/11.html">2017年11月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+</body>
+</html>

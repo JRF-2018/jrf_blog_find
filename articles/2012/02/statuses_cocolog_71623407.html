@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>ひとこと - JRF Blog Archive</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2012/02.html">2012年02月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+<article data-pagefind-body>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[statuses] <span class="cocolog-id">cocolog:71623407</span></td></tr>
+<tr><th>セクション</th><td>JRF のひとこと</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2012/02.html">2012年02月15日</a></td></tr>
+<tr><th>元URL</th><td><a href="http://jrf.cocolog-nifty.com/statuses/2012/02/post-021d.html" class="ext-link"><span class="original-url">http://jrf.cocolog-nifty.com/statuses/2012/02/post-021d.html</span></a></td></tr>
+
+</table>
+</div>
+<h1>ひとこと</h1>
+<pre class="body">ポップアップで入力を求める処理が IE6 でうまくいかなかった。position:absolute まわりで要素が表示されないというバグがあるらしく、それを疑ったが違った。JavaScript で、innerHTMLに要素を入れる前にappendChildしていたのが原因だった。
+JRF 2012年2月15日
+
+(まぁ、いまさら個人のサイトで InternetExplorer 6 に対応する必要はないというのも真なんだろうけど。)
+
+JRF 2012年2月15日
+
+position:absolute まわりのバグは↓。
+
+《jmblog.jp - IEで絶対配置（position:absolute）のボックスが消えるバグの検証》
+<a href="http://jmblog.jp/archives/180" class="ext-link">http://jmblog.jp/archives/180</a>
+
+私の症状は、↑とは違いボックスは表示されて、例えば、backgroud: red とかにすれば、確かにそれは有効なのに、innerHTML に突っこんだ要素は表示されないというものだった。
+
+JRF 2012年2月15日
+
+最初、↓みたいに書いてしまった。
+
+&lt;pre&gt;
+  var popup = document.createElement('div');
+  popup.className = &quot;popup-overlay&quot;;
+  container.appendChild(popup);
+  popup.innerHTML = 'ここに中身を書く。'
+&lt;/pre&gt;
+
+JRF 2012年2月15日
+
+それを↓にしたら直った。
+
+&lt;pre&gt;
+  var popup = document.createElement('div');
+  popup.className = &quot;popup-overlay&quot;;
+  popup.innerHTML = 'ここに中身を書く。'
+  container.appendChild(popup);
+&lt;/pre&gt;
+
+JRF 2012年2月15日
+
+typo 「backgroud」→「background」。
+typo 「'ここに中身を書く。'」→「'ここに中身を書く。';」。
+修正 「それを↓にしたら」→「それを↓の順序にしたら」。
+
+JRF 2012年2月15日</pre>
+
+
+</article>
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2012/02.html">2012年02月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+</body>
+</html>

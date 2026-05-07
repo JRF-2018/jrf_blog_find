@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>共有メモ - JRF Blog Archive</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2025/07.html">2025年07月</a> | <a href="../../../index/gsm.html">共有メモ</a></nav>
+<article data-pagefind-body>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[gsm] 2025-07-05T22:33:34Z</td></tr>
+<tr><th>セクション</th><td>グローバル共有メモ</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2025/07.html">2025-07-05T22:33:34Z</a></td></tr>
+<tr><th>元URL</th><td>(URLなし)</td></tr>
+
+</table>
+</div>
+<h1>共有メモ</h1>
+<pre class="body">jrf&gt; LangChain で熊剣迷路問題 Ver. 0.0.4。行動予約を導入。Gemini 2.5 Pro さんに「先生お願します」することで、見事、ゴールできた。
+
+《langchain_maze_0.0.4.ipynb - GitHub Gist》  
+<a href="https://gist.github.com/JRF-2018/6689ea04c1721b764cba1fac9467dabd" class="ext-link">https://gist.github.com/JRF-2018/6689ea04c1721b764cba1fac9467dabd</a>
+
+Version 0.0.4 での違い。
+
+やはり、tool は tool call で呼んで欲しい。そこで、行動はすぐに行動ではなく、「行動予約」として登録し、invoke のあとそれを実行するようにしました。このような方式ならば、「行動」が複数のツールであったり、引数を取るものであっても対応でき、将来性があるという判断です。
+
+ただ、ただそれだけだと、やたら「行動予約」だけして max iterations に達するので、「行動予約」したあとその予約した行動を Final Answer するよう促してみたところ、max iterations に達することは少なくなりました(ないわけではないです)。
+
+ただ、今度は、「行動予約」する前に「行動」を Final Answer することが増えて、ほぼ無限ループのように「行動予約」ツールを使わないことが出てきました。そういう状態が頻発しました。そこで、以前の bard_maze で有効だった「叱る」ことをやってみました。「行動予約」がなかったら、それを促すよう質問を繰り返すという方策です。
+
+ただ、これでも「行動予約」をしないことが頻発します。そこで、意地になって、gemini-2.5-pro さんに「先生お願いします」することにしました。
+
+やはり pro さんは pro らしく、方針の立て方がうまく「行動予約」も怒られれば、そこで対応してきます。賢い。しかし、何でもないところで壁があると間違って判断して、行きつ戻りつをして最初は 90手かけてもゴールできませんでした。覚悟してクレジットを消費したのに orz。
+
+ほぼ同じ条件でもう一度だけ pro さんにお願いしてみました。2トライ目です。すると、今度は見事に、ほぼ理想的な立ち回りでゴールまで到達しました。やったー！ こりゃ、AGI も近そうです (^^)。
+
+実は、pro さんの1トライ目がうまくいかなかったので、「次に可能な行動」を示したほうがいいかと思っていたのですが、それをせずにクリアできてよかったです。
+
+そうやって、またたまたまゴールできたので、それを公開しておくことにしました。</pre>
+
+
+</article>
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2025/07.html">2025年07月</a> | <a href="../../../index/gsm.html">共有メモ</a></nav>
+</body>
+</html>

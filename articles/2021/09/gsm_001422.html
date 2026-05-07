@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>共有メモ - JRF Blog Archive</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2021/09.html">2021年09月</a> | <a href="../../../index/gsm.html">共有メモ</a></nav>
+<article data-pagefind-body>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[gsm] 2021-09-05T03:52:47Z</td></tr>
+<tr><th>セクション</th><td>グローバル共有メモ</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2021/09.html">2021-09-05T03:52:47Z</a></td></tr>
+<tr><th>元URL</th><td>(URLなし)</td></tr>
+
+</table>
+</div>
+<h1>共有メモ</h1>
+<pre class="body">jrf&gt; [仏教の最適化プログラムの続き。]
+
+(承前)
+
+また違う方法を考えてみる。
+
+教育の平均は動いている。どうやって動いているかというと、僧の数から求められる education goal に向けて動いている。その goal は ARGS.education_goal_max から ARGS.education_goal_min まで動く。いちおう可能性としては、goal は僧以外の者についてのみの goal だから、僧の高めの数値が加味されることで最大値は ARGS.education_goal_max + α になりうる。実際にはそれはかなり難しいが。
+
+この education goal について、education goal よりもある程度、上に来る場合、threshold でカットする…としてはどうだろう？ しかし、すると実際の平均 education より、 education goal の位置が重要になってしまう。それは違うのではないか。
+
+結局、ARGS.education_goal_standard_max (普通は ARGS.education_goal_max と同じ数値) を平均 education の max と見なし、その max の何パーセントかで切るというのを ARGS.nation_education_power_threshold が表している…とする方法にしようということになった。ARGS.education_goal_standard_max が達成されることはほとんどないが + α があるため、もしかすると達成可能な数値かもしれない。国力の計算のときも、教育平均が max 以上で threshold が 1.0 の場合に 1.0 と評価されるようにする。詳しくは次のバージョンのソースを見ていただきたい。
+
+なお、ARGS.education_goal_standard_max は ARGS.education_goal_max のデフォルト値と同じ 0.65 にするが、ledu など教育を 0.15 下げた場合を考える必要上、ARGS.education_goal_standard_min は 0.20 とし、ARGS.education_goal_min のデフォルト値 0.35 より小さな値としておく。
+
+そして前少し言っていたが、education goal に向かう早さをパラメータで調整できるようにもしておき、デフォルトをかなり早くしておいた。
+
+(実験に続く)</pre>
+
+
+</article>
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2021/09.html">2021年09月</a> | <a href="../../../index/gsm.html">共有メモ</a></nav>
+</body>
+</html>

@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>ひとこと - JRF Blog Archive</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2017/11.html">2017年11月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+<article data-pagefind-body>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[statuses] <span class="cocolog-id">cocolog:88438902</span></td></tr>
+<tr><th>セクション</th><td>JRF のひとこと</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2017/11.html">2017年11月17日</a></td></tr>
+<tr><th>元URL</th><td><a href="http://jrf.cocolog-nifty.com/statuses/2017/11/firef-1.html" class="ext-link"><span class="original-url">http://jrf.cocolog-nifty.com/statuses/2017/11/firef-1.html</span></a></td></tr>
+
+</table>
+</div>
+<h1>ひとこと</h1>
+<pre class="body">Firefox の Greasemonkey で右クリックのコンテクストメニュー(contextmenu)を開くとき、コンテクストメニューのターゲットをどうやって取るか？ …やっと解決した。
+JRF 2017年11月17日
+
+昔は、gContextMenu という Firefox の拡張機能(add-on、アドオン)で使えるグローバル変数が使えた痕跡があるのだが、今は gContextMenu は使えない。document.popupNode も e.target.parentNode.triggerNode もうまくいかなかった。
+JRF 2017年11月17日
+
+それが↓に載っている例を見てやっと解決した。
+
+《Source for &quot;Context Menu Example&quot; - Userscripts.org》
+<a href="http://userscripts-mirror.org/scripts/review/150793" class="ext-link">http://userscripts-mirror.org/scripts/review/150793</a>
+
+JRF 2017年11月17日
+
+答えは…、document.documentElement の contextmenu イベントに addEventListener して、そのときのイベントの target が欲しいものなので、これを何らかの形で記録しておく…というもの。
+
+JRF 2017年11月17日
+
+それを使って FireLink または MakeLink というアドオンのかわりとなる Greasemonkey 4.0 スクリプトを書いたのが↓になる。(一応、Greasemonkey 3 とかでも使えるよう互換性コードは入れてあるから、Greasemonkey 4 でなくとも使えるはず。)
+
+《Copy_Text_and_Link.user.js》
+<a href="http://jrf.cocolog-nifty.com/archive/javascript/Copy_Text_and_Link.user.js" class="ext-link">http://jrf.cocolog-nifty.com/archive/javascript/Copy_Text_and_Link.user.js</a>
+
+JRF 2017年11月17日
+
+コンテクストメニューへの登録は、Greasemonkey でバージョンの互換性をもたせるときに使う gm4-polyfill.js を参考にした。
+
+このソースは、コンテクストメニューにサブメニューを追加する例にもなっている。
+
+JRF 2017年11月17日
+
+実際に FireLink や Make Link の代替として使うときは、個人の設定に合わせるため、上のソースをいじって使って欲しい。ソースを読むのは簡単だと思う。
+
+ライセンスは…私個人としてはパブリックドメインでいいと思う。元の &quot;Context Menu Example&quot; のライセンス &quot;the Do What The Fuck You Want To Public License, Version 2, as published by Sam Hocevar&quot; に従うというならそれもいいかもしれない。
+
+JRF 2017年11月17日
+
+……。
+
+追記。
+
+さっきググってて見つけたんだけど、FireLink の代わりのアドオンは私の場合、Format Link で充分そう。
+
+まぁ、コンテキストメニュー周りの javascript の書き方がわかったのは収穫ということで…。
+
+JRF 2017年11月17日
+
+……。
+
+追記。
+
+マウスでドラッグして選択した部分(セレクション)を使うのは window.getSelection().toString(); で OK。それはこのひとことの前から知っていた。それを今回学んだサブメニュー形式と組み合わせた例が↓。
+
+《Selection_Search.user.js》
+<a href="http://jrf.cocolog-nifty.com/archive/javascript/Selection_Search.user.js" class="ext-link">http://jrf.cocolog-nifty.com/archive/javascript/Selection_Search.user.js</a>
+
+上の Copy_Text_and_Link.user.js もそうだけど私個人用のコードが入っているので、適当に改変して使って欲しい。
+
+JRF 2017年11月23日
+
+……。
+
+追記。
+
+短縮 URL サービス(今回は is.gd)を使う例を上の Copy_Text_and_Link.user.js に足しておいた。改変して使って欲しい。今回のバージョンは、0.3。
+
+前回のバージョン 0.2 が欲しいということはないと思うが、一応、↓に置いておく。
+
+《Copy_Text_and_Link-20171117.user.js》
+<a href="http://jrf.cocolog-nifty.com/archive/javascript/Copy_Text_and_Link-20171117.user.js" class="ext-link">http://jrf.cocolog-nifty.com/archive/javascript/Copy_Text_and_Link-20171117.user.js</a>
+
+JRF 2017年11月24日
+
+今回のバージョン 0.3 の固定リンクが欲しいという方用に、一応、↓も置いておく。
+
+《Copy_Text_and_Link-20171124.user.js》
+<a href="http://jrf.cocolog-nifty.com/archive/javascript/Copy_Text_and_Link-20171124.user.js" class="ext-link">http://jrf.cocolog-nifty.com/archive/javascript/Copy_Text_and_Link-20171124.user.js</a>
+
+GM.xmlHttpRequest で Promise を使ったプログラミングを試してみたかったので、余技的にやった。エラーまわりが納得できないが、まぁ、普通に使う分には問題ないと思う(思いたい)。
+
+JRF 2017年11月24日
+
+……。
+
+追記。更新。
+
+TEXTAREA 等のセレクションを取るには window.getSelection().toString() だけでは不十分で document.activeElement の selectionStart と selectionEnd を見ないといけない。そうするように Selection_Search.user.js を更新した。バージョン 0.2。
+
+JRF 2017年11月24日
+
+前回のバージョン 0.1 が欲しいということはないと思うが、一応、↓に置いておく。
+
+《Selection_Search-20171123.user.js》
+<a href="http://jrf.cocolog-nifty.com/archive/javascript/Selection_Search-20171123.user.js" class="ext-link">http://jrf.cocolog-nifty.com/archive/javascript/Selection_Search-20171123.user.js</a>
+
+JRF 2017年11月24日
+
+今回のバージョン 0.2 の固定リンクが欲しいという方用に、一応、↓も置いておく。
+
+《Selection_Search-20171124.user.js》
+<a href="http://jrf.cocolog-nifty.com/archive/javascript/Selection_Search-20171124.user.js" class="ext-link">http://jrf.cocolog-nifty.com/archive/javascript/Selection_Search-20171124.user.js</a>
+
+JRF 2017年11月24日
+
+これで、JSActions の代替がかなりできるようになった。外部プログラムが使えないのはどうしようもないが…。
+
+JRF 2017年11月24日
+
+まぁ、どうしても外部プログラムを使いたい場合は、ローカルで httpd を何か起動して、GM.xmlHttpRequest で localhost にアクセスして CGI をお通してお好みのアプリケーションを起動する(参: <a href="../../../articles/2011/05/statuses_aboutme_138896.html" class="int-link cocolog-id" title="ひとこと">[aboutme:138896]</a>)…とかはできるけど、面倒くさいし処理が重くなりがちだからなぁ…。
+
+JRF 2017年11月24日
+
+……。
+
+追記。更新。
+
+Copy_Text_and_Link.user.js をバージョン 0.4 にした。GitHub に関して使うとき便利なように、PlainText のときタイトルのあとの改行の前にスペースを二つ追加した。
+
+なお、ココログにアップロードできないので、GitHub にアップロード。
+
+JRF 2020年4月8日
+
+直接ダウンロードするときは↓で。
+
+《Copy_Text_and_Link.user.js》
+<a href="https://github.com/JRF-2018/Copy_Text_and_Link/raw/master/Copy_Text_and_Link.user.js" class="ext-link">https://github.com/JRF-2018/Copy_Text_and_Link/raw/master/Copy_Text_and_Link.user.js</a>
+
+JRF 2020年4月8日
+
+バージョン 0.4 以降の過去のバージョンが欲しい場合は、↓から辿っていけばよい。
+
+《GitHub - JRF-2018/Copy_Text_and_Link》
+<a href="https://github.com/JRF-2018/Copy_Text_and_Link" class="ext-link">https://github.com/JRF-2018/Copy_Text_and_Link</a>
+
+JRF 2020年4月8日
+
+……。
+
+Selection_Search.user.js についてもいちおう GitHub にアップロードしておいた。
+
+直接ダウンロードするときは↓で。
+
+《Selection_Search.user.js》
+<a href="https://github.com/JRF-2018/Selection_Search/raw/master/Selection_Search.user.js" class="ext-link">https://github.com/JRF-2018/Selection_Search/raw/master/Selection_Search.user.js</a>
+
+JRF 2020年4月8日
+
+バージョン 0.2 以降の過去のバージョンが欲しい場合は、↓から辿っていけばよい。
+
+《GitHub - JRF-2018/Selection_Search》  
+<a href="https://github.com/JRF-2018/Selection_Search" class="ext-link">https://github.com/JRF-2018/Selection_Search</a>
+
+JRF 2020年4月8日
+
+Trackbacks:
+
+《cocolog:88492515》 from JRF のひとこと
+<a href="../../../articles/2017/11/statuses_cocolog_88492515.html" class="int-link" title="ひとこと">http://jrf.cocolog-nifty.com/statuses/2017/11/firef-2.html</a>
+
+Firefox のブラウザ拡張(アドオン)である PP Authorizer を作って公開した。匿名的ログインや匿名的支払いをサポートするためのアドオン。2,3 日で終った突貫工事で、完成度は高くないとは思うが…。... 
+
+受信： 2017-12-29 18:13:49 (JST)
+
+《cocolog:88438901》 from JRF のひとこと
+<a href="../../../articles/2017/11/statuses_cocolog_88438901.html" class="int-link" title="ひとこと">http://jrf.cocolog-nifty.com/statuses/2017/11/firef.html</a>
+
+Firefox 57 Quantum と Greasemonkey 4.0 の後方互換性のなさにイライラする。フリーで配布されているのはありがたく、そこに怒るのは筋違いではあるんだが、これまでの「資産」が使えなくなるのはやっぱり痛い。... 
+
+受信： 2017-12-29 18:14:10 (JST)</pre>
+
+
+<section class="backrefs" data-pagefind-ignore>
+<h2>後方参照 (3 件)</h2>
+<ul>
+<li><span class="backref-label">[cocolog:88438902]参照</span> <a href="../../../articles/2017/11/statuses_cocolog_88492515.html">ひとこと</a> <span class="backref-date">2017年11月27日</span></li>
+<li><span class="backref-label">[cocolog:88438902]参照</span> <a href="../../../articles/2017/11/statuses_cocolog_88438901.html">ひとこと</a> <span class="backref-date">2017年11月17日</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2011/05/statuses_aboutme_138896.html">ひとこと</a> <span class="backref-date">2011年05月20日</span></li>
+</ul>
+</section>
+
+</article>
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2017/11.html">2017年11月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+</body>
+</html>

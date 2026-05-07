@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>共有メモ - JRF Blog Archive</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2021/08.html">2021年08月</a> | <a href="../../../index/gsm.html">共有メモ</a></nav>
+<article data-pagefind-body>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[gsm] 2021-08-10T06:57:03Z</td></tr>
+<tr><th>セクション</th><td>グローバル共有メモ</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2021/08.html">2021-08-10T06:57:03Z</a></td></tr>
+<tr><th>元URL</th><td>(URLなし)</td></tr>
+
+</table>
+</div>
+<h1>共有メモ</h1>
+<pre class="body">jrf&gt; [仏教の最適化プログラムの続き。]
+
+昨日、「ひとこと」にまとめる中で気付いた simbdp2.py でまだやってないことを検討、一部、実装した。
+
+……。
+
+まず、支配層の hating を宥める soothing_by_king, soothing_by_governor について、そのパラメータがどうやれば増えるかというのが決まっていない。
+
+hating は主に昇進がらみで出てくるから、別の昇進で帳消しになる…というのはありそうなことだが、支配層の数が少な過ぎて、宥めるのに使えるような昇進機会というのはない感じ。…となると、経済的に宥めるという形になるのか。システムには現れないところで、昇進などで宥めているのか。…と迷い、ここは方針が立っていない。
+
+ここは、もうちょっと先の課題としたい。詰めずに残しておく。
+
+……。
+
+ケガ・病気(injure)に permanent なものと temporal なものを作ったが、これまでは、temporal なケガをしたものは必ず permanent なケガになることになっていた。
+
+それを変え、temporal なケガをした者のうち 1/2 のみが、permanent なケガになるようにした。そして、災害でケガをする人数については temporal なケガの人数として 2倍に(permanent は 1 倍(そのまま)に)した。
+
+……。
+
+支配層の tmp_labor や injure との関係。tmp_labor については考えないことにするが、injure に関しては考慮するものとする。
+
+王は injure が 0.75 を超えれば引退する。それ以外の支配層は、injure が 0.5 を超えれ引退する。
+
+Dominator.adder という +1 ごとに各能力値について 0 から 0.1 の範囲の一様乱数の値をプラスされるオブジェクト変数があるが、injure が 0.1 なら adder は -1、injure が 0.3 なら -2、0.6 なら -3 されることにする。
+
+……。
+
+災害対応しないことによる支配層の成長機会・学習機会を従来の 1/10 にした。これでもまだ多いのではないかと思う。
+
+水害と地震の頻度をさらに 1/2 にした。
+
+戦争(蛮族の侵入)の頻度はそのままに被害を 2 倍にした。
+
+……。
+
+戦時強姦を実装した。強姦は不倫のサブクラス。強姦で妊娠する確率は、行きずりの不倫による妊娠の確率と同じとした。行きずりの不倫は、1ヶ月を超えないものの何度か会ってる可能性があるという点では、妊娠の確率は強姦より大きいが、強姦には避妊がないという点で、行きずりの不倫のほうが、妊娠の確率が小さいという面もある。両者が相殺して、だいたい同じということにしておいた。
+
+……。
+
+以上の変更をした simbdp2.py を公開しておく。(バージョン 0.0.6)
+
+《simbd/simbdp2.py at master - JRF-2018/simbd》  
+<a href="https://github.com/JRF-2018/simbd/blob/master/simbdp2.py" class="ext-link">https://github.com/JRF-2018/simbd/blob/master/simbdp2.py</a></pre>
+
+
+</article>
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2021/08.html">2021年08月</a> | <a href="../../../index/gsm.html">共有メモ</a></nav>
+</body>
+</html>

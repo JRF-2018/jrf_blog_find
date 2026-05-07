@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>共有メモ - JRF Blog Archive</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2021/10.html">2021年10月</a> | <a href="../../../index/gsm.html">共有メモ</a></nav>
+<article data-pagefind-body>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[gsm] 2021-10-01T08:10:27Z</td></tr>
+<tr><th>セクション</th><td>グローバル共有メモ</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2021/10.html">2021-10-01T08:10:27Z</a></td></tr>
+<tr><th>元URL</th><td>(URLなし)</td></tr>
+
+</table>
+</div>
+<h1>共有メモ</h1>
+<pre class="body">jrf&gt; [仏教の最適化プログラムの続き。]
+
+simbdp3x1.py の MeanAmplifier BlockMeanAmplifier の alpha1 alpha2 を 0.3 にして試した結果。normal がその normal で、t1normal は take 1 normal の略で前々回の alpha1 と alpha2 が 0.2 のもので、t2normal は take 2 normal の略で前回の apha1 とalpha 2 が 0.4 のもので、pnormal が simbdp3.py のもの。
+
+python plot_logs.py t2normal t1normal pnormal normal -p AccDeath -o fig-20211001_01.png
+python plot_logs.py t2normal t1normal pnormal normal -p AccAbortion -o fig-20211001_02.png
+python plot_logs.py t2normal t1normal pnormal normal -p Education -o fig-20211001_03.png
+python plot_logs.py t2normal t1normal pnormal normal -p AccKarma -o fig-20211001_04.png
+python plot_logs.py t2normal t1normal pnormal normal -p Population -o fig-20211001_05.png
+python plot_logs.py t2normal t1normal pnormal normal -p Power -o fig-20211001_06.png
+python plot_logs.py t2normal t1normal pnormal normal -p NewKarma2 -o fig-20211001_07.png
+
+《グラフ集: 2021-09-27 から - Issue #5 - JRF-2018/simbd》  
+<a href="https://github.com/JRF-2018/simbd/issues/5" class="ext-link">https://github.com/JRF-2018/simbd/issues/5</a>
+
+AccDeath は、normal は t2normal pnormal に近く、t1normal が異常な値だったことを示唆している。AccAbortion は normal は t1 や t2 に比べて成績がなぜか悪い。AccKarma は normal は t2 並みにヒドイが、MeanAmplifier が数値を動かした結果であろう。人口で割らない Karma の NewKarma2 は、normal は t2 並みに揺れている。Power や Education も t2normal 並みに揺れているが、t2 より上下の際に中間の値を取らないのがちょっと予定通りではない。
+
+問題の lsth がらみを見て行こう。コマンドは省略する。
+
+Population や AccDeath は参考程度で差が付いているが、まぁ、ランダムなブレの範囲か。AccKarma は今度は ltom ltomlsth が下がっているのがキレイに出ていて、lsth が normal より上、ltomlsth が ltom より上に来ているのは予定通りだが、前ほど差がないのが気になる。AccVKarma はやはり差がないが ltom ltomlsth のほうが小さくなっているようだ。</pre>
+
+
+</article>
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2021/10.html">2021年10月</a> | <a href="../../../index/gsm.html">共有メモ</a></nav>
+</body>
+</html>

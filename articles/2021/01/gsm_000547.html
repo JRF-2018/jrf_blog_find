@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>共有メモ - JRF Blog Archive</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2021/01.html">2021年01月</a> | <a href="../../../index/gsm.html">共有メモ</a></nav>
+<article data-pagefind-body>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[gsm] 2021-01-19T21:39:52Z</td></tr>
+<tr><th>セクション</th><td>グローバル共有メモ</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2021/01.html">2021-01-19T21:39:52Z</a></td></tr>
+<tr><th>元URL</th><td>(URLなし)</td></tr>
+
+</table>
+</div>
+<h1>共有メモ</h1>
+<pre class="body">jrf&gt; [仏教の最適化プログラムの続き。]
+
+「シミュレーション仏教」らしく教化(education)にこだわって、test_of_income_1.py をいろいろいじってみた。(↓はバージョン 0.0.3 にアップデート。)
+
+《test_of_income_1.py - 主に商業財産から決まる収入のテスト経済シミュレーション。》  
+<a href="https://gist.github.com/JRF-2018/39ed54ff14cb3c79c21f42f7254fa7bc" class="ext-link">https://gist.github.com/JRF-2018/39ed54ff14cb3c79c21f42f7254fa7bc</a>
+
+教化が足りないと恨まれ(merchant_hated)がたまって、それが、いろいろ悪影響を及ぼす。…だから、教化が足りないと金持ちになりにくい…ということが観測されるべきなのだが、観測されない。悪影響の及ぼし方が足りないのかといろいろやってみるが、ちょっとやそっとのことではどうもうまくいかない。
+
+土地持ちに関しては悪影響を 5 倍(--strong-donation した上で(今後常に使う)、--hated-mag=5 --view-education で試せる)にしてみると影響が出るが、土地がない状態で試すと悪影響を 100 倍ぐらいにしないとはっきりとした影響は出ない(--no-land --view-hated --hated-mag=100)。
+
+(なお、バージョン 0.0.2 の --theta-mag は --prop-theta-mag に名前を変更。)
+
+その話はおいておいて、次に、教化と寄進の影響を考える。教化があればより寄進しやすいだろう…その一方、教化があるものは好意を持って大目に見られるため --donation-limit が緩められるだろう…その両者の効果を同時に試すのが、--donation-education=0.5 のオプション(--strong-donation --view-education とともに)。こうすると、教育があるほうが財産形成にうっすら有利なことがわかる。--donation-limit が緩められる効果のほうがデカいのだろう。
+
+その話もおいておいて、次に、消費をみなおし、貧しいうちは収入(からマイナス3したもの)の 90% から 80% ぐらい消費してしまうし、ある程度貧しさから脱出しても収入(からマイナス10したもの)の 50% から 40% は消費すると考えるようにする。これが --strong-consumption オプションである。ここでは教化されているほうが消費が少ないと考えた。これを試すとなかなか貧乏から脱出できないので平均が下がり、貧乏な者が増え、グラフはよりリアリティのある形になってよい。また、教化がうっすらとだが効いてくる。貧乏からの脱出が難しくなるのは、--init-zero --no-land オプションを付け、財産 0 からスタートさせればよりいっそうよくわかる。</pre>
+
+
+</article>
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2021/01.html">2021年01月</a> | <a href="../../../index/gsm.html">共有メモ</a></nav>
+</body>
+</html>

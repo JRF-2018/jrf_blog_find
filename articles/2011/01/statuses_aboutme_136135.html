@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>ひとこと - JRF Blog Archive</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2011/01.html">2011年01月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+<article data-pagefind-body>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[statuses] <span class="cocolog-id">aboutme:136135</span></td></tr>
+<tr><th>セクション</th><td>JRF のひとこと</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2011/01.html">2011年01月28日</a></td></tr>
+<tr><th>元URL</th><td><a href="http://jrf.cocolog-nifty.com/statuses/2011/01/aboutme136135.html" class="ext-link"><span class="original-url">http://jrf.cocolog-nifty.com/statuses/2011/01/aboutme136135.html</span></a></td></tr>
+
+</table>
+</div>
+<h1>ひとこと</h1>
+<pre class="body">Cygwin の perl で Math::GSL が install できない。gcc-4 でないとダメだ、CPAN の他のモージュルが入ってない…というのは、「OK。そういうことはよくある。」なのだが…ほかにも次から次へと問題が出てきて力尽きた。
+JRF 2011年1月28日
+
+Math::GSL のバージョンは 0.22。
+
+次の問題として出てくるのが、binutils の問題。
+
+$ perl Build.PL
+Checking for GSL..Found GSL version 1.14
+Checking if gcc-4 supports &quot;-Wall&quot;.../usr/lib/gcc/i686-pc-cygwin/4.3.4/../../../../i686-pc-cygwin/bin/ld: unrecognized -a option `ware'
+collect2: ld はステータス 1 で終了しました
+
+...
+
+JRF 2011年1月28日
+
+
+*** The test compile of 'tmp2160.c' failed: status 256
+*** (the status means: errno = 1 or 'Operation not permitted')
+*** DO NOT PANIC: this just means that you may get some innocuous
+*** compiler warnings.
+
+…っていちおう出るんだけど、このせいでコンパイルできない。
+
+JRF 2011年1月28日
+
+で、ググったところ、どうも binutils を「新しく」しろって言われる。でも、cygwin の標準の binutils は「開発バージョン」らしい 2.20 よりもパッケージが「新しい」ので、そもままではインストールされない。よって、2.20 に「ダウングレード」するよう指定しなければならない。
+
+これにより Build.PL は正常に終了するようになる。
+
+JRF 2011年1月28日
+
+しかし、だ。この次に ./Build をはじめると、次のようなエラーが出る。
+
+$ ./Build
+Building Math-GSL
+xs/BLAS_wrap.o: In function `SWIG_Perl_ConvertPtrAndOwn':
+/cygdrive/c/tmp/.cpan/build/Math-GSL-0.22/xs/BLAS_wrap.c:1124: undefined reference to `_Perl_Gthr_key_ptr'
+...
+JRF 2011年1月28日
+
+swig が入ってないとダメなのかとかいろいろ試した結果、ライブラリの指定がうまくいってないらしく、Build.PL を書き換えるしかないとの結論になった。
+
+JRF 2011年1月28日
+
+$ diff -uNr Build.PL.orig Build.PL
+--- Build.PL.orig       2010-06-10 10:05:56.000000000 +0900
++++ Build.PL    2011-01-28 20:53:34.031250000 +0900
+@@ -172,8 +172,8 @@
+                            
+JRF 2011年1月28日
+
+my $ldflags    = &quot;$gsl_pkgcfg{libs} -gsl&quot;;
+ $swig_flags = &quot;$gsl_pkgcfg{cflags} $swig_flags&quot;;
+
+-if ( $^O eq 'cygwin'  &amp;&amp; $Config{shrpenv} =~ m{\Aenv LD_RUN_PATH=(.*)\Z} ) {
+-    $ldflags .= &quot; -L$1 -lperl&quot;;
+
+JRF 2011年1月28日
+
++if ( $^O eq 'cygwin') {
++    $ldflags .= &quot; -L/usr/lib/perl5/5.10/i686-cygwin/CORE -lperl -lssp&quot;;
+     # Should we check the 32-ness?
+     $swig_flags = '-DNEED_LONG';
+ } elsif ( $^O eq 'darwin' ) {
+
+JRF 2011年1月28日
+
+これで、(ものすごく時間がかかるけど、)./Build のコンパイルが終了するところまで行った。
+
+しかし、./Build test がまったくうまくいかない。
+
+JRF 2011年1月28日
+
+$ ./Build test
+t/00-load.t ........ 1/52
+#   Failed test 'use Math::GSL;'
+#   at t/00-load.t line 12.
+#     Tried to use 'Math::GSL'.
+
+JRF 2011年1月28日
+
+#     Error:  Can't load '/cygdrive/c/tmp/.cpan/build/Math-GSL-0.22-JPhNGY/blib/arch/auto/Math/GSL/Errno/Errno.dll' for module Math::GSL::Errno: No such file or directory at /usr/lib/perl5/5.10/i686-cygwin/DynaLoader.pm line 200.
+...
+
+JRF 2011年1月28日
+
+でも、ちゃんと、Errno.dll などは、そのディレクトリに存在している！
+
+…というところで力尽きた。
+
+JRF 2011年1月28日
+
+Trackbacks:
+
+《aboutme:138754》 from JRF のひとこと
+<a href="../../../articles/2011/05/statuses_aboutme_138754.html" class="int-link" title="ひとこと">http://jrf.cocolog-nifty.com/statuses/2011/05/aboutme138754.html</a>
+
+EPSON Endeavor NP15 をネットで購入。Firefox, Emacs, Cygwin, TeX をインストールしている。Firefox は 4.0.1 を、Emacs は 23.3 だが、IME に対応した gnupack 6.0.1 版を使う。 
+
+受信： 2012-01-04 19:56:41 (JST)</pre>
+
+
+<section class="backrefs" data-pagefind-ignore>
+<h2>後方参照 (1 件)</h2>
+<ul>
+<li><span class="backref-label">[aboutme:136135]参照</span> <a href="../../../articles/2011/05/statuses_aboutme_138754.html">ひとこと</a> <span class="backref-date">2011年05月12日</span></li>
+</ul>
+</section>
+
+</article>
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2011/01.html">2011年01月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+</body>
+</html>

@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>共有メモ - JRF Blog Archive</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2021/10.html">2021年10月</a> | <a href="../../../index/gsm.html">共有メモ</a></nav>
+<article data-pagefind-body>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[gsm] 2021-10-18T04:34:19Z</td></tr>
+<tr><th>セクション</th><td>グローバル共有メモ</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2021/10.html">2021-10-18T04:34:19Z</a></td></tr>
+<tr><th>元URL</th><td>(URLなし)</td></tr>
+
+</table>
+</div>
+<h1>共有メモ</h1>
+<pre class="body">jrf&gt; [仏教の最適化プログラムの続き。]
+
+ダメだという判断になりかけているが、とりあえず、元の、直感で決めた MeanAmplifier BlockMeanAmplifier の alpha1 alpha2 を 0.2 にするのに戻してやってみる。重犯罪をいじったものが normal で、いじってない alpha1 alpha2 が 0.2 の logs-20210928.zip の normal を pnormal とする。
+
+python plot_logs.py normal pnormal -p AccDeath -o fig-20211018_01.png
+python plot_logs.py normal pnormal -p AccAbortion -o fig-20211018_02.png
+python plot_logs.py normal pnormal -p Education -o fig-20211018_03.png
+python plot_logs.py normal pnormal -p AccKarma -o fig-20211018_04.png
+python plot_logs.py normal pnormal -p Population -o fig-20211018_05.png
+python plot_logs.py normal pnormal -p Power -o fig-20211018_06.png
+python plot_logs.py normal pnormal -p NewKarma2 -o fig-20211018_07.png
+python plot_logs.py normal pnormal -p AccVKarma -o fig-20211018_08.png
+
+《グラフ集: 2021-10-16 から - Issue #6 - JRF-2018/simbd》  
+<a href="https://github.com/JRF-2018/simbd/issues/6" class="ext-link">https://github.com/JRF-2018/simbd/issues/6</a>
+
+AccDeath は変わって欲しくないところだが、少し違いがある。同じく変わて欲しくない Population や AccAbortioin はあまり変わってないのが良い。カルマ関連に違いがあるのはいい傾向だが、肝心の AccVKarma に変化が少ない。
+
+問題の lsth がらみを見て行こう。コマンドは省略する。
+
+AccKarma が ltom と ltomlsth がいったん下がって、lsth と ltomlsth があとで上がっているのは予定通りで今回はキレイに出た。しかし、AccVKarma はほとんど差がない。ここは、ltom ltomlsth は AccKarma とは逆にいったん上がって欲しいのだが、そうならなかった。ただ、本人の Hating が上がって、lsth や ltomlsth が最後上がっているのがほのかに観測できる…とまではいえないか。
+
+「ダメ」ではないな。alpha1 alpha2 は 0.2 にして、重犯罪について結果が出ないのは諦めて、次に行こう。</pre>
+
+
+</article>
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2021/10.html">2021年10月</a> | <a href="../../../index/gsm.html">共有メモ</a></nav>
+</body>
+</html>

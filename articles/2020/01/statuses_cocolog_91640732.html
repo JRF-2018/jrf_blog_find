@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>ひとこと - JRF Blog Archive</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2020/01.html">2020年01月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+<article data-pagefind-body>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[statuses] <span class="cocolog-id">cocolog:91640732</span></td></tr>
+<tr><th>セクション</th><td>JRF のひとこと</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2020/01.html">2020年01月28日</a></td></tr>
+<tr><th>元URL</th><td><a href="http://jrf.cocolog-nifty.com/statuses/2020/01/post-fb4a8b.html" class="ext-link"><span class="original-url">http://jrf.cocolog-nifty.com/statuses/2020/01/post-fb4a8b.html</span></a></td></tr>
+
+</table>
+</div>
+<h1>ひとこと</h1>
+<pre class="body">TensorFlow 2.0 を使っているとどんどん遅くなり、どうもメモリ消費が激しくメモリ不足が生じているようだ。ググると、tf.keras の model.predict() がメモリリークを起こしているらしい。
+JRF 2020年1月28日
+
+解決法としては…、
+
+&lt;pre&gt;
+    outputs = model.predict(inputs)
+&lt;/pre&gt;
+
+…などのかわりに…
+
+&lt;pre&gt;
+    outputs = model(inputs).numpy()
+&lt;/pre&gt;
+
+…を使えば良いようだ。
+
+JRF 2020年1月28日
+
+なお、あまりそういうことはしないが、同じく Keras の model.fit() も、複数回使っているとメモリリークするようなことも書いてあった。
+
+TensorFlow 2.1 でも直っているかどうかは微妙なところのようだ。↓など英語では複数のページに情報があるが、日本語では見つからなかったので「ひとこと」した。
+
+JRF 2020年1月28日
+
+《Repeatedly calling model.predict(...) results in memory leak · Issue #13118 · keras-team/keras · GitHub》
+<a href="https://github.com/keras-team/keras/issues/13118" class="ext-link">https://github.com/keras-team/keras/issues/13118</a>
+
+JRF 2020年1月28日
+
+ちなみに私の環境は、Windows 10 で conda=4.8.1 python=3.7.6。tensorflow=2.0.0 で gpu は入っていない。が、そういうのに関係なく TensorFlow 2.0 では起こっているようだ。
+
+JRF 2020年1月28日
+
+……。
+
+私はこれまで TensorFlow 1.x 系で勉強・実験してきて、昨日、はじめて TensorFlow 2 系を使いはじめたところだった。
+
+JRF 2020年1月28日
+
+だから、実行しているうちにメモリ使用量がすごく増えるのは、私のコードの問題かと疑い、@tf.function に渡す引数を tf.constant してからにしたり、いろいろ試したりしたのだった。あと、終了時の仮想メモリの解放がうまくいってないように見えたことから、python や matplotlib の gc 関連のバグかとも疑った。
+
+JRF 2020年1月28日
+
+TensorFlow 2.0 は 1.x に比べメモリを食うという情報もあったので、いくらなんでもここまで違うのはおかしいと思いながらも、しかたないのかとも思ったりした。
+
+日本語でググったりしてもなかなか解決策が見つからなかったが、[google: tensorflow 2.0 memory leak] でやっと原因がわかったのだった。
+
+JRF 2020年1月28日</pre>
+
+
+</article>
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2020/01.html">2020年01月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+</body>
+</html>

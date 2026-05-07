@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>共有メモ - JRF Blog Archive</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2021/04.html">2021年04月</a> | <a href="../../../index/gsm.html">共有メモ</a></nav>
+<article data-pagefind-body>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[gsm] 2021-04-02T22:20:37Z</td></tr>
+<tr><th>セクション</th><td>グローバル共有メモ</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2021/04.html">2021-04-02T22:20:37Z</a></td></tr>
+<tr><th>元URL</th><td>(URLなし)</td></tr>
+
+</table>
+</div>
+<h1>共有メモ</h1>
+<pre class="body">jrf&gt; [仏教の最適化プログラムの続き。]
+
+少し前に書いた「メモ」(↓)について simbd の枠組ではどうなるか考えてみた。
+
+＞結婚が「不倫」よりも倫理的に正しいのは、子供を育てるとき頼れるものがはっきりしているからではないか？ 多人数では責任があいまいになり、一人では何かあることが多過ぎ、あったときに困る…からではないか？
+
+子供には養母がいれば十分かというと、十分な場合もあるが、デフォルトでは、父の経済性と母の教育が必要だろう。両者がダメな場合に社会が補うというのであって、社会で補うことを前提に父と母をなくすコストは今でも大き過ぎるのではないか。女と「我が子」があてがわれない男の不満というコストも考えに入れるとさらに。
+
+《[哲学] E.ブレイク『最小の結婚』 論点メモ - charisの美学日誌》  
+<a href="https://charis.hatenadiary.com/entry/20210331/1617164005" class="ext-link">https://charis.hatenadiary.com/entry/20210331/1617164005</a>
+＜
+
+私の主張では、結婚がない場合、例えば、片親が死ぬと子供の引き取り手などがなかなか見つからず、苦労するかもしれない。そういう責任の問題がある。…ということを主張したかった。
+
+ただ、simbd の枠組では、そういう場合、養子にしてくれる者がすぐ見つかるシステムになっていた。実社会においても、親がダメな場合は、さらにその親がサポートしたり、養子にしてくれる者が手続き的には簡単に見つかるだろう。
+
+問題は、その子が幸せになれるかどうか。不幸になる確率が高いと言えるかどうか。
+
+例えば、その子を養子にしたあと、実子が産まれた場合、養子は気まずい思いをするだろう。そういうことがなくても、実親でないものに育てられていることにプレッシャーはあるかもしれない。
+
+しかし、そういうものは simbd では現れて来ない。養子を取ったあとに実子が産まれた数を数えて、その何割かは不幸になるから、結婚のあるシステムとないシステムでその数を比べてみればいい…みたいなことはできるかもしれない。それは今後の課題にしたいが、ただ、もっと単純なことがあるのではないか？
+
+そこで思い当たったのが相続の問題。父なし子になると、父の分の相続を受け取れなくなる分、相対的に経済的に不幸になる。…とは言えるのではないかと考えた。
+
+そこで simbd を振りかえると、父なし子という概念がほとんど取り入れられていなかった。ただ、親の children に実子が入らないことはあるというのは実装されているので、その場合、それを「認知がない」ことと解釈することにし、認知のない子＝父なし子というのを実装してみた。
+
+実質的に変わったのは Person.give_birth と calc_inheritance_share_1 ぐらい。あと、メモリ解放の安全在に考慮し、死ぬと economy への逆参照を消していたのを、死ぬときではなく、Tomb が除かれるときにはじめて逆参照が解消されるように変えた。
+
+さて、そのように変えた立場からソースを眺めていうと、結婚があることのメリットは、不倫で生まれた子についてもすでに結婚していれば、その子と認知させることがある程度可能であり、父なし子がうまれにくく、それはつまり父からの相続がない子ができにくいという点にメリットがある…ということになると思う。
+
+ただ、結婚のメリット…結婚と責任の問題…は、もっといろいろあると思う。先にも書いたが、それをシミュレーションを通じて示すのは「今後の課題」としたい。
+
+なお、test_of_matching_2.py はバージョン 0.0.16 に、simbdp1.py は バージョン 0.0.2 にした。
+
+《simbd/test_of_matching_2.py at master - JRF-2018/simbd》  
+<a href="https://github.com/JRF-2018/simbd/blob/master/test_of_matching_2.py" class="ext-link">https://github.com/JRF-2018/simbd/blob/master/test_of_matching_2.py</a>
+
+《simbd/simbdp1.py at master - JRF-2018/simbd》  
+<a href="https://github.com/JRF-2018/simbd/blob/master/simbdp1.py" class="ext-link">https://github.com/JRF-2018/simbd/blob/master/simbdp1.py</a></pre>
+
+
+</article>
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2021/04.html">2021年04月</a> | <a href="../../../index/gsm.html">共有メモ</a></nav>
+</body>
+</html>

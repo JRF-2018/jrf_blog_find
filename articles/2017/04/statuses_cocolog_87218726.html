@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>ひとこと - JRF Blog Archive</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2017/04.html">2017年04月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+<article data-pagefind-body>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[statuses] <span class="cocolog-id">cocolog:87218726</span></td></tr>
+<tr><th>セクション</th><td>JRF のひとこと</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2017/04.html">2017年04月14日</a></td></tr>
+<tr><th>元URL</th><td><a href="http://jrf.cocolog-nifty.com/statuses/2017/04/post-fb2c.html" class="ext-link"><span class="original-url">http://jrf.cocolog-nifty.com/statuses/2017/04/post-fb2c.html</span></a></td></tr>
+
+</table>
+</div>
+<h1>ひとこと</h1>
+<pre class="body">右三角分布、左三角分布、右台形分布、左台形分布の平均。簡単に計算できるためか、ググッても載っているところがなかった。
+JRF 2017年4月14日
+
+右三角分布は、a &lt;= x &lt;= b で密度関数が f(x) = 2 * (x - a) / (b - a)^2 で、それ以外の区間では 0 のもの。平均は、(2 * b + a) / 3 になる。
+
+JRF 2017年4月14日
+
+左三角分布は、a &lt;= x &lt;= b で密度関数が f(x) = 2 * (b - x) / (b - a)^2 で、それ以外の区間では 0 のもの。平均は、(2 * a + b) / 3 になる。
+
+JRF 2017年4月14日
+
+右台形分布は、a &lt;= x &lt;= b で密度関数が f(x) = (c * (b - a) + 2 * (1 - c) * (x - a)) / (b - a)^2 で、それ以外の区間では 0 のもの。平均は、(2 * a + 4 * b - c * (b - a)) / 6 になる。
+
+JRF 2017年4月14日
+
+左台形分布は、a &lt;= x &lt;= b で密度関数が f(x) = ((2 - c) * (b - a) - 2 * (1 - c) * (x - a)) / (b - a)^2 で、それ以外の区間では 0 のもの。平均は、(4 * a + 2 * b + c * (b - a)) / 6 になる。
+
+JRF 2017年4月14日
+
+分散はまだ計算してない。
+
+JRF 2017年4月14日
+
+↓を参考にした。
+
+『計算機シミュレーションのための確率分布乱数生成法』(四辻 哲章 著, プレアデス出版, 2010年 2013年第2版)
+<a href="https://www.amazon.co.jp/dp/4903814351" class="ext-link">https://www.amazon.co.jp/dp/4903814351</a>
+<a href="http://7net.omni7.jp/detail/1102943434" class="ext-link">http://7net.omni7.jp/detail/1102943434</a>
+
+JRF 2017年4月14日
+
+ちなみにこの本の p.74 に上記、左台形分布の式があるが、一ヶ所 + と - の符号が間違っていた。正誤表は↓にあるようだが、そこにはまだ載っていないようだ。
+
+《「計算機シミュレーションのための確率分布乱数生成法」正誤》
+<a href="http://www.pleiades-publishing.co.jp/download/data/keis.pdf" class="ext-link">http://www.pleiades-publishing.co.jp/download/data/keis.pdf</a>
+
+JRF 2017年4月14日
+
+なお、この本によると、乱数発生はそれぞれ次のようになる。
+
+JRF 2017年4月14日
+
+……。
+
+右三角分布。
+
+前処理. s = b - a を計算し、値を保持しておく。
+
+Step 1. 区間 [0,1] の一様乱数 U1 と U2 を独立に発生させる。
+
+Step 2. U1 と U2 の値を比較し、Y = max(U1, U2) とする。
+
+Step 3. X = a + s * Y を所望の値とする。
+
+JRF 2017年4月14日
+
+……。
+
+左三角分布。
+
+前処理. s = b - a を計算し、値を保持しておく。
+
+Step 1. 区間 [0,1] の一様乱数 U1 と U2 を独立に発生させる。
+
+Step 2. U1 と U2 の値を比較し、Y = min(U1, U2) とする。
+
+Step 3. X = a + s * Y を所望の値とする。
+
+JRF 2017年4月14日
+
+……。
+
+右台形分布。
+
+前処理. p = 1 / (1 - c)、q = p * c / 2、r = q^2、s = b - a を計算し、値を保持しておく。
+
+Step 1. 区間 [0,1] の一様乱数 U を発生させる。
+
+Step 2. Y = - q + sqrt(r + p * U) を計算する。
+
+Step 3. X = a + s Y を所望の乱数として計算する。
+
+JRF 2017年4月14日
+
+……。
+
+左台形分布。
+
+前処理. p = 1 / (1 - c)、q = p * (2 - c) / 2、r = q^2、s = b - a を計算し、値を保持しておく。
+
+Step 1. 区間 [0,1] の一様乱数 U を発生させる。
+
+Step 2. Y = q - sqrt(r - p * U) を計算する。
+
+Step 3. X = a + s Y を所望の乱数として計算する。
+
+JRF 2017年4月14日
+
+……。
+
+なんでこれが必要と思ったかというと、今、シミュレーションを作っていて、ある「率」を平均を指定してランダムに作成したい…つまり、定義域が 0 から 1 の間で少し前までは一様乱数で発生していたのを、平均を動かして使いたいと考えたからである。
+
+JRF 2017年4月14日
+
+それで直線的なものとして左三角分布を考えようとしたら、平均は、上で a = 0、b = 1 として 1/3 に決まってしまって好きな平均を出すという目的には合わない。だったら、左台形分布にすれば (2+c)/6、右台形分布にすれば (4-c)/6  が平均になるから、r を平均とすると 0 &lt;= r &lt; 2/3 のとき右台形分布で c = 4-6*r、1/3 &lt; r &lt;= 1 のとき左台形分布で c = 6 * r - 2 にすればいい。範囲が重なっているので r = 0.5 で分ければいいかもしれない。…と考えた。
+
+JRF 2017年4月14日
+
+ただ、実際、この乱数を使うかどうかはまだ決めていない。
+
+JRF 2017年4月14日
+
+……。
+
+「平均」というより「期待値」と書くべきだったかな…。
+
+JRF 2017年4月14日
+
+……。
+
+あっ、ダメだ。
+
+上の論に基づいて台形分布を実際に出力させてみたら、間違いがわかった。まず、平均 r = 0.5 のとき、左台形分布でも右台形分布でも c = 1 となり、上のアルゴリズムのところで p = 1/(1-c) が発散してしまう(ゼロ除算でエラーになる)。r = 0.5 のときは一様分布を使えということだろう。
+
+JRF 2017年4月14日
+
+そして、他もいろいろおかしい。例えば、r = 0.2 で右台形分布のアルゴリズムを使うと平均は 1.32... とかおかしな値になるし、試しに左台形分布のアルゴリズムを使ってみると 0.22... とそれっぽい値になるが、gnuplot で分布を描くと x &gt;= 0.6 が 0 の分布になっている。
+
+JRF 2017年4月14日
+
+同様に r = 0.8 で左台形分布のアルゴリズムを使うと平均は -0.33... とかおかしな値になるし、試しに右台形分布のアルゴリズムを使ってみると 0.77... とそれっぽい値になるが、gnuplot で分布を描くと x &lt;= 0.4 が 0 の分布になっている。
+JRF 2017年4月14日
+
+どうも 0 &lt;= c &lt; 1 の範囲しかやってはいけないようだ。よって右台形分布は 0.5 &lt; r &lt;= 2/3、左台形分布は 1/3 &lt;= r &lt; 0.5(、r = 0.5 のとき一様分布)としなければダメなようだ。
+
+JRF 2017年4月14日
+
+…そうか、まぁ、今作っているシミュレーションで平均を 1/3 &lt;= r &lt;= 2/3 に収めるというのはまだ修正がきくから、別にいいけど、不便だなぁ…。
+
+JRF 2017年4月14日
+
+Trackbacks:
+
+《cocolog:87253335》 from JRF のひとこと
+<a href="../../../articles/2017/04/statuses_cocolog_87253335.html" class="int-link" title="ひとこと">http://jrf.cocolog-nifty.com/statuses/2017/04/post-aa6b.html</a>
+
+過剰診断論に関してシミュレーションを書いている。やや行き詰まったため、考えを整理するのもかねて、「中間報告」の記事を書いた。 
+
+受信： 2017-06-28 19:15:08 (JST)</pre>
+
+
+<section class="backrefs" data-pagefind-ignore>
+<h2>後方参照 (2 件)</h2>
+<ul>
+<li><span class="backref-label">[cocolog:87218726]参照</span> <a href="../../../articles/2017/04/software_87253124.html">過剰診断論に関するシミュレーション 中間報告</a> <span class="backref-date">2017年04月20日 16:22:40</span></li>
+<li><span class="backref-label">[cocolog:87218726]参照</span> <a href="../../../articles/2017/04/statuses_cocolog_87253335.html">ひとこと</a> <span class="backref-date">2017年04月20日</span></li>
+</ul>
+</section>
+
+</article>
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2017/04.html">2017年04月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+</body>
+</html>

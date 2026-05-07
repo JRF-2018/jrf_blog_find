@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>ddwin.el: Meadow から DDwin を使う - JRF Blog Archive</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2006/02.html">2006年02月</a> | <a href="../../../index/software.html">ソフトウェア Tips</a></nav>
+<article data-pagefind-body>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[software] <span class="cocolog-id">cocolog:10123029</span></td></tr>
+<tr><th>セクション</th><td>JRF のソフトウェア Tips</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2006/02.html">2006年02月22日 14:41:23</a></td></tr>
+<tr><th>元URL</th><td><a href="http://jrf.cocolog-nifty.com/software/2006/02/post_14.html" class="ext-link"><span class="original-url">http://jrf.cocolog-nifty.com/software/2006/02/post_14.html</span></a></td></tr>
+<tr><th>タグ</th><td>[Emacs/Meadow] [JRF 作成ソフトウェア]</td></tr>
+</table>
+</div>
+<h1>ddwin.el: Meadow から DDwin を使う</h1>
+<pre class="body">Meadow で電子辞書を使うには普通、Lookup を使うところなのですが、使えない辞書も多いようですし、更新も止まっているようなので、 DDwin32 に乗り換えました。
+
+DDwin は起動時のオプションにより、簡単に既存のウィンドウで検索するよう指定できます。そこで突貫工事で Meadow から call-process 関数を使って DDwin に検索語を渡す Elisp を書きました。
+
+他の誰かが作ってるかもしれませんし、Emacs 使いなら誰でも作れるレベルの物ですが、いちおう公開しておきます。
+
+まず、DDwin 側で串刺し検索をするためのグループを作ってください。ここでは、「Meadow用」という名前だとします。
+
+この ddwin.el をダウンロードして c:/Meadow/site-lisp 以下にでも置き、.emacs の適当なところに次の行を足してください。
+
+(require 'ddwin)
+(setq ddwin-dictionary-group &quot;Meadow用&quot;)
+(setq ddwin-dictionary-number &quot;G1&quot;)
+(global-set-key &quot;\e\&quot;&quot; 'ddwin-search-word-at-point)
+(global-set-key [M-mouse-3] 'ddwin-search-word-at-mouse)
+
+これでインストールは終り。
+
+あとは、M-x ddwin-search-word で、その後に単語を入力、または M-x ddwin-search-region でリージョンを指定して検索します。M-&quot; を押すと、そのカーソル位置にある単語を検索します。
+
+Alt を押しながらマウスの右ボタンを押すと、直前にマウスをドラッグしていればそのリージョン、そうでなければカーソル位置の単語が検索されます。メニューバーの Tools に DDwin を登録してあり、マウスのときとほぼ同じ動作をします。
+
+ただし単語の切り出しは、「ひらがな」「カタカナ」「それ以外の日本語のワード」「日本語以外のワード」の続きしか判別しません。
+
+ほとんどテストしてないので、不具合があると思います。何かあれば、ここにコメントしていただけるとうれしいです。
+
+■更新履歴
+  
+  &lt;b&gt;2011-05-13&lt;/b&gt;call-process の前で sjis-dos を指定するようした。
+  &lt;b&gt;2006-02-27&lt;/b&gt;replace-regexp を関数から使わないようにした。
+  &lt;b&gt;2006-02-26&lt;/b&gt;独仏語の検索のために latin-1 のアクセント記号を抜くようにした。
+  &lt;b&gt;2006-02-25&lt;/b&gt;マウスに対応。
+  &lt;b&gt;2006-02-21&lt;/b&gt;'ー'に対応していなかったのと、判別のミスを修正。
+  &lt;b&gt;2006-02-20&lt;/b&gt;作成＆公開
+    
+なお、Permalink に関しては <a href="http://jrf.cocolog-nifty.com/archive/ddwin-el.html" class="ext-link">http://jrf.cocolog-nifty.com/archive/ddwin-el.html</a> をご利用ください。
+
+更新：06/02/20-06/02/27
+初公開：2006年02月21日 00:10:08
+最新版：2011年05月13日 20:57:55</pre>
+<details class="trackbacks" data-pagefind-ignore><summary>Trackbacks (2 件)</summary><pre>
+Trackbacks:
+
+《<a href="http://jrf.cocolog-nifty.com/software/2006/02/post_17.html">Firefox から DDwin を起動する</a>》 from JRF のソフトウェア Tips
+ JavaScript Actions(JSActions) を使って Firefox の中でセレクトした文字列を DDwin で検索する。 基本的には一本道で、次のような手順。 1. JavaScript Actions のサイトから最新版と ScriptSet をダウンロードし、インストール。動くようにする。 2. 上と同じところから JSAButton をダウンロードし、インストール。 Bu... 
+
+受信： 2006-02-25 01:08:41 (JST)
+
+
+《<a href="http://jrf.cocolog-nifty.com/pr/2012/04/post-3.html">恥をネットに知らせないローカル電子辞書 EBWin/DDwin</a>》 from JRF の勝手に PR
+EPWING は古い電子書籍の規格だが、そうであるがゆえに軽い電子辞書の実装がある。古いがゆえに今では入手の難しい辞書も多いのが玉にキズだが、その「文化」をハイソな大学生以外にも知って欲しい。... 
+
+受信： 2012-05-23 01:29:57 (JST)
+
+
+Links:
+
+Meadow: http://www.meadowy.org/meadow/wiki/
+Lookup: http://openlab.jp/edict/lookup/
+DDwin32: http://www.vector.co.jp/soft/win95/writing/se025915.html
+ddwin.el: http://jrf.cocolog-nifty.com/archive/ddwin.el
+
+
+
+</pre></details>
+
+<section class="backrefs" data-pagefind-ignore>
+<h2>後方参照 (2 件)</h2>
+<ul>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2012/04/pr_72491055.html">恥をネットに知らせないローカル電子辞書 EBWin/DDwin</a> <span class="backref-date">2012年04月29日 02:07:24</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2011/05/statuses_aboutme_138754.html">ひとこと</a> <span class="backref-date">2011年05月12日</span></li>
+</ul>
+</section>
+
+</article>
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2006/02.html">2006年02月</a> | <a href="../../../index/software.html">ソフトウェア Tips</a></nav>
+</body>
+</html>

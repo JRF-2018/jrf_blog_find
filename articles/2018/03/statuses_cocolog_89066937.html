@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>ひとこと - JRF Blog Archive</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2018/03.html">2018年03月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+<article data-pagefind-body>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[statuses] <span class="cocolog-id">cocolog:89066937</span></td></tr>
+<tr><th>セクション</th><td>JRF のひとこと</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2018/03.html">2018年03月19日</a></td></tr>
+<tr><th>元URL</th><td><a href="http://jrf.cocolog-nifty.com/statuses/2018/03/anaco.html" class="ext-link"><span class="original-url">http://jrf.cocolog-nifty.com/statuses/2018/03/anaco.html</span></a></td></tr>
+
+</table>
+</div>
+<h1>ひとこと</h1>
+<pre class="body">Anaconda 5.1 にアップデートしようとしてなかなかうまくいかなかった。OS は Windows 7。conda update conda が &quot;Solving environment: done&quot; から止まったように見えたり…。
+JRF 2018年3月19日
+
+正確なパッケージ名は、Anaconda3-5.1.0-Windows-x86.exe。Anaconda はプログラミング言語 Python のディストリビューションすなわちライブラリ等がバンドルされた配布物。Python 3.6 系のものを私は選んだ。
+
+JRF 2018年3月19日
+
+以前に入っていたバージョンは Anaconda3-4.3.1-Windows-x86.exe。ユーザーは「Just Me」ではなく「All Users」を選んで C:/ProgramData/Anaconda3 以下にインストールしている。「Add Anaconda to my PATH environment variable」にもチェックを入れた。
+
+まず、Anaconda3-5.1.0-Windows-x86.exe を使わず、conda update conda でアップデートを試みた。
+
+JRF 2018年3月19日
+
+しばらく待つと conda 4.3.XX (XX は忘れた) にアップデートするというので、アップデートさせた。アップデートが終ったあと、もう一度、試しに conda update conda すると、conda 4.4.11XXX にアップデートするという。とりあえずアップデートしたが、これを 5.1.0 まで続けていくのは面倒なので(後述するがこれは誤解だった)、一度、Anaconda をアンインストールして、Anaconda3-5.1.0-Windows-x86.exe を入れることにする。
+
+JRF 2018年3月19日
+
+「Add Anaconda to my PATH environment variable」は Not recommended なので、今回は付けない。
+
+インストール完了。
+
+JRF 2018年3月19日
+
+……。
+
+すると、Jupyter QtConsole がスタートメニューからなくなっているのに気付く。スタートメニューからはそれが一番使っていたものだけに、まずショックを受ける。
+
+Anaconda Navigator を起動。なぜかエラーが出て起動しない。
+
+JRF 2018年3月19日
+
+こういうときはアップデートだ。…とコマンドラインから conda update conda しようとするが、そう言えば PATH が通っていないのだった。こいうときは Anaconda Prompt …だが、それはなかなか起動せず…なぜか止まっているように見える…。
+
+インストール失敗したか？…と思い。一旦アンインストールして、もう一度、インストール。今度は「Add Anaconda to my PATH environment variable」をチェック。
+
+(時間はかかったが)インストール完了。
+
+JRF 2018年3月19日
+
+……。
+
+まず(管理者で)コマンドラインに行き、conda update conda する。すると、&quot;Solving environment: done&quot; になるのだが、そこから止まっているように見える(後述するようにこれも誤解だった)。
+
+こうなると、5.1.0 のインストーラがあやしい。Jupter QtConsole がなくなったのもいやなので、4.3.1 に一度戻し、そこから conda update conda を繰り返そうと決める。
+
+JRF 2018年3月19日
+
+5.1.0 をアンインストールして 4.3.1 を再びインストール。そして、conda update conda を繰り返す。
+
+conda 4.4.11XXX にアップデートしたあと、conda update conda すると、また、&quot;Solving environment: done&quot; で止まってしまった！ ググると↓の記事が見つかる。
+
+JRF 2018年3月19日
+
+《conda 4.4 hangs after &quot;solving environment&quot; - Issue #6406 - conda/conda - GitHub》
+<a href="https://github.com/conda/conda/issues/6406" class="ext-link">https://github.com/conda/conda/issues/6406</a>
+
+どうも日付からあたりを付け他を調べると、conda 4.4 が Anaconda 5 系列であるらしい。ややこしい！
+
+JRF 2018年3月19日
+
+で、その記事にはアンチウィルス系を切れとあるので切ってみるが、やっぱり止まってしまう。
+
+しかし、その記事には i7 でも長くかかるというので、しばらくほうっておいて他の作業をしようと Anaconda Navigator を起動していると、conda update conda から 20分ぐらいたって、&quot;Solving environment: done&quot; のあとに突然メッセージが表示され Y/N が聞かれるようになった。動いてたのか！
+
+JRF 2018年3月19日
+
+そして、Anaconda Navigator もちゃんと起動。しかし、これはアップデート前のはず。
+
+conda update conda をもう一度して、そこからのさらなるアップデートがないのを確かめたのち、conda update --all する。
+
+時間はかかるがアップデートプロセスは正常に終了したようだ。
+
+JRF 2018年3月19日
+
+……。
+
+が、しかし、スタートメニューを見ると、Jupyter QtConsole は消えてしまっている。4.3.1 からアップデートしてもそれは消える運命にあったようだ。ググると、Jupyter QtConsole は、Anaconda Navigator から起動するのが一般的な方法になったらしい。
+
+Anaconda Navigator を起動して(時間がかかる)、その後 Jupyter QtConsole を起動すると、ちゃんと起動した。Anaconda Prompt もちゃんと起動する。
+
+JRF 2018年3月19日
+
+……。
+
+…といった感じで、最終的にはちゃんとアップデートできたが、Jupyter QtConsole については不満の残る結果となった。
+
+あと、このアップデートをしようとしたキッカケが statistics.mean や statistics.variance が &quot;statistics.StatisticsError: mean requires at least one data point&quot; をなぜか出す「バグ」らしきものがあって、それが直っているか試そうとしたのだったが、それは直っていなかった。…ので骨折り損な感じ。
+
+JRF 2018年3月19日
+
+Trackbacks:
+
+《cocolog:89067097》 from JRF のひとこと
+<a href="../../../articles/2018/03/statuses_cocolog_89067097.html" class="int-link" title="ひとこと">http://jrf.cocolog-nifty.com/statuses/2018/03/post-9117.html</a>
+
+ミクロ経済学の我流シミュレーションのプログラムを Python で書いた。モデルは簡単なのに動かすのに苦労した。そして結果が思った以上にカオス風で一定しない。機械高度化にともなううんたら…という理論を検証しようとはじめたのだが、とてもそんなことをいう余裕はない。... 
+
+受信： 2018-03-30 21:29:08 (JST)</pre>
+
+
+<section class="backrefs" data-pagefind-ignore>
+<h2>後方参照 (1 件)</h2>
+<ul>
+<li><span class="backref-label">[cocolog:89066937]参照</span> <a href="../../../articles/2018/03/statuses_cocolog_89067097.html">ひとこと</a> <span class="backref-date">2018年03月19日</span></li>
+</ul>
+</section>
+
+</article>
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2018/03.html">2018年03月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+</body>
+</html>

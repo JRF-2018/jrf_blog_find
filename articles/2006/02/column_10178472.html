@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>ココログや Movable Type のシステムと奮戦中 - JRF Blog Archive</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2006/02.html">2006年02月</a> | <a href="../../../index/column.html">雑記</a></nav>
+<article data-pagefind-body>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[column] <span class="cocolog-id">cocolog:10178472</span></td></tr>
+<tr><th>セクション</th><td>JRF の私見：雑記</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2006/02.html">2006年02月24日 01:29:18</a></td></tr>
+<tr><th>元URL</th><td><a href="http://jrf.cocolog-nifty.com/column/2006/02/post_33.html" class="ext-link"><span class="original-url">http://jrf.cocolog-nifty.com/column/2006/02/post_33.html</span></a></td></tr>
+<tr><th>タグ</th><td>[ウェブログ・ココログ関連] [近況]</td></tr>
+</table>
+</div>
+<h1>ココログや Movable Type のシステムと奮戦中</h1>
+<pre class="body">MTEntries では sort_by と last_n を同時に使うことができず、 MTArchiveList では offset を使うことができないようだ。
+
+また、XML-RPC で更新情報として TIMESTAMP を書き込んだとき、月をまたぐと、(週別の)個別アーカイブの位置が変わるため、Permalink が変更されてしまうようだ。
+
+やろうとしてることは、まず、しかたないので XML-RPC では TIMESTAMP の更新をせず、その代わりに記事を default のソートではなく、 sort_by=&quot;modified_on&quot; にして、さらにそこから最新の 5 個ぐらいとって《記事の属するカテゴリ内の最近の記事》を表示しようということである。
+
+これは、sort_by と last_n を同時に使えないことからできないようだ。
+
+さらに、こちら(日)とこちら(US)を参考に Google サイトマップを導入しようとしているが、ページの changefreq を今週分のアーカイブのみ daily としたい。
+
+これは MTArchiveList で offset が使えないため素直にはできない。とりあえず、今週分のみ重複させてマップを作ったが、Google はどう判断するんだろう……。
+
+また、各サブブログで別々にサイトマップを作ったあと SSI で Sitemap Index を作ろうとしているが、.xml は SSI されないようなので .html にした。(さらに .xml は .inc と同じようにファイルとして表示されない。)これまたGoogle はどう判断するのだろう……。
+
+とりあえず、ココログではできないと思っていた MovableType の MTEntryModifiedDate が、TypePad 系では MTEntryDateModified でできることがわかっただけでも収穫としておこう。
+
+更新：06/02/24
+初公開：2006年02月24日 01:29:18
+最新版：2006年02月24日 01:29:18</pre>
+<details class="trackbacks" data-pagefind-ignore><summary>Trackbacks (1 件)</summary><pre>
+Trackbacks:
+
+《<a href="http://jrf.cocolog-nifty.com/software/2006/03/post_1.html">ココログプロで Google サイトマップインデックスを作る</a>》 from JRF のソフトウェア Tips
+ なかなか Google がクロールしてくれないので、Google Sitemapの機能を試してみる。Google Sitemap には Atom 0.3 でも良いから当初はそうしていたのだが、2 週間ほどたっても音沙汰なしだったので Google Sitemap 専用の XML フォーマットを使うことにした。 すでに下記参考のようにいくつかのサイトで Movable Type や Type Pa... 
+
+受信： 2006-03-02 03:12:34 (JST)
+
+
+Comments:
+
+拡張子が .html でも問題ありませんでした。「SITEMAP インデックス」と評価され、ステータスは OK になっています。
+投稿: JRF | 2006-02-24 17:32:28 (JST)
+
+
+Links:
+
+記事の属するカテゴリ内の最近の記事: http://jrf.cocolog-nifty.com/software/2006/02/post_16.html
+こちら(日): http://watcher.moe-nifty.com/memo/2005/06/typepad__google_e8c2.html
+こちら(US): http://www.sjl.us/main/2006/02/google_sitemaps.html
+
+
+
+</pre></details>
+
+<section class="backrefs" data-pagefind-ignore>
+<h2>後方参照 (1 件)</h2>
+<ul>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2006/02/column_10179035.html">重要な更新情報: 初公開日が書き換わっていました</a> <span class="backref-date">2006年02月24日 01:58:08</span></li>
+</ul>
+</section>
+
+</article>
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2006/02.html">2006年02月</a> | <a href="../../../index/column.html">雑記</a></nav>
+</body>
+</html>

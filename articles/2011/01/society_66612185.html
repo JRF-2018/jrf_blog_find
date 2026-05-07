@@ -1,0 +1,1045 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>外作用的簡易経済シミュレーションのアイデアと Perl による実装 - JRF Blog Archive</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2011/01.html">2011年01月</a> | <a href="../../../index/society.html">税・経済・法</a></nav>
+<article data-pagefind-body>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[society] <span class="cocolog-id">cocolog:66612185</span></td></tr>
+<tr><th>セクション</th><td>JRF の私見：税・経済・法</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2011/01.html">2011年01月09日 00:18:52</a></td></tr>
+<tr><th>元URL</th><td><a href="http://jrf.cocolog-nifty.com/society/2011/01/post.html" class="ext-link"><span class="original-url">http://jrf.cocolog-nifty.com/society/2011/01/post.html</span></a></td></tr>
+<tr><th>タグ</th><td>[経済学]</td></tr>
+</table>
+</div>
+<h1>外作用的簡易経済シミュレーションのアイデアと Perl による実装</h1>
+<pre class="body">抽象化された確率モデルにおいて、内的作用(内作用)により作られたモデルと外的作用(外作用)から作られたモデルが同じ臨界をもたらすことがある。経済に関するモデルを作るとき、ミクロな部分でなしたことがマクロに影響するということがいいたいことがあるが、マクロの大きな数と複雑な動きを表すにはコンピュータを用いても限界がある。確率モデルのようなアイデアをもってすれば、コンピュータシミュレーションなどで解析できるほど少ない数でも、しかし、それが外作用的にミクロな内作用と関わるというモデルが作れるのではないかと考えた。
+
+私は本稿の実験および考察を通じ、外作用をとても簡易で厳格なモデルにするが、内作用については外作用との関わりはごく限るかわりにその表現を自由にすることで、いろいろな問題についてある種の見通しを出すことができるかもしれないという感触を得た。
+
+■外作用モデル
+  
+実装とは必ずしも異るが、アイデアとしての外作用モデルを、その要素ごとに提示していく。
+
+  ●嗜好品需要
+    
+&lt;b&gt;ある市場に売り手と買い手が情報を出す。売り手の価格を超える desire を持つ買い手のうち、もっとも高い desire を持つものが、二番目に高い desire の価格または seller の価格で購入を行う。&lt;/b&gt;
+
+ここは外作用といいながら、内作用的に細かいすりあわせが行われる。ここが商売の譲れない基本ということかもしれない。
+
+  ●必需品需要
+    
+&lt;b&gt;greed のもっとも低い売り手から順に買い入れられて必要量消費される。その平均額がその品の売り手から均等にわけ与えられる。その総額が大きいと、 desire の総量が大きくなる。&lt;/b&gt;
+
+最後は、すなわち、所得ルールである。消費量一定でも消費総額が多いと気が大きくなって、desire も大きくなるとする。
+
+desire と greed は別のもので、単純に消費欲と生産欲というわけでもない。もちろん、現実の経済では、ある物が嗜好品か必需品かというのは定かではないが、むしろ、desire を持ってしまうのが嗜好品であり、greed を持ってしまうのが必需品で、現実にある定かでない物というのは、それらが一つの view をもって見えているに過ぎない……といったようにこのモデルでは考えるのである。
+
+  ●一般需要ルール
+    
+&lt;b&gt;その期の収穫が少なく liability が大きいと greed が大きくなる。asset が大きいと desire の振輻が大きくなる。&lt;/b&gt;
+
+借金が大きいと値段をふっかけようとし、資産が大きいと高い物でも買えるが、欲しくないものはまったく欲しくないというような「わがままさ」を持つといったところか。
+
+  ●嗜好品供給
+    
+&lt;b&gt;各 player に毎期一定の確率でできる。その価格は asset が大きいほど、大きくなる。&lt;/b&gt;
+
+つまり、このモデルで asset というのは文化資本であって、嗜好品は文化的蓄積からのみ価値の高いものができる…とでもいえよう。
+
+  ●必需品供給
+    
+&lt;b&gt;総産出量がある程度決まっており、毎期、必要量以上はある。総 liability が大きいほど、産出量が大きくなる。ランダムに持分権と権利期間が割り振られ、権利期間が終るまで持続する。持分権にランダム変動をかけた割合で分割して生産したことになる。&lt;/b&gt;
+
+「産出量が大きくなる」という部分については、今回の実装ではそれほど気にしていない。
+
+持分権をある期間持つ possession は、耕作地の所有権のようなイメージだが、それがいきなり与えられいきなり取り上げられるのは、まさに「外作用」的簡易さの現れている部分である。これも内作用的な view で嗜好品消費と結びつけることができるだろうから、観方によっては、必需品の possession のはずなのに desire の有効期間として機能することもできるだろうという直感がある。
+
+  ●収支のルール
+    
+&lt;b&gt;嗜好品の購入は、資産と負債が同時に増える。必需品の購入は、負債だけが増える。嗜好品・必需品の売却は、負債が減るか、(現金)資産が増える。 &lt;/b&gt;
+
+なお、「(現金)資産」とは単にマイナスの負債のことである。つまり、このシミュレーション世界では、現金とは「マイナスの負債」すなわち、負債の相手方が誰かいるということの標章に過ぎない。
+
+もちろん、内作用の view においては、 現金らしい動きをするものも作れるかもしれず、それは排除しない。
+
+  ●資産減耗
+    
+減耗はなくてもよい。減耗する場合は、定率にするか、ランダムにばらすか試してみるべきだろう。
+
+なお、資産価格の上昇は、asset に関して desire や供給価格が変化することに捉えられているとする。
+
+今回の実装には、資産減耗は入れてない。
+
+■内作用の戦術
+  
+内作用は tactics と呼ばれ、tactics は外作用のステップの半ばで呼ばれることになる。
+
+  ●View
+    
+&lt;b&gt;player の view に関して統計をとる。&lt;/b&gt;
+
+この統計が simulation そのものの実験者への view とも言える。
+
+なお、今回の実験では view の統計をとり、問題にするところまでには致っていない。
+
+  ●戦術
+    
+&lt;b&gt;外作用に view を反映させる方法、すなわちこのゲームの「コマ」は二種しかない。一つは、必需品を「廃棄」すること、もう一つは嗜好品を「価格低下」させること。量をいじれるのは commodity (嗜好品か必需品)だけで、 asset や liability, possession もいじることはできない。&lt;/b&gt;
+
+必需品の「廃棄」により、必要需要量を下回ってもよい。これは単に、ある者の必需品売却に対する受益権の放棄を意味するに近い。
+
+嗜好品を自分の desire よりも安い価格とすることで、それを自分の asset にもできる。ただし、自分の desire がどれぐらいかが明らかであるとは限らない。(その期、買い手のいない嗜好品は廃棄される。)
+
+他者の価格推移がわかったり desire がわかったりすると考えるかどうか、それによりどのように「廃棄」を決定するか…といったことが戦術となる。 desire や greed のやりとりもできないが、「自分」が知っているそのデータを根拠に「廃棄」や「ディスカウント」する「契約」は結べる。liability や asset の増減は直接できなくとも、それに関して廃棄させるようなことはできる。
+
+  ●二つの基本戦術
+    
+「廃棄」や「価格低下」のような「マイナス」の操作だけでは、経済的に意味がないと思うかもしれないが、そうではない。
+
+&lt;b&gt;まず、廃棄されるはずだった嗜好品の価格を自分の desire にまで下落させることができれば、相手には収入が入るし、自分の asset は大きくなる。だから、価格下落の権利は未実現資産として view されることになる。&lt;/b&gt;
+
+&lt;b&gt;また、greed の低い者の必需品を廃棄させることができれば、必需品の価格はたいてい上がることになり、それは liability の減少、ひいては、greed の減少につながり、「好順還」をもたらすかもしれない。特に、誰でもいいから廃棄させられるといったものは「現金」として view できるようになるかもしれない。&lt;/b&gt;
+
+ただし、asset が大きいことも liability が大きくなることも「良いこととする」かどうかは決まっていない。とりあえずは、総 liability が小さい中で、嗜好品の一期の売買総額が大きくなることを目標にしようかと思う。
+
+最初に作る tacitics として、上の二つを直接つなげるように考えた。売れ残った嗜好品を 10% 下げれば買える者がいるとき、その者は任意の期の必需品の 10% を廃棄する権利を渡すことで、ディスカウントが実現するとする。そして、その者の必需品が売れる状態ならば、必ず 10% 廃棄の権利が使われるとする。そして、view としては、必需品廃棄の権利がどれぐらい大きくなるかも調べたい。その内作用により、どう外作用的経済の統計が変わるか、その内作用的 view を最大にする外作用とはどのようなものか考えたい。
+
+&lt;b&gt;このような戦術の導入により、asset があり liability がなくても貧乏と view されるものが出てくるだろう。それによって、外作用モデルの結果も変わる。しかし、それでも外作用のルールが変更されるわけではない。&lt;/b&gt;
+
+&lt;b&gt;何かを最大にする外作用を考えたとしても、その実現は、それを可能とする別の内作用を見つけることが理想である。ただし、その内作用どうしの相互作用が意図しない結果を生むことも十分考えられる。&lt;/b&gt;
+
+場面の設定と、場面の変分により作用の本質的パラメータを特定するようなことも、将来的には行いたい。
+
+  ●集団の埋め込み
+    
+将来的には、複数の player を統合して、一人の player と見なす「埋め込み」は可能か、どういう条件が必要か……といたことを解析したい。
+
+■Perl での実装
+  
+Perl での実装は、とりあえず、シミュレーションが動作するところまでしかできておらず、入出力もコマンドラインを通じてするものしかない。
+
+もちろん、細かい実装については説明しきれないが、まず、注意すべき点から。
+
+シミュレーションで同じ結果を得るために、生成される乱数を固定するときは、オプションに --srand=0 などと指定する必要がある。もちろん、ソース の最初で srand をしてもよい。その場合は下記のコメントアウトした部分をコードに戻せばよい。
+
+：
+：
+# BEGIN { srand(0); }
+
+use strict;
+use warnings;
+：
+：
+
+何かによって desire が大きくなる…などといったことにどういう関数を割り当てるかが問題だが、次のようにしている。
+
+{
+  package Main::_LuxuryCommodity; ## 嗜好品
+  use base qw(Main::_Commodity);
+  ：
+  ：
+  sub random_produce {
+    my $self = shift;
+    my ($asset) = @_;
+    return 0 if rand(1) &lt; $self-&gt;{difficulty};
+    my $v = variance_for_mean_of_pnr(log(1 + $asset), $Pow);
+    return powered_normal_rand(0, $v, $Pow);
+  }
+  
+  sub random_desire {
+    my $self = shift;
+    my ($asset, $init_price, $tendency) = @_;
+    
+    return normal_rand($tendency * $init_price, sqrt($asset));
+  }
+  ：
+  ：
+}
+：
+：
+{
+  package Main::_EssentialCommodity; ## 必需品
+  use base qw(Main::_Commodity);
+  ：
+  ：
+  sub random_produce {
+    my $self = shift;
+    my ($quota) = @_;
+    
+    if ($USE_PPNR) {
+      return pseudo_powered_normal_rand($quota, $Pow);
+    } else {
+      my $v = variance_for_mean_of_pnr($quota, $Pow);
+      return powered_normal_rand(0, $v, $Pow);
+    }
+  }
+  
+  sub random_attach {
+    my $self = shift;
+    my ($newquata, $players) = @_;
+  ：
+  ：
+  }
+}
+：
+：
+{
+  package Main::_Market;
+  use base qw(Main::_Simple);
+  ：
+  ：
+          ## greed の計算式 $prod はプレイヤー $p の今期の生産。
+          my $mag = exp(1 - pow($prod / $quota, 1/$Pow));
+          $greed = $mag
+            * sqrt(($p-&gt;{liability} &gt; 100)? $p-&gt;{liability}
+                    : log(1 + exp($p-&gt;{liability})));
+  ：
+  ：
+}  
+：
+：
+{
+  package Math::Aux;
+  ：
+  ：
+  sub variance_for_mean_of_pnr {
+    my ($mean, $pow) = @_;
+    
+    return pow($mean * sqrt(pi) / gamma(($pow + 1) / 2), 1/$pow)/sqrt(2);
+  }
+  ：
+  ：
+}  
+
+ここで powered_normal_rand は N を正規乱数とすると √|N| を返すような関数($Pow は 0.5 にほぼ固定。)である。「下限のみが定義され最大頻度を持つ乱数」で、もっとも簡単に表現できるものを選んだ。密度関数を求めることも簡単だが、自然界に正規分布したものの冪乗根を取るような操作があるのかと問われると苦しい。
+
+その平均となるところは正規乱数の分散に関連するがそのものではない。シミュレーションでは、欲しい平均に対応する分散を variance_for_mean_of_pnr の計算式で求めている。gamma はΓ関数である。
+
+なお、$tendency は今期の必需品総消費額を前期の必需品総消費額で割ったものに arctan (tan の逆関数)を適用したものをとりあえず用いている。 $init_price は、その期のある嗜好品 $c の生産者希望価格の平均に $c-&gt;{simplicity} (現在 0.7 に固定)をかけたものにしている。$quota は持分権である。
+
+毎期、割り当てられた期間の過ぎた possession が出てくるため、それをランダムに割り当てる必要があるが、それをするのが random_attach である。当然、二重に割り当てられることがでてくるが、その場合は、従来の持分権を $quota として 	$newterm = $term + ($newterm / (1 + $quota)) として期間延長により対応している。そのため、期間が過ぎるときは徐々に持分権が少なくなるということはなく、一気になくなってしまう。
+
+powered_normal_rand の替わりに pseudo_powered_normal_rand が使えるようにしている。両者は似た形で、「下限のみが定義され最大頻度を持つ乱数」だが、後者だと、$greed の解析時に $mag の部分の密度関数が a x + b の一次式になる。これはいずれどちらを使うか、著者である私が決定すべきだろう。
+
+これらの計算式は、解析がしやすいように選択している面が大きく、観測結果等に基づいてはいないという点で、根拠は薄い。
+
+需要と供給のすりあわせのアルゴリズムは次のようになっている。
+
+{
+  package Main::_Market;
+  use base qw(Main::_Simple);
+  ：
+  ：
+  sub match_greed {
+    my $market = shift;
+    my ($cid, $prodmap) = @_;
+    
+    my @producer = keys %{$prodmap};
+    @producer = sort {$market-&gt;{player}-&gt;{$a}-&gt;{greed}-&gt;{$cid}
+                        &lt;=&gt; $market-&gt;{player}-&gt;{$b}-&gt;{greed}-&gt;{$cid}}
+      @producer;
+    my $total_prod = 0;
+    foreach my $pid (@producer) {
+      $total_prod += $prodmap-&gt;{$pid};
+    }
+    my $total = 0;
+    my $need = $market-&gt;{essential}-&gt;{$cid}-&gt;{need};
+    my $i = 0;
+    while ($need &gt; 0 &amp;&amp; $i &lt; @producer) {
+      my $pid = $producer[$i++];
+      my $greed = $market-&gt;{player}-&gt;{$pid}-&gt;{greed}-&gt;{$cid};
+      my $prod = $prodmap-&gt;{$pid};
+      if ($need &lt; $prod) {
+        $total += $greed * $need;
+        $need = 0;
+      } else {
+        $total += $greed * $prod;
+        $need -= $prod;
+      }
+    }
+    
+    my $buyer_price = $total / scalar(keys %{$market-&gt;{player}});
+    my $seller_price = {};
+    
+    foreach my $pid (@producer) {
+      my $prod = $prodmap-&gt;{$pid};
+      my $price = $prod * $total / $total_prod;
+      $seller_price-&gt;{$pid} = $price;
+    }
+    
+    return ($buyer_price, $seller_price);
+  }
+  ：
+  ：
+  sub match_desire {
+    my $market = shift;
+    my ($cid, $pricemap) = @_;
+    
+    my @producer = keys %{$pricemap};
+    @producer = sort {$pricemap-&gt;{$a} &lt;=&gt; $pricemap-&gt;{$b}} @producer;
+    
+    my @desire;
+    foreach my $pid (keys %{$market-&gt;{player}}) {
+      push(@desire, $pid) 
+        if exists $market-&gt;{player}-&gt;{$pid}-&gt;{desire}-&gt;{$cid};
+    }
+    @desire = sort {$market-&gt;{player}-&gt;{$b}-&gt;{desire}-&gt;{$cid}
+                      &lt;=&gt; $market-&gt;{player}-&gt;{$a}-&gt;{desire}-&gt;{$cid}}
+      @desire;
+      
+    my @match;
+    while (@producer &amp;&amp; @desire) {
+      my $p = $producer[0];
+      my $d = shift(@desire);
+      my $price = $pricemap-&gt;{$p};
+      last if $market-&gt;{player}-&gt;{$d}-&gt;{desire}-&gt;{$cid} &lt; $price;
+      if (@desire) {
+        my $rival = $desire[0];
+        $price = $market-&gt;{player}-&gt;{$rival}-&gt;{desire}-&gt;{$cid}
+          if $market-&gt;{player}-&gt;{$rival}-&gt;{desire}-&gt;{$cid} &gt; $price;
+      }
+      @producer = grep {$pricemap-&gt;{$_} &lt;= $price} @producer;
+      unshift(@match, [$price, $d, @producer]);
+      pop(@producer) if @producer;
+    }
+    
+    my $sold = 0;
+    my $prev_price = 0;
+    foreach my $m (@match) {
+      my ($price, $d, @rest) = @$m;
+      my $p = $rest[$sold++];
+      my $seller_price = $pricemap-&gt;{$p};
+      if (@rest &gt; $sold) {
+        $price = ($seller_price &gt; $prev_price)?
+          $seller_price : $prev_price;
+      }
+      @$m = ($price, $d, $p);
+      $prev_price = $price;
+    }
+    return @match;
+  }
+  ：
+  ：
+}
+
+必需品に関しては、$need が満ちるまで集めるのが価格決定には重要で、あとは総計をとって、持分に応じ分割しているだけである。
+
+嗜好品に関しては、かなり複雑なことになっているが、オークション的に価格をすりあわせている。アルゴリズムがこれで良いのかはっきりいって自信はない。
+
+戦術、tactics の実装についても説明しておこう。tactics は「クラス」として実装され、その期の途中で割り込みを行いたい部分にのみメソッドを書いておくということになる。ソースでは上の「二つの基本戦術」のところで書いたものを実装しているが、長いのでその説明はせず、どのようにメインループから tactics が呼び出されるかの部分だけここに転載しておこう。
+
+{
+  package Main::_Market;
+  use base qw(Main::_Simple);
+  ：
+  ：
+  sub main_loop {
+    my $market = shift;
+    my ($while) = @_;
+    ：
+    ：
+    for (my $term = 0; $term &lt; $while; $term++) {
+      ：
+      ：
+      if ($DEBUG) {
+        map {$_-&gt;[1]-&gt;preconsume_essential($market)} @{$market-&gt;{tactics}};
+      } else {
+        map {
+          my $m2 = $market-&gt;clone();
+          my ($tid, $tactics) = @$_;
+          $tactics-&gt;preconsume_essential($m2);
+          $market-&gt;change_after_tactics($tid, $m2,
+                                        discountable_essential =&gt; 1
+                                        );
+        } @{$market-&gt;{tactics}};
+      }
+      $market-&gt;annual_consume_essential();
+      ：
+      ：
+      $market-&gt;annual_cleanup();
+    }
+    ：
+    ：
+  }
+}
+
+デバッグモードでないとき、tacitics に渡すのは $market そのものではなく $market をコピーしたものである。そして、その返ってきたコピーの内容は、ちゃんと上の戦術の条件として示した「廃棄」と「価格低下」のみ(あとはその tactics 用のデータ)に制限して $market に反映する。
+
+こうすることで、他者が tactics として書いたものをコピー＆ペーストして自分の環境で実行するのがかなり安全になる……少なくともプレッシャーを与えることができるだろうと考えている。
+
+実行はいくつかオプションを指定する必要がある。--term で総期間を --player でその数を、--luxury で嗜好品の種類数を、--essential で必需品の種類数を指定できる。また、--initial-asset と --initial-liability で player が持つ asset と liability の初期値が指定できるが、これを別々に設定したいなら、ソースをいじる必要がある。(なお、デフォルトでは --term=10 --player=5 --luxury=2 --essential=3 --initial-asset=5 --initial-liability=10 になっている。)
+
+出力は今のところ、$market のプログラム内での構造をそのままダンプ(吐き出す)だけとなっているが、それも一つの tactics として実装されており、ダンプをするなら --tactics-dumper を指定しなければならない。
+
+「二つの基本戦術」を使う場合は --tactics-desire-greed-convert を指定する。
+
+デバッグモードは -d で指定するが、配布するものは最初からそうなっているので、デバッグモードでなくするためには -d0 を指定する必要がある。乱数固定のため srand をするときは --srand=0 が必要である。必需品の生産に関し、 powered_normal_rand の替わりに pseudo_powered_normal_rand を使うときは --ppnr を指定する。
+
+次のコマンドを実行し、結果を log にとる。
+
+$ perl simple_market_0.pl -d0 --srand=0 --term=100 --player=5 --luxury=2 --essential=3 --tactics-dumper &gt; simple_market_0_without_convert.log
+TERM001:
+TERM002:
+  ：
+  ：
+TERM100:
+
+最終期の log は次のようになっている。
+
+TERM100:
+$market = bless( {
+  current_essential =&gt; {
+    C003 =&gt; {
+      P001 =&gt; &quot;1.38585848705482&quot;,
+      P004 =&gt; &quot;1.35418264860133&quot;,
+      P005 =&gt; &quot;0.764173024821585&quot;
+    },
+    C004 =&gt; {
+      P001 =&gt; &quot;1.39482895434153&quot;,
+      P003 =&gt; &quot;1.22323239642829&quot;
+    },
+    C005 =&gt; {
+      P001 =&gt; &quot;1.11098402290041&quot;,
+      P003 =&gt; &quot;1.33341620305035&quot;,
+      P005 =&gt; &quot;1.42270552055381&quot;
+    }
+  },
+  current_gross_essential_consumption =&gt; &quot;10.9979581450734&quot;,
+  current_luxury =&gt; {
+    C002 =&gt; {
+      P004 =&gt; &quot;7.34410057579468&quot;
+    }
+  },
+  essential =&gt; {
+    C003 =&gt; bless( {
+      id =&gt; &quot;C003&quot;,
+      need =&gt; &quot;3.5&quot;,
+      type =&gt; &quot;essential&quot;
+    }, 'Main::_EssentialCommodity' ),
+    C004 =&gt; bless( {
+      id =&gt; &quot;C004&quot;,
+      need =&gt; &quot;3.5&quot;,
+      type =&gt; &quot;essential&quot;
+    }, 'Main::_EssentialCommodity' ),
+    C005 =&gt; bless( {
+      id =&gt; &quot;C005&quot;,
+      need =&gt; &quot;3.5&quot;,
+      type =&gt; &quot;essential&quot;
+    }, 'Main::_EssentialCommodity' )
+  },
+  luxury =&gt; {
+    C001 =&gt; bless( {
+      difficulty =&gt; &quot;0.8&quot;,
+      id =&gt; &quot;C001&quot;,
+      simplicity =&gt; &quot;0.7&quot;,
+      type =&gt; &quot;luxury&quot;
+    }, 'Main::_LuxuryCommodity' ),
+    C002 =&gt; bless( {
+      difficulty =&gt; &quot;0.8&quot;,
+      id =&gt; &quot;C002&quot;,
+      simplicity =&gt; &quot;0.7&quot;,
+      type =&gt; &quot;luxury&quot;
+    }, 'Main::_LuxuryCommodity' )
+  },
+  player =&gt; {
+    P001 =&gt; bless( {
+      asset =&gt; &quot;292.526322259257&quot;,
+      current_consumption_essential =&gt; {
+        C003 =&gt; &quot;2.23031567717946&quot;,
+        C004 =&gt; &quot;2.3510791744675&quot;,
+        C005 =&gt; &quot;2.19959162901469&quot;
+      },
+      current_consumption_luxury =&gt; {
+        C002 =&gt; &quot;21.8707742235897&quot;
+      },
+      current_income_essential =&gt; {
+        C003 =&gt; &quot;4.41026399711994&quot;,
+        C004 =&gt; &quot;6.26294205353971&quot;,
+        C005 =&gt; &quot;3.15961253315821&quot;
+      },
+      current_income_luxury =&gt; {},
+      desire =&gt; {
+        C002 =&gt; &quot;29.3189043379945&quot;
+      },
+      greed =&gt; {
+        C003 =&gt; &quot;3.6528380880111&quot;,
+        C004 =&gt; &quot;3.5628484740355&quot;,
+        C005 =&gt; &quot;7.25595615938614&quot;
+      },
+      id =&gt; &quot;P001&quot;,
+      liability =&gt; &quot;98.9365858742281&quot;,
+      possession =&gt; {
+        C003 =&gt; {
+          quota =&gt; 1,
+          term =&gt; &quot;7.27451057789084&quot;
+        },
+        C004 =&gt; {
+          quota =&gt; 1,
+          term =&gt; &quot;9.24261590725239&quot;
+        },
+        C005 =&gt; {
+          quota =&gt; 1,
+          term =&gt; &quot;10.712607419061&quot;
+        }
+      }
+    }, 'Main::_Player' ),
+    P002 =&gt; bless( {
+      asset =&gt; &quot;185.207825577778&quot;,
+      current_consumption_essential =&gt; {
+        C003 =&gt; &quot;2.23031567717946&quot;,
+        C004 =&gt; &quot;2.3510791744675&quot;,
+        C005 =&gt; &quot;2.19959162901469&quot;
+      },
+      current_consumption_luxury =&gt; {},
+      current_income_essential =&gt; {},
+      current_income_luxury =&gt; {},
+      desire =&gt; {
+        C002 =&gt; &quot;-18.1103647838689&quot;
+      },
+      greed =&gt; {},
+      id =&gt; &quot;P002&quot;,
+      liability =&gt; &quot;3.85679939366609&quot;,
+      possession =&gt; {}
+    }, 'Main::_Player' ),
+    P003 =&gt; bless( {
+      asset =&gt; &quot;257.042434291185&quot;,
+      current_consumption_essential =&gt; {
+        C003 =&gt; &quot;2.23031567717946&quot;,
+        C004 =&gt; &quot;2.3510791744675&quot;,
+        C005 =&gt; &quot;2.19959162901469&quot;
+      },
+      current_consumption_luxury =&gt; {},
+      current_income_essential =&gt; {
+        C004 =&gt; &quot;5.4924538187978&quot;,
+        C005 =&gt; &quot;3.7922044423962&quot;
+      },
+      current_income_luxury =&gt; {},
+      desire =&gt; {
+        C002 =&gt; &quot;6.81648344618042&quot;
+      },
+      greed =&gt; {
+        C004 =&gt; &quot;5.54745907697928&quot;,
+        C005 =&gt; &quot;4.20004644522383&quot;
+      },
+      id =&gt; &quot;P003&quot;,
+      liability =&gt; &quot;3.30105390426006&quot;,
+      possession =&gt; {
+        C004 =&gt; {
+          quota =&gt; 3,
+          term =&gt; &quot;6.25529138245987&quot;
+        },
+        C005 =&gt; {
+          quota =&gt; 3,
+          term =&gt; &quot;15.3199029030476&quot;
+        }
+      }
+    }, 'Main::_Player' ),
+    P004 =&gt; bless( {
+      asset =&gt; &quot;201.865083277347&quot;,
+      current_consumption_essential =&gt; {
+        C003 =&gt; &quot;2.23031567717946&quot;,
+        C004 =&gt; &quot;2.3510791744675&quot;,
+        C005 =&gt; &quot;2.19959162901469&quot;
+      },
+      current_consumption_luxury =&gt; {},
+      current_income_essential =&gt; {
+        C003 =&gt; &quot;4.30946091281162&quot;
+      },
+      current_income_luxury =&gt; {
+        C002 =&gt; &quot;21.8707742235897&quot;
+      },
+      desire =&gt; {
+        C002 =&gt; &quot;2.90340762051466&quot;
+      },
+      greed =&gt; {
+        C003 =&gt; &quot;4.51066952551896&quot;
+      },
+      id =&gt; &quot;P004&quot;,
+      liability =&gt; &quot;88.4260684697607&quot;,
+      possession =&gt; {
+        C003 =&gt; {
+          quota =&gt; 1,
+          term =&gt; &quot;7.42209534715529&quot;
+        }
+      }
+    }, 'Main::_Player' ),
+    P005 =&gt; bless( {
+      asset =&gt; &quot;135.33376898518&quot;,
+      current_consumption_essential =&gt; {
+        C003 =&gt; &quot;2.23031567717946&quot;,
+        C004 =&gt; &quot;2.3510791744675&quot;,
+        C005 =&gt; &quot;2.19959162901469&quot;
+      },
+      current_consumption_luxury =&gt; {},
+      current_income_essential =&gt; {
+        C003 =&gt; &quot;2.43185347596573&quot;,
+        C005 =&gt; &quot;4.04614116951901&quot;
+      },
+      current_income_luxury =&gt; {},
+      desire =&gt; {
+        C002 =&gt; &quot;21.8707742235897&quot;
+      },
+      greed =&gt; {
+        C003 =&gt; 0,
+        C005 =&gt; 0
+      },
+      id =&gt; &quot;P005&quot;,
+      liability =&gt; &quot;-144.520507641915&quot;,
+      possession =&gt; {
+        C003 =&gt; {
+          quota =&gt; 2,
+          term =&gt; &quot;7.35749096965106&quot;
+        }
+      }
+    }, 'Main::_Player' )
+  },
+  previous_gross_essential_consumption =&gt; &quot;18.4612245946956&quot;,
+  tactics =&gt; [
+    [
+      &quot;T001&quot;,
+      bless( {
+        id =&gt; &quot;T001&quot;,
+        type =&gt; &quot;dumper&quot;
+      }, 'Main::_DumperTactics' )
+    ]
+  ],
+  tactics_data =&gt; {},
+  term =&gt; 100,
+  term_rest =&gt; 1
+}, 'Main::_Market' )
+
+次は「二つの基本戦術」をありにしてみよう。
+
+$ perl simple_market_0.pl -d0 --srand=0 --term=100 --player=5 --luxury=2 --essential=3 --tactics-desire-greed-convert --tactics-dumper &gt; simple_market_0_with_convert.log
+TERM001:
+TERM002:
+  ：
+  ：
+TERM100:
+
+このときの最終期は次のようになっている。ただし、「取引」はほとんど起こらなかったようだ。
+
+TERM100:
+$market = bless( {
+  current_essential =&gt; {
+    C003 =&gt; {
+      P001 =&gt; &quot;1.38585848705482&quot;,
+      P004 =&gt; &quot;1.35418264860133&quot;,
+      P005 =&gt; &quot;0.764173024821585&quot;
+    },
+    C004 =&gt; {
+      P001 =&gt; &quot;1.39482895434153&quot;,
+      P003 =&gt; &quot;1.22323239642829&quot;
+    },
+    C005 =&gt; {
+      P001 =&gt; &quot;1.11098402290041&quot;,
+      P003 =&gt; &quot;1.33341620305035&quot;,
+      P005 =&gt; &quot;1.42270552055381&quot;
+    }
+  },
+  current_gross_essential_consumption =&gt; &quot;10.9979581450734&quot;,
+  current_luxury =&gt; {
+    C002 =&gt; {
+      P004 =&gt; &quot;7.34410057579468&quot;
+    }
+  },
+  essential =&gt; {
+    C003 =&gt; bless( {
+      id =&gt; &quot;C003&quot;,
+      need =&gt; &quot;3.5&quot;,
+      type =&gt; &quot;essential&quot;
+    }, 'Main::_EssentialCommodity' ),
+    C004 =&gt; bless( {
+      id =&gt; &quot;C004&quot;,
+      need =&gt; &quot;3.5&quot;,
+      type =&gt; &quot;essential&quot;
+    }, 'Main::_EssentialCommodity' ),
+    C005 =&gt; bless( {
+      id =&gt; &quot;C005&quot;,
+      need =&gt; &quot;3.5&quot;,
+      type =&gt; &quot;essential&quot;
+    }, 'Main::_EssentialCommodity' )
+  },
+  luxury =&gt; {
+    C001 =&gt; bless( {
+      difficulty =&gt; &quot;0.8&quot;,
+      id =&gt; &quot;C001&quot;,
+      simplicity =&gt; &quot;0.7&quot;,
+      type =&gt; &quot;luxury&quot;
+    }, 'Main::_LuxuryCommodity' ),
+    C002 =&gt; bless( {
+      difficulty =&gt; &quot;0.8&quot;,
+      id =&gt; &quot;C002&quot;,
+      simplicity =&gt; &quot;0.7&quot;,
+      type =&gt; &quot;luxury&quot;
+    }, 'Main::_LuxuryCommodity' )
+  },
+  player =&gt; {
+    P001 =&gt; bless( {
+      asset =&gt; &quot;292.526322259257&quot;,
+      current_consumption_essential =&gt; {
+        C003 =&gt; &quot;2.23031567717946&quot;,
+        C004 =&gt; &quot;2.3510791744675&quot;,
+        C005 =&gt; &quot;2.19959162901469&quot;
+      },
+      current_consumption_luxury =&gt; {
+        C002 =&gt; &quot;21.8707742235897&quot;
+      },
+      current_income_essential =&gt; {
+        C003 =&gt; &quot;4.41026399711994&quot;,
+        C004 =&gt; &quot;6.26294205353971&quot;,
+        C005 =&gt; &quot;3.15961253315821&quot;
+      },
+      current_income_luxury =&gt; {},
+      desire =&gt; {
+        C002 =&gt; &quot;29.3189043379945&quot;
+      },
+      greed =&gt; {
+        C003 =&gt; &quot;3.6528380880111&quot;,
+        C004 =&gt; &quot;3.5628484740355&quot;,
+        C005 =&gt; &quot;7.25595615938614&quot;
+      },
+      id =&gt; &quot;P001&quot;,
+      liability =&gt; &quot;98.9365858742281&quot;,
+      possession =&gt; {
+        C003 =&gt; {
+          quota =&gt; 1,
+          term =&gt; &quot;7.27451057789084&quot;
+        },
+        C004 =&gt; {
+          quota =&gt; 1,
+          term =&gt; &quot;9.24261590725239&quot;
+        },
+        C005 =&gt; {
+          quota =&gt; 1,
+          term =&gt; &quot;10.712607419061&quot;
+        }
+      }
+    }, 'Main::_Player' ),
+    P002 =&gt; bless( {
+      asset =&gt; &quot;185.207825577778&quot;,
+      current_consumption_essential =&gt; {
+        C003 =&gt; &quot;2.23031567717946&quot;,
+        C004 =&gt; &quot;2.3510791744675&quot;,
+        C005 =&gt; &quot;2.19959162901469&quot;
+      },
+      current_consumption_luxury =&gt; {},
+      current_income_essential =&gt; {},
+      current_income_luxury =&gt; {},
+      desire =&gt; {
+        C002 =&gt; &quot;-18.1103647838689&quot;
+      },
+      greed =&gt; {},
+      id =&gt; &quot;P002&quot;,
+      liability =&gt; &quot;3.85679939366609&quot;,
+      possession =&gt; {}
+    }, 'Main::_Player' ),
+    P003 =&gt; bless( {
+      asset =&gt; &quot;257.042434291185&quot;,
+      current_consumption_essential =&gt; {
+        C003 =&gt; &quot;2.23031567717946&quot;,
+        C004 =&gt; &quot;2.3510791744675&quot;,
+        C005 =&gt; &quot;2.19959162901469&quot;
+      },
+      current_consumption_luxury =&gt; {},
+      current_income_essential =&gt; {
+        C004 =&gt; &quot;5.4924538187978&quot;,
+        C005 =&gt; &quot;3.7922044423962&quot;
+      },
+      current_income_luxury =&gt; {},
+      desire =&gt; {
+        C002 =&gt; &quot;6.81648344618042&quot;
+      },
+      greed =&gt; {
+        C004 =&gt; &quot;5.54745907697928&quot;,
+        C005 =&gt; &quot;4.20004644522383&quot;
+      },
+      id =&gt; &quot;P003&quot;,
+      liability =&gt; &quot;3.30105390426006&quot;,
+      possession =&gt; {
+        C004 =&gt; {
+          quota =&gt; 3,
+          term =&gt; &quot;6.25529138245987&quot;
+        },
+        C005 =&gt; {
+          quota =&gt; 3,
+          term =&gt; &quot;15.3199029030476&quot;
+        }
+      }
+    }, 'Main::_Player' ),
+    P004 =&gt; bless( {
+      asset =&gt; &quot;201.865083277347&quot;,
+      current_consumption_essential =&gt; {
+        C003 =&gt; &quot;2.23031567717946&quot;,
+        C004 =&gt; &quot;2.3510791744675&quot;,
+        C005 =&gt; &quot;2.19959162901469&quot;
+      },
+      current_consumption_luxury =&gt; {},
+      current_income_essential =&gt; {
+        C003 =&gt; &quot;4.30946091281162&quot;
+      },
+      current_income_luxury =&gt; {
+        C002 =&gt; &quot;21.8707742235897&quot;
+      },
+      desire =&gt; {
+        C002 =&gt; &quot;2.90340762051466&quot;
+      },
+      greed =&gt; {
+        C003 =&gt; &quot;4.51066952551896&quot;
+      },
+      id =&gt; &quot;P004&quot;,
+      liability =&gt; &quot;88.4260684697607&quot;,
+      possession =&gt; {
+        C003 =&gt; {
+          quota =&gt; 1,
+          term =&gt; &quot;7.42209534715529&quot;
+        }
+      }
+    }, 'Main::_Player' ),
+    P005 =&gt; bless( {
+      asset =&gt; &quot;135.33376898518&quot;,
+      current_consumption_essential =&gt; {
+        C003 =&gt; &quot;2.23031567717946&quot;,
+        C004 =&gt; &quot;2.3510791744675&quot;,
+        C005 =&gt; &quot;2.19959162901469&quot;
+      },
+      current_consumption_luxury =&gt; {},
+      current_income_essential =&gt; {
+        C003 =&gt; &quot;2.43185347596573&quot;,
+        C005 =&gt; &quot;4.04614116951901&quot;
+      },
+      current_income_luxury =&gt; {},
+      desire =&gt; {
+        C002 =&gt; &quot;21.8707742235897&quot;
+      },
+      greed =&gt; {
+        C003 =&gt; 0,
+        C005 =&gt; 0
+      },
+      id =&gt; &quot;P005&quot;,
+      liability =&gt; &quot;-144.520507641915&quot;,
+      possession =&gt; {
+        C003 =&gt; {
+          quota =&gt; 2,
+          term =&gt; &quot;7.35749096965106&quot;
+        }
+      }
+    }, 'Main::_Player' )
+  },
+  previous_gross_essential_consumption =&gt; &quot;18.4612245946956&quot;,
+  tactics =&gt; [
+    [
+      &quot;T001&quot;,
+      bless( {
+        essential_convert_unit =&gt; &quot;0.1&quot;,
+        id =&gt; &quot;T001&quot;,
+        type =&gt; &quot;desire_greed_convert&quot;
+      }, 'Main::_DesireGreedConvertTactics' )
+    ],
+    [
+      &quot;T002&quot;,
+      bless( {
+        id =&gt; &quot;T002&quot;,
+        type =&gt; &quot;dumper&quot;
+      }, 'Main::_DumperTactics' )
+    ]
+  ],
+  tactics_data =&gt; {
+    T001 =&gt; {
+      name =&gt; &quot;desire_greed_convert&quot;,
+      owe =&gt; {}
+    }
+  },
+  term =&gt; 100,
+  term_rest =&gt; 1
+}, 'Main::_Market' )
+
+実は、これを公開するときにも出力を読んではじめてバグを見つけて修正したりした。以上が意図通り動いているか自信がないが、とりあえずこのシミュレーションでは asset はどんどん膨らむが、liability の総量は変化しない。以前のバージョンでは liability も膨らんでいたが、必需品の買い手の価格の計算でおかしなところを直したことで、恥ずかしながら、やっと、このモデルでは liability の総量が変化しないことに気づいた。
+
+■課題
+  
+そもそもの動機はペニーオークションが無尽講ではないかという疑問に対し、何らかのモデルを作って確かめるべきだと考えたところにある。ミクロな取引の「外側」というのを、簡単でいいかから何か表現する手段が欲しかった。昔も経済モデルを作ろうとしては何度も頓挫していたが、久しぶりにそもそも今の私ならどう経済モデルを作るだろうという関心をもって、作ってみたのが本稿のモデルである。
+
+今回は動くところまでは持ってきたが、昔、何度も頓挫しただけあって、これ以上ないくらい簡単にしたつもりのわりには、解析にまで手を回すのは、かなり難しそうな印象がある。正直、まだ、ほとんど解析できておらず、上のプログラムが「意図」したとおり動いているかどうかも確かめられていない。
+
+ただ、いつものごとくここで「頓挫」としておいて次を期すほどの「野心」のようなものはすでに私にはないと言ってよく、中途半端であることは重々承知しつつも、まずは公開するのを急いだ。
+
+よって、課題だらけと言っていいが、ちょっとした解析とそれに基づくブラッシュアップはすぐにでもしたい。そして最初の目標であったペニーオークションのモデル化については、ゆっくり考えていくつもりである。
+
+■参考文献
+  
+経済学は大学の教養課程と独学でちょっとかじっただけと言え、最近は経済プロパーなブログをチェックしているわけではない。特に参考文献とした経済学の文献がないのは申し訳ないかぎりである。
+
+  ●simple_market_0.tar.gz。Perl 実装のソースと実行ログをアーカイブしたもの。(「tar xvzf ファイル名」や、他のアーカイバソフトでも展開可能。tgz 形式と書かれているやつかもしれない。)
+  ●『歴史は「べき乗則」で動く』(マーク・ブキャナン 著, 水谷 淳 訳, ハヤカワ文庫)。内作用と外作用の臨界が一致するモデルというのは、この本の第9章にある。
+  ●《経済がわからない - 悪魔の妄想》。最近、私の別の記事から見つけた関心領域の重なりを感じる関連記事。
+  ●《古風な経済学の講義から脱出するために - hiroyukikojimaの日記》。数学書も書いてる経済学者の記事。経済プロパーでないため、どこにトラックバックすれば良いかも私はわからないのだが、ガロア理論の本を読んだことがあるよしみで、関連研究者としてリンクした。たまたまオークションに関する本に関して書いてあった最近の記事にリンクしている。
+  ●《「日銀カード（仮称）」構想》。ずっと以前に私が書いた経済に関する考察。金利と経済の関わりなども書いている。国家、特に税に力点を置いたのは、消費税還付論を援護するためでもあった。
+  ●《集合論雑記 - かがみのホームページ》。数理論理学では、集合論の強制法など、「外側」を作って、そこから「内側」のモデルを作っていくことがある。そういったところからもインスピレーションは得ている。
+  ●《参考文献：確率論》。私には、確率モデルに関しては、論理学との「アマルガム」を作りたいという思いもあって、本稿は《コンピュータ定理証明における弁証法 − 私が作りたいシステム》とはまた違う方向から、そこにアプローチしていると言えるかもしれない。宗教哲学的側面からは《シミュレーション・アーギュメントを論駁する》という記事も書いている。
+  ●《Perl でオブジェクト指向 C++風》。今回、Perl で実装するに際し、かねてからの懸案だった問題をやっと解決した。これが、コーディングスピードの上昇をもたらし、ひいてはすばやい公開につながったのだと思う。
+  ●《ミクロ経済学の我流シミュレーション》。micro_economy_*.py。最適化を大胆に用いた商品市場モデル。(2019年5月31日追記。)
+  ●《資産市場の簡易シミュレーション》。simple_market_a1_*.py。この記事に対する更新のようなもの。が、多くのアイデアが失われているのも事実。 (2019年5月31日追記。)
+    
+更新：2011-01-08,2011-02-02,2011-03-15,2012-12-25
+初公開：2011年01月09日 00:18:55
+最新版：2019年05月31日 20:02:17</pre>
+<details class="trackbacks" data-pagefind-ignore><summary>Trackbacks (4 件)</summary><pre>
+Trackbacks:
+
+《<a href="http://jrf.cocolog-nifty.com/column/2011/01/post-1.html">時間泥棒の夕べ</a>》 from JRF の私見：雑記
+「量子」という考え方を御存知あろう。その特徴として、複数の排他的状態が「可能性」として現実に並存し、観測によってその状態が確定する解釈が有名である。喩[たと]えれば、先に書いた七芒星の埋め込みの記事で、平面への展開図が発散する方向は確定していないが、空間への埋め込みにおいては、グラフの作画者はスピンの巻き方を左(InLeft)か右(InRight)に決定せざるをえないようなものだ。 この図のグラフ... 
+
+受信： 2011-01-20 20:01:24 (JST)
+
+
+《<a href="http://jrf.cocolog-nifty.com/column/2011/03/post.html">重要な更新情報: 受け取ったはてなポイントの分配を行います</a>》 from JRF の私見：雑記
+2011年3月1日に、匿名で(ポイント授受としては)高額のはてなポイントを受け取りました。(どなたか存じませんが、ありがとうございます。)それまでにいただいたポイントの累計額は、分配するには少なかったので、「送られたポイントは別枠で一切使わないようにする」という方針をとってきましたが、高額のポイントを受け取った以上、これを役立てる必要があると考え、それを分配することにしました。 分配方法を決めるに... 
+
+受信： 2011-03-03 02:23:16 (JST)
+
+
+《<a href="http://jrf.cocolog-nifty.com/column/2011/11/post.html">易双六(ようすこう) - タロットカードを使った一人遊び</a>》 from JRF の私見：雑記
+概要 このゲームは、タロットカードを使ったソリティアの一種ということになるだろう。 タロットカードの大アルカナ 22 枚(-2枚)をシャッフルして6 枚を引き、それを並べて盤面とし、プレイヤーのトークンを置く。シャッフルした小アルカナ 56 枚( 大アルカナ一枚)を一枚づつ引いてそれ従ってトークンを移動させる。ゲーム終了時のトークンの位置で勝敗が決まるゲーム。 易とタロットカードの意味を参考にして... 
+
+受信： 2011-11-09 07:06:55 (JST)
+
+
+《<a href="http://jrf.cocolog-nifty.com/society/2018/03/post.html">ミクロ経済学の我流シミュレーション</a>》 from JRF の私見：税・経済・法
+ミクロ経済学に基づき、経済シミュレーションまたはゲームを作った。モデル自体は簡単なものなのだが、「動く」までにするのが一苦労であった。コンピュータでシミュレーションができるようになるまでには、いろいろ決め難いことを決めねばならない。あいまいにしたいことがあれば、どうやってあいまいにするのか、乱数を使うならどのような乱数を使うのかを決めなければならない。企業が赤字の場合どうするか、パラメータが 0 ... 
+
+受信： 2018-03-19 17:28:50 (JST)
+
+
+Comments:
+
+[E:atm] 更新：リンクをいくつか足した。本文は何もかえてない。…関心は似ていても抱いている思いは違う。しかし、コンピュータの時代に数学を修めたあと、彼らは働き、遊んでいるのは私だ。ただ、いいたいこともわからないではないから、似たところに辿り着いたのは「小人さん」達のせいばかりではないだろう…とかチラと思う。まぁ、ただの妄想。
+
+投稿: JRF | 2011-01-09 19:25:09 (JST)
+
+[E:carouselpony] 更新：バージョンを1.01 にした。DesireGreedConvertTactics が「greed の低い者」に廃棄という条件を使ってなかったので、そこを修正、他ちょこちょこといじっている。これにより、上の出力結果の数値が変わるが、まだ変更は反映していない。上の tar.gz を新しいバージョンのものに差しかえているが、変更前のアーカイブは simple_market_0-20110109.tar.gz で、今回のアーカイブは simple_market_0-20110111.tar.gz でもダウンロードできる。
+
+投稿: JRF | 2011-01-11 16:10:43 (JST)
+
+[E:coldsweats02] 更新：「greed の低い者」に廃棄させるというのが、そうなってなかったことを発見し、fix。急遽、バージョンを 1.02 にする。今回のアーカイブは simple_market_0-20110111_2.tar.gz。ついでなので出力結果も記事に反映しておいた。このバージョンアップの間、誰もこの記事を読んだ形跡がないのがトホホな感じ。orz しばらくはこんな感じで不安定な状態が続きそう。orz
+
+投稿: JRF | 2011-01-11 19:55:07 (JST)
+
+[E:dollar] 更新：少し解析をしていて、その成果を反映し「ブラッシュアップ」した。…といっても、powered_normal_rand まわりの解析をしただけだが。
+
+ここまでで、greed に関してはこれ以上の解析は私には困難であることがわかった。ソートの分布が多項式になる…というところまではできるが、その先に冪乗根の和の条件を付して重積分を行う必要がありそうで、そこで私はお手上げである。
+
+一方、desire に関しては基礎的なところ以外はどこから手を付けるべきかもわかりにくい。また、アイデアとしてbalance_mail_redirect のアルゴリズムを嗜好品の生産か需要かどちらかに使うのがおもしろそうだなどという考えが浮かんでいる。
+
+解析というよりは統計的手法を用いた「分析」が必要だろうと考えている。このシミュレーションの特殊な状態として、必需品は必ずすべて「廃棄」させ、嗜好品は必ずすべて 0 まで価格低下させると、ほとんどシステムが動かない「ゲームオーバー」の状態になる。ここから逆に廃棄や価格低下を一部やめることで「変分」を見るような分析ができるだろう。この変分と、同じ頻度なのに、より効果的な「内作用」を見つけるといったことが、おもしろい結果となるかもしれない。……などと夢想している。
+
+ただ、そういう「計画」はあるものの、ちょっと手詰まり感があり、少し間を置いて、ほかのことに時間を使いたいと思っている。しばらく、本格的なプログラムの更新がないだろうということで、これまでのところの「スナップショット」を公開しておこう…というのが今回の記事の更新の動機である。
+
+今回は、バージョン 1.03 でアーカイブは simple_market_0-20110202.tar.gz。オプション周りでは、srand をオプションとして指定するようになったところが注意すべき変更である。
+
+投稿: JRF | 2011-02-02 17:38:13 (JST)
+
+[E:music] 更新：メインのところに変更はないが、DesireGreedConvertTactics を、自分が生産者のときは自分より低い greed の者に廃棄させ、自分が非生産者のときは、need よりも生産が少ないかギリギリのとき、greed の高い生産者から廃棄させるようにした。当然、自己への owe が解消されなくなったが…。また、owe の解消は、必ず 10% ではなく 0.1 ずつの累積を認め、100% 廃棄にも対応した。
+
+ただ、上の更新自体は前回の更新のあとすぐに行っており、今回、バージョンアップという形を取ったのは、ポイントがらみのモデルを造っていて、simple_market との絡みも少し考えようかと思っていたが、大震災のため、そうする精神的余祐がないと認めてしまいたかったというのが一つ。また、同じく大震災前に考えていたモデルがらみのことを吐き出してしまっておきたかったというのが一つ。
+
+で、考えていたことだが、一つは、「資産減耗遷移(または資産減耗埋め込み)」…上の記事では資産減耗を定率で行うことなどを考えていたが、そうではなく、「定常状態」にあるときなどに、埋め込まれたシステムに遷移することで、catastrophic に資産減耗を実現するということを考えていた。埋め込まれた先では、埋め込まれる元の経済が埋め込まれているかもしれない。また、複数ある「子」経済のうちの一つに遷移するかもしれない。
+
+また、一つは、アバウトミーに書いたことだが、すなわち、「実数」で乱数を作るとき、値の重なりは普通無視して良いが、「意志」により、ある乱数の値まで「価格低下」することを認めるなら、値が重なる者の「評価の順序」がシステムに与える影響を無視できないということ。これに対していずれ解決策を出す必要がある。それに付随して、「公共財遷移」…文化的 possession などを公共財として説明したくなることへの牽制として、possesion や asset に「ふさわしくない」生産があると、それを公共財からの付与として負担を要求する戦術を考えていた。
+
+さらに、一つは、liability の総量が変わらない「不自然さ」に気づき、乱数の「平等」を気にするなら、逆に、「平等」をわざと崩して特定のものにマイナスの liability を集中する「中央銀行モデル」…「最強」のプレイヤーが存在し、その者の liability がどんどん減っていく tactics があればいいのではないかと考えていた。その「強さ」がどれぐらい弱くても「中央銀行」として成り立つかに興味がある。
+
+こういったちょっと誇大妄想的なアイデアは、実現の難しさには差がある(「中央銀行モデル」は簡単かな？)が、かなりモデルの様相を変えるものであるので、実装する気になかなかなれなかった。それが大震災で、もうそちらには私は手が出せないような気がしてきたので、アイデアだけ公開しておいた。
+
+今回は、バージョン 1.04 でアーカイブは simple_market_0-20110315.tar.gz。
+
+投稿: JRF | 2011-03-15 20:46:38 (JST)
+
+[E:fastfood] 更新：simple_market_0-20121225.tar.gz。バージョン 1.05。
+
+必需品の random_produce のミスを修正。上の記事のソース部分を読んでて間違いに気付いた。記事の該当部分と計算結果を更新した。
+
+投稿: JRF | 2012-12-25 19:57:09 (JST)
+
+
+Links:
+
+ソース: /archive/simple_market/simple_market_0.pl
+ペニーオークションが無尽講ではないか: http://jrf.aboutme.jp/user_statuses/show/135109
+simple_market_0.tar.gz: /archive/simple_market/simple_market_0.tar.gz
+歴史は「べき乗則」で動く: http://www.amazon.co.jp/dp/4150503583
+経済がわからない - 悪魔の妄想: http://d.hatena.ne.jp/rikunora/20090808/p1
+古風な経済学の講義から脱出するために - hiroyukikojimaの日記: http://d.hatena.ne.jp/hiroyukikojima/20101107/1289143177
+「日銀カード（仮称）」構想: http://jrf.cocolog-nifty.com/society/2006/09/post.html
+集合論雑記 - かがみのホームページ: http://evariste.jp/kagami/diary/0000/settheory.html
+参考文献：確率論: http://jrf.cocolog-nifty.com/column/2006/06/post.html
+コンピュータ定理証明における弁証法 − 私が作りたいシステム: http://jrf.cocolog-nifty.com/column/2006/09/post_2.html
+シミュレーション・アーギュメントを論駁する: http://jrf.cocolog-nifty.com/religion/2006/10/post.html
+Perl でオブジェクト指向 C++風: http://jrf.cocolog-nifty.com/software/2010/12/post.html
+ミクロ経済学の我流シミュレーション: http://jrf.cocolog-nifty.com/society/2018/03/post.html
+資産市場の簡易シミュレーション: http://jrf.cocolog-nifty.com/society/2019/05/post-9da6e7.html
+simple_market_0-20110109.tar.gz: http://jrf.cocolog-nifty.com/archive/simple_market/simple_market_0-20110109.tar.gz
+simple_market_0-20110111.tar.gz: http://jrf.cocolog-nifty.com/archive/simple_market/simple_market_0-20110111.tar.gz
+simple_market_0-20110111_2.tar.gz: http://jrf.cocolog-nifty.com/archive/simple_market/simple_market_0-20110111_2.tar.gz
+balance_mail_redirect: http://jrf.cocolog-nifty.com/software/2010/05/post-2.html
+simple_market_0-20110202.tar.gz: http://jrf.cocolog-nifty.com/archive/simple_market/simple_market_0-20110202.tar.gz
+ポイントがらみのモデル: http://jrf.cocolog-nifty.com/column/2011/03/post.html
+大震災: http://jrf.aboutme.jp/user_statuses/show/137553
+アバウトミーに書いた: http://jrf.aboutme.jp/user_statuses/show/136350
+simple_market_0-20110315.tar.gz: http://jrf.cocolog-nifty.com/archive/simple_market/simple_market_0-20110315.tar.gz
+simple_market_0-20121225.tar.gz: http://jrf.cocolog-nifty.com/archive/simple_market/simple_market_0-20121225.tar.gz
+
+
+
+</pre></details>
+
+<section class="backrefs" data-pagefind-ignore>
+<h2>後方参照 (34 件)</h2>
+<ul>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2025/11/statuses_cocolog_95733565.html">ひとこと</a> <span class="backref-date">2025年11月22日</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2024/02/statuses_cocolog_94703217.html">ひとこと</a> <span class="backref-date">2024年02月21日</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2019/05/society_91037181.html">資産市場の簡易シミュレーション</a> <span class="backref-date">2019年05月31日 19:54:35</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2019/05/statuses_cocolog_91037236.html">ひとこと</a> <span class="backref-date">2019年05月31日</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2019/05/statuses_cocolog_91020330.html">ひとこと</a> <span class="backref-date">2019年05月24日</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2019/02/statuses_cocolog_90689746.html">ひとこと</a> <span class="backref-date">2019年02月15日</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2018/05/statuses_cocolog_89428585.html">ひとこと</a> <span class="backref-date">2018年05月31日</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2018/03/society_89066973.html">ミクロ経済学の我流シミュレーション その１ 基礎経済モデル</a> <span class="backref-date">2018年03月19日 17:04:10</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2017/01/statuses_cocolog_86784687.html">ひとこと</a> <span class="backref-date">2017年01月30日</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2016/06/statuses_cocolog_85384301.html">ひとこと</a> <span class="backref-date">2016年06月18日</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2016/04/column_84884157.html">前期の翌日(2016-01-01)から昨日(2016-03-31)まで 91 日間のアクセス解析・近況など</a> <span class="backref-date">2016年04月01日 12:53:25</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2016/01/column_84274746.html">前期の翌日(2015-10-01)から昨日(2015-12-31)まで 92 日間のアクセス解析・近況など</a> <span class="backref-date">2016年01月01日 01:58:23</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2015/10/column_83514430.html">前期の翌日(2015-07-01)から昨日(2015-09-30)まで 92 日間のアクセス解析・近況など</a> <span class="backref-date">2015年10月01日 13:47:48</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2015/08/statuses_cocolog_83220604.html">ひとこと</a> <span class="backref-date">2015年08月26日</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2015/07/column_82774604.html">前期の翌日(2015-04-01)から昨日(2015-06-30)まで 91 日間のアクセス解析・近況など</a> <span class="backref-date">2015年07月01日 05:36:05</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2015/04/column_82138851.html">前期の翌日(2015-01-01)から昨日(2015-03-31)まで 90 日間のアクセス解析・近況など</a> <span class="backref-date">2015年04月01日 09:16:30</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2015/01/column_81484128.html">前期の翌日(2014-10-01)から昨日(2014-12-31)まで 92 日間のアクセス解析・近況など</a> <span class="backref-date">2015年01月01日 06:55:14</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2014/10/column_80751818.html">前期の翌日(2014-07-01)から昨日(2014-09-30)まで 92 日間のアクセス解析・近況など</a> <span class="backref-date">2014年10月01日 05:31:54</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2014/07/column_80047968.html">前期の翌日(2014-04-01)から昨日(2014-06-30)まで 91 日間のアクセス解析・近況など</a> <span class="backref-date">2014年07月01日 09:02:01</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2014/06/statuses_cocolog_79824785.html">ひとこと</a> <span class="backref-date">2014年06月02日</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2014/04/column_79318735.html">前期の翌日(2014-01-01)から昨日(2014-03-31)まで 90 日間のアクセス解析・近況など</a> <span class="backref-date">2014年04月01日 06:35:22</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2014/02/statuses_cocolog_79036705.html">ひとこと</a> <span class="backref-date">2014年02月24日</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2014/01/column_78565892.html">前期の翌日(2013-10-01)から昨日(2013-12-31)まで 92 日間のアクセス解析・近況など</a> <span class="backref-date">2014年01月01日 01:27:22</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2013/10/column_77781983.html">前期の翌日(2013-07-01)から昨日(2013-09-30)まで 92 日間のアクセス解析・近況など</a> <span class="backref-date">2013年10月01日 01:14:59</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2013/07/column_76937312.html">前期の翌日(2013-04-01)から昨日(2013-06-30)まで 91 日間のアクセス解析・近況など</a> <span class="backref-date">2013年07月01日 01:50:58</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2013/04/column_76057634.html">前期の翌日(2013-01-01)から昨日(2013-03-31)まで 90 日間のアクセス解析・近況など</a> <span class="backref-date">2013年04月01日 01:17:46</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2013/01/column_75158671.html">前期の翌日(2013-10-01)から昨日(2012-12-31)まで 92 日間のアクセス解析・近況など</a> <span class="backref-date">2013年01月01日 01:17:42</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2012/10/column_74229152.html">前期の翌日(2012-07-01)から昨日(2012-09-30)まで 92 日間のアクセス解析・近況など</a> <span class="backref-date">2012年10月01日 03:24:01</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2011/11/column_70485258.html">易双六(ようすこう) - タロットカードを使った一人遊び</a> <span class="backref-date">2011年11月09日 07:00:14</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2011/03/statuses_aboutme_137668.html">ひとこと</a> <span class="backref-date">2011年03月15日</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2011/03/column_67315591.html">重要な更新情報: 受け取ったはてなポイントの分配を行います</a> <span class="backref-date">2011年03月02日 18:59:39</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2011/02/statuses_aboutme_136350.html">ひとこと</a> <span class="backref-date">2011年02月04日</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2011/01/statuses_aboutme_135594.html">ひとこと</a> <span class="backref-date">2011年01月11日</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2011/01/statuses_aboutme_135496.html">ひとこと</a> <span class="backref-date">2011年01月07日</span></li>
+</ul>
+</section>
+
+</article>
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2011/01.html">2011年01月</a> | <a href="../../../index/society.html">税・経済・法</a></nav>
+</body>
+</html>

@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>ひとこと - JRF Blog Archive</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2021/07.html">2021年07月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+<article data-pagefind-body>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[statuses] <span class="cocolog-id">cocolog:92875018</span></td></tr>
+<tr><th>セクション</th><td>JRF のひとこと</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2021/07.html">2021年07月13日</a></td></tr>
+<tr><th>元URL</th><td><a href="http://jrf.cocolog-nifty.com/statuses/2021/07/post-af8d54.html" class="ext-link"><span class="original-url">http://jrf.cocolog-nifty.com/statuses/2021/07/post-af8d54.html</span></a></td></tr>
+
+</table>
+</div>
+<h1>ひとこと</h1>
+<pre class="body">Windows の Python で signal.signal を使って Ctrl-C (SIGINT) でデバッガに入るような処理を書こうと思ったのだがうまくいかない。
+JRF 2021年7月13日
+
+(「グローバル共有メモ」で書いたことのほぼコピペ。日本語でググっても良い情報がないので、こちらにも書いておく。)
+
+JRF 2021年7月13日
+
+実は下記のようなエラーが出ているのだが、最初のころから出ていたため、これが普通だと思っていた。
+
+JRF 2021年7月13日
+
+&lt;pre&gt;
+forrtl: error (200): program aborting due to control-C event
+Image              PC                Routine            Line        Source
+
+libifcoremd.dll    00007FFFAD7D3B58  Unknown               Unknown  Unknown
+(…)
+QObject::~QObject: Timers cannot be stopped from another thread
+&lt;/pre&gt;
+
+JRF 2021年7月13日
+
+このエラーで、ググると、Python 2.7系から scipy などにあるエラーらしい。私は Python 3.7 系でも直っておらずこのエラーが続いていた。
+
+JRF 2021年7月13日
+
+《Ctrl-C crashes Python after importing scipy.stats - Stack Overflow》  
+<a href="https://stackoverflow.com/questions/15457786/ctrl-c-crashes-python-after-importing-scipy-stats" class="ext-link">https://stackoverflow.com/questions/15457786/ctrl-c-crashes-python-after-importing-scipy-stats</a>
+
+↑によって、
+
+JRF 2021年7月13日
+
+&lt;pre&gt;
+import os
+os.environ['FOR_DISABLE_CONSOLE_CTRL_HANDLER'] = '1'
+from scipy.stats import zscore
+&lt;/pre&gt;
+
+JRF 2021年7月13日
+
+…となどとすることで解決した。scipy モジュールなどを読み込む前に os.environ[...] = '1' が必要なのがミソらしい。
+
+JRF 2021年7月13日</pre>
+
+
+</article>
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2021/07.html">2021年07月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+</body>
+</html>

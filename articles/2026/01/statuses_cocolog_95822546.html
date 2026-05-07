@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>ひとこと - JRF Blog Archive</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2026/01.html">2026年01月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+<article data-pagefind-body>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[statuses] <span class="cocolog-id">cocolog:95822546</span></td></tr>
+<tr><th>セクション</th><td>JRF のひとこと</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2026/01.html">2026年01月24日</a></td></tr>
+<tr><th>元URL</th><td><a href="http://jrf.cocolog-nifty.com/statuses/2026/01/post-b86e58.html" class="ext-link"><span class="original-url">http://jrf.cocolog-nifty.com/statuses/2026/01/post-b86e58.html</span></a></td></tr>
+
+</table>
+</div>
+<h1>ひとこと</h1>
+<pre class="body">MemoryBanditWorkflow (参: <a href="../../../articles/2025/09/statuses_cocolog_95619779.html" class="int-link cocolog-id" title="ひとこと">[cocolog:95619779]</a>(2025年9月)) を Claude Code などの SKILL.md などを利用して実現するにはどうすればいいか。試みに Claude さん自身に聞いてみた。
+JRF 2026年1月24日
+
+Claude Sonnet 4.5 さんと会話。
+
+JRF 2026年1月24日
+
+……。
+
+jrf:&gt; AIエージェントの試験実装として MemoryBanditWorkflow (参: <a href="../../../articles/2025/09/statuses_cocolog_95619779.html" class="int-link cocolog-id" title="ひとこと">[cocolog:95619779]</a>(2025年9月)) というのを以前作った。
+
+そのとき、メモリ機能として、キーワード検索とベクトル検索が両方備わっていることを前提とした。
+
+しかし、最近の Claude Code はメモリ機能を明には持たず、ファイルで十分であるという設計思想を持つようだ。
+
+この場合、基本的に検索は grep などを使い、必要ならば、ベクトル検索やキーワード検索のデータベースなどを用意し、その用意の仕方などを SKILLS に書くとなるのだろうか？
+
+JRF 2026年1月24日
+
+Claude:&gt; あなたの理解は概ね正しいと思います。
+
+MemoryBanditWorkflowのような試験実装では：
+
+  1. 初期段階: 構造化されたマークダウンファイル + grep
+
+  2. SKILLSに記載: 「メモリが大きくなったらscripts/setup_vector_search.shを実行せよ」
+
+  3. 必要になったら: 実際にベクトル検索インフラを追加
+
+つまり、SKILLSには「いつ、どのように検索インフラを構築するか」の判断基準とスクリプトへの参照を書いておき、実際の構築は必要性が明確になってから行う、という段階的アプローチが実用的だと思います。
+
+JRF 2026年1月24日
+
+……。
+
+jrf:&gt; 定期的作業には、bandit という仕組みを用意した。それは確率的に動作する。MemoryBanditWorkflow は会話形式を持続し、ときおり要約が起こり、空きが確保されるので、システムプロンプト+要約+前回までのチャットが次の要約まで変化せず、そこでコンテクスト効率化ができるようになっていたが、代わりに、定期的に bandit でコンテクストを再構成する必要があった。
+
+こういうことを Claude Code で実現するには、定期的作業を CLAUDE.md に書いておけばいいのだろうか？
+
+JRF 2026年1月24日
+
+Claude:&gt; Claude Codeは「人間が定期的にメンテナンスを指示する」か「Claudeが作業のたびに自動的にチェックスクリプトを実行する習慣を持つ」かのどちらかになります。後者を実現するには、CLAUDE.mdやSKILLSに「作業フローの一部としてメンテナンスチェックを含める」と明記するのが効果的です。
+
+JRF 2026年1月24日
+
+jrf:&gt; なるほど MemoryBanditWorkflow を特別に定義しなくても SKILLS などの枠組みで十分なのですね。勉強になりました。Gemini CLI に SKILLS が実装され、安く使えるときが来るか、Claude Code でのテストが大安売りでできるときにでも、MemoryBanditWorkflow でやっていたことが SKILLS でも実際できるのかをテストしてみたいです。当分は二足歩行実験に忙しいので、当分先の話だとは思いますが。
+
+JRF 2026年1月24日
+
+……。
+
+追記。
+
+jrf:&gt; MemoryBanditWorkflowのメモリ機能では、わざと書き換えに制限を設けていました。個々のメモリのエントリのいっぺんの書き換えは提供せず、文字列を指定しての修正と、追記のみ許していました。なぜかというと、そのころのAIさんたちは、発作的に全体を書き換えて前の情報を消してしまいがちのように思えたからです。
+
+JRF 2026年1月24日
+
+こういうハーネス・制約を Claude Code で実現するにはどうしたらよいのでしょう？ 結局メモリシステムみたいなものを実装しておいて、それを使わせるという方向でしょうか。でも、そうするとファイル機能が「抜け穴」的に使えてしまえますよね。CLAUDE.md で厳しくそれを咎めるのでしょうか？
+
+JRF 2026年1月24日
+
+Claude:&gt; 非常に鋭い指摘ですね。これは「AIの破壊的行動をどう防ぐか」という本質的な問題です。
+
+Claude Codeでは技術的な「完全な強制」は困難です。しかし：
+
+  * 明確で強い警告をCLAUDE.mdに記載
+
+  * 専用ツールで正しい道を簡単にする
+
+  * Gitで安全網を用意する
+
+  * 作業フローに確認ステップを組み込む
+
+この組み合わせで、「抜け穴はあるが、通常は踏まない」状態を作れます。
+
+JRF 2026年1月24日
+
+Claudeは指示に従う傾向が強いので、CLAUDE.mdで「なぜこの制約があるのか」を明確に説明すれば、かなり守ってくれると思います。ただし、完全な保証はないので、Git等での復旧手段は必須ですね。
+
+JRF 2026年1月24日
+
+……。
+
+jrf:&gt; Gemini CLI の動作や Canvas 機能などを見てて思ったのですが、そこでも全体書き換えよりも、差分書き換えが使われてますよね。それで、差分書き換えでも十分だと考えたのでした。実際のところ差分を扱う訓練もかなりされてますよね。Claude さんも。
+
+Claude:&gt; その通りです！ 非常に重要な観察ですね。
+
+つまり、あなたが当時実装した制約は：
+
+「AIの発作的な破壊行動を防ぐ」
+
+という目的だけでなく、
+
+「AIが最も得意で効率的な更新方法を使わせる」
+
+という意味でも正しかったわけです。
+
+JRF 2026年1月24日
+
+あなたの指摘は完全に正しく、むしろ：
+
+「制約」ではなく「ベストプラクティスへの誘導」
+
+として設計すべきですね。
+
+JRF 2026年1月24日
+
+```
+# CLAUDE.md
+
+## メモリ更新のベストプラクティス
+
+差分更新を使うと：
+✅ トークン効率が良い（あなたのコンテクストを節約）
+✅ 変更が明確（意図しない変更を防ぐ）
+✅ AIが最も得意な方式（精度が高い）
+
+推奨ツール: `scripts/memory_patch.py`（差分更新）
+非推奨: 全体書き換え（特別な理由がない限り）
+```
+
+JRF 2026年1月24日
+
+「禁止」ではなく「推奨」という形にすることで、Claudeの自然な動作パターンと一致させられますね。
+
+JRF 2026年1月24日
+
+……。
+
+jrf:&gt; 脳も完全な書き換えは「提供」していませんもんね。
+
+Claude:&gt; まさに！
+
+AI研究者が「差分更新を好むようにモデルを訓練している」のではなく、
+
+「情報を持続的に管理するシステムは、自然と差分更新に収束する」
+
+のかもしれません。
+
+JRF 2026年1月24日
+
+……。
+
+……。
+
+追記。
+
+jrf:&gt; そうか！ ハーネスが効いたメモリとかどう Claude Code でやるのか…と思ったが、そうか、ハーネスが効いたメモリ付きのエージェントを Claude Code に実装させ、さらに実行し管理させればいいのか。Claude Code 自身に長大なメモリがなくても、ファイルと長めのコンテクストで管理はできるのかもしれない。管理人(警察とか)自身が優秀でなくても管理だけは可能なように。
+
+JRF 2026年1月26日
+
+《Jaana Dogan ヤナ ドガン:2026-01-03》  
+<a href="https://x.com/rakyll/status/2007239758158975130" class="ext-link">https://x.com/rakyll/status/2007239758158975130</a>
+
+JRF 2026年1月26日
+
+＞I'm not joking and this isn't funny. We have been trying to build distributed agent orchestrators at Google since last year. There are various options, not everyone is aligned... I gave Claude Code a description of the problem, it generated what we built last year in an hour.
+
+JRF 2026年1月26日
+
+It's not perfect and I'm iterating on it but this is where we are right now. If you are skeptical of coding agents, try it on a domain you are already an expert of. Build something complex from scratch where you can be the judge of the artifacts.
+＜
+
+JRF 2026年1月26日
+
+Claude:&gt; Jaana Doganの事例が示すように、複雑な分散システムでさえ実装できるなら、MemoryBanditWorkflowのようなエージェントシステムも十分実装可能でしょう。
+
+素晴らしい気づきでした！
+
+JRF 2026年1月26日
+
+……。
+
+……。
+
+追記。
+
+○ 2026-01-28T07:13:03Z
+
+MemoryBanditWorkflow。必要なのはどこに最初に・常に見るべきメモリがあるかを記録するようなことで、それは scratchpad や plan に置かれることを想定していた。それらは中目的の開始時に必ず会話に表示されるから。しかし、scratchpad という名前からそのような利用は想定しにくい。「固定メモ(Geminiさん提案: Core Context)」みたいな名前にした方が良かったかもしれない。または、そのようなものも scratchpad とは別に用意して、システムプロンプトで説明するか。
+
+JRF 2026年1月28日
+
+……。
+
+……。
+
+追記。
+
+LangChain に私が欲しいのは skill tree または tool tree になるか。
+
+Claude Code が MemoryBanditWorkflow を使うような「実行エージェント」を作り動かすことで、その実行エージェントでは権限を制約できる…メモリにハーネスを効かしたりできる…ことになる。実行エージェントで重要なのは、Claude Code のように何でもできることではなく、指示されたツールしか使えないこと。
+
+JRF 2026年1月29日
+
+ただ、それでも長く動く実行エージェントにしたいなら、様々なツールを使わせたいのが人情。ツールの記述がコンテクストを圧迫するのを防ぐために Claude Code のような Skills の仕組みが欲しい。
+
+ツールの skill_show でそのディレクトリのスキルを調べ、skill_do でスキルを実行し、skill_cd で作業ディレクトリを変えるようなもの…。能力の低い LLM だと、フルパスの入力ミスが増えるだろうから skill_cd みたいなのはあったほうがいいだろう。
+
+JRF 2026年1月29日
+
+MemoryBanditWorkflow の場合、memory 関連はツールとして残すが bandit や workflow 関連のツールはスキル化してしまうほうがいいだろう。
+
+そして、Claude Code が簡単にスキルを移譲できるように、そういう skill tree で使えるツール形式に SKILL.md などを「コンパイル」できるようになって欲しい。
+
+…とここまで考えてググると、すでに LangChain には Skills の機能があるようだ。それで十分なのかな…。
+
+JRF 2026年1月29日
+
+《Skills - Docs by LangChain》  
+<a href="https://docs.langchain.com/oss/python/langchain/multi-agent/skills" class="ext-link">https://docs.langchain.com/oss/python/langchain/multi-agent/skills</a>
+
+Grok さんや Claude さんによると「ほぼ LangChain の Skills でできる」ようだ。細かい部分はもちろん私の「構想」とは違うのだが。
+
+JRF 2026年1月29日
+
+……。
+
+追記。
+
+○ 2026-01-29T17:06:52Z jqGIsliL30
+
+どうも Grok さんに調べてもらうと、LangChain の Skills では指示またはコードが読めるだけで、その実行はほぼシェルや Python が自由に使えることが前提となっているようだ。それではハーネスとして意味がない。するとコンテクスト汚染を防ぐための skill_do などは独自に実装するしかないようだ。
+
+JRF 2026年1月30日
+
+要は、例えば bandit_schedule というオブジェクト(クラス)に定義された tool を SKILLS という TypeDict に登録する方法は「ない」ようだ。実質的には。これをしようとすれば、単に、bandit_schedule_skills というのをドキュメントとして提供して、create_agent に渡すツールには bandit_schedule そのものも含めるしかないが、これでは bandit_schedule をツールに登録しないことでコンテクスト汚染を減らし、Skills に逃がすという目的が果たせなくなっている。これではダメだ。
+
+JRF 2026年1月30日
+
+しかし、skill_do のようなそれを可能とするような枠組みを作って、果たして、LLM さん達がそれを理解して使ってくれるだろうか…。
+
+JRF 2026年1月30日
+
+……。
+
+追記。
+
+○ 2026-01-29T17:34:57Z
+
+そうか！ 単純な話だ。SKILL.md に skill_do(&quot;bandit_schedule&quot;, arg1,...) を使えと書けばいいんだ。そして skill_do は単純に tool list を保持すればいい。むしろだとすると skill_do だと Skills と混同するから subtool_do みたいな名前のほうがいいな…。 
+
+ディレクトリも考慮するなら、subtool_do(&quot;/bandit/schedule&quot;, arg1,...) みたいにすればいい。
+
+JRF 2026年1月30日
+
+……。
+
+MemoryBanditWorkflow。近々、実装(改良)することにしよう。お金、多少かかるけど。AI さん達に聞いて LangChain 1.0 に対応するメドもだいたいついたし。
+
+JRF 2026年1月30日
+
+……。
+
+……。
+
+追記。
+
+上で言ったことを実装してみた。
+
+JRF 2026年2月4日
+
+……。
+
+○ 2026-02-03T16:59:18Z
+
+「LangChain 1.x 系で熊剣迷路問題」の実験を行った。MemoryBanditWorkflow を LangChain 1.x 系に対応させ、さらにはやりの skills やツールボックスなどの導入に相当する subtool_do の導入も行った。
+
+JRF 2026年2月4日
+
+《langchain_maze_0.0.15.ipynb - GitHub Gist》  
+<a href="https://gist.github.com/JRF-2018/f363356fd1846172ac052e89c288ff8a" class="ext-link">https://gist.github.com/JRF-2018/f363356fd1846172ac052e89c288ff8a</a>
+
+《langchain_maze_0_0_15.ipynb - JRF-2018/langchain_maze》  
+<a href="https://github.com/JRF-2018/langchain_maze/blob/master/langchain_maze_0_0_15.ipynb" class="ext-link">https://github.com/JRF-2018/langchain_maze/blob/master/langchain_maze_0_0_15.ipynb</a>
+
+JRF 2026年2月4日
+
+## サブツールというアイデア
+
+Claude Code はすでに AGI じゃないかと話題だが、私の MemoryBanditWorkflow のようにメモリの使い方にハーネス＝制約を効かせる実装はどうするのだろうか？
+
+おそらく、それは Claude Code にサブエージェント的なものとしてメモリのハーネスの効いたエージェントを実装させることになるのだろう。そういう Claude Code に書かせたものとして、MemoryBanditWorkflow のような枠組みは有効であると思われる。
+
+JRF 2026年2月4日
+
+Claude Code などでは、skills というものがある。これは、MCP などのツール類の情報が肥大化し、それを常にコンテクストに置いておくのは効率が悪いという判断のもと、必要なときに必要なスキルをスキルツリーから「探索」する形で置いておくというアイデアだ…というのが私の認識である。
+
+このようなスキルも MemoryBanditWorkflow に取り込みたい。どうすればいいのだろうか？
+
+JRF 2026年2月4日
+
+Claude Code のスキルでは、Claude Code がシェルや Python コードを実行できることを前提として、コマンドやコードが示される。しかし、シェルや REPL は、ハーネスを効かせたエージェントでは、一般に使わせることなど考えられない。しかし、そうでないとすれば、ツールをすべて用意しておくしかないが、そうすると、コンテクストを「汚染」してしまう。
+
+JRF 2026年2月4日
+
+そこでひらめいたのが、サブツールという考え方である。ツールとしては subtool_do だけがコンテクストに載っていて、どういうサブツールが使えるかは subtool_show で、まるで SKILL.md を読むように後から適宜知る必要がある…とすればいいのではないかと考えた。無限の拡張性をもたせた上での「オンデマンド学習」というわけである。
+
+問題はそれを LLM さん(Gemini さん)が理解してくれるかどうかである。
+
+このあたりのアイデアの軌跡は↓(このページ)にある。
+
+JRF 2026年2月4日
+
+<a href="../../../articles/2026/01/statuses_cocolog_95822546.html" class="int-link cocolog-id" title="ひとこと">[cocolog:95822546]</a>(2026年1月)  
+《MemoryBanditWorkflow (参: <a href="../../../articles/2025/09/statuses_cocolog_95619779.html" class="int-link cocolog-id" title="ひとこと">[cocolog:95619779]</a>(2025年9月)) を Claude Code などの SKILL.md などを利用して実現するにはどうすればいいか。試みに Claude さん自身に聞いてみた。 - JRF のひとこと》  
+<a href="../../../articles/2026/01/statuses_cocolog_95822546.html" class="int-link" title="ひとこと">http://jrf.cocolog-nifty.com/statuses/2026/01/post-b86e58.html</a>
+
+JRF 2026年2月4日
+
+## 前回からの変更点
+
+LangChain 1.x 系に対応した。まず、Pydantic v2 と Gemini の実装のクセらしく型エラーへの対処が難しかったが、なんとか今は動くようになっている。しかし、弥縫策で、この先はどうなるか自信がない。
+
+ツールを格納して必要なツールのみ説明を読んで使うための subtool_do や subtool_show を導入した。subtool_show で表示されるのがおよそ他のフレームワークでは SKILL.md で書かれることに相当する。
+
+JRF 2026年2月4日
+
+## 結論
+
+今回はコストがかかるのを嫌ってはじめからゴールさせるつもりはなく、ワークフローを一度使ったところで実験終了させた。テストは gemini-2.5-flash-lite さんで行い、最終的には gemini-3-flash-preview さんに実行をお願いした。
+
+flash-lite さんは、サブツールの実行はうまくいかないこともあったが、gemini-3 さんは、ちゃんと実行できたようだ。サブツールはまずまずうまくいったというのが私の評価である。
+
+JRF 2026年2月4日
+
+……。
+
+……。
+
+○ 2026-02-03T17:06:25Z
+
+「MemoryBanditWorkflow を使った RAG の試験実装 (LangChain 1.x系)」の実験を行った。先の langchain_maze_0.0.15.ipynb の MemoryBanditWorkflow でも RAG っぽいことをやらせてみた。
+
+JRF 2026年2月4日
+
+《experimental_rag_0.0.16.ipynb - GitHub Gist》  
+<a href="https://gist.github.com/JRF-2018/fc26e7a2e528d7bb9c96163bbbe7688f" class="ext-link">https://gist.github.com/JRF-2018/fc26e7a2e528d7bb9c96163bbbe7688f</a>
+
+《experimental_rag_0_0_16.ipynb - JRF-2018/langchain_maze》  
+<a href="https://github.com/JRF-2018/langchain_maze/blob/master/experimental_rag_0_0_16.ipynb" class="ext-link">https://github.com/JRF-2018/langchain_maze/blob/master/experimental_rag_0_0_16.ipynb</a>
+
+JRF 2026年2月4日
+
+## 結論
+
+gemini-2.5-flash-lite さんでテストし、最後は gemini-3-flash-preview さんにお願した。途中、こちらのミスによる無限ループがわかったところで、一度止めて修正して再実行したそのログをそのまま載せている。コストがかかるのでそうした。ご容赦いただきたい。
+
+サブツールの実行はやはり、難しいらしく、/thesis サブツールを使っての完成は一発ではならなかった。そのサブツールを使うよう、なじったあとは、完成までこぎつけることができた。
+
+JRF 2026年2月4日
+
+ただ、それらの影響かどうか、内容は別として、構造としては前回のほうがよかったように思う。でも、MemoryBanditWorkflow とサブツールの実証実験としてはこんなものだと思う。
+
+JRF 2026年2月4日
+
+……。
+
+……。
+
+追記。
+
+「MemoryBanditWorkflow を使った RAG の試験実装 (LangChain 1.x系)」をバージョン 0.0.16.2 に上げた。変更点は軽微なミスの修正のみ。
+
+JRF 2026年2月4日
+
+《experimental_rag_0.0.16.2.ipynb - GitHub Gist》  
+<a href="https://gist.github.com/JRF-2018/f4f9565095611aea2ab1b24be6596145" class="ext-link">https://gist.github.com/JRF-2018/f4f9565095611aea2ab1b24be6596145</a>
+
+《experimental_rag_0_0_16.ipynb - JRF-2018/langchain_maze》  
+<a href="https://github.com/JRF-2018/langchain_maze/blob/master/experimental_rag_0_0_16.ipynb" class="ext-link">https://github.com/JRF-2018/langchain_maze/blob/master/experimental_rag_0_0_16.ipynb</a>
+
+JRF 2026年2月4日
+
+0.0.16.2 の結論はこうなる。
+
+プロンプトで /thesis サブツール群を使うように指示したせいか、スムーズに行き、最後まで一気に書き上げてくれた。ただ、取材はもう少し長くやって欲しかった印象はある。実証試験としては問題ない。
+
+JRF 2026年2月4日
+
+……。
+
+……。
+
+追記。
+
+「熊剣迷路問題 revisited」の英語版を一応作っておいた。
+
+《langchain_maze_en_0_0_15.ipynb: Bear-Sword Maze Problem with LangChain 1.x - JRF-2018/langchain_maze》  
+<a href="https://github.com/JRF-2018/langchain_maze/blob/master/langchain_maze_en_0_0_15.ipynb" class="ext-link">https://github.com/JRF-2018/langchain_maze/blob/master/langchain_maze_en_0_0_15.ipynb</a>
+
+JRF 2026年2月13日
+
+《langchain_maze_en_0.0.15.ipynb: Bear-Sword Maze Problem with LangChain 1.x - GitHub Gist》  
+<a href="https://gist.github.com/JRF-2018/b79a9e18a1a25898812da0ab4f9df87d" class="ext-link">https://gist.github.com/JRF-2018/b79a9e18a1a25898812da0ab4f9df87d</a>
+
+JRF 2026年2月13日
+
+《experimental_rag_en_0_0_16.ipynb: Experimental RAG Implementation using MemoryBanditWorkflow (LangChain 1.x) - JRF-2018/langchain_maze》  
+<a href="https://github.com/JRF-2018/langchain_maze/blob/master/experimental_rag_en_0_0_16.ipynb" class="ext-link">https://github.com/JRF-2018/langchain_maze/blob/master/experimental_rag_en_0_0_16.ipynb</a>
+
+JRF 2026年2月13日
+
+《experimental_rag_en_0.0.16.ipynb: Experimental RAG Implementation using MemoryBanditWorkflow (LangChain 1.x) - GitHub Gist》  
+<a href="https://gist.github.com/JRF-2018/b5eb29832b4d27e8f9c5b9c718bfb8ac" class="ext-link">https://gist.github.com/JRF-2018/b5eb29832b4d27e8f9c5b9c718bfb8ac</a>
+
+これで見てくれる人が増えたらうれしいんだけど…。
+
+JRF 2026年2月13日
+
+……。
+
+英文告知。
+
+I conducted experiments on &quot;Bear-Sword Maze Problem with LangChain 1.x&quot; and &quot;Experimental RAG Implementation using MemoryBanditWorkflow (LangChain 1.x).&quot;
+
+JRF 2026年2月13日
+
+《langchain_maze_en_0_0_15.ipynb - JRF-2018/langchain_maze》  
+<a href="https://github.com/JRF-2018/langchain_maze/blob/master/langchain_maze_en_0_0_15.ipynb" class="ext-link">https://github.com/JRF-2018/langchain_maze/blob/master/langchain_maze_en_0_0_15.ipynb</a>
+
+JRF 2026年2月13日
+
+《experimental_rag_en_0_0_16.ipynb - JRF-2018/langchain_maze》  
+<a href="https://github.com/JRF-2018/langchain_maze/blob/master/experimental_rag_en_0_0_16.ipynb" class="ext-link">https://github.com/JRF-2018/langchain_maze/blob/master/experimental_rag_en_0_0_16.ipynb</a>
+
+JRF 2026年2月13日
+
+《JRF-2018/langchain_maze: Bear-Sword Maze Problem Revisited (with MemoryBanditWorkflow)》  
+<a href="https://github.com/JRF-2018/langchain_maze" class="ext-link">https://github.com/JRF-2018/langchain_maze</a>
+
+JRF 2026年2月13日
+
+`MemoryBanditWorkflow` is an agent framework created based on experiences with the Bear-Sword Maze problem. It has now been updated to support LangChain 1.x. Furthermore, I have introduced `subtool_do`, which serves as an equivalent to features like &quot;skills&quot; or &quot;toolboxes&quot; in other frameworks.
+
+JRF 2026年2月13日
+
+Although it originated as part of a maze-solving project, I aimed to design it as a versatile framework. This project represents an attempt to build a RAG (Retrieval-Augmented Generation) agent to demonstrate that the framework is indeed capable of general-purpose tasks.
+
+JRF 2026年2月13日
+
+Unlike many complex multi-agent frameworks, `MemoryBanditWorkflow` focuses on a clear, traceable execution path.
+
+JRF 2026年2月13日
+
+……。
+
+……。
+
+追記。
+
+英語版でのちょっとした改良を日本語版にバックポートしておいた。バージョンは langchain_maze は 0.0.15.4 に experimental_rag は 0.0.16.4 に上げておいた。GitHub の langchain_maze のレポジトリからダウンロードしてください。
+
+《JRF-2018/langchain_maze: Bear-Sword Maze Problem Revisited (with MemoryBanditWorkflow)》
+<a href="https://github.com/JRF-2018/langchain_maze" class="ext-link">https://github.com/JRF-2018/langchain_maze</a>
+
+JRF 2026年2月13日
+
+ちなみに、コスト＆結果が変わるのがイヤで、エージェントループは回してない。テストしてない。大丈夫だとは思うけど…。
+
+JRF 2026年2月13日</pre>
+
+
+<section class="backrefs" data-pagefind-ignore>
+<h2>後方参照 (7 件)</h2>
+<ul>
+<li><span class="backref-label">[cocolog:95822546]参照</span> <a href="../../../articles/2026/02/statuses_cocolog_95867020.html">ひとこと</a> <span class="backref-date">2026年02月20日</span></li>
+<li><span class="backref-label">[cocolog:95822546]参照</span> <a href="../../../articles/2026/02/gsm_008497.html">共有メモ</a> <span class="backref-date">2026-02-20T09:05:44Z</span></li>
+<li><span class="backref-label">[cocolog:95822546]参照</span> <a href="../../../articles/2026/02/statuses_cocolog_95858241.html">ひとこと</a> <span class="backref-date">2026年02月16日</span></li>
+<li><span class="backref-label">[cocolog:95822546]参照</span> <a href="../../../articles/2026/02/gsm_008470.html">共有メモ</a> <span class="backref-date">2026-02-14T08:00:48Z</span></li>
+<li><span class="backref-label">[cocolog:95822546]参照</span> <a href="../../../articles/2026/02/gsm_008408.html">共有メモ</a> <span class="backref-date">2026-02-03T16:59:18Z</span></li>
+<li><span class="backref-label">[cocolog:95822546]参照</span> <a href="../../../articles/2026/02/statuses_cocolog_95833608.html">ひとこと</a> <span class="backref-date">2026年02月01日</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2026/01/gsm_008352.html">共有メモ</a> <span class="backref-date">2026-01-24T06:01:57Z</span></li>
+</ul>
+</section>
+
+</article>
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2026/01.html">2026年01月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+</body>
+</html>

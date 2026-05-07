@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>ひとこと - JRF Blog Archive</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2015/11.html">2015年11月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+<article data-pagefind-body>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[statuses] <span class="cocolog-id">cocolog:83987061</span></td></tr>
+<tr><th>セクション</th><td>JRF のひとこと</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2015/11.html">2015年11月26日</a></td></tr>
+<tr><th>元URL</th><td><a href="http://jrf.cocolog-nifty.com/statuses/2015/11/post-27d5.html" class="ext-link"><span class="original-url">http://jrf.cocolog-nifty.com/statuses/2015/11/post-27d5.html</span></a></td></tr>
+
+</table>
+</div>
+<h1>ひとこと</h1>
+<pre class="body">定理証明システム Isabelle (現バージョンは Isabelle2015)をインストールして、その勉強をしている。
+JRF 2015年11月26日
+
+《Isabelle》
+<a href="../../../articles/2016/01/hbm_01839.html" class="int-link" title="Isabelle">https://isabelle.in.tum.de/</a>
+<a href="../../../articles/2016/01/hbm_01840.html" class="int-link" title="Isabelle">http://www.cl.cam.ac.uk/research/hvg/Isabelle/</a>
+
+JRF 2015年11月26日
+
+Isabelle/HOL の tutorial.pdf については次の「ひとこと」(<a href="../../../articles/2015/11/statuses_cocolog_83987064.html" class="int-link cocolog-id" title="ひとこと">[cocolog:83987064]</a>)で感想(?)を述べるとして、こちらの「ひとこと」では、まず、インストール後から、Isabelle の統合環境を自分好みにしていったことについて述べたい。
+
+JRF 2015年11月26日
+
+……。
+
+2015-11-20 に Isabelle2015 を install。私は ZF を使いたかったので、まず、そこでつまづく。jEdit の右肩の Theories のパネルを開くと、&quot;ZF&quot; がない。&quot;ZF-AC&quot; とか &quot;ZF-ex&quot; とかはあるのに。これは、ZF が &quot;Logics_ZF&quot; で入っているからだと気付くまでにしばらくかかった。
+
+使いはじめるときは Logics_ZF を選択したあと一回終了して、起動しなおせば良かった。
+
+JRF 2015年11月26日
+
+……。
+
+覚悟していたのが、isabelle が cygwin を使っていて、私が使っている古めのバージョンの cygwin とバージョン違いのためにエラーを起こすのではないかということ。他のソフトを使っていて &quot;This problem is probably due to using incompatible versions of the cygwin DLL&quot; というエラーは何度か見たことがある。
+
+JRF 2015年11月26日
+
+でも、Isabelle2015 のほうで何か対策をしているのか、そのエラーが発生せずに違うバージョンの cygwin の同時起動が実現できているようだ。不便を覚悟していただけに、予期せぬ幸せでうれしい。
+
+JRF 2015年11月26日
+
+ちなみに私以外の人ではめったに起こらない不具合だが、IME を『風』にしていると、Cygwin-Terminal.bat で起動したウィンドウでは入力ができない。Ctrl+Shift で IME を標準のものに切り換えると入力できる。これは、普通の DOS窓などでもそうなので、Isabelle が悪いわけではない。
+
+JRF 2015年11月26日
+
+……。
+
+2015-11-21 に jEdit を Emacs バインドにしようとして、plugin を探し、↓を見て試したがうまくいかない。
+
+《Emacs Macros for jEdit - Other Software》
+<a href="http://software.clapper.org/jedit-emacs/" class="ext-link">http://software.clapper.org/jedit-emacs/</a>
+
+JRF 2015年11月26日
+
+が、しかし、その後、jEdit の Utilities -&gt; Global Options の中の Shortcuts に Choose keymap の項目があって、そこで Emacs にすればはじめからよかったんだと気付いた。(でも、C-x C-s と C-s とかキー設定を自分の好みで変えないといけない部分があるようす…。)
+
+JRF 2015年11月26日
+
+……。
+
+2015-11-22 に jEdit で auto translation というか replacement というか font substitution というか、symbol が勝手に書き換えられちゃうやつ。…例えば、&quot;A ~: B&quot; とか書くと &quot;~:&quot; の部分が Unicode 記号になってセーブされると \&lt;notin&gt; になっちゃうやつね。これ、ブログとかで引用したり、ソースを Emacs などから見るときに不便で、私は昔の表記に慣れているから、off にしようと思った。
+
+JRF 2015年11月26日
+
+jEdit の Plugins -&gt; Plugin Options の Isabelle の General の中の &quot;Completion Immediate&quot; の項目のチェックボタンをオフにすることで、なしにすることができた。けど、Immediate をオフにしただけなので、Completion で記号が出したいときは出せるのかと思っていたら、出せたり、出せなかったり。\&lt;notin&gt; を出そうと思ったら、下の Symbols パネルから探して入力する必要があった。
+
+(今はだいたい出せてる。最初のときだけバグって出せなかったのか？)
+
+JRF 2015年11月26日
+
+……。
+
+2015-11-24 に Isabelle を起動中にご飯を食べに休憩したとき、PC のスクリーンセーバー(ディスプレイの電源が切れるタイプ)になったんだけど、その後、マウスを動かしてもディスプレイの電源がオンにならなかった。普段はこんなことないんだけど…。Isabelle が使うメモリのサイズがデカいから、不具合が生じたのかな？
+
+JRF 2015年11月26日
+
+……。
+
+2015-11-25 に、Isabelle を起動中に他のエディタ(Emacs)に入力しようとしたのが、jEdit への中途半端な入力になったらしくヌルポ(Null Pointer Assignment)のエラーダイアログが表示された。
+
+JRF 2015年11月26日
+
+……。
+
+上で書いた不具合はいずれも再現性がなく、いっしょに起動している Firefox のほうがおかしくなったりということがあったくらいで、うちのシステム全体がメモリの使い過ぎ等で少し不安定になっているのかもしれない。
+
+が、不安定さは「少し」で、スクリーンセーバーから復帰できないのも一度経験したのみで、それ以降は安定して復帰できているし、Firefox の不具合も、Firefox を起動しなおすだけで直った。
+
+私が使ってる PC は自慢じゃないが貧弱なものなので、そのほうに問題があると思う。だから、他の人のところではもっとまともにサクサク動いているのではないか。
+
+JRF 2015年11月26日
+
+Isabelle2015、概して、問題ないっすよ。
+
+JRF 2015年11月26日
+
+……。
+
+追記。
+
+JRF 2015年12月6日
+
+2015-12-06 に気になっていたことを解決した。thm で表示したときもそうなんだけど特に proof state で気になっていた。jEdit で、&quot;[| P; Q |] ==&gt; P &amp; Q&quot; みたいに入力しても、tutorial.pdf にあるような &quot;\&lt;lbrakk&gt; P; Q \&lt;rbrakk&gt; \&lt;Longrightarrow&gt; P \&lt;and&gt; Q&quot; という表示ではなく \&lt;Longrightarrow&gt; だけを使った表示である &quot; P \&lt;Longrightarrow&gt; Q \&lt;Longrightarrow&gt; P \&lt;and&gt; Q&quot; という表示になっていた。
+
+JRF 2015年12月6日
+
+&quot;isabelle only Longrightarrow&quot; や lbrakk や rbrakk を付けたり足したりしてググっていたが見つからず、jEdit の Plugin Options にやっと Print Mode という空欄を見出してもしやと思って &quot;isabelle print mode jedit&quot; でググると、↓がヒットした。
+
+JRF 2015年12月6日
+
+《How do I display brackets around assumptions in Isabelle/jEdit? - Stack Overflow》
+<a href="http://stackoverflow.com/questions/15939265/how-do-i-display-brackets-around-assumptions-in-isabelle-jedit" class="ext-link">http://stackoverflow.com/questions/15939265/how-do-i-display-brackets-around-assumptions-in-isabelle-jedit</a>
+
+JRF 2015年12月6日
+
+それによると Plugins -&gt; Plugin Options の Isabelle の General の Print Mode に brackets と設定すればいいようだ。デフォルトだと no_brackets が設定されている状態になっているらしい。有効にするためには設定したあとに再起動する必要がある。
+
+JRF 2015年12月6日
+
+Trackbacks:
+
+《cocolog:83987064》 from JRF のひとこと
+<a href="../../../articles/2015/11/statuses_cocolog_83987064.html" class="int-link" title="ひとこと">http://jrf.cocolog-nifty.com/statuses/2015/11/post-27d5-1.html</a>
+
+定理証明システム Isabelle/HOL の Tutorial、Isabelle2015/doc/tutorial.pdf を読んだ。いつもの読書と違って英語。 
+
+受信： 2015-12-29 13:54:10 (JST)</pre>
+
+
+<section class="backrefs" data-pagefind-ignore>
+<h2>後方参照 (2 件)</h2>
+<ul>
+<li><span class="backref-label">[cocolog:83987061]参照</span> <a href="../../../articles/2020/06/statuses_cocolog_91995523.html">ひとこと</a> <span class="backref-date">2020年06月22日</span></li>
+<li><span class="backref-label">[cocolog:83987061]参照</span> <a href="../../../articles/2015/11/statuses_cocolog_83987064.html">ひとこと</a> <span class="backref-date">2015年11月26日</span></li>
+</ul>
+</section>
+
+</article>
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2015/11.html">2015年11月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+</body>
+</html>

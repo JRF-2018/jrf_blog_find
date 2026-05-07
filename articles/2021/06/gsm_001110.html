@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>共有メモ - JRF Blog Archive</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2021/06.html">2021年06月</a> | <a href="../../../index/gsm.html">共有メモ</a></nav>
+<article data-pagefind-body>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[gsm] 2021-06-17T04:59:11Z</td></tr>
+<tr><th>セクション</th><td>グローバル共有メモ</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2021/06.html">2021-06-17T04:59:11Z</a></td></tr>
+<tr><th>元URL</th><td>(URLなし)</td></tr>
+
+</table>
+</div>
+<h1>共有メモ</h1>
+<pre class="body">jrf&gt; [仏教の最適化プログラムの続き。]
+
+「反逆」の実装。家系的な hating を重視するという話だった。
+
+部下が仕事をするとき、その hating (soothing である程度打ち消したもの)がどれほど邪魔をするか。
+
+パラメータを参考にするときは、王：閣僚：知事：部下 = 1:3:1:5 ぐらいの感じと言ったが、王への hating が 1.0 (最大)のとき、その比率がまず 0.5:3:1:5 になる。知事への hating が 1.0 のときは 1:3:0.5:5、両方に hating があれば 0.5:3:0.5:5。つまり、これはそこに協力をあおぐことがなくなることを示す。
+
+その上で、今度は協力が得にくくなることを示すために、パラメータで「仕事量」を積み上げたときに、そこに最大の hating のときには 0.75 をかける。「仕事量」には国力などをかけると書いたが、国力などは平均したものをかけるのに対し、0.75 は独立でかけるから、かなり効果が大きくなる。(0.8 では効果がなさすぎ、0.7 では効果があり過ぎと考え、その中間の 0.75 を取る。) 王と知事の両方に対し hating があるときは、どちらか大きい方の値を参照する。
+
+閣僚が王に hating を持っていることもありうる。この場合、1:3:1:5 の 3 部分を計算するとき複数の閣僚の平均などで値を出すわけだが、その出した値に対し、最大の hating で 0.5 をかけることにする。ただし、「最大の hating」は閣僚の hating の平均が最大値になることなので、0.5 がかかるほどに効果が大きくなることはないと想定する。
+
+…こんな感じにしようかと思う。</pre>
+
+
+</article>
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2021/06.html">2021年06月</a> | <a href="../../../index/gsm.html">共有メモ</a></nav>
+</body>
+</html>

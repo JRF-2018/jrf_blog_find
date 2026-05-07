@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>共有メモ - JRF Blog Archive</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2021/02.html">2021年02月</a> | <a href="../../../index/gsm.html">共有メモ</a></nav>
+<article data-pagefind-body>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[gsm] 2021-02-08T10:08:57Z</td></tr>
+<tr><th>セクション</th><td>グローバル共有メモ</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2021/02.html">2021-02-08T10:08:57Z</a></td></tr>
+<tr><th>元URL</th><td>(URLなし)</td></tr>
+
+</table>
+</div>
+<h1>共有メモ</h1>
+<pre class="body">jrf&gt; [仏教の最適化プログラムの続き。]
+
+子供を表すデータ構造について。
+
+人(Person)は、実父・実母(biological_father ・ biological_mother)と養父・養母(father・mother) のデータ(ID)を持つ。
+
+親は children のリストに Child クラスのデータを持つ。Child クラスは、Child の id の他にその子との関係 実子(biological)と思っているか、養子(adopted)と思っているか の別(attr)を記録する。
+
+重要なことは、biological のデータが正しいのは、人(Person)にあるほうのデータで、Child クラスのデータは、そう思っているということでしかないということ。古代では特に父親は実子と思っているが、養子であることがあるというのを表すために使う。これにより時限爆弾的に恨みが発生することに対応したい。
+
+そして、これらのデータとは別に、扶養(supporting)、被扶養(supported)がデータとしてある。子供が成人すれば、子供のままだが、扶養からは外れる。扶養は経済的な一体として処理することを考えている。
+
+……。
+
+結婚について。
+
+結婚しているカップルが子供ができず、一方が不倫して子供ができると離婚の可能性がかなり上がるとすべきだろう。
+
+そして、不倫して子供ができたカップルで共に結婚していなければ、結婚する可能性がかなり高くなる。このとき、結婚誘度(魅力度？)や結婚好意度に関係なく、そのカップルが結婚すると選ばれなければならない。不倫から結婚への「昇格」みたいな処理になるのだと思う。ここは不倫と大きく違うところだろう。
+
+この際、結婚して子供ができて後に別れたカップルと区別しなければならないが、どう判定すればいいのか…。</pre>
+
+
+</article>
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2021/02.html">2021年02月</a> | <a href="../../../index/gsm.html">共有メモ</a></nav>
+</body>
+</html>

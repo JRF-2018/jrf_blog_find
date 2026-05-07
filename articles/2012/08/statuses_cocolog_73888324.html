@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>ひとこと - JRF Blog Archive</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2012/08.html">2012年08月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+<article data-pagefind-body>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[statuses] <span class="cocolog-id">cocolog:73888324</span></td></tr>
+<tr><th>セクション</th><td>JRF のひとこと</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2012/08.html">2012年08月31日</a></td></tr>
+<tr><th>元URL</th><td><a href="http://jrf.cocolog-nifty.com/statuses/2012/08/post-c138.html" class="ext-link"><span class="original-url">http://jrf.cocolog-nifty.com/statuses/2012/08/post-c138.html</span></a></td></tr>
+
+</table>
+</div>
+<h1>ひとこと</h1>
+<pre class="body">遺伝子の違い、つまり、「距離」からその祖先を決定するのは「グラフ理論的」におかしかったはずと何度か書いた(<a href="../../../articles/2012/06/statuses_cocolog_72943095.html" class="int-link cocolog-id" title="ひとこと">[cocolog:72943095]</a>)。…
+JRF 2012年8月31日
+
+…「アフリカ単一起源説」は考古学資料による裏付けもあるから、この議論で否定されるものではないが、TV番組などでは「その説明はおかしい」と思うことが何度かあった。
+
+JRF 2012年8月31日
+
+これがその例ズバリではなかったかもしれないけど、簡単な例でもそれっぽいことを言えると気付いたので書いてみる。
+
+JRF 2012年8月31日
+
+……。
+
+遺伝子を単純化するときビット列でモデル化するというのは情報工学寄りの世界ではわりと普通だと思う。
+
+今、とにかくモデルをシンプルにするため、遺伝子が 2 bit 1 バイトの 1111_1111 というところから出発する。(ここの &quot;_&quot; は読みやすさのための区切り。無視してよい。)
+
+JRF 2012年8月31日
+
+1111_1111 と 1011_1111 と 1111_1011 という遺伝子を持つ個体があるとき、あとの二つがあるということは、違う位置での 0 への変化が同時に起こるという可能性(確率でもいいが)はとても小さいので、1111_1111 から 1011_1111 へ、また 1111_1111 から 1111_1011 への変化があったという方向を考えるのが自然に思える。
+
+JRF 2012年8月31日
+
+でも、そう特定しちゃうのはおかしい。というのは「確率」の問題じゃなくて、実はこれは、1011_1111 から 1111_1111 への変化がまずあり、その後、1111_1111 から 1111_1011 への変化があったという二段階でも、同じ可能性があると考えるべきだから。
+
+JRF 2012年8月31日
+
+つまり、遺伝子コードの「距離」からグラフを作って、↓という形がわかる…ということまで言っていいとしても…、
+
+&lt;pre&gt;
+        1111_1111
+     ／               ＼
+1011_1111       1111_1011
+&lt;/pre&gt;
+
+JRF 2012年8月31日
+
+「＼」に矢印をどの向きに付けるかは決定しえないということ。
+
+&lt;pre&gt;
+         1111_1111
+      ↓               ↓
+1011_1111       1111_1011
+
+…かもしれないけど、
+
+1011_1111
+↓
+1111_1111
+    ↓
+     1111_1011
+
+…かもしれないし、
+
+     1111_1011
+    ↓
+1111_1111
+↓
+1011_1111
+
+…かもしれない。
+&lt;/pre&gt;
+
+JRF 2012年8月31日
+
+この方向付けは「距離」だけからなら可能性としては等しいとせねばならないところだろう。もちろん、考古学資料とか、別の情報を加味することで方向が特定できることもあることは否定しない。
+
+JRF 2012年8月31日
+
+……。
+
+そして、上の例をすすめて、遺伝子コードの数を増やして、無向なまま地図を広げることができる。「トポロジカル」にグニャグニャ変形して良いという図は書ける。でもそうやって数を増やすと 1 バイトの表現が埋まってきて、今度は、逆にその「形」の部分さえ怪しくなってくる。
+
+JRF 2012年8月31日
+
+つまり、例えば 1011_1011 が含まれたりすると、上の形では線分が不要になる可能性も見えてくる。1011_1011 がないときは 1011_1111 と 1111_1011 の両者が偶然同じ遺伝子コード 1111_1111 を産むことはかなりありえないとできたので、それらが存在している以上、三者の間に線分があると推定できた。ところが、過去に実は関係があったとなるなら、線で結ぶ必然がなくなってしまう。
+
+JRF 2012年8月31日
+
+&lt;pre&gt;
+         1011_1011
+     ↓                ↓  …三つの矢印が先に特定しているとすれば、
+1011_1111       1111_1011
+     ↓                ｜…この線分はそもそもなくてもよかったとなる。
+         1111_1111
+&lt;/pre&gt;
+
+「トポロジカルにグニャグニャ」で方向だけ決定すればいいというだけでなく「存在論的にアヤフヤ」で「距離」がそもそも直系を示さないといった要素への考慮も必要になる。
+
+JRF 2012年8月31日
+
+……。
+
+しかも、実は広い意味での表現系で、そこそこ選んでツイストが起こる…とかいうモデルまで組み入れちゃうと、むしろ、アダムのクローン的なイブがいるという観方より、遺伝子的に遠い祖先がツイストしたからこそ、遺伝的豊かさが生まれ、遺伝的な近さはそれが部分部分で収束しているだけだみたいな話になりかねない。まぁ、この辺をちゃんとモデル化すべきなんだろうけど、ここがまさに↓の部分。
+
+JRF 2012年8月31日
+
+<a href="../../../articles/2012/06/statuses_cocolog_72943095.html" class="int-link cocolog-id" title="ひとこと">[cocolog:72943095]</a>
+＞そのシミュレーションは、やりたいことリストのなかでの優先順位はもうかなり低いけど。やるとしても数あるツールの中の一つ、演習項目の一つとしてやってみるぐらいで、それで誰かと論争するまでの気力はない。＜
+
+JRF 2012年8月31日
+
+……。
+
+keyword: 確率モデル
+keyword: グラフ理論的 遺伝 
+
+関連薄いがこのころ話題となっている生命科学の記事(一例)。
+
+《妊婦のダウン症検査の話、陽性的中率 - aggren0xの日記》
+<a href="http://d.hatena.ne.jp/aggren0x/20120829/1346241213" class="ext-link">http://d.hatena.ne.jp/aggren0x/20120829/1346241213</a>
+
+keyword: 染色体
+
+JRF 2012年8月31日
+
+精神病だったころの妄想がらみの話だが…。
+
+<a href="../../../articles/2009/12/statuses_aboutme_116617.html" class="int-link cocolog-id" title="ひとこと">[aboutme:116617]</a> 
+＞染色体異常と第二次性徴の関係になるのだろうか。染色体数の減数変化もおそらく増数変化もあるはずである。(…)ただ、人間や動物の染色体が単純にそのようなモデルに従っているとは思えない。(…)第一次性徴を通じて実はそのような安易なモデルを遮る方法が完成しているのではないか。それは前進化的遺物？＜
+
+JRF 2012年8月31日
+
+↓不妊がらみでの直近の不謹慎な私のブクマ。
+
+はてなブックマーク - 《有人宇宙飛行ができるのは火星まで？ | スラッシュドット・ジャパン サイエンス》
+<a href="../../../articles/2012/08/hbm_01595.html" class="int-link" title="有人宇宙飛行ができるのは火星まで？ | スラッシュドット・ジャパン サイエンス">http://science.slashdot.jp/story/12/08/30/0320211/</a>
+jrf:＞ 「脳が宇宙」より卵子と精子を月とか金星とかで人工受精させてサンプルリターン後着床、「受精地主義」で「宇宙人類誕生！」とかのほうがインパクトはあるかな？領土問題を不妊治療の発展に繋げる奇策とかいって。＜ 2012/08/31
+
+JRF 2012年8月31日
+
+修正 「2 bit 1 バイト」→「8 bit で 1 バイト」。
+
+JRF 2012年8月31日
+
+もう一個過去の妄想的な「ひとこと」を…。
+
+<a href="../../../articles/2012/02/statuses_cocolog_71772540.html" class="int-link cocolog-id" title="ひとこと">[cocolog:71772540]</a>
+＞&gt;<a href="../../../articles/2009/11/statuses_aboutme_113999.html" class="int-link cocolog-id" title="ひとこと">[aboutme:113999]</a>
+&gt;毒を持てば身を守れるというのが「有効」、殻を固くすればいいというのも「有効」。どこかからメッセージがある、あえて他と交われば良い、と信じるのが「無効」。
+(…)
+何でも性に帰着する議論があるが、それはある時代以降の「有効」グラフでしかないのではないか？
+&lt;&lt;
+
+(ちなみに本来のグラフ理論の用語は「有向」「無向」ね。)
+＜
+
+JRF 2012年8月31日
+
+……。
+
+[google:グラフ理論 遺伝子] とか、ググると、やっぱり、研究はある感じだ。でも、ものすごく基本的な↑のような「注意」みたいなのは、口で言えば一瞬なので、教科書的なものには案外載らないのでは？
+
+JRF 2012年9月1日
+
+Trackbacks:
+
+《cocolog:88031559》 from JRF のひとこと
+<a href="../../../articles/2017/09/statuses_cocolog_88031559.html" class="int-link" title="ひとこと">http://jrf.cocolog-nifty.com/statuses/2017/09/post-c5c2.html</a>
+
+ニール・シュービン『ヒトのなかの魚、魚のなかのヒト』を読んだ。化石探索のフィールドワークのおもしろさと進化論がらみの(私にとって)新しい情報を知れたのが収穫。 
+
+受信： 2017-09-30 06:55:33 (JST)</pre>
+
+
+<section class="backrefs" data-pagefind-ignore>
+<h2>後方参照 (9 件)</h2>
+<ul>
+<li><span class="backref-label">[cocolog:73888324]参照</span> <a href="../../../articles/2023/11/statuses_cocolog_94524505.html">ひとこと</a> <span class="backref-date">2023年11月15日</span></li>
+<li><span class="backref-label">[cocolog:73888324]参照</span> <a href="../../../articles/2023/11/statuses_cocolog_94512250.html">ひとこと</a> <span class="backref-date">2023年11月08日</span></li>
+<li><span class="backref-label">[cocolog:73888324]参照</span> <a href="../../../articles/2022/08/statuses_cocolog_93680196.html">ひとこと</a> <span class="backref-date">2022年08月17日</span></li>
+<li><span class="backref-label">[cocolog:73888324]参照</span> <a href="../../../articles/2022/08/gsm_002411.html">共有メモ</a> <span class="backref-date">2022-08-16T19:36:28Z</span></li>
+<li><span class="backref-label">[cocolog:73888324]参照</span> <a href="../../../articles/2017/09/statuses_cocolog_88031559.html">ひとこと</a> <span class="backref-date">2017年09月04日</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2012/06/statuses_cocolog_72943095.html">ひとこと</a> <span class="backref-date">2012年06月06日</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2012/02/statuses_cocolog_71772540.html">ひとこと</a> <span class="backref-date">2012年02月27日</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2009/12/statuses_aboutme_116617.html">ひとこと</a> <span class="backref-date">2009年12月30日</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2009/11/statuses_aboutme_113999.html">ひとこと</a> <span class="backref-date">2009年11月25日</span></li>
+</ul>
+</section>
+
+</article>
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2012/08.html">2012年08月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+</body>
+</html>

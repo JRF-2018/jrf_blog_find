@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>ひとこと - JRF Blog Archive</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2019/10.html">2019年10月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+<article data-pagefind-body>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[statuses] <span class="cocolog-id">cocolog:91372755</span></td></tr>
+<tr><th>セクション</th><td>JRF のひとこと</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2019/10.html">2019年10月08日</a></td></tr>
+<tr><th>元URL</th><td><a href="http://jrf.cocolog-nifty.com/statuses/2019/10/post-007944.html" class="ext-link"><span class="original-url">http://jrf.cocolog-nifty.com/statuses/2019/10/post-007944.html</span></a></td></tr>
+
+</table>
+</div>
+<h1>ひとこと</h1>
+<pre class="body">穴井宏和『数理最適化の実践ガイド』を読んで、micro_economy_*.py について検討した。価格を 1 から 1000 までに抑える制約をペナルティ関数法を使って考慮すべきか迷う。また、最適化で競争をどう表現するかで迷っている。
+JRF 2019年10月8日
+
+『数理最適化の実践ガイド』(穴井 宏和 著, 講談社, 2013年)
+<a href="https://www.amazon.co.jp/dp/4061565109" class="ext-link">https://www.amazon.co.jp/dp/4061565109</a>
+<a href="https://7net.omni7.jp/detail/1106252139" class="ext-link">https://7net.omni7.jp/detail/1106252139</a>
+
+JRF 2019年10月8日
+
+最適化について、理論的導出ではなく、利用者の観点にたった紹介がメインの本。非線形最適化に多くの紙片を費やしており、線形計画法についても書かれているが、それは別の本に頼るべきだろう。
+
+最適化は、目的関数の gradient のイコール 0 となるところで、gradient の二回微分に相当するヘッセ行列(Hessian matrix)を用いた凸性の判断と組み合わせて判断するのが基本となる。
+
+JRF 2019年10月8日
+
+制約を含んでラグランジュ関数にする方法ももちろん解説している。アルゴリズムでは BFGS 法も紹介がある。
+
+その後、非凸計画問題への対応として、遺伝的アルゴリズム(GA)や、粒子群最適化法(PSO)の説明がある。私が micro_economy_*.py で採用している Nelder-Mead 法は紹介がない。焼きなまし法(アニーリング法 SA)は簡単な紹介のみある。
+
+JRF 2019年10月8日
+
+数式ごと最適化する手法も少し詳しく紹介されており、その方法としての QE (Quantifier Elimination) は論理学をやっていた私には興味深い方法だった。ちょっと説明すると…。
+
+(Ex x. x ** 2 + b * x + c) という式を自動的に b ** 2 - 4 * a * c &gt; 0 という限量記号を含まない形式に自動的に変換する一般的なアルゴリズムがある。
+
+JRF 2019年10月8日
+
+これを使い (Ex x. k = f(x) and g_1(x) &gt;= 0 ...) という式を k について解くと、最適値を求めることのできる k に関する不等式が求まる。
+
+…という寸法である(ただし、f(x) や g_1(x) は多項式で、あまり複雑なものは計算量が爆発する)。
+
+JRF 2019年10月8日
+
+複数の最適化を同時に行う多目的最適化についても解説がある。重み付き和は私も考案していたが、重み付き max を使うチェビシェフスカラー化関数(Tchebyshev scalarization function) は思い付いていなかった。
+
+あとは、工業的場面などで、最適化関数がはっきりとはわからない場合、応答曲面法を用いればいいという紹介があった。
+
+JRF 2019年10月8日
+
+……。
+
+紹介の部分はある程度わかった気にさせてくれるので、それは読んでよかったが、当然、理解力の足りない私…眼がどんどんかすんでくるのと同様におそらく知能もますますかげりつつある私…では、ちゃんと理解したと言えない部分も多かった。
+
+JRF 2019年10月8日
+
+……。
+
+micro_economy_*.py (↓) で、よくわからないまま最適化を使っていたが、その点についてもう少し検討を加えたいというのが、この本を読んだ動機だった。
+
+《ミクロ経済学の我流シミュレーション その１ 基礎経済モデル》
+<a href="../../../articles/2018/03/hbm_01864.html" class="int-link" title="ミクロ経済学の我流シミュレーション [ JRF の私見：税・経済・法 ]">http://jrf.cocolog-nifty.com/society/2018/03/post.html</a>
+
+JRF 2019年10月8日
+
+多目的最適化については、基本、やっぱり和を取るしかないんだな…とあたりをつけれたのは良かった。
+
+気になっている点として、gradient を取るのが難しいので、微分を使わない無制約の最適化を使っているのだが、それでも価格を 1 から 1000 の間にするような制約は欲しく、制約の外に出たら無限大にすることで、無理矢理に制約を課すようなことをしている。どうもこの本によると、そういうときは、普通は、ペナルティ関数法を使えばよいとのこと。
+
+JRF 2019年10月8日
+
+でも、結局 gradient が使えないから終了条件が使えないのではないか…とか Nelder-Mead 法でそれをして意味があるのか…というところでよくわからない。まぁ、試せばいい…ということかもしれないが、試して使うことになれば時間も余計にかかるし、迷っている。
+
+JRF 2019年10月8日
+
+また、競争をどう最適化を用いて表すかという点でも私には迷いがある。これまでは、企業どうしの競争について、最適化で利益を最大化するというのとは別に、弾力性や優位性をもとに分配すなわち競争結果が決まるとしていた。
+
+JRF 2019年10月8日
+
+今、考えている途中なのは、資本家どうしの競争をどう考えるかというところ。資本家どうしが競争することで、企業数が 1 よりも大きくなると同時に、その数が資本家の数ぐらいに限られる…ということをやろうとしている。これは最適化するとき、企業の数が 5 を増えるまで最適化関数が増え、それ以降は増えないとすることで実現できるのだが、その裏で、資本家はどういう競争をすれば、そういう最適化と「矛盾なくできるか」が問題となる。
+
+JRF 2019年10月8日
+
+企業の数を5ぐらいにするというだけなら、資本家がどうたらという議論はいらない。しかし、最適化が何がしかの競争の結果なされると考えるなら、資本家というものを考える必要があるのではないか。そして、資本家がどう企業をもつかという部分では、矛盾がないようにする必要があるのではないか。
+
+JRF 2019年10月8日
+
+つまり、社会は最適化したいこと(この例では企業の数を5ぐらいにする)があるが、それをどういう競争を通じて実現するかという問題があり、それは本来は別のことなのではということ。ただし、最適化のために、競争が目的を導かない場合は、いくらでもルールをいじっていいというのも通常の競争とは少し違う。
+
+社会の最適化を考えるには、ある「最適化」が可能なような競争ルールはあるか、最適化の結果はルールと矛盾がないか…を確認・証明する必要があるのではないか？
+
+JRF 2019年10月8日
+
+遺伝的アルゴリズム(GA)のようなもので、エージェントを使って競争させる…ということも思考実験としては考えるのだが、競争を誰がどのように判断するのか、競争するエージェントとは別のエージェントに判断させるのか…とか考えていくと難しい。もちろん、乱数的要素もあろう。それは平均すれば結局、何がしかの最適化と等しい…とできるのではないか…そうできないとすれば何が違うのか。
+
+JRF 2019年10月8日
+
+…とかいろいろ考えるが、どうも答えが出ず、迷っている。
+
+JRF 2019年10月8日</pre>
+
+
+<section class="backrefs" data-pagefind-ignore>
+<h2>後方参照 (6 件)</h2>
+<ul>
+<li><span class="backref-label">[cocolog:91372755]参照</span> <a href="../../../articles/2022/10/gsm_002595.html">共有メモ</a> <span class="backref-date">2022-10-06T16:04:04Z</span></li>
+<li><span class="backref-label">[cocolog:91372755]参照</span> <a href="../../../articles/2022/08/statuses_cocolog_93683698.html">ひとこと</a> <span class="backref-date">2022年08月19日</span></li>
+<li><span class="backref-label">[cocolog:91372755]参照</span> <a href="../../../articles/2022/08/gsm_002388.html">共有メモ</a> <span class="backref-date">2022-08-09T16:11:09Z</span></li>
+<li><span class="backref-label">[cocolog:91372755]参照</span> <a href="../../../articles/2022/04/statuses_cocolog_93421636.html">ひとこと</a> <span class="backref-date">2022年04月09日</span></li>
+<li><span class="backref-label">[cocolog:91372755]参照</span> <a href="../../../articles/2022/04/gsm_002018.html">共有メモ</a> <span class="backref-date">2022-04-05T22:18:25Z</span></li>
+<li><span class="backref-label">[cocolog:91372755]参照</span> <a href="../../../articles/2020/02/statuses_cocolog_91677019.html">ひとこと</a> <span class="backref-date">2020年02月13日</span></li>
+</ul>
+</section>
+
+</article>
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2019/10.html">2019年10月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+</body>
+</html>

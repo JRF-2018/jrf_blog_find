@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>共有メモ - JRF Blog Archive</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2025/12.html">2025年12月</a> | <a href="../../../index/gsm.html">共有メモ</a></nav>
+<article data-pagefind-body>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[gsm] 2025-12-26T12:44:07Z</td></tr>
+<tr><th>セクション</th><td>グローバル共有メモ</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2025/12.html">2025-12-26T12:44:07Z</a></td></tr>
+<tr><th>元URL</th><td>(URLなし)</td></tr>
+
+</table>
+</div>
+<h1>共有メモ</h1>
+<pre class="body">jrf&gt; (承前)
+
+……。
+
+実験。
+
+はじめ、WEIGHT_DECAY を 1e-4 に設定して、開発途中の DWPN を試したところ、スパース化はかなり達成されたが、模倣ロス(Imitation Loss)はこれまで 0.013 台まで落ちていたのに 0.03 台までしか落ちず、ヒューマノイドの行動が壊滅的になった。最初 WEIGHT_DECAY が問題なのに気付かずノイズの温度を表す ALPHA を工夫したり、DWPN の統計的偏差の修正などを繰り返したのだが、結局は WEIGHT_DECAY の問題だと気付いた。ちなみに WEIGHT_DECAY は、L2正則化に相当するものらしい。
+
+WEIGHT_DECAY を 0 にしたところ、動作は安定した。しかし、そこでわかったのは DWPN だけではまったくスパース化は進まないということだった。そこで L1 正則化を入れたり、ある程度学習してから追加学習時に L1正則化を強くしたり WEIGHT_DECAY を再導入したりした。しかし、スパース化は 0.02% が最大だった。諦めかけたころ、Gemini さんが提案したのが、ここから Magnitude Pruning をしようということだった。
+
+Magnitude Pruning をするのにどういうデータが適しているのか私はわかってなかったが、最初からの学習で、 WEIGHT_DECAY を 1e-6 と小さくするのを試してなかったので、それを5エポック計画の中の1エポックだけ試したところ、スパース化が 1% 以上とスパース化に関しては特に良い成績をおさめ、ロスもなかなかの落ち方となった。これの分析を見て、Gemini さんが、それをスタートとして、Magnitude Pruning を行いましょう…ということになった。Gemini さんはこの段階で、モデル内の重みが「真に必要な精鋭」と「ノイズに埋もれた微小な重み」に二極化されていることを見抜いたのだ。
+
+この分析に基づき PRUNING_RATE = 0.3 に設定。下位30%の重みを物理的に「0」へ固定する手術を行い、5エポックの残り4エポックをファインチューニングとして行った。
+
+結果、性能も確実に回復し、行動(simple walk, expert run, standup)はほぼ問題ないレベルになった。これまであれほどスパース化ができなかったのに、これほどあっさりと30%のスパース化がなったのは私には驚きでしかない。</pre>
+
+
+</article>
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2025/12.html">2025年12月</a> | <a href="../../../index/gsm.html">共有メモ</a></nav>
+</body>
+</html>

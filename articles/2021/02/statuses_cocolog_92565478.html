@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>ひとこと - JRF Blog Archive</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2021/02.html">2021年02月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+<article data-pagefind-body>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[statuses] <span class="cocolog-id">cocolog:92565478</span></td></tr>
+<tr><th>セクション</th><td>JRF のひとこと</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2021/02.html">2021年02月18日</a></td></tr>
+<tr><th>元URL</th><td><a href="http://jrf.cocolog-nifty.com/statuses/2021/02/post-b7b5ba.html" class="ext-link"><span class="original-url">http://jrf.cocolog-nifty.com/statuses/2021/02/post-b7b5ba.html</span></a></td></tr>
+
+</table>
+</div>
+<h1>ひとこと</h1>
+<pre class="body">Python で重み付き(weighted)な random.sample が欲しい。np.random.choice がエラーを吐くほど巨大な数で使えるような。
+JRF 2021年2月18日
+
+配列から重なりなく要素を複数選ぶには random.sample を使うが、重み付きの場合は、np.random.choice を replace=False で呼び出すのがセオリー。
+
+しかし、配列がとても巨大な場合、重みの和が 1 でないというエラーが出やすい。
+
+例えば…
+
+JRF 2021年2月18日
+
+&lt;pre&gt;
+    l1 = list(range(100000))
+    l1 = np.array(l1)
+    l2 = np.random.choice(l1, 1000, p=l1/np.sum(l1), replace=False)
+&lt;/pre&gt;
+
+JRF 2021年2月18日
+
+…などとすると ValueError: probabilities do not sum to 1 という例外が発生する。
+これを解決する方法の一つは、型を np.longdouble にするというもの。
+
+JRF 2021年2月18日
+
+&lt;pre&gt;
+    l1 = list(range(100000))
+    l1 = np.array(l1).astype(np.longdouble)
+    l2 = np.random.choice(l1, 1000, p=l1/np.sum(l1), replace=False)
+&lt;/pre&gt;
+
+JRF 2021年2月18日
+
+…ならば通る。この np.longdouble は Linux 系では 'float128' だが、Windows 系では 'float96' らしく、'float128' とか 'float96' が使えるからと言ってそれを指定する(例えば astype('float128')) と、処理系によっては使えないプログラムになるので、上のように np.longdouble を使うのがセオリーらしい。
+
+ただ、np.longdouble が気持ち悪い場合…例えば、
+
+JRF 2021年2月18日
+
+&lt;pre&gt;
+    l1 = list(range(100000))
+    l2 = np.random.choice(l1, 1000, p=np.array(l1).astype(np.longdouble)
+                          /np.sum(l1).astype(np.longdouble), replace=False)
+&lt;/pre&gt;
+
+JRF 2021年2月18日
+
+…みたいに少し変えるだけで、再び ValueError: probabilities do not sum to 1 が出てしまう。
+
+こういうのがいやだという場合、アイデアとしては np.random.choice の代わりに次のような関数を使うことが考えられる。
+
+JRF 2021年2月18日
+
+&lt;pre&gt;
+def alt_np_random_choice(a, size=None, replace=True, p=None):
+    assert replace is False
+    p2 = p * np.random.uniform(size=len(p))
+    l = sorted(list(zip(a, p2)), key=lambda x: x[1], reverse=True)[0:size]
+    return [x for x, q in l]
+&lt;/pre&gt;
+
+JRF 2021年2月18日
+
+「重み」がかっちりとした分布を表すのではなく、なんとなく大きい小さいだけというアバウトな場合に使うことができるかもしれない。
+
+ただ、私の目的では、これは p の「スコア」が大きいものがやたら選ばれるという結果になり都合が悪かった。
+
+そこで、上の関数の p2 のところをいろいろ工夫した「経験的な結果」だが、たまたま私の目的では、次のような関数が、都合のよい結果をもたらした。
+
+JRF 2021年2月18日
+
+&lt;pre&gt;
+def alt2_np_random_choice(a, size=None, replace=True, p=None):
+    assert replace is False
+    p2 = p + ((np.max(p) - np.min(p)) / 2) * np.random.normal(size=len(p))
+    l = sorted(list(zip(a, p2)), key=lambda x: x[1], reverse=True)[0:size]
+    return [x for x, q in l]
+&lt;/pre&gt;
+
+JRF 2021年2月18日
+
+ただ、いちいち sorted しているのが遅い気がする。実際 timeit で測ると np.random.choice に比べ30倍以上遅い。
+
+だから、np.longdouble が気持ち悪い場合のみ使うことになるだろう。
+
+JRF 2021年2月18日</pre>
+
+
+<section class="backrefs" data-pagefind-ignore>
+<h2>後方参照 (1 件)</h2>
+<ul>
+<li><span class="backref-label">[cocolog:92565478]参照</span> <a href="../../../articles/2021/02/gsm_000631.html">共有メモ</a> <span class="backref-date">2021-02-18T14:04:04Z</span></li>
+</ul>
+</section>
+
+</article>
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2021/02.html">2021年02月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+</body>
+</html>

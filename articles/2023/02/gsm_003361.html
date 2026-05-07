@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>共有メモ - JRF Blog Archive</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2023/02.html">2023年02月</a> | <a href="../../../index/gsm.html">共有メモ</a></nav>
+<article data-pagefind-body>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[gsm] 2023-02-09T13:31:05Z</td></tr>
+<tr><th>セクション</th><td>グローバル共有メモ</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2023/02.html">2023-02-09T13:31:05Z</a></td></tr>
+<tr><th>元URL</th><td>(URLなし)</td></tr>
+
+</table>
+</div>
+<h1>共有メモ</h1>
+<pre class="body">jrf&gt; FANBOX EPUB 化の暫定的な技術的覚え書き
+
+FANBOX の EPUB 化にあたり、最大の問題点は、FANBOX のページは JavaScript による動的生成を多様しており、Perl から get しても、ブラウザのページで保存したりしても、中身のないデータしか得られないという点である。これを補うため、Firefox のアドオンの Save Page WE というアドオンで保存する。
+
+ただし、Save Page WE はページがまるごと保存できるのがウリだが、決して特定の仕様に沿ったセーブをなすわけではない。そのため、Save Page WE で保存したものから変換作業を行っていくが、その作業は Save Page WE のバージョンアップと共に変更を強いられることとなろう。
+
+次の大きな問題点として、EPUB は HTML のかなり小さいサブセットであるため、情報をかなり削っていかなければ、うまく表示できないという点がある。Save Page WE の特殊な CSS の使い方等を補う必要がある。
+
+EPUB への流れとしては、Save Page WE でセーブ → 変換スクリプトで変換 → Sigil で EPUB にする。…という流れ。Sigil のメタデータの入力や CSS の作成などにもノウハウはないでもないが、これについてはできた EPUB を見てもらったほうが早いのでここでは説明しない。変換についてのみここでは書いていく。</pre>
+
+
+</article>
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2023/02.html">2023年02月</a> | <a href="../../../index/gsm.html">共有メモ</a></nav>
+</body>
+</html>

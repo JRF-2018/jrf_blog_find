@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>共有メモ - JRF Blog Archive</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2025/06.html">2025年06月</a> | <a href="../../../index/gsm.html">共有メモ</a></nav>
+<article data-pagefind-body>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[gsm] 2025-06-23T19:11:52Z</td></tr>
+<tr><th>セクション</th><td>グローバル共有メモ</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2025/06.html">2025-06-23T19:11:52Z</a></td></tr>
+<tr><th>元URL</th><td>(URLなし)</td></tr>
+
+</table>
+</div>
+<h1>共有メモ</h1>
+<pre class="body">jrf&gt; quail-naggy について Tips を↓のコメント欄に書いておいた。
+
+《quail-naggy.el: 単漢字変換 Input Method for Emacs. [ JRF のソフトウェア Tips ]》  
+<a href="../../../articles/2015/10/software_83641133.html" class="int-link" title="quail-naggy.el: 単漢字変換 Input Method for Emacs.">http://jrf.cocolog-nifty.com/software/2015/10/post.html</a>
+＞ここに書いて読む人がいるだろうか？
+
+GitHub のほうの quail-naggy (↓)には fix_skk_jisyo_l.pl というスクリプトを足しておいた。
+
+<a href="https://github.com/JRF-2018/quail-naggy" class="ext-link">https://github.com/JRF-2018/quail-naggy</a>
+
+これは、「nihon:」を変換したときに「ニホン」が最初の候補に来るなどするのが、とてもムカついたので作った、SKK-JISYO.L からカタカナへの変換などを除去するツールになる。これでできたものを make_skk_dic_db.pl にかけたあと、site-init.nginit を例えば次のようにして使えばいい。
+
+&lt;pre&gt;
+load-init-file default-init.nginit
+set-tankanji-dic Wind2.txt -s
+#set-tankanji-dic tankanji.txt -e
+#add-skk-dic SKK-JISYO.L -e
+add-skk-dic SKK-JISYO.fixed.L -e
+add-skk-dic bushu-skk-dic.txt -e
+add-skk-dic emoji-skk-dic.txt -u
+&lt;/pre&gt;
+
+ただし、あまりチェックしていないので、完璧に「いい感じ」ではないかもしれない。
+
+あと、ちょっとした Tips。最初にシフトキーを押して「Nihon」と入力して変換するのも「nohon:」と入力して変換するのも同じ感じになるのであるが、「風」系の哲学として、入力したあとのキーで選びたいということがある。だから、「nihon」の後 S-SPC で nihon: SPC と入力したのと同じように変換したい。…という場合は次のようにすればいい。
+
+&lt;pre&gt;
+(require 'quail-naggy)
+
+(defun quail-naggy-alt-convert ()
+  (interactive)
+  (setq quail-current-key
+	(concat quail-current-key &quot;:&quot;))
+  (or (catch 'quail-tag
+	(quail-update-translation (quail-translate-key))
+	t)
+      (setq quail-translating nil))
+  (quail-naggy-convert))
+
+(add-hook 'input-method-activate-hook
+	  (lambda ()
+	    (if (string= (quail-name) &quot;japanese-naggy&quot;)
+		(progn
+		  (define-key (quail-conversion-keymap)
+			      [?\S- ] 'quail-naggy-alt-convert)
+		  (define-key (quail-conversion-keymap)
+			      [?\C- ] 'quail-naggy-insert-space)))))
+&lt;/pre&gt;
+
+quail-naggy-insert-space を C-SPC に移動する必要があり、それはラテン語圏などでもし S-SPC をこれまで頻繁に使っている人がいると、それは迷惑だろうから、標準では取り込まなかった。でも漢字圏の人はこのキーバインドのほうが圧倒的に楽になると思う。
+＜</pre>
+
+
+</article>
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2025/06.html">2025年06月</a> | <a href="../../../index/gsm.html">共有メモ</a></nav>
+</body>
+</html>

@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>共有メモ - JRF Blog Archive</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2023/06.html">2023年06月</a> | <a href="../../../index/gsm.html">共有メモ</a></nav>
+<article data-pagefind-body>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[gsm] 2023-06-22T15:03:50Z</td></tr>
+<tr><th>セクション</th><td>グローバル共有メモ</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2023/06.html">2023-06-22T15:03:50Z</a></td></tr>
+<tr><th>元URL</th><td>(URLなし)</td></tr>
+
+</table>
+</div>
+<h1>共有メモ</h1>
+<pre class="body">jrf&gt; PAR 続き。
+
+前は Predictor と Actor の負の学習に勾配を求めるなど小難しいことをやっていたが、そんなことは必要ないのではないか。負の学習率を持った学習自体がいらないように思う。
+
+「行動結果」-「目的」 と 「結果予想」- 「目的」 の絶対値を比較し、前者が大きければ、Actor を負の学習をする。後者が大きければ、Predictor を負の学習をする。…ということであったが、ここで、「結果予想」を Actor に食わせた「対予想行動」と「行動結果」を Actor に食わせた「対結果行動」を求めることができる。このうち後者の組になるべきは、「行動結果」「環境」「対結果行動」となるが、これはリアルな「行動結果」「環境」「行動」より悪いデータだから捨てる。
+
+仮に　Actor が負けたとしよう。このとき相対的に Predictor が正しいので、「対予想行動」についても正しい判断ができると考える。そこで Predictor に「対予想行動」「環境」を食わせて得た「対予想行動結果予想」も相対的に正しいと考える。そして、Actor についてのみ「対予想行動」「環境」「対予想行動結果予想」を正しい例として小さめの学習率で学ぶ。
+
+逆に Predictor が負けた場合は少し簡単で、負けた Predictor のみ、「対予想行動」「結果予想」「環境」を正しい例として小さめの学習率で学べばよいのではないか。
+
+…なお、これらは私の以前の実験例でもいえることなので、以前の実験例について、今回考えたアルゴリズムでどうなるか、まず実験してみるべき…となるのだが、TensorFlow とかいろいろアップデートされて、また、私の忘却もあって、ちょっと難しい。時間をかけるべきか否か…。</pre>
+
+
+</article>
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2023/06.html">2023年06月</a> | <a href="../../../index/gsm.html">共有メモ</a></nav>
+</body>
+</html>

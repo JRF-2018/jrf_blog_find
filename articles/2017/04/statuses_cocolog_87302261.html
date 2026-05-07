@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>ひとこと - JRF Blog Archive</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2017/04.html">2017年04月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+<article data-pagefind-body>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[statuses] <span class="cocolog-id">cocolog:87302261</span></td></tr>
+<tr><th>セクション</th><td>JRF のひとこと</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2017/04.html">2017年04月29日</a></td></tr>
+<tr><th>元URL</th><td><a href="http://jrf.cocolog-nifty.com/statuses/2017/04/no-au.html" class="ext-link"><span class="original-url">http://jrf.cocolog-nifty.com/statuses/2017/04/no-au.html</span></a></td></tr>
+
+</table>
+</div>
+<h1>ひとこと</h1>
+<pre class="body">no autovivification qw(strict warnings ...) がおかしい。Perl 5.10.x で使っていて大丈夫だったのが Perl 5.22.x (Perl 5.2x?) でダメになってる。
+JRF 2017年4月29日
+
+すごい簡単なコード、次のようなのが、Cygwin の Perl 5.10.1 &amp; autovivification 0.12 では通るのに、ActivePerl の Perl 5.22.1 &amp; autovivification 0.16 では通らない。tmp.pl を次のようにする。
+JRF 2017年4月29日
+
+&lt;pre&gt;
+no autovivification qw(strict warn fetch exists delete store);
+
+my %x;
+if (exists $x{&quot;n&quot;}) {
+  print &quot;OK\n&quot;;
+}
+&lt;/pre&gt;
+
+JRF 2017年4月29日
+
+これの Perl 5.10.1 での実行結果は、何も表示されない。Perl 5.22.1 での実行結果は、
+
+&lt;pre&gt;
+Reference vivification forbidden at tmp.pl line 4.
+&lt;/pre&gt;
+
+…になる。
+
+JRF 2017年4月29日
+
+バージョンが変わって、こういう動作になったということかな？
+
+JRF 2017年4月29日
+
+もちろん、次のようなコードだと…
+
+&lt;pre&gt;
+no autovivification qw(strict warn fetch exists delete store);
+
+my %x;
+if (exists $x{&quot;m&quot;}-&gt;{&quot;n&quot;}) {
+  print &quot;OK\n&quot;;
+}
+&lt;/pre&gt;
+
+JRF 2017年4月29日
+
+Perl 5.10 でも Perl 5.22 でも次のように表示されるのは思い通りの動作なんだけど…。
+
+&lt;pre&gt;
+Reference vivification forbidden at tmp.pl line 4.
+&lt;/pre&gt;
+
+JRF 2017年4月29日
+
+何かおかしい。
+
+最初のでエラーが出るのが意図した動作なのだろうか？
+
+しかたないので、リリースのときだけ、no autovivification をコメントアウトするようにした。
+
+JRF 2017年4月29日
+
+……。
+
+あと、Perl 5.10 と Perl 5.22 の違いではまったのは、Perl 5.10 では大丈夫な次のようなコードが Perl 5.22 ではダメだったこと。 tmp.pl を次のようにする。
+
+&lt;pre&gt;
+foreach my $x qw(a b c) {
+  print &quot;$x\n&quot;;
+}
+&lt;/pre&gt;
+
+JRF 2017年4月29日
+
+これが Perl 5.22 では…
+
+&lt;pre&gt;
+syntax error at tmp.pl line 1, near &quot;$x qw(a b c)&quot;
+Execution of tmp.pl aborted due to compilation errors.
+&lt;/pre&gt;
+
+…になる。
+
+JRF 2017年4月29日
+
+ちなみにエラーメッセージもわかりにくくて
+
+&lt;pre&gt;
+foreach my $x qw(a b
+		 c) {
+  print &quot;$x\n&quot;;
+}
+&lt;/pre&gt;
+
+…とすると、
+
+JRF 2017年4月29日
+
+&lt;pre&gt;
+syntax error at tmp.pl line 2, near &quot;c)&quot;
+  (Might be a runaway multi-line () string starting on line 1)
+Execution of tmp.pl aborted due to compilation errors.
+&lt;/pre&gt;
+
+…と表示される。
+
+JRF 2017年4月29日
+
+ちなみに、次のように foreach のあとにいきなり qw がこなければ OK。
+
+&lt;pre&gt;
+foreach my $x (qw(a b c)) {
+  print &quot;$x\n&quot;;
+}
+&lt;/pre&gt;
+
+…とすると、
+
+JRF 2017年4月29日
+
+&lt;pre&gt;
+a
+b
+c
+
+&lt;/pre&gt;
+
+…とちゃんと表示される。
+
+JRF 2017年4月29日
+
+……。
+
+追記。
+
+Ubuntu 16.04 の perl 5.22 ＆ autovivification 0.16 で試してみた。
+
+結果、Active Perl 5.22 + autovivification 0.16 と同じ結果だった。ちなみに ActivePerl 5.24 + autovivification 0.16 でも同じ結果だった。
+
+…バグだと思う。報告しようと思ったが、報告のページを見るとメールアドレスがほとんど公開されてしまうようなので、怖くて報告を出せない。
+
+JRF 2017年5月21日
+
+Trackbacks:
+
+《cocolog:87304791》 from JRF のひとこと
+<a href="../../../articles/2017/04/statuses_cocolog_87304791.html" class="int-link" title="ひとこと">http://jrf.cocolog-nifty.com/statuses/2017/04/quail.html</a>
+
+quail-naggy.el と jrf_semaphore.pl をアップデートした。そららが共通している naggy-backend.pl のブラッシュアップが大きな変更点。 
+
+受信： 2017-06-28 19:14:53 (JST)</pre>
+
+
+<section class="backrefs" data-pagefind-ignore>
+<h2>後方参照 (1 件)</h2>
+<ul>
+<li><span class="backref-label">[cocolog:87302261]参照</span> <a href="../../../articles/2017/04/statuses_cocolog_87304791.html">ひとこと</a> <span class="backref-date">2017年04月29日</span></li>
+</ul>
+</section>
+
+</article>
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2017/04.html">2017年04月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+</body>
+</html>

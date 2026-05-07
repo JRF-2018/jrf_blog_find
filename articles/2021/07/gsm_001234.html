@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>共有メモ - JRF Blog Archive</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2021/07.html">2021年07月</a> | <a href="../../../index/gsm.html">共有メモ</a></nav>
+<article data-pagefind-body>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[gsm] 2021-07-22T05:11:46Z</td></tr>
+<tr><th>セクション</th><td>グローバル共有メモ</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2021/07.html">2021-07-22T05:11:46Z</a></td></tr>
+<tr><th>元URL</th><td>(URLなし)</td></tr>
+
+</table>
+</div>
+<h1>共有メモ</h1>
+<pre class="body">jrf&gt; [仏教の最適化プログラムの続き。]
+
+病気または怪我(ケガ)。
+
+障害ができるようなケガは、p.injured で、一時的なケガは p.tmp_injured で表現し、災害などの際にケガをする者として選ばれると、p.injured は最大 0.5 ずつ、p.tmp_injured は最大 0.5 ずつ上がっていく。p.injured と p.tmp_injured は、p.tmp_labor を計算するとき p.labor から減算される。p.tmp_injured は一ヶ月ごとに 0.1 ずつ下がっていく。…とする。
+
+p.injured が 1 になると、a60_death_rate と同じだけ死亡率が上がるとする。0 は当然上昇なし。高齢者の場合は、高齢者死亡率と p.injured による死亡率の大きいほうを threshold として取ることにする。
+
+当初は p.tmp_injured は考えないでおこうと思ったが、入れておいたほうが今後のために良いか、そのほうがリアルか…と思い、いちおう入れておくことにした。p.tmp_injured を入れるなら、災害などの際にケガをさせるとき、もしかすると今よりかなり多めに(一時的な)ケガをするようにして、そのうち何人かは障害が残らないようにする…としたほうが、自然だったかもしれないが、とりあえず、そうしてない。必ず障害が残るように(残る者だけケガをしたと選ばれるように)なっている。</pre>
+
+
+</article>
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2021/07.html">2021年07月</a> | <a href="../../../index/gsm.html">共有メモ</a></nav>
+</body>
+</html>

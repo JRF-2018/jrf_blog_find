@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>ひとこと - JRF Blog Archive</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2018/03.html">2018年03月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+<article data-pagefind-body>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[statuses] <span class="cocolog-id">cocolog:89067097</span></td></tr>
+<tr><th>セクション</th><td>JRF のひとこと</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2018/03.html">2018年03月19日</a></td></tr>
+<tr><th>元URL</th><td><a href="http://jrf.cocolog-nifty.com/statuses/2018/03/post-9117.html" class="ext-link"><span class="original-url">http://jrf.cocolog-nifty.com/statuses/2018/03/post-9117.html</span></a></td></tr>
+
+</table>
+</div>
+<h1>ひとこと</h1>
+<pre class="body">ミクロ経済学の我流シミュレーションのプログラムを Python で書いた。モデルは簡単なのに動かすのに苦労した。そして結果が思った以上にカオス風で一定しない。機械高度化にともなううんたら…という理論を検証しようとはじめたのだが、とてもそんなことをいう余裕はない。
+JRF 2018年3月19日
+
+久々に《JRF の私見：税・経済・法》のブログ記事にした。
+
+《ミクロ経済学の我流シミュレーション》
+<a href="../../../articles/2018/03/hbm_01864.html" class="int-link" title="ミクロ経済学の我流シミュレーション [ JRF の私見：税・経済・法 ]">http://jrf.cocolog-nifty.com/society/2018/03/post.html</a>
+
+詳しくはそちらを読んで欲しいが、こちらでは感想的なものを述べたい。
+
+JRF 2018年3月19日
+
+まず、こんなシュミレーションはどこかでなされていると思うのだが、見つけられなかった。それに見つけていたとしても、自分の思考実験のために、一から書いていたと思う。レベルとしては、大学生の実験演習ぐらいのレベルだと思う。
+
+Python の(SciPy の)最適化を使うのは、<a href="../../../articles/2018/02/statuses_cocolog_88972860.html" class="int-link cocolog-id" title="ひとこと">[cocolog:88972860]</a> の価格弾力性のひとことで一回やっていて、そこから今回にすぐにつながった。というよりも、今回のを書いている副産物として価格弾力性に関するアイデアが浮かんで、先に書いたのだった。
+
+JRF 2018年3月19日
+
+今回のプログラムは動かすまでが一苦労。そして、最適化のことをよくわかってないせいもあるんだろうけど、動くだけで手いっぱい。機械高度化に関する議論なんてできる状況にまだないのが悔やしい。
+
+新規貯蓄に関する部分とか、時間要素をからめた最適化のスコアの作り方とか、何かリクツがありそうな気がする。そういうのどこを調べたらいいんだろう？ あっても英語ソースしかないとか？ この最適化のノウハウって、まずは経験則が積み上がっていって、将来的に一分野となりそうな気配でワクワクする。それともやっぱりもうどこかには理論としてあるのかなぁ？
+
+JRF 2018年3月19日
+
+……。
+
+Python 自体にも慣れてなくて <a href="../../../articles/2018/03/statuses_cocolog_89066937.html" class="int-link cocolog-id" title="ひとこと">[cocolog:89066937]</a> に書いたように、途中アップデートするのに苦心したりした。
+
+JRF 2018年3月19日
+
+……。
+
+あと、ブログに記事を投稿するときトラックバックが XMLRPC 経由ではうまく送れなかったのがショック。送れなくてなんでかな…と思って、試しにココログの記事投稿機能を使うとアッサリ送れた。うーん、もうそういう仕様になっちゃったのかな？ 悲しい。
+
+JRF 2018年3月19日
+
+……。
+
+追記。
+
+「ミクロ経済学」のシミュレーションと言っているが、ちょっと語弊がある。パレート最適などのミクロ経済学の特徴的な概念を使っているかと言えばそうではなく、実際には経済原論…基礎的な経済学の原理である需要と供給の関係に触れているだけである。しかし、「経済原論」と言ってしまうと、今はマルクス経済学のことになってしまうようで、それもまた違うとして、その言葉を避けたのだった。
+
+誤解を招く表現であることについては申し訳なく思うが、その辺の事情を斟酌していただければと思う。
+
+JRF 2018年3月20日
+
+……。
+
+追記。
+
+↓をザッと読む。
+
+『数値計算ツールと経済学学習』(河合 勝彦 著, 桃山学院大学経済経営論集 第44巻第4号, 2002年)
+<a href="https://ci.nii.ac.jp/lognavi?name=nels&amp;lang=en&amp;type=pdf&amp;id=ART0000594983" class="ext-link">https://ci.nii.ac.jp/lognavi?name=nels&amp;lang=en&amp;type=pdf&amp;id=ART0000594983</a>
+
+コブ・ダグラス型の関数で定義して、fsolve を使って解いてる。普通はそうするものなんだろうな。
+
+これに比べて私のやってることのなんと幼稚なことか！
+
+JRF 2018年3月27日
+
+アメリカでは高校で経済学の授業のあるところがあるようで、それは fundamental economics とでもいう場合あがあるようだ。訳せば「基礎経済学」だろうか？ ただ、日本ではそういう言い方はなさそう。上では「大学生の実験演習ぐらいのレベル」と言ったが、そういうところでは高校の演習ぐらいのレベルと言いなおしたほうがよさそう。
+
+JRF 2018年3月27日
+
+私のモデルについて論文に書かれたものよりも「よい」というか「難しい」点としては、ある意味エージェントベースで、市場への企業の参入・退出も考えに入れているという点が挙げられるか。しかし、それで何か言えてるわけでないから、意味ないんだけど！
+
+(私にはよくあることだけど、)ブログ記事を書いたことが今になって恥ずかしくなってきた。ああ、くだらない大人の勝手な記事を許して欲しい！
+
+JRF 2018年3月27日
+
+Trackbacks:
+
+《cocolog:89122076》 from JRF のひとこと
+<a href="../../../articles/2018/03/statuses_cocolog_89122076.html" class="int-link" title="ひとこと">http://jrf.cocolog-nifty.com/statuses/2018/03/post-c055.html</a>
+
+金利は破綻のリスクに対する保障としてあり、その本質は社会に確保される「捨て扶持」にあるのではないか？ 投資により所得が増えるのは、「捨て扶持」を利用するところからリスクを取るところに移動し、人口増に寄与するからではないか？... 
+
+受信： 2018-03-30 21:28:27 (JST)
+
+《cocolog:89931312》 from JRF のひとこと
+<a href="../../../articles/2018/09/statuses_cocolog_89931312.html" class="int-link" title="ひとこと">http://jrf.cocolog-nifty.com/statuses/2018/09/pytho.html</a>
+
+Python による「ミクロ経済学の我流シミュレーション」の記事の「その２」を書いた。スコアを取るとき、利益を足し合わせるだけでなく、バランスを取るために分散を足すようにした。はっきり言ってやってることのレベル低くて申し訳ない…。... 
+
+受信： 2018-09-28 18:52:16 (JST)
+
+《cocolog:90214777》 from JRF のひとこと
+<a href="../../../articles/2018/11/statuses_cocolog_90214777.html" class="int-link" title="ひとこと">http://jrf.cocolog-nifty.com/statuses/2018/11/pytho.html</a>
+
+Python を使った最適化の本と人工知能(AI)の本を読んだが、身につかなかった。私が普段使うマシンでは例の実行にすごく時間がかかることもあって、例を確かめなかった。本気でやるなら GPU (グラボ) を買うべきか。... 
+
+受信： 2018-12-30 11:48:14 (JST)
+
+《cocolog:90097610》 from JRF のひとこと
+<a href="../../../articles/2018/10/statuses_cocolog_90097610.html" class="int-link" title="ひとこと">http://jrf.cocolog-nifty.com/statuses/2018/10/post-5cc3.html</a>
+
+小島寛之『エコロジストのための経済学』を読んだ。「活動家」を経済学に引き込むのが目的らしく、シンプルな論理を用いていてわかりやすかった。 
+
+受信： 2018-12-30 11:51:29 (JST)</pre>
+
+
+<section class="backrefs" data-pagefind-ignore>
+<h2>後方参照 (8 件)</h2>
+<ul>
+<li><span class="backref-label">[cocolog:89067097]参照</span> <a href="../../../articles/2019/05/statuses_cocolog_91020330.html">ひとこと</a> <span class="backref-date">2019年05月24日</span></li>
+<li><span class="backref-label">[cocolog:89067097]参照</span> <a href="../../../articles/2018/11/statuses_cocolog_90214777.html">ひとこと</a> <span class="backref-date">2018年11月05日</span></li>
+<li><span class="backref-label">[cocolog:89067097]参照</span> <a href="../../../articles/2018/10/statuses_cocolog_90097610.html">ひとこと</a> <span class="backref-date">2018年10月13日</span></li>
+<li><span class="backref-label">[cocolog:89067097]参照</span> <a href="../../../articles/2018/09/statuses_cocolog_89931312.html">ひとこと</a> <span class="backref-date">2018年09月09日</span></li>
+<li><span class="backref-label">[cocolog:89067097]参照</span> <a href="../../../articles/2018/03/statuses_cocolog_89122076.html">ひとこと</a> <span class="backref-date">2018年03月30日</span></li>
+<li><span class="backref-label">[cocolog:89067097]参照</span> <a href="../../../articles/2018/03/society_89066973.html">ミクロ経済学の我流シミュレーション その１ 基礎経済モデル</a> <span class="backref-date">2018年03月19日 17:04:10</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2018/03/statuses_cocolog_89066937.html">ひとこと</a> <span class="backref-date">2018年03月19日</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2018/02/statuses_cocolog_88972860.html">ひとこと</a> <span class="backref-date">2018年02月28日</span></li>
+</ul>
+</section>
+
+</article>
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2018/03.html">2018年03月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+</body>
+</html>

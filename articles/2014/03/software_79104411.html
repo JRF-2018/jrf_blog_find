@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>Perl で unpack_bits - JRF Blog Archive</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2014/03.html">2014年03月</a> | <a href="../../../index/software.html">ソフトウェア Tips</a></nav>
+<article data-pagefind-body>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[software] <span class="cocolog-id">cocolog:79104411</span></td></tr>
+<tr><th>セクション</th><td>JRF のソフトウェア Tips</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2014/03.html">2014年03月05日 06:24:44</a></td></tr>
+<tr><th>元URL</th><td><a href="http://jrf.cocolog-nifty.com/software/2014/03/post.html" class="ext-link"><span class="original-url">http://jrf.cocolog-nifty.com/software/2014/03/post.html</span></a></td></tr>
+<tr><th>タグ</th><td>[Perl]</td></tr>
+</table>
+</div>
+<h1>Perl で unpack_bits</h1>
+<pre class="body">Perl の unpack では、ビット表現つまり 2 進数にするための B や b が使える。が、…使えてねぇ！
+
+例えば、
+
+my ($mapper, $four_screen, $trainer, $sram, $vertical_mirror)
+  =  unpack(&quot;B4BBBB&quot;, $ines_flags);
+  
+で、$ines_flags には 0x43 でも入ってるとしよう。すると、欲しい値は (4, 0, 0, 1, 1) だ。が、返ってくる値は (&quot;0011&quot;, &quot;0&quot;, undef, undef, undef) になる。
+
+は？
+
+驚くべきこと、その１。unpack(&quot;B&quot;) 系は、数値ではなく、ビットの「文字列」を返す。
+
+驚くべきこと、その２。unpack(&quot;B&quot;) 系の一つの B は必ず 1 バイトにしか対応しない。0x43 == 67 なので、ord('6') == 0b00110110 の 0011 と ord('7') == 0b00110111 の 0 が返ってきたわけだ。
+
+先に pack(&quot;C&quot;) をしなかったのは私のミスだ。それは認めよう。でも、そうして返ってくるのは (&quot;0100&quot;, undef, undef, undef, undef) になる。そんなの欲しかったわけじゃない！
+
+ということで、上でしたかったように書く正解は次になる。
+
+my ($mapper, $four_screen, $trainer, $sram, $vertical_mirror)
+  =  map {unpack(&quot;C&quot;, pack(&quot;b&quot; . length($_), scalar reverse($_)))}
+        unpack(&quot;a4aaaa&quot;, unpack(&quot;B8&quot;, pack(&quot;C&quot;, $ines_flags)))); # Crazy!
+        
+あかん。これはあかん。ということで最初に書いたみたいに動く関数 unpack_bits を書いた。これだと、↓で OK。
+
+my ($mapper, $four_screen, $trainer, $sram, $vertical_mirror)
+  = unpack_bits(&quot;B4BBBB&quot;, $ines_flags);
+  
+ソースは↓。もちろんパブリックドメインで。もっといい書き方があるかもしれないけど…。
+
+  sub unpack_bits {
+    my ($origspec, $origbits) = @_;
+    my @r;
+    my $c = &quot;B&quot;;
+    my $len = 0;
+    my $spec = reverse($origspec);
+    my $bits = $origbits;
+    while ($spec ne &quot;&quot;) {
+      my $n = 1;
+      if ($spec =~ s/^[01-9]+//) {
+        $n = reverse($&amp;);
+      }
+      $spec =~ s/^.//;
+      if ($&amp; eq &quot;b&quot;) {
+        $c = &quot;b&quot;;
+      }
+      push(@r, $bits &amp; ((1 &lt;&lt; $n) - 1));
+      $bits = $bits &gt;&gt; $n;
+      $len += $n;
+    }
+    if ($c ne &quot;b&quot;) {
+      return reverse @r;
+    }
+    @r = ();
+    $spec = $origspec;
+    $bits = $origbits;
+    while ($spec ne &quot;&quot;) {
+      my $n = 1;
+      my $c = &quot;B&quot;;
+      if ($spec =~ s/^[^01-9]//) {
+        $c = $&amp;;
+      }
+      if ($spec =~ s/^[01-9]+//) {
+        $n = $&amp;;
+      }
+      if ($c eq &quot;b&quot;) {
+        push(@r, $bits &amp; ((1 &lt;&lt; $n) - 1));
+        $bits = $bits &gt;&gt; $n;
+      } else {
+        push(@r, ($bits &gt;&gt; ($len - $n)) &amp; ((1 &lt;&lt; $n) - 1));
+      }
+      $len -= $n;
+    }
+    return @r;
+  }
+  
+  sub pack_bits {
+    my ($spec, @bits) = @_;
+    my @r;
+    my $len = 0;
+    my $bits = 0;
+    while (@bits) {
+      my $b = shift(@bits);
+      my $n = 1;
+      my $c = &quot;B&quot;;
+      if ($spec =~ s/^[^01-9]//) {
+        $c = $&amp;;
+      }
+      if ($spec =~ s/^[01-9]+//) {
+        $n = $&amp;;
+      }
+      $b = $b &amp; ((1 &lt;&lt; $n) - 1);
+      if ($c eq &quot;b&quot;) {
+        $bits = $bits | ($b &lt;&lt; $len);
+      } else {
+        $bits = ($bits &lt;&lt; $n) | $b;
+      }
+      $len += $n;
+    }
+    return $bits;
+  }
+  
+■参考
+  ●《INES - Nesdev wiki》。ある意味広く普及した LLVM の一種としてファミコンエミュレータに注目。
+  ●《Perl の数値変換》。＞憤慨するかもしれません。しかしその前に、自分は Perl に苦手な仕事をさせようとしていないか、ちょっと考えてみて下さい。 ＜sed や awk の流れで perl を見ればそうなるけど…。もう Perl で文字列処理に限定される使われかたじゃないし…。
+  ●《perl - Can you explain the bits I'm getting from unpack? - Stack Overflow》。
+    
+更新：2014-03-05
+初公開：2014年03月05日 06:24:44
+最新版：2014年03月05日 06:24:44
+
+
+Links:
+
+INES - Nesdev wiki: <a href="http://wiki.nesdev.com/w/index.php/INES" class="ext-link">http://wiki.nesdev.com/w/index.php/INES</a>
+Perl の数値変換: <a href="http://mikeneko.creator.club.ne.jp/~lab/perl/numerical_transform/" class="ext-link">http://mikeneko.creator.club.ne.jp/~lab/perl/numerical_transform/</a>
+perl - Can you explain the bits I'm getting from unpack? - Stack Overflow: <a href="http://stackoverflow.com/questions/5749241/can-you-explain-the-bits-im-getting-from-unpack" class="ext-link">http://stackoverflow.com/questions/5749241/can-you-explain-the-bits-im-getting-from-unpack</a></pre>
+
+
+</article>
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2014/03.html">2014年03月</a> | <a href="../../../index/software.html">ソフトウェア Tips</a></nav>
+</body>
+</html>

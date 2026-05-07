@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>共有メモ - JRF Blog Archive</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2021/10.html">2021年10月</a> | <a href="../../../index/gsm.html">共有メモ</a></nav>
+<article data-pagefind-body>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[gsm] 2021-10-25T13:14:21Z</td></tr>
+<tr><th>セクション</th><td>グローバル共有メモ</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2021/10.html">2021-10-25T13:14:21Z</a></td></tr>
+<tr><th>元URL</th><td>(URLなし)</td></tr>
+
+</table>
+</div>
+<h1>共有メモ</h1>
+<pre class="body">jrf&gt; [仏教の最適化プログラムの続き。]
+
+simbdp*/calamity.py の damage_property と damage_poor_property について p.prop がマイナスのときに対応しないといけなかった。マイナスの場合、逆にダメージが軽くなるようになっていた。
+
+少し考えて、test_of_domination_2.py と simbdp2/calamity.py については、
+
+if p.prop &gt; 0:
+  p.prop *= random.random()
+
+…みたいにした。
+
+一方、simbdp3/calamity.py simbdp3x1/calamity.py については
+
+if p.prop &gt; 10:
+   p.prop *= random.random()
+else:
+   p.prop -= 10 * random.random()
+
+…みたいにした。この後、simbdp3x1 はマイナスの prop でも大丈夫にする予定で、simbdp3 については次のバージョンでは、simbdp3x1 の MeanAmplifier 以外の機能をバックポートする予定だから。</pre>
+
+
+</article>
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2021/10.html">2021年10月</a> | <a href="../../../index/gsm.html">共有メモ</a></nav>
+</body>
+</html>

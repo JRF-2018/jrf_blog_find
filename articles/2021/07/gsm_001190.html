@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>共有メモ - JRF Blog Archive</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2021/07.html">2021年07月</a> | <a href="../../../index/gsm.html">共有メモ</a></nav>
+<article data-pagefind-body>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[gsm] 2021-07-10T03:47:16Z</td></tr>
+<tr><th>セクション</th><td>グローバル共有メモ</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2021/07.html">2021-07-10T03:47:16Z</a></td></tr>
+<tr><th>元URL</th><td>(URLなし)</td></tr>
+
+</table>
+</div>
+<h1>共有メモ</h1>
+<pre class="body">jrf&gt; Windows の Python で signal.signal を使って Ctrl-C (SIGINT) でデバッガに入るような処理を書こうと思ったのだがうまくいかない。
+
+forrtl: error (200): program aborting due to control-C event
+Image              PC                Routine            Line        Source
+
+libifcoremd.dll    00007FFFAD7D3B58  Unknown               Unknown  Unknown
+KERNELBASE.dll     00007FFFF71FB933  Unknown               Unknown  Unknown
+KERNEL32.DLL       00007FFFF7537034  Unknown               Unknown  Unknown
+ntdll.dll          00007FFFF9422651  Unknown               Unknown  Unknown
+QObject::~QObject: Timers cannot be stopped from another thread
+
+…みたいなエラーが出てて、ググると、Python 2.7系と scipy などにあるエラーらしい。
+
+《Ctrl-C crashes Python after importing scipy.stats - Stack Overflow》  
+<a href="https://stackoverflow.com/questions/15457786/ctrl-c-crashes-python-after-importing-scipy-stats" class="ext-link">https://stackoverflow.com/questions/15457786/ctrl-c-crashes-python-after-importing-scipy-stats</a>
+
+↑によって、
+
+import os
+os.environ['FOR_DISABLE_CONSOLE_CTRL_HANDLER'] = '1'
+from scipy.stats import zscore
+
+…となどとすることで解決した。scipy モジュールなどを読み込む前に os.environ[...] = '1' が必要なのがミソらしい。</pre>
+
+
+</article>
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2021/07.html">2021年07月</a> | <a href="../../../index/gsm.html">共有メモ</a></nav>
+</body>
+</html>

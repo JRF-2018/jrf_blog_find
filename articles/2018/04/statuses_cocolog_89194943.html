@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>ひとこと - JRF Blog Archive</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2018/04.html">2018年04月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+<article data-pagefind-body>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[statuses] <span class="cocolog-id">cocolog:89194943</span></td></tr>
+<tr><th>セクション</th><td>JRF のひとこと</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2018/04.html">2018年04月13日</a></td></tr>
+<tr><th>元URL</th><td><a href="http://jrf.cocolog-nifty.com/statuses/2018/04/elde.html" class="ext-link"><span class="original-url">http://jrf.cocolog-nifty.com/statuses/2018/04/elde.html</span></a></td></tr>
+
+</table>
+</div>
+<h1>ひとこと</h1>
+<pre class="body">ELDE (Exhaustive Lock Dependency Emulator) において、「実実行」のみを数え上げる「修正」バージョンを作った。そして、それを「失敗作」だった「虚実行」を許すバージョンと突き合わせ、結果が正しいことを確かめた。怪我の功名。
+JRF 2018年4月13日
+
+ブログ記事は↓。
+
+《Exhaustive Lock Dependency Emulator その３ 修正とチェック》
+<a href="../../../articles/2018/04/software_89194818.html" class="int-link" title="Exhaustive Lock Dependency Emulator その３ 修正とチェック">http://jrf.cocolog-nifty.com/software/2018/04/post-1.html</a>
+
+JRF 2018年4月13日
+
+今回こそ「車輪の再発明」。前回の「その１」は、意図しない「虚実行」を含めていたため、他の人がやらないような実装になり、その意味では個性があったことになる。
+
+とりあえず「その１」を確認用として役立てられたのは良かった。
+
+JRF 2018年4月13日
+
+……。
+
+実装はそれほど難しくなかった。組み合わせを使ったロック仕様の数え上げが適度に難しく作っていて楽しかった。途中で組み合わせの数え上げについて記事を書いた(<a href="../../../articles/2018/04/statuses_cocolog_89185782.html" class="int-link cocolog-id" title="ひとこと">[cocolog:89185782]</a>)のが副産物。
+
+lock_limit まわりは、ループの途中でも良いようにしようかと少し迷ったが、その１ではそういう実装をしていなかったため、変換が容易になるように、今回は、難しい実装にしなかった。
+
+JRF 2018年4月13日
+
+……。
+
+そこにも書いたが「虚実行」について。「虚実行」という考え方は、この「虚実行」以外にも cut している実行があり、それらと「虚実行」を分けるものが何かと問われると難しく、今のままでは「虚実行」そのものに意味を見出すのは難しい。
+
+今後、ELDE を発展させていくなかでデッドロックに関して連続とか不連続とかを定義できて、そこに絡めて何とか言えたりしたら、カッコイイんだけど、どうなることやら…。
+
+JRF 2018年4月13日
+
+……。
+
+今後は複数ロックの場合について考えたいが、その「仕事」の前に読書やゲームを先に進めるため、少し休もうかな、時間をおこうかな…。
+
+JRF 2018年4月13日</pre>
+
+
+<section class="backrefs" data-pagefind-ignore>
+<h2>後方参照 (2 件)</h2>
+<ul>
+<li><span class="backref-label">[cocolog:89194943]参照</span> <a href="../../../articles/2018/04/software_89194818.html">Exhaustive Lock Dependency Emulator その３ 修正とチェック</a> <span class="backref-date">2018年04月13日 21:00:17</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2018/04/statuses_cocolog_89185782.html">ひとこと</a> <span class="backref-date">2018年04月11日</span></li>
+</ul>
+</section>
+
+</article>
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2018/04.html">2018年04月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+</body>
+</html>

@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>ひとこと - JRF Blog Archive</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2024/09.html">2024年09月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+<article data-pagefind-body>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[statuses] <span class="cocolog-id">cocolog:95052633</span></td></tr>
+<tr><th>セクション</th><td>JRF のひとこと</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2024/09.html">2024年09月16日</a></td></tr>
+<tr><th>元URL</th><td><a href="http://jrf.cocolog-nifty.com/statuses/2024/09/post-f8f621.html" class="ext-link"><span class="original-url">http://jrf.cocolog-nifty.com/statuses/2024/09/post-f8f621.html</span></a></td></tr>
+
+</table>
+</div>
+<h1>ひとこと</h1>
+<pre class="body">「仮想合成人口個票」または「合成人口データ」の簡易な実装を作ってみた。実は感染モデルのちょっとした実験をやるためにそれを作ったのだが、感染モデルの実験はまだ当分先になりそうな感じなので、先にこちらのみ公開することにした。
+JRF 2024年9月16日
+
+《JRF-2018/simple_synthetic_population: 仮想合成人口個票の簡易な実装》  
+<a href="https://github.com/JRF-2018/simple_synthetic_population" class="ext-link">https://github.com/JRF-2018/simple_synthetic_population</a>
+
+詳しくは↑の README.md を読んでいただきたい。
+
+JRF 2024年9月16日
+
+↑のはじめに書いたことをこちらに引用しておく。
+
+＞ちょっとシミュレーションをするために調べていると「仮想合成人口個票」または「合成人口データ」と呼ばれる便利なものがあることを知りました。しかし、《関西大学ソシオネットワーク戦略研究機構》で配布されているものには申請が必要なようで、そこまでキバったことをするつもりのない私は、他の方の論文などを参考に、その簡易版を作ってみることにしたのでした。
+
+JRF 2024年9月16日
+
+なお、まだこのデータを使ったシミュレーション実験を私はしていません。感染モデルの実験をしたいと思っているのですが、それは当分先になりそうです。そうやって実用すればこのデータにもアラが見えてくるはずですから、そういった実験後に公開すべきか迷ったのですが、そうなったらそうなったで修正すればいいという気軽な気持ちで、公開しました。気分一新して次の実験にかかれるようにするためです。ですから、このデータはあくまでも「開発中」で将来大きく変更する可能性のあることをご了承の上、お使いください。
+＜
+
+JRF 2024年9月16日
+
+データもプログラムも自由に使っていただきたいが、何分「開発中」なので、将来、仕様が大きく変わりうることだけはご了承いただきたい。
+
+JRF 2024年9月16日
+
+……。
+
+参考文献はとりあえず次の二つを挙げておく。
+
+『日本全国の位置情報付き仮想の個票合成手法の精緻化』(原田 拓弥 ＆ 村田忠彦 著, サイバーメディア HPCジャーナル No. 9 (pp. 53-56), 2020年1月)
+<a href="https://www.hpc.cmc.osaka-u.ac.jp/wp-content/uploads/2019/12/2018_harada.pdf" class="ext-link">https://www.hpc.cmc.osaka-u.ac.jp/wp-content/uploads/2019/12/2018_harada.pdf</a>
+
+《焼き鈍し法(SA法)メモ - Negative/Positive Thinking》  
+<a href="https://jetbead.hatenablog.com/entry/20111014/1318598381" class="ext-link">https://jetbead.hatenablog.com/entry/20111014/1318598381</a>
+
+JRF 2024年9月16日
+
+……。
+
+令和二年の国勢調査のデータを使った。表2-1, 表11-1, 表11-2, 表15-1, 表15-5, 表17-1 を使った。
+
+JRF 2024年9月16日
+
+《国勢調査 令和２年国勢調査 人口等基本集計　（主な内容：男女・年齢・配偶関係，世帯の構成，住居の状態，母子・父子世帯，国籍など） 2020年10月 | ファイル | 統計データを探す | 政府統計の総合窓口》  
+<a href="https://www.e-stat.go.jp/stat-search/files?page=1&amp;layout=datalist&amp;toukei=00200521&amp;tstat=000001136464&amp;cycle=0&amp;year=20200&amp;month=24101210&amp;tclass1=000001136466&amp;tclass2val=0" class="ext-link">https://www.e-stat.go.jp/stat-search/files?page=1&amp;layout=datalist&amp;toukei=00200521&amp;tstat=000001136464&amp;cycle=0&amp;year=20200&amp;month=24101210&amp;tclass1=000001136466&amp;tclass2val=0</a>
+
+JRF 2024年9月16日
+
+……。
+
+……。
+
+追記。
+
+更新: 仮想合成人口個票の簡易な実装。バージョン 0.0.2。
+
+初期データに最低限の家族条件を強制するようにした。ライセンスを MIT License にした。
+
+JRF 2024年10月14日
+
+初期データに最低限の家族条件を強制するため、条件に合わない家族は、世帯主以外の家族の人員を他の家族の人員と共に条件に合うよう入れ換える。
+
+最低限の家族条件とは、親の場合は世帯主より年齢が上、子の場合は世帯主より年齢が下、世帯主の配偶者は 16歳以上。
+
+たったこれだけの条件でも、世帯主の年齢が高過ぎたり低過ぎたりして、すべての家族に最低限の家族条件を適用できない場合がしばしば出てくるようだ。
+
+JRF 2024年10月14日
+
+その場合、初期データまるごと生成しなおすことにした。
+
+あと、ライセンスを MIT License にした。私は Public Domain でいいのだが、もしかすると他の人の特許などが絡むのかもしれず、すると MIT License のほうが便利だろうと判断したから。
+
+JRF 2024年10月14日</pre>
+
+
+<section class="backrefs" data-pagefind-ignore>
+<h2>後方参照 (5 件)</h2>
+<ul>
+<li><span class="backref-label">[cocolog:95052633]参照</span> <a href="../../../articles/2025/11/statuses_cocolog_95725020.html">ひとこと</a> <span class="backref-date">2025年11月16日</span></li>
+<li><span class="backref-label">[cocolog:95052633]参照</span> <a href="../../../articles/2025/05/statuses_cocolog_95428644.html">ひとこと</a> <span class="backref-date">2025年05月03日</span></li>
+<li><span class="backref-label">[cocolog:95052633]参照</span> <a href="../../../articles/2025/04/statuses_cocolog_95369157.html">ひとこと</a> <span class="backref-date">2025年04月11日</span></li>
+<li><span class="backref-label">[cocolog:95052633]参照</span> <a href="../../../articles/2024/12/statuses_cocolog_95207898.html">ひとこと</a> <span class="backref-date">2024年12月29日</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2024/09/gsm_006152.html">共有メモ</a> <span class="backref-date">2024-09-16T08:36:55Z</span></li>
+</ul>
+</section>
+
+</article>
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2024/09.html">2024年09月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+</body>
+</html>

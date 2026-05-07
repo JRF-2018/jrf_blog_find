@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>共有メモ - JRF Blog Archive</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2021/09.html">2021年09月</a> | <a href="../../../index/gsm.html">共有メモ</a></nav>
+<article data-pagefind-body>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[gsm] 2021-09-05T13:35:06Z</td></tr>
+<tr><th>セクション</th><td>グローバル共有メモ</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2021/09.html">2021-09-05T13:35:06Z</a></td></tr>
+<tr><th>元URL</th><td>(URLなし)</td></tr>
+
+</table>
+</div>
+<h1>共有メモ</h1>
+<pre class="body">jrf&gt; [仏教の最適化プログラムの続き。]
+
+実験の前に…。
+
+さすがにここまで変更すると normal のログを求めるところからやり直さねばならない。これまでのログは無用となる。
+
+ログを消す前に plot_logs.py でのグラフの表示もいくつかセーブしておくこととする。これは fig-20210906_*.png という名前にしておく。その内容は、ファイル名からはわからないが、グラフには legend 部分に prefix が並び、縦軸に何に注目してあるかが書いてあるからわかるであろう。これらは↓で見れるようにした。
+
+《グラフ集: 2021-09-05 まで - Issue #1 - JRF-2018/simbd》  
+<a href="https://github.com/JRF-2018/simbd/issues/1" class="ext-link">https://github.com/JRF-2018/simbd/issues/1</a>
+
+今後は別の Issue をたてて、グラフは作ったときに Issue に公開して行こうかと思う。
+
+次に plot_logs.py などの更新を公開しておく。(バージョン 0.0.4)
+
+《simbd/plot_logs.py at master - JRF-2018/simbd》  
+<a href="https://github.com/JRF-2018/simbd/blob/master/stats_simbdp3/plot_logs.py" class="ext-link">https://github.com/JRF-2018/simbd/blob/master/stats_simbdp3/plot_logs.py</a>
+
+そして、ログのバックアップも取っておこう。バックアップは zip にするため、git のに特別な Release を作ってそこに zip のバイナリを置くことにした。その Release の URL は↓でバックアップは Asset の logs-20210906.zip になる。
+
+《Release Old Logs 20210905 - JRF-2018/simbd》  
+<a href="https://github.com/JRF-2018/simbd/releases/tag/plot_logs-v0.0.4" class="ext-link">https://github.com/JRF-2018/simbd/releases/tag/plot_logs-v0.0.4</a>
+
+なお、一緒に置いてある simbdp3_pickle-20210831.zip の中身は、normal2 や mwar2 を作る直前に作った pickle であり、その前の normal や mwar を作ったころの pickle は残っていない。上のグラフをまとめたものも figs-20210905.zip として置いてある。</pre>
+
+
+</article>
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2021/09.html">2021年09月</a> | <a href="../../../index/gsm.html">共有メモ</a></nav>
+</body>
+</html>

@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>共有メモ - JRF Blog Archive</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2024/07.html">2024年07月</a> | <a href="../../../index/gsm.html">共有メモ</a></nav>
+<article data-pagefind-body>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[gsm] 2024-07-25T05:45:58Z</td></tr>
+<tr><th>セクション</th><td>グローバル共有メモ</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2024/07.html">2024-07-25T05:45:58Z</a></td></tr>
+<tr><th>元URL</th><td>(URLなし)</td></tr>
+
+</table>
+</div>
+<h1>共有メモ</h1>
+<pre class="body">jrf&gt; 《めめちも:X:2024-07-24》  
+<a href="https://x.com/mecimecimemeci/status/1816099453398614268" class="ext-link">https://x.com/mecimecimemeci/status/1816099453398614268</a>
+＞＞鉄緑会恋愛発展講座定期
+ところでこれクソ問すぎる
+＞第4問
+
+Adam には Barbara と Carrol という2人の恋人がいる。ある日、Adam のところに恋人から手紙が届いたが、不幸なことに雨で差出人の名前が消えてしまっていた。幸いなんとか &quot;ar&quot; という文字だけは読み取ることができたが、さて、Adam が返事を出すとすればどちらの恋人に出すのが無難か、理由を付けて答えよ。ただし、雨で消えなかった可能性があるのは隣どうしの2文字であって、それらが残る可能性はいずれも同じとする。また、手紙が Barbara からくる確率と Carrol からくる確率はともに 1/2 とする。
+＜
+＜＜
+
+まず、数学外で答えると、どちらにも当たり障りない返事をするか、どちらにも返事をしないことが最適な戦略であると思われる。どちらかのみに返そうというのはリスク選好性が高い。
+
+どちらかにしか返せないとして数学してみる。ベイズの定理(全確率の和の公式含む)を使う。事象 A を &quot;ar&quot; が残った事象とする。事象 B1 を Barbara が送った事象とする。事象 B2 を Carrol が送った事象とする。
+
+さて、解法は２つほどあるように思う。一つは文字が消える確率を等しく q とする方法である。こちらを私は先に考えたが、その答えは後述する。
+
+もう一つは ar が残る確率を p とし、B1 には ar が２つ含まれているので、P(A|B1) = 2p とし、B2 には ar が１つだけなので P(A|B2) = 1p とする。p &lt; 1/2 でなければならない。
+
+まず全確率の公式を使い。
+
+P(A) = P(A|B1) * P(B1) + P(A|b2) * P(B2) = 2p * (1/2) + 1p * (1/2) = (3/2) * p
+
+ベイズの定理を使い、
+
+P(B1|A) = P(A|B1) * P(B1) / P(A) = 2p * (1/2) / ((3/2) * p) = 2/3
+P(B2|A) = P(A|B2) * P(B2) / P(A) = 1p * (1/2) / ((3/2) * p) = 1/3
+
+P(B1|A)/P(B2|A) = 2
+
+ゆえに Barbara からきたほうが 2倍、もっともらしいので Barbara に送り返すべきとなる。
+
+
+次に文字が消える確率を q として考察しよう。
+
+P(A|B1) =　q * (1-q) * (1-q) * q * q * q * q + q * q * q * q * (1-q) * (1-q) * q = 2q^5 * (1-q)^2
+
+P(A|B2) = q * (1-q) * (1-q) * q * q * q = q^4 * (1-q)^2
+
+P(A) = P(A|B1) * P(B1) + P(A|B2) * P(B2) = (1/2) (2q^5 * (1-q)^2 + q^4 * (1-q)^2)
+
+P(B1|A) = P(A|B1) * P(B1) / P(A) = (1/2) * (2q^5 * (1-q)^2) / P(A)
+P(B2|A) = P(A|B2) * P(B2) / P(A) = (1/2) * (q^4 * (1-q)^2) / P(A)
+
+P(B1|A)/P(B2|A) = 2q
+
+つまり、q &gt; 1/2 ならば、Barbara が送ったほうがもっともらしく、q &lt; 1/2 ならば Carrol が送ったほうがもっともらしい。ただ、文字がほとんどが消える状況だと q &gt; 1/2 のほうがもっともらしいと思われる。Barbara に送り返すべきであろう。
+
+これで合っているのだろうか？ 合っている自信はない。orz</pre>
+
+
+</article>
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2024/07.html">2024年07月</a> | <a href="../../../index/gsm.html">共有メモ</a></nav>
+</body>
+</html>

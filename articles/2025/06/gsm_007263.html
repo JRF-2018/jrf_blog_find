@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>共有メモ - JRF Blog Archive</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2025/06.html">2025年06月</a> | <a href="../../../index/gsm.html">共有メモ</a></nav>
+<article data-pagefind-body>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[gsm] 2025-06-27T17:10:54Z</td></tr>
+<tr><th>セクション</th><td>グローバル共有メモ</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2025/06.html">2025-06-27T17:10:54Z</a></td></tr>
+<tr><th>元URL</th><td>(URLなし)</td></tr>
+
+</table>
+</div>
+<h1>共有メモ</h1>
+<pre class="body">jrf&gt; Colab 上 で gemini-cli。Imagen で絵を生成。ポイントを書いておくと、↓の手順通りなのだが、
+
+《Gemini CLI から Imagen を呼び出し！ MCPサーバー経由で画像生成 #GoogleCloud - Qiita》  
+<a href="https://qiita.com/te_yama/items/db572cad90a3ae221847" class="ext-link">https://qiita.com/te_yama/items/db572cad90a3ae221847</a>
+
+GEMINI_API_KEY をまず設定する。gemini が起動して挨拶を返せるようになったら…。
+
+gcloud auth application-default login
+
+…する。Colab 上では --no-launch-browser が自動で指定されてる感じ。
+
+gcloud auth application-default set-quota-project $PROJECT_ID
+
+export GOOGLE_APPLICATION_CREDENTIALS=/content/.config/application_default_credentials.json
+
+add-apt-repository -y ppa:longsleep/golang-backports
+
+apt install golang
+
+export PATH=$PATH:/root/go/bin
+
+あとは↑の記事の手順通り。GCP で Imagen API の許可(Vertex AI の許可)とかはやっておくように。$PROJECT_ID は↑の記事のようにしても設定されないから、自分で設定してください。</pre>
+
+
+</article>
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2025/06.html">2025年06月</a> | <a href="../../../index/gsm.html">共有メモ</a></nav>
+</body>
+</html>

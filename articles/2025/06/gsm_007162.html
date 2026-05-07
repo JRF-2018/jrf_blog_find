@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>共有メモ - JRF Blog Archive</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2025/06.html">2025年06月</a> | <a href="../../../index/gsm.html">共有メモ</a></nav>
+<article data-pagefind-body>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[gsm] 2025-06-14T22:12:15Z</td></tr>
+<tr><th>セクション</th><td>グローバル共有メモ</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2025/06.html">2025-06-14T22:12:15Z</a></td></tr>
+<tr><th>元URL</th><td>(URLなし)</td></tr>
+
+</table>
+</div>
+<h1>共有メモ</h1>
+<pre class="body">jrf&gt; (承前: jrf_pdb_agent_lib の話の続き。)
+
+&lt;pre&gt;
+pal.do(d_md(&quot;&quot;&quot;\
+  主目的: サーバーを立てる。
+
+  * (X) データを持ってくる。
+  * ( ) サーバーを立てる。
+  * ( ) テストを行う。
+
+  留意事項: ライブラリやアプリが足りない場合はいったん終了する。
+&quot;&quot;&quot;), current_code = d_py(&quot;&quot;&quot;\
+&lt;/pre&gt;
+&lt;pre&gt;
+  tasks = [True, False, False]
+  try:
+    if not tasks[0]:
+      pal.do(&quot;データを持ってくる。&quot;, current_code=&quot;retrieve_data()&quot;)
+      tasks[0] = True
+    if not tasks[1]:
+      pal.do(&quot;サーバーを立てる。&quot;, current_code=&quot;run_server()&quot;)
+      tasks[1] = True
+    if not tasks[2]:
+      pal.do(&quot;テストを行う。&quot;, current_code=&quot;run_test()&quot;)
+      tasks[2] = True
+    if all(tasks):
+      pal.do(&quot;完了報告を行う。&quot;)
+  except pal.AiException as e:
+      if pal.do(&quot;e がライブラリやアプリが足りないと言っている。&quot;):
+        pal.do(&quot;終了済みのタスクをこの .apy に記録していったん終了。&quot;)
+      else:
+        pal.EXCEPTION = e
+&quot;&quot;&quot;))
+&lt;/pre&gt;
+
+…みたいにして、書き換えるのを最小にしておけば、current_code をほとんど維持したままいろいろ対応できるか…。
+
+ここまでやるかどうかは別として、このフレームワークには、いろいろ潜在的可能性がある…とは言えるのだろう。</pre>
+
+
+</article>
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2025/06.html">2025年06月</a> | <a href="../../../index/gsm.html">共有メモ</a></nav>
+</body>
+</html>

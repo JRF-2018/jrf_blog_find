@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>ひとこと - JRF Blog Archive</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2023/06.html">2023年06月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+<article data-pagefind-body>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[statuses] <span class="cocolog-id">cocolog:94260074</span></td></tr>
+<tr><th>セクション</th><td>JRF のひとこと</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2023/06.html">2023年06月18日</a></td></tr>
+<tr><th>元URL</th><td><a href="http://jrf.cocolog-nifty.com/statuses/2023/06/post-ecc050.html" class="ext-link"><span class="original-url">http://jrf.cocolog-nifty.com/statuses/2023/06/post-ecc050.html</span></a></td></tr>
+
+</table>
+</div>
+<h1>ひとこと</h1>
+<pre class="body">簡単な易占いをオープンな LLM AI の Rinna 3.6B にやらせてみた。Rinna はどうも元々、易占いを知ってるようす。簡単な指示に割と合ってる答えを返す。逆に詳しい指示を与えたほうがダメだった。
+JRF 2023年6月18日
+
+まず、ChatGPT は、易占いでかなり優れた結果を残すことが知られている。1月に私が試したときはうまくいってなかったのは、私のプロンプトがまずかったということか…。
+
+《【AI占い】意外な真実！ChatGPTは「易」が得意だった.. | ～ 人生を変えたいあなたへ 〜 あなたの未来に輝きを与えるブログ》  
+<a href="https://ameblo.jp/uranai-tenkyu/entry-12791858182.html" class="ext-link">https://ameblo.jp/uranai-tenkyu/entry-12791858182.html</a>
+
+JRF 2023年6月18日
+
+それはそれとして、オープンな AI を使って易占いができるかやってみようとした。OpenCALM か Rinna かどちらにやらせるか迷ったが、OpenCALM は質疑用にはユーザーがファインチューンしたモデルしかなく、Rinna は質疑用にファインチューンしたモデルがあらかじめあるので、Rinna を選んだ。
+
+JRF 2023年6月18日
+
+Rinna の sft-v2 を使った結果が↓。まず few-shot learning 用に詳しい指示を、次に最初から知識があることを前提に簡単な指示を試したが、詳しい指示を与えたとき否の卦での占いが失敗しているように見える。
+
+《rinna_yijing_test.ipynb》  
+<a href="https://gist.github.com/JRF-2018/92e0099c357d8aa7302ebf8ac961b366" class="ext-link">https://gist.github.com/JRF-2018/92e0099c357d8aa7302ebf8ac961b366</a>
+
+JRF 2023年6月18日
+
+Rinna の ppo を使った結果が↓。詳しい指示を与えたとき否の卦での占いはやはり失敗している。簡単な指示も比の卦が「天火同人」(同人の卦の説明)と説明され失敗している。否の卦でも失敗している。
+
+《rinna_yijing_test_ppo.ipynb》  
+<a href="https://gist.github.com/JRF-2018/1d93efb9b85a95ea8fc771b4af818070" class="ext-link">https://gist.github.com/JRF-2018/1d93efb9b85a95ea8fc771b4af818070</a>
+
+JRF 2023年6月18日
+
+……。
+
+追記。
+
+Rinna 3.6B で易占いつづき。sft-v2 で質疑応答を求めるような答えが出たので、それを試みるが(あまり)うまくいかない。また、乱数を独自に持ってて占ってくれるようではないようだ。
+
+《rinna_yijing_test_2.ipynb》  
+<a href="https://gist.github.com/JRF-2018/15154ca41c665979945cfd64cf9acbd9" class="ext-link">https://gist.github.com/JRF-2018/15154ca41c665979945cfd64cf9acbd9</a>
+
+JRF 2023年6月18日
+
+……。
+
+追記。
+
+○ 2023-06-17T21:30:38Z
+
+ちなみに rinna_yijing_test_2.ipynb の generate 関数で do_sample=True にすれば「乾」以外の卦が出てくるようだが、出力はかなり不安定になる。
+
+JRF 2023年6月21日
+
+……。
+
+○ 2023-06-19T04:28:50Z
+
+Google Bard は易占いをちゃんとやってくれた。すごい。そんな本格的な占いではないけど、簡単な答えだけでなく、ある程度の長さの答えを返してくれる。
+
+JRF 2023年6月21日
+
+……。
+
+……。
+
+○ 2023-06-16T05:47:05Z
+
+AI 生成物が増えて、(ネットなどの)データが「穢れる」みたいなことが言われる。けれど、画像生成の場合は今のところ必ず人の選択が入るので、その点で学習しがいがあるのではないか。文章生成も何を生成させようとしたかには人の選択がある。
+
+JRF 2023年6月21日
+
+《AI成果物が急増したことで「AI生成コンテンツをAIが学習するループ」が発生し「モデルの崩壊」が起きつつあると研究者が警告 - ライブドアニュース》  
+<a href="https://news.livedoor.com/article/detail/24422043/" class="ext-link">https://news.livedoor.com/article/detail/24422043/</a>
+
+JRF 2023年6月21日
+
+……。
+
+……。
+
+○ 2023-06-18T10:49:02Z
+
+jrf&gt; すごい！
+
+《OpenAI Function callingで複雑なタスクを簡単に実現 - Qiita》  
+<a href="https://qiita.com/canadie/items/161aaa41a5d110470e8f" class="ext-link">https://qiita.com/canadie/items/161aaa41a5d110470e8f</a>
+
+JRF 2023年6月21日
+
+……。
+
+……。
+
+○ 2023-06-19T21:13:12Z
+
+AI にとって易占いよりタロット占いが難しそうなのは、後者はカードの絵を判断する必要があるから。絵の属性を言葉で抽出しておけばいいという話ではなく、相談によって絵の識別器の動作を変える必要があるから…と思う。
+
+JRF 2023年6月21日
+
+……。
+
+○ 2023-06-20T17:45:41Z
+
+#AI 例えば、私のブログとか検索に載らなくなってきてるのだけど、Google はおそらくそのデータを今も持っていて、将来的には↓の技術とかで議論のソースとして(過去こういうことを言っていた人がいる等で)使うことがあるのだろうと思う。「忘却」には他の AI への優越性を維持する役割もありそう。その検索もタロット占いと同様、相談によって識別器の動作を変える…ただ、その場合は Attention 的なものだけでなく、検索語句みたいなものを変えることによるのだろう。
+
+JRF 2023年6月21日
+
+《Langchain新機能: エビデンスの引用付きの解答が得られるQA機能（citation_fuzzy_match_chain）｜はまち》  
+<a href="https://note.com/hamachi_jp/n/nddcf74bc8a60" class="ext-link">https://note.com/hamachi_jp/n/nddcf74bc8a60</a>
+
+JRF 2023年6月21日
+
+……。
+
+○ 2023-06-20T18:03:51Z
+
+また変な夢を見た。私はゾンビ的に生き延びるんだが、そこで世界のシステムが完成する。しかし、私は違和感をもっていて、それを言葉にはできるのだが、感覚的には違和感を維持できない感じだった。
+
+JRF 2023年6月21日
+
+資源が枯渇するとか、それを宇宙で調達すれば地球で廃棄物の問題が起こる(<a href="../../../articles/2020/03/statuses_cocolog_91743489.html" class="int-link cocolog-id" title="ひとこと">[cocolog:91743489]</a> など)とかが違和感で、それでもその違和感を維持できない感じで、そこに上の AI の話に意識が来て、いや、それも、私がかつて学んた Generic Theorem Prover とかの複雑な論理まで ChatGPT とかに発想できるのか…とか考えていたら、目が覚めて、<a href="../../../articles/2023/06/gsm_004237.html" class="int-link gsm-tsref" title="jrf&gt; #AI 例えば、私のブログとか検索に載らなくなってきてるのだけど、Go">>>2023-06-20T17:45:41Z</a> の書き込みとなった。
+
+JRF 2023年6月21日
+
+……。
+
+……。
+
+追記。
+
+○ 2023-06-21T11:44:17Z
+
+一応 OpenCALM (3B) でも易占いしてみた。OpenCALM はファインチューンが必要らしいがそれをやっていない。そのせいもあるのか、基本、失敗している。易の事前知識はありそうだが。なお、これまで Rinna の易占いの GitHub Gist のソースを、Public にするのを忘れていた orz。Public にしておいた。
+
+JRF 2023年6月21日
+
+《opencalm_yijing_test.ipynb》  
+<a href="https://gist.github.com/JRF-2018/2d6ac0d09c137709b96b7cd3bf80a06a" class="ext-link">https://gist.github.com/JRF-2018/2d6ac0d09c137709b96b7cd3bf80a06a</a>
+
+JRF 2023年6月21日</pre>
+
+
+<section class="backrefs" data-pagefind-ignore>
+<h2>後方参照 (1 件)</h2>
+<ul>
+<li><span class="backref-label">[cocolog:94260074]参照</span> <a href="../../../articles/2023/06/statuses_cocolog_94265741.html">ひとこと</a> <span class="backref-date">2023年06月21日</span></li>
+</ul>
+</section>
+
+</article>
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2023/06.html">2023年06月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+</body>
+</html>

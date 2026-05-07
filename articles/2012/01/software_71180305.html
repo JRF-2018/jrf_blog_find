@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>ブログのバックアップ＆「ひとこと」のクロスリファレンス - JRF Blog Archive</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2012/01.html">2012年01月</a> | <a href="../../../index/software.html">ソフトウェア Tips</a></nav>
+<article data-pagefind-body>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[software] <span class="cocolog-id">cocolog:71180305</span></td></tr>
+<tr><th>セクション</th><td>JRF のソフトウェア Tips</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2012/01.html">2012年01月07日 14:28:08</a></td></tr>
+<tr><th>元URL</th><td><a href="http://jrf.cocolog-nifty.com/software/2012/01/post.html" class="ext-link"><span class="original-url">http://jrf.cocolog-nifty.com/software/2012/01/post.html</span></a></td></tr>
+<tr><th>タグ</th><td>[ウェブログ・ココログ関連] [Perl] [JRF 作成ソフトウェア]</td></tr>
+</table>
+</div>
+<h1>ブログのバックアップ＆「ひとこと」のクロスリファレンス</h1>
+<pre class="body">私の《ひとこと》サイトで「クロスリファレンス」を張ろうと思い立った。少し試した段階でスパム制限等のため時間がかかることがわかったので、その前に《ひとこと》を「ダンプ」つまりフルバックアップすることにした。
+
+ココログの機能として、他所に移転するのを支援するために、バックアップの機能がもとからあるが、これは、元の URL やトラックバック URL、記事 ID などを記録しないため、今回の目的には適さない。少し迷惑かなぁと思いつつ、 XMLRPC と普通のページ読み込みの両方を使って、「フルバックアップ」するスクリプトを書いた。それが dump_blog.pl である。
+
+このフルバックアップにもとづいて、当初は、URL マップみたいなのを XMLに書いて、Ajax で読み込もうかとも考えたが、私以外の場所で使うことを想定すると、これが巨大になることもありえるかもしれず、するとただでさえ重い《ひとこと》サイトがさらに重くなるかもしれないので、その方法は採用しなかった。代わりに単純に後向きの参照としてトラックバックを張ることにした。スクリプトでリンクを張っているため、検索エンジンにその密結合ぶりをアピールできてないことを疑っていたので、それを補う意味でもこの方法が良いと思われた。それを実現するのが、xref_trackback.pl である。
+
+■使用方法
+  
+dump_blog.pl と xref_trackback.pl は aboutme2cocolog のパッケージに含んで配布する。aboutme2cocolog の記事に書いてあるように、config.ph をエディットして、make_templates.pl を実行すると、generated/ の下に、dump_blog.pl と xref_trackback.pl ができている。
+
+トラックバックを送るのには特に認証が必要ないので、xref_trackback.pl はブログ名ぐらいしか config.ph のデータを使っていないが、XMLRPC を使う dump_blog.pl は config.ph の中の XMLRPC 関連のパスワード等を使っている。
+
+perl dump_blog.pl --blogid=XXXX &gt; tmp.blog_dump
+
+…などとすると、tmp.blog_dump にフルバックアップが残される。まれにココログの側でエラーが出たことがあったが、何度かトライすると直ったのでエラー処理はそれほどやっていない。ダンプされた形式は、オリジナル形式だが、 XML として解釈できる(はず)。
+
+なお、ダンプに含まれる情報は、ココログのバックアップの上位拡張ではなく、 IP 情報がなくなる。むしろ、他人のプライバシーである IP 情報は除くようにして、プライベートなオンラインストレージなどに置きやすくしてある。
+
+いちおう内部では BASIC 認証にも対応しているので、BASIC 認証をしたい方は dump_blog.pl のソースを適宜いじってもらえばよい。
+
+perl xref_trackback.pl tmp.blog_dump
+
+…とすると、トラックバックを送りはじめる。
+
+&lt;b&gt;なお、トラックバックの通知をメールで受け取る設定をしていると大量のメールが届くので、このコマンドの前に、一連の作業が終るまで、その設定を解除しておいたほうがいいだろう。&lt;/b&gt;
+
+これでトラックバックを送れるとは、つまり、ココログを経由してトラックバックを送っているのではなく、まるでトラックバックスパムを送るようにローカルからトラックバックのプロトコルを直接吐いて、トラックバックを送っている。
+
+よって、これがスパムと判断されるのはもっともな話で、トラックバックを受けつけたあとスパムと判断したという警告を発されたり、そもそもトラックバックの受けつけを拒否し、403 Forbidden エラーを返してくることもある。スクリプトでは 403 エラーを返されたときは、3 分待って再送を行う。
+
+当然時間がかかる。476 個のトラックバックを送るのに 4 日ほどかかった。トラックバックを送りきったあと、ココログの管理画面でスパムと判断されたものを「公開」する必要がある。これは手作業で行うが、それまでに 4 日かかったことを思えば、大した作業ではないだろう。orz
+
+トラックバックが全部で何個送られるかを知るには次のようにする。
+
+perl xref_trackback.pl --to=0 tmp.blog_dump
+
+途中でエラーなどで止めてしまって、再開したい場合には範囲指定ができる。 100 番目のトラックバックから、200 番目のトラックバックを指定するときは次のようにする。(なお、↑はその範囲指定の最後を 0 にしただけである。)
+
+perl xref_trackback.pl --from=100 --to=200 tmp.blog_dump
+
+■配布物
+  ●aboutme2cocolog.shar。最新版には dump_blog.pl と xref_trackback.pl が含まれている。
+■関連
+  ●《aboutme2cocolog：アバウトミーの「ひとこと」をココログプロへ移転するツール》。
+  ●《Statuses_Editor_Proxy.CGI - XMLRPC と OAuth を組み合わせた「ひとことサイト」ソリューション》。現在は、aboutme2cocolog の一部。
+  ●《トラックバック技術仕様書》。
+  ●《MovableType で使える XML-RPC API》。
+    
+更新：2012-01-07
+初公開：2012年01月07日 14:28:15
+最新版：2012年01月07日 14:32:44
+
+
+Links:
+
+ひとこと: <a href="http://jrf.cocolog-nifty.com/statuses/" class="ext-link">http://jrf.cocolog-nifty.com/statuses/</a>
+aboutme2cocolog の記事: <a href="../../../articles/2011/04/software_67976071.html" class="int-link" title="aboutme2cocolog: アバウトミーの「ひとこと」をココログプロへ移転するツール">http://jrf.cocolog-nifty.com/software/2011/04/post.html</a>
+aboutme2cocolog.shar: <a href="http://jrf.cocolog-nifty.com/archive/aboutme2cocolog/aboutme2cocolog.shar" class="ext-link">http://jrf.cocolog-nifty.com/archive/aboutme2cocolog/aboutme2cocolog.shar</a>
+aboutme2cocolog：アバウトミーの「ひとこと」をココログプロへ移転するツール: <a href="../../../articles/2011/04/software_67976071.html" class="int-link" title="aboutme2cocolog: アバウトミーの「ひとこと」をココログプロへ移転するツール">http://jrf.cocolog-nifty.com/software/2011/04/post.html</a>
+Statuses_Editor_Proxy.CGI - XMLRPC と OAuth を組み合わせた「ひとことサイト」ソリューション: <a href="../../../articles/2011/06/software_68520060.html" class="int-link" title="Statuses_Editor_Proxy.CGI - XMLRPC と OAuth を組み合わせた「ひとことサイト」ソリューション">http://jrf.cocolog-nifty.com/software/2011/06/post.html</a>
+トラックバック技術仕様書: <a href="../../../articles/2012/01/hbm_01507.html" class="int-link" title="トラックバック技術仕様書">http://lowlife.jp/yasusii/stories/8.html</a>
+MovableType で使える XML-RPC API: <a href="../../../articles/2012/01/hbm_01508.html" class="int-link" title="MovableType で使える XML-RPC API">http://www.na.rim.or.jp/~tsupo/program/blogTool/mt_xmlRpc.html</a></pre>
+
+
+<section class="backrefs" data-pagefind-ignore>
+<h2>後方参照 (2 件)</h2>
+<ul>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2014/09/statuses_cocolog_80639852.html">ひとこと</a> <span class="backref-date">2014年09月16日</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2012/01/statuses_cocolog_71146730.html">ひとこと</a> <span class="backref-date">2012年01月04日</span></li>
+</ul>
+</section>
+
+</article>
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2012/01.html">2012年01月</a> | <a href="../../../index/software.html">ソフトウェア Tips</a></nav>
+</body>
+</html>

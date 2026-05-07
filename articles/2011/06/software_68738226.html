@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>Exhaustive Lock Dependency Emulator その１ 並列処理の総当り - JRF Blog Archive</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2011/06.html">2011年06月</a> | <a href="../../../index/software.html">ソフトウェア Tips</a></nav>
+<article data-pagefind-body>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[software] <span class="cocolog-id">cocolog:68738226</span></td></tr>
+<tr><th>セクション</th><td>JRF のソフトウェア Tips</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2011/06.html">2011年06月20日 02:54:31</a></td></tr>
+<tr><th>元URL</th><td><a href="http://jrf.cocolog-nifty.com/software/2011/06/post-1.html" class="ext-link"><span class="original-url">http://jrf.cocolog-nifty.com/software/2011/06/post-1.html</span></a></td></tr>
+<tr><th>タグ</th><td>[Perl] [シミュレーション] [関数型言語・定理証明器]</td></tr>
+</table>
+</div>
+<h1>Exhaustive Lock Dependency Emulator その１ 並列処理の総当り</h1>
+<pre class="body">※最後に追記するようにこの記事には大きなミスが見つかった。以下は参考のために残しておく議論である。※
+
+マルチスレッドまたはマルチプロセスの最も簡易な lock/unlock 機構において、その依存を総当たり的に調べるプログラムを(Perlで)書いた。
+
+総当たり的なので、特に工夫があるといえるわけではなく、おそらく他の方が特に言及することなく為していることについて、たまたま私もプログラムする順番が回ってきたぐらいのことになると思う。「車輪の再発明」だが、調べるよりは自分で作ったほうが早い部類の話で、記号論理をやった人間にとって示唆に富む部分があるという印象を受けたので、ブログに書いておくことにした…といったところ。
+
+これはマルチプロセス環境を Perl 上でエミュレートするという話ではまったくない。プログラム自体は、シングルプロセスで終了する形をとる。
+
+アイデアのキモは、シングルプロセス環境ではあるがプロセスを順に何度も起動し、unlock があったときに環境をすべて保存し、lock があったときに以前 unlock された環境に切り換わると考えることにより、lock/unlock のシミュレーションができたと考える点にある。
+
+■理屈と例
+  
+例えば、次の二つの「プログラム」を考える。二つのプログラムがそれぞれ別の「プロセス」で動くとする。まず、$context-&gt;set や$context-&gt;get が $context-&gt;lock と $context-&gt;unlock の間になければエラーを出すとすれば、排他制御としてはもっとも簡易な形が実現できているとできるだろう。
+
+sub prog1 {
+    my ($context) = @_;
+    
+    $context-&gt;lock();
+    $context-&gt;set(&quot;a&quot;, 1);
+    $context-&gt;unlock();
+    
+    $context-&gt;lock();
+    $context-&gt;set(&quot;a&quot;, 2);
+    $context-&gt;unlock();
+}
+
+sub prog2 {
+  my  ($context) = @_;
+  
+  $context-&gt;lock();
+  my $a = $context-&gt;get(&quot;a&quot;);
+  print &quot;$a\n&quot; if defined $a;
+  print &quot;undef\n&quot; if ! defined $a;
+  $context-&gt;unlock();
+}
+
+当然、$prog1 と $prog2 がどちらが先に実行されるかは不明だし、$prog1 の unlock のあとに $prog2 の lock があれば 1 か 2 が表示されるだろうが、1 と 2 のどちらになるかは不明である。$prog1 の unlock がなく $prog2 が終了していれば、undef が表示されるだろう。
+
+これを「すべての場合」について総当たり的に見てみたい。
+
+ところで、ここでいう「すべての場合」とは何か？
+
+$context のデータが置き換わるのは、lock と unlock に挟まれた部分だけであり、その間では他のプロセスはデータを変えない。逆にいうと他のプロセスがデータを変える可能性があるのは、unlock と lockの間で、その間は自分は get もできないのだから、つきつめれば、lock のときにのみ他のプロセスがデータを変えたかどうか調べればよいとなる。そしてデータが変わるのは他のプロセスが unlock をしたときだけである。
+
+また、「排他制御」という定義である以上、同時に lock は起きないので、あるプロセスの unlock が影響を与える lock は一つと考えてよく、ただ、その  lock が unlock されるときは当然、次のプロセスに影響を与えることがあるとすればいい。
+
+ここで、あるプロセス p において n 番目の unlock があったとき、その環境 ($context)が別のプロセス q における m 番目の lock の環境になることをπpυn→πqλm と書くとしよう(Perl での実装ではP${p}U${n}-&gt;P${q}L${m} のように書いている)。
+
+実行の一つの「場合」とはすなわち、πpυn→πqλm の列で表すことができる。 (特殊な場合として、空列は、まったく環境の置換が起きない場合と考える。) 今後、一つの「場合」、π(p_0)υ(n_0)→π(q_0)λ(m_0),...,π(p_k)υ(n_k)→π(q_k)λ(m_k) を lock 仕様(lock specification)と呼ぼう。
+
+一つのプロセス内での lock の順序は守られるので、任意の j &lt; k について、
+
+        p_k = p_j ならば n_k &gt; n_j、
+かつ p_k = q_j ならば n_k &gt;= m_j、
+かつ q_k = q_j ならば m_k &gt; m_j、
+かつ q_k = p_j ならば m_k &gt; n_j。
+
+大ざっぱに言えば、前の部分で p_k がすでに現れていれば、その n, m よりも n_k は大きい数字でなければならないし、q_k, m_k についても同様のことがいえるということ。
+
+上の例で lock 仕様と実行結果をすべて書き出すと、次のようになる。
+
+  空列                          undef が表示。 
+  π0υ0→π1λ0                1 が表示。     
+  π0υ0→π1λ0,π1υ0→π0λ1 1 が表示。     
+  π0υ1→π1λ0                2 が表示。     
+  π1υ0→π0λ0                undef が表示。 
+  π1υ0→π0λ1                undef が表示。 
+
+  
+なお、「プログラム」は $context に関し「関数的(functional)」であることが条件になる。すなわち、$context が同じように(同じ lock/unlock 順序で) 与えられれば、常に同じ「出力」をしなければならない。
+
+■実装
+  
+実装には私が使い慣れた Perl を用いている。エミュレータを書く最初なので、拡張性は念頭に置きつつも、できるだけシンプルに書くことをこころがけた。
+
+アルゴリズム的には、まずありえる lock 仕様をすべて書き出してしまい。枝刈りしながらも、lock 仕様を一つずつ実行するという形をとっている。
+
+当然、プログラムにはループがありうる。しかし、今回の方法だと「すべての場合」を書き出すと、無限に続くかもしれないループは、無限のメモリ空間を要することになるので、lock 数の上限を先に lock_limit として与えることにしている。
+
+プログラムの「メイン」部分はだいたい次のようになっている。
+
+MAIN:
+{
+    my $emu = Main::_Emulator-&gt;new();
+    $emu-&gt;new_process(sub {
+                        my ($context) = @_;
+                        $context-&gt;lock();
+                        $context-&gt;set(&quot;a&quot;, 1);
+                        $context-&gt;unlock();
+                        
+                        $context-&gt;lock();
+                        $context-&gt;set(&quot;a&quot;, 2);
+                        $context-&gt;unlock();
+                      },
+                      lock_limit =&gt; 3,
+                      );
+    $emu-&gt;new_process(sub {
+                        my ($context) = @_;
+                        $context-&gt;lock();
+                        my $a = $context-&gt;get(&quot;a&quot;);
+                        print $a . &quot;\n&quot; if defined $a;
+                        print &quot;undef\n&quot; if ! defined $a;
+                        $context-&gt;unlock();
+                      },
+                      lock_limit =&gt; 2,
+                      );
+    print &quot;\n\nPlan:\n&quot;;
+    $emu-&gt;dump_tree();
+    print &quot;\n\nResult:\n&quot;;
+    $emu-&gt;run();
+    print &quot;\n\nResult Tree:\n&quot;;
+    $emu-&gt;dump_tree();
+}
+
+$emu-&gt;new_process で、上の例の $prog1 と $prog2 を登録している。 lock_limit は、それがどう機能するかを見るために、一つずつ多めにとってある。
+
+最初の $emu-&gt;dump_tree() はとりあえず書き出した lock 仕様をすべて表示する。$emu-&gt;run() が lock 仕様にもとづいてすべての場合について実行を行っている。最後の $emu-&gt;dump_tree() は、枝刈りされ、意味のあるとわかった lock 仕様だけをすべて表示することになる。
+
+今回は「デバッグ」中の起動ということにして、run の途中で print するようにしている。Perl の特徴により、実行順序がばらばらでみにくいかもしれない。&quot;cut!&quot; と表示されるところは、実行はしてみたが、lock 仕様を満たしようがないと判断された部分を示している。
+
+実行すると、最後のほうが次のような表示になった。
+
+(...続き...)
+run_by_lock_spec: P0U2-&gt;P1L1
+cut!
+run_by_lock_spec: P1U0-&gt;P0L1
+undef
+run_by_lock_spec: P1U0-&gt;P0L1,P0U2-&gt;P1L1
+cut!
+run_by_lock_spec: P1U0-&gt;P0L1,P0U1-&gt;P1L1
+undef
+cut!
+run_by_lock_spec: P1U0-&gt;P0L1,P1U1-&gt;P0L2
+cut!
+run_by_lock_spec: P1U1-&gt;P0L2
+cut!
+
+
+Result Tree:
+
+P0U0-&gt;P1L0
+P0U0-&gt;P1L0,P1U0-&gt;P0L1
+P0U1-&gt;P1L0
+P1U0-&gt;P0L0
+P1U0-&gt;P0L1
+
+上にある部分では &quot;cut!&quot; されなかったのが &quot;P1U0-&gt;P0L1&quot; だけということで、もう少し枝刈りを改良する余地がありそうだ。Result Tree に関しては、上の例のところで挙げたものと一致している。
+
+■今後の課題
+  
+「πpυn→πqλm」という表記は、process の p をギリシャ文字の π に unlock の u を υ に lock の l を λ に変えて、カッコつけてるというのもあるが、計算論の pi-calculus (π計算)や lambda-calculus (λ計算)を少し意識している。
+
+もちろん、それらとはまったく別物で、pi-calculus ではどれがどれを待つというのが重要になってるのに、私のエミュレーションでは、プロセスにとって大事な入力待ちの状態さえまったく出て来ない。
+
+しかし、それは言ってみれば lock をかけようとしてからずっと待ってる状態に入力待ちを対応させることもできるのではないかという感触があり、それは特殊な枝刈りの仕方で、そこではまるでラムダ抽象のように lock が機能する…といったように議論を持っていっていくことができるのではないかとか夢想している。
+
+今後いつか、そういった部分を理論的に詰めてみたい。
+
+上の実装では lock_limit を最初に指定して lock 仕様の場合の数の最大値を制限したが、プログラムした感触では、順次、lock 仕様の木を伸ばしていくということも不可能ではなさそうだ。枝刈りをもっと効率的にし、メモリ使用量を少なくする工夫をさらに取り入れながら、lock_limit がいらない実装もしてみたい。
+
+この「エミュレータ」を作る直接のキッカケは、CGI プログラムで(私にとって)複雑な排他制御を行おうとしたとき、本当にそれで意図通り動くかチェックしたいが、どうしたらそういうチェックができるのだろう？…と考えたことにある。
+
+もちろん、そういった「実用的」なプログラムに関してエミュレートできるようになるまでは時間がかかるだろうから、そこを目標とはしないが、それに向けた拡張は行っていきたい。
+
+さしあたり、lock と unlock の間でデータベースにアクセスする(記事の書き換えをする)と宣言したあと、unlock 後にそこにアクセスしても排他的なアクセスにすることはできる…といった機構を導入したい。ここでチェックすべきは、本当にアクセスが排他的になっているかということで、プロセスに与えられた「accessor」が同じ場合か違う場合というのを総当たりで挙動を確かめれば十分という話になろう。
+
+このような理論的実装において、実用的なプログラムでは必ず現れる &quot;sleep&quot; には意味がなくなる。なぜなら、厳密な検証の文脈では、実行のオーバーヘッドはどこにでも起きうると考えるべきだからである。
+
+では、sleep とは何をやっていることになるのだろう？それは、おそらく、エラーに関係する。今回の理屈を延ばしたところにおいて、エラーとはすなわち確率的な事象とせざるを得ない。そして、それに確率的に干渉するのが sleep ということになるのではないか。
+
+サーバー等の実装では、ユーザーが連続して入力するときに、処理をブロックしにくいよう待つために、sleep を使うということであるが、これは、ブロックという「エラー」の確率を減らす操作と考えることができよう。
+
+こういった確率的事象とのからみまで、将来考えられたらうれしい。
+
+■参考
+  
+関連研究等はまだまったく調べていない。上の「今後の課題」をある程度やって、再びブログ記事にするときなどに折を見ながら、落ち着いて調べるといった手順になるかと思う。今は Wikipedia と自分の記事のみ挙げておく。
+
+  ●《π-calculus - Wikipedia, the free encyclopedia》。プロセスの代数。本稿とはまったく別(?)のアプローチ。ラムダ計算については適当にググるなりしてください。
+  ●《Statuses_Editor_Proxy.CGI》。今回の直接のキッカケとなった CGI。現在、鋭意製作中。
+  ●《Perl でオブジェクト指向 C++風》。Perl 実装のオブジェクト指向の使い方は私の独特な書き方。
+  ●《セキュアジャパン 2006 の Winny 対策としての VM は釣り？》。この記事に「デバッガの代わりに理論的な極限状況を再現できるものとしてのエミュレータって感じかな。他の方からすれば、エミュレータというよりもインタプリタ + 定理証明システムってことになるのかもしれませんが。」と書いている。そういった関心が本稿の背景にある。
+  ●《外作用的簡易経済シミュレーションのアイデアと Perl による実装》。本稿とはまったく関係がないが、今のところシミュレーションの私の関連記事は、ほぼこれだけとなるので載せておく。
+    
+■配布物
+  ●exhaustive_lock_dependency_emulator_0.pl。バージョン 0.02。
+    
+■「虚実行」またはこの仕組みの大きなミスについて (追記: 2018-04-06)
+  
+書いて省みず数年してから、ブラッシュアップしようと見返したときに、この仕組みは失敗していることがわかった。それを説明しよう。
+
+π0υ1→π1λ2 かつ π1υ4→π0λ3 とする。すると、間に π0λ2 とπ1λ3 があるわけで、こららは必ずどちらかが前でどちらかが後になる。π0υ2→π1λ3 か π1υ3→π0λ2 でなければならない。これが仕様に含まれてない実行はニセモノ…「虚実行」というべきものになる。
+
+もっと簡単に、プロセス群の中の一番最初のロック以外のプロセス q の最初のロックは πpυn→πqλ0 なる仕様(p n は任意)を含んでいないと「虚実行」になるし、プロセス群の最後のロックを含むプロセス以外のプロセス q の最後のロック l は πqυl→πpλn なる仕様(p n は任意)を含んでいないと「虚実行」になる。
+
+「虚実行」群の中に「実実行」というべきものがすべて入っているので、「虚実行」群全体でテストに合格したものは「実実行」においてもテストに合格すると言えるが、余計なものまで(大量に)チェックしていることは否めない。
+
+「虚実行」か「実実行」かを判定するプログラムを書こうかと思ったが難しい。ロック仕様から完全に別物にしたほうが早いだろう。今後の課題としたい。
+
+「虚実行」を含めたテスト…という考え方がもしかすると有用かもしれないので、このエントリはこのまま残すことにしたが、注意されたい。
+
+更新：2011-06-19,2018-04-06
+初公開：2011年06月20日 02:54:27
+最新版：2018年04月06日 01:33:47</pre>
+<details class="trackbacks" data-pagefind-ignore><summary>Trackbacks (4 件)</summary><pre>
+Trackbacks:
+
+《<a href="http://witch2011alfa1.blog.so-net.ne.jp/">お部屋のコーディネイトおまかせください</a>》 from Witch House
+リフォーム、お部屋のリニューアル、収納アドバイス、ハウスキーピングのプロフェッショナル 
+
+受信： 2011-06-20 20:31:04 (JST)
+
+
+《<a href="http://jrf.cocolog-nifty.com/software/2011/07/post.html">Exhaustive Lock Dependency Emulator その２ wait_and_lock</a>》 from JRF のソフトウェア Tips
+その１で、このフレームワークにおいて「入力待ち…は…特殊な枝刈りの仕方」ではないかというアイデアを書いた。本稿では、それを実装してみる。 理屈 入力待ちは、最も単純にはループして、他のプロセスが $context を変更するのを待てば良い。しかし、それは普通、非効率的で、このエミュレータだと、探索すべき lock 仕様の木の深さを無限に大きくすることになる。 もう少しマシな方法ということであれば、... 
+
+受信： 2011-07-01 22:37:34 (JST)
+
+
+《<a href="http://jrf.cocolog-nifty.com/statuses/2011/09/post-1d5e.html">cocolog:69727785</a>》 from JRF のひとこと
+(続き 2011年9月8日) 「式でパラメータが落ちる」はちょうど私にとっての「弁証法」の逆になるわけだが、lock と(高階論理で使われる)ラムダ式の関係みたいなのが私には見えはじめてる。強い単一の lock の式への変換みたいなのもありそうで、そうすると計算オーダーみたいに lock にオーダーがあるという話になり、その量を「負のパラメータ」につなげられたりするのだろうか？... 
+
+受信： 2011-09-08 18:02:54 (JST)
+
+
+《<a href="http://jrf.cocolog-nifty.com/software/2018/04/post-1.html">Exhaustive Lock Dependency Emulator その３ 修正とチェック</a>》 from JRF のソフトウェア Tips
+略して ELDE。マルチプロセスの最も簡単な lock/unlock 機構において、そのロックの依存を総当たり的に調べるプログラムを書いた。その１で「虚実行」も数え上げていたのを修正し、「実実行」のみを対象とするようにした。 前回は、意図しない「虚実行」を含めていたため、他の人がやらないような実装になり、その意味では個性があったかもしれないが、今回こそ、特に工夫のない「車輪の再発明」になっていると... 
+
+受信： 2018-04-13 21:00:29 (JST)
+
+
+Comments:
+
+[E:clover] 更新：*_0.pl の lock_limit のバグを修正。バージョン 0.02。
+
+投稿: JRF | 2011-07-01 22:46:29 (JST)
+
+[E:shoe] 更新：タイトルに「その１ 並列処理の総当り」を足したのみ。主に検索用。
+
+投稿: JRF | 2011-09-05 13:07:44 (JST)
+
+[E:parking] 更新: 大きなミスを発見。「「虚実行」またはこの仕組みの大きなミスについて」の節を追記した。
+
+とても恥ずかしい。
+
+[cocolog:89156596] に今回の顛末を少し書いた。あわせて読んでいただきたい。
+
+投稿: JRF | 2018-04-06 02:10:16 (JST)
+
+
+Links:
+
+実装: http://jrf.cocolog-nifty.com/archive/perl/exhaustive_lock_dependency_emulator_0.pl
+π-calculus - Wikipedia, the free encyclopedia: http://en.wikipedia.org/wiki/%CE%A0-calculus
+Statuses_Editor_Proxy.CGI: http://jrf.cocolog-nifty.com/software/2011/06/post.html
+Perl でオブジェクト指向 C++風: http://jrf.cocolog-nifty.com/software/2010/12/post.html
+セキュアジャパン 2006 の Winny 対策としての VM は釣り？: http://jrf.cocolog-nifty.com/column/2006/04/post_16.html
+外作用的簡易経済シミュレーションのアイデアと Perl による実装: http://jrf.cocolog-nifty.com/society/2011/01/post.html
+exhaustive_lock_dependency_emulator_0.pl: http://jrf.cocolog-nifty.com/archive/perl/exhaustive_lock_dependency_emulator_0.pl
+
+
+
+</pre></details>
+
+<section class="backrefs" data-pagefind-ignore>
+<h2>後方参照 (17 件)</h2>
+<ul>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2025/04/column_95353441.html">今後の(主に勉学の)方針 (2025年度版)</a> <span class="backref-date">2025年04月01日 00:08:38</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2025/01/statuses_cocolog_95231673.html">ひとこと</a> <span class="backref-date">2025年01月12日</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2025/01/gsm_006547.html">共有メモ</a> <span class="backref-date">2025-01-10T03:08:18Z</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2024/04/column_94770411.html">今後の(主に勉学の)方針 (2024年度版)</a> <span class="backref-date">2024年04月01日 11:42:55</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2023/04/column_94109640.html">今後の(主に勉学の)方針 (2023年度版)</a> <span class="backref-date">2023年04月01日 05:07:23</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2022/08/statuses_cocolog_93692583.html">ひとこと</a> <span class="backref-date">2022年08月24日</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2022/04/column_93406487.html">今後の(主に勉学の)方針 (2022年度版)</a> <span class="backref-date">2022年04月02日 03:22:12</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2021/04/column_92653504.html">今後の(主に勉学の)方針 (2021年度版)</a> <span class="backref-date">2021年04月01日 00:16:10</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2020/04/column_91793096.html">今後の(主に勉学の)方針 (2020年度版)</a> <span class="backref-date">2020年04月01日 13:12:27</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2019/04/column_90872352.html">今後の(主に勉学の)方針 (2019年度版)</a> <span class="backref-date">2019年04月01日 03:02:52</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2018/04/software_89194818.html">Exhaustive Lock Dependency Emulator その３ 修正とチェック</a> <span class="backref-date">2018年04月13日 21:00:17</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2018/04/statuses_cocolog_89156596.html">ひとこと</a> <span class="backref-date">2018年04月06日</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2018/04/column_89132379.html">今後の(主に勉学の)方針 (2018年度版)</a> <span class="backref-date">2018年04月01日 17:57:20</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2016/06/statuses_cocolog_85384301.html">ひとこと</a> <span class="backref-date">2016年06月18日</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2012/09/statuses_cocolog_74037700.html">ひとこと</a> <span class="backref-date">2012年09月14日</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2011/09/statuses_cocolog_69727785.html">ひとこと</a> <span class="backref-date">2011年09月08日</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2011/07/software_68888436.html">Exhaustive Lock Dependency Emulator その２ wait_and_lock</a> <span class="backref-date">2011年07月01日 22:37:18</span></li>
+</ul>
+</section>
+
+</article>
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2011/06.html">2011年06月</a> | <a href="../../../index/software.html">ソフトウェア Tips</a></nav>
+</body>
+</html>

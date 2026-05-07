@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>Navi2ch でインラインに画像を表示する (Referer もつける) - JRF Blog Archive</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2006/03.html">2006年03月</a> | <a href="../../../index/software.html">ソフトウェア Tips</a></nav>
+<article data-pagefind-body>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[software] <span class="cocolog-id">cocolog:10330547</span></td></tr>
+<tr><th>セクション</th><td>JRF のソフトウェア Tips</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2006/03.html">2006年03月04日 06:44:26</a></td></tr>
+<tr><th>元URL</th><td><a href="http://jrf.cocolog-nifty.com/software/2006/03/post_2.html" class="ext-link"><span class="original-url">http://jrf.cocolog-nifty.com/software/2006/03/post_2.html</span></a></td></tr>
+<tr><th>タグ</th><td>[Emacs/Meadow] [Cygwin]</td></tr>
+</table>
+</div>
+<h1>Navi2ch でインラインに画像を表示する (Referer もつける)</h1>
+<pre class="body">最近の Emacs は画像をインラインに表示できるが、Navi2ch そのものは掲示板の画像をインラインで見ることができない。しかし、《2chログ：Navi2ch for Emacs （Part 11）》の 888 の記事にインライン表示をする elisp とそれ用のシェルスクリプトが書いてあった。
+
+それを Meadow と Cygwin の bash を使って走らせることにする。Cygwin の ImageMagickも使えるようにしておかねばならない。
+
+まず、シェルスクリプトは次のようなものを navi2ch.makethumb という名前で作り実行ビットを立てておく。
+
+#!/bin/sh
+#### 引数で与えられた画像をダウンロードし縮小したファイル名を返す ####
+#### $2 には referer が入る。
+tmp=${TMPDIR:-/tmp}/navi2ch-thumbnails
+errimage=/cygdrive/c/WINDOWS/pchealth/helpctr/System/images/error.gif
+thumbsize=&quot;300x150&quot;
+
+origfile=&quot;$tmp/${1#*tp://}&quot;
+thumbfile=&quot;$origfile.jpg&quot;
+
+# すでにテンポラリにあるイメージは再利用する。
+if [ ! -f $origfile ]; then
+    if [ -z &quot;$2&quot; ]; then
+      /usr/bin/wget &quot;$1&quot; -q -N -x -P $tmp
+    else
+      /usr/bin/wget --referer=&quot;$2&quot; &quot;$1&quot; -q -N -x -P $tmp
+    fi
+fi
+if [ ! -f $origfile ]; then
+    echo -n &quot;$errimage&quot;
+    exit
+fi
+
+# アニメ Gif は scene 0 だけ取り出す。
+scene=`identify -format &quot;%n&quot; &quot;$origfile&quot;`
+
+if [ ! -s $thumbfile -o $thumbfile -ot $origfile ]; then
+    if [ $scene -gt 1 ]; then
+      convert -scene 0 -sample $thumbsize &quot;$origfile&quot; &quot;$origfile-%d.jpg&quot; &gt; /dev/null 2&gt;&amp;1
+      mv &quot;$origfile-0.jpg&quot; $thumbfile &gt; /dev/null 2&gt;&amp;1
+    else
+      convert -sample $thumbsize &quot;$origfile&quot; &quot;$origfile.jpg&quot; &gt; /dev/null 2&gt;&amp;1
+    fi
+fi
+echo -n &quot;$thumbfile&quot;
+
+次に .emacs や ~/.navi2ch/init.el とかに次を書き足す。
+
+(eval-after-load &quot;navi2ch&quot;
+    '(progn
+        (defvar my-navi2ch-show-image-queue nil)
+        (defvar my-navi2ch-check-host t
+          &quot;t なら同じホストの場合のみ連続読み込み時にイメージも読み込む。&quot;)
+        (make-variable-buffer-local 'my-navi2ch-show-image-queue)
+        
+        (defun my-navi2ch-article-insert-image (proc file)
+          &quot;FILE で渡された画像をスレに挿入する．PROC が終了すると呼ばれる．&quot;
+          (let ((buf (buffer-name (process-buffer proc))))
+            (set-process-buffer proc nil)
+            (unless (file-exists-p file)
+              (setq my-navi2ch-show-image-queue nil)
+              (message &quot;画像の取得または作成に失敗しました。&quot;))
+            (when (and buf
+                      (file-exists-p file))
+              (with-current-buffer buf
+                (save-excursion
+                  (let ((buffer-read-only nil)
+                        (orig (file-name-sans-extension file)))
+                    (goto-char (process-mark proc))
+                    (forward-line)
+                    (insert-image (create-image file))
+                    (add-text-properties (1- (point)) (point)
+                                        (if (string&lt; navi2ch-version &quot;1.8.0&quot;)
+                                            (list 'link t 'link-head t
+                                                  'url orig 'help-echo orig)
+                                          (list 'navi2ch-link-type 'url
+                                                'navi2ch-link orig
+                                                'help-echo orig)))
+                    (insert &quot;\n&quot;)
+                    (when my-navi2ch-show-image-queue
+                      (let ((fun (car my-navi2ch-show-image-queue)))
+                        (setq my-navi2ch-show-image-queue
+                              (cdr my-navi2ch-show-image-queue))
+                        (apply (car fun) (cdr fun))))))))))
+                        
+        (defun my-navi2ch-article-show-image ()
+          &quot;非同期で画像を縮小しインラインに表示する．&quot;
+          (interactive)
+          (let* ((point (point))
+                (board (cdr (assq 'uri navi2ch-article-current-board)))
+                (url (if (string&lt; navi2ch-version  &quot;1.8.0&quot;)
+                          (get-text-property point 'url)
+                        (get-text-property point 'navi2ch-link)))
+                (ext (when url
+                        (file-name-extension url)))
+                (proc (get-buffer-process (current-buffer)))
+                (stat (and proc (process-status proc))))
+            (when (and stat (eq stat 'run))
+              (message &quot;以前のプロセスがまだ動いています。&quot;))
+            (when (and ext
+                      (not (and stat (eq stat 'run)))
+                      (member (downcase ext) navi2ch-browse-url-image-extentions))
+              ;; Cygwin を使う場合はあったほうがいいのでは？
+              (setenv &quot;BASH_ENV&quot; &quot;~/.bash_profile&quot;)
+              (setq proc
+                    (start-process &quot;navi2ch.thumb&quot; (current-buffer)
+                                  &quot;c:\\cygwin\\bin\\bash.exe&quot;
+                                  &quot;-c&quot;
+                                  (concat &quot;navi2ch.makethumb &quot; url &quot; &quot; board)))
+              (set-process-filter proc 'my-navi2ch-article-insert-image)
+              (set-marker (process-mark proc) point))))
+              
+        (defun my-navi2ch-article-add-property-and-next-image (beg end force)
+          (add-text-properties beg end '(my-navi2ch &quot;shown&quot;))
+          (my-navi2ch-article-show-next-images force))
+          
+        (defun my-navi2ch-article-show-next-images (&amp;optional force)
+          &quot;カーソル以下のイメージを連続的に読み込む。&quot;
+          (interactive &quot;P&quot;)
+          (save-excursion
+            (let* ((num (navi2ch-article-get-current-number))
+                  (board (cdr (assq 'uri navi2ch-article-current-board))))
+              (if (re-search-forward
+                  (concat &quot;h?ttp://\\([^ \t\n\r]+\\.\\(&quot;
+                          (mapconcat (lambda (s) s)
+                                      navi2ch-browse-url-image-extentions &quot;\\|&quot;)
+                          &quot;\\)\\)&quot;) nil t)
+                  (let ((url (concat &quot;<a href="http://&amp;quot;" class="ext-link">http://&amp;quot;</a> (match-string 1)))
+                        (beg (match-beginning 0))
+                        (end (match-end 0))
+                        (func 'my-navi2ch-article-add-property-and-next-image)
+                        (prop (get-text-property (match-beginning 1)
+                                                'my-navi2ch)))
+                    (when (and (or force
+                                  (not my-navi2ch-check-host)
+                                  (string= (navi2ch-url-to-host url)
+                                            (navi2ch-url-to-host board)))
+                              (not (string= prop &quot;shown&quot;)))
+                      (goto-char beg)
+                      (my-navi2ch-article-show-image)
+                      (setq my-navi2ch-show-image-queue
+                            (append my-navi2ch-show-image-queue
+                                    (list (list func beg end force))))))))))
+                                    
+        ;; スレを読みにいったときに自動的にイメージを挿入するようにして
+        ;; おく。my-navi2ch-check-host を t にしておけば安心。
+        (add-hook 'navi2ch-article-mode-hook
+                  'my-navi2ch-article-show-next-images)
+                  
+        ;; &quot;T&quot; でその URL だけ強制的に表示。
+        (define-key navi2ch-article-mode-map &quot;T&quot; 'my-navi2ch-article-show-image)
+        ;; 通常はそのホストのイメージは読み込んでるはずだから、&quot;I&quot; で連
+        ;; 続読みをするときは強制的に全部読む。
+        (define-key navi2ch-article-mode-map &quot;I&quot;
+          (lambda () (interactive)
+            (my-navi2ch-article-show-next-images t)))
+      ))
+      
+ちなみに、どの掲示板見てるかバレそうだけど、次のようにするとダーティだけど HTTP ヘッダに付けるリファラが設定できたりする。
+
+(eval-after-load &quot;navi2ch&quot;
+    '(progn
+        ;; 一部リファラがないとアクセスできない掲示板に対応。
+        (defadvice navi2ch-net-make-request-header
+          (around navi2ch-net-make-request-header-with-referer
+                (header-alist) activate)
+          (let ((header ad-do-it)
+                (board (or navi2ch-article-current-board
+                          navi2ch-board-current-board)))
+            (unless (assoc &quot;Referer&quot; header-alist)
+              (if board
+                  (setq header 
+                        (concat header &quot;Referer: &quot; (cdr (assq 'uri board))
+                                &quot;\r\n&quot;))))
+            (setq ad-return-value header)))
+            
+        ;; document.write だけしかしない javascript なら対応できる。
+        (setq navi2ch-article-filter-list
+              (cons 
+              (lambda ()
+                (goto-char (point-min))
+                (while (re-search-forward &quot;document\\.write('\\([^']*\\)');&quot; nil t)
+                  (replace-match &quot;\\1&quot;)))
+              navi2ch-article-filter-list))
+              
+        ;; &lt;br /&gt; に対応。
+        (setq navi2ch-replace-html-tag-alist
+              (append navi2ch-replace-html-tag-alist
+                      '((&quot;&lt;br /&gt;&quot; . &quot;\n&quot;))))
+        (navi2ch-update-html-tag-regexp)
+      ))
+      
+おっと、ただし、これらは cygwin-mount.el （説明ページ） が必須です。.emacs に次の行があるのをご確認を。動作の軽い cygwin-mount-mw32.el （説明ページ） というものもあります。
+
+(require 'cygwin-mount)
+(cygwin-mount-activate)
+
+■追記 (2010-07-01)
+  
+どうも navi2ch のバージョンアップにより、get-text-property で得る値が変わっているらしい。行儀が悪いが、とりあえずの&lt;ruby&gt;&lt;rb&gt;弥縫策&lt;/rb&gt;&lt;rt&gt;びほうさく&lt;/rt&gt;&lt;/ruby&gt;を反映した。また私が行っているサイトでは &lt;br /&gt; が使われているので、それに対応した。
+
+更新：06/03/04,2010-07-01
+初公開：2006年03月04日 06:44:27
+最新版：2010年07月01日 20:21:58
+
+
+Comments:
+
+よろしくです。
+投稿: ゆか | 2010-02-04 18:28:57 (JST)
+
+[E:heart01] 更新：navi2ch-1.8.3 では少なくとも使えなくなっていたので、詳しいところはチェックしてないが、とりあえず動くよう修正した。他の人のところでは動いていたのだろうか？
+投稿: JRF | 2010-07-01 10:12:41 (JST)
+
+
+Links:
+
+Navi2ch: <a href="../../../articles/2006/04/hbm_00109.html" class="int-link" title="Navi2ch Project Home Page">http://navi2ch.sourceforge.net/</a>
+2chログ：Navi2ch for Emacs （Part 11）: <a href="../../../articles/2006/04/hbm_00110.html" class="int-link" title="Navi2ch for Emacs (Part 11)">http://pc.2ch.net/test/read.cgi/unix/1065246418/</a>
+ImageMagick: <a href="http://www.imagemagick.org/" class="ext-link">http://www.imagemagick.org/</a>
+navi2ch.makethumb: <a href="http://jrf.cocolog-nifty.com/archive/navi2ch.makethumb" class="ext-link">http://jrf.cocolog-nifty.com/archive/navi2ch.makethumb</a>
+次: <a href="http://jrf.cocolog-nifty.com/archive/my-navi2ch.el" class="ext-link">http://jrf.cocolog-nifty.com/archive/my-navi2ch.el</a>
+cygwin-mount.el （説明ページ）: <a href="../../../articles/2006/04/hbm_00112.html" class="int-link" title="Meadow/Emacs memo: ファイルを開く関連">http://www.bookshelf.jp/soft/meadow_23.html#SEC241</a>
+cygwin-mount-mw32.el （説明ページ）: <a href="../../../articles/2006/04/hbm_00113.html" class="int-link" title="Meadow">http://www4.kcn.ne.jp/~boochang/emacs/elisp.html</a>
+ゆか: <a href="http://sweetkiss.in" class="ext-link">http://sweetkiss.in</a></pre>
+
+
+<section class="backrefs" data-pagefind-ignore>
+<h2>後方参照 (1 件)</h2>
+<ul>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2011/05/statuses_aboutme_138754.html">ひとこと</a> <span class="backref-date">2011年05月12日</span></li>
+</ul>
+</section>
+
+</article>
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2006/03.html">2006年03月</a> | <a href="../../../index/software.html">ソフトウェア Tips</a></nav>
+</body>
+</html>

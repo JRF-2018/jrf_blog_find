@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>ひとこと - JRF Blog Archive</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2015/11.html">2015年11月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+<article data-pagefind-body>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[statuses] <span class="cocolog-id">cocolog:83987064</span></td></tr>
+<tr><th>セクション</th><td>JRF のひとこと</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2015/11.html">2015年11月26日</a></td></tr>
+<tr><th>元URL</th><td><a href="http://jrf.cocolog-nifty.com/statuses/2015/11/post-27d5-1.html" class="ext-link"><span class="original-url">http://jrf.cocolog-nifty.com/statuses/2015/11/post-27d5-1.html</span></a></td></tr>
+
+</table>
+</div>
+<h1>ひとこと</h1>
+<pre class="body">定理証明システム Isabelle/HOL の Tutorial、Isabelle2015/doc/tutorial.pdf を読んだ。いつもの読書と違って英語。
+JRF 2015年11月26日
+
+《Isabelle》
+<a href="../../../articles/2016/01/hbm_01839.html" class="int-link" title="Isabelle">https://isabelle.in.tum.de/</a>
+<a href="../../../articles/2016/01/hbm_01840.html" class="int-link" title="Isabelle">http://www.cl.cam.ac.uk/research/hvg/Isabelle/</a>
+
+JRF 2015年11月26日
+
+私の場合、普通、英語の文章は日本語の文章に比べて読むのに三倍以上の時間がかかるものだが、「昔取った杵柄[きねづか]」というやつか、大昔(15年以上前)にやってた分野だからか、割とスラスラ読めた。
+
+Tutorial (入門)を進めていく途中の環境設定についてはエントリを別にして、一つ前に「ひとこと」している(<a href="../../../articles/2015/11/statuses_cocolog_83987061.html" class="int-link cocolog-id" title="ひとこと">[cocolog:83987061]</a>)。
+
+JRF 2015年11月26日
+
+……。
+
+入門の感想(?)に入る前に、私の Isabelle の経験について。
+
+私は上で書いたように 15年以上前の時代に Isabelle を使っていた。当然 Isar はなく、tactic と tactical のみで証明していた。証明は ZF 上で、ラムダ計算のα同値性(の無矛盾性)に関する証明をして、それを(指導教官の否定的見解をおしきって)修士論文(相当)にした。
+
+JRF 2015年11月26日
+
+それがイヤな思い出になったのかはわからないが、それ以降は Isabelle を自宅環境にインストールしたりしたこともあったが、結局、いじらずじまいということが続いた。「今後の方針」(↓)にも以前から Isabelle を触ろうと書きはしていたがとりかかる気になれなかった。それを今回は、Isabelle を起動し Tutorial をやるところまで行った。「トラウマ」があったとすれば時間がそれを克服したのかな…といったところ。
+
+JRF 2015年11月26日
+
+《JRF の私見：雑記: 今後の方針》
+<a href="http://jrf.cocolog-nifty.com/column/cat21172478/index.html?mode=long" class="ext-link">http://jrf.cocolog-nifty.com/column/cat21172478/index.html?mode=long</a>
+
+JRF 2015年11月26日
+
+とりあえずの目標は、上で述べた修論のα同値性に関する証明を今の Isabelle 上でやること。が、そこまで気力が続くかはわからない。
+
+JRF 2015年11月26日
+
+……。
+
+2015-11-21 には、Tutorial からやろうということで、2015-11-20 に一端 Logics_ZF にしたのを HOL に Theory を選択しなおして起動。ToyList.thy を作って、とりあえず end を入力するところまで行く。その後、&quot;The Value of a Boolean Expression&quot; の例をするかどうか迷う。その例はあとまわしにして、とりあえず２章を読み進んだ。
+
+JRF 2015年11月26日
+
+２章を読んだあと、迷っていた例を入力していくことにした。Exercise 2.5.2 で何をやっていいかわからなくなてつまづく。↓を見て解決。Exercise の文から normal の定義を変えないといけないのはわかったが、normif も CIF の部分は、normif (CIF b) t e = (if b then t else e) に変える必要があり、そうすると normal t &amp; normal e --&gt; normal(normif b t e) が証明できて、さらに normal(norm b) が定理として証明できるとのことだった。
+
+JRF 2015年11月26日
+
+《Isabelle Tutorial その4 - caeruiro》
+<a href="http://d.hatena.ne.jp/caeruiro/20100321/1269136916" class="ext-link">http://d.hatena.ne.jp/caeruiro/20100321/1269136916</a>
+
+JRF 2015年11月26日
+
+３章も読んだ。が、ここの練習問題は面倒臭く感じてやる気が起きず、やらなかった。私は ZF を使う予定なので、このあとにある Set Theory に関心がある。そこになったら、また練習問題をするかもしれないが、しばらくはやらなくていいかな…と思う。
+
+JRF 2015年11月26日
+
+あと、ペラペラと最後までページをめくってみた(ディスプレイ上で、印刷はしてないので)。すると、チラと他のサイトを見たときに紹介されていた proof や have や qed が出てくる証明がこの Tutorial には(ほぼ)出て来ないことがわかった。tutorial.pdf にあるのは、apply ... done タイプの証明と言われる形式だけらしい。Isar を「読みやすく」書くのは別のところを読む必要がありそうだ。以前、↓から読んだ記事が参考になりそう。
+
+JRF 2015年11月26日
+
+《Isabelle/Isar（その１） - ATPとCASのこと（謄）》
+<a href="../../../articles/2016/01/hbm_01838.html" class="int-link" title="Isabelle/Isar（その１） - ATPとCASのこと（謄）">http://ehito.hatenablog.com/entry/20130503/1367582411</a>
+
+JRF 2015年11月26日
+
+……。
+
+2015-11-22 に４章を読んだが、LaTeX が必要となるような「発見」ができるまでこれから先どれぐらいかかるのだろう。それまでここに書いてたことを覚えていられるかな…という印象。
+
+５章も読んだが、gcd などの例を３章でやってなかったからか、いくつか失敗する証明やできない証明があり、そこは飛ばしつつ読んだ。昔とは全々違うが昔のおもかげもあるところもある。でも、これらも覚えてられないな…と思いつつ読んだ。読んでおいたから、やってれば、こういうのがあったと気付けるような気もするんだけど…。
+
+JRF 2015年11月26日
+
+……。
+
+2015-11-23 に Logics_ZF 上で、以前作った証明の一部である Infinite の理論を作ってみることにした。blast の力はすごく、以前証明した命題はすぐに証明できたが、欲が出て、Infinite(nat) を証明しようとしていろいろはまった。
+
+JRF 2015年11月26日
+
+なかなかできなかったがそれがやっとできたので、次に Infinite(lfp(D,h)) という一般化を試してみたが、それをつかった Infinite(nat) の証明はとても難しそうで歯が立たなかった。Axiom of Choice が必要かどうかはわからないが、term のサイズを見る関数を定義してその最大のものを指定してそこに bnd_mono な h をかけるみたいなことをしないといけなさそうで、とりあえず諦めた。
+
+JRF 2015年11月26日
+
+(おそらく &quot;F: Fin(X) ==&gt; F ~= 0 --&gt; EX x: F. length(x) = Union({length(y). y: F})&quot; みたいなのが言えればいい。それは帰納法だけで言えるはずで length 関数があれば、選択公理はいらないはず。)
+
+JRF 2015年11月26日
+
+(ちなみに、Infinite(X) ならば、任意の F: Fin(X) に対して EX x: X. x ~: F が、選択公理なしに言える。背理法さえ使えれば、有限とか無限に関係なく、もっと強い &quot;[| A ~= B; B &lt;= A |] ==&gt; EX x: A. x ~: B&quot; も言える。ほんと、「選択公理」って思った以上に使わなくてもいけるんだよね。)
+
+JRF 2015年11月26日
+
+ちなみに、apply ... done 形式しか使っていないが、Tutorial がそうなってるんだから、別に気にしなくていいのかな？
+
+JRF 2015年11月26日
+
+……。
+
+2015-11-23 に Tutorial の６章を読んだ。私は昔ずっと ZF でやってたので、HOL の well-foundedness の話とか知らず、とても興味深く読んだ。また↓にお世話になったが、言われている通り動かしているだけで、意味はよくわかっていない。
+
+《Isabelle Tutorial その18 - caeruiro》
+<a href="http://d.hatena.ne.jp/caeruiro/20100428/1272454217" class="ext-link">http://d.hatena.ne.jp/caeruiro/20100428/1272454217</a>
+
+JRF 2015年11月26日
+
+しかし、よく Exercise が解けるなぁ。すごい。同じ apply ... done 形式の証明でも、私が Logics_ZF で証明してるのはすべてこんなにエレガントなものじゃない。レベルの違いというか「超えられない壁」を感じる。私はダメだなぁ…。
+
+JRF 2015年11月26日
+
+……。
+
+2015-11-24 には７章を読んだ。例によって Exercise は自分で解かず、↓を参照するだけ。7.3節は読んでいてわけがわからなかった。7.4節の長大な証明で途中 apply(rule S_A_B.intros) が失敗したが↓をよくみると apply (rename_tac v) が tutorial.pdf には抜けていた。
+
+JRF 2015年11月26日
+
+《Isabelle Tutorial その20 - caeruiro》
+<a href="http://d.hatena.ne.jp/caeruiro/20100506/1273155367" class="ext-link">http://d.hatena.ne.jp/caeruiro/20100506/1273155367</a>
+
+《Isabelle Tutorial その21 - caeruiro》
+<a href="http://d.hatena.ne.jp/caeruiro/20100507/1273242196" class="ext-link">http://d.hatena.ne.jp/caeruiro/20100507/1273242196</a>
+
+JRF 2015年11月26日
+
+……。
+
+2015-11-25 に８章を読んだ。例によって↓を参照。この章は、はじめはわかりやすい。証明しようとするとややこしいんだろうけど、概念はやさしい。
+
+《Isabelle Tutorial その22 - caeruiro》
+<a href="http://d.hatena.ne.jp/caeruiro/20100512/1273669794" class="ext-link">http://d.hatena.ne.jp/caeruiro/20100512/1273669794</a>
+
+JRF 2015年11月26日
+
+「オブジェクト指向」っぽいことというのは Isabelle/HOL 内だとこう構築していくんだね。Perl (↓)の手作り感あふれるオブジェクト指向をちょっと思い出す。
+
+《Perl でオブジェクト指向 C++風》
+<a href="../../../articles/2010/12/software_66486034.html" class="int-link" title="Perl でオブジェクト指向 C++風">http://jrf.cocolog-nifty.com/software/2010/12/post.html</a>
+
+JRF 2015年11月26日
+
+8.4 節では 0 (ゼロ) なのか O (オー)なのか、または  l(エル) なのか I (アイ) なのか 1 (ワン) なのかで迷う。エラーやコンテクストを見ながら見わけた。証明が↓の apply ... done から tutorial.pdf では proof ... have ... qed を使うタイプの証明(structured Isar proofs というらしい)になっていた。将来的には他の部分も proof ... qed を使った証明になっていくんだろうか。だとすると、ますます私はやりにくくなるな…。
+
+JRF 2015年11月26日
+
+《Isabelle Tutorial その23 - caeruiro》
+<a href="http://d.hatena.ne.jp/caeruiro/20100516/1274018433" class="ext-link">http://d.hatena.ne.jp/caeruiro/20100516/1274018433</a>
+
+proof ... qed タイプは文法をまだまったく学んでないのでそんなところに &quot;.&quot; を打つか…というのを気付くまで悩んだりした。
+
+JRF 2015年11月26日
+
+９章も読んだ。↓を見て Exercise の解を入力した。なお、変数名の衝突があったので ToyList.thy の他にファイルを二つ作ったのだが、9.2節の例をやるために前のファイルの途中に戻ったりした。
+
+《Isabelle Tutorial その26 - caeruiro》
+<a href="http://d.hatena.ne.jp/caeruiro/20100606/1275810766" class="ext-link">http://d.hatena.ne.jp/caeruiro/20100606/1275810766</a>
+
+JRF 2015年11月26日
+
+……。
+
+2015-11-26 に１０章を読んだ。まず、{|X, Y|} が MPair X Y のことだというのだが、それが infix とかを利用せずに定義されていて、どうすればいいのかよくわからず、tutorial.pdf や↓には {|X,Y|} と記述されているのをいちいち MPair X Y と書けばいいんだな…と思って入力した…。が、まず最初の lemma が解けない。induct でいいと書いてるが、そこからわからない。↓にも証明が書いてない…ということで例をやるのはあきらめて、ただ読んでいくだけになった。
+
+JRF 2015年11月26日
+
+《Isabelle Tutorial その27 - caeruiro》
+<a href="http://d.hatena.ne.jp/caeruiro/20100620/1277038979" class="ext-link">http://d.hatena.ne.jp/caeruiro/20100620/1277038979</a>
+
+JRF 2015年11月26日
+
+……。
+
+私は ZF か ZFC かの世界につまずいてしまって、ガンコにそこから進もうとしなかった…という面があった。この Tutorial でそれを超えた世界を見せられ、その世界の豊かさに驚いた。私は何にこだわってたんだろう…という感じ。
+
+ときおり気になって、Isabelle2015/src/HOL 以下にあるソースを見ると、structured Isar proof の世界で、その記述は読める気はするけど全々書ける気がしない私は、これからどうしたらいいんだろうと、とまどうばかりだった。
+
+JRF 2015年11月26日
+
+この先、Isabelle で何かするかどうかはわからない。tutorial.pdf が終って、なんだか気落ちしてしまったというのが正直な感想…。
+
+JRF 2015年11月26日
+
+Trackbacks:
+
+《cocolog:84021412》 from JRF のひとこと
+<a href="../../../articles/2015/11/statuses_cocolog_84021412.html" class="int-link" title="ひとこと">http://jrf.cocolog-nifty.com/statuses/2015/11/t-ni.html</a>
+
+T. Nipkow  L. C. Paulson  M. Wenzel 『Isabelle/HOL』を読んだ。2002年に出た本で、前回 <a href="../../../articles/2015/11/statuses_cocolog_83987064.html" class="int-link cocolog-id" title="ひとこと">[cocolog:83987064]</a> で読んだ Isabelle2015 の tutorial.pdf の古いバージョンにあたる。 
+
+受信： 2015-12-29 13:54:05 (JST)
+
+《cocolog:83987061》 from JRF のひとこと
+<a href="../../../articles/2015/11/statuses_cocolog_83987061.html" class="int-link" title="ひとこと">http://jrf.cocolog-nifty.com/statuses/2015/11/post-27d5.html</a>
+
+定理証明システム Isabelle (現バージョンは Isabelle2015)をインストールして、その勉強をしている。 
+
+受信： 2015-12-29 13:54:15 (JST)</pre>
+
+
+<section class="backrefs" data-pagefind-ignore>
+<h2>後方参照 (2 件)</h2>
+<ul>
+<li><span class="backref-label">[cocolog:83987064]参照</span> <a href="../../../articles/2015/11/statuses_cocolog_84021412.html">ひとこと</a> <span class="backref-date">2015年11月30日</span></li>
+<li><span class="backref-label">[cocolog:83987064]参照</span> <a href="../../../articles/2015/11/statuses_cocolog_83987061.html">ひとこと</a> <span class="backref-date">2015年11月26日</span></li>
+</ul>
+</section>
+
+</article>
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2015/11.html">2015年11月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+</body>
+</html>

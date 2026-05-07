@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>POPUP_MNU_RA: プチコンmkII用のポップアップメニュー - JRF Blog Archive</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2013/02.html">2013年02月</a> | <a href="../../../index/software.html">ソフトウェア Tips</a></nav>
+<article data-pagefind-body>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[software] <span class="cocolog-id">cocolog:75690273</span></td></tr>
+<tr><th>セクション</th><td>JRF のソフトウェア Tips</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2013/02.html">2013年02月22日 18:17:29</a></td></tr>
+<tr><th>元URL</th><td><a href="http://jrf.cocolog-nifty.com/software/2013/02/post-3.html" class="ext-link"><span class="original-url">http://jrf.cocolog-nifty.com/software/2013/02/post-3.html</span></a></td></tr>
+<tr><th>タグ</th><td>[プチコン]</td></tr>
+</table>
+</div>
+<h1>POPUP_MNU_RA: プチコンmkII用のポップアップメニュー</h1>
+<pre class="body">STACKLIB に付いてくる ctrllib.prg は、今風の「ジェスチャ入力」「モーションコントローラ」には対応していない。わざわざライブラリにするぐらいだから、そういうのを期待されるのかもしれないが、『易双六 PTC』で使うのに必要とした部分のみしか作っていないというべきで、ウリと言えば、自分で使っていて便利だなと思ったポップアップメニューのルーチン @POPUP_MNU_RA になる。
+
+この関数の呼び出しは簡単で、基本は、メニューの表示項目とそれがクリックされたときに返すべき値のペアを連想配列 RA$[] に指定していくだけである。
+
+  RA$[0,0] = &quot;Yes&quot;
+  RA$[0,1] = STR$(1)
+  RA$[1,0] = &quot;No&quot;
+  RA$[1,1] = STR$(0)
+  RN = 2
+  R = -1: GOSUB @PUSH_R
+  R = -1: GOSUB @PUSH_R
+  GOSUB @POPUP_MNU_RA
+  
+上で -1 を二つ引数として渡している。ここの部分は本来、表示すべきコンソールウィンドウのサイズ W,H を指定すべきところだったが、開発の過程で @CON_PRINT の PRINT_SIZE_R を作り、エスケープシーケンスを含むような場合も、そういった指定なしで、ほぼ自動的にサイズを調整できるようになったため、自動で調節することを指定する -1 を入れて使うのが普通になった。
+
+むしろ、ポップアップメニューのサイズ調整をしたければ、@POPUP_MNU_RA は @CON_PRINTで出てきた CLIP_C{X,Y,W,H} のクリッピング領域を認識して、位置やサイズを決めるので、そちらをいじっておくほうが、便利だろう。
+
+なお、こういうポップアップメニューを使うとき特定のボタンに特定の項目を割り当てたいというのは、ニンテンドーDSがゲーム機である以上、当然の欲求だろう。
+
+それは、メニュー表示項目に &quot;\B[A]&quot; などと指定することでできる。まぎらわしいが、これは @CON_PRINT の &quot;\N[A]&quot; とは違う。ただ &quot;\B[A]&quot; で指定しておいたのを、あとから指定するメニュー表示項目に &quot;\N[A]&quot; を含めてそのボタンが使えることを示すのがマナーというべきものだろう。
+
+メニューの選択はタッチではなく、十字ボタンでもできる。はじめ選択されたところがない状態で、十字ボタンの上を押すと一番下が、下を押すと一番上が選択され「カーソル」が出る。「カーソル」があるところをタッチするか、そこで A ボタンを押すと、この関数は終了し、指定された文字列を返す。
+
+その選択を最初から特定の項目にあるようにするのが、文頭の &quot;\S&quot; のエスケープシーケンスになる。
+
+また、大事なこととして、B ボタンが押されるとキャンセル扱いとみなし、 RT$ に &quot;NONE&quot; の値が返る。これを防止したいときは &quot;\B[B]&quot; のメニュー項目を作っておけばよい。その値は &quot;&quot; を指定する。
+
+メニュー項目中、値が &quot;&quot; のものは無視される。
+
+以上を取り込んだ呼び出し例は次のようになる。キャンセルは認めず、Yes か No かを待つ。
+
+  RA$[0, 0] = &quot;\N[Y]Yes&quot;
+  RA$[0, 1] = STR$(1)
+  RA$[1, 0] = &quot;\S\N[X]No&quot;
+  RA$[1, 1] = STR$(0)
+  RA$[2, 0] = &quot;\B[Y]&quot;
+  RA$[2, 1] = STR$(1)
+  RA$[3, 0] = &quot;\B[X]&quot;
+  RA$[3, 1] = STR$(0)
+  RA$[4, 0] = &quot;\B[B]&quot;
+  RA$[4, 1] = &quot;&quot;
+  RN = 5
+  R = -1: GOSUB @PUSH_R
+  R = -1: GOSUB @PUSH_R
+  GOSUB @POPUP_MNU_RA
+  
+  PRINT R$
+  
+なお、連想配列を文字列化せず、そのまま渡すようにしているのは、メッセージの長さなどから、それらを連結すると往々にして 256 バイト制限に引っかかるからである。
+
+■仲間の関数
+  
+@POPUP_MNU_RA は、@MNU_CTRL_* という関数群を用いて実装している。この別系列として ctrllib.prg には @TCH_CTRL_* という関数群もあり、こちらはタッチセンス用に作られたもので、項目の長押し等にも対応したが、「ジェスチャ入力」などはできない。@MNU_CTRL_* のほうには @MNU_CTRL_* を使いながら @POPUP_MNU_RAを使えるよう専用のスタックがあり、コントローラを push pop して使えるが、それは @TCH_CTRL_* には対応していない(そもそも別管理なので @TCH_CTRL_* を使いながらポップアップは出せる)。
+
+なお、項目の長押しを使うときは、それを最初のほうに登録しておかないと先に別の領域がセンスされることに注意を要する。
+
+また、@MNU_CTRL_* はコンソール座標系で指定を行うが、@TCH_CTRL_* のほうはグラフィック座標系で行うというのも注意を要するところである。
+
+■配布物やライセンス、関連等
+  
+STACKLIBの記事をご参照ください。
+
+更新：2013-02-22
+初公開：2013年02月22日 18:17:34
+最新版：2013年02月22日 19:08:24
+
+
+Links:
+
+STACKLIB: <a href="../../../articles/2013/02/software_75676987.html" class="int-link" title="STACKLIB: プチコンmkII用スタックライブラリ">http://jrf.cocolog-nifty.com/software/2013/02/post-1.html</a>
+易双六 PTC: <a href="http://jrf.cocolog-nifty.com/archive/youscout/ptc/index.html" class="ext-link">http://jrf.cocolog-nifty.com/archive/youscout/ptc/index.html</a>
+@CON_PRINT: <a href="../../../articles/2013/02/software_75686369.html" class="int-link" title="CON_PRINT: プチコンmkII用コンソールPRINT">http://jrf.cocolog-nifty.com/software/2013/02/post-2.html</a></pre>
+
+
+<section class="backrefs" data-pagefind-ignore>
+<h2>後方参照 (1 件)</h2>
+<ul>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2013/02/software_75696191.html">HLPVIEW: プチコンmkII用の簡易アドヴェンチャーゲーム用ルーチン</a> <span class="backref-date">2013年02月23日 09:53:30</span></li>
+</ul>
+</section>
+
+</article>
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2013/02.html">2013年02月</a> | <a href="../../../index/software.html">ソフトウェア Tips</a></nav>
+</body>
+</html>

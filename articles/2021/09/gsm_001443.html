@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>共有メモ - JRF Blog Archive</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2021/09.html">2021年09月</a> | <a href="../../../index/gsm.html">共有メモ</a></nav>
+<article data-pagefind-body>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[gsm] 2021-09-11T09:34:05Z</td></tr>
+<tr><th>セクション</th><td>グローバル共有メモ</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2021/09.html">2021-09-11T09:34:05Z</a></td></tr>
+<tr><th>元URL</th><td>(URLなし)</td></tr>
+
+</table>
+</div>
+<h1>共有メモ</h1>
+<pre class="body">jrf&gt; [仏教の最適化プログラムの続き。]
+
+ログ取り直し続き。
+
+run_simbdp3.sh ledu 10 -L -t 360 --education-goal=0.35 --education-goal-max=0.5 --education-goal-min=0.20
+run_simbdp3.sh ltom 10 -L -t 360 --tombs-population=10000
+run_simbdp3.sh ledultom 10 -L -t 360 --education-goal=0.35 --education-goal-max=0.5 --education-goal-min=0.20 --tombs-population=10000
+
+python plot_logs.py normal ledu ltom ledultom -p AccKarma -o fig-20210911_01.png
+python plot_logs.py normal ledu ltom ledultom -p NewKarma -o fig-20210911_02.png
+python plot_logs.py normal ledu ltom ledultom -p Education -o fig-20210911_03.png
+
+《グラフ集: 2021-09-06 から - Issue #2 - JRF-2018/simbd》  
+<a href="https://github.com/JRF-2018/simbd/issues/2" class="ext-link">https://github.com/JRF-2018/simbd/issues/2</a>
+
+ledu は normal よりカルマが悪く、normal は ltom よりカルマが悪く ledultom は ltom よりカルマが悪いが、normal よりは良いとなっている。前は ledultom が ltom と差がないという悩みがあったが、今回は割と差があり、結果が美しい。
+
+なお、測ってないが、計算時間はログにたくさんの数値を載せるようになった関係でかなり遅くなってしまったようだ。</pre>
+
+
+</article>
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2021/09.html">2021年09月</a> | <a href="../../../index/gsm.html">共有メモ</a></nav>
+</body>
+</html>

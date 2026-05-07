@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>玄人志向 RD70-A64C を NTSC で起動する - JRF Blog Archive</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2006/01.html">2006年01月</a> | <a href="../../../index/software.html">ソフトウェア Tips</a></nav>
+<article data-pagefind-body>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[software] <span class="cocolog-id">cocolog:9645852</span></td></tr>
+<tr><th>セクション</th><td>JRF のソフトウェア Tips</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2006/01.html">2006年01月28日 21:59:23</a></td></tr>
+<tr><th>元URL</th><td><a href="http://jrf.cocolog-nifty.com/software/2006/01/post.html" class="ext-link"><span class="original-url">http://jrf.cocolog-nifty.com/software/2006/01/post.html</span></a></td></tr>
+<tr><th>タグ</th><td>[ハード]</td></tr>
+</table>
+</div>
+<h1>玄人志向 RD70-A64C を NTSC で起動する</h1>
+<pre class="body">昔使っていた Linux &amp; Windows 2000 のデュアルブートマシンをセカンドマシンとして使っている。
+
+少し前まで、KVM (ディスプレイ切替器とか PC 切替器ともいう)を使っていたのだが、別モニタで見たいということで、ビデオ出力付きの安いビデオカードを買った。上記の「玄人志向 RD70-A64C」である。
+
+さて、買ったあと知ったのだが、この製品、ビデオ出力が標準では PAL 形式で NTSC にする方法が Windows で設定するしかないようなのだ。普通、この手の商品はジャンパスィッチで起動時のビデオ設定を変更できるものだと思うが、それがない。
+
+どうしたものか。
+
+調べたところ、この製品の OEM 先の商品名は、PowerColor 7000 というシリーズの一つのようである。ここの FAQ を調べていると、NTSC にする方法がないかと聞いている人がいて、その解答として、 <a href="../../../articles/2006/04/hbm_00069.html" class="int-link" title="techPowerUp! - The latest in hardware and gaming">http://www.techpowerup.com/</a> というサイトに bios があるという情報があった。
+
+ところが、このサイトには PowerColor 7000 の 32M の bios はあるが、64M の bios はない。案の上、このサイトの Winflash で書き換えようとすると ID が違うよといわれてしまった。
+
+でも、おそらく PowerColor 7000 の 32 M とそう大差はないはずなので、このサイトの NTSC と PAL 版(original ではない)の bios をダウンロードしてバイナリエディタ Stirling で比較すると、2 バイトだけ違う。
+
+違う 1 バイトのうち最後のものはチェックサム(?) を合わせているだけだろうから、問題となるのは残り 1 バイトである。実際、RD70-A64C から吸い出したものも同じようなアドレスに同じようなデータがある。どうもここを書き換えれば良さそうだ。
+
+結果、アドレス 0xB52C の 4E 02 という並びを 4E 01 にし、チェックサム (?)を 1 「増やす」必要があるため、害のなさそうな適当な文字列(私は日付け)を 1 増やした。
+
+以上で、bios に書き込んだ。安いグラフィックボードだからこそフンギリも付く。……成功！！
+
+ただ、Linux (debian) の場合、コンソールについては表示されるが、さすがに XFree86 については表示されないようである。
+
+ちなみに、上のサイトでは NTSC のほかに NTSC/J の bios もダウンロードできるが、NTSC/J の値にした場合、テレビには何も表示されなくなってしまった。これは私のデュアルヘッドのメインマシンでも、起動時には何も表示されないので、NTSC/J というのは、メーカー側がなぜか、そのように作っているのかもしれない。
+
+更新：06/01/16,06/01/28
+初公開：2006年01月28日 21:56:48</pre>
+
+
+</article>
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2006/01.html">2006年01月</a> | <a href="../../../index/software.html">ソフトウェア Tips</a></nav>
+</body>
+</html>

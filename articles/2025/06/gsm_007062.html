@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>共有メモ - JRF Blog Archive</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2025/06.html">2025年06月</a> | <a href="../../../index/gsm.html">共有メモ</a></nav>
+<article data-pagefind-body>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[gsm] 2025-06-01T12:23:06Z</td></tr>
+<tr><th>セクション</th><td>グローバル共有メモ</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2025/06.html">2025-06-01T12:23:06Z</a></td></tr>
+<tr><th>元URL</th><td>(URLなし)</td></tr>
+
+</table>
+</div>
+<h1>共有メモ</h1>
+<pre class="body">jrf&gt; jrf_pdb_agent_lib の事例集。途中で .py ファイルを書き換える。
+
+test_3.py が次のようであるとする。
+
+import jrf_pdb_agent_lib as pal
+import test_4
+
+def main():
+    pal.do(&quot;test1&quot;,
+           current_code=&quot;test_4.sub1()&quot;)
+
+if __name__ == &quot;__main__&quot;:
+    main()
+
+test_4.py が次のようであるとする。
+
+import jrf_pdb_agent_lib as pal
+
+def sub1():
+    pal.consult_human(&quot;ここをいじって&quot;)
+    pal.do(&quot;test2&quot;)
+
+このとき、test_3.py を実行すると、まず pal.do test1 でデバッガに入るのだが、そこでは c する。今度は pal.consult_human(&quot;ここをいじって&quot;) でデバッガに入るのだが、ここで対話的にファイルを書き換えたあと…。
+
+global EXCEPTION; EXCEPTION = LoopRequestException(&quot;reload&quot;)
+
+…して、c することで、一旦 pal.do test1 内に戻る。そして、u して…
+
+pal.reload_module(&quot;test_4&quot;); pal.EXEC = &quot;test_4.sub1()&quot;
+
+…を実行し、c すると、書き換えた sub1 に行くことができる。こういう consult_human リクエストにはこういう流れになるのだと思う。</pre>
+
+
+</article>
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2025/06.html">2025年06月</a> | <a href="../../../index/gsm.html">共有メモ</a></nav>
+</body>
+</html>

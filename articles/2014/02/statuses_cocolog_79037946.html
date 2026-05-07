@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>ひとこと - JRF Blog Archive</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2014/02.html">2014年02月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+<article data-pagefind-body>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[statuses] <span class="cocolog-id">cocolog:79037946</span></td></tr>
+<tr><th>セクション</th><td>JRF のひとこと</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2014/02.html">2014年02月25日</a></td></tr>
+<tr><th>元URL</th><td><a href="http://jrf.cocolog-nifty.com/statuses/2014/02/firef.html" class="ext-link"><span class="original-url">http://jrf.cocolog-nifty.com/statuses/2014/02/firef.html</span></a></td></tr>
+
+</table>
+</div>
+<h1>ひとこと</h1>
+<pre class="body">Firefox 系の Audio Data を使ってたのを Web Audio API 系にして、Chrome では出る音が鳴らない。mozWriteAudio にアプリが渡してたのが、Short 値で、それを 0x7fff で割って Float にしたら解決した。
+JRF 2014年2月25日
+
+…たぶん。Short 値ってのはヤマカンで、どうも音量の問題らしいと気付いていろいろ試す中で、渡されてるデータの min と max を調べると Short の範囲になってたから、やってみたら、だいたいうまく鳴ってるようす。
+
+JRF 2014年2月25日
+
+「アプリ」は、ファミコンのエミュレータなんでちょっと問題があるかもしれないけど、でも、サンプルの ROM は私が 作ったやつなんで、OK だと思う。
+
+《JSNES: A JavaScript NES emulator》
+<a href="http://jrf.cocolog-nifty.com/archive/test/jsnes_test.html" class="ext-link">http://jrf.cocolog-nifty.com/archive/test/jsnes_test.html</a>
+
+↑の Sample1 のほうは、&quot;HELLO, WORLD!&quot; と表示して 800Hz ぐらいの音(三角波)を断続的に鳴らすだけの NES ROM。
+
+JRF 2014年2月25日
+
+JSNES の元は↓。で、そこから行ける github から2014年2月13日にダウンロードしてきたものを grunt で make した jsnes.min.js を私のサイトに置いて使ってる。
+
+《JSNES: A JavaScript NES emulator - Ben Firshman》
+<a href="../../../articles/2014/03/hbm_01766.html" class="int-link" title="JSNES: A JavaScript NES emulator – Ben Firshman">http://fir.sh/projects/jsnes/</a>
+JRF 2014年2月25日
+
+で↑では DynamicAudio っていう同じ Ben Firshman という人が作ったライブラリを使ってたんだけど、どうもそれが私の環境だとエラーを出すんで、JSNES で使ってる部分だけを私が作り直したのが、↓。
+
+《pseudo_dynamicaudio.js》
+<a href="http://jrf.cocolog-nifty.com/archive/javascript/pseudo_dynamicaudio.js" class="ext-link">http://jrf.cocolog-nifty.com/archive/javascript/pseudo_dynamicaudio.js</a>
+
+JRF 2014年2月25日
+
+(今回のバージョン固有のリンク。)
+<a href="http://jrf.cocolog-nifty.com/archive/javascript/pseudo_dynamicaudio-20140225.js" class="ext-link">http://jrf.cocolog-nifty.com/archive/javascript/pseudo_dynamicaudio-20140225.js</a>
+
+オリジナルの github は↓。
+
+《bfirsh/dynamicaudio.js - GitHub》
+<a href="https://github.com/bfirsh/dynamicaudio.js/" class="ext-link">https://github.com/bfirsh/dynamicaudio.js/</a>
+
+JRF 2014年2月25日
+
+上の sample1.nes は基本↓から取ってきたのをかなりいじったもの。(現在製作中の「ブツ」のキャラとかも入ってたりする。)(^^;
+
+《NES研究室》
+<a href="http://hp.vector.co.jp/authors/VA042397/nes/sample.html" class="ext-link">http://hp.vector.co.jp/authors/VA042397/nes/sample.html</a>
+＞基本的に著作権は放棄しています。好きなところを好きな分だけ利用してください。＜
+JRF 2014年2月25日
+
+で、psg_test.nes はほぼ完全に自作と言えるものだけど、JSNES 上でやるとキーがなかなか入力できなくて、そのあたり改善の余地がありそう。
+
+上の jsnes_test.html とかも含めて、この先もいろいろテストのためにいじるつもりなので、来たときに動かなかったりしたらすみません。
+
+いちおう、ローカルで開発するのがメインだけど、他のマシンとかネット上での JavaScript の違いとか見ないとダメだから…。個人開発してる「素人」の限界ってことで一つ赦してつかーさいということで…。
+
+JRF 2014年2月25日
+
+修正 「出る音が鳴らない。」→「出る音が Firefox だと鳴らない。」
+
+JRF 2014年2月25日
+
+……。
+
+あと、今回の開発はまともにやったらロングスパンになり過ぎて辛いので、上みたいにできたものから基本的に公開していく方針。
+
+「キャラを使ったブツ」もだいたいできてるんだけど、それは1Pと2Pのコントローラを同時に使う前提なので、それ用に JSNES の UI は最低もうちょっと作り込まないと公開しても意味ないだろうから…。
+
+JRF 2014年2月25日
+
+sample1.nes のほうは微妙だけど、psg_test.nes のほうはソースの asm もその「ブツ」を公開するときに含めるつもり。そこに付けなかったら sample1.asm は、ここで後日公開すると思う。
+
+JRF 2014年2月25日
+
+……。
+
+おっと、最初の話、Chrome でも、もちろん 0x7fff で割る前は鳴りはしたけど、まともになってなかった。createGainNode でゲインを 0.1 とかにしても鳴り続けるのに 0 にすると鳴りがおさまることで原因に気付いた。
+
+そもそも Chrome でもちゃんと鳴ってないのはエミュレータの問題だと思ってた。(もちろん、違った。)
+
+JRF 2014年2月25日
+
+今ネットで読める Web Audio API の解説の多くは webkitAudioContext で説明してて、それが Firefox だと AudioContext 使わないとだめなのに、Chrome では AudioContext ではまだダメ。じゃあ、Firefox がまともな実装に改めたのかというと、createGainNode すら実装されてないらしい。
+
+とてもメンドくさい。
+
+JRF 2014年2月25日
+
+……。
+
+いちおう sample1のソースは↓に上げておいた。(psg_test.nes はそうしないけど)これに関してはバイナリ面で、上のと同じになるようテストレベルで使った不必要なコードも残して今回はアーカイブした。
+
+《sample1-20140225.shar》
+<a href="http://jrf.cocolog-nifty.com/archive/collabo/meme/sample1-20140225.shar" class="ext-link">http://jrf.cocolog-nifty.com/archive/collabo/meme/sample1-20140225.shar</a>
+
+JRF 2014年2月25日
+
+で、不必要なやつを削ったのも↓に用意しておいた。jsnes_test.html で使う sample1.nes もそちらに差し換えといた。
+
+《sample1-20140225_2.shar》
+<a href="http://jrf.cocolog-nifty.com/archive/collabo/meme/sample1-20140225_2.shar" class="ext-link">http://jrf.cocolog-nifty.com/archive/collabo/meme/sample1-20140225_2.shar</a>
+
+JRF 2014年2月25日
+
+……。
+
+あと、JSNES は GPL v3 なんだよね…。ちょっとライセンス的に厳しい面があるんだが、まぁ、pseudo_dynamicaudio.js 的なラッパーコードなら問題ないと思う。
+
+ただ、jsnes.min.js については「バイナリ」と判断されるか微妙なとこなので、一応、私が持ってきたソースもこのサイトにアーカイブしておいた。
+
+JRF 2014年2月25日
+
+《jsnes-master-20140213.zip》
+<a href="http://jrf.cocolog-nifty.com/archive/collabo/gnu/jsnes-master-20140213.zip" class="ext-link">http://jrf.cocolog-nifty.com/archive/collabo/gnu/jsnes-master-20140213.zip</a>
+
+JRF 2014年2月25日
+
+あとは、まぁ、一応、GPL の原文もアーカイブ。
+
+《GNU GENERAL PUBLIC LICENSE Version 3》
+<a href="http://jrf.cocolog-nifty.com/archive/collabo/gnu/gpl-3.0.txt" class="ext-link">http://jrf.cocolog-nifty.com/archive/collabo/gnu/gpl-3.0.txt</a>
+
+《Version 2》
+<a href="http://jrf.cocolog-nifty.com/archive/collabo/gnu/gpl-2.0.txt" class="ext-link">http://jrf.cocolog-nifty.com/archive/collabo/gnu/gpl-2.0.txt</a>
+
+《GNU 一般公衆利用許諾契約書 v2 (UTF8化)》
+<a href="http://jrf.cocolog-nifty.com/archive/collabo/gnu/gpl-2.0.ja.utf8.txt" class="ext-link">http://jrf.cocolog-nifty.com/archive/collabo/gnu/gpl-2.0.ja.utf8.txt</a>
+
+JRF 2014年2月25日
+
+本家の URI は↓。
+
+《GNU一般公衆ライセンス v3.0 - GNUプロジェクト - フリーソフトウェアファウンデーション》
+<a href="https://www.gnu.org/copyleft/gpl.html" class="ext-link">https://www.gnu.org/copyleft/gpl.html</a>
+
+JRF 2014年2月25日
+
+私は GPL に関して、v3 になる前ぐらいに意見を書いている。
+
+《GPL のここが嫌い [ JRF の私見：雑記 ]》
+<a href="../../../articles/2006/02/column_10248128.html" class="int-link" title="GPL のここが嫌い">http://jrf.cocolog-nifty.com/column/2006/02/post_36.html</a>
+
+JRF 2014年2月25日
+
+Trackbacks:
+
+《cocolog:79241255》 from JRF のひとこと
+<a href="../../../articles/2014/03/statuses_cocolog_79241255.html" class="int-link" title="ひとこと">http://jrf.cocolog-nifty.com/statuses/2014/03/post-6a9b.html</a>
+
+ファミコン版『手旗信号』。ネット配布中。 
+
+受信： 2014-03-30 23:35:40 (JST)</pre>
+
+
+<section class="backrefs" data-pagefind-ignore>
+<h2>後方参照 (2 件)</h2>
+<ul>
+<li><span class="backref-label">[cocolog:79037946]参照</span> <a href="../../../articles/2014/03/statuses_cocolog_79241255.html">ひとこと</a> <span class="backref-date">2014年03月22日</span></li>
+<li><span class="backref-label">[cocolog:79037946]参照</span> <a href="../../../articles/2014/03/software_79149901.html">JRF Flag Semaphore for NES Emulator を作った</a> <span class="backref-date">2014年03月11日 08:00:00</span></li>
+</ul>
+</section>
+
+</article>
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2014/02.html">2014年02月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+</body>
+</html>

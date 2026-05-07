@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>ひとこと - JRF Blog Archive</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2014/06.html">2014年06月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+<article data-pagefind-body>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[statuses] <span class="cocolog-id">cocolog:79940558</span></td></tr>
+<tr><th>セクション</th><td>JRF のひとこと</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2014/06.html">2014年06月17日</a></td></tr>
+<tr><th>元URL</th><td><a href="http://jrf.cocolog-nifty.com/statuses/2014/06/bgcal.html" class="ext-link"><span class="original-url">http://jrf.cocolog-nifty.com/statuses/2014/06/bgcal.html</span></a></td></tr>
+
+</table>
+</div>
+<h1>ひとこと</h1>
+<pre class="body">Bgcall でランダムに壁紙を変えてたんだけど、何が選ばれてるか記録したくなって VBScript でログ取りながらランダムに壁紙を変えるスクリプトを書いた。
+JRF 2014年6月17日
+
+やりたかったことは直近の↓に書いた。
+
+ <a href="../../../articles/2014/06/statuses_cocolog_79931287.html" class="int-link cocolog-id" title="ひとこと">[cocolog:79931287]</a> 
+＞
+「シチョーリツ」の要素を考えると、壁紙に実際何を使用したかを公開する必要も認めねばならないのだろうか？
+
+ランダムに表示された壁紙が何であったかを記録するようなアプリを作るべきなのか？
+＜
+
+JRF 2014年6月17日
+
+でも、ライセンスがなぁ…。いろいろなところを参考にしながらだけど、「パブリック ドメイン」って言っていいレベルに留まっていると思う。↓に置いておく。エンコーディングは私には珍しく Shift-JIS なので注意！
+
+《WallWrapperChanger.vbs》
+<a href="http://jrf.cocolog-nifty.com/archive/collabo/meme/WallWrapperChanger.vbs" class="ext-link">http://jrf.cocolog-nifty.com/archive/collabo/meme/WallWrapperChanger.vbs</a>
+
+JRF 2014年6月17日
+
+他の Windows アプリと違って、ソースいじったりしない限り動かないし、私がどうやって Log を取ったかの参考用にしかならないと思う。Windows 7 以外だとどう動くのかは確認していない。
+
+いちおう動き方も説明すると、MyDocuments の wall_wrapper_list.txt で、壁紙の１ファイル名を１行に羅列して、やはり MyDocuments 下の wall_wrapper.log ランダムに選択されたものが何かをログに取っていく…というふうになる。
+
+JRF 2014年6月17日
+
+ただし、Windows 7 のレジストリ設定の限界から、起動時にパッと変えるというのはできなくて、「次の起動時」にどれを使うかをログに残すことしかできない。
+
+JRF 2014年6月17日
+
+このあたり、私が使ってたアプリケーション「Bgcall」ではちゃんと、起動時に入れ替えてる感じだったから、私の使った方法の限界だと思う。あと XP だとちゃんと「そのとき」に替える方法もあるっぽいんだけど、Windows 7 だとダメ(ときたまちゃんと替わる)なんで、そこはコメントアウトして使っている。私の↑のものは十分テストしてないので、「もしも」のときのために復元ポイントを作っておいたほうがいい。私は Bgcall もインストールしておいて、「スタートアップ」で Bgcall の替わりに呼び出すようにしている。
+
+
+JRF 2014年6月17日
+
+《Bgcall - Vieas Web》
+<a href="http://www.vieas.com/software/bgcall.html" class="ext-link">http://www.vieas.com/software/bgcall.html</a>
+
+JRF 2014年6月17日
+
+私、VBScript をほとんどわかってなくて、↓がすごい役に立った。
+
+《VBScript 基礎文法最速マスター - CX's VBScript Diary - VBScript グループ》
+<a href="http://vbscript.g.hatena.ne.jp/cx20/20100131/1264906231" class="ext-link">http://vbscript.g.hatena.ne.jp/cx20/20100131/1264906231</a>
+
+JRF 2014年6月17日
+
+上の Bgcall を使わないなら、基本は↓を参考にして、私のは参考にせず、自分で組めば、私のと同じレベルにはすぐ達すると思う。
+
+《WallPaper.VBSの詳細情報 : Vector ソフトを探す！》
+<a href="http://www.vector.co.jp/soft/winnt/util/se405242.html" class="ext-link">http://www.vector.co.jp/soft/winnt/util/se405242.html</a>
+
+JRF 2014年6月17日
+
+私は、VBScript に関してはエラー処理とかもよくわかってなくて、そのあたりもネットで探してきたののコピペを元に作ってる。そういうコピペの「キメラ」みたいなものなんで、「自作」というよりは「コラボ」に近い。WallPaper.VBS の作者の吉岡氏はフリーソフトウェアと書いてるので、一番上の私が作ったのも「パブリックドメイン」というよりは「フリーソフトウェア」とすべきなのかもしれない。
+
+JRF 2014年6月17日
+
+いつもの Cygwin の bash から VBS はすぐには呼べなくて cscript.exe を介さねばならないのは↓で知ったが、結局は DOS 窓を使ったほうが便利だった。
+
+《[Q&amp;A] cygwin上でvbscirptを実行する方法 【OKWave】》
+<a href="http://okwave.jp/qa/q6366152.html" class="ext-link">http://okwave.jp/qa/q6366152.html</a>
+
+JRF 2014年6月17日
+
+VBScript の関数の詳細は、もちろん、MSDN でオープンになってるのも参考にしたけど、↓が役に立った。
+
+《VBScript関数リファレンス》
+<a href="http://www.kanaya440.com/contents/script/" class="ext-link">http://www.kanaya440.com/contents/script/</a>
+
+JRF 2014年6月17日
+
+起動時にパッと変えるのは、Windows 7 では XP ほどうまくいかないという話は↓に出てる。
+
+《vbscript - Change Wallpaper in Windows 7 - Stack Overflow》
+<a href="http://stackoverflow.com/questions/5214647/change-wallpaper-in-windows-7" class="ext-link">http://stackoverflow.com/questions/5214647/change-wallpaper-in-windows-7</a>
+
+JRF 2014年6月17日
+
+↓次回のは替えれるという確信はここでもらった。
+
+《Hey, Scripting Guy!デスクトップの壁紙を定義済みの 6 つのうちの 1 つに変更する方法はありますか》
+<a href="http://gallery.technet.microsoft.com/scriptcenter/82731212-c16a-4cae-be3b-3332cc91d6b6" class="ext-link">http://gallery.technet.microsoft.com/scriptcenter/82731212-c16a-4cae-be3b-3332cc91d6b6</a>
+
+JRF 2014年6月17日
+
+MyDocuments の位置を取ってくるのは↓を参考にした。
+
+《VBAでマイドキュメントやデスクトップ等の特殊フォルダーを取得する - まりふのひと》
+<a href="http://d.hatena.ne.jp/ogohnohito/20130526/p1" class="ext-link">http://d.hatena.ne.jp/ogohnohito/20130526/p1</a>
+
+JRF 2014年6月17日
+
+typo 「wall_wrapper.log ランダムに」→「wall_wrapper.log にランダムに」。
+
+JRF 2014年6月17日
+
+……。
+
+更新：バージョン 0.02。wall_wrapper_list.txt 中のファイル名が相対パスのときに、ソース直書きの変数で設定しておけば、補完できるようにした。
+
+JRF 2014年6月18日
+
+……。
+
+更新：バージョン 0.03。0.02 のコメント後、すぐに失敗に気づく。論理演算ミスを修正。影響はほぼないはず。
+JRF 2014年6月18日
+
+更新：バージョン 0.04。コードは変わってない。このページへのリンクをいちおう書いておいた。
+
+JRF 2014年6月21日</pre>
+
+
+<section class="backrefs" data-pagefind-ignore>
+<h2>後方参照 (1 件)</h2>
+<ul>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2014/06/statuses_cocolog_79931287.html">ひとこと</a> <span class="backref-date">2014年06月16日</span></li>
+</ul>
+</section>
+
+</article>
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2014/06.html">2014年06月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+</body>
+</html>

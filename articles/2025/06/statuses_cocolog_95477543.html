@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>ひとこと - JRF Blog Archive</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2025/06.html">2025年06月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+<article data-pagefind-body>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[statuses] <span class="cocolog-id">cocolog:95477543</span></td></tr>
+<tr><th>セクション</th><td>JRF のひとこと</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2025/06.html">2025年06月04日</a></td></tr>
+<tr><th>元URL</th><td><a href="http://jrf.cocolog-nifty.com/statuses/2025/06/post-ca8568.html" class="ext-link"><span class="original-url">http://jrf.cocolog-nifty.com/statuses/2025/06/post-ca8568.html</span></a></td></tr>
+
+</table>
+</div>
+<h1>ひとこと</h1>
+<pre class="body">ブラウザゲーム「易双六」などを GitHub Pages を使って公開した。Gemini さんに GitHub Actions のワークフローを書いてもらって。これで私が死んでも少し遺りやすくなったと思う。
+JRF 2025年6月4日
+
+(「グローバル共有メモ」と Twitter (X) で書いたことのコピペを中心に。)
+
+GitHub には GitHub Pages という機能があり、GitHub Actions を使って GitHub の提供する領域にウェブページが公開できるという話なのだが、難しそうで敬遠していた。しかし、今なら Gemini さんに聞けば「一発」かもしれない…と試してみた。
+
+JRF 2025年6月4日
+
+最初、Gemini さんも使わず GitHub Actions も使わないで、単に Deploy from a branch でも易双六を動かすことはできた。ただ、The JRF Tarot を表示させるには、GitHub Actions が必要そうだった。そこで Gemini さんに相談。しかし、意味不明のエラーに苦しむ…。
+
+JRF 2025年6月4日
+
+……。
+
+○ 2025-06-03T14:09:17Z
+
+GitHub Pages で易双六をデプロイしようと思って、Gemini さんに頼んでやってるのだが、Missing download info for actions/upload-pages-artifact@v4 …というエラーが出てうまくいかない orz。Gemini さんは GitHub が悪いのかも…というが…。
+
+JRF 2025年6月4日
+
+……。
+
+ギブアップしかけたのだが…。
+
+JRF 2025年6月4日
+
+……。
+
+○ 2025-06-03T15:52:51Z
+
+やっとうまくいった！ actions/checkout@v4 を actions/checkout@v3 みたいに v3 系にすることでうまくいった。ということは GitHub がなんかおかしかったということになると思う。
+
+JRF 2025年6月4日
+
+……。
+
+○ 2025-06-03T15:48:48Z
+
+…ということで、易双六。GitHub 上でもゲームできるようになりました！
+
+《易双六 Youscout ～ Tarot Solitaire》  
+<a href="https://jrf-2018.github.io/youscout/youscout.html?default_lang=ja" class="ext-link">https://jrf-2018.github.io/youscout/youscout.html?default_lang=ja</a>
+
+JRF 2025年6月4日
+
+……。
+
+○ 2025-06-03T15:57:32Z
+
+もちろん略式易双六もできます！
+
+《略式易双六 Simplified Youscout ～ Tarot Solitaire》  
+<a href="https://jrf-2018.github.io/youscout/simple_ysc.html?default_lang=ja" class="ext-link">https://jrf-2018.github.io/youscout/simple_ysc.html?default_lang=ja</a>
+
+JRF 2025年6月4日
+
+……。
+
+○ 2025-06-03T19:26:10Z
+
+プチコンmkII版のほうは QRコードが見れるだけだけど、一応 GitHub 上で見れるようにはしておいた。
+
+《易双六 Youscout for PTC》  
+<a href="https://jrf-2018.github.io/youscout_ptc/" class="ext-link">https://jrf-2018.github.io/youscout_ptc/</a>
+
+JRF 2025年6月4日
+
+……。
+
+……。
+
+そして、AI さん達が Gist をうまく読めなかったので、その対策をしたいと前々から思っていたのも、GitHub Pages で「一発」だと気が付いた。
+
+○ 2025-06-03T20:42:58Z
+
+Gist に付けた最近の実験 ipynb をまとめてリポジトリに入れ、さらにそれらを AI がクロールしやすいよう HTML 化しておいた。
+
+JRF 2025年6月4日
+
+《JRF-2018/misc_ipynb: Miscellaneous IPYNBs》  
+<a href="https://github.com/JRF-2018/misc_ipynb" class="ext-link">https://github.com/JRF-2018/misc_ipynb</a>
+<a href="https://jrf-2018.github.io/misc_ipynb/" class="ext-link">https://jrf-2018.github.io/misc_ipynb/</a> (HTMLs)
+
+JRF 2025年6月4日
+
+……。
+
+今、そこに登録したのは…
+
+《ウィルス弱毒化の SIR 的モデル》(virus_attenuation_SIR.ipynb) (<a href="../../../articles/2025/05/statuses_cocolog_95428644.html" class="int-link cocolog-id" title="ひとこと">[cocolog:95428644]</a>(2025年5月))。
+
+《ウィルス弱毒化シミュレーションの ABM》(virus_attenuation_ABM.ipynb) (<a href="../../../articles/2025/05/statuses_cocolog_95428644.html" class="int-link cocolog-id" title="ひとこと">[cocolog:95428644]</a>(2025年5月))。
+
+JRF 2025年6月4日
+
+《ウィルスの(実効)潜伏期間のシミュレーション (性選択による進化シミュレーション)》(scar_sexsel.ipynb) (<a href="../../../articles/2025/05/statuses_cocolog_95428644.html" class="int-link cocolog-id" title="ひとこと">[cocolog:95428644]</a>(2025年5月))。
+
+《縁故主義経済シミュレーション》(nepotism_economy.ipynb) (<a href="../../../articles/2025/05/statuses_cocolog_95440214.html" class="int-link cocolog-id" title="ひとこと">[cocolog:95440214]</a>(2025年5月))。
+
+《縁故主義経済シミュレーション その2》(nepotism_economy_2.ipynb) (<a href="../../../articles/2025/05/statuses_cocolog_95444432.html" class="int-link cocolog-id" title="ひとこと">[cocolog:95444432]</a>(2025年5月))。
+
+JRF 2025年6月4日
+
+《エスカレーター並び方問題のシミュレーション》(escalator_problem.ipynb) (<a href="../../../articles/2025/05/statuses_cocolog_95455686.html" class="int-link cocolog-id" title="ひとこと">[cocolog:95455686]</a>(2025年5月))。
+
+ちなみにこの過程で escalator_problem.ipynb を escalator_probrem.ipynb と綴りまちがいしていることに気付いた。orz
+
+JRF 2025年6月4日</pre>
+
+
+<section class="backrefs" data-pagefind-ignore>
+<h2>後方参照 (1 件)</h2>
+<ul>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2025/06/gsm_007082.html">共有メモ</a> <span class="backref-date">2025-06-04T08:13:39Z</span></li>
+</ul>
+</section>
+
+</article>
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2025/06.html">2025年06月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+</body>
+</html>

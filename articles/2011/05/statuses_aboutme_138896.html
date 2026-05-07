@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>ひとこと - JRF Blog Archive</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2011/05.html">2011年05月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+<article data-pagefind-body>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[statuses] <span class="cocolog-id">aboutme:138896</span></td></tr>
+<tr><th>セクション</th><td>JRF のひとこと</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2011/05.html">2011年05月20日</a></td></tr>
+<tr><th>元URL</th><td><a href="http://jrf.cocolog-nifty.com/statuses/2011/05/aboutme138896.html" class="ext-link"><span class="original-url">http://jrf.cocolog-nifty.com/statuses/2011/05/aboutme138896.html</span></a></td></tr>
+
+</table>
+</div>
+<h1>ひとこと</h1>
+<pre class="body">はやりらしいから Google Chrome も試そうか？…と、その前に JSActions や Lauchy みたい外部アプリ、外部 EXE を実行するものを探していて、たまたま AN HTTPd に行き当たる。
+JRF 2011年5月20日
+
+…そうか、localhost で httpd 起動して、そっからアプリケーション起動ってのもアリか。
+
+CGI の使い方としてはめちゃくちゃ反則な気がするが、最近は普通ファイアーウォールがあるんだから、外から変な攻撃はされにくい…、それでいいっちゃいいのかな。
+
+Greasemonkey は標準で付いてるみたいで、私は使ったことはこれまでなかったけど、グリモンで右クリックメニューに足したりもできるから、全部のサイトに対しグリモンを起動…とかすれば、JSActions アドオンに代わる要素はそろってるとは言えるかな。
+
+とてもメンドクサイが。
+
+JRF 2011年5月20日
+
+《AN HTTPD Home Page》
+<a href="../../../articles/2011/06/hbm_01871.html" class="int-link" title="AN HTTPD Home Page">http://www.st.rim.or.jp/~nakata/</a>
+
+AN HTTPD の perl は cygwin のものでもいいようだ。いずれ X11 なしの Perl::Tk のために ActivePerl は入れるつもりだが、今はこれでいい。
+
+JRF 2011年5月20日
+
+CGI を動かして、perl から DDwin を起動するというところまでやってみた。
+
+ここで驚いたのは、system 関数の文字コードの仕様。最初 cp932 に変換して渡そうとしたのに渡らない。試しに utf-8 に変換して渡したらうまくいった。Windows アプリなのでコマンドラインは cp932 (shiftjis)しか理解しないはずだから、cygwin か perl が内部で変換をしていることになる。
+
+JRF 2011年5月20日
+
+localhost の httpd からアプリ起動のアイデアは↓から。昔、そういうことは考えたか誰かにアイデアを聞いたかしたことはある。でも、そのころはセキュリティ的に否定的に考えたと思う。そういう構成でソフト作っても他者にインストールさせる手間がかかるだけだし。…が、時代が変わったか。
+
+《Google Chrome のテキストエリアを外部エディタで編集する Edit with Emacs - 酒日記 はてな支店》
+<a href="http://d.hatena.ne.jp/sfujiwara/20100129/1264743217" class="ext-link">http://d.hatena.ne.jp/sfujiwara/20100129/1264743217</a>
+
+JRF 2011年5月20日
+
+Chrome インストールしてみた。私のサイトはちゃんと表示されるようで安心。
+
+が、Greasemonkey ならぬ UserScript が私のような使い方をする者には使えないものだとわかる。
+
+まず、user.js のインストールで手間どる。↓のデフォルトのウィンドウが小さいだけで発言する問題だと知る。
+
+JRF 2011年5月21日
+
+《自作のExtensionsがインストールできず、User Scriptからの変換もできない - Google Chrome 公式ヘルプフォーラム》
+<a href="http://www.google.com/support/forum/p/chrome/thread?tid=2d87009e7d1e5293&amp;hl=ja" class="ext-link">http://www.google.com/support/forum/p/chrome/thread?tid=2d87009e7d1e5293&amp;hl=ja</a>
+
+さらに、GM_xmlhttpRequest にがっちりサイト制限があるうえ、unsafeWindow が使えないとのことで、↓ の XMLRPC で投稿する statuses_tool.user.js は使えないことがわかった。
+
+JRF 2011年5月21日
+
+《aboutme2cocolog: アバウトミーの「ひとこと」をココログプロへ移転するツール》
+<a href="../../../articles/2011/04/software_67976071.html" class="int-link" title="aboutme2cocolog: アバウトミーの「ひとこと」をココログプロへ移転するツール">http://jrf.cocolog-nifty.com/software/2011/04/post.html</a>
+
+unsafeWindow のほうは script タグの多用で何とかなるのかもしれないが、そのほうが気持ち悪いんだけどなぁ…。
+
+このあたりも CGI のトリックを使えってことなのかな？でも、それって、セキュリティ的には余計に危なくするだけだろうに。
+
+JRF 2011年5月21日
+
+安全性を疎かにして自由を求める人間は、より危険なところに勝手に行けってか？…もちろん、正義の google 様がそんなこと考えてるわけないが、もうしわけないが、そういうメッセージを受け取ってしまう。
+
+まぁ、でもその辺のところは今にはじまったわけでもない。Linux から Windows に移り、gpg からメールヘッダのデコレーションに移る。セキュリティの専門家たる彼らの考えるセキュリティに間違いはないだろうさ。
+
+誰でもサーバーを立てられる。誰しも最新の script 標準が使える。それを嫌うのは反知性的でしかない。
+
+ああ、私は愚かだな…愚かさの中に沈んでいくばかり。
+
+JRF 2011年5月21日
+
+openssl が使えなかったり、ImageMagick が使えなかったり、gmp が使えなかったり、…は自分に技術も資金もなく、彼らの仲間になって貢献をする気もないからだから、その責めはどちらかと言えば、私が受けるべきものだ。
+
+いわんやエンコードがおかしいぐらいで、陰謀論的な方向にかたむくのは、頭がおかしい。被害妄想が過ぎるってもんだ。
+
+使えるようにしてくれてるというその一点に感謝しこそすれ、自分の考える「完璧」さを人に求め、うらみごとを吐[ぬ]かすのはスジ違いもいいとこ。
+
+自分ができるバージョンアップをできる範囲で誠実にやり続けることこそ大事だろう。
+
+JRF 2011年5月21日
+
+彼らのアートなサイエンスは私などの素人には決して創れないもの。それに比べて、私のは、自分用の「設定」の延長、自己満足に過ぎないのだから私が生きてる間のみ通用すれば十二分なのだ。
+
+不完全な「設定」をネットさらすのは、改造車を見せびらかす心理と同じか、それ以下。彼らのほうが技術も金もかけている。資産性もある。
+
+もちろん、だからといって製造者たる責任をすべて逃れられるわけではないのだから、法を守るし、法がおかしいと信じれば、あまり迷惑にならない範囲で、不服従も守る。
+
+いつまでたってもうだつの上がらん人間だ。私は。
+
+JRF 2011年5月21日
+
+修正 「gmp」→「Math::GSL」。
+
+クロスドメイン制限は、サーバーがヘッダにAccess-Control-Allow-Origin を付ければいいとかいうのも今ではあるようだが、基本は、「ユーザー」から見れば、サーバーはいじれないもので、同じドメインだから信頼できるというのも少しおかしい。「UserScript」にまでその制限を課すのはやめて欲しかった。
+
+…ただ、これを良い機会としてツールの CGI 版を書きはじめている。OAuth とかを使って認証するもの。ローカルにもサーバーにも置けるものにしたい。
+
+JRF 2011年5月23日
+
+Trackbacks:
+
+《cocolog:70722096》 from JRF のひとこと
+<a href="../../../articles/2011/11/statuses_cocolog_70722096.html" class="int-link" title="ひとこと">http://jrf.cocolog-nifty.com/statuses/2011/11/javas-2.html</a>
+
+JavaScript の Canvas にもオリジン制限があることを知る。開発者向けにブラウザ起動時にそれを無視するオプションはあるようだが、サーバーオーナーやブロガーが回避する方法はなさそう。 
+
+受信： 2012-01-04 14:58:54 (JST)
+
+《aboutme:138968》 from JRF のひとこと
+<a href="../../../articles/2011/05/statuses_aboutme_138968.html" class="int-link" title="ひとこと">http://jrf.cocolog-nifty.com/statuses/2011/05/aboutme138968.html</a>
+
+OAuth を使った CGI アプリを作っている。うすうす感じていたが OAuth は「PPログイン」に使えそうだ。 
+
+受信： 2012-01-04 19:50:29 (JST)
+
+《cocolog:88438902》 from JRF のひとこと
+<a href="../../../articles/2017/11/statuses_cocolog_88438902.html" class="int-link" title="ひとこと">http://jrf.cocolog-nifty.com/statuses/2017/11/firef-1.html</a>
+
+Firefox の Greasemonkey で右クリックのコンテクストメニュー(contextmenu)を開くとき、コンテクストメニューのターゲットをどうやって取るか？ …やっと解決した。 
+
+受信： 2017-12-29 18:14:05 (JST)</pre>
+
+
+<section class="backrefs" data-pagefind-ignore>
+<h2>後方参照 (2 件)</h2>
+<ul>
+<li><span class="backref-label">[aboutme:138896]参照</span> <a href="../../../articles/2017/11/statuses_cocolog_88438902.html">ひとこと</a> <span class="backref-date">2017年11月17日</span></li>
+<li><span class="backref-label">[aboutme:138896]参照</span> <a href="../../../articles/2011/11/statuses_cocolog_70722096.html">ひとこと</a> <span class="backref-date">2011年11月29日</span></li>
+</ul>
+</section>
+
+</article>
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2011/05.html">2011年05月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+</body>
+</html>

@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>ひとこと - JRF Blog Archive</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2022/03.html">2022年03月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+<article data-pagefind-body>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[statuses] <span class="cocolog-id">cocolog:93385012</span></td></tr>
+<tr><th>セクション</th><td>JRF のひとこと</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2022/03.html">2022年03月22日</a></td></tr>
+<tr><th>元URL</th><td><a href="http://jrf.cocolog-nifty.com/statuses/2022/03/post-4fdf33.html" class="ext-link"><span class="original-url">http://jrf.cocolog-nifty.com/statuses/2022/03/post-4fdf33.html</span></a></td></tr>
+
+</table>
+</div>
+<h1>ひとこと</h1>
+<pre class="body">楠田康之『経済分析のための構造推定アルゴリズム』と Judea Pearl 他『入門 統計的因果推論』に目を通した。前者は今の関心の経済シミュレーション、後者は、若い頃からの懸案であったグラフ理論・仏教的因果論・モンティホール問題にとどめを刺す統合されたテーマになる。
+JRF 2022年3月22日
+
+(まず「グローバル共有メモ」に書いたのをコピペしている。)
+
+JRF 2022年3月22日
+
+……。
+
+……。
+
+○ 2022-03-18T19:05:21Z
+
+『経済分析のための構造推定アルゴリズム』(楠田 康之 著, 三恵社, 2019年1月)
+<a href="https://www.amazon.co.jp/dp/4866931418" class="ext-link">https://www.amazon.co.jp/dp/4866931418</a>
+<a href="https://7net.omni7.jp/detail/1107046081" class="ext-link">https://7net.omni7.jp/detail/1107046081</a>
+
+micro_economy_*.py の参考になればと思って読んだ。基本的には目を通しただけで、「読めた」とは言いがたい。例のプログラムも試してないし。まぁ、いざというときに再度読めばいいようにしておくのが目を通す目的といったところ。
+
+JRF 2022年3月22日
+
+第2章、第3章の動的計画法やベルマン方程式は、強化学習の本でも見た(<a href="../../../articles/2020/01/statuses_cocolog_91609276.html" class="int-link cocolog-id" title="ひとこと">[cocolog:91609276]</a>)。有限個の経済の行動(action)について、経済がどう遷移していくか、効用が最大のものを中心に確率的にたどっていくというモデルだった。もしかしたら、こういうのは強化学習に落として解く方法が今ならあるのかもしれない。
+
+第4章は少し違うが、やはり最適化に落として経済の実際の値から需要や供給のモデルをある強い仮定のもと推定していく。無関係な選択対象からの独立性(IIA)が悪さをするらしく、それを排除したある意味偏りのあるモデルにするのに苦心している感じだった。
+
+JRF 2022年3月22日
+
+実際の数値をモデルに当てはめるって、私はもっと簡単だと思っていたが、こんなに複雑になってしまうのか。それが意外だった。
+
+JRF 2022年3月22日
+
+……。
+
+最近、経済学にどうして微分が出てくるか気になっていて、その一つが、p.121 でベルトラン競争(Bertrand competition)の式として出てきた。ググると↓に説明があった。
+
+《【ベルトラン･モデル】均衡･最適反応･余剰や計算方法･求め方を分かりやすく どさんこ北国の経済教室》  
+<a href="https://kitaguni-economics.com/bertrand-competition/" class="ext-link">https://kitaguni-economics.com/bertrand-competition/</a>
+
+JRF 2022年3月22日
+
+……。
+
+……。
+
+○ 2022-03-21T15:03:50Z
+
+『入門 統計的因果推論』(Judea Pearl ＆ Madelyn Glymour ＆ Nicholas P. Jewell 著, 落海 浩 訳, 朝倉書店, 2019年8月)
+<a href="https://www.amazon.co.jp/dp/4254122411" class="ext-link">https://www.amazon.co.jp/dp/4254122411</a>
+<a href="https://7net.omni7.jp/detail/1107021673" class="ext-link">https://7net.omni7.jp/detail/1107021673</a>
+
+JRF 2022年3月22日
+
+私は若いころから、仏教について因果ではなく縁起を重視することに関心を持っていた。最近では仏教論理学の因明に関心を持っていた(<a href="../../../articles/2022/01/statuses_cocolog_93262667.html" class="int-link cocolog-id" title="ひとこと">[cocolog:93262667]</a>)。また、大学時代はグラフ理論に注目して、独学で圏論を学んだりしたがうまく活かすことができなかった。さらに、大学を出た後、Monty Hall 問題にこだわったりしていた。
+
+それらの伏線が一気に回収されるようなテーマで驚いた。私がもう少し若ければ、もっと真剣に読めたであろうが、いかんせん、ボケボケの今では目を通すのがやっとだった。
+
+JRF 2022年3月22日
+
+ただ、Monty Hall に関して「反事実」が重要と言いながら、結局、Monty Hall のような「反事実」で事実がゆがむような例は他になかった。「反事実」を使って、統計的真実を述べるというのはそれはそれで意味のあることだとは思うが、当初予想したようなトピックはなかった。
+
+モンティホール問題が反事実というのはどういうことだろうか、と本を閉じたあと考えた。
+
+JRF 2022年3月22日
+
+構造方程式は素直に書くと、最初の選択を F、車の位置を C、司会者の選択を M とし、それぞれ 0 から 2 までの値をとるとすると、
+
+F := U_F
+C := U_C
+M := if F == C then ((F + U_M) % 3) else ((3 - F - C) % 3)
+
+みたいに書けると思う。で、求めたいのは P(C == 2| F == 0, M == 1) == 2/3 ということ。
+
+JRF 2022年3月22日
+
+ここに反事実を持ってくるということは M == 0 のとき P(C_{M==2} == 2 | F == 0) を求めたいといったことになるのだろうか。
+
+しかし、M == 2 という反事実は C や F に遡及しないので、結局、P(C_{M==2} == 2 | F == 0) == P(C == 2) == 1/3 でしかない。
+
+JRF 2022年3月22日
+
+もう少し工夫して
+
+F := U_F
+C := U_C
+X := if F == C then 0 else 1
+M := (1-X) * ((F + U_M) % 3) + X * ((3 - F - C) % 3)
+
+にして X でコントロールしようとすると、C_{X==0} とかは上と変わらないので、M_{X==0} や M_{X==1} に意味があるかどうかになる。
+
+JRF 2022年3月22日
+
+しかし P(C == 2|M_{X==0} == 1, F == 0) == 1/3 と出て、P(C == 2|M_{X==1} == 1, F == 0) == 1 と出るが、それに何の意味があるというのか？
+
+モンティ・ホール問題の反事実性はどこにあって、どんな役割をしているか、結局わからずじまい…ということになる。
+
+結局、この本もぜんぜん読めてなくて、目を通しただけということになろう。情けなや orz。
+
+JRF 2022年3月22日
+
+……。
+
+モンティホール問題についてもう少し。
+
+反事実と呼べるようなものは、M == 1 のとき C == 1 が否定される。だから C == 1 が反事実的になる。ただ、C_{C==1} == 2 みたいなものが考えられるかというとそういう話はなかった。ただ、F == 0 で M == 1 のとき C == 1 が反事実で、すると C == 0 か C == 2 で、C == 0 のときは M = 1 であることは U_M != 1 つまり U_M == 1 が反事実的になり、C == 2 のときは、U_M == 0 も U_M == 1 も反事実的ではない。
+
+JRF 2022年3月22日
+
+反事実の判定に C ではなく U_C を使うと、外生変数 U_C と U_M (と U_F) について、反事実かどうかが問題になっていて、その反事実でないものを数え上げることで、確率を計算できる…という感じになる…ということかもしれない。
+
+しかしあくまで反事実「的」であって、この本にいう「反事実」とは定義が違う。これが何かの役に立つようには思えないのだが…。
+
+JRF 2022年3月22日
+
+生物学で、遺伝子がモンティホールの F を指定する役割で、他の変異個体が死産するのが M を指定すること…みたいな話は、「陰性変異」の議論で考えたけど(<a href="../../../articles/2018/05/statuses_cocolog_89358180.html" class="int-link cocolog-id" title="ひとこと">[cocolog:89358180]</a>)、うまくいかなかったんだよね。
+
+JRF 2022年3月22日</pre>
+
+
+<section class="backrefs" data-pagefind-ignore>
+<h2>後方参照 (2 件)</h2>
+<ul>
+<li><span class="backref-label">[cocolog:93385012]参照</span> <a href="../../../articles/2024/10/statuses_cocolog_95101663.html">ひとこと</a> <span class="backref-date">2024年10月18日</span></li>
+<li><span class="backref-label">[cocolog:93385012]参照</span> <a href="../../../articles/2022/06/gsm_002290.html">共有メモ</a> <span class="backref-date">2022-06-29T15:30:39Z</span></li>
+</ul>
+</section>
+
+</article>
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2022/03.html">2022年03月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+</body>
+</html>

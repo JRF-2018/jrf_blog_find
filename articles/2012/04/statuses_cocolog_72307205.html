@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>ひとこと - JRF Blog Archive</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2012/04.html">2012年04月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+<article data-pagefind-body>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[statuses] <span class="cocolog-id">cocolog:72307205</span></td></tr>
+<tr><th>セクション</th><td>JRF のひとこと</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2012/04.html">2012年04月12日</a></td></tr>
+<tr><th>元URL</th><td><a href="http://jrf.cocolog-nifty.com/statuses/2012/04/la-e185.html" class="ext-link"><span class="original-url">http://jrf.cocolog-nifty.com/statuses/2012/04/la-e185.html</span></a></td></tr>
+
+</table>
+</div>
+<h1>ひとこと</h1>
+<pre class="body">無線 LAN アダプタのクライアントマネージャを起動時にアクセスポイントモードで自動実行すると、SoftAP.exe に対してユーザーアカウント制御(UAC)の管理者権限を求める暗転ダイアログが出る。これを出さないようにするには、タスクスケジューラを使えばいいようだが…。
+JRF 2012年4月12日
+
+今回の無線 LAN アダプタは、PLANEX GW-USNano2。管理者権限を求める暗転後のダイアログには「このプログラムにコンピューターの変更を許可しますか？」と表示される。
+
+Nintendo DS Lite のアクセスポイントが欲しいが、私の家の無線ルーターは古いのと、DS Lite 特有のセキュリティの弱さ(WEP しか使えない)から、私が普段使っているマシンを「ブリッジ」して接続できたほうがいいと考え、それっぽい商品としてプラネックスの GW-USNano2 があり、Amazon で安かったのでそれを購入した。
+
+JRF 2012年4月12日
+
+《無線LAN｜GW-USNano2｜PLANEX》
+<a href="http://www.planex.co.jp/product/wireless/gw-usnano2/" class="ext-link">http://www.planex.co.jp/product/wireless/gw-usnano2/</a>
+
+《Amazon.co.jp： PLANEX ゲーム・パソコン・ケータイをかんたんWi-Fi接続! WPSボタン付 150Mbpsハイパワー無線LAN USBアダプタ GW-USNano2: パソコン・周辺機器》
+<a href="http://www.amazon.co.jp/dp/B004AP8QKM" class="ext-link">http://www.amazon.co.jp/dp/B004AP8QKM</a>
+
+JRF 2012年4月12日
+
+ところが、まず、それがアクセスポイントモードでなかなかつながらない。アクセスポイントモードのときはインターネットに接続するところは有線が普通であるように説明してあるが、無線でも大丈夫だろうという読みもあったし、ネットにはそうらしい情報がある。(後述のようにちゃんとそれはできた。)
+
+JRF 2012年4月12日
+
+ただ、私は無線 LAN への接続にこれまで PLANEX の別の古い製品を使っており、それは Windows 標準のドライバで動いているため、今度の GW-USNano2 も標準のドライバでアクセスポイントになればいいな…と思って、まずは、クライアントマネージャを入れずに動かしてみた。
+
+Windows 7 Home Premium で普通に標準のドライバで認識して無線 LAN アダプタとしては使えたので、Ad Hoc モードなどにしておいてから、インターネットの共有をしたりしてみたが…、全々うまくいかない。
+
+JRF 2012年4月12日
+
+Windows 標準ドライバではアクセスポイントモードはできないとフン切りを付け、ここでやっとクライアントマネージャを導入。しかし、うまく起動しない。DS Lite 側の問題かもしれないと Xbox 360 で試してみてもやっぱり起動してない。
+
+もしかすると、先に標準ドライバで動かしちゃったので、ドライバがうまく入ってないかも…と疑って、PC の再起動を何度かしながら、一端クライアントモードで動く設定にしてみた。…うまく動く。
+
+JRF 2012年4月12日
+
+続いてアクセスポイントモードにすると…やっぱりおかしい。ググると↓が見つかって、私は以前 VPN を使ったことがあるため「インターネットの共有」を手動で指定しなおす必要があるかもしれない…と試してみた。
+
+《icoro : 無線LANアダプタ「GW-USNano2」でアクセスポイントモードを使用する際のメモ》
+<a href="http://www.icoro.com/201111036198.html" class="ext-link">http://www.icoro.com/201111036198.html</a>
+
+…Xbox 360 はつながった！
+
+JRF 2012年4月12日
+
+ただし、DS Lite  は WEP しか使えないとのことなので、まずは WEP のオープンシステムで繋げてみると、キー長が 64bit ならつながるのに、なぜか 128bit だと Xbox 360 でもつながらない。
+
+で、オープンシステムの 64bit で、DS Lite につなげようとすると…つながらない。いろいろ試してわかったのは、DS Lite は WEP のオープンシステムだとむしろだめで、WEP のシェアードにする必要があることがわかった。
+
+JRF 2012年4月12日
+
+「シェアード(WEP)」であれば、キー長 128bit で DS Lite にも Xbox 360 にもつながった！
+
+JRF 2012年4月12日
+
+……。
+
+…ただし、その、書いちゃうと、いわゆるマジコンでバックアップするために DS Lite で FTPd または FTP クライアントを使うプログラムを使おうとするとダメだった。wifi_lib_test.nds で繋がるかいろいろ試してみてもダメだった。(ファイアウォールを切って試したりもした。)普通の(バックアップ版ではない)ゲームだとちゃんとつながるのに。
+
+ゲームをつなげたときに DS 内のドライバでもアップデートされるんだろうか…その割には WEP 以外が使えるようになってないんだが…。
+
+JRF 2012年4月12日
+
+今になって、 DS Lite の Wi-Fi 環境を整えようと思ったのは、最近いろいろ法律が厳しくなってきている(著者不同意でダウンロードしたものは財産ではないとか)ので、今のうちに私も個人でバックアップできるようになっておきたいと考え、ネットで調べると、DS や GBA のバックアップは結局「マジコン」を使うのが便利だという結論になったから。
+
+個人的には、「子供用」たる DS でコピーが簡単に使える(らしい)「マジコン」をむしろ疎ましく感じていたが、こういう法律になってきては背に腹は変えられない…と今になって使いはじめようとしたのだった。
+
+JRF 2012年4月12日
+
+……。
+
+さて、まぁ、とにかく繋がった。そこで問題になったのが最初の UAC ダイアログのうっとうしさ。
+
+ググると、ズバリのものは見つからないが、「タスクスケジューラ」を使ってどうこうという情報を得る。
+
+JRF 2012年4月12日
+
+そこで、スタートメニューから、コントロールパネル→システムとセキュリティ→タスクのスケジュールで「タスクスケジューラ」を起動させた。(または、スタートメニューの「ファイル名を指定して実行...」で、「taskschd.msc」を指定して起動させた。)
+
+JRF 2012年4月12日
+
+そこで「タスクの作成」をクリックし、出てきたウィンドウで「最上位の特権で実行する」を指定したうえで、セキュリティに注意しながら、ログオン時をトリガーとして SoftAP.exe (KickCM.exe) を起動する操作を行うようなタスクを作ったところ、UAC ダイアログが出なくなった！
+
+(なお、タスクにすることで必要のなくなったスタートメニューのスタートアップの KickCM.exe のショートカットは削除した。)
+
+JRF 2012年4月12日
+
+……。
+
+PLANEX のページを見ると同社が「プッシュ！」しているのは、どうも PSP で、DS (3DS) に関する記述はほとんどない。タスクスケジューラを使えばいいというのがわかってないときにサポートに連絡すると、UAC 制御をゆるめるものしか案内できないという返事だった。
+
+JRF 2012年4月12日
+
+まぁ、今回いろいろネットで調べながら試してみて、サポートも含め、オープンなネットではいろいろ難しくなってきてるんだなぁ…と感じた私なのだった。
+
+JRF 2012年4月12日
+
+修正 「不同意でダウンロードしたものは財産ではないとか」→「不同意で法改正後にダウンロードしたものは財産ではないとか(<a href="../../../articles/2012/03/statuses_cocolog_72049628.html" class="int-link cocolog-id" title="ひとこと">[cocolog:72049628]</a>)」。
+修正 「まずは WEP の」→「Xbox 360 で、まずは WEP の」。
+修正 「 Xbox 360 でもつながらない。」→「つながらない。」。
+
+JRF 2012年4月13日
+
+(あとで調べると、ソフトウェア・アクセスポイントは、Windows 7 には標準で付いてくるらしい([google:netsh wlan hostednetwork])。ただし、暗号としては WPA2 パーソナルのみで、セキュリティの弱い WEP は使えず、結果、DS (Lite) 用には使えないらしい。)
+
+《Windows 7 無線ワイファイ(Wi-Fi)アクセスポイント》
+<a href="http://www.akakagemaru.info/port/internet-softap.html" class="ext-link">http://www.akakagemaru.info/port/internet-softap.html</a>
+
+JRF 2012年4月15日
+
+Trackbacks:
+
+《cocolog:72344690》 from JRF のひとこと
+<a href="../../../articles/2012/04/statuses_cocolog_72344690.html" class="int-link" title="ひとこと">http://jrf.cocolog-nifty.com/statuses/2012/04/post-39db.html</a>
+
+数日前から「ハードウェアの取り外し」をやったあとのバルーンヘルプ「'USB大容量...' をコンピューターから安全に取り外すことができます。」が表示されなくなった。その症状が出ないところまで復元しようとしてドツボった。... 
+
+受信： 2012-06-27 07:20:12 (JST)
+
+《cocolog:89675814》 from JRF のひとこと
+<a href="../../../articles/2018/07/statuses_cocolog_89675814.html" class="int-link" title="ひとこと">http://jrf.cocolog-nifty.com/statuses/2018/07/post-d0ed.html</a>
+
+レトロゲームの「経済」。ゲームプレイ(感想書きや画像引用も含む)はゲーム機本体はいらず  ROM を持っているか借りていればいいとしたい。そして、本体持ちだと、広告ありの動画配信ができ、吸出しができる者は DRM をかけて貸出し管理ができる…とすればいいのではないか。... 
+
+受信： 2018-09-28 18:53:17 (JST)</pre>
+
+
+<section class="backrefs" data-pagefind-ignore>
+<h2>後方参照 (5 件)</h2>
+<ul>
+<li><span class="backref-label">[cocolog:72307205]参照</span> <a href="../../../articles/2018/07/statuses_cocolog_89675814.html">ひとこと</a> <span class="backref-date">2018年07月20日</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2013/01/column_75158671.html">前期の翌日(2013-10-01)から昨日(2012-12-31)まで 92 日間のアクセス解析・近況など</a> <span class="backref-date">2013年01月01日 01:17:42</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2012/10/column_74229152.html">前期の翌日(2012-07-01)から昨日(2012-09-30)まで 92 日間のアクセス解析・近況など</a> <span class="backref-date">2012年10月01日 03:24:01</span></li>
+<li><span class="backref-label">[cocolog:72307205]参照</span> <a href="../../../articles/2012/04/statuses_cocolog_72344690.html">ひとこと</a> <span class="backref-date">2012年04月15日</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2012/03/statuses_cocolog_72049628.html">ひとこと</a> <span class="backref-date">2012年03月22日</span></li>
+</ul>
+</section>
+
+</article>
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2012/04.html">2012年04月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+</body>
+</html>

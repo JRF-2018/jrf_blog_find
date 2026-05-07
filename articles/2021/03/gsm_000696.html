@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>共有メモ - JRF Blog Archive</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2021/03.html">2021年03月</a> | <a href="../../../index/gsm.html">共有メモ</a></nav>
+<article data-pagefind-body>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[gsm] 2021-03-11T15:07:32Z</td></tr>
+<tr><th>セクション</th><td>グローバル共有メモ</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2021/03.html">2021-03-11T15:07:32Z</a></td></tr>
+<tr><th>元URL</th><td>(URLなし)</td></tr>
+
+</table>
+</div>
+<h1>共有メモ</h1>
+<pre class="body">jrf&gt; [仏教の最適化プログラムの続き。]
+
+↓、細かい修正をした (バージョン 0.0.14)。
+
+《simbd/test_of_matching_2.py at master - JRF-2018/simbd》  
+<a href="https://github.com/JRF-2018/simbd/blob/master/test_of_matching_2.py" class="ext-link">https://github.com/JRF-2018/simbd/blob/master/test_of_matching_2.py</a>
+
+まず、「自然離婚」について、初期化すぐの相手が不明な結婚の場合、判定が1/2になるのを修正した。ただその場合単純に 2 倍にするのも全体数がおかしくなるかと思い、√2倍にしておいた。
+
+次に、養子の際に離縁の情報を残すようにして、近親婚の結婚判定を少し改善した。ただし、処理が重くなり過ぎているのを嫌っているのもあるし、正確じゃないかもしれないがそれぐらいいいだろう…というのもあって、養父との結婚・養父の実父との結婚はダメだが、養父の養父との結婚などは可にしてある。
+
+離縁の情報を残すようにすれば initial_father や initial_mother の情報はいらなくなるかと思ったが、三親等内の傍系血族のチェックに必要そうだし、あるほうが正確ではないが速い部分もあるので残っている。
+
+あと、望まない子で「堕胎」しない子が出た場合、欲しい子供の数をすぐ増やすようにしてたんだけど、少し余裕を見て増やすようにした。もうちょっと余裕を見て増やすようにすべきか様子を見ているところ。ただ、欲しい子供の数で、全々コントロールできてない様子なんだよね…。</pre>
+
+
+</article>
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2021/03.html">2021年03月</a> | <a href="../../../index/gsm.html">共有メモ</a></nav>
+</body>
+</html>

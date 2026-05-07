@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>共有メモ - JRF Blog Archive</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2021/03.html">2021年03月</a> | <a href="../../../index/gsm.html">共有メモ</a></nav>
+<article data-pagefind-body>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[gsm] 2021-03-03T15:21:49Z</td></tr>
+<tr><th>セクション</th><td>グローバル共有メモ</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2021/03.html">2021-03-03T15:21:49Z</a></td></tr>
+<tr><th>元URL</th><td>(URLなし)</td></tr>
+
+</table>
+</div>
+<h1>共有メモ</h1>
+<pre class="body">jrf&gt; [仏教の最適化プログラムの続き。]
+
+「焼けぼっくいに火がついた」的なものはやろう。
+
+それで気がついたのだが、以前または今の不倫相手とたまたま新しく不倫すると選ばれたときの処理を書いてなかった。
+
+前は、不倫の期間はひきつがない…としていたが、前の不倫の半分の期間を引き継ぐことにしよう。少し、データに整合性というか正直さがなくなるが…。
+
+……。
+
+…と思ったが、「焼けぼっくいに火がついた」以外の場合の新しい不倫の重なりについて、すべての新しい不倫にてついて過去の不倫を調べるのは時間を食い過ぎると思う。だから、「焼けぼっくいに火がついた」以外の新しい不倫については、過去の子供の情報は引き継がないし、不倫期間も引きつがないこととする。
+
+「焼けぼっくいに火がついた」場合も、過去の子供の情報は引き継がないこととする。必要なときは、必要なときに過去の子供との関係を全部さらうということで。ただし、不倫の期間は、前の不倫の半分の期間を引き継ぐことにしよう。
+
+……。
+
+「焼けぼっくいに火がつく」のは、不倫または結婚している場合は 10年で 10%、そうでない場合は、1年で 10% とする。
+
+さらに火がつく相手が、結婚か不倫している場合、火がつく確率は 50% とする。50% と高いのは、火がつくと選ばれること自体がまれな「幸運」なので。
+
+火がつくと決まったあと、どの関係が再燃するかは、昔の init_favor とその関係の存続期間を加味して決まることにする。rellist が関係のリストとして、
+
+l2 = [0.1 + math.log(1 + x.end - x.begin) \
+      * np_clip(x.init_favor, 0, 10) for x in rellist]
+
+を元に決める。
+
+今の favor ではなく、昔の favor を使うのは、そのほうが速いから。まぁ、昔の思い出で火がつくあたりは少しリアリティもあるかもしれない。
+
+……。
+
+↓、「結婚」はまだだが、「焼けぼっくいに火がつく」は実装した (バージョン 0.0.8)。
+
+《simbd/test_of_matching_2.py at master - JRF-2018/simbd》  
+<a href="https://github.com/JRF-2018/simbd/blob/master/test_of_matching_2.py" class="ext-link">https://github.com/JRF-2018/simbd/blob/master/test_of_matching_2.py</a></pre>
+
+
+</article>
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2021/03.html">2021年03月</a> | <a href="../../../index/gsm.html">共有メモ</a></nav>
+</body>
+</html>

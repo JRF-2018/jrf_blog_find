@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>ひとこと - JRF Blog Archive</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2011/03.html">2011年03月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+<article data-pagefind-body>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[statuses] <span class="cocolog-id">aboutme:137270</span></td></tr>
+<tr><th>セクション</th><td>JRF のひとこと</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2011/03.html">2011年03月02日</a></td></tr>
+<tr><th>元URL</th><td><a href="http://jrf.cocolog-nifty.com/statuses/2011/03/aboutme137270.html" class="ext-link"><span class="original-url">http://jrf.cocolog-nifty.com/statuses/2011/03/aboutme137270.html</span></a></td></tr>
+
+</table>
+</div>
+<h1>ひとこと</h1>
+<pre class="body">突貫で、はてなポイントの分配アルゴリズムを作った。昨日ポイントをもらってすぐだからたぶんアラがあると思うが、分配することを告げる前に次の入金が(ないとは思うが)あったら困るし、期末までに受取の連絡を必要とする部分があるので分配の通知だけでもすぐやる必要があると考えたので、急いだ。
+JRF 2011年3月2日
+
+アルゴリズムの突貫解説記事は↓。
+
+《重要な更新情報: 受け取ったはてなポイントの分配を行います [ JRF の私見：雑記 ]》
+<a href="../../../articles/2011/03/column_67315591.html" class="int-link" title="重要な更新情報: 受け取ったはてなポイントの分配を行います">http://jrf.cocolog-nifty.com/column/2011/03/post.html</a>
+
+JRF 2011年3月2日
+
+ちょっと、補足。超早く完成！…みたいなのは自慢の面は確かにあるけど、慢心のように受け取られちゃいやだから。
+
+このプログラムは構文解析して配列の処理するだけみたいなものなので、１日あればできるぐらいのもの。
+
+ただ、核となるアイデア自体は、ポイントを送りはじめてからずっと温めてきたものなので、いきなりペンション組んだりもできてる。動くかどうかやってみたのは初でも、長い蓄積があったとは言える。当初はもっと複雑なことも考えてた気もするけど、いい具合に忘却過程がはさまれて、シンプルにしか初められないようにされた…という感じかな。
+
+JRF 2011年3月3日
+
+$ID_CONDENSER のところ、f(x + y) &gt; f(x) + f(y) かつ f(x) -&gt; 1 (x -&gt; inf) というのを探したが、見つからなかったので、f(x) = x ** (1 + r) という関数にした。
+
+これを f(x) -&gt; 1 にしようと例えば f(x) = x ** (1 + r * exp(-x/N)) とか f(x) = x ** (1 + r / (x ** (1.0/N))) とかも考えた。
+
+
+JRF 2011年3月3日
+
+しかし、gnuplotで 2 * f(x) と f(2 * x) を描くと、どうしても 2 * f(x) &gt; f(2 * x) なる部分が見つかり、条件 f(x + y) &gt; f(x) + f(y) に合わない。
+
+逆に大きい部分では ID を分けるのをむしろうながしたほうがいいかもしれず、そうすると、f(x) = x ** (1 + r / (x ** (1.0/N))) も良さそうな感じなのだが、わかりやすさを優先した。
+
+JRF 2011年3月3日
+
+むしろ、他の者もこのプログラムを使うようになると、基礎ポイントの多い者に、ペンション登録を促し、$PENSION_FEE を払うことを選択させたほうがいいのではないかという読みもある。そう促す方法というのは、また考えないといけないが。
+
+
+JRF 2011年3月3日
+
+修正 「f(x) -&gt; 1」→「f(x) - x -&gt; 0」。
+
+書くとき 1 + r 乗が 1 に近づくというのと混同してしまった。つまり、x をとても大きくしていくと、y = f(x) が y = x の直線に近づくということ。
+
+複雑な関数に結局しないのは、「わかりやすさを優先」のほか、私一人で基礎ポイントを付けている限り、そんな多額にはならないので問題ないというのもある。
+
+
+JRF 2011年3月3日
+
+考えていたことの痕跡はあるかな。
+
+keyword: 休眠ポイント
+
+《はてなアイデア - はてな定期休眠ポイント。保管手数料を取り、解約手続きをしなければ通常のポイント支払いに使えないかわりに、最終利用日から1年を経過した場合にも無効にしない制度をつくる。》
+<a href="http://i.hatena.ne.jp/idea/26294" class="ext-link">http://i.hatena.ne.jp/idea/26294</a>
+
+JRF 2011年3月4日
+
+あと↓…。
+
+<a href="http://jrf.aboutme.jp/user_statuses/show/119507" class="ext-link">http://jrf.aboutme.jp/user_statuses/show/119507</a>
+＞死亡・失踪に直接的にまたはその看過に消極的にインセンティブを与えないよう第三者の善意取得をいかに否定するかを考えたほうが良いのか？ ＜
+
+…というのと直接関連するとは思わないけど、「匿名」の寄付が、実際は政治献金で問題になってるようにもらった時点で「善意取得」が成立しないとみなされ、その返還が他者から求められる可能性も思いつく。
+
+…すると、ブクマのタグにいくら払ったか記載し、彼らに直接請求できないなら、私にも請求するなという構えをとったほうが安全ではないか…という考えが浮かんだ。
+
+JRF 2011年3月5日
+
+Trackbacks:
+
+《aboutme:137828》 from JRF のひとこと
+<a href="../../../articles/2011/03/statuses_aboutme_137828.html" class="int-link" title="ひとこと">http://jrf.cocolog-nifty.com/statuses/2011/03/aboutme137828.html</a>
+
+ボーナスを受け取ったものがペンションを受け取れるようになるまで一定期間を設けるのではなく、ペンションを受け取るための ID の統合を認めるが、統合を認めるには一定期間の経過を必要とする…としたほうが良いのではないか。... 
+
+受信： 2012-01-04 22:59:03 (JST)
+
+《aboutme:137725》 from JRF のひとこと
+<a href="../../../articles/2011/03/statuses_aboutme_137725.html" class="int-link" title="ひとこと">http://jrf.cocolog-nifty.com/statuses/2011/03/aboutme137725.html</a>
+
+匿名でのポイントに関して、原則としてすべて分配するようにするとしても、(そういやって他者が分配した)送り先と宛て先が明示的な「対価性」のあるポイント送信については、少なくとも今度は、ちゃんと受け取って記事の作成等に役立てなければ、ネット市民に対し失礼になるだろう。... 
+
+受信： 2012-01-04 23:32:10 (JST)</pre>
+
+
+<section class="backrefs" data-pagefind-ignore>
+<h2>後方参照 (1 件)</h2>
+<ul>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2010/02/statuses_aboutme_119507.html">ひとこと</a> <span class="backref-date">2010年02月16日</span></li>
+</ul>
+</section>
+
+</article>
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2011/03.html">2011年03月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+</body>
+</html>

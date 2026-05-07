@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>「志村けん問題」を JAGS で解く その１ 結論編 - JRF Blog Archive</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2020/05.html">2020年05月</a> | <a href="../../../index/software.html">ソフトウェア Tips</a></nav>
+<article data-pagefind-body>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[software] <span class="cocolog-id">cocolog:91890591</span></td></tr>
+<tr><th>セクション</th><td>JRF のソフトウェア Tips</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2020/05.html">2020年05月09日 05:25:43</a></td></tr>
+<tr><th>元URL</th><td><a href="http://jrf.cocolog-nifty.com/software/2020/05/post-918b0f.html" class="ext-link"><span class="original-url">http://jrf.cocolog-nifty.com/software/2020/05/post-918b0f.html</span></a></td></tr>
+<tr><th>タグ</th><td>[シミュレーション]</td></tr>
+</table>
+</div>
+<h1>「志村けん問題」を JAGS で解く その１ 結論編</h1>
+<pre class="body">新型コロナウィルス(COVID-19)により稀代のコメディアン・志村けん氏が亡くなった。その志村けん氏がまだ闘病中だったころ、新型コロナについて一つの確率的問題が提起された。
+
+志村けん氏ほどの有名人が新型コロナに罹ったということは、感染者数は言われているよりもっと多いに違いない。…これは本当か。
+
+…というのが、その問題のだいたいである。
+
+「それは本当だ」というのを R 言語上のベイズ統計モデリングソフト JAGS を用いて示せたというのが本稿の主張である。
+
+■はじめに
+  
+詳しい経緯は↓にある。これを「元記事」として本稿では参照する。
+
+《志村けんのパラドックス - アスペ日記》  
+
+まず最初に問題となるツイートがあった。
+
+《Twitter:森岡正博:2020年3月25日》
+
+＞
+  みんな冷静に計算してほしいけど、東京都の新コロナ感染者数は現在１７１人。東京から無作為に２００人をピックアップしたときに、その中に超有名人の志村けん氏が入ってる確率ってどのくらいだと思う？　現在の感染拡大ペースは我々の想像をはるかに超えてるよ。桁違いの感染者数になってるよ。
+＜
+
+これが間違っているか、あっているかで議論となった。
+
+「元記事」では次のように結論付けている。
+
+＞
+  例の哲学者の人が
+  
+    ●この病気は誰でも平等にかかるものだ
+    ●政府は感染者数を隠蔽しているかもしれない
+    ●政府は有名人の感染については隠蔽できないだろう
+      
+  という前提を持っているのであれば、志村けんさんの感染によって彼が「政府は感染者数を隠蔽しているんだろう」という確信を深めるのは、確率の考え方としては、完全に理にかなったことです。
+  
+  有効な反論は、それらの前提に対する
+  
+    ●志村けんは特別に感染確率が高かったんだろう
+    ●政府が感染者数を隠蔽するなんて無理だろう
+    ●その気になれば有名人の感染も隠蔽できるだろう
+      
+  といったものです。
+＜
+
+ここでは、その問題を次のようになおす。
+
+「100人に1人の有名人の感染がわかった集団と、そういう者がいない集団の間で感染者数の推定に差があるか。」
+
+そして、
+
+「その有名人は感染確率の高い集団に属していてその高さが異なる場合、また、政府の信頼性が異なる場合、また、隠蔽の巧拙が異なる場合について、推定される差が変化するか。」
+
+…という問題を検討することにする。
+
+元のツイートに比べて「200人を無作為に抽出して1人…」というのが抜けるが、それに近いことについては、「その２ 試行錯誤編」のほうで扱うことにする。結果的にいうと、それを考えに入れるモデルは、私の実力では ESS (Effective Sample Size, 実効サンプル数) が足りなくなり、うまく扱えなかった。
+
+■実装
+  
+問題の実装は、R 言語 3.6.3、JAGS 4.3.0、rjags 4.10 を使った。
+
+試行錯誤の末に辿り着いたのが次のコードになる。
+
+data {
+  # N &lt;- 100000000
+  # n.fam.sk &lt;- 100
+  # filter.fam &lt;- 0.01
+  # n.risk &lt;- 1000000
+  # mag.risk &lt;- 2
+  # mag.all &lt;- 10
+  # alpha.pos &lt;- 1
+  # beta.pos &lt;- 2
+  one1 &lt;- 1
+}
+
+model {
+  p.pos.sk.temp ~ dbeta(alpha.pos, beta.pos)
+  p.pos.nsk.temp ~ dbeta(alpha.pos, beta.pos)
+  p.pos.sk.risk &lt;- p.pos.sk.temp * mag.risk / mag.all
+  p.pos.nsk.risk &lt;- p.pos.nsk.temp * mag.risk / mag.all
+  p.pos.sk.nrisk &lt;- p.pos.sk.temp / mag.all
+  p.pos.nsk.nrisk &lt;- p.pos.nsk.temp / mag.all
+  
+  n.pos.sk.risk ~ dbinom(p.pos.sk.risk , n.risk - n.fam.sk)
+  n.pos.nsk.risk ~ dbinom(p.pos.nsk.risk , n.risk)
+  n.pos.sk.nrisk ~ dbinom(p.pos.sk.nrisk, N - n.risk)
+  n.pos.nsk.nrisk ~ dbinom(p.pos.nsk.nrisk, N - n.risk)
+  
+  for (i in 1:n.fam.sk) {
+    mf.fam[i] ~ dbern(p.pos.sk.risk)
+    mf.f[i] ~ dbern(filter.fam)
+    mf.fam.f[i] &lt;- mf.fam[i] * mf.f[i]
+  }
+  one1 ~ sum(step(sum(mf.fam.f) - 1) * 1, 0)
+  
+  n.pos.sk &lt;- n.pos.sk.risk + n.pos.sk.nrisk + sum(mf.fam)
+  n.pos.nsk &lt;- n.pos.nsk.risk + n.pos.nsk.nrisk
+  
+  diff &lt;- n.pos.sk - n.pos.nsk
+  gr &lt;- n.pos.sk &gt; n.pos.nsk
+}
+
+sk は志村けん氏のいる群、nsk は志村けん氏のいない群を現わす。pos は感染者で、risk はリスク群、nrisk は非リスク群、fam はリスク群をかねた有名人群を示す。n は人数で、p は割合、mf は famous man。filter は政府やマスコミによりフィルターアウトされない確率を表し、.f はフィルターアウトされなかった者を表す。
+
+リスク群を 2 倍から 10 倍のリスクに設定するため、逆にそうでないリスクはあらかじめ 1/10 している。それが p.pos.sk.temp や p.pos.nsk.temp のテクニックである。
+
+one1 ~ sum(step(sum(mf.fam.f) - 1) * 1, 0) は、TRUE ~ (sum(mf.fam.f) &gt;= 1) を表し、有名人の数(n.fam.sk)の中で、感染した上でフィルターアウトされなかった者(mf.fam.f[i] == 1)の合計(sum)が 1 以上であることを示す。これが制約条件のようになっている。
+
+知りたいのは diff で、志村けん氏のいる群の感染者数 n.pos.sk と志村けん氏のいない群の感染者数 n.pos.nsk の差を比較する。
+
+わかりやすいだろうと思って、sk_problem18.jag を先に見せたが、ベルヌーイ分布 dbern を使っている部分は、二項分布 dbinom を使って書き直すことができる。そうしたのが、sk_problem19.jag で次のようになる。
+
+data {
+  one1 &lt;- 1
+}
+
+model {
+  p.pos.sk.temp ~ dbeta(alpha.pos, beta.pos)
+  p.pos.nsk.temp ~ dbeta(alpha.pos, beta.pos)
+  p.pos.sk.risk &lt;- p.pos.sk.temp * mag.risk / mag.all
+  p.pos.nsk.risk &lt;- p.pos.nsk.temp * mag.risk / mag.all
+  p.pos.sk.nrisk &lt;- p.pos.sk.temp / mag.all
+  p.pos.nsk.nrisk &lt;- p.pos.nsk.temp / mag.all
+  
+  n.pos.sk.risk ~ dbinom(p.pos.sk.risk , n.risk - n.fam.sk)
+  n.pos.nsk.risk ~ dbinom(p.pos.nsk.risk , n.risk)
+  n.pos.sk.nrisk ~ dbinom(p.pos.sk.nrisk, N - n.risk)
+  n.pos.nsk.nrisk ~ dbinom(p.pos.nsk.nrisk, N - n.risk)
+  
+  n.fam.f ~ dbinom(filter.fam, n.fam.sk)
+  n.pos.fam.f ~ dbinom(p.pos.sk.risk, n.fam.f)
+  n.pos.fam.nf ~ dbinom(p.pos.sk.risk, n.fam.sk - n.fam.f)
+  one1 ~ sum(step(n.pos.fam.f - 1) * 1, 0)
+  
+  n.pos.sk &lt;- n.pos.sk.risk + n.pos.sk.nrisk + n.pos.fam.f + n.pos.fam.nf
+  n.pos.nsk &lt;- n.pos.nsk.risk + n.pos.nsk.nrisk
+  
+  diff &lt;- n.pos.sk - n.pos.nsk
+  gr &lt;- n.pos.sk &gt; n.pos.nsk
+}
+
+one1 ~ sum(step(n.pos.fam.f - 1) * 1, 0) は、TRUE ~ (n.pos.fam.f &gt;= 1) ということがやりたいのである。
+
+これを実行するには R で次のように行う。
+
+library(rjags)
+library(coda)
+
+m &lt;- jags.model('sk_problem19.jag',
+                data = list(
+                    N = 100000000,
+                    n.fam.sk = 100,
+                    n.risk = 1000000,
+                    filter.fam = 0.01,
+                    mag.risk = 2, mag.all = 10,
+                    alpha.pos = 1, beta.pos = 2
+                ),
+                inits = list(
+                    p.pos.sk.temp = 0.001,
+                    p.pos.nsk.temp = 0.001,
+                    n.pos.sk.risk = 5,
+                    n.pos.nsk.risk = 5,
+                    n.pos.fam.f = 1
+                ),
+                n.chains=4)
+update(m, 10000)
+post.list &lt;- coda.samples(m, c('n.pos.sk', 'n.pos.nsk', 'diff', 'gr'),
+                          n.iter=10000)
+print(summary(post.list))
+print(effectiveSize(post.list))
+
+結果は次のようになる。
+
+&gt; print(summary(post.list))
+
+Iterations = 11001:21000
+Thinning interval = 1 
+Number of chains = 4 
+Sample size per chain = 10000 
+
+1. Empirical mean and standard deviation for each variable,
+    plus standard error of the mean:
+    
+                Mean        SD  Naive SE Time-series SE
+diff      1.627e+06 3.277e+06 1.639e+04      1.831e+04
+gr        6.940e-01 4.608e-01 2.304e-03      2.445e-03
+n.pos.nsk 3.365e+06 2.385e+06 1.192e+04      1.192e+04
+n.pos.sk  4.992e+06 2.270e+06 1.135e+04      1.429e+04
+
+2. Quantiles for each variable:
+
+              2.5%     25%     50%     75%   97.5%
+diff      -5075426 -592374 1718641 4006771 7591012
+gr               0       0       1       1       1
+n.pos.nsk   123516 1363403 2944500 5052312 8526503
+n.pos.sk    938800 3197919 4986752 6747554 9139378
+
+&gt; print(effectiveSize(post.list))
+      diff        gr n.pos.nsk  n.pos.sk 
+  32095.21  35553.71  40039.25  25275.07 
+  
+Mean を見ると、n.pos.sk のほうが、n.pos.nsk よりも大きいのがわかる。志村けん氏が感染したことで、感染者数の見積りを大きくすることは間違ってなさそうだ。しかし、diff は 0 をはさんでかなり散らばっており、「確信を持って大きい」とまでは言えない。
+
+いちおう、グラフに書くと次のようになる。n.pos.sk のほうが大きいほうにシフトしているのがわかる。
+
+<a href="https://jrf.cocolog-nifty.com/photos/uncategorized/fignpossknsk.png">[fig-n-pos-sk-nsk.png]</a>
+
+次に、リスクの高い集団のリスクの高さ mag.risk を 2 から 10 に上げてみよう。すると、結果の一部の Mean に関する部分は次のようになる。
+
+diff      1.606e+06 3.533e+06 1.767e+04      2.108e+04
+n.pos.nsk 3.609e+06 2.561e+06 1.280e+04      1.285e+04
+n.pos.sk  5.215e+06 2.432e+06 1.216e+04      1.701e+04
+
+n.pos.sk は少し大きくなったが、それ以上に n.pos.nsk が大きくなり、結果、 diff はほんの少し小さくなっている。リスク集団のリスクが上がるとほんの少し差がなくなる傾向があると言えるかもしれない。
+
+次に mag.risk を 2 に戻した上で、政府の信頼性が異なる場合を試すことを考える。これは事前確率の形が違うことに相当しよう。特にベータ分布の集中度が上がることが、政府がより信頼されることに相当すると思われる。そこで、alpha.pos = 1、beta.pos = 2 を alpha.pos = 2、beta.pos = 4 に変えてみる。その結果の一部の Mean に関する部分は次のようになる。
+
+diff      9.021e+05 2.527e+06 1.263e+04      1.421e+04
+n.pos.nsk 3.380e+06 1.803e+06 9.015e+03      9.015e+03
+n.pos.sk  4.282e+06 1.767e+06 8.834e+03      1.108e+04
+
+diff は少し小さくなる。n.pos.sk も少し小さくなっているようだ。政府の信頼度が上がると、差がなくなる傾向にあると言えるようだ。
+
+次に、alpha.pos = 1、beta.pos = 2 に戻した上で、隠蔽の巧拙が異なる場合を試すことにする。filter.fam を 0.01 から 0.9 に上げてみる。その結果の一部の Mean に関する部分は次のようになる。
+
+diff      3.179e+05 3.295e+06 1.648e+04      3.875e+04
+n.pos.nsk 3.355e+06 2.378e+06 1.189e+04      1.192e+04
+n.pos.sk  3.673e+06 2.291e+06 1.145e+04      3.692e+04
+
+n.pos.sk も diff もそこそこ小さくなった。隠蔽がなくなれば、差はなくなる傾向にあると言えそうだ。
+
+最後に、全部をいっしょに試す。mag.risk = 10, alpha.pos = 2, beta.pos = 4, filter.fam = 0.9 で試す。その結果の一部の Mean に関する部分は次のようになる。
+
+diff      7.064e+03 2725747.4 1.363e+04      6.021e+04
+n.pos.nsk 3.641e+06 1943851.8 9.719e+03      9.676e+03
+n.pos.sk  3.648e+06 1924074.9 9.620e+03      6.132e+04
+
+n.pos.sk は n.pos.nsk とほとんど変わらず、diff はほぼ誤差と言えるくらいかなり小さくなった。元記事の反論は有効であったと言えよう。
+
+■結論
+  
+100人に1人の有名人の感染がわかった集団と、そういう者がいない集団の間で感染者数の推定に差があることがわかった。
+
+さらに、その有名人が感染確率の高い集団に属していてその確率がより高く、政府の信頼性が高く、また、隠蔽がなせれていない場合は、推定に差がなくなることがわかった。
+
+いずれの推論も確信できるほどではないが、そのような推論をしても論理的に間違いと言えないことは示せたはず。
+
+■参考
+  ●《志村けんのパラドックス - アスペ日記》。元記事。
+  ●《COVID-19 日本国内の潜在的な陽性者数を推定する試み - StatModeling Memorandum》。JAGS に興味を持ったのはこの記事を見て。
+  ●『ベイズ統計モデリング - R, JAGS, Stan によるチュートリアル 原著第2版』(John K. Kruschke 著, 前田 和寛 ＆ 小杉 考司 監訳, 共立出版, 2017年)。この本を見て JAGS に関して勉強した。本稿はその勉強の成果という側面もある。
+  ●《「志村けん問題」を JAGS で解く その２ 試行錯誤編》。この記事の続き。
+■ライセンス
+  
+パブリックドメイン。 (数式のような小さなプログラムなので。)
+
+自由に改変・公開してください。
+
+■配布物
+  
+今回の配布物は以下の zip ファイル。更新があれば下のリンクの中身は最新のものに置き変わっているはず。
+
+  ●sk_problem.zip
+    
+GitHub にも登録してあるが、更新は、ここの更新のあと1日から3日遅れるかもしれない。
+
+  ●《GitHub - JRF-2018/sk_problem》。
+    
+更新：2020-05-09
+初公開：2020年05月09日 05:25:42
+最新版：2020年05月09日 05:34:59
+
+
+Comments:
+
+初公開: sk_problem-20200509.zip。バージョン 0.0.1。
+
+sk_problem-20200509.zip に相当するものは↓からどうぞ。
+
+<a href="https://github.com/JRF-2018/sk_problem/releases/tag/v0.0.1" class="ext-link">https://github.com/JRF-2018/sk_problem/releases/tag/v0.0.1</a>
+
+<a href="../../../articles/2020/05/statuses_cocolog_91890615.html" class="int-link cocolog-id" title="ひとこと">[cocolog:91890615]</a>(↓)に感想も書いたのでよければそちらもお読みください。
+
+<a href="../../../articles/2020/05/statuses_cocolog_91890615.html" class="int-link" title="ひとこと">http://jrf.cocolog-nifty.com/statuses/2020/05/post-2d4490.html</a>
+＞「志村けん問題」を JAGS で解く…という記事を書いた。超有名人が感染したことがわかったら、感染者数はわかる以前より多いと見積もっても正しいか…という問題。「正しい」というのが私の結論で、JAGS によるシミュレーションをその証拠とする。＜
+
+投稿: JRF | 2020-05-09 06:02:38 (JST)
+
+
+Links:
+
+志村けんのパラドックス - アスペ日記: <a href="../../../articles/2020/05/hbm_01984.html" class="int-link" title="志村けんのパラドックス - アスペ日記">https://takeda25.hatenablog.jp/entry/2020/03/28/083257</a>
+Twitter:森岡正博:2020年3月25日: <a href="https://twitter.com/Sukuitohananika/status/1242698846032953345" class="ext-link">https://twitter.com/Sukuitohananika/status/1242698846032953345</a>
+その２ 試行錯誤編: <a href="../../../articles/2020/05/software_91890593.html" class="int-link" title="「志村けん問題」を JAGS で解く その２ 試行錯誤編">http://jrf.cocolog-nifty.com/software/2020/05/post-e84089.html</a>
+COVID-19 日本国内の潜在的な陽性者数を推定する試み - StatModeling Memorandum: <a href="../../../articles/2020/05/hbm_01985.html" class="int-link" title="COVID-19 日本国内の潜在的な陽性者数を推定する試み - StatModeling Memorandum">http://statmodeling.hatenablog.com/entry/covid19-estimate-total-number-of-positives-in-japan</a>
+ベイズ統計モデリング - R, JAGS, Stan によるチュートリアル 原著第2版: <a href="../../../articles/2020/05/hbm_01986.html" class="int-link" title="Amazon.co.jp: ベイズ統計モデリング: R,JAGS, Stanによるチュートリアル 原著第2版: Kruschke,John K. (著), 和寛,前田 (翻訳), 考司,小杉 (翻訳): Books">https://www.amazon.co.jp/dp/4320113160</a>
+「志村けん問題」を JAGS で解く その２ 試行錯誤編: <a href="../../../articles/2020/05/software_91890593.html" class="int-link" title="「志村けん問題」を JAGS で解く その２ 試行錯誤編">http://jrf.cocolog-nifty.com/software/2020/05/post-e84089.html</a>
+sk_problem.zip: <a href="https://www.sugarsync.com/pf/D252372_79_66900922051" class="ext-link">https://www.sugarsync.com/pf/D252372_79_66900922051</a>
+GitHub - JRF-2018/sk_problem: <a href="https://github.com/JRF-2018/sk_problem" class="ext-link">https://github.com/JRF-2018/sk_problem</a></pre>
+
+
+<section class="backrefs" data-pagefind-ignore>
+<h2>後方参照 (6 件)</h2>
+<ul>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2025/05/statuses_cocolog_95436730.html">ひとこと</a> <span class="backref-date">2025年05月09日</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2020/05/software_91890593.html">「志村けん問題」を JAGS で解く その２ 試行錯誤編</a> <span class="backref-date">2020年05月09日 05:28:58</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2020/05/statuses_cocolog_91890615.html">ひとこと</a> <span class="backref-date">2020年05月09日</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2020/05/hbm_01984.html">志村けんのパラドックス - アスペ日記</a> <span class="backref-date">2020年05月09日 05:52:56</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2020/05/hbm_01985.html">COVID-19 日本国内の潜在的な陽性者数を推定する試み - StatModeling Memorandum</a> <span class="backref-date">2020年05月09日 05:55:50</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2020/04/statuses_cocolog_91824909.html">ひとこと</a> <span class="backref-date">2020年04月13日</span></li>
+</ul>
+</section>
+
+</article>
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2020/05.html">2020年05月</a> | <a href="../../../index/software.html">ソフトウェア Tips</a></nav>
+</body>
+</html>

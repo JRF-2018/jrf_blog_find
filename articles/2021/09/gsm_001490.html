@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>共有メモ - JRF Blog Archive</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2021/09.html">2021年09月</a> | <a href="../../../index/gsm.html">共有メモ</a></nav>
+<article data-pagefind-body>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[gsm] 2021-09-24T00:48:46Z</td></tr>
+<tr><th>セクション</th><td>グローバル共有メモ</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2021/09.html">2021-09-24T00:48:46Z</a></td></tr>
+<tr><th>元URL</th><td>(URLなし)</td></tr>
+
+</table>
+</div>
+<h1>共有メモ</h1>
+<pre class="body">jrf&gt; [仏教の最適化プログラムの続き。]
+
+lsth がうまくいかなかったのは、 VirtualHating に対する「感度」が弱いから…だろう。「感度」の自動調節ができないか？
+
+10年ぐらい VirtualHating の記録しておき、その変化が少ないなら、その少ない変化で犯罪量を大きく動かすようなことがしたい。
+
+記録の平均を mu、標準偏差を sigma として、この期の VirtualHating が v1 のとき、((v1 - mu) / sigma) * 0.4 から犯罪量 c1 を決定してみてはどうだろう？
+
+しかし、この場合、相対評価ということになるが、高い VirturalHating が続いた場合、mu が増えることで、だんだん c1 が小さくなってしまう。これは違うんじゃないか？
+
+そこで前の VirtualHating が v1 で犯罪量が c1、次のものが v2 と c2 とするとき、c2 = c1 + k * ((v2 - v1) / sigma) * 0.3 としてみてはどうだろう？ mu のかわりに前の値 v1 を使うのである。
+
+しかし、そうすると犯罪量が大きくなり過ぎたり、小さくなり過ぎたりするのではないか？ 前の値 v1 でなく mu を使ったほうが素直か？
+
+……。
+
+ちょっとテストしてみた。
+
+《test_of_mean_amplifier_2.py: 平均付近の増幅》  
+<a href="https://gist.github.com/JRF-2018/ee1bfe8b3cc676a5389ed5f81c6f544f" class="ext-link">https://gist.github.com/JRF-2018/ee1bfe8b3cc676a5389ed5f81c6f544f</a>
+
+表示されるグラフも↑に貼り付けた。
+
+上のグラフが時系列の元のデータで、これが VirtualHating だと思いねい。
+
+そして、下のグラフの青い y2 が、mu を使った場合で、黄色い y3 が、前の値 v1 を使った値。そして、折衷的に、(y2 + y3) / 2 したのが y4。
+
+このグラフを見る限り、y4 がいい感じだが、simbd の実験に組み込んでもうまくいくのかどうか…。</pre>
+
+
+</article>
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2021/09.html">2021年09月</a> | <a href="../../../index/gsm.html">共有メモ</a></nav>
+</body>
+</html>

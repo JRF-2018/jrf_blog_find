@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>共有メモ - JRF Blog Archive</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2021/03.html">2021年03月</a> | <a href="../../../index/gsm.html">共有メモ</a></nav>
+<article data-pagefind-body>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[gsm] 2021-03-10T13:39:28Z</td></tr>
+<tr><th>セクション</th><td>グローバル共有メモ</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2021/03.html">2021-03-10T13:39:28Z</a></td></tr>
+<tr><th>元URL</th><td>(URLなし)</td></tr>
+
+</table>
+</div>
+<h1>共有メモ</h1>
+<pre class="body">jrf&gt; [仏教の最適化プログラムの続き。]
+
+↓、近親結婚の忌避を入れるなどした (バージョン 0.0.13)。
+
+《simbd/test_of_matching_2.py at master - JRF-2018/simbd》  
+<a href="https://github.com/JRF-2018/simbd/blob/master/test_of_matching_2.py" class="ext-link">https://github.com/JRF-2018/simbd/blob/master/test_of_matching_2.py</a>
+
+まだ、やるべきことがあるのかも。simbdp1 は1週間ほど待ってからかな…。しばらく、休息にして、オペラ DVD でも観るのが吉なのかもしれない。
+
+……。
+
+相続割合の計算において、半血・全血に対応するため、家系図に複数回現れる人物の割合は和を取ることにした。前は max を取っていた。ただ、これにより、姪の子なんだけど妻である場合などにおいて、若干、相続割合が増えるようになった。実務においてはどうなるのだろう？
+
+……。
+
+近親結婚の忌避。このためだけに新たな情報 initial_father と initial_mother を足したのだけど、養子の離縁には記録する情報の不足で対応できなかった。
+
+あと、このアルゴリズムは結構時間を食うはず。…のわりには、そこまで実行時間に影響してない。だいたいすんなりいくんだが、時々一時止まることがあるのは、ガーベージコレクションにでも引っかかっているのだろうか？
+
+時間を食うわりには、ほとんどこれで reject (忌避に引っかかる)されないんだよね。だから、時間が問題だったら、このルーチン削ってもいいと思う。
+
+近親結婚の忌避のテストのようなものは↓に書いた (バージョン 0.0.1)。
+
+《simbd/test_of_marriage_1.py at master - JRF-2018/simbd》  
+<a href="https://github.com/JRF-2018/simbd/blob/master/test_of_marriage_1.py" class="ext-link">https://github.com/JRF-2018/simbd/blob/master/test_of_marriage_1.py</a></pre>
+
+
+</article>
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2021/03.html">2021年03月</a> | <a href="../../../index/gsm.html">共有メモ</a></nav>
+</body>
+</html>

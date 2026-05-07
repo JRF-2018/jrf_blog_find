@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>Exhaustive Lock Dependency Emulator その３ 修正とチェック - JRF Blog Archive</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2018/04.html">2018年04月</a> | <a href="../../../index/software.html">ソフトウェア Tips</a></nav>
+<article data-pagefind-body>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[software] <span class="cocolog-id">cocolog:89194818</span></td></tr>
+<tr><th>セクション</th><td>JRF のソフトウェア Tips</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2018/04.html">2018年04月13日 21:00:17</a></td></tr>
+<tr><th>元URL</th><td><a href="http://jrf.cocolog-nifty.com/software/2018/04/post-1.html" class="ext-link"><span class="original-url">http://jrf.cocolog-nifty.com/software/2018/04/post-1.html</span></a></td></tr>
+<tr><th>タグ</th><td>[Perl] [シミュレーション] [関数型言語・定理証明器]</td></tr>
+</table>
+</div>
+<h1>Exhaustive Lock Dependency Emulator その３ 修正とチェック</h1>
+<pre class="body">略して ELDE。マルチプロセスの最も簡単な lock/unlock 機構において、そのロックの依存を総当たり的に調べるプログラムを書いた。その１で「虚実行」も数え上げていたのを修正し、「実実行」のみを対象とするようにした。
+
+前回は、意図しない「虚実行」を含めていたため、他の人がやらないような実装になり、その意味では個性があったかもしれないが、今回こそ、特に工夫のない「車輪の再発明」になっていると思う。ただ、前回の怪我の功名で、違う考え方で作った二つの実装が同じ結果を出すのを確かめることで、エミュレータの正しさを多少ともチェックしているのは優位点かもしれない。「証明」がないのは相変わらずではあるが、いくつかの例で、チェックはできた。
+
+前回も書いたとおり、これはマルチプロセス環境を Perl 上でエミュレートするという話ではまったくない。プログラム自体は、シングルプロセスで終了する形をとる。
+
+今回のアイデアのキモは、グローバルな単一ロックのみを扱うため、ロックは重ならず、プロセスをまたいでそれぞれのロックをシーケンシャルに整列して捉えることができるという点にある。その列をロック仕様として総当りで数え上げ、それに基づくよう実行していく。処理の重なりのうち、簡単なものは省いて効率化する。
+
+なお、「プログラム」をコンテクストに関し「関数的(functional)」でなければならない…という条件を課すのは今回も同様である。すなわち、コンテクストが同じように(同じ lock/unlock 順序で)与えられれば、常に同じ「出力」をしなければならない。
+
+■理屈と例
+  
+例えば、次の二つの「プログラム」を考える。二つのプログラムがそれぞれ別の「プロセス」で動くとする。まず、$context-&gt;set や$context-&gt;get が $context-&gt;lock と $context-&gt;unlock の間になければエラーを出すとすれば、排他制御としてはもっとも簡易な形が実現できているとできるだろう。
+
+sub prog0 {
+    my ($context) = @_;
+    
+    $context-&gt;lock();
+    $context-&gt;set(&quot;a&quot;, 1);
+    $context-&gt;unlock();
+    
+    $context-&gt;lock();
+    $context-&gt;set(&quot;a&quot;, 2);
+    $context-&gt;unlock();
+}
+
+sub prog1 {
+  my  ($context) = @_;
+  
+  $context-&gt;lock();
+  my $a = $context-&gt;get(&quot;a&quot;);
+  print &quot;$a\n&quot; if defined $a;
+  print &quot;undef\n&quot; if ! defined $a;
+  $context-&gt;unlock();
+}
+
+当然、$prog0 と $prog1 がどちらが先に実行されるかは不明だし、$prog0 の unlock のあとに $prog1 の lock があれば 1 か 2 が表示されるだろうが、1 と 2 のどちらになるかは不明である。$prog0 の unlock がなく $prog1 が終了していれば、undef が表示されるだろう。
+
+これを「すべての場合」について総当たり的に見てみたい。
+
+ところで、ここでいう「すべての場合」とは何か？
+
+$context のデータが置き換わるのは、lock と unlock に挟まれた部分だけであり、その間では他のプロセスはデータを変えない。逆にいうと他のプロセスがデータを変える可能性があるのは、unlock と lockの間で、その間は自分は get もできないのだから、つきつめれば、lock のときにのみ他のプロセスがデータを変えたかどうか調べればよいとなる。そしてデータが変わるのは他のプロセスが unlock をしたときだけである。
+
+ここまではその１とほぼ同じ説明である。
+
+「排他制御」という定義である以上、同時に lock は起きず、lock のあとは必ず unlock があり、lock は直前のunlock に影響を受けるのみである。プロセスをまたいで lock の列というのを考えれば、それを「lock 仕様」として、プロセス群の一つの結果が導ける。
+
+あるプロセス p のうちで n 番目に lock がされることを πpλn と表すとしよう。lock 仕様は
+
+  π(p_0)λ0,π(p_1)λ(n_1),...,π(p_k)λ(n_k)
+  
+…といったものになる。
+
+上の例で lock 仕様と実行結果をすべて書き出すと次のようになる。
+
+  π0λ0,π0λ1,π1λ0 2 が表示。     
+  π0λ0,π1λ0,π0λ1 1 が表示。     
+  π1λ0,π0λ0,π0λ1 undef が表示。 
+
+  
+■lock 仕様の数え上げ
+  
+二つのプロセス 0, 1 を考え、その lock の最大個数を L_0, L_1 としよう。 lock 仕様は、プロセス 0 から L_0 個、プロセス 1 から L_1 個を選んで、バラバラに並べるが、プロセスごとの順番は守られていなければならない。
+
+これは、L_0 + L_1 の長さの列から L_1 個選び、選ばれなかったほうに順番に L_0 個の要素を並べ、選んだほうに L_1 個の要素を並ぶことで実現できる。つまり、L_0 + L_1 から L_1 個を選ぶ組み合わせの数え上げを使えば実装ができることになる。
+
+三つ目のプロセス 2 が増えたときは、二つのプロセスにおいて並べた L_0 + L_1 の長さの列がすでにあるとすると、L_0 + L_1 + L_2 の中から L_2 個選んで、選ばれなかったほうに L_0 + L_1 の長さの列を詰めていき、選んだほうに L_2 個の列を詰めていけばよい。
+
+任意個のプロセスについて以下同様である。
+
+■実装
+  
+当然、プログラムにはループがありうる。しかし、今回の方法だと「すべての場合」を書き出すと、無限に続くかもしれないループは、無限のメモリ空間を要することになるので、lock 数の上限を先に lock_limit として与えることにしている。
+
+今回は、上記のプログラムについて、lock_limit を 1 ずつ多めにとってみた。
+
+実装したプログラム elde_2.pl を走らせると次のような表示になる。
+
+Result:
+run_by_lock_spec: P1L0,P1L1,P0L0,P0L1,P0L2
+undef
+cut! lock spec is too long.
+run_by_lock_spec: P1L0,P0L0,P1L1,P0L1,P0L2
+cut! lock spec is too long.
+run_by_lock_spec: P1L0,P0L0,P0L1,P1L1,P0L2
+cut! terminated before lock_limit: P1L0,P0L0,P0L1.
+run_by_lock_spec: P1L0,P0L0,P0L1,P0L2,P1L1
+cut! terminated before lock_limit: P1L0,P0L0,P0L1.
+run_by_lock_spec: P0L0,P1L0,P1L1,P0L1,P0L2
+1
+cut! lock spec is too long.
+run_by_lock_spec: P0L0,P1L0,P0L1,P1L1,P0L2
+cut! terminated before lock_limit: P0L0,P1L0,P0L1.
+run_by_lock_spec: P0L0,P1L0,P0L1,P0L2,P1L1
+cut! terminated before lock_limit: P0L0,P1L0,P0L1.
+run_by_lock_spec: P0L0,P0L1,P1L0,P1L1,P0L2
+2
+cut! terminated before lock_limit: P0L0,P0L1,P1L0.
+run_by_lock_spec: P0L0,P0L1,P1L0,P0L2,P1L1
+cut! terminated before lock_limit: P0L0,P0L1,P1L0.
+run_by_lock_spec: P0L0,P0L1,P0L2,P1L0,P1L1
+cut! lock spec is too long.
+
+通常の終了の場合 &quot;cut! ...&quot; の替わりに &quot;normally terminated.&quot; と表示されるが、そうなっていない。これは、lock_limit を多めに設定したため、仕様のうち評価されない lock があるためその部分が cut されたと判断しているからである。
+
+そのうち、&quot;cut! terminated before lock_limit: P1L0,P0L0,P0L1.&quot; は、 P1L0,P0L0,P0L1 でちょうどプログラムが終了し、それ以降の lock 仕様が無視されたことを示す。これが今回の正常終了の場合である。&quot;cut! lock spec is too long.&quot; は一つのプロセスが終了したが、別のプロセスが終了する前に終了したはずのプロセスの lock が必要となる仕様であった場合に表示される。
+
+中途のコンテクストが同じものは二度と実行されないようにプログラムを効率化している。そのため、undef や 1 や 2 が表示されるタイミングがおかしなものとなっている。これは、このエミュレータの仕様ということで勘弁していただきたい。その替わりといってはなんだが、終了したときのコンテクストが、その１のものと同じかどうかチェックすることで、正しく動いているかチェックしたい。
+
+■チェック
+  
+その１のプログラムを elde_0.pl としよう。elde_0.pl のチェック方法は「虚実行」を含む点で問題があった。そして「実実行」だけを選び出す方法が(考えつか)ないとして諦めていた。
+
+今回、elde_2.pl は「実実行」のみである。elde_0.pl から elde_2.pl の lock 仕様に変換するのは難しいが、逆の elde_2.pl から elde_0.pl の lock 仕様への変換は割と簡単である。
+
+elde_2.pl の lock 仕様があったとき、同じプロセスが続いているところははしょり、プロセスが変わったところで直前のプロセス q のロック m から、次のプロセス p のロック n への切り換わりを πqυm→πpλn として書き換えれば、erde_0.pl のロック仕様が得られる。
+
+そのような実装をしたのが elde_0_and_2.pl で実行結果はだいたい次のようになる。(上の prog0 や prog1 ではないものを使っている。)
+
+ELDE2 Result:
+run_by_lock_spec: P1L0,P1L1,P0L0,P0L1,P0L2
+undef a10
+4 a11
+45 a00
+451 a01
+4512 a02
+normally terminated.
+：
+：(中略)
+：
+run_by_lock_spec: P0L0,P0L1,P0L2,P1L0,P1L1
+123 a10
+1234 a11
+normally terminated.
+
+
+ELDE0 Result:
+run_by_lock_spec:
+undef a00
+1 a01
+12 a02
+undef a10
+4 a11
+：
+：(中略)
+：
+run_by_lock_spec: P1U1-&gt;P0L2
+undef a00
+1 a01
+45 a02
+undef a10
+4 a11
+
+
+Check Result:
+Emu2: P0L0,P0L1,P0L2,P1L0,P1L1: cid = 33
+Emu0: P0U2-&gt;P1L0: cid = 33
+  OK!
+Emu2: P0L0,P0L1,P1L0,P0L2,P1L1: cid = 31
+Emu0: P0U1-&gt;P1L0,P1U0-&gt;P0L2,P0U2-&gt;P1L1: cid = 31
+  OK!
+Emu2: P0L0,P0L1,P1L0,P1L1,P0L2: cid = 29
+Emu0: P0U1-&gt;P1L0,P1U1-&gt;P0L2: cid = 29
+  OK!
+Emu2: P0L0,P1L0,P0L1,P0L2,P1L1: cid = 26
+Emu0: P0U0-&gt;P1L0,P1U0-&gt;P0L1,P0U2-&gt;P1L1: cid = 26
+  OK!
+Emu2: P0L0,P1L0,P0L1,P1L1,P0L2: cid = 25
+Emu0: P0U0-&gt;P1L0,P1U0-&gt;P0L1,P0U1-&gt;P1L1,P1U1-&gt;P0L2: cid = 25
+  OK!
+Emu2: P0L0,P1L0,P1L1,P0L1,P0L2: cid = 21
+Emu0: P0U0-&gt;P1L0,P1U1-&gt;P0L1: cid = 21
+  OK!
+Emu2: P1L0,P0L0,P0L1,P0L2,P1L1: cid = 14
+Emu0: P1U0-&gt;P0L0,P0U2-&gt;P1L1: cid = 14
+  OK!
+Emu2: P1L0,P0L0,P0L1,P1L1,P0L2: cid = 13
+Emu0: P1U0-&gt;P0L0,P0U1-&gt;P1L1,P1U1-&gt;P0L2: cid = 13
+  OK!
+Emu2: P1L0,P0L0,P1L1,P0L1,P0L2: cid = 11
+Emu0: P1U0-&gt;P0L0,P0U0-&gt;P1L1,P1U1-&gt;P0L1: cid = 11
+  OK!
+Emu2: P1L0,P1L1,P0L0,P0L1,P0L2: cid = 5
+Emu0: P1U1-&gt;P0L0: cid = 5
+  OK!
+  
+Check Result のところ、最初のものは、elde_2.pl では lock 仕様がπ0λ0,π0λ1,π0λ2,π1λ0,π1λ1 で正常終了したもので、そのコンテクストのハッシュ値が 33 だったものが、elde_0.pl の枠組みでは lock 仕様がπ0υ2→π1λ0 になり、そのコンテクストのハッシュ値が 33 だったことを示している。そして、二つのハッシュ値が等しいので OK! と表示している。
+
+ある一例についてだが、elde_2.pl で正常終了したものすべてについて、その elde_0.pl での相当物が同じコンテクストを示しているのが確認された。
+
+■問題と今後の課題
+  
+以前はマルチプロセスだけでなく、「マルチスレッド」も対象にしていると考えたのだが、マルチスレッドの場合、メモリ管理がかなり難しく、リストを作るために malloc するのさえ、ちゃんと管理しなければならない。そこまでは議論の対象としていないということで「マルチスレッド」という言い方はやめた。
+
+elde_0.pl は「虚実行」があるため意味を見出すのは難しかったが、 elde_2.pl の正しさの確認という点で役立てられたのは良かった。しかし、「虚実行」という考え方は、この「虚実行」以外にも cut している実行があり、それらと「虚実行」を分けるものが何かと問われると難しく、今のままでは「虚実行」そのものに意味を見出すのは難しい。今後、ELDE を発展させていくなかで何か意味を見出せれば、カッコイイのだが…。
+
+単一ロックではなく複数ロックに対応できたらすばらしい。この場合 lock_limit で指定するのではなく、そのプロセスにおける lock/unlock の順番の仕様を決めてかからないと、組み合わせの量が爆発してしまうおそれがある。その上で、デッドロックになるとかならないとかの議論ができればカッコイイのだが、そんなにうまくいくものか…今のところはわからない。
+
+elde_0.pl と elde_2.pl があって、elde_1.pl がどこに行った？…ということになるかもしれないが、その１で少し考えた sleep を加味したものが elde_1.pl になる予定だった。しかし、その１で書いたように大きな意味を見出せず、お蔵入りとなった。
+
+■参考
+  
+関連研究等はまだまったく調べていない。どう調べたらいいかわからない。その１の「間違い」について５年以上たってもまったくツッコミが入らなかったことから、私のほうも無視されているのは確実だけど、私の実力からいってしかたないことかな…と諦めている。
+
+  ●《Exhaustive Lock Dependency Emulator その１ 並列処理の総当り》。「虚実行」について書いてある。
+  ●《Exhaustive Lock Dependency Emulator その２ wait_and_lock》。こちらの枠組みは今回、見返していない。一応、elde_0wl.pl としてアーカイブには含めておいたが。
+    
+■配布物
+  
+erde_2.pl, erde_0_and_2.pl, erde_0.pl は下記のアーカイブに含めた。バージョン違いについては、コメント欄を見て欲しい。次のリンクの中身は常に最新版に置き換わっているはず。
+
+  ●elde.zip
+    
+更新：2018-04-13
+初公開：2018年04月13日 21:00:19
+最新版：2018年04月13日 21:06:02
+
+
+Comments:
+
+[E:bell] 初公開：elde-20180413.zip。バージョン 0.03。
+
+バージョンが 0.03 からはじまるのは、その１で公開したファイルがあるから。おそらく、その１やその２のファイルもこちらでバージョンアップ通知をしていく予定。
+
+あと、<a href="../../../articles/2018/04/statuses_cocolog_89194943.html" class="int-link cocolog-id" title="ひとこと">[cocolog:89194943]</a> に今回の簡単な感想を「ひとこと」しておいた。
+
+投稿: JRF | 2018-04-13 21:33:04 (JST)
+
+
+Links:
+
+その１: <a href="../../../articles/2011/06/software_68738226.html" class="int-link" title="Exhaustive Lock Dependency Emulator その１ 並列処理の総当り">http://jrf.cocolog-nifty.com/software/2011/06/post-1.html</a>
+組み合わせの数え上げ: <a href="../../../articles/2018/04/software_89185653.html" class="int-link" title="組み合わせと順列の数え上げのアルゴリズム">http://jrf.cocolog-nifty.com/software/2018/04/post.html</a>
+Exhaustive Lock Dependency Emulator その１ 並列処理の総当り: <a href="../../../articles/2011/06/software_68738226.html" class="int-link" title="Exhaustive Lock Dependency Emulator その１ 並列処理の総当り">http://jrf.cocolog-nifty.com/software/2011/06/post-1.html</a>
+Exhaustive Lock Dependency Emulator その２ wait_and_lock: <a href="../../../articles/2011/07/software_68888436.html" class="int-link" title="Exhaustive Lock Dependency Emulator その２ wait_and_lock">http://jrf.cocolog-nifty.com/software/2011/07/post.html</a>
+elde.zip: <a href="http://jrf.cocolog-nifty.com/archive/perl/elde.zip" class="ext-link">http://jrf.cocolog-nifty.com/archive/perl/elde.zip</a>
+elde-20180413.zip: <a href="http://jrf.cocolog-nifty.com/archive/perl/elde-20180413.zip" class="ext-link">http://jrf.cocolog-nifty.com/archive/perl/elde-20180413.zip</a></pre>
+
+
+<section class="backrefs" data-pagefind-ignore>
+<h2>後方参照 (2 件)</h2>
+<ul>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2018/11/statuses_cocolog_90214777.html">ひとこと</a> <span class="backref-date">2018年11月05日</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2018/04/statuses_cocolog_89194943.html">ひとこと</a> <span class="backref-date">2018年04月13日</span></li>
+</ul>
+</section>
+
+</article>
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2018/04.html">2018年04月</a> | <a href="../../../index/software.html">ソフトウェア Tips</a></nav>
+</body>
+</html>

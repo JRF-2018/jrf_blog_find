@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>共有メモ - JRF Blog Archive</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2021/09.html">2021年09月</a> | <a href="../../../index/gsm.html">共有メモ</a></nav>
+<article data-pagefind-body>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[gsm] 2021-09-25T13:06:38Z</td></tr>
+<tr><th>セクション</th><td>グローバル共有メモ</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2021/09.html">2021-09-25T13:06:38Z</a></td></tr>
+<tr><th>元URL</th><td>(URLなし)</td></tr>
+
+</table>
+</div>
+<h1>共有メモ</h1>
+<pre class="body">jrf&gt; [仏教の最適化プログラムの続き。]
+
+BlockMeanAmplifier というのも作った。重犯罪の判定用。
+
+MeanAmplifier は時系列のスカラー値を取るのに対し、BlockMeanAmplifier は可変長のリストの時系列を取る。
+
+bma = BlockMeanAmplifier() として、リスト xs を与えるときは bma.update(xs) とする。過去これまでに従って現在の個々の値 x の増幅値を知りたいときは bma.test(x)  とする。なお、bma.test(x) を使ったあとの x すべてを記録したものを xs とすると、通常は bma.update(xs) とするべきだが、そのような x は自動的に記録されているため bma.update() だけで OK。</pre>
+
+
+</article>
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2021/09.html">2021年09月</a> | <a href="../../../index/gsm.html">共有メモ</a></nav>
+</body>
+</html>

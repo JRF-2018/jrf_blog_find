@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>共有メモ - JRF Blog Archive</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2023/06.html">2023年06月</a> | <a href="../../../index/gsm.html">共有メモ</a></nav>
+<article data-pagefind-body>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[gsm] 2023-06-22T02:32:06Z</td></tr>
+<tr><th>セクション</th><td>グローバル共有メモ</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2023/06.html">2023-06-22T02:32:06Z</a></td></tr>
+<tr><th>元URL</th><td>(URLなし)</td></tr>
+
+</table>
+</div>
+<h1>共有メモ</h1>
+<pre class="body">jrf&gt; (承前)
+
+Actor に入力される予想を「目的」と呼び、Predictor の出力を「結果予想」、現実の行動結果を「行動結果」と呼ぼう。基本的に「目的」「行動結果」「行動」で、まずは、Actor Predictor ともに学習する。その上で、「行動結果」-「目的」 と 「結果予想」- 「目的」 の絶対値を比較し、前者が大きければ、Actor を負の学習をする。後者が大きければ、Predictor を負の学習をする。さらに、「行動結果」-「結果予想」の絶対値が小さいときは、(「行動結果」+「結果予想」)/2 を正例として、Recollector を学習する。
+
+この Recollector の学習は、Recollector の目的はどういう行動をしても達成できないという解釈により、そのような学習をする。
+
+ただ、今回の議論は、以前までの学習の枠組みで言えることであって、ファインチューニングだからどう、という最近の議論にマッチするものではない。</pre>
+
+
+</article>
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2023/06.html">2023年06月</a> | <a href="../../../index/gsm.html">共有メモ</a></nav>
+</body>
+</html>

@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>ひとこと - JRF Blog Archive</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2026/03.html">2026年03月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+<article data-pagefind-body>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[statuses] <span class="cocolog-id">cocolog:95890529</span></td></tr>
+<tr><th>セクション</th><td>JRF のひとこと</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2026/03.html">2026年03月07日</a></td></tr>
+<tr><th>元URL</th><td><a href="http://jrf.cocolog-nifty.com/statuses/2026/03/post-87cfd1.html" class="ext-link"><span class="original-url">http://jrf.cocolog-nifty.com/statuses/2026/03/post-87cfd1.html</span></a></td></tr>
+
+</table>
+</div>
+<h1>ひとこと</h1>
+<pre class="body">「二足歩行の腕振りを目指す強化学習の実験」を行った。以前に模倣学習したデータを有効活用して「ちゃんとした歩行」を強化学習させようとしたが、Humanoid-v5 の「足先がない(足先が球体)」という物理的限界にはばまれ、実験はおおむね失敗した。
+JRF 2026年3月7日
+
+成果物は↓。
+
+《bipedal_walker_2_03_4.ipynb: 二足歩行の腕振りを目指す強化学習の実験 - Colab》  
+<a href="https://colab.research.google.com/drive/10BFDlPKorqoLF5xh5_2Va300nf69282o" class="ext-link">https://colab.research.google.com/drive/10BFDlPKorqoLF5xh5_2Va300nf69282o</a>
+
+JRF 2026年3月7日
+
+↓のつづきみたいなもの。
+
+<a href="../../../articles/2025/11/statuses_cocolog_95705029.html" class="int-link cocolog-id" title="ひとこと">[cocolog:95705029]</a>(2025年11月)  
+《「「多層目的＝アテンション」を確かめる二足歩行の実験」を行った。今回は「歩行」としてはギコチナイが、前進を続けることができてうれしかった。 - JRF のひとこと》  
+<a href="../../../articles/2025/11/statuses_cocolog_95705029.html" class="int-link" title="ひとこと">http://jrf.cocolog-nifty.com/statuses/2025/11/post-9af9f7.html</a>
+
+JRF 2026年3月7日
+
+……。
+
+## 概要
+
+DecisionTransformer (DT) で模倣学習したデータを有効活用して、「ちゃんとした歩行」を強化学習させようとしたが、Humanoid-v5 の「足先がない(足先が球体)」という物理的限界にはばまれ、実験はおおむね失敗した。ただ、私自身は強化学習の感触を知ることができて収穫があった。
+
+JRF 2026年3月7日
+
+## 動機
+
+「ちゃんとした歩行」をさせたい。それが一番の動機で強化学習に手を出した。
+
+JRF 2026年3月7日
+
+これまで「「多層目的＝アテンション」を確かめる二足歩行の実験」と題して、Minari データセットを使い、Mujoco 環境で、DT (DecisionTransformer) 系のモデルで、模倣学習を行ってきた。Minari データセットの「歩行」の simple-v0 は、足を延ばしてゆっくり滑るように歩く「ジリジリ歩き」であり、medium-v0 は、足を上げるが走り出すデータだった。これを「ちゃんとした歩行」…腕を前後に振り、大地を踏んで足を上げて降ろし、前後に動かして、ゆっくり歩く…をやらせてみたかった。
+
+JRF 2026年3月7日
+
+そのためにまず必要だと思ったのが、ビデオの歩行データを見て、それを強化学習させるという方向である。ビデオから直接というのは難しくても、ビデオから 3D のキーポイントの動作データ OpenPose を得るという枠組みはあるので、その OpenPose になったものからの学習ならば可能ではないかと考えた。
+
+JRF 2026年3月7日
+
+しかし、AI さん達に相談すると、OpenPose から Minari の人体モデルである Humanoid-v5 に変換する「標準的な方法」はなく、3D のモーションデータである AMASS などの データから学習する方法を強く勧められた。しかし、AMASS などは関節数が多過ぎて、Colab の計算力・計算資源では難しすぎることも判明する。AMASS の CMU Humanoid から  Humanoid-v5 への変換ももちろん確立していないとのことだった。この方向は(いったん)諦めることにした。
+
+JRF 2026年3月7日
+
+代わりにシンプルな報酬に基づく強化学習でお茶をにごすことにした。私はこれまで強化学習について本で学んだことはあっても実装をしたことはなく、その実装を私が学ぶことを目的にすることに路線転換した。
+
+それがこの実験の出発点である。
+
+JRF 2026年3月7日
+
+## 実装
+
+シンプルな報酬の提案はまず ChatGPT さんの提案にしたがい、プログラムの骨格は Gemini さんにまずはお願いした。プログラムを単純に動かすまでには苦労したのだが、そこははしょって、報酬設計を中心に語っていこう。
+
+最終的な報酬の式は、次のようになっている。
+
+JRF 2026年3月7日
+
+&lt;pre&gt;
+custom_reward = (
+    0.80 * r_imitation +
+    0.16 * r_velocity +
+    0.40 * r_balance +
+    0.25 * r_foot +
+    0.19 * r_posture -
+    0.30 * flight_penalty
+)
+
+survival_reward = 0.2
+custom_reward += survival_reward
+&lt;/pre&gt;
+
+JRF 2026年3月7日
+
+当初、ChatGPTさんが提案したのは、r_imitation と survival_reward がないものだった。ポイントは、w_velocity (0.16) / w_balance (0.40) = 0.4 の比を守ることで、それが走行にならない歩行のカギだという話だった。その比はこの実験中ずっと守った。
+
+しかし、当初、どうにも途中でこけることが多く、エピソードの長さ(ep_len_mean)がなかなか延びないため、まず、生存報酬 survival_reward を導入した。
+
+JRF 2026年3月7日
+
+その後、ChatGPT さんの方法だけではどうもうまくいかないと感じるようになり、ChatGPT さんに相談する前に Gemini Deep Research さんに教えてもらっていた次のような報酬も導入したことがあった。
+
+JRF 2026年3月7日
+
+&lt;pre&gt;
+# --- A. 物理ベース報酬 (Deep Research 流) ---
+# 1. 角運動量最小化 (体幹の回転を抑える＝腕振りを誘発)
+ang_mom = self.env.unwrapped.data.subtree_angmom[0] # Root body (torso)
+ang_mom_norm = np.linalg.norm(ang_mom)
+r_ang_mom = np.exp(-self.w_am * (ang_mom_norm**2))
+&lt;/pre&gt;
+
+JRF 2026年3月7日
+
+&lt;pre&gt;
+# 2. 膝の伸展報酬 (ジリジリ歩き防止)
+qpos = self.env.unwrapped.data.qpos
+l_knee_angle = qpos[self.left_knee_qpos_idx]
+r_knee_angle = qpos[self.right_knee_qpos_idx]
+
+# 膝の伸展報酬（両膝の角度の二乗和）
+r_knee = np.exp(-self.w_knee * (l_knee_angle**2 + r_knee_angle**2))
+&lt;/pre&gt;
+
+JRF 2026年3月7日
+
+しかし、これは逆に学習を不安定にしてしまったようで、後に取り除くことになった。私は意識してなかったが、AI さん達と会話している間に自然に取り除かれていた感じだった。
+
+JRF 2026年3月7日
+
+このころのビデオを見ると…、腕を振らず、腕は上げることが多いのは、Minari の simple-v0 や medium-v0 の元のデータもそうなので、それが残っているのだろう。足が多少前後することがあっても、ジリジリ歩きなのは、シンプルな報酬設計の限界があるのだろう。…ということになった。
+
+JRF 2026年3月7日
+
+ここで、3D モーションデータを強化学習で模倣することを再び検討することになった。白羽の矢を立てたのが DeepMimic ( <a href="https://github.com/xbpeng/DeepMimic" class="ext-link">https://github.com/xbpeng/DeepMimic</a> )のモーションデータである。今となっては古いのだが、古いがゆえに関節数が少なく、マッチングしやすいだろう…と思われたからだ。
+
+JRF 2026年3月7日
+
+ところが、そのマッチングに Gemini 3.0 Flash さんはとても苦労する。しかたなく Claude Sonnet 4.6 さんにお願いしたところ、なんと非課金なのに、マッチングに成功してしまった！ (Gemini さんは Gemini Plus 課金。Claude さんは非課金。)
+
+そうやって導入されたのがモーション模倣報酬 r_imitation になる。
+
+JRF 2026年3月7日
+
+しかし、せっかく導入された r_imitation だったが、決定的な改善につながらなかった。Claude さんが提案した DTFullTransformerExtractor で隠れ状態を正規化する LayerNorm など改善があり、ep_len_mean などはかつてなく伸びたのだが、腕振りは発現せず、ジリジリ歩きのままだった。
+
+JRF 2026年3月7日
+
+## 結論と今後の課題
+
+実験は失敗だった。当初の目的である「ちゃんとした歩行」を発現させることはできなかった。
+
+この大きな原因は、Humanoid-v5 の物理的限界にあると思われる。Humanoid-v5 には足先がなく(球体になっており)、足を上げる動作がとても不安定で、大地を踏んばることもできない。これが膝を伸ばしてのジリジリ歩きか、走行しか安定したモードがないことになっている原因だと思われる。
+
+JRF 2026年3月7日
+
+`custom_reward = r_imitation + 0.2` とする模倣とサバイバル報酬だけの実験も裏では行ったのだが、すぐに倒れるだけで、その動作の難しさが推察される。
+
+今回 DT 系を元に強化学習をさせたが、DT を使わず一から始める実験も裏でやってみたが、初期に立っておくのも難しく、DT 系が役に立っていることは確認できた。
+
+JRF 2026年3月7日
+
+今後の課題としては Humanoid-v5 ではなく足先のあるモデルを使い「ちゃんとした歩行」を実現することが挙げられる。しかし、そうなると Minari のデータは使えなくなるため、DT との混合実験ではなくなって、これまでの資産をほぼ活かせない。その代替データが(Colab で使えるようなものが)あるのかが問題となる。
+
+JRF 2026年3月7日
+
+しかし、とはいえ、今回の実験で、強化学習にどれぐらいかかるかという時間感覚のようなものは掴めた。LLM のファインチューニングにおいて、強化学習を行うときエポック数は1でよいという話があり、強化学習ってそれだけで良いのかという疑問も私にはあったが、いってみれば、こういうランダム環境でのオンライン学習は、それぞれのエピソードがエポック数1のようなものなのだということのようだ。そういうことがわかっただけでも収穫があったとしたい。
+
+JRF 2026年3月7日</pre>
+
+
+<section class="backrefs" data-pagefind-ignore>
+<h2>後方参照 (1 件)</h2>
+<ul>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2026/03/gsm_008589.html">共有メモ</a> <span class="backref-date">2026-03-07T14:27:37Z</span></li>
+</ul>
+</section>
+
+</article>
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2026/03.html">2026年03月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+</body>
+</html>

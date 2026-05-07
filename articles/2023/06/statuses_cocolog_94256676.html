@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>ひとこと - JRF Blog Archive</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2023/06.html">2023年06月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+<article data-pagefind-body>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[statuses] <span class="cocolog-id">cocolog:94256676</span></td></tr>
+<tr><th>セクション</th><td>JRF のひとこと</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2023/06.html">2023年06月16日</a></td></tr>
+<tr><th>元URL</th><td><a href="http://jrf.cocolog-nifty.com/statuses/2023/06/post-d86ac3.html" class="ext-link"><span class="original-url">http://jrf.cocolog-nifty.com/statuses/2023/06/post-d86ac3.html</span></a></td></tr>
+
+</table>
+</div>
+<h1>ひとこと</h1>
+<pre class="body">Lewis Tunstall 他『機械学習エンジニアのためのTransformers』をザッと読み、岡野原大輔『拡散モデル』に目を通した。前者は ChatGPT とかの元の LLM の本で得るところがあったが、後者は画像生成 AI の数学理論書で歯が立たなかった。
+JRF 2023年6月16日
+
+(「グローバル共有メモ」で書いたことをコピペする。)
+
+JRF 2023年6月16日
+
+○ 2023-06-13T19:04:12Z
+
+『機械学習エンジニアのためのTransformers』を読んだ。Attention 機構の説明を読むために購入。3章でその望みは達せられた。『ゼロから作る Deep Learning 2』ではその学習を理解できなかったが、これは理解できた(気がする)。あとは知識蒸留が興味深かったが、それ以外は飛ばし読み。私に必要なときがくるのだろうか？
+
+JRF 2023年6月16日
+
+『機械学習エンジニアのためのTransformers - 最先端の自然言語処理ライブラリによるモデル開発』(Lewis Tunstall ＆ Leandro von Werra ＆ Thomas Wolf 著, 中山 光樹 訳, オライリージャパン, 2022年8月)
+<a href="https://www.amazon.co.jp/dp/4873119952" class="ext-link">https://www.amazon.co.jp/dp/4873119952</a>
+<a href="https://7net.omni7.jp/detail/1107312226" class="ext-link">https://7net.omni7.jp/detail/1107312226</a>
+<a href="https://www.oreilly.co.jp/books/9784873119953/" class="ext-link">https://www.oreilly.co.jp/books/9784873119953/</a>
+
+JRF 2023年6月16日
+
+……。
+
+○ 2023-06-15T19:37:12Z
+
+岡野原大輔『拡散モデル』に目を通した。画像生成AIなどで使われている数学の理論書。コンプレックスから購入。案の上、歯が立たなかったが、用語に関しては経済数学とかとも共通でわかる部分も多かった。ちゃんと数学してる人にはわかる本だと思う。
+
+JRF 2023年6月16日
+
+『拡散モデル - データ生成技術の数理』(岡野原 大輔 著, 岩波書店, 2023年2月)
+<a href="https://www.amazon.co.jp/dp/400006343X" class="ext-link">https://www.amazon.co.jp/dp/400006343X</a>
+<a href="https://7net.omni7.jp/detail/1107364924" class="ext-link">https://7net.omni7.jp/detail/1107364924</a>
+<a href="https://www.iwanami.co.jp/book/b619864.html" class="ext-link">https://www.iwanami.co.jp/book/b619864.html</a>
+
+私でもわかるハッとする記述がある。例えば…。
+
+JRF 2023年6月16日
+
+＞(…)尤度関数や最尤推定を行うためには、分配関数 Z(θ) やその勾配∇_θ Z(θ) を計算しなければならない。これは入力データが高次元の場合は、計算量的に不可能である。
+
+JRF 2023年6月16日
+
+(…)
+
+MCMC 法は、尤度比(…)さえ求まれば、サンプリングすることができる。尤度比には分配関数は打ち消されて登場しないため、分配関数を求められない場合でも MCMC 法は実行できる。敵対的生成モデルで分配関数が必要のない理由も、生成器は識別器の情報を使って学習し、識別器は尤度比を対象に学習するためである。
+＜(p.11-12)
+
+JRF 2023年6月16日
+
+GAN のソースでいまいちこれがいいというのがわからない部分があったと(感覚で)覚えていて、そういう理屈だったのかと私はハッとした。
+
+これ以外の部分でも、わかる人にはハッとする部分があるものと思われる。私はこの辺そうかな…と思うぐらいだった。orz
+
+あと、私は、StableDiffusion に興味を持って、この本を読んだのだが、それに直接言及する記述はほとんどないながらも以下の部分にあった。
+
+JRF 2023年6月16日
+
+＞拡散モデルは入力データと同じ空間上で拡散していき、完全なノイズになった時も、入力データの次元数と同じ次元数をもつ。拡散過程において入力次元数が変わらないことの問題点は３つある。
+
+JRF 2023年6月16日
+
+(…)
+
+これらの問題を解決するための一つの方法として、あらかじめ自己符号化器を学習しておき、入力空間を潜在空間に変換する符号化器と、潜在空間を入力空間に変換する複号化器を学習し、次元数が少なくなった潜在空間上で生成された変数は、複号化器を使って元の入力空間に変換できる。例えば Stable Diffusion (…) などは、このアプローチをとって計算量や使用メモリ量を大きく減らすことに成功している。
+＜(p.89-90)
+
+JRF 2023年6月16日
+
+……。
+
+……。
+
+追記。
+
+
+○ 2023-06-16T16:38:30Z
+
+『実践計算物理学 物理を理解するための Python 活用法』に目を通した。物理の例には案の定歯が立たなかったが、scipy.optimize などのアルゴリズムの意味などを知ることができて収穫はあった。
+
+JRF 2023年6月17日
+
+『実践計算物理学 - 物理を理解するための Python 活用法 (フロー式物理演習シリーズ 22)』(野本 拓也 ＆ 是常 隆 ＆ 有田 亮太郎 著, 共立出版, 2023年1月)
+<a href="https://www.amazon.co.jp/dp/4320035763" class="ext-link">https://www.amazon.co.jp/dp/4320035763</a>
+<a href="https://7net.omni7.jp/detail/1107363676" class="ext-link">https://7net.omni7.jp/detail/1107363676</a>
+<a href="https://www.kyoritsu-pub.co.jp/book/b10025215.html" class="ext-link">https://www.kyoritsu-pub.co.jp/book/b10025215.html</a>
+
+JRF 2023年6月17日</pre>
+
+
+<section class="backrefs" data-pagefind-ignore>
+<h2>後方参照 (3 件)</h2>
+<ul>
+<li><span class="backref-label">[cocolog:94256676]参照</span> <a href="../../../articles/2024/04/statuses_cocolog_94787819.html">ひとこと</a> <span class="backref-date">2024年04月12日</span></li>
+<li><span class="backref-label">[cocolog:94256676]参照</span> <a href="../../../articles/2024/04/gsm_005496.html">共有メモ</a> <span class="backref-date">2024-04-11T14:59:24Z</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2023/06/gsm_004208.html">共有メモ</a> <span class="backref-date">2023-06-15T19:48:30Z</span></li>
+</ul>
+</section>
+
+</article>
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2023/06.html">2023年06月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+</body>
+</html>

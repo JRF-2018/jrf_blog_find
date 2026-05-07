@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>共有メモ - JRF Blog Archive</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2020/12.html">2020年12月</a> | <a href="../../../index/gsm.html">共有メモ</a></nav>
+<article data-pagefind-body>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[gsm] 2020-12-28T21:45:03Z</td></tr>
+<tr><th>セクション</th><td>グローバル共有メモ</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2020/12.html">2020-12-28T21:45:03Z</a></td></tr>
+<tr><th>元URL</th><td>(URLなし)</td></tr>
+
+</table>
+</div>
+<h1>共有メモ</h1>
+<pre class="body">jrf&gt; GitHub が↓みたいな警告を返してきた。
+
+&gt;Deprecation Notice 
+
+You recently used a password to access the repository at JRF-2018/shared_memo with git using git/2.29.2.
+
+Basic authentication using a password to Git is deprecated and will soon no longer work. Visit <a href="https://github.blog/2020-12-15-token-authentication-requirements-for-git-operations/" class="ext-link">https://github.blog/2020-12-15-token-authentication-requirements-for-git-operations/</a> for more information around suggested workarounds and removal dates.
+&lt;
+
+で、私は Cygwin の git を使っているのだが、なんか、Git Credential Manager Core または Git Credential Manager for Windows を使えば良いのではないかという感じなので、いろいろ試しながら、Git for Windows 2.30.0 もインストールしてみた。
+
+が、うまくいかない。↓に
+
+《git-credential manager for windows with cygwin · GitHub》  
+<a href="https://gist.github.com/kelbyers/6e845fd28b8bf55ef66b36025ca06c10" class="ext-link">https://gist.github.com/kelbyers/6e845fd28b8bf55ef66b36025ca06c10</a>
+＞you do not need to copy files anywhere, simply configuring `credential.helper` to `manager` works if the credential manager is installed＜
+
+…とかあるので、ファイルのコピーとかしなくて大丈夫かと思ったら全々大丈夫じゃない。git が 2.29 と 2.30 で違うからか？ わからない。
+
+とりあえず、Git for Windows をアンインストールしてもうしばらく様子を見ることにする。4月ぐらいになっても、ダメなら Cygwin の git ではなく Git for Windows を使わねばならないのかもしれない。</pre>
+
+
+</article>
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2020/12.html">2020年12月</a> | <a href="../../../index/gsm.html">共有メモ</a></nav>
+</body>
+</html>

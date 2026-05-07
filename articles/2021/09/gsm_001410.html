@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>共有メモ - JRF Blog Archive</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2021/09.html">2021年09月</a> | <a href="../../../index/gsm.html">共有メモ</a></nav>
+<article data-pagefind-body>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[gsm] 2021-09-03T03:56:56Z</td></tr>
+<tr><th>セクション</th><td>グローバル共有メモ</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2021/09.html">2021-09-03T03:56:56Z</a></td></tr>
+<tr><th>元URL</th><td>(URLなし)</td></tr>
+
+</table>
+</div>
+<h1>共有メモ</h1>
+<pre class="body">jrf&gt; [仏教の最適化プログラムの続き。]
+
+悔いが大きくなり過ぎてもいけないというのが当初の話だった。悔いは「自分の集団を害する」…ただし、「害する」といっても「限定された不利益を確実に受け容れることでしかない」ということだった。
+
+それは今のシステムにおいては寺院を作るところに現れているか…。ただ、それは支配層だけだな。個人においては僧になる…という部分に現れてると考えるべきなのだろうか？
+
+僧になるのは、今は死者から僧への相続量の多寡だけ見ているが、狂信分…ARGS.nation_education_power_threshold も見るべきか…。ARGS.nation_education_power_threshold  を上げるときは、僧の数に関わる ARGS.priests_rate なども上げるべきということか…。そして、ARGS.priests_rate が上がれば教育が良くなるべきだと思うが、今は、ARGS.priests_rate という変数が動いても ARGS.education_goal は動かないことになってるから、ARGS.education_goal も動かさないとダメということになりそう。
+
+それともこのあたり改修すべきなのか？
+
+…一部改修した。ARGS.priests_rate の他に ARGS.priests_standard_rate という非常に似たものを作った。実際の僧の増減は ARGS.priests_rate を使うが、僧の数(割合)を判定に用いるときは、ARGS.priests_standard_rate を使うようにした。これにより ARGS.priests_rate を上げれば ARGS.education_goal を動かさなくても、単純に教育がよくなるはず。ややこしいが、やむを得まい。
+
+これにより mwar2fpr のログが影響を受けるので再度 run_simbdp3.sh を実行する必要がある。私のところでは再実行後のグラフは前と大差がない感じだった。災害の被害は mwar2fpr のほうが mwar2 よりむしろ少なくてそこは予想とは違ったが。</pre>
+
+
+</article>
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2021/09.html">2021年09月</a> | <a href="../../../index/gsm.html">共有メモ</a></nav>
+</body>
+</html>

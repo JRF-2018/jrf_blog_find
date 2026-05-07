@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>共有メモ - JRF Blog Archive</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2021/09.html">2021年09月</a> | <a href="../../../index/gsm.html">共有メモ</a></nav>
+<article data-pagefind-body>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[gsm] 2021-09-23T07:45:06Z</td></tr>
+<tr><th>セクション</th><td>グローバル共有メモ</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2021/09.html">2021-09-23T07:45:06Z</a></td></tr>
+<tr><th>元URL</th><td>(URLなし)</td></tr>
+
+</table>
+</div>
+<h1>共有メモ</h1>
+<pre class="body">jrf&gt; [仏教の最適化プログラムの続き。]
+
+前回、lsth がうまくいかなかった。VirtualHating に差が付きやすい ltom でやってみたらどうだろう？ …と思いやってみた。
+
+ltom は前といっしょだが、いちおう書いておく。
+
+run_simbdp3.sh ltom 10 -L -t 360 --tombs-population=10000
+run_simbdp3.sh ltomlsth 10 -L -t 360 --tombs-population=10000 --soothe-nation-threshold=0.6 --soothe-nation-threshold-min=0.5 --soothe-nation-threshold-max=0.7
+
+python plot_logs.py normal lsth ltom ltomlsth -p AccDeath -o fig-20210923_01.png
+python plot_logs.py normal lsth ltom ltomlsth -p AccKarma -o fig-20210923_02.png
+python plot_logs.py normal lsth ltom ltomlsth -p Hating -o fig-20210923_03.png
+python plot_logs.py normal lsth ltom ltomlsth -p VirtualHating -o fig-20210923_04.png
+
+《グラフ集: 2021-09-22 から - Issue #4 - JRF-2018/simbd》  
+<a href="https://github.com/JRF-2018/simbd/issues/4" class="ext-link">https://github.com/JRF-2018/simbd/issues/4</a>
+
+いちおう AccDeath をみてみたが、これは差があるべきでないのに、AccKarma より差がある感じで口惜しい。AccKarma は ltom が下に来るのはいいのだが、ltomlsth が ltom より上に来て欲しいところ、上には来ているがその差はほぼない。
+
+normal は ltom に比べて hating の影響を受けにくく、「頑健」と言えるかもしれない。…みたいなことが言いたかったが、この程度の差ではそれは言いにくい。
+
+lsth が効果を発揮するには、軽犯罪の発生率に関してアルゴリズムを変更する必要がありそうだが、どう変えれば良いのか…。しかし、今さら変えるのもなぁ…。
+
+……。
+
+ちょっと長くなったのでここらで一区切りしよう…。</pre>
+
+
+</article>
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2021/09.html">2021年09月</a> | <a href="../../../index/gsm.html">共有メモ</a></nav>
+</body>
+</html>

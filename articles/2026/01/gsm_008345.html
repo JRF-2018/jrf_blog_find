@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>共有メモ - JRF Blog Archive</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2026/01.html">2026年01月</a> | <a href="../../../index/gsm.html">共有メモ</a></nav>
+<article data-pagefind-body>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[gsm] 2026-01-23T15:31:14Z</td></tr>
+<tr><th>セクション</th><td>グローバル共有メモ</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2026/01.html">2026-01-23T15:31:14Z</a></td></tr>
+<tr><th>元URL</th><td>(URLなし)</td></tr>
+
+</table>
+</div>
+<h1>共有メモ</h1>
+<pre class="body">jrf&gt; Claude Sonnet 4.5 さんと会話。
+
+jrf:&gt; AIエージェントの試験実装として MemoryBanditWorkflow (参: <a href="../../../articles/2025/09/statuses_cocolog_95619779.html" class="int-link cocolog-id" title="ひとこと">[cocolog:95619779]</a>(2025年9月)) というのを以前作った。
+
+そのとき、メモリ機能として、キーワード検索とベクトル検索が両方備わっていることを前提とした。
+
+しかし、最近の Claude Code はメモリ機能を明には持たず、ファイルで十分であるという設計思想を持つようだ。
+
+この場合、基本的に検索は grep などを使い、必要ならば、ベクトル検索やキーワード検索のデータベースなどを用意し、その用意の仕方などを SKILLS に書くとなるのだろうか？
+
+Claude:&gt; あなたの理解は概ね正しいと思います。
+
+MemoryBanditWorkflowのような試験実装では：
+
+  1. 初期段階: 構造化されたマークダウンファイル + grep
+
+  2. SKILLSに記載: 「メモリが大きくなったらscripts/setup_vector_search.shを実行せよ」
+
+  3. 必要になったら: 実際にベクトル検索インフラを追加
+
+つまり、SKILLSには「いつ、どのように検索インフラを構築するか」の判断基準とスクリプトへの参照を書いておき、実際の構築は必要性が明確になってから行う、という段階的アプローチが実用的だと思います。
+
+jrf:&gt; 定期的作業には、bandit という仕組みを用意した。それは確率的に動作する。MemoryBanditWorkflow は会話形式を持続し、ときおり要約が起こり、空きが確保されるので、システムプロンプト+要約+前回までのチャットが次の要約まで変化せず、そこでコンテクスト効率化ができるようになっていたが、代わりに、定期的に bandit でコンテクストを再構成する必要があった。
+
+こういうことを Claude Code で実現するには、定期的作業を CLAUDE.md に書いておけばいいのだろうか？
+
+Claude:&gt; Claude Codeは「人間が定期的にメンテナンスを指示する」か「Claudeが作業のたびに自動的にチェックスクリプトを実行する習慣を持つ」かのどちらかになります。後者を実現するには、CLAUDE.mdやSKILLSに「作業フローの一部としてメンテナンスチェックを含める」と明記するのが効果的です。
+
+jrf:&gt; なるほど MemoryBanditWorkflow を特別に定義しなくても SKILLS などの枠組みで十分なのですね。勉強になりました。Gemini CLI に SKILLS が実装され、安く使えるときが来るか、Claude Code でのテストが大安売りでできるときにでも、MemoryBanditWorkflow でやっていたことが SKILLS でも実際できるのかをテストしてみたいです。当分は二足歩行実験に忙しいので、当分先の話だとは思いますが。</pre>
+
+
+</article>
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2026/01.html">2026年01月</a> | <a href="../../../index/gsm.html">共有メモ</a></nav>
+</body>
+</html>

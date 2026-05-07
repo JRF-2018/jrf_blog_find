@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>共有メモ - JRF Blog Archive</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2021/03.html">2021年03月</a> | <a href="../../../index/gsm.html">共有メモ</a></nav>
+<article data-pagefind-body>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[gsm] 2021-03-08T12:02:50Z</td></tr>
+<tr><th>セクション</th><td>グローバル共有メモ</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2021/03.html">2021-03-08T12:02:50Z</a></td></tr>
+<tr><th>元URL</th><td>(URLなし)</td></tr>
+
+</table>
+</div>
+<h1>共有メモ</h1>
+<pre class="body">jrf&gt; [仏教の最適化プログラムの続き。]
+
+「余った子」を養子に出して受け容れる…確率とかって、sqrt をかけぐらいしてやっとサイズ感が出てくる。でも、2万5千人の人口で、1年ならいざしらず1ヶ月で5人とか10人とかそういう子が出るのが「正しいか」と言われると…違う。1年で10人ぐらい…とすると、まぁ、確率的に間違っていないのかな…という気はする。
+
+問題は、それに比べて、結婚・離婚・不倫が多いことなのだと思う。これは私が不倫のアルゴリズムから作りはじめて、まずハッキリとした数字が欲しいことから多めに設定していたからそうなっているのだと思う。確率について1年の数字とすべきところを1ヶ月の数字にしている感じ。
+
+特に離婚が多いのが気になる(離婚数の表示は結婚数に比べて約2倍の単位にはなるのであるがそれにしても)。しかし、離婚の数を減らすには私のモデルでは結婚を減らすしかない。そこで、結婚については、新規結婚を選び出す数をかなり少なくした。threshold があるので、そこまで少なくするとマッチングがうまくいかないのではないかと思っていたが、結構数は確保されている。少しおかしい気もするが、うまくいってるのでよしとしよう。
+
+不倫は削り過ぎると、「堕胎」を結婚から出す数が多くなるため、不倫というマージンはある程度ないといけない。そのためには、本当は、新規不倫を減らすべきではないのだが、25000人のうち 1000組以上の新規不倫は多過ぎるので、それをゴソっと減らすかわりに、不倫し続けてる人の数を増やすことにした。
+
+元が、
+
+ARGS.adultery_rate = 0.11
+ARGS.new_adultery_rate = 0.22
+ARGS.marriage_rate = 0.7
+ARGS.new_marriage_rate = 0.8
+
+…だったのを…
+
+ARGS.adultery_rate = 0.20
+ARGS.new_adultery_rate = 0.22
+ARGS.marriage_rate = 0.768
+ARGS.new_marriage_rate = 0.77
+
+…という数値にしてみている。
+
+副作用として、マッチングにかかる計算コストが下がりシミュレーションが終るのが早くなった。</pre>
+
+
+</article>
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2021/03.html">2021年03月</a> | <a href="../../../index/gsm.html">共有メモ</a></nav>
+</body>
+</html>

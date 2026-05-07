@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>二封筒問題のシミュレーション その２ 実数拡張編 - JRF Blog Archive</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2020/11.html">2020年11月</a> | <a href="../../../index/software.html">ソフトウェア Tips</a></nav>
+<article data-pagefind-body>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[software] <span class="cocolog-id">cocolog:92328124</span></td></tr>
+<tr><th>セクション</th><td>JRF のソフトウェア Tips</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2020/11.html">2020年11月05日 22:59:45</a></td></tr>
+<tr><th>元URL</th><td><a href="http://jrf.cocolog-nifty.com/software/2020/11/post-8d2f26.html" class="ext-link"><span class="original-url">http://jrf.cocolog-nifty.com/software/2020/11/post-8d2f26.html</span></a></td></tr>
+<tr><th>タグ</th><td>[シミュレーション] [Python]</td></tr>
+</table>
+</div>
+<h1>二封筒問題のシミュレーション その２ 実数拡張編</h1>
+<pre class="body">■概要
+  
+二封筒問題(参: 三浦俊彦『可能世界の哲学』)を Python を用いたシミュレーションで解く。その１では未開封と開封で答えが違うことがシミュレーションによっても確かめられた。
+
+この「その２」ではその謎を探るため、まずは上限の効果を確かめようと額を実数にするよう問題を拡張してみる。
+
+この次の「その３」では整数問題に戻って拡張を試みる。
+
+■実数拡張
+  
+その１のシミュレーションでは、暗黙のうちに小切手の額は整数であると考えた。しかし、整数だと一方を2倍にするときに、両者の中間的な状態がわからなくなる感じ、中がくぼんでいるイメージがあるように私は思った。それが解析を難しくしていると感じた。
+
+そこで、もっと状態が稠密であるようにすればよいのではないかと、額を実数にすることを考えてみる。具体的には、乱数を上限 X 円で一様乱数を発生させて、x という額をランダムに決めたあと、コインで表裏を決める…すなわち 0 か 1 かの乱数 r をとり、r == 0 ならば、a の封筒に 2*x/3 円、b の封筒に x/3 円入れ、r == 1 ならば a の封筒に x/3 円、b の封筒に 2*x/3 円入れるという風にやってみる。
+
+それをするプログラムが two_envelopes_3.py で以下のようになる。(parse_args を省略している。)
+
+import random
+import numpy as np
+from sympy import *
+import argparse
+ARGS = argparse.Namespace()
+
+ARGS.trials = 10000
+ARGS.x_max = 200
+ARGS.q = 0
+
+def main ():
+    s = 0
+    valid = 0
+    for trial in range(ARGS.trials):
+        r = random.randrange(2)
+        x = random.uniform(0, ARGS.x_max)
+        if r == 0:
+            a = 2 * x / 3
+            b = x / 3
+        else:
+            a = x / 3
+            b = 2 * x / 3
+        if a &gt; ARGS.x_max / 3 + ARGS.q:
+            continue;
+        valid += 1
+        s += np.array([a, b, x, b / a])
+    av_c = s / valid
+    
+    x = Symbol('x', real=True)
+    X = Symbol('X', real=True)
+    E_a1_b = integrate(Rational(1, 3) * x / (X / 2), (x, 0, X / 2))
+    E_b_b = integrate(Rational(2, 3) * x / X, (x, 0, X))
+    E_c_b = Rational(1, 3) * E_a1_b + Rational(2, 3) * E_b_b
+    assert Eq(E_a1_b, X * Rational(1, 12)).simplify()
+    assert Eq(E_b_b, X * Rational(1, 3)).simplify()
+    assert Eq(E_c_b, X * Rational(1, 4)).simplify()
+    
+    E_a1_a = integrate(Rational(2, 3) * x / (X / 2), (x, 0, X / 2))
+    E_b_a = integrate(Rational(1, 3) * x / X, (x, 0, X))
+    E_c_a = Rational(1, 3) * E_a1_a + Rational(2, 3) * E_b_a
+    assert Eq(E_a1_a, X * Rational(1, 6)).simplify()
+    assert Eq(E_b_a, X * Rational(1, 6)).simplify()
+    assert Eq(E_c_a, X * Rational(1, 6)).simplify()
+    
+    E_a1_ba = integrate(Rational(1, 2) / (X / 2), (x, 0, X / 2))
+    E_b_ba = integrate(2 / X, (x, 0, X))
+    E_c_ba = Rational(1, 3) * E_a1_ba + Rational(2, 3) * E_b_ba
+    assert Eq(E_a1_ba, Rational(1, 2)).simplify()
+    assert Eq(E_b_ba, 2).simplify()
+    assert Eq(E_c_ba, Rational(3, 2)).simplify()
+    
+    E_c_a = E_c_a.subs([(X, ARGS.x_max)]).evalf()
+    E_c_b = E_c_b.subs([(X, ARGS.x_max)]).evalf()
+    E_c_ba = E_c_ba.subs([(X, ARGS.x_max)]).evalf()
+    
+    print(&quot;valid:&quot;, valid, &quot;/&quot;, ARGS.trials)
+    if ARGS.q == 0:
+        print(&quot;E(A) =&quot;, av_c[0], &quot;(==&quot;, E_c_a, &quot;)&quot;)
+        print(&quot;E(B) =&quot;, av_c[1], &quot;(==&quot;, E_c_b, &quot;)&quot;)
+        print(&quot;E(X) =&quot;, av_c[2])
+        print(&quot;E(B/A) =&quot;, av_c[3], &quot;(==&quot;, E_c_ba, &quot;)&quot;)
+        print(&quot;E(B)/E(A) =&quot;, av_c[1] / av_c[0], &quot;(==&quot;, E_c_b / E_c_a, &quot;)&quot;)
+    else:
+        print(&quot;E(A) =&quot;, av_c[0])
+        print(&quot;E(B) =&quot;, av_c[1])
+        print(&quot;E(X) =&quot;, av_c[2])
+        print(&quot;E(B/A) =&quot;, av_c[3])
+        print(&quot;E(B)/E(A) =&quot;, av_c[1] / av_c[0])
+        
+if __name__ == '__main__':
+    main()
+    
+ソースの説明の前に実行結果を先に見ておこう。
+
+$ python two_envelopes_3.py
+valid: 7525 / 10000
+E(A) = 33.37136761864975 (== 33.3333333333333 )
+E(B) = 49.86177523537428 (== 50.0000000000000 )
+E(X) = 83.23314285402402
+E(B/A) = 1.4948837209302326 (== 1.50000000000000 )
+E(B)/E(A) = 1.4941483910748923 (== 1.50000000000000 )
+
+ソースの main は大きくわけて三つの部分からなる。
+
+最初の for によるループでシミュレーションを実行している。開封バージョンのような結果を得るために、基本、a &lt;= ARGS.x_max / 3 のものだけ valid (妥当)な試行として数えている。ARGS.x_max が上でいう上限 X である。ARGS.q についてはあとで説明する。
+
+次の x = Symbol('x', real=True) から print の前までが、期待値の計算である。
+
+「assert 式」は、式が真でない場合、エラーを出力するもので逆に言えば、そこでの計算結果が満たすべき式を表している。通常みないのは 「assert Eq(■, □).simplify()」という式である。これは、sympy を使ったシンボルを含む式な単純な == では文字通りの比較をされて偽と判断されるためそうならないようにしているだけで、いいたいことは ■ == □ である。
+
+例えば、「assert Eq(E_a1_b, X * Rational(1, 12)).simplify()」 は E_a1_b が X/12 になることを確かめているだけである。Rational(1, 12) は 1/12 のことである。
+
+さて期待値の計算であるが、本当は、a が開封されて a だけが見れるわけではあるが、期待値の計算上はどちらを二倍にするかの r も見ることができるとしても問題ない。そこで、事象を次の 3 つの領域に分類する。
+
+  ●領域 a1:r == 0 で、x &lt;= X/2。
+  ●領域 a2:r == 0 で、x &gt; X/2。
+  ●領域 b:r == 1 で、すべての x。
+      
+上でチェックしている a &lt;= X/3 であるが、r == 1 の場合、a は x/3 であることが確定し x/3 &lt;= X/3 なので、かならず言える。r == 0 の場合、a は 2*x/3 であるが、x &lt;= X/2 ならば a &lt;= X/3 に、x &gt; X/2 ならば a &gt; X/3 となる。ゆえに、
+
+  ●領域 c:a &lt;= X/3。
+      
+とすると、領域 c == 領域 a1 と 領域 b の和集合…となる。
+
+領域 c における b の封筒に入っている額の期待値を求めたいならば、領域 a1 と領域 b に分割して両者の期待値を計算してから重み付けして足し合わせればいい。ちなみに、「期待値の分割」の公式は↓などにあるが、離散版しか証明を載せてないところしか見つからず、実数版は私は見つけることができなかった。自明のようにも思うが、ここでは証明なしに「期待値の分割」の公式を使う。
+
+《期待値 - COMPASS 真の理解のためのシンプルな数学のノート》  
+
+領域 a1 における b の期待値は、ソースを見ればわかるかと思うが、
+
+  E_a1_b = integrate(Rational(1, 3) * x / (X / 2), (x, 0, X / 2))
+  
+として式を建てる。E(f(X)) == integrate(f(X) * p(x), x) という定義的式と一様分布の p(x) = 1/(X/2) を使った。これは、結局、E_a1_b == X/12 のように求まる。
+
+それを領域 b における b の期待値とともに「期待値の分割」の公式を使ってまとめているのが、
+
+  E_c_b = Rational(1, 3) * E_a1_b + Rational(2, 3) * E_b_b
+  
+で、結局、領域 c における b の期待値 E_c_b == X / 4 と求まる。
+
+同様にして、領域 c における a の期待値 E_c_a == X/6、領域 c における b/a の期待値 E_c_ba == 3/2 が求まる。
+
+あと、E_c_a = E_c_a.subs([(X, ARGS.x_max)]).evalf() は X にそのときの上限の実際の値を入れて計算するものである。
+
+そして、最後にシミュレーション結果と ARGS.q == 0 のときは期待値を表示する。
+
+これが上の two_envelopes_3.py がやっていることである。
+
+これにより、開封後 a が X/3 以下であれば…すなわち、領域 c において… a から b に交換したときの期待値が 1.5 倍になることが示された。
+
+■ARGS.qの使い方
+    
+さて、if a &gt; ARGS.x_max / 3 + ARGS.q: の部分を変え、valid となる範囲をいろいろ変えて実験していくと、どうも、E(b)/E(a) の期待値の最大値は 1.5 らしいとわかってくる。それを簡単に試してもらうため ARGS.q に様々な値を代入していただこうというのが、ARGS.q を設けた目的である。
+
+ARGS.q を正の値にすると、valid でないとして reject される範囲が狭まり、領域 a2 のものが計算に加わることになる。上では示していないが、領域 a2 は交換が不利になるため、その領域を含むことで、E(b)/E(a) の結果は悪くなる。例えば ARGS.q == +30 とすると次のようになる。
+
+$ python two_envelopes_3.py -q +30
+valid: 8617 / 10000
+E(A) = 39.59189449016641
+E(B) = 48.976348351691456
+E(X) = 88.568242841858
+E(B/A) = 1.368631774399443
+E(B)/E(A) = 1.2370296744414668
+
+一方、ARGS.q を負の値にすると、valid な範囲が狭まるわけであるが、それは a1 の領域が食い込むだけで、E(b)/E(a) には影響を及ぼさない。例えば ARGS.q == -30 にすると次のようになる。
+
+$ python two_envelopes_3.py -q -30
+valid: 4095 / 10000
+E(A) = 18.56406053629886
+E(B) = 28.04892252471019
+E(X) = 46.612983061009025
+E(B/A) = 1.5084249084249084
+E(B)/E(A) = 1.5109260428161875
+
+E(b)/E(a) の最大は 1.5 で、最大の 1.5 に保ったまま reject されない…すなわち得をする機会を見逃さないのが、a &lt;= X/3 という基準であると言えそうだ。
+
+しかし、それはデータからそう言えるだけで論理的にそうだと証明できたわけではない。
+
+開封によって知ることができ、かつ、その知ったことによって変化させることができる事象というものが、はっきり列挙されているわけではないのがここでは問題となる。
+
+知ること／知らないことをどう表すか…それが問われていると言えるかもしれない。
+
+なお、中身を見れず額がわからなくとも、上限額よりはるかに小さい額しか入っていないという情報があれば、a &lt;= X/3 を確かめるための X の具体的な数値が示されないということであっても、交換が有利になるとは言えるだろう。ただ、分布が一様分布でないというような情報になれば、また話は変わってくるだろう。
+
+さて、この続きの「その３」では、整数に戻って元の二封筒問題がなぜそのような答えになるかの私なりの「完全な解答」を与えよう。
+
+■参考＆著者＆ライセンス＆配布物
+  
+この記事には、その１ 基礎編、その２ 実数拡張編、その３ 整数拡張編があるが、その１を参照のこと。
+
+更新：2020-11-05--2020-11-12
+初公開：2020年11月05日 22:59:44
+最新版：2020年11月12日 23:01:46
+
+
+Links:
+
+可能世界の哲学: <a href="../../../articles/2020/11/hbm_02020.html" class="int-link" title="Amazon.co.jp: 改訂版 可能世界の哲学 「存在」と「自己」を考える (二見文庫): 三浦俊彦: Books">https://www.amazon.co.jp/dp/4576170619</a>
+その１: <a href="../../../articles/2020/11/software_92328105.html" class="int-link" title="二封筒問題のシミュレーション その１ 基礎編">http://jrf.cocolog-nifty.com/software/2020/11/post-91f890.html</a>
+その３: <a href="../../../articles/2020/11/software_92328134.html" class="int-link" title="二封筒問題のシミュレーション その３ 整数拡張編">http://jrf.cocolog-nifty.com/software/2020/11/post-cc834b.html</a>
+two_envelopes_3.py: <a href="https://github.com/JRF-2018/two_envelopes/blob/master/two_envelopes_3.py" class="ext-link">https://github.com/JRF-2018/two_envelopes/blob/master/two_envelopes_3.py</a>
+期待値 - COMPASS 真の理解のためのシンプルな数学のノート: <a href="../../../articles/2020/11/hbm_02019.html" class="int-link" title="期待値">http://www.compassare.org/mean.html</a>
+その２: <a href="../../../articles/2020/11/software_92328124.html" class="int-link" title="二封筒問題のシミュレーション その２ 実数拡張編">http://jrf.cocolog-nifty.com/software/2020/11/post-8d2f26.html</a></pre>
+
+
+<section class="backrefs" data-pagefind-ignore>
+<h2>後方参照 (3 件)</h2>
+<ul>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2020/11/software_92328105.html">二封筒問題のシミュレーション その１ 基礎編</a> <span class="backref-date">2020年11月05日 22:51:24</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2020/11/software_92328134.html">二封筒問題のシミュレーション その３ 整数拡張編</a> <span class="backref-date">2020年11月05日 23:05:33</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2020/11/statuses_cocolog_92328204.html">ひとこと</a> <span class="backref-date">2020年11月05日</span></li>
+</ul>
+</section>
+
+</article>
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2020/11.html">2020年11月</a> | <a href="../../../index/software.html">ソフトウェア Tips</a></nav>
+</body>
+</html>

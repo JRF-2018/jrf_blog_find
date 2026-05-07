@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>ひとこと - JRF Blog Archive</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2025/05.html">2025年05月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+<article data-pagefind-body>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[statuses] <span class="cocolog-id">cocolog:95428644</span></td></tr>
+<tr><th>セクション</th><td>JRF のひとこと</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2025/05.html">2025年05月03日</a></td></tr>
+<tr><th>元URL</th><td><a href="http://jrf.cocolog-nifty.com/statuses/2025/05/post-b1374d.html" class="ext-link"><span class="original-url">http://jrf.cocolog-nifty.com/statuses/2025/05/post-b1374d.html</span></a></td></tr>
+
+</table>
+</div>
+<h1>ひとこと</h1>
+<pre class="body">Grok さんに教わりながら、ウィルスの弱毒化のシミュレーションと、病痕を美的に評価する集団の実効潜伏期間が短縮されるよう性選択されるというウィルスと人類との共進化(?)シミュレーションを作った。
+JRF 2025年5月3日
+
+コロナをキッカケに以前から感染症のシミュレーションに興味を持っていた。拙著『宗教学雑考集』がひといきついて、その周りの勉強にも手を付けはじめた。
+
+『宗教学雑考集』を書いてる間も、勉強の準備として、<a href="../../../articles/2024/09/statuses_cocolog_95052633.html" class="int-link cocolog-id" title="ひとこと">[cocolog:95052633]</a>(2024年9月) で、↓という「ライブラリ」を作ったりしていた。
+
+《JRF-2018/simple_synthetic_population: 仮想合成人口個票の簡易な実装》  
+<a href="https://github.com/JRF-2018/simple_synthetic_population" class="ext-link">https://github.com/JRF-2018/simple_synthetic_population</a>
+
+JRF 2025年5月3日
+
+本当はそれを使ってシミュレーションをする計画だったのだが、Grok さんと弱毒化を語っているうちに Grok さんがシュッとシミュレーションのプログラムを出してきて、それで↑を使わずにシミュレーション実験をする流れとなった。
+
+JRF 2025年5月3日
+
+……。
+
+あと、気になる方もいるだろうから先に主張しておく。
+
+○ 2025-04-29T03:42:26Z
+
+表記問題。「ウイルス」か「ウィルス」か。標準的には「ウイルス」のようだが、私は「ウィルス」と発音するのでそう書いている。ラテン語をなまって読むと「ウィルス」なのかな？…とか思う。昔は「ウィ」と表記できないので苦肉の策で「ウイ」と書いたのであって、今なら「ウィ」が良いのは？…と思う。
+
+JRF 2025年5月3日
+
+……。
+
+以前から、患者の行動(隔離など)により、「ウィルスの弱毒化」が起きうることを示したかった。
+
+<a href="../../../articles/2024/06/statuses_cocolog_94891057.html" class="int-link cocolog-id" title="ひとこと">[cocolog:94891057]</a>(2024年6月)
+＞ウィルスの弱毒化は起きるだろう。ウィルスにその意図はなくても動物はほぼそう意図し行動するから。弱毒化が正しければロックダウンも正しい。逆に、ロックダウンが許せないから、弱毒化言説も否定されているのではないか？
+
+(…)
+
+ウィルスがそのような「意図」はもってなかったとしても、動物はそう「意図」して弱毒なウィルスを選ぶよう、症状がヒドイほど表に出ない・陰で死ぬ選択はできる。
+＜
+
+JRF 2025年5月3日
+
+ウィルスに動物を適度に残そうという意思はないかもしれないが、動物の戦略をかいくぐろうという意思もやはりないはずで、その分、意志のある動物は有利なはずだ。はしかや天然痘はなぜかそれを掻い潜って弱毒化していないようだけれども。
+
+JRF 2025年5月3日
+
+……。
+
+最近も弱毒化を否定するような RT を Twitter (X) で見かけて、それでまたこのことが気になって、Grok さんに相談した。
+
+強毒のものが隔離される(死亡する)ことで、感染性をもつが、毒性の弱いものが広がりやすくなるはずだ。…という信念が私にあるが、どうだろう？ …と。
+
+すると、Grok さんはシュッと数理モデルを示してくれて、しかも Python で図示するコッードまで示してくれた。
+
+それをまとめたのが↓になる。
+
+JRF 2025年5月3日
+
+《virus_attenuation_SIR.ipynb - ウィルス弱毒化の SIR 的モデル - GitHub Gist》  
+<a href="https://gist.github.com/JRF-2018/b190e53d792a921f6ca56fa5aebc2c9d" class="ext-link">https://gist.github.com/JRF-2018/b190e53d792a921f6ca56fa5aebc2c9d</a>
+
+しかし、それは弱毒株と強毒株がすでにある状態のモデルでしかない。そうではなく、どれぐらい弱毒か強毒かが確率的に決まり、どれぐらい感染力があるも確率的に決まるとき、強毒なものほど隔離されるとすると、弱毒かつ感染力があるものが広がりやすいということを示したい。
+
+JRF 2025年5月3日
+
+この場合はエージント・シミュレーションつまり、ABM (Agent-Based Model) がほぼ必要になる。その ABM についても Grok3 さんはシュッと出してきた。
+
+それをさらに拡張して、潜伏期間(感染性あり)もランダムに決まるとき、ロックダウン的政策をすると、潜伏期間の短縮されることも示したいと考えた。こちらも Grok3 さんの補助の元、プログラムしたのだが、結果として私が考えるロックダウン的政策では潜伏期間の短縮がほぼならないことがわかった。これは意外だった。
+
+JRF 2025年5月3日
+
+それをまとめたのが↓になる。
+
+《virus_attenuation_ABM.ipynb - ウィルス弱毒化シミュレーションの ABM - GitHub Gist》  
+<a href="https://gist.github.com/JRF-2018/42d292c92325bce1c515d229fe9486b5" class="ext-link">https://gist.github.com/JRF-2018/42d292c92325bce1c515d229fe9486b5</a>
+
+なお、ここまでの Grok さんとの会話は↓から読めるようにしてある。
+
+《ウイルス感染の数理モデルとシミュレーション - X Grok》
+<a href="https://x.com/i/grok/share/Pl9eHC3k5QgrEFkmuTcfBKABz" class="ext-link">https://x.com/i/grok/share/Pl9eHC3k5QgrEFkmuTcfBKABz</a>
+
+JRF 2025年5月3日
+
+ちなみに、ここまでの内容は、↓のひとことのほうに追記としてまず書いておいた。
+
+<a href="../../../articles/2025/04/statuses_cocolog_95369157.html" class="int-link cocolog-id" title="ひとこと">[cocolog:95369157]</a>(2025年4月)
+＞岩見＆中岡＆岩波『ウイルス感染の数理モデルとシミュレーション』を読んだ。感染症の社会シミュレーションに興味を持って手に取ったが、この本は細胞内のウィルス動態が中心でその点ではアテが外れた。が、参考にできそうな部分も多かった。生物学に関しては基本飛ばして読んだ。＜
+
+JRF 2025年5月3日
+
+……。
+
+ここからが今回の本題である。
+
+ウィルスの(実効)潜伏期間のシミュレーション (性選択による進化シミュレーション)を作って Gist に付けておいた。Grok さんに例のごとく手伝ってもらったが今回は私の修正分も多い。
+
+《scar_sexsel.ipynb - ウィルスの(実効)潜伏期間のシミュレーション (性選択による進化シミュレーション) - GitHub Gist》  
+<a href="https://gist.github.com/JRF-2018/c3ccc62951ce90a5a03c4b129850a9de" class="ext-link">https://gist.github.com/JRF-2018/c3ccc62951ce90a5a03c4b129850a9de</a>
+
+JRF 2025年5月3日
+
+前回の virus_attenuation_ABM.ipynb までで、弱毒化はあるということは示せたが、そこで問題となったのは感染性のある潜伏期間がやっかいであるということ。その短縮をどうやるのかが次の問題となった。
+
+人体の発熱は、そういう潜伏期間を許さず自己隔離を促すためでもあるのではないか…つまり発症するということ自体がある種の適応で、周りの目が隔離を促せるよう「発症」の在り方を進化させてきたのではないか…と考えた。
+
+JRF 2025年5月3日
+
+人類が「裸」なのは、病痕がわかりやすいよう、それが、病痕が、美的に選択されてきたからだろうか？…と考えて、進化シミューレションを作ってみた。
+
+今回のコード。病痕の評価でグループ(種族)を分けていること・異種族間では交配・コンタクトが起きにくくしているのが特徴。また、人の免疫応答も考慮した「実効潜伏期間」を減らすために潜伏期間中も感染・回復・死亡が起きうるというモデルになっているのも特徴だろう。感染が続かないことがないよう、回復後も再感染が多少あるようにもしている。
+
+JRF 2025年5月3日
+
+途中、潜伏期間中の毒性を上げ、回復率を低いように設定した。ここまですると、潜伏期間があることのメリットは人間にはなくなる。すると実効潜伏期間を減らすよう免疫応答速度が増えるよう進化するはずだ。この設定は意外に思うかもしれないが、逆に発症後の毒性が低くなり、回復が増えるというのは、「対処療法」によると解釈すれば正当化できるだろう。現代「根治」が可能になり、「対処療法」は批判されることがあるが、ウィルス進化を考えにいれると、感染が増えて人が死ぬのを許容するという点で非情ではあるが、なかなか侮れない戦略だったのかもしれない。
+
+JRF 2025年5月3日
+
+結論。
+
+病痕を評価する文化が、実効潜伏期間を短縮することはおそらく言えた。信頼区間的にハッキリとまでは言えないが。…といったところ。病痕がわかりやすいよう「裸」に進化するのは、免疫応答速度の上昇を促し、人間の側の実効潜伏期間を短くする要素はあるようだ。
+
+JRF 2025年5月3日
+
+ウィルス自体の潜伏期間を減らすのに潜伏期間と発症後の感染確率(感染力)の差が大きなファクターであることはわかった。感染を制限しがちな裸を是とする文化は、それらの面ではマイナスの側面があった。現代も感染を制限しがちなので、潜伏期間という面からすると、長く＝悪化する方向に圧力をかけていることになるだろう。人類の咳はわざと感染を広め、致死性のある潜伏期間や感染確率の悪化を防ぐ進化という意味あいもあったのかもしれない。現代でも、マスク解除のような政策が、潜伏期間や感染力を悪化させない面はあるのかもしれない。
+
+JRF 2025年5月3日
+
+なお、ウィルスと人類の共進化シミュレーションを目指したが、そこまではできず、ちょっとお茶をにごした面はある。
+
+JRF 2025年5月3日
+
+……。
+
+ちなみに、scar_sexsel.ipynb を作るまでの Grok さんとの会話は↓から読めるようにしてある。
+
+《潜伏期間と発熱の役割についてのシミュレーション考察 - X Grok》  
+<a href="https://x.com/i/grok/share/NJu1QacUXGwWDbkxNkuznT695" class="ext-link">https://x.com/i/grok/share/NJu1QacUXGwWDbkxNkuznT695</a>
+
+JRF 2025年5月3日
+
+あと、病痕が見えるように体毛が退化し「裸」になったという視点はたまたま最近、それに関連する記事が出ていた。
+
+《人間の傷の治癒はサルの3倍もかかることが判明、人間のケガの治りが遅いのは「毛が生えていないから」 - GIGAZINE》  
+<a href="https://gigazine.net/news/20250501-humans-heal-3-times-slower/" class="ext-link">https://gigazine.net/news/20250501-humans-heal-3-times-slower/</a>
+
+JRF 2025年5月3日
+
+……。
+
+ところで今回作ったプログラム(ipynb)のライセンスだが…。
+
+基本はこういうのの私のいつものスタンスは、「簡単なプログラムなので Public Domain でいいです。ただし、それだと使いにくいという場合は MIT License で。」というもので、それは今回も変わらない。私が作った部分についてはそれでいい。
+
+JRF 2025年5月3日
+
+しかし、今回のプログラムはかなり Grok さんの手によるものだ。生成 AI が生成したプログラムのライセンスという現在は複雑な問題がからむ。ここ最近は生成 AI のコードのサポートは常識となっており、そのコードを自分のものと主張できないとなるとかなり困った状況になるので、その辺は、AI に著作権がないみたいなものの類推で、ある種の Public Domain 的なコードを流用したに近いと主張できるのかもしれない。だから私のいつものスタンスで十分なのかもしれない。が…。
+
+この辺りは私もよくわからない。
+
+JRF 2025年5月3日</pre>
+
+
+<section class="backrefs" data-pagefind-ignore>
+<h2>後方参照 (5 件)</h2>
+<ul>
+<li><span class="backref-label">[cocolog:95428644]参照</span> <a href="../../../articles/2025/06/statuses_cocolog_95477543.html">ひとこと</a> <span class="backref-date">2025年06月04日</span></li>
+<li><span class="backref-label">[cocolog:95428644]参照</span> <a href="../../../articles/2025/05/statuses_cocolog_95440214.html">ひとこと</a> <span class="backref-date">2025年05月11日</span></li>
+<li><span class="backref-label">[cocolog:95428644]参照</span> <a href="../../../articles/2025/05/statuses_cocolog_95436730.html">ひとこと</a> <span class="backref-date">2025年05月09日</span></li>
+<li><span class="backref-label">[cocolog:95428644]参照</span> <a href="../../../articles/2025/05/statuses_cocolog_95433263.html">ひとこと</a> <span class="backref-date">2025年05月06日</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2025/05/gsm_006924.html">共有メモ</a> <span class="backref-date">2025-05-03T09:11:53Z</span></li>
+</ul>
+</section>
+
+</article>
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2025/05.html">2025年05月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+</body>
+</html>

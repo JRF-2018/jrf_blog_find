@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>共有メモ - JRF Blog Archive</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2025/08.html">2025年08月</a> | <a href="../../../index/gsm.html">共有メモ</a></nav>
+<article data-pagefind-body>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[gsm] 2025-08-18T09:24:08Z</td></tr>
+<tr><th>セクション</th><td>グローバル共有メモ</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2025/08.html">2025-08-18T09:24:08Z</a></td></tr>
+<tr><th>元URL</th><td>(URLなし)</td></tr>
+
+</table>
+</div>
+<h1>共有メモ</h1>
+<pre class="body">jrf&gt; experimental_memory_0.0.1.ipynb (↓)について。
+
+<a href="../../../articles/2025/08/statuses_cocolog_95583904.html" class="int-link" title="ひとこと">http://jrf.cocolog-nifty.com/statuses/2025/08/post-881b46.html</a>
+
+最近、よく動画を見させてもらっている↓さんがメモリ機能について言及されていた。
+
+《AI時代の羅針盤 (compass for the AI era):X:2025-08-18》  
+<a href="https://x.com/compassinai/status/1957221745645203803" class="ext-link">https://x.com/compassinai/status/1957221745645203803</a>
+＞【AI進化の鍵は&quot;記憶&quot;にあり。📷】
+
+与えられたデータを学ぶ時代は終わりました。
+
+今、AIは自らの経験という教科書を書き始めています。
+
+しかし、その膨大な経験をどう活かすか？
+
+「効率的な記憶管理」こそが、AIを次のレベルに進化させる鍵です。
+
+『RoboMemory』は脳の構造を模倣し、経験を忘れず、知識として整理し続ける仕組みを提案します。
+
+この新しい記憶は、AIの知性をどこまで高めるのでしょうか？
+
+(…)
+
+#AI #進化 #自己進化 #経験学習 #RoboMemory
+
+(…)
+
+人間の脳を真似たロボット記憶システム RoboMemory は実現したのか？（2508.01415）【論文解説シリーズ】RoboMemory: A Brain-inspired Multi-memory Agentic Framework for Lifelong Learning in Physical Embodied Systems. Mingcong Lei, et al.
+
+<a href="https://www.youtube.com/watch?v=JGGMmIiVe7w" class="ext-link">https://www.youtube.com/watch?v=JGGMmIiVe7w</a> via @compassinai
+＜
+
+そこでは「空間記憶」「時間記憶」「エピソード記憶」「意味記憶」という４つの機能を並列処理処理でこなし、プランニングとクリティックもするという話だった。最初聞いたときは、そんな特別な機能分化がいるのかなぁ… AI さん達に(マルチモーダルな)メモリツールを渡せば、いずれは AI が自分で適当に分化させた使い方を学習していくんじゃないか…と思った。
+
+しかし、もう少し検討して、私の枠組みにもそれらの機能に相当するものが意図せず現れていたのに気付いた。
+
+まず、時間記憶は、memory_list_recent に相当するのだろう。それは何に続いて何があったかという情報を持つ。
+
+エピソード記憶は、summarize_messages による要約がそれにあたるのだろう。
+
+空間記憶は、熊剣迷路問題が元々持っていた地図取得(get_full_map や get_surroundings)がそれにあたるということだろう。
+
+意味記憶は、メモリ機能の実態とセマンティック検索か。
+
+プランニングは、update_plan show_plan があったし、クリティックは今回はなくなったけど、前あった scolding の機能がそれに相当するように思う。
+
+こう考えると、「並列処理」はしていないが、必要だと思われた機能は共通しているのかもしれない。私も上の論文も一般的枠組みに沿っているのだろう。ロボティクスなのでいらなかったのか目立たなかったのか、imagine_keyword に相当するものはなかったようだが。</pre>
+
+
+</article>
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2025/08.html">2025年08月</a> | <a href="../../../index/gsm.html">共有メモ</a></nav>
+</body>
+</html>

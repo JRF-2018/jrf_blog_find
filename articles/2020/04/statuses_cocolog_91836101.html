@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>ひとこと - JRF Blog Archive</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2020/04.html">2020年04月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+<article data-pagefind-body>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[statuses] <span class="cocolog-id">cocolog:91836101</span></td></tr>
+<tr><th>セクション</th><td>JRF のひとこと</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2020/04.html">2020年04月18日</a></td></tr>
+<tr><th>元URL</th><td><a href="http://jrf.cocolog-nifty.com/statuses/2020/04/post-6fbd1e.html" class="ext-link"><span class="original-url">http://jrf.cocolog-nifty.com/statuses/2020/04/post-6fbd1e.html</span></a></td></tr>
+
+</table>
+</div>
+<h1>ひとこと</h1>
+<pre class="body">「JAGS でモンティ・ホール問題を解く」という記事を書いた。R 言語とベイズ統計モデリングの JAGS の練習として。まだ、JAGS の勉強をしようとしてぜんぜんしていない段階なので、これでいいのか自信がないが…。
+JRF 2020年4月18日
+
+記事は↓。
+
+《JAGS でモンティ・ホール問題を解く》  
+<a href="../../../articles/2020/04/software_91836017.html" class="int-link" title="JAGS でモンティ・ホール問題を解く">http://jrf.cocolog-nifty.com/software/2020/04/post-7e9b97.html</a>
+
+JRF 2020年4月18日
+
+……。
+
+新型コロナウィルスに関するシミュレーションの「追実験」をしていると <a href="../../../articles/2020/04/statuses_cocolog_91824909.html" class="int-link cocolog-id" title="ひとこと">[cocolog:91824909]</a> に書いた。
+
+特に、↓の JAGS の記事を見て、こんなソフトがあるのかと驚いた。
+
+《COVID-19 日本国内の潜在的な陽性者数を推定する試み - StatModeling Memorandum》
+<a href="../../../articles/2020/05/hbm_01985.html" class="int-link" title="COVID-19 日本国内の潜在的な陽性者数を推定する試み - StatModeling Memorandum">http://statmodeling.hatenablog.com/entry/covid19-estimate-total-number-of-positives-in-japan</a>
+
+JRF 2020年4月18日
+
+私の関心のある確率分野で、Prolog みたいな推論ができる…と関心を持った。そして目標として「志村けん問題」(↓)を扱いたいと思った。
+
+《志村けんのパラドックス - アスペ日記》
+<a href="../../../articles/2020/05/hbm_01984.html" class="int-link" title="志村けんのパラドックス - アスペ日記">https://takeda25.hatenablog.jp/entry/2020/03/28/083257</a>
+
+JRF 2020年4月18日
+
+その前に練習としていいものはないかと考えたところ、前に記事も書いた(↓)モンティ・ホール問題がいいのではないか、と思いついた。
+
+《モンティ・ホール問題または三囚人問題の拡張とその確率操作シミュレーション》  
+<a href="../../../articles/2016/08/software_85821961.html" class="int-link" title="モンティ・ホール問題または三囚人問題の拡張とその確率操作シミュレーション">http://jrf.cocolog-nifty.com/software/2016/08/post.html</a>
+
+JRF 2020年4月18日
+
+あとは一番上の記事に書いてあるとおりで、はじめてなので苦労しながら結果を出した。
+
+JRF 2020年4月18日
+
+……。
+
+実は「志村けん問題」についても、ある程度、結果は出ている。
+
+100人の村で、5人に1人の有名人が感染症にかかったら、そうでない場合よりも感染が広がっているか…という問題で、広がっていると言って間違いではない…という結果は得ている。
+
+JRF 2020年4月18日
+
+しかし、その信頼度などをどう測ればよいかが、私にはわかっておらず、JAGS やベイズ統計モデリングについてもう少し勉強してから、記事にするつもり。
+
+モンティ・ホール問題も勉強してからにしようかとも思ったが、ここのところ記事を書いてなかったし、あかんところがあったら、あとで修正すればいいかという軽い気持ちで、先に公開してしまった。
+
+JRF 2020年4月18日
+
+……。
+
+一点、JAGS を用いるときの注意点。
+
+rjags で、jags.model するとき、
+
+Node inconsistent with parents
+
+…というエラーは初期値の設定をミスっているものと考えてよさそうだ。初期値に inconsistency があるということで、たいてい初期値をさらに詳しく与える必要があるときに出ていた。
+
+JRF 2020年4月18日</pre>
+
+
+<section class="backrefs" data-pagefind-ignore>
+<h2>後方参照 (2 件)</h2>
+<ul>
+<li><span class="backref-label">[cocolog:91836101]参照</span> <a href="../../../articles/2020/05/statuses_cocolog_91890615.html">ひとこと</a> <span class="backref-date">2020年05月09日</span></li>
+<li><span class="backref-label">[cocolog:91836101]参照</span> <a href="../../../articles/2020/04/software_91836017.html">JAGS でモンティ・ホール問題を解く</a> <span class="backref-date">2020年04月18日 19:28:13</span></li>
+</ul>
+</section>
+
+</article>
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2020/04.html">2020年04月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+</body>
+</html>

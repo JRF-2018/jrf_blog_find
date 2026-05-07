@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>Tweet Sig: ウェブ上の三文判？ - JRF Blog Archive</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2018/01.html">2018年01月</a> | <a href="../../../index/software.html">ソフトウェア Tips</a></nav>
+<article data-pagefind-body>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[software] <span class="cocolog-id">cocolog:88702702</span></td></tr>
+<tr><th>セクション</th><td>JRF のソフトウェア Tips</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2018/01.html">2018年01月06日 17:12:01</a></td></tr>
+<tr><th>元URL</th><td><a href="http://jrf.cocolog-nifty.com/software/2018/01/post.html" class="ext-link"><span class="original-url">http://jrf.cocolog-nifty.com/software/2018/01/post.html</span></a></td></tr>
+<tr><th>タグ</th><td>[JRF 作成ソフトウェア] [Firefox] [JavaScript]</td></tr>
+</table>
+</div>
+<h1>Tweet Sig: ウェブ上の三文判？</h1>
+<pre class="body">This is a support page of the Tweet Sig (for the Mozilla Firefox or for the Google Chrome) and the Tweet Sig for Android.  This page also supports the simple social page poster which is a Facebook web app and is used in the Tweet Sig.  You can write comments on this page, even if you can't understand Japanese blow. If you need explanation of the extension in English, show the English main page of the Tweet Sig.
+
+ブラウザ拡張 Tweet Sig を作った。Web Extension 規格に順って作ったので今後、様々なブラウザで利用できるようになるかもしれないが、今のところ Mozilla Firefox と Google Chrome でしか動かないようだ。
+
+Tweet Sig の説明は、専用ページで行った。まずそちらを読んで欲しい。このページは「サポート」を行うのがメインである。
+
+一応、ここでも軽く説明しておくと、Tweet Sig には、二つのモードがある。一つは、右クリックメニューで選ぶ(for PC)またはボタンを押す(for Android)ことで、セレクションの内容を投稿し、投稿した URL をクリップボードにコピーする。もう一つは、ボタンを押すことで、'#tweet-sig-in' の内容を投稿し、その URL を '#tweet-sig-out'にコピーするというものである。三文判程度の認証に使うことを想定している。
+
+以前から私は、似た用途として、時間記録デバイスを提案している。それは、読み出しと追記のみができる USB メモリのようなデバイスで、契約文書を作ったとき、それをこのデバイスに書き込むと、その文書にデバイスメーカーによる署名が付されて、保存される…といった用途を想定している。
+
+しかし、そのようなデバイスは今にいたるまで使われていない。それに替わるものとして、時間が記録されるもの…というと、Twitter などへの書き込みがあるな…として今回、このようなものを作ってみた。専用ページで書いたように削除ができたり非公開にできたりするのは不便だが、まったく似た用途に使えないわけではないと思う。
+
+なお、このアドオンを作ったときの感想が <a href="../../../articles/2018/01/statuses_cocolog_88703123.html" class="int-link cocolog-id" title="ひとこと">[cocolog:88703123]</a> に書いてある。
+
+■配布物
+  
+PC 用のアドオンは、AMO (Mozilla Add-ons) または Google Web Store のページから手に入る。Android 用は AMO for Android から手に入る。このページでは、一応、提出した際のソースのアーカイブを公開しておく。次のリンクが最新のもののはずだが、より以前のものはコメント欄をご参照いただきたい。
+
+  ●tweet_sig.zip
+  ●tweet_sig_mobile.zip
+    
+なお、tweet_sig.zip には manifest.json が含まれていない。かわりに manifest_for_firefox.json と manifest_for_chrome.json が含まれている。どちらかを manifest.json にリネーム(またはコピー)して使っていただきたい。
+
+更新：2018-01-06,2018-01-19
+初公開：2018年01月06日 17:12:04
+最新版：2018年01月19日 17:24:35
+
+
+Comments:
+
+[E:key] 初公開: tweet_sig-20180105.zip。バージョン 0.1.1。
+
+ID を取るためだけに作ったバージョン 0.1 は捨てた。
+
+投稿: JRF | 2018-01-06 17:16:30 (JST)
+
+[E:weep] 更新: tweet_sig-20180107-tmp.zip。バージョン 0.2。
+
+このバージョンは、Mozilla や Google に登録してない「幻のバージョン」。
+
+Facebook に対応！…と思ったら、Facebook は Tweet Sig がやるような直接ユーザーが入力したわけではない事前入力がある投稿を許していないらしい。しかたなく、審査を受ける前に諦めた。が、やったということがわかるよう、動いたバージョンをここにアーカイブしておく。
+
+投稿: JRF | 2018-01-07 06:20:20 (JST)
+
+[E:punch] 更新: tweet_sig-20180107.zip。バージョン 0.2.1。
+
+で、上のバージョン 0.2 を元のバージョン 0.1 相当の機能に制限したのが、バージョン 0.2.1 になる。含まれるファイルは増えているが、できることは 0.1 と変わらないはず。
+
+投稿: JRF | 2018-01-07 06:21:19 (JST)
+
+[E:golf] 更新: tweet_sig-20180118.zip。バージョン 0.4。
+
+Facebook でも使えるようになった。また、右クリックメニューでセレクションを投稿できるようになった。大きな変更。
+
+この更新に致るまでに Facebook のアプリ審査を受けたりして、いろいろあった。そちらの感想などは、上で書いた「ひとこと」のページなどで書きたい。
+
+投稿: JRF | 2018-01-19 16:16:30 (JST)
+
+[E:tennis] 初公開: tweet_sig_mobile-20180118.zip。バージョン 0.1.1。
+
+Tweet Sig for Android または tweet_sig_mobile はバージョン 0.1.1 で初公開。Firefox for Android では contextMenus が使えないため、セレクションをするとボタンが表示されるようにしてそれをクリックすると以前セレクトしていた内容を投稿できるようにした。iframe にもいちおう対応している。
+
+投稿: JRF | 2018-01-19 16:20:24 (JST)
+
+[E:penguin] 更新: tweet_sig-20180123.zip。バージョン 0.5。
+
+tweet_sig_mobile-20180123.zip。バージョン 0.2。
+
+小さな変更。引用時にタイトルもコピーできるようにした。
+
+投稿: JRF | 2018-01-23 19:13:30 (JST)
+
+[E:soccer] 更新: tweet_sig-20180702.zip。バージョン 0.6。
+
+tweet_sig_mobile-20180702.zip。バージョン 0.3。
+
+Facebook のサポートをやめた。いろいろな制限に対応するのを諦めた。
+
+また、小さなバグを修正した。
+
+投稿: JRF | 2018-07-02 12:18:06 (JST)
+
+
+Links:
+
+for the Mozilla Firefox: <a href="https://addons.mozilla.org/firefox/addon/tweet_sig/" class="ext-link">https://addons.mozilla.org/firefox/addon/tweet_sig/</a>
+for the Google Chrome: <a href="https://chrome.google.com/webstore/detail/tweet-sig/epefaednifmpgcdkedbcjkecibikpdkd" class="ext-link">https://chrome.google.com/webstore/detail/tweet-sig/epefaednifmpgcdkedbcjkecibikpdkd</a>
+the Tweet Sig for Android: <a href="https://addons.mozilla.org/firefox/addon/tweet_sig_mobile/" class="ext-link">https://addons.mozilla.org/firefox/addon/tweet_sig_mobile/</a>
+simple social page poster: <a href="http://jrf.cocolog-nifty.com/archive/tweet_sig/fb_page_poster.html" class="ext-link">http://jrf.cocolog-nifty.com/archive/tweet_sig/fb_page_poster.html</a>
+the English main page of the Tweet Sig: <a href="http://jrf.cocolog-nifty.com/archive/tweet_sig/README_en.html" class="ext-link">http://jrf.cocolog-nifty.com/archive/tweet_sig/README_en.html</a>
+専用ページ: <a href="http://jrf.cocolog-nifty.com/archive/tweet_sig/README_ja.html" class="ext-link">http://jrf.cocolog-nifty.com/archive/tweet_sig/README_ja.html</a>
+時間記録デバイス: <a href="../../../articles/2012/03/statuses_cocolog_72139046.html" class="int-link" title="ひとこと">http://jrf.cocolog-nifty.com/statuses/2012/03/post-cebd.html</a>
+AMO: <a href="https://addons.mozilla.org/firefox/addon/tweet_sig/" class="ext-link">https://addons.mozilla.org/firefox/addon/tweet_sig/</a>
+Google Web Store: <a href="https://chrome.google.com/webstore/detail/tweet-sig/epefaednifmpgcdkedbcjkecibikpdkd" class="ext-link">https://chrome.google.com/webstore/detail/tweet-sig/epefaednifmpgcdkedbcjkecibikpdkd</a>
+AMO for Android: <a href="https://addons.mozilla.org/firefox/addon/tweet_sig_mobile/" class="ext-link">https://addons.mozilla.org/firefox/addon/tweet_sig_mobile/</a>
+tweet_sig.zip: <a href="http://jrf.cocolog-nifty.com/archive/tweet_sig/tweet_sig.zip" class="ext-link">http://jrf.cocolog-nifty.com/archive/tweet_sig/tweet_sig.zip</a>
+tweet_sig_mobile.zip: <a href="http://jrf.cocolog-nifty.com/archive/tweet_sig/tweet_sig_mobile.zip" class="ext-link">http://jrf.cocolog-nifty.com/archive/tweet_sig/tweet_sig_mobile.zip</a>
+tweet_sig-20180105.zip: <a href="http://jrf.cocolog-nifty.com/archive/tweet_sig/tweet_sig-20180105.zip" class="ext-link">http://jrf.cocolog-nifty.com/archive/tweet_sig/tweet_sig-20180105.zip</a>
+tweet_sig-20180107-tmp.zip: <a href="http://jrf.cocolog-nifty.com/archive/tweet_sig/tweet_sig-20180107-tmp.zip" class="ext-link">http://jrf.cocolog-nifty.com/archive/tweet_sig/tweet_sig-20180107-tmp.zip</a>
+tweet_sig-20180107.zip: <a href="http://jrf.cocolog-nifty.com/archive/tweet_sig/tweet_sig-20180107.zip" class="ext-link">http://jrf.cocolog-nifty.com/archive/tweet_sig/tweet_sig-20180107.zip</a>
+tweet_sig-20180118.zip: <a href="http://jrf.cocolog-nifty.com/archive/tweet_sig/tweet_sig-20180118.zip" class="ext-link">http://jrf.cocolog-nifty.com/archive/tweet_sig/tweet_sig-20180118.zip</a>
+tweet_sig_mobile-20180118.zip: <a href="http://jrf.cocolog-nifty.com/archive/tweet_sig/tweet_sig_mobile-20180118.zip" class="ext-link">http://jrf.cocolog-nifty.com/archive/tweet_sig/tweet_sig_mobile-20180118.zip</a>
+tweet_sig-20180123.zip: <a href="http://jrf.cocolog-nifty.com/archive/tweet_sig/tweet_sig-20180123.zip" class="ext-link">http://jrf.cocolog-nifty.com/archive/tweet_sig/tweet_sig-20180123.zip</a>
+tweet_sig_mobile-20180123.zip: <a href="http://jrf.cocolog-nifty.com/archive/tweet_sig/tweet_sig_mobile-20180123.zip" class="ext-link">http://jrf.cocolog-nifty.com/archive/tweet_sig/tweet_sig_mobile-20180123.zip</a>
+tweet_sig-20180702.zip: <a href="http://jrf.cocolog-nifty.com/archive/tweet_sig/tweet_sig-20180702.zip" class="ext-link">http://jrf.cocolog-nifty.com/archive/tweet_sig/tweet_sig-20180702.zip</a>
+tweet_sig_mobile-20180702.zip: <a href="http://jrf.cocolog-nifty.com/archive/tweet_sig/tweet_sig_mobile-20180702.zip" class="ext-link">http://jrf.cocolog-nifty.com/archive/tweet_sig/tweet_sig_mobile-20180702.zip</a></pre>
+
+
+<section class="backrefs" data-pagefind-ignore>
+<h2>後方参照 (1 件)</h2>
+<ul>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2018/01/statuses_cocolog_88703123.html">ひとこと</a> <span class="backref-date">2018年01月06日</span></li>
+</ul>
+</section>
+
+</article>
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2018/01.html">2018年01月</a> | <a href="../../../index/software.html">ソフトウェア Tips</a></nav>
+</body>
+</html>

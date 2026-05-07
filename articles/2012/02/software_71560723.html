@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>cp_with_prefix.pl: ディレクトリ平坦化機能付きコピー - JRF Blog Archive</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2012/02.html">2012年02月</a> | <a href="../../../index/software.html">ソフトウェア Tips</a></nav>
+<article data-pagefind-body>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[software] <span class="cocolog-id">cocolog:71560723</span></td></tr>
+<tr><th>セクション</th><td>JRF のソフトウェア Tips</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2012/02.html">2012年02月09日 22:26:15</a></td></tr>
+<tr><th>元URL</th><td><a href="http://jrf.cocolog-nifty.com/software/2012/02/post.html" class="ext-link"><span class="original-url">http://jrf.cocolog-nifty.com/software/2012/02/post.html</span></a></td></tr>
+<tr><th>タグ</th><td>[Cygwin] [Perl] [JRF 作成ソフトウェア]</td></tr>
+</table>
+</div>
+<h1>cp_with_prefix.pl: ディレクトリ平坦化機能付きコピー</h1>
+<pre class="body">ハードのメディアプレイヤーで画像をランダムに閲覧したい。私が持っているメディアプレイヤーに限らず専用ハードのものはたいていそうだが、PC などのソフトではあった、zip にまとめられたものを見るようなことはできず、また、ディレクトリの構造を奥へ奥へと &quot;recursive&quot; に辿って見るような機能もない。フォルダ内のランダム再生はある。
+
+そこでディレクトリ構造を平坦化(flattening)してコピーするような Perl スクリプトを書いた。
+
+はじめはソースと同じファイル名(ベース名)で一つのディレクトリにコピーしたとき重複を避けるため、手動で接頭辞(prefix)を付けられるようにすれば十分かと考えたが、使うと面倒くさいので、-F オプションによって、ファイル名にディレクトリが含まれているとき、そのディレクトリ名を prefix とする機能も作った。
+
+例えば、
+
+$ perl cp_with_prefix.pl --prefix=p_ a/b/c.jpg d
+
+…としたときは、d/p_c.jpg というファイルができる。
+
+$ perl cp_with_prefix.pl -F a/b/c.jpg d
+
+…としたときは d/a_b_c.jpg というファイルができる。
+
+Cygwin の mv や cp の実装を参考に、xargs といっしょに使いやすいよう -t (ターゲットディレクトリ)オプションを用意した。
+
+例えば次のように使う。
+
+$ find dir1 dir2 -name '*' -print0 | xargs -0 perl cp_with_prefix.pl -F -t dir3
+
+こうすると、dir1 や dir2 の下にあるファイルがリカーシブに dir3 の下にファイル名の重複が(ほぼ)なくなるようにコピーされる。
+
+なお、私の最初に書いた目的にそった上で高速化するため、同じファイル名があったときはコピーせずスキップする。ちゃんと上書き(overwrite)して欲しいときは -f (force)オプションを付ければよい。スキップしている表示がうっとうしいなら、-q (quiet)オプションを付ければよい。目的がただの rename に近いため、コピーしたあとの日付けはソースと変わらないようにしている。
+
+ファイル名とコンソールの文字エンコーディングについては、ソースの以下の部分をいじって欲しい。本当は、ロケールとかを使ってコーディングできれば美しいのだが、これまでの私の経験から言うと、オプションで指定してもらうか、今回のようにスクリプトをいじってもらったほうが話が早い。現在、 Cygwin の 1.7 系列の場合、ファイルシステムのエンコーディングが cp932 (Windows 用の Shift JIS コード)であっても、utf8 で処理される。昔の Cygwin であれば、utf8 の部分を、ファイル名では cp932 にコンソールでは euc-jp にすると、うまくいくかもしれない。
+
+our $FILENAME_ENCODER = Encode::find_encoding('utf8') or die;
+our $CONSOLE_ENCODER = Encode::find_encoding('utf8') or die;
+
+■配布物
+  
+これは、とても簡単なプログラムなので、数式のようにパブリックドメインなものとして扱っていただいてよい。こんなプログラマなら誰でも作れそうなものをプログラムできる人しか使えないであろう Perl スクリプトで公開する意義はないかもしれないが、こんな簡単な機能がググっても見つからないのも変なので公開することにした。
+
+  ●cp_with_prefix.pl
+    
+■関連
+  
+スクリプト自体はパッと見つからないが、シェルで同じような機能を求めてる人はいそうだった。Windows なら高機能なリネームソフトはいろいろある。 iTunes とかもそういう機能がありそうだが、このような機能だけが欲しくて使っているとかありうるんだろうか？
+
+  ●《Unix shell file copy flattening folder structure - Stack Overflow》。
+  ●《Flexible Renamer》。Windows 用のリネームソフトの例。
+    
+更新：2012-02-09,2012-02-11
+初公開：2012年02月09日 22:26:18
+最新版：2012年02月11日 19:10:51
+
+
+Comments:
+
+[E:wave] 更新: バージョン 0.03。オプションを Unix 風というか POSIX 風かにするため、上書きを -o から -f に、上書きしないときも警告しないようにするのを -o- から -q に改めた。
+
+投稿: JRF | 2012-02-11 18:28:20 (JST)
+
+[E:coldsweats01] typo 「平担」→「平坦」。
+
+投稿: JRF | 2012-02-11 19:13:20 (JST)
+
+
+Links:
+
+cp_with_prefix.pl: <a href="http://jrf.cocolog-nifty.com/archive/perl/cp_with_prefix.pl" class="ext-link">http://jrf.cocolog-nifty.com/archive/perl/cp_with_prefix.pl</a>
+Unix shell file copy flattening folder structure - Stack Overflow: <a href="../../../articles/2012/02/hbm_01513.html" class="int-link" title="Unix shell file copy flattening folder structure - Stack Overflow">http://stackoverflow.com/questions/27621/unix-shell-file-copy-flattening-folder-structure</a>
+Flexible Renamer: <a href="../../../articles/2012/02/hbm_01514.html" class="int-link" title="Flexible Renamer">http://hp.vector.co.jp/authors/VA014830/FlexRena/</a></pre>
+
+
+</article>
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2012/02.html">2012年02月</a> | <a href="../../../index/software.html">ソフトウェア Tips</a></nav>
+</body>
+</html>

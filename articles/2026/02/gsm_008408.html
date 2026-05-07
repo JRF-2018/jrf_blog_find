@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>共有メモ - JRF Blog Archive</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2026/02.html">2026年02月</a> | <a href="../../../index/gsm.html">共有メモ</a></nav>
+<article data-pagefind-body>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[gsm] 2026-02-03T16:59:18Z</td></tr>
+<tr><th>セクション</th><td>グローバル共有メモ</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2026/02.html">2026-02-03T16:59:18Z</a></td></tr>
+<tr><th>元URL</th><td>(URLなし)</td></tr>
+
+</table>
+</div>
+<h1>共有メモ</h1>
+<pre class="body">jrf&gt; 「LangChain 1.x 系で熊剣迷路問題」の実験を行った。MemoryBanditWorkflow を LangChain 1.x 系に対応させ、さらにはやりの skills やツールボックスなどの導入に相当する subtool_do の導入も行った。
+
+《langchain_maze_0.0.15.ipynb - GitHub Gist》  
+<a href="https://gist.github.com/JRF-2018/f363356fd1846172ac052e89c288ff8a" class="ext-link">https://gist.github.com/JRF-2018/f363356fd1846172ac052e89c288ff8a</a>
+
+《langchain_maze_0_0_15.ipynb - JRF-2018/langchain_maze》  
+<a href="https://github.com/JRF-2018/langchain_maze/blob/master/langchain_maze_0_0_15.ipynb" class="ext-link">https://github.com/JRF-2018/langchain_maze/blob/master/langchain_maze_0_0_15.ipynb</a>
+
+## サブツールというアイデア
+
+Claude Code はすでに AGI じゃないかと話題だが、私の MemoryBanditWorkflow のようにメモリの使い方にハーネス＝制約を効かせる実装はどうするのだろうか？
+
+おそらく、それは Claude Code にサブエージェント的なものとしてメモリのハーネスの効いたエージェントを実装させることになるのだろう。そういう Claude Code に書かせたものとして、MemoryBanditWorkflow のような枠組みは有効であると思われる。
+
+Claude Code などでは、skills というものがある。これは、MCP などのツール類の情報が肥大化し、それを常にコンテクストに置いておくのは効率が悪いという判断のもと、必要なときに必要なスキルをスキルツリーから「探索」する形で置いておくというアイデアだ…というのが私の認識である。
+
+このようなスキルも MemoryBanditWorkflow に取り込みたい。どうすればいいのだろうか？
+
+Claude Code のスキルでは、Claude Code がシェルや Python コードを実行できることを前提として、コマンドやコードが示される。しかし、シェルや REPL は、ハーネスを効かせたエージェントでは、一般に使わせることなど考えられない。しかし、そうでないとすれば、ツールをすべて用意しておくしかないが、そうすると、コンテクストを「汚染」してしまう。
+
+そこでひらめいたのが、サブツールという考え方である。ツールとしては subtool_do だけがコンテクストに載っていて、どういうサブツールが使えるかは subtool_show で、まるで SKILL.md を読むように後から適宜知る必要がある…とすればいいのではないかと考えた。無限の拡張性をもたせた上での「オンデマンド学習」というわけである。
+
+問題はそれを LLM さん(Gemini さん)が理解してくれるかどうかである。
+
+このあたりのアイデアの軌跡は↓にある。
+
+<a href="../../../articles/2026/01/statuses_cocolog_95822546.html" class="int-link cocolog-id" title="ひとこと">[cocolog:95822546]</a>(2026年1月)  
+《MemoryBanditWorkflow (参: <a href="../../../articles/2025/09/statuses_cocolog_95619779.html" class="int-link cocolog-id" title="ひとこと">[cocolog:95619779]</a>(2025年9月)) を Claude Code などの SKILL.md などを利用して実現するにはどうすればいいか。試みに Claude さん自身に聞いてみた。 - JRF のひとこと》  
+<a href="../../../articles/2026/01/statuses_cocolog_95822546.html" class="int-link" title="ひとこと">http://jrf.cocolog-nifty.com/statuses/2026/01/post-b86e58.html</a>
+
+
+## 前回からの変更点
+
+LangChain 1.x 系に対応した。まず、Pydantic v2 と Gemini の実装のクセらしく型エラーへの対処が難しかったが、なんとか今は動くようになっている。しかし、弥縫策で、この先はどうなるか自信がない。
+
+ツールを格納して必要なツールのみ説明を読んで使うための subtool_do や subtool_show を導入した。subtool_show で表示されるのがおよそ他のフレームワークでは SKILL.md で書かれることに相当する。
+
+
+## 結論
+
+今回はコストがかかるのを嫌ってはじめからゴールさせるつもりはなく、ワークフローを一度使ったところで実験終了させた。テストは gemini-2.5-flash-lite さんで行い、最終的には gemini-3-flash-preview さんに実行をお願いした。
+
+flash-lite さんは、サブツールの実行はうまくいかないこともあったが、gemini-3 さんは、ちゃんと実行できたようだ。サブツールはまずまずうまくいったというのが私の評価である。</pre>
+
+
+</article>
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2026/02.html">2026年02月</a> | <a href="../../../index/gsm.html">共有メモ</a></nav>
+</body>
+</html>

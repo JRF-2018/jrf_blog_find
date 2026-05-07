@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>ひとこと - JRF Blog Archive</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2025/10.html">2025年10月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+<article data-pagefind-body>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[statuses] <span class="cocolog-id">cocolog:95674080</span></td></tr>
+<tr><th>セクション</th><td>JRF のひとこと</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2025/10.html">2025年10月12日</a></td></tr>
+<tr><th>元URL</th><td><a href="http://jrf.cocolog-nifty.com/statuses/2025/10/post-d94a84.html" class="ext-link"><span class="original-url">http://jrf.cocolog-nifty.com/statuses/2025/10/post-d94a84.html</span></a></td></tr>
+
+</table>
+</div>
+<h1>ひとこと</h1>
+<pre class="body">AI がツールでロボットを操るためには、割り込みなどの処理がワークフロー側に必要。そういう基盤があった上で RLRMDiffusion 的な重いモデルを元に VLM 的な軽いモデルが作られ、その特定のモデルを LoRA やカーネルを用いて他のロボットに応用していくのかも。
+JRF 2025年10月12日
+
+<a href="../../../articles/2025/09/statuses_cocolog_95612828.html" class="int-link cocolog-id" title="ひとこと">[cocolog:95612828]</a>(2025年9月) や <a href="../../../articles/2025/07/statuses_cocolog_95551700.html" class="int-link cocolog-id" title="ひとこと">[cocolog:95551700]</a>(2025年7月) や <a href="../../../articles/2025/08/gsm_007579.html" class="int-link gsm-tsref" title="jrf&gt; まぁ、ロボットが早期にモノにならなければ、我々「ニート」の老後は物理的">>>2025-08-28T12:14:41Z</a> にも書いたが、私は経済敗者「ニート」で、ロボットが早期にモノにならなければ、我々「ニート」の老後は物理的に維持できない。AI・ロボットにより、物がとても安くなることだけがとても低い年金でも生きていける唯一のチャンスなところがある。だからこそ、AI・ロボットに「オールイン」してる面がある。
+
+JRF 2025年10月12日
+
+そんな中、ロボットについてもどういう技術が必要か…というのは、この「ひとこと」でもいくつか夢想している。もちろん、実装や実験はやってないのでブレインストーミングぎみの思考実験でしかないのだが。
+
+近時、2nd AGI や 3rd AGI を考えたが(<a href="../../../articles/2025/10/statuses_cocolog_95666408.html" class="int-link cocolog-id" title="ひとこと">[cocolog:95666408]</a>(2025年10月))、やはり、ロボットが問題…と、この問題に戻って思考することになった。別に実装するわけでもなく、逡巡しているだけと言え、他の人の役に立つ話にはなってないかもしれない。が、私の中では少しずつ理解が進んでいる感覚がある。お目汚し失礼だが、読んでくださるとありがたい。
+
+JRF 2025年10月12日
+
+議論に参加した AI さん達は、Claude Sonnet 4.5 さん、Gemini 2.5 Flash さん、Grok 4 さん、ChatGPT 5 さん。
+
+JRF 2025年10月12日
+
+……。
+
+jrf:＞ LLM などによるロボットの制御について考えてます。
+
+どうなれば我々のような凡人にも扱いやすいかと考えると、ツールでロボットが制御できるようになればいいんだろうな。…と思います。
+
+コントローラーで3Dゲームのキャラクターを操作するように、ツールでロボットを操作するイメージです。3Dゲームのキャラクターが少々形が違っても動かせるように、ロボットも形が違えどだいたい同じツールで扱いたい。
+
+JRF 2025年10月12日
+
+このとき、必要なものとして割り込みの機能がまず必要でしょう。ツールで実行するだけでなく、割り込みで特殊イベントの情報が、LLM に返ってくるようなことがいるのだと思います。
+
+私の MemoryBanditWorkflow (参: <a href="../../../articles/2025/09/statuses_cocolog_95619779.html" class="int-link cocolog-id" title="ひとこと">[cocolog:95619779]</a>(2025年9月)) に足りないのは割り込み(とヒューマン・イン・ザ・ループ)への対応…そういう一般的な機構を作っておくことだったな…と思い出します。
+
+JRF 2025年10月12日
+
+もちろん、ツールとして呼び出されたロボットの側では、複雑な対応が必要です。単に動くだけでなく、何を見てそれに反応してどう動くか…というのまでがツールで指示されている…ということになっているはずです。そしてイベントの割り込みも発生させるようでなければなりません。
+
+その学習を考えます。ロボットの腕を動かす「映像」について、それに相当するツール記述の探索が行われることになるでしょう。しかし重要なのは、ツール記述は可塑的であるということです。あるツール記述に対しそのように腕を動かす方向へのロボット側の学習もありうるということを考慮しなければなりません。
+
+JRF 2025年10月12日
+
+このようなツール記述に対する可塑性は、他の場合の動作と整合性が取れるように、決まっていくのでしょう。ここに多次元性・多様体性があり、ニューラルネット的(Transformer 的？)学習の余地があるのだと思います。
+
+いかがでしょう？
+＜
+
+JRF 2025年10月12日
+
+Gemini:&gt; この学習プロセスは、LLM（言語・論理）とロボットの制御系（多様体・運動）を分離しつつ、「ツール記述」という抽象層を介して相互に影響し合うという、Transformer的な自己注意機構と転移学習の余地を最大限に引き出すものとなります。非常に理にかなった、先進的なアーキテクチャ構想です。
+
+JRF 2025年10月12日
+
+jrf:&gt; Google さんはどちらかというとそういう方向ですよね。
+
+JRF 2025年10月12日
+
+Gemini:＞ まさにその通りです。Google（特にGoogle DeepMind）の研究開発の方向性は、あなたが構想された「LLMを上位のプランナーとし、ツール（抽象化された行動）を通じて多様なロボットを制御する」というアーキテクチャに強く合致しています。
+
+* SayCan（Say, Can）技術: これはまさに、自然言語の指示（上位の目的）を、ロボットが実行可能な行動のシーケンス（ツール）に分解し、物理的動作に変換する技術です。LLMは高レベルのプランニングに集中し、低レベルの複雑な制御はツール（ロボットの能力）に委ねられます。
+
+JRF 2025年10月12日
+
+* Gemini Robotics 1.5: これは「Vision-Language-Action (VLA) モデル」とされており、「言語（指示）」と「視覚（環境）」を統合し、「ツールを使用する」能力を前面に出しています。これは、LLMが自律的に適切な抽象化された行動（ツール）を選択し実行する構造です。
+＜
+
+JRF 2025年10月12日
+
+……。
+
+jrf:＞ 私は以前 RLRMDiffusion (Reinforcement Learning Result Model Diffusion)というコンセプトを考えた(<a href="../../../articles/2025/05/statuses_cocolog_95459644.html" class="int-link cocolog-id" title="ひとこと">[cocolog:95459644]</a>(2025年5月))。そこでは、強化学習の戦略記述を「コマンド」として強化学習で得たモデルを生成することを考えた。先の考えによればツールに渡すのはこの「コマンド」だろう。しかし、それはできたとしてもとても重くなる。しかし、それでもそれができることで、VLM 的方法への道が開かれるのではないか。「コマンド」とセンシングデータ列からのモーターコマンドの直接生成である。
+
+JRF 2025年10月12日
+
+さらにそれが特定の人型などに対して完成したあと、そのモーターコマンドなどを他のロボットにも適用できるようにする LoRA やカーネルが出てくるのではないか。この LoRA やカーネルができそうというのが先に挙げた多次元性・多様体性などがあるためなのかもしれない。 
+
+このようなことは技術的に可能でしょうか？ 現実の技術との異同はどうでしょう？
+＜
+
+JRF 2025年10月12日
+
+Grok:&gt; あなたの提案するRLRMDiffusion（RLの戦略をコマンドとして記述し、Diffusionモデルで生成、センシングデータと融合してモーターコマンド出力、さらにLoRA/カーネルで他のロボットに適応）のようなコンセプトは、技術的に可能です。2025年現在のAI/ロボティクス研究では、類似の要素がすでに統合され、実証されています。
+
+JRF 2025年10月12日
+
+……。
+
+……。
+
+追記。
+
+jrf:＞＞ Grok Imagine model のロボットアームのデモとか、中国のロボットのデモとか、どうやってるのか全然わからん。どこまで進んでるんだ。
+
+JRF 2025年10月13日
+
+《Zeeshan Patel:X:2025-10-12》  
+<a href="https://x.com/zeeshanp_/status/1977284151662514184" class="ext-link">https://x.com/zeeshanp_/status/1977284151662514184</a>
+＞Our @Grok Imagine model can also simulate basic robot manipulation tasks without any robotics specific training. It’s only going to get better from here!＜
+
+JRF 2025年10月13日
+
+《Uking Sun:X:2025-10-09》  
+<a href="https://x.com/UkingSun/status/1976154681601827285" class="ext-link">https://x.com/UkingSun/status/1976154681601827285</a>
+
+JRF 2025年10月13日
+
+＞Mirrometech (镜识科技), maker of BAOBAO — a dual-form robot — has raised tens of millions of yuan in funding. BAOBAO can seamlessly switch between humanoid and quadruped modes, enabling it to navigate diverse environments with ease.
+
+JRF 2025年10月13日
+
+Mirrometech, incubated by the Center for X-Mechanics at Zhejiang University, set a Guinness World Record in May for the fastest 100-metre run by a quadrupedal robot, completing it in 16.33 seconds. Source: <a href="https://www.mirrormetech.com/cn/product_3.html" class="ext-link">https://www.mirrormetech.com/cn/product_3.html</a>
+＜＜
+
+JRF 2025年10月13日
+
+Gemini:＞ これらのデモやニュースは、あなたが考察されている「LLM（上位計画）と抽象化されたツール（行動）による制御」が、現在の最先端の研究において最も有望な方向であることを裏付けています。
+
+ただし、「どこまで進んでいるか」については、デモの多くはクリーンな環境でのタスクに限定されており、予期せぬ外部からの「割り込み」やノイズが多い実世界でのロバストネス（堅牢性）は、今後の大きな課題であると推測されます。
+＜
+
+JRF 2025年10月13日
+
+……。
+
+……。
+
+追記。
+
+jrf:&gt; 強化学習では一つの経験で正解が得られるとそこから改善が始まることがあったと思います。そういう正解をいくつか与える強化学習の手法って何か専門用語とかあるんですか？
+
+JRF 2025年10月13日
+
+Gemini:&gt; 該当する主要な専門用語としては、模倣学習（Imitation Learning / IL）と、その関連手法であるオフライン強化学習（Offline RL）やデモンストレーションからの学習（Learning from Demonstrations / LfD）が挙げられます。
+
+JRF 2025年10月13日
+
+jrf:&gt; LfD が私が意図した用語のようです。人型が歩くなどは重いモデルも必要な気もしますが、ロボットアームなんかは、正解の trajectory(?) を操作ロッドを通じて与える方向のようですね。trajectory さえあれば、VLM にはできるのかもしれません。すべて人が入力するわけではなく、例を増やす方法等もありつつなのでしょうが。
+
+JRF 2025年10月13日
+
+Gemini:&gt;おっしゃる通り、LfD（Learning from Demonstrations）のコンセプトは、ロボットアームのような比較的自由度の低いシステムにおいて、特にその真価を発揮します。
+
+JRF 2025年10月13日
+
+……。
+
+……。
+
+追記。
+
+jrf:&gt; ロボットに限らずエージェントが学んだ教訓を LLM の基盤モデルにフィードバックするのがどういうレベルでかはわからないけど、必要になってくるように思う。映像なども含むその経験の記録ができたとしても、それをどう学習すればいいのか…。ビデオをマルチモーダルに LLM が学ぶだけでそのような学習ができるのだろうか？
+
+JRF 2025年10月16日
+
+Grok:&gt; 主に、フィードバックのレベルは「推論時（inference-time）の即時調整」から「モデル訓練時（training-time）のパラメータ更新」まで多岐にわたり、必要性は高まっており、マルチモーダル学習は有効ですが、それだけでは不十分で、記憶機構や反復的な強化学習が必要になるケースが多いです。
+
+JRF 2025年10月16日
+
+……。
+
+jrf:&gt; マルチモーダルにビデオそのものを学ぶより、そこに映っているものを、ロボットのトラジェクトリにおいてモーターコマンドが記録されているように、ツールの利用が記録された上での、解説を AI に作らせ、それを他の AI が学ぶ形のほうが効率(?)がいいのだろうか？
+
+Grok:&gt; はい、構造化トラジェクトリ + AI生成解説の方が多くの場合で効率が高い傾向がありますが、状況（タスクの複雑さやデータ可用性）により異なります。
+
+JRF 2025年10月16日
+
+……。
+
+jrf:&gt; ロボットにおいて、VLA のような重いモデルを元に VLM のような軽いモデルを作る方向があると思っているのですが(<a href="../../../articles/2025/10/statuses_cocolog_95674080.html" class="int-link cocolog-id" title="ひとこと">[cocolog:95674080]</a>(2025年10月))、どうやら、PC 上で完結するようなワークについても、そのようなものがいりそうですね。
+
+つまり、エージェントや人のワークのビデオだけが基本的にある中、それを意図を含めて再現する「トラジェクトリ」(構造化ログ?)を生成し、そのツール利用などを解説とともに学習する方向です。
+
+JRF 2025年10月16日
+
+Grok:&gt; ユーザーの指摘通り、2025年現在の研究トレンドでは、ロボット分野でVLA (Vision-Language-Action) モデルのような重いエンドツーエンドモデルを基に、VLM (Vision-Language Model) 型の軽量モデルへ蒸留・軽量化するアプローチが進んでいます。これは、計算効率の向上や実世界デプロイのしやすさを目指したもので、PC上完結のソフトウェアワーク（例: デスクトップ操作やウェブエージェント）にも拡張可能です。
+
+JRF 2025年10月16日
+
+特に、ビデオデータから意図を含むトラジェクトリ（構造化された行動ログ）を生成し、AI生成の解説を加えて学習する方向は、両分野で有効性が示されています。
+
+JRF 2025年10月16日
+
+……。
+
+……。
+
+追記。
+
+○ 2025-10-27T02:17:37Z
+
+あ、私誤解してた。VLM は end-to-end でモーターコマンド出力までやるもの、VLA は上層・下層を分けるもの…と。どうも前者も VLA で E2E (VLA) みたいな感じで呼ぶようだ。
+
+JRF 2025年10月27日</pre>
+
+
+<section class="backrefs" data-pagefind-ignore>
+<h2>後方参照 (2 件)</h2>
+<ul>
+<li><span class="backref-label">[cocolog:95674080]参照</span> <a href="../../../articles/2025/10/gsm_007827.html">共有メモ</a> <span class="backref-date">2025-10-16T08:36:13Z</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2025/10/gsm_007801.html">共有メモ</a> <span class="backref-date">2025-10-12T02:42:16Z</span></li>
+</ul>
+</section>
+
+</article>
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2025/10.html">2025年10月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+</body>
+</html>

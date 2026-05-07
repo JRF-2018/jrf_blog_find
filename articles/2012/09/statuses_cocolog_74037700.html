@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>ひとこと - JRF Blog Archive</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2012/09.html">2012年09月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+<article data-pagefind-body>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[statuses] <span class="cocolog-id">cocolog:74037700</span></td></tr>
+<tr><th>セクション</th><td>JRF のひとこと</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2012/09.html">2012年09月14日</a></td></tr>
+<tr><th>元URL</th><td><a href="http://jrf.cocolog-nifty.com/statuses/2012/09/post-5323.html" class="ext-link"><span class="original-url">http://jrf.cocolog-nifty.com/statuses/2012/09/post-5323.html</span></a></td></tr>
+
+</table>
+</div>
+<h1>ひとこと</h1>
+<pre class="body">「プログラムの極意」というと Church-Turing のテーゼだと思う。
+JRF 2012年9月14日
+
+計算可能性を議論すると、テープの文字に従って右に行ったり左に行ったりするだけの「チューリングマシン」と Lisp とかで有名な「ラムダ計算」と、構造化プログラミングの「if-while 文」が結局、同じ「計算力」しかない…というもの。
+
+JRF 2012年9月14日
+
+……。
+
+重要なのは、この補題として出てくる、オブジェクト指向みたいな複雑なものだろうが goto を使おうが、結局、「計算可能」なプログラミングは、「if-while 文」や「ラムダ計算」や「チューリングマシン」(あと「帰納関数」)に書き下せる以外ありえなそうだという事実。これらは相互に変換でき、結局、総体として「計算可能性」という一つの概念を表しているのだろうというのがテーゼの内容。
+
+JRF 2012年9月14日
+
+この「証明」はめんどくさいんだけど、記号をコード化したり、状態をひとつの構造体みたいにしてまとめて扱うテクニックや、Curry 化（f(a,b) というのを (f(a))(b) にしたり）や高階関数みたいな知っておくとのちのち便利な概念がそこに集約されて出てくる。「証明」は忘れてもいいけど、その感覚は覚えておいたほうがいい。
+
+JRF 2012年9月14日
+
+実用プログラミング言語の Perl とかで while に continue 文とかあったり、大域脱出とかあったりして、それを使ったほうが見やすいというのはありえるんだけど、他の言語に移殖…特に自分がちょっと作ったマクロ言語に移殖したりするときは、書き換えは少なくともできるんだということは覚えておいたほうがいい。
+
+JRF 2012年9月14日
+
+「オブジェクト指向」とかは、計算論から見れば、要は、コーディングスタイルの延長線みたいなところを越えてない。もちろん、コーディングスタイルも、おろそかにすると組織とかでは困ったことになるし、読みにくいコードは保守ができないんだけど、動くかどうかのロジックは別のところにあるというのは、SE とか経営層とかは知識として持っておくべきだろう。つまり、そのあたりの用語が出てきたら「プログラミングの方法論」のように見えても実際は「プログラマーの組織論」が問題で、そこにどう介入するかが問われているのかもしれない。
+
+JRF 2012年9月14日
+
+《チャーチ＝チューリングのテーゼ - Wikipedia》
+<a href="http://ja.wikipedia.org/wiki/%E3%83%81%E3%83%A3%E3%83%BC%E3%83%81%EF%BC%9D%E3%83%81%E3%83%A5%E3%83%BC%E3%83%AA%E3%83%B3%E3%82%B0%E3%81%AE%E3%83%86%E3%83%BC%E3%82%BC" class="ext-link">http://ja.wikipedia.org/wiki/%E3%83%81%E3%83%A3%E3%83%BC%E3%83%81%EF%BC%9D%E3%83%81%E3%83%A5%E3%83%BC%E3%83%AA%E3%83%B3%E3%82%B0%E3%81%AE%E3%83%86%E3%83%BC%E3%82%BC</a>
+
+JRF 2012年9月14日
+
+《計算可能性理論 - Wikipedia》
+<a href="http://ja.wikipedia.org/wiki/%E8%A8%88%E7%AE%97%E5%8F%AF%E8%83%BD%E6%80%A7%E7%90%86%E8%AB%96" class="ext-link">http://ja.wikipedia.org/wiki/%E8%A8%88%E7%AE%97%E5%8F%AF%E8%83%BD%E6%80%A7%E7%90%86%E8%AB%96</a>
+
+《カリー化 - Wikipedia》
+<a href="http://ja.wikipedia.org/wiki/%E3%82%AB%E3%83%AA%E3%83%BC%E5%8C%96" class="ext-link">http://ja.wikipedia.org/wiki/%E3%82%AB%E3%83%AA%E3%83%BC%E5%8C%96</a>
+
+JRF 2012年9月14日
+
+大学で「情報工学」を学べば、必ずこのあたりは習うはず。私はラムダ計算寄りの人間だったので、手元に残ってる教科書は↓。
+
+『計算論 計算可能性とラムダ計算』(高橋 正子 著, 近代科学社, 1991年)
+<a href="http://www.amazon.co.jp/dp/4764901846" class="ext-link">http://www.amazon.co.jp/dp/4764901846</a>
+
+JRF 2012年9月14日
+
+オブジェクト指向に対する私の考え方は↓の「用語訳」と、その下は私の理解するオブジェクト指向の原理的な部分を例から学ぶためのものといった感じか。
+
+《呪術的オブジェクト指向用語訳》
+<a href="../../../articles/2006/03/column_10639623.html" class="int-link" title="呪術的オブジェクト指向用語訳">http://jrf.cocolog-nifty.com/column/2006/03/post_17.html</a>
+
+《Perl でオブジェクト指向 C++風》
+<a href="../../../articles/2010/12/software_66486034.html" class="int-link" title="Perl でオブジェクト指向 C++風">http://jrf.cocolog-nifty.com/software/2010/12/post.html</a>
+
+JRF 2012年9月14日
+
+「構造化プログラミング」の尖鋭形として認識されている(?)関数型プログラミングでも、goto っぽいのは書けるよ…という記事も私は書いている(↓)。ただ、この変形はチャーチのテーゼとはあまり関係がない。
+
+《Haskell の callCC で goto を作る》
+<a href="../../../articles/2011/01/software_66773047.html" class="int-link" title="Haskell の callCC で goto を作る">http://jrf.cocolog-nifty.com/software/2011/01/post-2.html</a>
+
+JRF 2012年9月14日
+
+……。
+
+ちなみに「計算可能性」は「計算量」とは別の概念ね。「可能性」と「確率」が違うぐらいに違う。プログラム変換とかを証明に使うのは似てるけど。
+
+「計算量」で大事なのは、番号とか辞書とかで整った並びにするのに、すぐ思い付くのは O(n^2) という遅いものなんだけど、クイックソートとか O(n log n) という速いものがあるというのの「クイックソート」のアルゴリズムは実生活でも使えるというのと、あとハッシュを使った読み出しは O(1) で(つまり一瞬でできるものとして)計算するということかな。
+
+JRF 2012年9月14日
+
+人が情報を読み出すには、まずしっかり整列させて、ここかな…というところを辿っていくのが早いという感覚がある。でも、人の目から見た「整列」というのはコンピュータには関係なくて、バラバラの番号がある一定にまとまるという固定式(ハッシュ関数)があれば、整列せずともそれをいつも使ったほうが早いと考えるというわけ。
+
+人に見せるなら文字の図柄の続きが予想できるような整列は必要だけど、コンピュータの中では文字に図柄はなくただの数値なので、その「特徴」が数値的に計算しやすいものであれば、それで分類したほうが早いという感じかな？
+
+JRF 2012年9月14日
+
+《ソート - Wikipedia》
+<a href="http://ja.wikipedia.org/wiki/%E3%82%BD%E3%83%BC%E3%83%88" class="ext-link">http://ja.wikipedia.org/wiki/%E3%82%BD%E3%83%BC%E3%83%88</a>
+
+《ハッシュテーブル - Wikipedia》
+<a href="http://ja.wikipedia.org/wiki/%E3%83%8F%E3%83%83%E3%82%B7%E3%83%A5%E3%83%86%E3%83%BC%E3%83%96%E3%83%AB" class="ext-link">http://ja.wikipedia.org/wiki/%E3%83%8F%E3%83%83%E3%82%B7%E3%83%A5%E3%83%86%E3%83%BC%E3%83%96%E3%83%AB</a>
+
+JRF 2012年9月14日
+
+……。
+
+計算可能という概念を崩す蟻の一穴みたいなのがあるとすると、I/O (Input/Output) まわりがそれになるだろう。
+
+つまり、1 と 2 が入力されたときに 3 を出力するというのはどうとでも「計算可能」なんだけど、「計算可能」は「計算量」的なことは考慮しないから、あるプログラムで 1 と 2 を取って 3 を出力するのが 1 秒でできるけど、それをプログラム変換した別のものだとどうしても 3 秒はかかってしまうみたいなことはありうる。
+
+JRF 2012年9月15日
+
+すると、I/O ってのは相手の反応で、応答時間によって答えが変ってきてもおかしくない。1 秒以内に 3 を出力したら次の入力は 4 が返ってくるけど、3 秒たっての出力なら次の入力は 0 でしかない…結果が変わる…といったこともある。
+
+JRF 2012年9月15日
+
+もちろん、I/O の相手方もプログラムの内部とできれば、(実際、上の例でも「1秒以内」かどうかの条件分岐を私は書いてしまってるわけで、)相手のその反応も含めたエミュレーションに関し調整すればよく、それも含めた計算可能という概念なんだという話にはなる。
+
+JRF 2012年9月15日
+
+そのあたりでモヤモヤした感じがあって、複数のプレーヤーが絡みあう「並列処理」に関して何か言えることはないかと探っているのが、私の記事だと ELDE (↓)がらみになる。
+
+《Exhaustive Lock Dependency Emulator その１ 並列処理の総当り》
+<a href="../../../articles/2011/06/software_68738226.html" class="int-link" title="Exhaustive Lock Dependency Emulator その１ 並列処理の総当り">http://jrf.cocolog-nifty.com/software/2011/06/post-1.html</a>
+
+ただ、これも実装までしただけで、計算論的に意味がある成果までは出せてるわけではない。
+
+JRF 2012年9月15日
+
+このあたりは X Window などの GUI の出はじめにあわせていろいろ考えたことにもつながるか。
+
+<a href="../../../articles/2012/02/statuses_cocolog_71745984.html" class="int-link cocolog-id" title="ひとこと">[cocolog:71745984]</a>
+＞大学のころなんちゃってで、「UI 応答の計算量」みたいなのを考えた。(…)もちろん、CSS を使いやすくしてデザイナのフィーリングにまかせる…みたいなのも必要なんだろうけど、「フィーリング」に対応するスターシステムみたいなのができないなら、デザイナの序列ってものを工学的理論で支えていく必要があるんじゃないか？＜
+
+JRF 2012年9月15日
+
+……。
+
+「オブジェクト指向」と組織論に関しては、そこまで深く考えたことはないが、↓が近いか。
+
+《IT 革命と私――WWW と Tcl の衝撃》
+<a href="../../../articles/2006/03/column_10411689.html" class="int-link" title="IT 革命と私――WWW と Tcl の衝撃">http://jrf.cocolog-nifty.com/column/2006/03/post_9.html</a>
+＞オブジェクト指向における private などを使ったモジュール管理機構は未来の自分への戒めとしては有効かもしれないが、C のシステム関数を個人が使うことができるなどの抜け道がいろいろある以上、複数人での開発の場合むしろプログラミングを繁雑にし、開発者間のセッション数が増えるだけに終ってしまうのではないか、という危惧があった。＜
+
+JRF 2012年9月15日
+
+Trackbacks:
+
+《cocolog:76226522》 from JRF のひとこと
+<a href="../../../articles/2013/04/statuses_cocolog_76226522.html" class="int-link" title="ひとこと">http://jrf.cocolog-nifty.com/statuses/2013/04/post-0ad1.html</a>
+
+マメ知識：数列とは自然数の関数である。 
+
+受信： 2013-06-30 00:01:26 (JST)</pre>
+
+
+<section class="backrefs" data-pagefind-ignore>
+<h2>後方参照 (2 件)</h2>
+<ul>
+<li><span class="backref-label">[cocolog:74037700]参照</span> <a href="../../../articles/2013/04/statuses_cocolog_76226522.html">ひとこと</a> <span class="backref-date">2013年04月18日</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2012/02/statuses_cocolog_71745984.html">ひとこと</a> <span class="backref-date">2012年02月25日</span></li>
+</ul>
+</section>
+
+</article>
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2012/09.html">2012年09月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+</body>
+</html>

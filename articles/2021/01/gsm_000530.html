@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>共有メモ - JRF Blog Archive</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2021/01.html">2021年01月</a> | <a href="../../../index/gsm.html">共有メモ</a></nav>
+<article data-pagefind-body>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[gsm] 2021-01-11T20:47:56Z</td></tr>
+<tr><th>セクション</th><td>グローバル共有メモ</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2021/01.html">2021-01-11T20:47:56Z</a></td></tr>
+<tr><th>元URL</th><td>(URLなし)</td></tr>
+
+</table>
+</div>
+<h1>共有メモ</h1>
+<pre class="body">jrf&gt; [仏教の最適化プログラムの続き。]
+
+商農比率を固定すると同時に、小農から大農の分布を一定の関数にフィットさせるという考え。とりあえず、実装してみたのが、↓になる。
+
+《test_of_merchant_peasant_ratio.py - 商人(merchant) と 農民(peasant) の比率と農民の農地の垂直的分布を一定の関数に保つアルゴリズムのテスト》  
+<a href="https://gist.github.com/JRF-2018/a8e857bd4377fb800952f193c87ba174" class="ext-link">https://gist.github.com/JRF-2018/a8e857bd4377fb800952f193c87ba174</a>
+
+細かいところで、これまで書いたのと違いがあるかもしれない。この先必ずこのアルゴリズムで行くという保証はない。が、ソースを読めば、今の考えが端的に現れている。
+
+農地(land)を手に入れて商業財産の価値が上がる…などの評価替えはとりあえずやってみたレベルで、全々決まっていない。
+
+一定の関数もだいたいこんな感じかなレベル。
+
+苦労したのが、端数処理。一番大きな地主がどこまでも大きくなっていくような問題があったため、最大地主が成長できる最大値 land-max-growth で制限した。
+
+だいたいうまく行ってるように見えるけど…。</pre>
+
+
+</article>
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2021/01.html">2021年01月</a> | <a href="../../../index/gsm.html">共有メモ</a></nav>
+</body>
+</html>

@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>ひとこと - JRF Blog Archive</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2012/10.html">2012年10月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+<article data-pagefind-body>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[statuses] <span class="cocolog-id">cocolog:74412954</span></td></tr>
+<tr><th>セクション</th><td>JRF のひとこと</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2012/10.html">2012年10月18日</a></td></tr>
+<tr><th>元URL</th><td><a href="http://jrf.cocolog-nifty.com/statuses/2012/10/post-bb81.html" class="ext-link"><span class="original-url">http://jrf.cocolog-nifty.com/statuses/2012/10/post-bb81.html</span></a></td></tr>
+
+</table>
+</div>
+<h1>ひとこと</h1>
+<pre class="body">多言語混在対応ローマ字 Transliteration by ASCII …というのを考えてみた。(車輪の再発明みたいな話だが。)
+JRF 2012年10月18日
+
+ローマ字だが、読みよりも Transliteration であることを重視し、Tokyo も Toukyou と書くことが基本となる。スペースで単語を区切るが、送りがなや助動詞は区切らなくても良い。
+
+カタカナで長音を記すのは -- または ~。ハイフン - は熟語等の区切りに使う。
+
+JRF 2012年10月18日
+
+英単語を書くときは en:Example などと書く。全体の基本が英語であることを明示するには、文頭に en: または文末に :en と付ける。かっこ付きの (en:)  とかでも良いがコロンのない (en) はわかりにくいのでやめにしたい。
+
+ただ、明らかに英語だとわかるような語句には付けなくともいいとしたいが、そのためには、そう判断できるかのチェッカを、(MP3コンバータやブラウザ内の)エディタが備えているべきだろう。
+
+JRF 2012年10月18日
+
+ヨーロッパの語だが、フランス語かドイツ語かとかがわからないということはあるので、一般な Latin-1 の Transliteration (SeNoLEBLO↓)として lt: と書いて良い。
+
+《アクセント付き文字の変換表(アクセント分解)》
+<a href="http://cosmoshouse.com/tools/acc-conv-j.htm" class="ext-link">http://cosmoshouse.com/tools/acc-conv-j.htm</a>
+
+JRF 2012年10月18日
+
+カタカナであることを明示したい場合は、k:konpyu-ta とする。ひらがな明示の h:kakasi もあり。漢字は K:Gaikoku といったところだが、これはあまり使う必要がないだろう。基本的には Capital のみ大文字なのが漢字で、小文字がひらがなといったのが普通。名前がひらがなというのはあるので、明示したい場合は h: を使う場面はあるかもしれない。
+
+JRF 2012年10月18日
+
+k と K の違いのように、「コマンド」の大文字小文字は区別したい。
+
+JRF 2012年10月18日
+
+名前であることを明示したいときは、 n: SEI Mei や n:KIRA-Tei などと書く。ファーストネームとファミリーネームを区別したいときはファミリーネームを全部大文字にするので不十分なときは、 n0:FAMILY n1:First のように書く。同様の論理でミドルネームは n2 や nm でいい。
+
+上の n: のように間にスペースを入れるときは、(途中の切り換えがなければ)区読点等の区切りまでの指定となり、それ以外はその直後の(スペースかハイフンまでの)単語だけの指定となる。ただ、n: とかの「属性コマンド」に関してはあまり固いことはいわない。
+
+JRF 2012年10月18日
+
+「エスケープシーケンス」は \n とか ［ruby:漢字:kanji］ とかになるが、できれば使わない。Transliteration ルーチンではそこは未変換にする配慮はしてもよい。
+
+JRF 2012年10月18日
+
+CD の ID3 タグなどで使うことを想定している。できれば、コメントとして、このルールを使ったことを明示するために、Translit: JRFTL-ja などと表示して欲しいが、私が作ったもの であることをあまり意識して欲しいと思わないので、Translit: ja でも十分としたい。
+
+JRF 2012年10月18日
+
+なお、SeNoLEBLO のエスツエットは s&amp; だが、リガチャーに近いとして昔の SeNoLEBLO の ss&amp; に私はしたい。ss&amp; を使うときは Translit: JRFTL-lt にすべきかも。または SeNoLEBLO の旧バージョンをサポートするか、@ がメールアドレスとぶつかるのは、↓の ascii: で何とかなるし。
+
+JRF 2012年10月18日
+
+途中で ascii そのまま入力したいときは ascii: をつける。また［ascii: ］ という文も OK。でも、［lt: ］ はなしで ［translit:lt: ］ はありにするか。［］ の入れ子はなし。［e: ］ は、その中で、\n などのエスケープが評価されることを表し、そこでは ［］ が \x91\x93 で表現できるようにする。
+
+JRF 2012年10月18日
+
+英単語かどうかをできるだけ判断する Translit: ja-sloppy と英単語であれば en: を付ける ja-rigid を指定できるようにする。カタカナも必ず k: を付けるときは ja-rigorous にでもするか。
+
+JRF 2012年10月18日
+
+修正 「konpyu-ta」→「konpyu~ta」。
+修正 「［lt: ］ はなしで ［translit:lt: ］ はあり」→「［lt: ］や［en: ］ はなしで ［translit:lt: ］や［translit:en: ］ はあり」。
+
+(k: コマンドを使ってるときは ~ じゃなくて - でもいいとしても、カタカナだから判別できるんだけど、いちおう修正。)
+
+JRF 2012年11月23日
+
+……。
+
+sloppy の辞書指定は ja-sloppy(DictName) といった形にする。
+
+括孤の中の DictName は英数の辞書名で括孤( () や [] )やスペース( )を使ってはならない。ハイフン(-)やカンマ(,)もダメにしたいが、アンダーバー(_)とピリオド(.)とスラッシュ(/)は OK とする。(特にカンマは将来の拡張のために残しておきたい。)
+
+DictName を URL にするのはできるだけ使わないほうがいいが、どうしてもというときはできるだけ記号類(特に括孤)は使わないようにする(この場合のハイフンは仕方ないか…。)。
+
+JRF 2012年11月30日
+
+typo 「一般な」→「一般的な」。
+
+JRF 2012年12月19日
+
+……。
+
+少し話題が外れるが、現在、私はプチコンでプログラミングをしている。そこでは漢字は使えないが、カタカナは使える。そういったカタカナだけを使う場合は、読みやすさのためにハイフンが欲しいが、ハイフンに長音(ー)を使うとマイナスと区別がつかない。
+
+カタカナだけに直す場合は、等合(=)をハイフンとして使ったほうがいい。
+
+JRF 2013年1月8日
+
+……。
+
+「お食事」「御[ご]入学」などで使われる丁寧さを表す接頭辞の「お」や「ご」は、&quot;o'Shokuji&quot;, &quot;Go'Nyuugaku&quot; などとしてよいとする。
+
+JRF 2014年1月16日
+
+これは、主に辞書引きをしやすいようにするための対策。「ご覧になる」などの接頭辞がついたままで辞書に乗っている場合は &quot;go'Ran-ni-naru&quot; でも &quot;gorannninaru&quot; でもいいとする。&quot;o'&quot; のすぐあとの文字や &quot;o&quot; 自身の大文字化・小文字化については…今は決めないでおく。「お」も漢字にすれば「御」で同じであることもあり、さしあたりどちらでもいいということで。(「お食事」を「御食事」と書いたのに相当する &quot;O'shokuji&quot; もさしあたり OK。)
+
+JRF 2014年1月16日
+
+&quot;o-Shokuji&quot; のようにハイフンを使っても良さそうだが、それだと「間違い」が起きやすいと考えた。通常、ハイフンを使うときは単語の区切りで、そこで発音の区切りがあってもおかしくない。それに対し、この接頭辞は区切る意味が薄く、助詞の「を」と間違いを起こさないためにも、普通、一気に発音する。その違いを際立きわだたせるため、このルールを足すことにした。他国語の「定冠詞」とは微妙に違うものなのだが、そんな感じにも見えるようにした。
+
+JRF 2014年1月16日</pre>
+
+
+<section class="backrefs" data-pagefind-ignore>
+<h2>後方参照 (1 件)</h2>
+<ul>
+<li><span class="backref-label">[cocolog:74412954]参照</span> <a href="../../../articles/2012/12/column_75053065.html">Virtua Fighter 5 FS コスプレ：懐かしのスター 編</a> <span class="backref-date">2012年12月21日 21:17:33</span></li>
+</ul>
+</section>
+
+</article>
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2012/10.html">2012年10月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+</body>
+</html>

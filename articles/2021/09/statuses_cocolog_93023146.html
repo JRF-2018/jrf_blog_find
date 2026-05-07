@@ -1,0 +1,1842 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>ひとこと - JRF Blog Archive</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2021/09.html">2021年09月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+<article data-pagefind-body>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[statuses] <span class="cocolog-id">cocolog:93023146</span></td></tr>
+<tr><th>セクション</th><td>JRF のひとこと</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2021/09.html">2021年09月23日</a></td></tr>
+<tr><th>元URL</th><td><a href="http://jrf.cocolog-nifty.com/statuses/2021/09/post-b32cd2.html" class="ext-link"><span class="original-url">http://jrf.cocolog-nifty.com/statuses/2021/09/post-b32cd2.html</span></a></td></tr>
+
+</table>
+</div>
+<h1>ひとこと</h1>
+<pre class="body">仏教の最適化プログラムのメモ その８ 統計 編。「シミュレーション仏教」の模索のその１・２から、実装に移ってその３からその７で一段落。その８では統計を取りモデルが意図通りか確認する。「グローバル共有メモ」のバックアップ。
+JRF 2021年9月23日
+
+その１からその７は↓。これらを読んでいることが前提。
+
+<a href="../../../articles/2020/10/statuses_cocolog_92288127.html" class="int-link cocolog-id" title="ひとこと">[cocolog:92288127]</a>
+＞仏教の最適化プログラムのメモ その１。仏教は「来世がないのが良い」「生きなければならない」「自己の探求が良い」の三つの命令的前提による最適化プログラムではないか。…みたいな考えを「グローバル共有メモ」で詰めていっている。メモはやがて消えてしまうので、「ひとこと」に書き移しておく。＜
+
+JRF 2021年9月23日
+
+<a href="../../../articles/2020/12/statuses_cocolog_92431465.html" class="int-link cocolog-id" title="ひとこと">[cocolog:92431465]</a>
+＞その２ 生産シミュレーションのアイデア編。「シミュレーション仏教」の模索をするその１に続きながら、少し仏教から離れ、社会の生産を中心にしてそのシミュレーションをどうするかを考えた。＜
+
+<a href="../../../articles/2021/02/statuses_cocolog_92541965.html" class="int-link cocolog-id" title="ひとこと">[cocolog:92541965]</a>
+＞その３ 経済と不倫のシミュレーションの部分実装 編。「シミュレーション仏教」の模索をするその１・その２に続きながら、少し仏教から離れ、経済・不倫を中心にどうするかを考え、部分実装してみた。＜
+
+JRF 2021年9月23日
+
+<a href="../../../articles/2021/03/statuses_cocolog_92616760.html" class="int-link cocolog-id" title="ひとこと">[cocolog:92616760]</a>
+＞その４ 結婚・不倫・扶養・相続などのマッチングのシミュレーション 編。＜
+
+<a href="../../../articles/2021/04/statuses_cocolog_92700520.html" class="int-link cocolog-id" title="ひとこと">[cocolog:92700520]</a>
+＞その５ プロトタイプ 1 号 編。＜ その３とその４の総合。
+
+<a href="../../../articles/2021/08/statuses_cocolog_92930043.html" class="int-link cocolog-id" title="ひとこと">[cocolog:92930043]</a>
+＞その６ プロトタイプ 2 号 編。(…)その５に続き、その６では支配と災害の理論を足した。＜
+
+<a href="../../../articles/2021/08/statuses_cocolog_92960749.html" class="int-link cocolog-id" title="ひとこと">[cocolog:92960749]</a>
+＞その７ プロトタイプ 3 号 編。その７では僧と犯罪の理論を足した。ここでこのプロジェクトは一段落。＜
+
+JRF 2021年9月23日
+
+プログラムの GitHub レポジトリは↓にある。今回は、simbdp3.py と plot_logs.py の話が大部分を占める。
+
+《JRF-2018/simbd: シミュレーション仏教 - Buddhistic Philosophical Computer-Simulation of Society》  
+<a href="https://github.com/JRF-2018/simbd" class="ext-link">https://github.com/JRF-2018/simbd</a>
+
+JRF 2021年9月23日
+
+では、「グローバル共有メモ」に書いたことをコピペしていく、少し誤字修正等もあるかもしれない。
+
+JRF 2021年9月23日
+
+……。
+
+……。
+
+○ 2021-08-24T03:11:21Z
+
+soothing_by_king, soothing_by_governor という宿題が残ってた。
+
+他の soothe と同じように高くなったら自動的に下げるというのでは、hating_to_king とかが意味がなくなる。そもそも hating_to_king とかはそれほど高くなってない様子で、soothing_by_king みたいなものはいらないかもしれない。
+
+JRF 2021年9月23日
+
+やるとしても soothe のコストをどうするか。一期に一度だけとか一年に一度だけにするか？…それも多過ぎる気がする。
+
+支配層で hating がたまるのは昇進のとき。だから、昇進のとき、その喜びで soothe され、それ以外の場合は考えない。…でいいかな…？
+
+JRF 2021年9月23日
+
+昇進した本人が、cavalier の場合は governor に対して 1/2 ぐらい soothe され、cavalier 以外は king に対して soothe される。governor が king になったときは特別に soothe を受け継ぐが、基本、governor か king が別の人になれば、soothing は消えてしまうとしよう。
+
+JRF 2021年9月23日
+
+……。
+
+重犯罪で犯人が自分を殺す可能性があるのに気付いたが、犯人の自殺というのはありうることなので、特別な処理は書かないことにした。
+
+JRF 2021年9月23日
+
+……。
+
+僧の数の増減について激変緩和措置を入れた。
+
+JRF 2021年9月23日
+
+……。
+
+以上の点について変更し、いくつかバグを取った simbdp3.py をいちおう公開しておく。(バージョン 0.0.3)
+
+《simbd/simbdp3.py at master - JRF-2018/simbd》  
+<a href="https://github.com/JRF-2018/simbd/blob/master/simbdp3.py" class="ext-link">https://github.com/JRF-2018/simbd/blob/master/simbdp3.py</a>
+
+ただ、もう少し変更がたまってからの更新でも良かったかな…。
+
+JRF 2021年9月23日
+
+……。
+
+このバージョンにしたあとで、昇進した本人が、cavalier の場合は governor だけでなく king に対しても soothe されることにした。次のバージョンから…。
+
+JRF 2021年9月23日
+
+……。
+
+……。
+
+○ 2021-08-24T12:38:19Z
+
+「生きなければならない」を重視すると戦争(蛮族の侵入)が増えるということだった。戦争が増えると経済が良くなるということがあるかもしれない。
+
+JRF 2021年9月23日
+
+その機序をできるだけこのシステムの枠組内で考えると、まず、戦争が増えると支配層が死に代替わりが増える。今のこのシステムではそれは訓練された支配層の死を意味するので、マイナスでしかないが、本来は、社会に新しい風を吹き込むような効果があるのだろう。
+
+すると、それはこのシステムにおいては上昇指向(ambition)を高めに誘導する効果として観測されるべきなのではないか。そして ambition が上がると、リスクを取る人が増えるということだから経済が大きくなる。
+
+JRF 2021年9月23日
+
+そして経済が大きくなると、生産性が上がる革新が起こったり、食料の輸入が増えたりして、養しなえる人口が増えるということになろうか。人口が増えるなら、「生きなければならない」に確かにプラスであろう。
+
+上記の部分のうち、支配層の死が増えると ambition が増えるという部分、経済が大きくなると人口目標値が増えるという部分は、このシステムでは実装されていない。する予定もない。
+
+JRF 2021年9月23日
+
+しかし、人口目標値が増えた状態というのは試せるので、あとは ambition が増える状況を作り出せれば、自動的ではないものの手動で、上のようなことがあった結果を見ることができよう。
+
+そこで ARGS.change_ambition と ARGS.ambition_goal のオプションを作った。通常 ambtion は初期・誕生時に決められてから変化しないが、ARGS.change_ambition を True にすると、変化するようになり、平均が ambition_goal を目指すように変化する。
+
+JRF 2021年9月23日
+
+このオプションと ARGS.population と ARGS.invasion_average_term_min をいじれば、目的とする経済をいちおう試すことができるだろう。
+
+JRF 2021年9月23日
+
+……。
+
+boolean のオプションを指定するときに、--no- を前に付けると False を指定できるようにした。(--no-change-ambtion などとする。) 前はロードするとき、以前 True だったものを False に戻すことができなかったが、この変更によりそれが可能になった。
+
+JRF 2021年9月23日
+
+……。
+
+これらは次のバージョンから…
+
+JRF 2021年9月23日
+
+……。
+
+……。
+
+○ 2021-08-25T09:02:44Z
+
+ドキュメントを LaTeX で書こうか…とか書いたが、むしろ、Amazon Kindle で読めるような電子書籍にして 1000 円とか 3000 円とかで売っちゃおうか。…と考えはじめた。どうせ前書いた小説や道徳本が誰にも買われなかった(誰にもではないか。一人ぐらいはいたかな？)ように、買ってくれる人はいないだろうけど、でも、そのほうがいいものを書こうというモチベーションにはなるかな。運良く収入につながればこの上なくうれしいし。
+
+JRF 2021年9月23日
+
+まぁ、でも、ここに一連で書いたこと以上のことは書くつもりはない。ここに書いたことを読みやすくしようと試みるだけ。電子書籍に初出となるような話題はほとんどないように、電子書籍に載る予定の図…の作り方等もこれからもここや GitHub でドシドシ公開していく予定。
+
+JRF 2021年9月23日
+
+……。
+
+……。
+
+○ 2021-08-26T07:16:18Z
+
+ログを取りながら出力を見るコマンド。Unix 系(Cygwin や Linux)では tee を昔習ったが、script というコマンドもあるのか。
+
+JRF 2021年9月23日
+
+tee だと Ctrl-C などのコントロールコード(制御文字)がうまく使えないのではないかと疑ったが、Ctrl-C はちゃんと使えた。ただし、デバッガに入ったあと interact コマンドをして Ctrl-D は効かない。が、Ctrl-D の替わりに Ctrl-Z して Return を押すとうまくいったので、まぁ、問題ないレベル。ただし、デバッガでやったコマンドについては、ログに記録されなかった。
+
+JRF 2021年9月23日
+
+script は Cygwin のせいか、-O オプションで出力ファイルが指定できなかった。あと -c オプションもなんかおかしい。が、オプションなしの script はうまくいき、Ctrl-C や Ctrl-D も問題ない。できた typescript ファイルを見ると、デバッガに入ってからの記録もちゃんとある。ただし、文字コード \x0d がやたら入り込んでしまってちょっと加工が必要な感じ。
+
+JRF 2021年9月23日
+
+……。
+
+……。
+
+○ 2021-08-26T08:19:07Z
+
+「生きなければならない」を重視し、戦争(蛮族の侵入)が多くなると、経済が大きくなる可能性があると述べ、経済が大きくなった状態を試すために ambition をいじることなども述べた。
+
+JRF 2021年9月23日
+
+もし、それで実際、経済が大きくなり、人口が増えうるのなら、「生きなければならない」を重視するというとき、その方向に舵が切られやすくなるだろう。これはどう表現すればいいのか。戦争を多くすることの、エネルギーの必要量が小さくなる。…いや、むしろ、積極的にエネルギーを使うようになるのか。…まぁ、エネルギーに占めるシェアが増えるということにすればよいのだろう。
+
+JRF 2021年9月23日
+
+実際、人口などがどれぐらい増えたり減ったりするのかが確かめられるのが、このシミュレーションの良いところだが、それに対して例えばエネルギーをどう設定するかに関してはかなり自由度がある。カルマが下がったり戦争で人口が減ったりするのは、かなり微妙なレベルでしか観測できないかもしれない。しかし、そうだとしても、エネルギーを定義するときに「感度」を上げれば良いのだ。
+
+JRF 2021年9月23日
+
+「感度」を上げるのは、このシステム内部でも割と使っている。ある数値 x があって、それが 0.0 から 1.0 まで定義されているのだが、x には中心となる値が存在しているとき y = interpolate(0, y_min, 1.0, y_max, x) みたいに単純に定義してしまうと y_max や y_min 近くの値が現れないみたいなことがある。x は 0.3 から 0.7 までに集中しているというとき、感度を上げて、y = interpolate(0.3, y_min, 0.7, y_max, np_clip(x, 0.3, 0.7)) みたいにする。
+
+JRF 2021年9月23日
+
+……。
+
+戦争で人口が減ったり、軽犯罪でカルマが下がったり…というのと狂信は微妙に違う。狂信でも、人口が減ることは予想できるのだが、その減り方は戦争で人口が減るのと比べればゆるやかである。しかし、だから重視しないということにはならない。
+
+JRF 2021年9月23日
+
+人口が減るほどの狂信は人口減以上の「苦」があり、それは寺院の増加などで観測できる。人口が減るのと同時に寺院の増加があれば、人の苦がそこにあり寺院を本当は必要でもないのに建設してしまうのだ…とできる。…そうなってないならそうなるようにすればいいかと思う。
+
+指標に現れない「苦」もほかにあるだろうが、シミュレーションは自由だから、何らかの指標に現れるよう作ればいい。
+
+JRF 2021年9月23日
+
+これまで、狂信に関し寺院が増えるようになっていなかった。なぜそうなってなかったかというと、支配層の信仰理解が高いこと自体は狂信ではないというのがこのシステムの考え方だから。信仰理解が 0.5 を超えるまでは徐々に寺院を作る可能性が大きくなるが、0.5 を超えると寺院が問題ではないことに気付き、寺院を 0.5 のころと同じだけ作り続けるがますます作る可能性が増えることはないというようになっていた。
+
+JRF 2021年9月23日
+
+狂信に関するパラメータは、むしろ、ARGS.faith_realization_power_threshold だった。これを寺院建設にも関係させよう。上の「信仰理解が 0.5 を超える…」という部分を「信仰理解が ARGS.faith_realization_power_threshold を超える…」にしなおした。こうすることで、狂信が進んで ARGS.faith_realization_power_threshold が高くなると、寺院の建設も増えるようになる。(次のバージョンから。)
+
+JRF 2021年9月23日
+
+……。
+
+……。
+
+○ 2021-08-27T07:54:05Z
+
+最初期に書いた易経の「吉凶悔吝」の話。悔いは、 karma に、吝[うら]みは、hating に相当するといった感じか。もちろん、悔いと karma、吝みと hating がまったく同じとかいう主張がしたいわけではない。悔いや吝みはもっと深みのある概念で、karma や hating はその表層的なところに含まれているという感じになるのだと思う。
+
+私のシステムは仏教的といいながらも、易経的な方向も模索していたのかも。まぁ、それは言い過ぎか。
+
+JRF 2021年9月23日
+
+……。
+
+「私が決めるべきところはすでに決めた」とか書いたが、私が決めなければ誰も作れないとかそういう話ではない。このところの部分は、いかようにも仕様の作り方があって、私がどういう意図だったかというのを残すには、ちゃんと決まったものを残す必要があったということ。他の人には他の人の決め方があると思われる。
+
+JRF 2021年9月23日
+
+これ以降は私が決めたところから、自然と出てくるようなもの…というのは言い過ぎだが、まぁ、私以外が私の意図を活かすようにやれば、私の意図からそう離れたものにはならないだろうと予想する。
+
+JRF 2021年9月23日
+
+……。
+
+……。
+
+○ 2021-08-27T07:56:36Z
+
+オプションのパラメータを誰が決めるのか。まぁ、メタな視点に立てば外部に立つ我々が決めるわけだが、内部から見れば何がパラメータを決定しているのか…内部にどういう動きがあると見なして我々はパラメータを決めれば良いのか。
+
+大きく二つ考えられる。一つは、内部にいる人々の思いのようなもの、もう一つは、自然の条件である。まぁ、「神」が決めている面もあるかもしれないが、それは自然の条件に含めよう。
+
+JRF 2021年9月23日
+
+内部にいる人々が決めているからといって、それは民主的に決まるわけではあるまい。僧であったり支配層であったりが特に重くその考えに影響していることが考えられよう。
+
+JRF 2021年9月23日
+
+そして重要なこととして、人々の思いが違うというとき、システム内でしばしば、人によってオプションのパラメータが変わるかのように実装することも可能な場合があるということを考えねばならない。それと一つのパラメータで決めてしまうことはどう違うのか。結局、パラメータを変えるといっても、詳細を常に指定することはほぼ不可能だから、ランダム性を組み入れるという話にしかならない。それならば、このシステムでもすでにある程度はやっている…となる。
+
+JRF 2021年9月23日
+
+パラメータがどう成立してくるかの詳細には立ち入らない…立ち入れない…としても、その成立がなかなかに難しい場合は、この前述べたような必要エネルギーなどの概念を導入してある程度考慮すればいいのだと思う。
+
+JRF 2021年9月23日
+
+……。
+
+まだ、決まった話でなくボンヤリした話なのだが…。
+
+JRF 2021年9月23日
+
+「来世がないほうが良い」には「少子化を受け入れる」「カルマを下げる」「狂信を防ぐ」といった意味が含まれる。「来世がないほうが良い」を「最適化」して、その概要値が 0.7 になるとして、「少子化を受け入れる」:「カルマを下げる」:「狂信を防ぐ」 がそれぞれ 0.1:0.2:0.4 になることもあれば 0.2:0.4:0.1 になることもあるだろう。ここでは親である「来世がないほうが良い」の子として含まれるものの概要値の和が 0.7 になるようにしてみたが、「その他」というものも合わせ、和が 0.7 未満になるようにすることも考えられる。
+
+JRF 2021年9月23日
+
+親の概要値が決まっているとして、その子の概要値の組み合わせというのが決まってきて、それについて、エネルギーはどれぐらいというのが決まってくるのかもしれない。
+
+必要エネルギーの等しいものから組み合わせが選ばれるが、それは民主的に多数決で決まるのではなく、むしろランダムでどれか一つに決まる感じか。0.7 になるような必要エネルギーが一定のものを集めて平均したりプロットしたりすることにどれほど意味があるのか…。
+
+JRF 2021年9月23日
+
+等しいエネルギーの中からどれか選ぶとなるとランダム的で、それがどういう傾向を持つかというのにはそれなりの関心を持てるが、もっともエネルギーを高くした「望ましいもの」というのは逆に決まってきそうで、そのほうが意味があるのかもしれない。
+
+「望ましいもの」からどれぐらい離れたかを論じる…というのが、この先論を進める方向になるのか…。
+
+JRF 2021年9月23日
+
+……。
+
+……。
+
+○ 2021-08-28T11:53:45Z
+
+ちょっとハマったこと。
+
+Invasion クラスの damage_unit をオプション指定で増やせるようにしようとした。
+
+単純に damage_unit = 30 のところを damage_unit = 30 * ARGS.invasion_mag などとするのは失敗する。
+
+JRF 2021年9月23日
+
+なぜなら、クラスを定義する前に ARGS は作られてないし、まして parse_args もされていないから。
+
+いろいろ考えた末、今回のようにクラス変数を ARGS で変更したい場合は、parse_args のあと、update_classes という別の関数を呼び、その中で変更するようにした。例えば…
+
+JRF 2021年9月23日
+
+&lt;pre&gt;
+def update_classes ():
+    Invasion.damage_unit *= ARGS.invasion_mag
+&lt;/pre&gt;
+
+…などとする。
+
+JRF 2021年9月23日
+
+ARGS.invasion_mag をかける場所が、クラス定義の場所でなくなるので、わかりにくくなるが、これがもっとも穏当な方法だろうと思う。クラス定義の場所には、あとで変更する旨のコメントを残すぐらいはしておくべきだろう。
+
+JRF 2021年9月23日
+
+……。
+
+……。
+
+○ 2021-08-28T12:44:42Z
+
+python は Windows の Anaconda のものを cygwin から使っている。cygwin でシェルスクリプトを動かして処理しようとすると、Ctrl-C … SIGINT あたりでうまくいかない。ちゃんとデバッガに入るのではなく終了してしまう。試しに cygwin の /usr/bin/python3 用にテストプログラムを書いて試すとうまくいくので、Windows の問題だろう。実際、ググるとそれっぽい記述もある。
+
+JRF 2021年9月23日
+
+これは無理にいじるより、しょうがないと諦めるべきなのかな…。
+
+JRF 2021年9月23日
+
+……。
+
+……。
+
+○ 2021-08-30T21:59:27Z
+
+いちおう、今現在使っている Python とライブラリのバージョン。
+
+&lt;pre&gt;
+conda                     4.10.3           py37haa95532_0
+matplotlib                3.1.3                    py37_0
+numpy                     1.18.1           py37h93ca92e_0
+&lt;/pre&gt;
+
+JRF 2021年9月23日
+
+&lt;pre&gt;
+pandas                    1.0.3            py37h47e9c7a_0
+python                    3.7.7           h60c2a47_0_cpython
+scipy                     1.4.1            py37h9439919_0
+&lt;/pre&gt;
+JRF 2021年9月23日
+
+&lt;pre&gt;
+seaborn                   0.10.0                     py_0
+sympy                     1.8              py37haa95532_0
+&lt;/pre&gt;
+
+sympy はこのプロジェクトでは使ってないけど。scipy は前は使ってたけど使わなくなった。
+
+JRF 2021年9月23日
+
+ちょっと古めかな。ライブラリのバージョンアップはもうちょっと落ちついてから。
+
+Windows 10 で Cygwin から Windows の Anaconda の Python を使って作っている。エディタは Windows 用 GNU Emacs。
+
+JRF 2021年9月23日
+
+……。
+
+……。
+
+○ 2021-08-31T05:33:15Z
+
+細かい変更をした simbdp3.py を公開する。(バージョン 0.0.4)
+
+《simbd/simbdp3.py at master - JRF-2018/simbd》  
+<a href="https://github.com/JRF-2018/simbd/blob/master/simbdp3.py" class="ext-link">https://github.com/JRF-2018/simbd/blob/master/simbdp3.py</a>
+
+今回の特徴は統計処理をするプログラムを stats_simbdp3/ 以下に置いたこと。
+
+プログラムは主に二つ。run_simbdp3.sh と plot_logs.py。
+
+JRF 2021年9月23日
+
+……。
+
+run_simbdp3.sh は数回 simbdp3.py を実行してそれをログに取る。
+
+plot_logs.py はそのログを Python の seaborn ライブラリを使って描画する。
+
+seaborn ライブラリのインストールは、どこか他のサイトを参照していただきたい。これ以降はすでにインストールされているものとする。
+
+それらを使う準備として、まず、simbdp3.py で simbdp3.pickle を作る。simbdp3.py があるディレクトリで…、
+
+JRF 2021年9月23日
+
+python simbdp3.py -d -t 1200 -S --save-period=12 --no-view
+
+…を実行する。
+
+次に stats_simbdp3/ に移動し simbdp3.pickle をコピーし、run_simbdp3.sh を実行可能にする。(私は Cygwin 上でやっている。run_simbdp3.sh は bash で動く。)
+
+JRF 2021年9月23日
+
+cd stats_simbdp3/
+cp -p ../simbdp3.pickle .
+chmod +x run_simbdp3.sh
+
+JRF 2021年9月23日
+
+次に 30年間を 10 回まわしそれを normal-01.log ... normal-10.log に取る。このとき PREFIX は 'normal' という。
+
+run_simbdp3.sh normal 10 -d -L -t 360 --change-random-seed --no-view
+
+ここで -d 以降は simbdp3.py に渡すオプション。
+
+JRF 2021年9月23日
+
+次に戦争が増えるよう --invasion-average-term-min=60 を付けて 30年間を 10 回まわす。その PREFIX は mwar (many wars の略)とする。
+
+run_simbdp3.sh mwar 10 -d -L -t 360 --change-random-seed --no-view --invasion-average-term-min=60
+
+最後に結果をプロットする。
+
+python plot_logs.py normal mwar -p AccDeath
+
+JRF 2021年9月23日
+
+ここで plot_logs.py は PREFIX を引数に取る。オプションとして -p にどの数値をプロットするかを指定する。AccDeath は累積死亡数を指定する。この他、Population 人口、AccDeath 累積死亡数、Karma 平均カルマ、NewKarma 新規発生カルマ(人口割)、AccKarma 累積新規発生カルマ、AccTemple 累積寺院建設数、Breakup 一家離散数、AccBreakup 累積一家離散数 …がある。
+
+JRF 2021年9月23日
+
+実験の結論としては、ほんの少し mwar が normal より上にあるが、予想されていたほどの差は出なかった。同じ実験をしても、運によって逆転すらあるかもという差でしかない。
+
+うまくいかないものだ。
+
+JRF 2021年9月23日
+
+……。
+
+……。
+
+○ 2021-08-31T08:31:34Z
+
+boolean のオプションを指定するときに、--no- を前に付けると False を指定できるようにした(--no-change-ambtion などとする。)が、例外として、元の名前が --no- ではじまる場合は、--no-no- の替わりに --with- となることとした。例えば、--no-view については --with-view になる。
+
+JRF 2021年9月23日
+
+……。
+
+……。
+
+○ 2021-08-31T21:38:06Z
+
+結論めいたことも書いたが、基本、そう作ったからそうなった。…という以上の話はない。シミュレーションを回したが故の発見というのは(まだ)ない。私個人では、作ってるうちに気付いたことがあったり、当初、このプロジェクトが現在の姿のようになるとは予想していなかったというのはあるのだが。
+
+JRF 2021年9月23日
+
+優秀な人は、もしかしたら、このプロジェクトがたち上がり、プログラムに入った時点で、いくつかありうる終着点の一つとして、今の私の出した結論のようなものに落ち着きうることが、その人がプログラムを実際に作らなくてもその「結論」が、正確に予想できたのかもしれない。私にはまったく不可能だったが…。たとえば私の前に似たことをやった人があり、それを知っていたということもありえない話ではない。
+
+JRF 2021年9月23日
+
+そんな中、何を「売り」にすれば、私のやったことが認められうるのか。他の人がこのシステムを使って何か他のことができる…というのは難しいと思うから、ドキュメントを整えて、経験を伝える…というあたりをゴールにしようか…とは考えているのだが、他の人がそれを読んで得るところがあるのかどうか…。
+
+しかし、まぁ、とりあえずはその方向に行く以外、私の乏しい想像力では、思い付かないから、その方向をめざすのみ…なのだが…。
+
+JRF 2021年9月23日
+
+……。
+
+まだ、うまく言葉にできないが…。
+
+結論的に述べたことは、このシステムでできる範囲のものでしかないことはわかっている。
+
+人工社会で成り立つ真理を示している…人工社会であるが故の真理でしかない可能性はなくはないが、実社会にもある程度、移して言えることもあるように思う。どうしてそのようなことがありうるか。それはよく説明できない。
+
+JRF 2021年9月23日
+
+むしろ、実社会で言えそうなことを人工社会で言ってみた。そう作ってみたという話ではないのか？ それにいったいどんな意味があるのか？
+
+現世の hating が多いと捕まる人が増えるというのが必要だ…とかいう条件を「導き出した」…は言い過ぎか、思い付いたり、カルマが犯罪に関するだけのものでも、ある程度説明できたり…という自分なりの発見はあり、自分としては意味があると思ったのだが、他の人がそれをどう思うか・他の人にとって意味があるかは、正直わからない。
+
+JRF 2021年9月23日
+
+……。
+
+今回作ったシステムに現実を近付けようという話では決してない。
+
+決してないのだが、しかし、現実に何か示唆できることはないか…あってもいい・あればいい…と作者としては望んでいる。
+
+JRF 2021年9月23日
+
+……。
+
+……。
+
+○ 2021-09-01T03:29:52Z
+
+オプション --invasion-mag を 2.0 から 5.0 に上げてやってみた。このほうが、戦争被害が大きくなって違いがクッキリ出るかと思って。
+
+simbdp3.py のディレクトリがあるところからはじめて…
+
+JRF 2021年9月23日
+
+python simbdp3.py -d -t 1200 -S --save-period=12 --no-view --invasion-mag=5.0
+cd stats_simbdp3/
+cp -p ../simbdp3.pickle .
+run_simbdp3.sh normal2 10 -L -t 360 --change-random-seed
+run_simbdp3.sh mwar2 10 -L -t 360 --change-random-seed --invasion-average-term-min=60
+
+JRF 2021年9月23日
+
+python plot_logs.py normal2 mwar2 -p AccDeath
+
+JRF 2021年9月23日
+
+…としたのだが、やはり大きな違いはない。前よりは確かに違いは大きくなったようだが、それほど大きくはなっていない。
+
+しかし、plot_logs.py を更新して「堕胎」の累積数を数えてみると…
+
+python plot_logs.py normal2 mwar2 -p AccAbortion
+
+JRF 2021年9月23日
+
+…割とハッキリ違いが出た。normal2 のほうが「堕胎」が多い。これは予想通り、実は、前のデータ normal と mwar で -p AccAbortion をしてもやはりハッキリ違いが出ていた。
+
+JRF 2021年9月23日
+
+これはどういうことだろう？ 基礎的な死亡の数が一定して多いので、違いが目立ちにくいということなのか、それとも条件が悪くなると逆に死を防ぐような何かが自動的に組み込まれている…ということなのか？ 後者は今のところ思い当たることがないが…。
+
+JRF 2021年9月23日
+
+死が増えると僧が増えて教育などが改善し、それが国力となって、災害などに強くなり、死者が減る…ということだろうか？ しかし、plot_log.py にコードを足して、戦争以外の災害の大きさを比べてみても大差はない。もしやと調べた教育や僧の数もほとんど同じ。それはそれでおかしいのだが…。
+
+JRF 2021年9月23日
+
+……。
+
+……。
+
+○ 2021-09-01T03:44:31Z
+
+追ってる人間がいるような感じでもないから、そんなに急ぐ話でもないように思うが、変更点がいろいろあるので plot_logs.py を更新しておく。(バージョン 0.0.2)
+
+JRF 2021年9月23日
+
+《simbd/plot_logs.py at master - JRF-2018/simbd》  
+<a href="https://github.com/JRF-2018/simbd/blob/master/stats_simbdp3/plot_logs.py" class="ext-link">https://github.com/JRF-2018/simbd/blob/master/stats_simbdp3/plot_logs.py</a>
+
+JRF 2021年9月23日
+
+……。
+
+……。
+
+○ 2021-09-01T12:59:26Z
+
+オプション -S または --save のふしぎ。
+
+オプション -S または --save は他の boolean 型のオプションとは少し違う。-L または --load を指定してオプションがロードされるとき、このセーブのオプションだけは読み込まれず、常に False の状態に修正される。このため、ロードしたあともセーブしたいなら、新たに -S または --save を指定しなければならない。
+
+JRF 2021年9月23日
+
+これは、--no-save または -S- がなかったころの名残りである。そのころは boolean 型のオプションを一度指定すると、ロードしたあとに修正する手段がなかった。セーブに関してはさすがにそれはまずく、同じセーブで複数の結果を得たいといったとき不便だったので、しかたなく、ロードしたときに常に False にする運用にしたのだった。
+
+今は --no-save または -S- があるため、常に False にする必要はないのだが、便利なこともあり、保守的な判断でそのままにしている。
+
+JRF 2021年9月23日
+
+……。
+
+……。
+
+○ 2021-09-01T20:23:04Z
+
+「死が増えると僧が増えて教育などが改善し、それが国力となって、災害などに強くなり、死者が減る」…などというこが本当に起きているだろうか。
+
+試しに死が増えると僧が増える…という部分を止めて、それで死者が増える一方になるか見てみようとした。
+
+JRF 2021年9月23日
+
+ただこれをするためには、simbdp3.py を少し変更する必要があった。僧がほとんど増減しないでもエラーが出ないようにする必要があった。その上で…、
+
+JRF 2021年9月23日
+
+run_simbdp3.sh mwar2fpr 10 -L -t 360 --change-random-seed --invasion-average-term-min=60 --priests-rate-max=0.005 --priests-rate-min=0.005
+python plot_logs.py normal2 mwar2 mwar2fpr -p AccDeath
+
+JRF 2021年9月23日
+
+…を実行してみた。(fpr は fixed priests の略)
+
+結果としては、mwar2 と mwar2fpr にそこまでの差が出なかった。いちおう私のところでは mwar2fpr が予想通り若干 mwar2 よりも上に来たのはではあるのだが…。
+
+JRF 2021年9月23日
+
+……。
+
+もうちょっとあとからでいいかと思うが、特に plot_logs.py がまともになった面があるので、更新を公開しておく。(バージョン 0.0.3)
+
+simbdp3.py も上記のようにほんの少しいじっている。(バージョン 0.0.5)
+
+JRF 2021年9月23日
+
+《simbd/plot_logs.py at master - JRF-2018/simbd》  
+<a href="https://github.com/JRF-2018/simbd/blob/master/stats_simbdp3/plot_logs.py" class="ext-link">https://github.com/JRF-2018/simbd/blob/master/stats_simbdp3/plot_logs.py</a>
+
+《simbd/simbdp3.py at master - JRF-2018/simbd》  
+<a href="https://github.com/JRF-2018/simbd/blob/master/simbdp3.py" class="ext-link">https://github.com/JRF-2018/simbd/blob/master/simbdp3.py</a>
+
+JRF 2021年9月23日
+
+……。
+
+……。
+
+○ 2021-09-02T17:32:30Z
+
+以前、カルマが私のシステムでは易の「吉凶悔吝」の「悔い」にあたるのではないかと考えた。しかし、それだけではなく、重犯罪の際、被害者の親世代の過去の「うらみ」が宥められていることを考慮したが、それもまた被害者側の「悔い」ではないかと思い当った。囚人になってカルマがなくなるというのと似ているということか、むしろ、カルマの自然減少に似ているということか、それらとの混同があるということか…。
+
+JRF 2021年9月23日
+
+「宥める」ということには「悔い」を刺激せねばならない部分があるように思う。「偶然」が自分やその親族に振りかかったとすればどうだったかという反省・悔いが、感情・思念を宥めることにつながる。…といった感じか。
+
+一方の「吝[うら]み」も単なる憎しみとは違う部分があるはず。それは正義を求める心や教育を望む心も表す…とかあるのだろう。こちらは(「悔い」より一層)まだ詰めきれてない。
+
+JRF 2021年9月23日
+
+…ただ、正義を求める心という部分は、現世の hating が多いと、捕まる人や監獄が多くなるというふうには少し反映はしているか。
+
+JRF 2021年9月23日
+
+……。
+
+カルマ自体は「悔い」ではないか。悔いることでカルマが減る。収監されてつとめを果たしてカルマがゼロになったとき、振り返れば元のカルマが悔いるべきものを指し示していたという感じか。
+
+それとも「悔いるべき」も易では「悔」に含まれているのだろうか？
+
+JRF 2021年9月23日
+
+……。
+
+……。
+
+○ 2021-09-03T03:56:56Z
+
+悔いが大きくなり過ぎてもいけないというのが当初の話だった。悔いは「自分の集団を害する」…ただし、「害する」といっても「限定された不利益を確実に受け容れることでしかない」ということだった。
+
+それは今のシステムにおいては寺院を作るところに現れているか…。ただ、それは支配層だけだな。個人においては僧になる…という部分に現れてると考えるべきなのだろうか？
+
+JRF 2021年9月23日
+
+僧になるのは、今は死者から僧への相続量の多寡だけ見ているが、狂信分…ARGS.nation_education_power_threshold も見るべきか…。ARGS.nation_education_power_threshold  を上げるときは、僧の数に関わる ARGS.priests_rate なども上げるべきということか…。
+JRF 2021年9月23日
+
+そして、ARGS.priests_rate が上がれば教育が良くなるべきだと思うが、今は、ARGS.priests_rate という変数が動いても ARGS.education_goal は動かないことになってるから、ARGS.education_goal も動かさないとダメということになりそう。
+
+JRF 2021年9月23日
+
+それともこのあたり改修すべきなのか？
+
+…一部改修した。ARGS.priests_rate の他に ARGS.priests_standard_rate という非常に似たものを作った。実際の僧の増減は ARGS.priests_rate を使うが、僧の数(割合)を判定に用いるときは、ARGS.priests_standard_rate を使うようにした。これにより ARGS.priests_rate を上げれば ARGS.education_goal を動かさなくても、単純に教育がよくなるはず。ややこしいが、やむを得まい。
+
+JRF 2021年9月23日
+
+これにより mwar2fpr のログが影響を受けるので再度 run_simbdp3.sh を実行する必要がある。私のところでは再実行後のグラフは前と大差がない感じだった。災害の被害は mwar2fpr のほうが mwar2 よりむしろ少なくてそこは予想とは違ったが。
+
+JRF 2021年9月23日
+
+……。
+
+……。
+
+○ 2021-09-03T10:52:37Z
+
+以前、「赤ん坊の education は、両親の中間の値を持って産まれてくる(父親が不明な場合は父親分はランダム値)」…と書いたが、まだそうなっていなかった。
+
+simbdp3.py のみそのように修正。simbdp2.py 以前は修正しなかった。
+
+JRF 2021年9月23日
+
+さて、その上で「来世がないのがよい」と「思考と思念を深めるのがよい」の関係を見るために、墓の数を減らしたものと教育(の目標値)を下げたものについてシミュレーションを回してみる。
+
+JRF 2021年9月23日
+
+本来は、赤ん坊の education を変えたので、最初からやり直す必要があるが、時間がかかるのでそれはまた次の機会として、normal2 などを作った前の simbdp3.pickle をそのまま使って実験することにする。教育の目標値のパラメータを 0.15 ずつ下げたものを試す。(ledu は little education または low education の略。)
+
+JRF 2021年9月23日
+
+run_simbdp3.sh ledu 10 -L -t 360 --change-random-seed --education-goal=0.35 --education-goal-max=0.5 --education-goal-min=0.20
+
+JRF 2021年9月23日
+
+次に墓が少ないものを試す。墓が前は 25000 だったのを 10000 にして試す。(ltom は little tombs の略。)
+
+JRF 2021年9月23日
+
+run_simbdp3.sh ltom 10 -L -t 360 --change-random-seed --tombs-population=10000
+
+JRF 2021年9月23日
+
+そして、両方を下げたものを試す。
+
+JRF 2021年9月23日
+
+run_simbdp3.sh ledultom 10 -L -t 360 --change-random-seed --education-goal=0.35 --education-goal-max=0.5 --education-goal-min=0.20 --tombs-population=10000
+
+JRF 2021年9月23日
+
+解釈としては、方向が逆で、ledultom の状態から「思考と思念を深めるのがよい」を重視して --tombs-population を上げて ledu の状態になってカルマが増え、そこから、思考のみを深めて normal2 の状態にしてどれだけカルマが下がるかを見たい。…といった感じになる。normal2 の状態から、逆に --tombs-population を下げて、どれだけカルマが下がるか、ledu とどちらを取るべきか…ということも見たい。
+
+JRF 2021年9月23日
+
+ログが取れたあと…
+
+python plot_logs.py normal2 ledu ltom ledultom -p AccKarma
+
+…または…
+
+python plot_logs.py normal2 ledu ltom ledultom -p NewKarma
+
+…としてみる。
+
+JRF 2021年9月23日
+
+すると、確かに ledu は normal2 よりカルマが悪く、normal2 は ltom よりカルマが悪いとなっている。問題は ledultom で、これは normal2 の下、ltom の間に来ているが、ledu と normal2 の差に比べて、ledultom と ltom の差が小さいのが気になる。
+
+これはなぜだろう？ -p Education をして調べるとちゃんと ledu ledultom は教育が同程度に下がっており、そこに問題はないようだった。…ということで ledultom と ltom の差が小さい理由はわからない。それは今後の課題としておいておくとしよう。
+
+JRF 2021年9月23日
+
+この結果だけだと ltom にするのがとにかく良いとなってしまう。そこで重犯罪の重さは ltom のほうが重いはずだったというのを見るために、-p AccVKarma を表示してみる。…しかし、これはほとんど差がない。もっと世代を重ね、墓の数を巨大にしないと差が出ないのかもしれない。
+
+JRF 2021年9月23日
+
+すると、ltom が一番良いということでいいのだろうか？ ただ、ltom は「思念を深めるのがよい」の軽視だから、ARGS.prophecy_effect を小さくするのと一緒になりやすいということだった。ARGS.prophecy_effect を小さくするのを lpe とすると、ltomlpe と normal2 を比べて総合的にどうかを問うということになるのか。
+
+JRF 2021年9月23日
+
+……。
+
+……。
+
+○ 2021-09-03T11:03:12Z
+
+mwar2 と mwar2fpr の AccDeath がほぼ同じだった件。
+
+Education を見ると、0.54 から 0.49 の間ぐらいで、大きな変化がないといって良く、それが国力に与える影響となるとさらに小さいとなる。
+
+ここがおかしいのではないかと思う。
+
+JRF 2021年9月23日
+
+僧の数が変化したとき、もっと早く education を変化させれば良いのだろうか？ それとも国力に反映させるとき education はより大きな影響を持つとすべきなんだろうか？
+
+…難しいところだ。早く変化させれば偏りが大きくなりそうだし、逆に下がるのも大きくなる。国力でなんで education だけそんなに大きな影響を持つのか理由がない。
+
+JRF 2021年9月23日
+
+……。
+
+……。
+
+○ 2021-09-05T03:16:02Z
+
+ARGS.prophecy_effect を小さくする lpe を試す。(ここは完全な失敗なので。他の人はやる必要がない。)
+
+run_simbdp3.sh lpe 10 -L -t 360 --change-random-seed --prophecy-effect=0.8
+
+JRF 2021年9月23日
+
+run_simbdp3.sh ltomlpe 10 -L -t 360 --change-random-seed --tombs-population=10000 --prophecy-effect=0.8
+
+JRF 2021年9月23日
+
+run_simbdp3.sh ledultomlpe 10 -L -t 360 --change-random-seed --education-goal=0.35 --education-goal-max=0.5 --education-goal-min=0.20 --tombs-population=10000 --prophecy-effect=0.8
+
+JRF 2021年9月23日
+
+python plot_logs.py normal2 lpe -p AccDeath
+python plot_logs.py lpe ltomlpe ledultomlpe -p AccDeath
+python plot_logs.py normal2 ledu ltomlpe ledultomlpe -p AccKarma
+
+JRF 2021年9月23日
+
+…やってみると、lpe はまったく効いていないことがわかる。意図としては予言の有効性が減ることで災害のダメージが増えるはずであったが、まったくそうなっていない。試しに --prophecy-effect=0.0 をやってみる。
+
+JRF 2021年9月23日
+
+run_simbdp3.sh lpe0 10 -L -t 360 --change-random-seed --prophecy-effect=0.0
+python plot_logs.py normal2 lpe0 -p AccDeath
+
+JRF 2021年9月23日
+
+…これだとさすがに差が出るようでひとまずホッとする。では、--prophecy-effect=0.5 でやってみよう。
+
+JRF 2021年9月23日
+
+run_simbdp3.sh lpe05 10 -L -t 360 --change-random-seed --prophecy-effect=0.5
+python plot_logs.py normal2 lpe0 lpe05 -p AccDeath
+
+JRF 2021年9月23日
+
+…すると、lpe05 は lpe0 ぐらい normal2 より高くなっており、今後は lpe05 を lpe としていけば良さそうなことがわかる。ただし、lpe0 と lpe05 がほぼ重なる形になってるのが、気にかかるところではあるが…。
+
+JRF 2021年9月23日
+
+あと、狂信を見るとき、ちょうどそれは --prophecy-effect と同じような形で作用するのであるが、その作用は最大で --prophecy-effect=0.8 ぐらいにしていた。しかし、これではまったく足りないということがわかった。そこで、最大で --prophecy-effect=0.2 ぐらいになるよう改めることとする。
+
+JRF 2021年9月23日
+
+……。
+
+……。
+
+○ 2021-09-05T03:51:43Z
+
+狂信について試したい。
+
+狂信のパラメータは、ARGS.nation_education_power_threshold と ARGS.faith_realization_power_threshold で、これを同時に大きくする 0.9 か 0.95 ぐらいにするのが狂信を試すことに相当する。
+
+JRF 2021年9月23日
+
+問題は、ARGS.nation_education_power_threshold がほとんど意味がないことである。
+
+狂信は、教育や信仰理解が高いことそのものではない。高い教育や信仰理解を(threshold を高く設定し)国力にかえようとすることが狂信である…といった定義になっている。
+
+JRF 2021年9月23日
+
+支配層の信仰理解は、1.0 に近くなることもあり、threshold を高めに設定することに意味がある。しかし、教育は国民の平均を見ており、国民の平均は 0.5 付近に張り付いていて、高い threshold を設定してもそれにかかることは絶対にありえず意味がない。
+
+これに意味を持たせるにはどうするか？
+
+JRF 2021年9月23日
+
+まず、教育の平均の分布は中心極限定理によりそれはそれで正規分布に近付くはずである。その正規分布の Percent Point が ARGS.nation_education_power_threshold になる点を新たに threshold と定義しなおすという方向を思い付いた。
+
+JRF 2021年9月23日
+
+しかし、これはダメである。個人の教育の分布が本当に 0.0 から 1.0 の一様分布であれば、一様分布の σ**2 に対し、n 人(25000人ぐらい)の平均の分布の分散は (σ**2)/n となりかなり小さくなる。その例えば 90 % 点というのは 0.5 にものすごく近付くがそれは、教育の平均が動くのに対してあまりにも近付き過ぎということになる。
+
+JRF 2021年9月23日
+
+つまるところ、このシステムでは、個人の教育の平均は 0.5 ではないのが普通で、0.5 から (σ**2)/n の点とか考えても意味がないのだ。
+
+JRF 2021年9月23日
+
+そこで、もっと違う方法を考えてみる。一つの方法として平均と取る前に個人に対して threshold を適用してはどうか…ということである。しかし、これは、平均がかなり低めに出ることになり、教育が高いこと自体は狂信ではないという定義に反するように思う。低めに出るのが問題だからと、上を切るのと同時に教育の低い方にも threshold を適用することも考えられるが、しかし、それは教育の低い者を国力と認めない方向で、それはそれで間違っている気がする。
+
+JRF 2021年9月23日
+
+平均を取るという方向、その平均に何か操作をするというこれまでの方向は間違っていないように思う。
+
+また違う方法を考えてみる。
+
+JRF 2021年9月23日
+
+教育の平均は動いている。どうやって動いているかというと、僧の数から求められる education goal に向けて動いている。その goal は ARGS.education_goal_max から ARGS.education_goal_min まで動く。いちおう可能性としては、goal は僧以外の者についてのみの goal だから、僧の高めの数値が加味されることで最大値は ARGS.education_goal_max + α になりうる。実際にはそれはかなり難しいが。
+
+JRF 2021年9月23日
+
+この education goal について、education goal よりもある程度、上に来る場合、threshold でカットする…としてはどうだろう？ しかし、すると実際の平均 education より、 education goal の位置が重要になってしまう。それは違うのではないか。
+
+JRF 2021年9月23日
+
+結局、ARGS.education_goal_standard_max (普通は ARGS.education_goal_max と同じ数値) を平均 education の max と見なし、その max の何パーセントかで切るというのを ARGS.nation_education_power_threshold が表している…とする方法にしようということになった。ARGS.education_goal_standard_max が達成されることはほとんどないが + α があるため、もしかすると達成可能な数値かもしれない。
+JRF 2021年9月23日
+
+国力の計算のときも、教育平均が max 以上で threshold が 1.0 の場合に 1.0 と評価されるようにする。詳しくは次のバージョンのソースを見ていただきたい。
+
+JRF 2021年9月23日
+
+なお、ARGS.education_goal_standard_max は ARGS.education_goal_max のデフォルト値と同じ 0.65 にするが、ledu など教育を 0.15 下げた場合を考える必要上、ARGS.education_goal_standard_min は 0.20 とし、ARGS.education_goal_min のデフォルト値 0.35 より小さな値としておく。
+
+JRF 2021年9月23日
+
+そして前少し言っていたが、education goal に向かう早さをパラメータで調整できるようにもしておき、デフォルトをかなり早くしておいた。
+
+(実験に続く)
+
+JRF 2021年9月23日
+
+……。
+
+……。
+
+○ 2021-09-05T03:52:47Z
+
+実験の前に…。
+
+さすがにここまで変更すると normal のログを求めるところからやり直さねばならない。これまでのログは無用となる。
+
+JRF 2021年9月23日
+
+ログを消す前に plot_logs.py でのグラフの表示もいくつかセーブしておくこととする。これは fig-20210906_*.png という名前にしておく。その内容は、ファイル名からはわからないが、グラフには legend 部分に prefix が並び、縦軸に何に注目してあるかが書いてあるからわかるであろう。これらは↓で見れるようにした。
+
+JRF 2021年9月23日
+
+《グラフ集: 2021-09-05 まで - Issue #1 - JRF-2018/simbd》  
+<a href="https://github.com/JRF-2018/simbd/issues/1" class="ext-link">https://github.com/JRF-2018/simbd/issues/1</a>
+
+JRF 2021年9月23日
+
+今後は別の Issue をたてて、グラフは作ったときに Issue に公開して行こうかと思う。
+
+JRF 2021年9月23日
+
+次に plot_logs.py などの更新を公開しておく。(バージョン 0.0.4)
+
+《simbd/plot_logs.py at master - JRF-2018/simbd》  
+<a href="https://github.com/JRF-2018/simbd/blob/master/stats_simbdp3/plot_logs.py" class="ext-link">https://github.com/JRF-2018/simbd/blob/master/stats_simbdp3/plot_logs.py</a>
+
+JRF 2021年9月23日
+
+そして、ログのバックアップも取っておこう。バックアップは zip にするため、git のに特別な Release を作ってそこに zip のバイナリを置くことにした。その Release の URL は↓でバックアップは Asset の logs-20210906.zip になる。
+
+JRF 2021年9月23日
+
+《Release Old Logs 20210905 - JRF-2018/simbd》  
+<a href="https://github.com/JRF-2018/simbd/releases/tag/plot_logs-v0.0.4" class="ext-link">https://github.com/JRF-2018/simbd/releases/tag/plot_logs-v0.0.4</a>
+
+JRF 2021年9月23日
+
+なお、一緒に置いてある simbdp3_pickle-20210831.zip の中身は、normal2 や mwar2 を作る直前に作った pickle であり、その前の normal や mwar を作ったころの pickle は残っていない。上のグラフをまとめたものも figs-20210905.zip として置いてある。
+
+JRF 2021年9月23日
+
+……。
+
+……。
+
+○ 2021-09-06T21:19:37Z
+
+さて狂信に関する実験である。
+
+normal のログを求めるところからやり直し、normal に上書きする。--change-random-seed ははじめから付けておくことにする。
+
+JRF 2021年9月23日
+
+python simbdp3.py -d -t 1200 -S --save-period=12 --no-view --invasion-mag=5.0 --change-random-seed
+cd stats_simbdp3/
+cp -p ../simbdp3.pickle .
+run_simbdp3.sh normal 10 -L -t 360
+
+JRF 2021年9月23日
+
+一応、前のログとの違いを確認しておく。
+
+python plot_logs.py normal2 normal -p AccDeath -o fig-20210906_01.png
+python plot_logs.py normal2 normal -p AccAbortion -o fig-20210906_02.png
+python plot_logs.py normal2 normal -p Education -o fig-20210906_03.png
+
+JRF 2021年9月23日
+
+python plot_logs.py normal2 normal -p NewKarma -o fig-20210906_04.png
+
+JRF 2021年9月23日
+
+AccDeath も AccAbortion も normal のほうが改善している。一方、Education は normal のほうが 0.5 付近に張り付いているが、試行ごとの変化は大きそうだ。NewKarma は初期の normal2 と normal に違いが大きく、その後ほんの少し寄せていってる感じか。
+
+なお、今回から、fig-*.png は↓で見られるようにしてある。
+
+JRF 2021年9月23日
+
+《グラフ集: 2021-09-06 から - Issue #2 - JRF-2018/simbd》  
+<a href="https://github.com/JRF-2018/simbd/issues/2" class="ext-link">https://github.com/JRF-2018/simbd/issues/2</a>
+
+JRF 2021年9月23日
+
+……。
+
+狂信を試す。(fana は fanaticism の略。)
+
+run_simbdp3.sh fana 10 -L -t 360 --nation-education-power-threshold=0.925 --faith-realization-power-threshold=0.925
+
+JRF 2021年9月23日
+
+python plot_logs.py normal fana -p AccDeath -o fig-20210906_05.png
+python plot_logs.py normal fana -p AccAbortion -o fig-20210906_06.png
+python plot_logs.py normal fana -p AccTemple -o fig-20210906_07.png
+
+JRF 2021年9月23日
+
+予想通り、AccDeath は fana のほうが悪く、AccAbortion は fana のほうが良く。AccTemple は fana のほうが多い。これまでここまではっきり予想通りとなることは少なかったので、逆に心配になるぐらい。
+
+JRF 2021年9月23日
+
+……。
+
+ちょっと前に、狂信時に僧の数を増やすべきだという考えをしたが、それは無意味なものであるべきだともしていた。まずは僧の数を増やしたもののみやってみる。(mpr は many priests の略。)
+
+JRF 2021年9月23日
+
+run_simbdp3.sh fanampr 10 -L -t 360 --nation-education-power-threshold=0.925 --faith-realization-power-threshold=0.925 --priests-rate-max=0.0125 --priests-rate=0.00666666666666667 --priests-rate-min=0.004
+
+JRF 2021年9月23日
+
+次に無意味であることを表すために --priests-standard-rate のほうもいっしょに動かすこととする。(mprs は much priests standard の略。)
+
+JRF 2021年9月23日
+
+run_simbdp3.sh fanamprmprs 10 -L -t 360 --nation-education-power-threshold=0.925 --faith-realization-power-threshold=0.925 --priests-rate-max=0.0125 --priests-rate=0.00666666666666667 --priests-rate-min=0.004 --priests-standard-rate-max=0.0125 \
+JRF 2021年9月23日
+
+--priests-standard-rate=0.00666666666666667 --priests-standard-rate-min=0.004
+
+JRF 2021年9月23日
+
+python plot_logs.py normal fana fanampr fanamprmprs -p Education -o fig-20210907_01.png
+python plot_logs.py normal fana fanampr fanamprmprs -p AccDeath -o fig-20210907_02.png
+
+JRF 2021年9月23日
+
+python plot_logs.py normal fana fanampr fanamprmprs -p Population -o fig-20210907_03.png
+python plot_logs.py normal fana fanampr fanamprmprs -p AccAbortion -o fig-20210907_04.png
+
+JRF 2021年9月23日
+
+Education は fanampr が高くなるのは予定通り。そのおかげで fanaampr は fana や fanamprmprs より AccDeath も良くなるか…と思っていたが、必ずしもそうなっていない。教育の効果は大したことない…となってしまった。Population を見ると、fanampr は最後のほうで下がっていて、どうも大きな戦争がたまたま起こったらしいということではないかと推察する。
+JRF 2021年9月23日
+
+AccDeath と逆の動きを大きくしがちな AccAbortion も fanampr が fana と大差なく、最後は fanamprmprs と同じになるのは、くじ運が悪かった以外どうにも説明がつかない。
+
+JRF 2021年9月23日
+
+……。
+
+……。
+
+○ 2021-09-08T03:45:19Z
+
+fanampr は本当にくじ運が悪かっただけななのか？ 確かめるためそれだけもう一度実験してみた。
+
+JRF 2021年9月23日
+
+run_simbdp3.sh fanampr2 10 -L -t 360 --nation-education-power-threshold=0.925 --faith-realization-power-threshold=0.925 --priests-rate-max=0.0125 --priests-rate=0.00666666666666667 --priests-rate-min=0.004
+
+JRF 2021年9月23日
+
+python plot_logs.py fanampr fanampr2 -p AccDeath -o fig-20210908_01.png
+python plot_logs.py normal fana fanampr fanamprmprs fanampr2 -p Education -o fig-20210908_02.png
+
+JRF 2021年9月23日
+
+python plot_logs.py normal fana fanampr fanamprmprs fanampr2 -p AccDeath -o fig-20210908_03.png
+python plot_logs.py normal fana fanampr fanamprmprs fanampr2 -p Population -o fig-20210908_04.png
+
+JRF 2021年9月23日
+
+python plot_logs.py normal fana fanampr fanamprmprs fanampr2 -p AccAbortion -o fig-20210908_05.png
+
+JRF 2021年9月23日
+
+《グラフ集: 2021-09-06 から - Issue #2 - JRF-2018/simbd》  
+<a href="https://github.com/JRF-2018/simbd/issues/2" class="ext-link">https://github.com/JRF-2018/simbd/issues/2</a>
+
+JRF 2021年9月23日
+
+fanampr(2) は、fana より AccDeath では下に、AccAbortion では上に来て欲しいのだが、そうなってない。Education は予定通り fanampr(2) が上に来ているがその差は 0.54 - 0.50 = 0.04 程度で、Education の効果はほとんどないということになるようだ。
+
+JRF 2021年9月23日
+
+……。
+
+国力を見てみると…、
+
+python plot_logs.py normal fana fanampr fanamprmprs fanampr2 -p Power -o fig-20210908_06.png
+
+JRF 2021年9月23日
+
+…確かに fanampr(2) のほうが高く、差はあるのだが、その差が少な過ぎて効いてない…ということなのだろうか？ 長期で見ればまた違いがあるのだろうか？
+
+JRF 2021年9月23日
+
+……。
+
+……。
+
+○ 2021-09-09T03:44:05Z
+
+mwar をもう一度試してみよう。今度は、戦争が増えたとき上昇指向が増え人口目標が増えた状態を試そう。人口目標が増えた状態を much population で mpop、上昇指向が増えた状態を much ambition で mamb とする。人口が違うと比較しにくいので、比較用に人口目標が増えただけの mwarmpop も実験しておいた。
+
+JRF 2021年9月23日
+
+run_simbdp3.sh mwar 10 -L -t 360 --invasion-average-term-min=60
+run_simbdp3.sh mwarmpopmamb 10 -L -t 360 --invasion-average-term-min=60 --population=11000,11000,5500 --change-ambition --ambition-goal=0.70
+
+JRF 2021年9月23日
+
+run_simbdp3.sh mwarmpop 10 -L -t 360 --invasion-average-term-min=60 --population=11000,11000,5500
+
+JRF 2021年9月23日
+
+python plot_logs.py normal mwar mwarmpopmamb mwarmpop -p AccDeath -o fig-20210909_01.png
+python plot_logs.py normal mwar mwarmpopmamb mwarmpop -p AccDeathRate -o fig-20210909_02.png
+
+JRF 2021年9月23日
+
+python plot_logs.py normal mwar mwarmpopmamb mwarmpop -p AccAbortion -o fig-20210909_03.png
+python plot_logs.py normal mwar mwarmpopmamb mwarmpop -p AccBreakup -o fig-20210909_04.png
+
+JRF 2021年9月23日
+
+python plot_logs.py normal mwar mwarmpopmamb mwarmpop -p Budget -o fig-20210909_05.png
+python plot_logs.py normal mwar mwarmpopmamb mwarmpop -p Power -o fig-20210909_06.png
+
+JRF 2021年9月23日
+
+《グラフ集: 2021-09-06 から - Issue #2 - JRF-2018/simbd》  
+<a href="https://github.com/JRF-2018/simbd/issues/2" class="ext-link">https://github.com/JRF-2018/simbd/issues/2</a>
+
+JRF 2021年9月23日
+
+AccDeathRate でも mwarmpopmamb はかなり死者が多いとなっているのは理由がいまいちわからない。mwarmpopmamb と mwarmpop で「堕胎」が少ないのは人口増加過程にあるからで予定通り。
+
+JRF 2021年9月23日
+
+活発な経済の mwarmpopmamb が mwarmpop より一家離散 AccBreakup が当然多いはずだがそれほど差がない。ただ、経済規模を反映する Budget が大きくなるはずというのはその通りになっている。ただ、人口が多いはずの mwarmpop が mwar よりも Budget が小さくなってるのはよくわからない。財産を持ってない子供が増えたせいだろうか。
+
+JRF 2021年9月23日
+
+Budget が normal より mwar シリーズで減るのは戦争で障害(injured)が多くなるせいだと思う。障害があると労働力(tmp_labor)が低くなり、経済的に不利になる。死者が増えると僧に相続税と取られる分、経済の規模が小さめになりやすいということもありうるのだが、戦争で死者があまり増えてる感じじゃないのでこの効果は薄いだろう。
+
+JRF 2021年9月23日
+
+……。
+
+……。
+
+○ 2021-09-09T16:13:50Z
+
+simbdp3.py についてログに Average Injured や Average Fertility や Average Tmp Labor などを表示するように変更した。
+
+本当はこれでログを取り直せばいいのだが、まだ変更がありうるし、面倒なので、とりあえず今は取り直さないことにする。
+
+JRF 2021年9月23日
+
+……。
+
+……。
+
+○ 2021-09-09T17:23:49Z
+
+前、sympy は使ってないとか scipy は今は使ってないとか書いてるが、普通に使ってますね。simbdp3.py では使ってないというだけで。
+
+JRF 2021年9月23日
+
+……。
+
+……。
+
+○ 2021-09-09T22:07:22Z
+
+さて、これまで取ったログの取り直しの続き。まずは mwarfpr から。
+
+run_simbdp3.sh mwarfpr 10 -L -t 360 --invasion-average-term-min=60 --priests-rate-max=0.005 --priests-rate-min=0.005
+
+JRF 2021年9月23日
+
+python plot_logs.py normal mwar mwarfpr -p AccDeath -o fig-20210910_01.png
+python plot_logs.py normal mwar mwarfpr -p AccAbortion -o fig-20210910_02.png
+python plot_logs.py normal mwar mwarfpr -p Education -o fig-20210910_03.png
+python plot_logs.py normal mwar mwarfpr -p Power -o fig-20210910_04.png
+JRF 2021年9月23日
+
+《グラフ集: 2021-09-06 から - Issue #2 - JRF-2018/simbd》  
+<a href="https://github.com/JRF-2018/simbd/issues/2" class="ext-link">https://github.com/JRF-2018/simbd/issues/2</a>
+
+JRF 2021年9月23日
+
+前は mwar と mwarfpr に差が出なかったのに、今回はかなり差が出ている。くじ運の問題だろうか。mwarfpr、AccDeath は予定通り上、AccAbortion は予定通り下、Education は予定通り変化が少ない。そのわりに、Power はなぜか mwarfpr が最後一番良いという結果になって、この理由がわからない。戦争で疲弊したにもかかわらず、political_hating に soothe がかかったためそれが国力にプラスの影響を及ぼしたとかなんだろうか？
+
+JRF 2021年9月23日
+
+……。
+
+……。
+
+○ 2021-09-11T09:34:05Z
+
+ログ取り直し続き。
+
+JRF 2021年9月23日
+
+run_simbdp3.sh ledu 10 -L -t 360 --education-goal=0.35 --education-goal-max=0.5 --education-goal-min=0.20
+run_simbdp3.sh ltom 10 -L -t 360 --tombs-population=10000
+
+JRF 2021年9月23日
+
+run_simbdp3.sh ledultom 10 -L -t 360 --education-goal=0.35 --education-goal-max=0.5 --education-goal-min=0.20 --tombs-population=10000
+
+JRF 2021年9月23日
+
+python plot_logs.py normal ledu ltom ledultom -p AccKarma -o fig-20210911_01.png
+python plot_logs.py normal ledu ltom ledultom -p NewKarma -o fig-20210911_02.png
+python plot_logs.py normal ledu ltom ledultom -p Education -o fig-20210911_03.png
+
+JRF 2021年9月23日
+
+《グラフ集: 2021-09-06 から - Issue #2 - JRF-2018/simbd》  
+<a href="https://github.com/JRF-2018/simbd/issues/2" class="ext-link">https://github.com/JRF-2018/simbd/issues/2</a>
+
+JRF 2021年9月23日
+
+ledu は normal よりカルマが悪く、normal は ltom よりカルマが悪く ledultom は ltom よりカルマが悪いが、normal よりは良いとなっている。前は ledultom が ltom と差がないという悩みがあったが、今回は割と差があり、結果が美しい。
+
+なお、測ってないが、計算時間はログにたくさんの数値を載せるようになった関係でかなり遅くなってしまったようだ。
+
+JRF 2021年9月23日
+
+……。
+
+……。
+
+○ 2021-09-11T19:04:03Z
+
+重犯罪の重さの決め方について。
+
+決め方を詳しくは繰り返さないが、墓の過去をかなり辿って僧達によって宥められた葬られた者の憎しみを参照していた。
+
+しかし、実際には、古代においても墓が残っているからといって、そんな過去の憎しみを考慮に入れるといったことはなかったであろう。
+
+JRF 2021年9月23日
+
+あったのは「バーチャルな真実」として、物語で神的存在の愛憎劇があったぐらいというのが実際のところではないか。
+
+ただし、物語が私的に伝承する過程で、自分の家族にあった憎しみなどから、どの伝承を選択するかというのはあっただろうし、墓がたくさん残るような状況のほうが物語がたくさん残りやすく、そこから自分の家族にあった伝承を選択できる。そして時間がたつごとに物語自体さまざまに変質し、露骨な憎しみが解消されたり、新たな憎しみが作られたり…。…といった面はあったのではないか。
+
+JRF 2021年9月23日
+
+そういった面をそのまま実装するのはそれはそれで難しいため、その代わりとして、simbdp3.py のようなモデル化がなされていると考えていただくのがよいのかもしれない。
+
+JRF 2021年9月23日
+
+……。
+
+……。
+
+○ 2021-09-12T04:04:56Z
+
+ログ取り直し続き。
+
+lpe の --prophecy-effect に関しては 0.8 ではなく 0.5 になってるのがポイント。
+
+JRF 2021年9月23日
+
+run_simbdp3.sh lpe 10 -L -t 360 --prophecy-effect=0.5
+run_simbdp3.sh ltomlpe 10 -L -t 360 --tombs-population=10000 --prophecy-effect=0.5
+
+JRF 2021年9月23日
+
+run_simbdp3.sh ledultomlpe 10 -L -t 360 --education-goal=0.35 --education-goal-max=0.5 --education-goal-min=0.20 --tombs-population=10000 --prophecy-effect=0.5
+
+JRF 2021年9月23日
+
+python plot_logs.py normal lpe -p AccDeath -o fig-20210912_01.png
+python plot_logs.py lpe ltomlpe ledultomlpe -p AccDeath -o fig-20210912_02.png
+python plot_logs.py normal ledu ltomlpe ledultomlpe -p AccKarma -o fig-20210912_03.png
+
+JRF 2021年9月23日
+
+《グラフ集: 2021-09-06 から - Issue #2 - JRF-2018/simbd》  
+<a href="https://github.com/JRF-2018/simbd/issues/2" class="ext-link">https://github.com/JRF-2018/simbd/issues/2</a>
+
+JRF 2021年9月23日
+
+AccKarma のグラフはキレイに予定通りだが、AccDeath に関しては lpe がもう少し高くても良い感じか。lpe が ltomlpe や ledultomlpe と割と差がついているのも解せない。ledultomlpe が低教育のためそれだけ AccDeath が高くなる…というならまだ解釈しようがあるのだが、そうなっていない。
+
+JRF 2021年9月23日
+
+……。
+
+……。
+
+○ 2021-09-12T04:18:20Z
+
+さて一通りの実験はした。その間に、過去のアイデアを読んで、いくつか変更すべきところを思い付いた。その変更をすれば、ログは取り直しせねばならない。そこで、再びログのバックアップをすることにした。
+
+まず plot_logs.py などの更新を公開しておく。(バージョン 0.0.5)
+
+JRF 2021年9月23日
+
+《simbd/plot_logs.py at master - JRF-2018/simbd》  
+<a href="https://github.com/JRF-2018/simbd/blob/master/stats_simbdp3/plot_logs.py" class="ext-link">https://github.com/JRF-2018/simbd/blob/master/stats_simbdp3/plot_logs.py</a>
+
+そして、ログのバックアップである。GitHub に特別な Release を作ってそこに zip のバイナリを置く。その Release の URL は↓でバックアップは Asset の logs-20210912.zip になる。
+
+JRF 2021年9月23日
+
+《Release Logs 20210912 - JRF-2018/simbd》  
+<a href="https://github.com/JRF-2018/simbd/releases/tag/plot_logs-v0.0.5" class="ext-link">https://github.com/JRF-2018/simbd/releases/tag/plot_logs-v0.0.5</a>
+
+JRF 2021年9月23日
+
+なお、一緒に置いてある simbdp3_pickle-20210906.zip の中身は今回公開のログを取るのに使ったものである。ただし、次のバージョンでは pickle の構造が変わるのでそのままでは使えなくなる予定…。グラフをまとめた figs-20210912.zip も置いておく。
+
+JRF 2021年9月23日
+
+……。
+
+……。
+
+○ 2021-09-13T17:46:51Z
+
+過去のアイデアログを読み直し、いくつか未実装のものを実装した。simbdp3.py のみいじる。
+
+まずは大きなところで hating まわり。
+
+JRF 2021年9月23日
+
+hating_unknown の存在を忘れていて、犯罪などに hating_unknown が反映されていなかったのを修正した。そして、hating_unknown の上がり方を 0.1 * hate ではなく、カルマと同じ、p.hating_unknown = max([p.hating_unknown, new_hate]) + 0.1 * min([p.hating_unknown, new_hate]) という形にした。
+
+JRF 2021年9月23日
+
+次に、強姦の際、妊娠したら hating_unknown が 0.5 たまることにした。0.5 では少ないと思われる向きもあるかもしれないが、強姦は今のところ戦時強姦で、政治への hating は前からたまるようにしていたこともあり、抑えめにした。
+
+JRF 2021年9月23日
+
+さらに、重犯罪の被害者になる際のなりやすさに、hating の相手方の hated を参照するようにした。その判定の前に、憎まれの最大値 tmp_max_hated というのを求めておき、それを参照している。
+
+なお、強く恨まれてるより数多く恨まれてるほうが被害者になりやすいかもしれないが、数を問題にすると面倒なので tmp_max_hated で十分とし、数多くというのは merchant_hated である程度代替しうると考えた。
+
+JRF 2021年9月23日
+
+あとついでに、重犯罪は、男性のほうが力がある分、女性より 1.2 倍、罪を犯しやすくしておいた。
+
+さらについでに、重犯罪の被害者になりやすさについて、もっとランダムに誰しもが選ばれやすくしておいた。
+
+JRF 2021年9月23日
+
+……。
+
+アイデアログに次のように書いていた。
+
+＞古代では特に父親は実子と思っているが、養子であることがあるというのを表すために使う。これにより時限爆弾的に恨みが発生することに対応したい。＜
+
+…しかし、時限爆弾的にいつ起こるかわからないものだと、重ねて恨みが発生しないように起きたときを記録しておかねばならないだろう。それは処理が重くなり過ぎるように思う。
+
+JRF 2021年9月23日
+
+そこで、扶養されていたが子供でなかったとき、結婚時または成人時にそれぞれ 0.15 ぐらい産みの親(生きてる場合)への hating が発生するとした。
+
+JRF 2021年9月23日
+
+……。
+
+＞特定の誰かへの恨みは減りにくいが、hating_unknown は日々の生活の中、(教育があれば)減りやすいとしよう。＜…と書いた。
+
+結局、soothe されるとき、hating_unknown も個人に対するのの 1.5 倍の確率で soothe されるとしたが、複数人への hating であることを考慮し、減り方を 0.5 をかけるのではなく 0.75 をかけるようにした。
+
+JRF 2021年9月23日
+
+……。
+
+……。
+
+○ 2021-09-13T17:47:11Z
+
+過去のアイデアログを読み直して、やってないと気付いたものの修正しなかった点について。
+
+JRF 2021年9月23日
+
+……。
+
+＞11ヶ月前の基準を記録しておいて、それで「堕胎」などを判断するようにしてほうがフェアじゃないかという気はする。むしろ、人口変動への対応が遅れるのでマイナスかもしれないが、将来もしかすると、ここでいいアルゴリズムが見つかるかもしれず、「フェア」にやっておく価値はあるかもしれない。未来へのメッセージ的なもの…。＜
+
+…これについてはやってない。まだ迷っている。人口維持しながら「堕胎」を減らすには、どういう方法がいいのか…。
+
+JRF 2021年9月23日
+
+……。
+
+＞地域の違う離れた貴族どうしでの結婚は奨励される感じか。＜
+
+これは支配層の家族であるかどうかを判定しなければならなくなるため、処理が重くなり過ぎると判断し、結局やってない。まぁ、貴族は金持ちと結婚しやすい感じにはなってるのでそれはそれで良いかという判断。
+
+JRF 2021年9月23日
+
+……。
+
+＞経済の余裕・豊かさが教育を支える。＜
+
+というのは経済が豊かだと死亡時の僧の相続分が増えることで、僧が増え、教育が増える…というので表されていると考えたい。
+
+JRF 2021年9月23日
+
+＞死が増えることで僧を増やそうとはするかもしれない。しかし、それは相続総額に関係なく起こるとすることで、「捨て扶持」性を表す…ようにしようかと思う。＜
+
+…これは相続総額を見ることにした。「捨て扶持」性は、寺院建立が何の役にも立たないことなど他のことで表されていると考える。もしくは、僧が増えても教育が増えないようにすることなどで表されている。…としたい。
+
+JRF 2021年9月23日
+
+……。
+
+＞ただ、物語を大きくして僧を大きくすることを、僧が行うならそれは破綻のリスクを増やしてでも僧を増やそうとしていることが疑われるため、僧は物語を大きくさせようとするべきではない。僧以外のものが物語を大きくして、結果、僧が多くなり、様々なリスクが減るかもしれない。しかし、僧の大きさは「捨て扶持」の大きさによっても決まってくるからあまり大きくもできない。「捨て扶持」を大きくするにはどうすればいいか…。
+
+JRF 2021年9月23日
+
+「捨て扶持」を大きくするには、相対的な労働者人口が大きい必要がある。労働者人口を大きく減らすのは戦争(蛮族の侵入)なので、民が僧を増やそうと思ったら、平和を願うことになる。しかし、僧が自ら増えようとするのは、死者が増えて葬儀が増えたときである。両者を同時に満たすには、平和が長く続き、たくさんの者が労働できるほど健康であり続けたのち老人となってから死ぬのがよい。平和が長く続けば「物語」も増やしてよい。
+＜
+
+JRF 2021年9月23日
+
+平和が続くのは、「生きなければならない」より「来世がないほうが良い」を重視する結果のようにモデル化していたが、平和は「物語」…思念を増やすにも良い…「思考と思念を深めるのがよい」にも良い…とすべきなのだろうか？
+
+JRF 2021年9月23日
+
+……。
+
+……。
+
+○ 2021-09-14T11:02:19Z
+
+ケガ・障害のある人については死亡率を上げていたが、その判定の際、permanent な p.injured のみを見ていた。それを p.injured + p.tmp_injured に関して見るように変えた。
+
+JRF 2021年9月23日
+
+そうするのを忘れていたという感じだが、少し迷いもある。一時的な障害については、その分注意も多くなるのでは…と思うから。しかし、一時的な障害も労働力 p.tmp_labor には影響する。むしろ、p.tmp_labor の影響の度合が p.tmp_injured で表されているといっていい。動きにくくなるのならば、死亡率も上げて良いだろう。…と結局のところ判断した。
+
+JRF 2021年9月23日
+
+……。
+
+……。
+
+○ 2021-09-15T21:20:10Z
+
+このシミュレーションが一応できたことで、今後、仏教社会について考えるとき、このシミュレーションの具体的にどこをかえれば、自分の考える社会に近付くのか、または、どうしてシミュレーションにはうまく乗れないのか…という思考が具体的にできるようになった。…と言えるのではないか。
+
+それはある独特な世界観に対する(批判的な)観方へ道筋を拓いたことになる。
+
+それをとらえて、私のやったことは曼陀羅[マンダラ](の絵)を描いたことに似ているのかもしれない。
+
+JRF 2021年9月23日
+
+……。
+
+……。
+
+○ 2021-09-18T10:27:37Z
+
+__init__ になかったメンバー変数へ代入を許さない Frozen の効果を切るオプション --no-frozen を作った。テストが十分に終った段階でこれを使えば、スピードが早くなるはず。今のところ simbdp3.py にのみ入れている。
+
+JRF 2021年9月23日
+
+……。
+
+……。
+
+○ 2021-09-18T22:28:19Z
+
+本を読み↓という「ひとこと」を書いた。そこから simbd に関する部分をいくつか抜き書きしておこう。
+
+<a href="../../../articles/2021/09/statuses_cocolog_93013747.html" class="int-link cocolog-id" title="ひとこと">[cocolog:93013747]</a>
+<a href="../../../articles/2021/09/statuses_cocolog_93013747.html" class="int-link" title="ひとこと">http://jrf.cocolog-nifty.com/statuses/2021/09/post-fef7d9.html</a>
+
+JRF 2021年9月23日
+
+＞田上太秀『仏典のことば さとりへの十二講』を再読した。「諸法皆空」は simbd には何にあたるのだろう？ 空であると知ること、それは世界の実相を知ることである。それを知ることで「エネルギー」を得て世界を変えていける。…ということではないか？＜
+
+JRF 2021年9月23日
+
+＞
+諸行無常は simbd のどこに現れているだろうか…と考えてみる。諸行無常そのものは現れていない。しかし、諸行無常がもたらす諦観こそが、simbd において、憎しみを宥める soothe として結実しているのではないかと思う。
+
+JRF 2021年9月23日
+
+諸行無常を説く仏教がないと、soothe がなくなる…完全になくなるわけではないが、効果が薄れる…として良さそうだ。この場合「仏教がなくなる」とは「来世がないほうが良い」の軽視…ということになろうかと思う。
+
+soothe は憎しみの平均値が一定に達すると起き、その一定の判断を上に上げたり下に下げたりするところに「来世がないほうが良い」がかかわるといった感じになろう。
+
+JRF 2021年9月23日
+
+一方で、soothe は個々には、相手への憎しみごとに成功したり失敗したりする。諸行無常が宥める根拠なら、個々で違っての個の中の相手ごとに変わるということはないはずである。それをどう考えるか？ …それは、仏教が対機説法で人を教えるから…とすればいいのではないか。諸行無常は全体の平均を下げるが、具体的な教えは対機説法によるから、問題になった相手についてのみ宥められるのだ。…といった感じに考えればよいのだと思う。
+
+JRF 2021年9月23日
+
+ここに挙げた soothe のほかに soothe にはもう一種のパスがある。それは祭りなどを想定した、政治的憎しみに対する soothe である。ただ、考えてみると、諸行無常は、政治的憎しみに対しても効きそうである。だから、今はそうなってなかったが、祭りでないほうの soothe においても、政治的憎しみも宥められるように変更すべきだろう。
+
+JRF 2021年9月23日
+
+商業的憎しみ・憎まれについても同様のことが言えそうだが、こちらについては、独自の体系を持っているので、オプションで指定できるパラメータを追加して、諸行無常が説かれない状況を作るときいっしょにそのオプションもいじるということで対応しよう。
+
+あと経済については「諸行無常」については別のパスがあり、上昇指向(ambition)を抑える働きがある…とできるかもしれない。
+
+JRF 2021年9月23日
+
+諸行無常を説かない soothe の少ないもの(lsth …と呼ぶ)から普通に説く normal への移行は、「思考と思念を深めるのがよい」を軽視する lpe から normal への移行に似て、他の本目的三条件には関係なく進めることができる感じがする。ただ lpe は ltom (low tombs population) をするときには必要とされたように、mamb (much ambtion) は lsth をするときには必要とされる…ということにすべきかもしれない。
+＜
+
+JRF 2021年9月23日
+
+……。
+
+＞
+＞空のもとの意味は「膨れ上がった」であった。＜(p.85)
+
+空は 0 であると同時に 1/0 の無限大を表し、1/0 が「膨れ上がった」ということだろうか？ むしろ、空としては、極限や微分作用素・積分を考えるべきだろうか？ 無限小を無限個集めれば有限に留まり、その数値はなんとでも変化できる。そのなんとでもなれるからこそ、それにより世界が作られうる…ということだろうか？ 
+
+JRF 2021年9月23日
+
+＞では、ゼロが虚無だけの意味であるとすると、10 という数字の 0 はどのように理解すればよいだろうか。(…)10の数は 9 に 1 をプラスして得た数字であり、0 の記号は 1 から 0 までの数を含む意味がある。もし 100000 という数の 0 が虚無であれば、その 0 を重ねて書く意味があるだろうか。この場合、一の位の 0、十の位の 0 ないし万の位の 0、それぞれ虚無なのだろうか。そうではなく、それらの 0 はかぎりなく膨張した数を表す記号ではないか。0 をもっと増やせば、0 の内容はますます膨張していく。数字のシューニャ、すなわち 0 は膨張するものなのである。＜(p.88-89)
+JRF 2021年9月23日
+
+＞世間を空と観察することは、私たちにどんな生きる術を教えたのだろうか。＜(p.95)
+
+「諸法皆空」は simbd には何にあたるのだろう？ 空であると知ること、それは世界の実相を知ることである。それを知ることで世界を変えていける。世界を「膨張」させていける。…ということではないか？本目的三条件などをそれがないところからあるところに移行するときには「エネルギー」がいると私は考えた。その「エネルギー」を与えるものこそ、「諸法皆空」が示すものではないか？
+
+JRF 2021年9月23日
+
+simbd では「カルマ」は牢にまだ入ってないことを表すに過ぎない。「諸行無常」は soothe でしかない。そして、「諸法皆空」は、それが浸透することで、どこにエネルギーがあるかが知られ変化できる…ということでしかない。…そういうふうに言えないだろうか？
+
+「諸法皆空」は現代で言えば科学知識の発見のようなものということになる。
+
+空であると、ある種のシミュレーションで表せると、観じることで、できることが広がる…。本当か？
+＜
+
+JRF 2021年9月23日
+
+……。
+
+……。
+
+○ 2021-09-18T22:28:19Z
+
+「空」観が「エネルギー」をもたらす…と書いた。しかし、「観」であるということは「「思考と思念を深めるのがよい」の方向でしかないのではないか。それと何が違うのか？「思考と思念を深めるのがよい」がエネルギーをもたらすということか？
+
+JRF 2021年9月23日
+
+システムのパラメータを動かすその「外在」にエネルギーを注ぐべきことを理解しているということで、それは「深める」というよりは「行動する」に近いということではないか。
+
+その行動の原資が「神秘的」に供給され、それを受け容れるということか？ 神秘的にはそれもありうるのかもしれないが、基本は、妨げていたものに気付くぐらいの話で、その妨げていたものを取り除く行動がなされるということだろう。その行動に少しエネルギーを使えば、または触媒的なものを用意すれば、より大きなエネルギーを活かせる…といった感じか。
+
+JRF 2021年9月23日
+
+そういうことができるという洞察は、システム内部では確かに「思考と思念を深めるのがよい」の結果ではあるのだろう。しかし、エネルギーを活かす方向への commit …その行動は、「生きなければならない」や「来世がないのが良い」からの是認とも共にある…ということではないか。
+
+むしろ、最適化のためのエネルギーが先にあり、そのエネルギーをどのような空…構造として捉えるかという話でしかないのだろうか？ その空性がわかることで、そのエネルギーの利用が「必然」となって安定する。…とまでは言えないか…？
+
+JRF 2021年9月23日
+
+エネルギーを増やして最適化した状態になってもシステムが壊れない。そのことがシステムが空であるということなのだろうか？ 要は、システムに「空き」がある…と。これも偏った見解に思うが…。
+
+JRF 2021年9月23日
+
+……。
+
+……。
+
+○ 2021-09-19T00:45:42Z
+
+田上太秀『仏典のことば さとりへの十二講』(<a href="../../../articles/2021/09/statuses_cocolog_93013747.html" class="int-link cocolog-id" title="ひとこと">[cocolog:93013747]</a>)からもう一点。
+
+諸法無我について。
+
+JRF 2021年9月23日
+
+＞simbd (…)を作ったとき self をプログラムで使ってはいるが、それは我と呼べるような AI ですらない。我がなくても世界の実相はつかめる…我の必要なく世界・諸法をつかめ…世界に我の必要なくせしめよ…とは言えるのかもしれない。…とは思うが、「諸法無我」はそういう意味なのだろうか？ 「諸法無我」がそういう意味なら、私もある程度は納得ができるが…。＜
+
+JRF 2021年9月23日
+
+最初のころ「信頼度付きで論理式をいじる」など論理体系を作る話をしていたが、法律の事実認定の論理などを作るのもとても難しいことで、そこには私はどう考えてるか…私から見てどうか…みたいなことが必要になると思う。
+
+しかし、「私から見てどうか」は別として世界はあるのだから、その世界を論じることができ、simbd のように「私から見てどうか」は、ambition や education といったパラメータに落ちる。そうなれば「私から見てどうか」はいらなくなる。
+
+JRF 2021年9月23日
+
+確率を議論するときも、↓のような問題で、観測者が「自分」であるかどうかで物事が変わる気がするが、しかし、「自分」というのを結局出てこなくても様々な観方の結論は出せる。
+
+《眠り姫問題のプログラム》  
+<a href="../../../articles/2017/02/software_86853962.html" class="int-link" title="眠り姫問題のプログラム">http://jrf.cocolog-nifty.com/software/2017/02/post-1.html</a>
+
+JRF 2021年9月23日
+
+《モンティ・ホール問題または三囚人問題の拡張とその確率操作シミュレーション [ JRF のソフトウェア Tips ]》  
+<a href="../../../articles/2016/08/software_85821961.html" class="int-link" title="モンティ・ホール問題または三囚人問題の拡張とその確率操作シミュレーション">http://jrf.cocolog-nifty.com/software/2016/08/post.html</a>
+
+JRF 2021年9月23日
+
+「自分」であることは何かとても大事なことのように思うが、問題を解いてみると、案外「自分」はいらない。
+
+それが「諸法(において)無我」ということになるのだろうか？
+
+結局、シミュレーションプログラムに落とせた。それがこのプロジェクトにおける「諸法無我」の現れ…となるのだろうか？
+
+JRF 2021年9月23日
+
+……。
+
+四法印のうち、諸法無我は上の通り、涅槃寂静が「来世がないほうが良い」…として、一切皆苦が逆に苦の中を生きるべきだということで「生きなければならない」に、すると残りの「諸行無常」が「思考と思念を深めるのがよい」に相当するのだろうか。むしろ、一実相印…諸法実相の空観のほうが「思考と思念を深めるのがよい」となり、「諸行無常」は田上太秀『仏典のことば』のメモで述べたように、この「諦観」も「来世がないほうが良い」に含まれるということだろうか。
+
+JRF 2021年9月23日
+
+《法印 - Wikipedia》  
+<a href="https://ja.wikipedia.org/wiki/%E6%B3%95%E5%8D%B0" class="ext-link">https://ja.wikipedia.org/wiki/%E6%B3%95%E5%8D%B0</a>
+
+まぁ、無理矢理あてはめすぎか…。
+
+JRF 2021年9月23日
+
+……。
+
+……。
+
+○ 2021-09-19T19:57:19Z
+
+自分としてはスゴイことをやったつもりがあるのだが、注目されない…というか「注目」までは必要ないが、誰か別の人が追試とかもやってくれない…というのは、やはりツライ…というか悲しいというか…認知的不協和がある。
+
+それはいつものこと…といえばそうなんだけど、今回はかなり時間をかけただけに、その思いも強い。
+
+JRF 2021年9月23日
+
+ただ、これもいつものことなんだけど、振り返って冷静になれば、たいしたことはやってない…いや、「たいしたこと」というのを私自身が否定したくないから別の言い方をすると、他人が見てすぐ役立てるような形になってないのは事実で、今回みたいなシミュレーションの場合、ヤッコー…やってみたらこーなった以上のものでないのは、そうなのかな…という感じ。
+
+JRF 2021年9月23日
+
+でも、ここで手綱を離したら、それこそやってきたことが無意味になるので、なんとかドキュメント書く作業に入って、地道に…ひたすら地道に書いて、興味を持った人がフォローできるように仕上げたい。
+
+JRF 2021年9月23日
+
+……。
+
+……。
+
+○ 2021-09-20T00:19:10Z
+
+normal のログを求めるところからやり直す。前とパラメータは同じなので、run_simbdp3.sh と plot_logs.py のコマンドはこの先しばらく、示さない。グラフ集は Issue に新たなエントリを作った。
+
+あと、新たに worst1 と worst2 のログを作った。worst1 は ledu ltom lpe fana mwar 。worst2 は ledu ltom lpe fana mwar mpop mamb mpr。コマンドとしては…
+
+JRF 2021年9月23日
+
+run_simbdp3.sh worst1 10 -L -t 360 --education-goal=0.35 --education-goal-max=0.5 --education-goal-min=0.20 --tombs-population=10000 --prophecy-effect=0.5 --nation-education-power-threshold=0.925 --faith-realization-power-threshold=0.925 --invasion-average-term-min=60
+
+JRF 2021年9月23日
+
+run_simbdp3.sh worst2 10 -L -t 360 --education-goal=0.35 --education-goal-max=0.5 --education-goal-min=0.20 --tombs-population=10000 --prophecy-effect=0.5 --nation-education-power-threshold=0.925 --faith-realization-power-threshold=0.925 \
+JRF 2021年9月23日
+
+--invasion-average-term-min=60 --priests-rate-max=0.0125 --priests-rate=0.00666666666666667 --priests-rate-min=0.004 --invasion-average-term-min=60 --population=11000,11000,5500 --change-ambition --ambition-goal=0.70
+
+JRF 2021年9月23日
+
+python plot_logs.py normal worst1 worst2 -p AccDeath
+python plot_logs.py normal worst1 worst2 -p AccAbortion
+python plot_logs.py normal worst1 worst2 -p AccKarma
+python plot_logs.py normal worst1 worst2 -p Education
+
+JRF 2021年9月23日
+
+…になる。
+
+本当の worst は worst1。ただし、ltom は必ずしも悪い方向ではないが、ltom には lpe が必ず伴う…とするとすると、worst に ltom も現れるという感じでこれを worst に入れている。
+
+JRF 2021年9月23日
+
+worst2 は、「仏教」がないとした場合の発展の方向といった感じになる。逆に normal は、人口上昇がどうしてもできない場合に、その「エネルギー」を「仏教」に振り向けたといった感じか。
+
+JRF 2021年9月23日
+
+なお、simbdp3.py はこのログを取ったときから若干の変更がある。そのため、このログを取るのに、バージョン 0.0.8 ではこれまでのオプションにさらに、--soothe-political-hating-decay=1.0 --soothe-merchant-hating-decay=1.0 --soothe-merchant-hated-decay=1.0 を指定したのと同じことになる。
+
+JRF 2021年9月23日
+
+《グラフ集: 2021-09-20 - Issue #3 - JRF-2018/simbd》  
+<a href="https://github.com/JRF-2018/simbd/issues/3" class="ext-link">https://github.com/JRF-2018/simbd/issues/3</a>
+
+JRF 2021年9月23日
+
+次回は、これらの soothe に関するオプションなしのデフォルトで行い、諸行無常の効果が薄い low soothe の条件も試そうと思う。worst1 や worst2 は low soothe の条件付きになるので、それらも少し変わる予定。
+
+なお、グラフについてだが、fanamprmprs の死亡が大きく出過ぎている。このシミュレーションはどうしてもそういうことが起きることがあるらしい。カルマについて ltom の効果だと思うが、normal が worst1 や worst2 よりハッキリ悪いのはいかがなものか…といったところ。
+
+JRF 2021年9月23日
+
+……。
+
+……。
+
+○ 2021-09-20T00:28:58Z
+
+ここで、いちおう、ログのバックアップをすることにした。
+
+まず simbdp3.py などの更新を公開しておく。(バージョン 0.0.8)
+
+《simbd/simbdp3.py at master - JRF-2018/simbd》  
+<a href="https://github.com/JRF-2018/simbd/blob/master/simbdp3.py" class="ext-link">https://github.com/JRF-2018/simbd/blob/master/simbdp3.py</a>
+
+JRF 2021年9月23日
+
+そして、ログのバックアップである。GitHub に特別な Release を作ってそこに zip のバイナリを置く。その Release の URL は↓でバックアップは Asset の logs-20210920.zip になる。
+
+《Release Logs 20210920 - JRF-2018/simbd》  
+<a href="https://github.com/JRF-2018/simbd/releases/tag/plot_logs-v0.0.6" class="ext-link">https://github.com/JRF-2018/simbd/releases/tag/plot_logs-v0.0.6</a>
+
+JRF 2021年9月23日
+
+なお、一緒に置いてある simbdp3_pickle-20210914.zip の中身は今回公開のログを取るのに使ったものである。グラフをまとめた figs-20210920.zip も置いておく。
+
+JRF 2021年9月23日
+
+
+……。
+
+……。
+
+○ 2021-09-21T18:00:14Z
+
+lsth (less soothe) を見るために再度ログを取り直す。normal については前のものに --no-frozen を付けたもの。
+
+lsth は次のようになる。
+
+JRF 2021年9月23日
+
+run_simbdp3.sh lsth 10 -L -t 360 --soothe-nation-threshold=0.6 --soothe-nation-threshold-min=0.5 --soothe-nation-threshold-max=0.7
+
+JRF 2021年9月23日
+
+まずは前回の normal を pnormal とリネームし、それを今回の normal と比較してみる。
+
+JRF 2021年9月23日
+
+python plot_logs.py normal pnormal -p AccDeath -o fig-20210922_01.png
+python plot_logs.py normal pnormal -p AccAbortion -o fig-20210922_02.png
+python plot_logs.py normal pnormal -p Education -o fig-20210922_03.png
+
+JRF 2021年9月23日
+
+python plot_logs.py normal pnormal -p NewKarma -o fig-20210922_04.png
+python plot_logs.py normal pnormal -p Hating -o fig-20210922_05.png
+python plot_logs.py normal pnormal -p PoliticalHating -o fig-20210922_06.png
+
+JRF 2021年9月23日
+
+python plot_logs.py normal pnormal -p Population -o fig-20210922_07.png
+
+JRF 2021年9月23日
+
+AccDeath に違いが現れているのが良くわからない。Population を調べると最初のころに大きな違いがあるようなので、それが後々に影響したということだろうか。リクツで言えば違いが出そうなのは PoliticalHating で、それが normal では低く出て欲しいところなのだが、ほんの少しだけしかそうなっていない。
+
+次に lsth と normal を比較してみる。
+
+JRF 2021年9月23日
+
+python plot_logs.py normal lsth -p AccDeath -o fig-20210922_08.png
+python plot_logs.py normal lsth -p AccKarma -o fig-20210922_09.png
+python plot_logs.py normal lsth -p Hating -o fig-20210922_10.png
+python plot_logs.py normal lsth -p VirtualHating -o fig-20210922_11.png
+
+JRF 2021年9月23日
+
+AccDeath の違いが出てないのはリクツ通り。AccKarma に差がまったくないのはなぜだろう？ lsth は soothe が少なくなっていることから、Hating が上がり、継いで VirtualHating が上がるはずで、それにつれて AccKarma も上がるはずである。Hating も VirtualHating も上がっているが、VirtualHating の差は 0.005 程度と、差が少な過ぎるのが問題か。
+
+JRF 2021年9月23日
+
+グラフは↓に貼っておく。
+
+《グラフ集: 2021-09-22 から - Issue #4 - JRF-2018/simbd》  
+<a href="https://github.com/JRF-2018/simbd/issues/4" class="ext-link">https://github.com/JRF-2018/simbd/issues/4</a>
+
+JRF 2021年9月23日
+
+……。
+
+……。
+
+○ 2021-09-23T07:45:06Z
+
+前回、lsth がうまくいかなかった。VirtualHating に差が付きやすい ltom でやってみたらどうだろう？ …と思いやってみた。
+
+ltom は前といっしょだが、いちおう書いておく。
+
+JRF 2021年9月23日
+
+run_simbdp3.sh ltom 10 -L -t 360 --tombs-population=10000
+run_simbdp3.sh ltomlsth 10 -L -t 360 --tombs-population=10000 --soothe-nation-threshold=0.6 --soothe-nation-threshold-min=0.5 --soothe-nation-threshold-max=0.7
+
+JRF 2021年9月23日
+
+python plot_logs.py normal lsth ltom ltomlsth -p AccDeath -o fig-20210923_01.png
+python plot_logs.py normal lsth ltom ltomlsth -p AccKarma -o fig-20210923_02.png
+python plot_logs.py normal lsth ltom ltomlsth -p Hating -o fig-20210923_03.png
+
+JRF 2021年9月23日
+
+python plot_logs.py normal lsth ltom ltomlsth -p VirtualHating -o fig-20210923_04.png
+
+JRF 2021年9月23日
+
+《グラフ集: 2021-09-22 から - Issue #4 - JRF-2018/simbd》  
+<a href="https://github.com/JRF-2018/simbd/issues/4" class="ext-link">https://github.com/JRF-2018/simbd/issues/4</a>
+
+JRF 2021年9月23日
+
+いちおう AccDeath をみてみたが、これは差があるべきでないのに、AccKarma より差がある感じで口惜しい。AccKarma は ltom が下に来るのはいいのだが、ltomlsth が ltom より上に来て欲しいところ、上には来ているがその差はほぼない。
+
+JRF 2021年9月23日
+
+normal は ltom に比べて hating の影響を受けにくく、「頑健」と言えるかもしれない。…みたいなことが言いたかったが、この程度の差ではそれは言いにくい。
+
+lsth が効果を発揮するには、軽犯罪の発生率に関してアルゴリズムを変更する必要がありそうだが、どう変えれば良いのか…。しかし、今さら変えるのもなぁ…。
+
+JRF 2021年9月23日
+
+……。
+
+ちょっと長くなったのでここらで一区切りしよう…。
+
+JRF 2021年9月23日</pre>
+
+
+<section class="backrefs" data-pagefind-ignore>
+<h2>後方参照 (3 件)</h2>
+<ul>
+<li><span class="backref-label">[cocolog:93023146]参照</span> <a href="../../../articles/2022/03/statuses_cocolog_93361273.html">ひとこと</a> <span class="backref-date">2022年03月11日</span></li>
+<li><span class="backref-label">[cocolog:93023146]参照</span> <a href="../../../articles/2022/01/statuses_cocolog_93262666.html">ひとこと</a> <span class="backref-date">2022年01月20日</span></li>
+<li><span class="backref-label">[cocolog:93023146]参照</span> <a href="../../../articles/2021/11/statuses_cocolog_93143975.html">ひとこと</a> <span class="backref-date">2021年11月22日</span></li>
+</ul>
+</section>
+
+</article>
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2021/09.html">2021年09月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+</body>
+</html>

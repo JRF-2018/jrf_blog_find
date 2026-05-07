@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>ひとこと - JRF Blog Archive</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2024/01.html">2024年01月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+<article data-pagefind-body>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[statuses] <span class="cocolog-id">cocolog:94634858</span></td></tr>
+<tr><th>セクション</th><td>JRF のひとこと</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2024/01.html">2024年01月20日</a></td></tr>
+<tr><th>元URL</th><td><a href="http://jrf.cocolog-nifty.com/statuses/2024/01/post-b3c883.html" class="ext-link"><span class="original-url">http://jrf.cocolog-nifty.com/statuses/2024/01/post-b3c883.html</span></a></td></tr>
+
+</table>
+</div>
+<h1>ひとこと</h1>
+<pre class="body">自分のマシンで、画像生成 AI の Stable Diffusion (WebUI) を動かせた！ やったぁ。
+JRF 2024年1月20日
+
+以前は Google Colab で生成していた(参: <a href="../../../articles/2023/04/statuses_cocolog_94145743.html" class="int-link cocolog-id" title="ひとこと">[cocolog:94145743]</a> など)。
+
+JRF 2024年1月20日
+
+ちょっとはまったのが、
+
+webui-user.bat
+
+…が Cygwin で Permission Denied になったこと。
+
+ls -l すると実行フラグ(x) がついてるのに、実行できないので、bat と ACL の関係、/etc/fstab 関連を疑ったが、結局
+
+JRF 2024年1月20日
+
+chmod a+x webui-user.bat
+
+…にすると動いた。
+
+JRF 2024年1月20日
+
+あと、Anaconda で動かしているが、python 3.12.1 では torch がなくてダメと言われたので、python=3.10.6 で動かすことにした。
+
+シンボリックリンクは Windows のシンボリックリンクを使うことで、別のドライブにある昔のモデルデータなども利用できた。
+
+まだ、試してるうちに問題が出てくるかもしれないけど、とりあえず、うれしい！
+
+JRF 2024年1月20日</pre>
+
+
+<section class="backrefs" data-pagefind-ignore>
+<h2>後方参照 (1 件)</h2>
+<ul>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2024/01/gsm_005211.html">共有メモ</a> <span class="backref-date">2024-01-20T14:02:51Z</span></li>
+</ul>
+</section>
+
+</article>
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2024/01.html">2024年01月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+</body>
+</html>

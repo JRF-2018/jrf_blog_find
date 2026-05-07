@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>ケネディと天使の問題を Isabelle で証明 その１ うそつき天使問題 - JRF Blog Archive</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2020/06.html">2020年06月</a> | <a href="../../../index/software.html">ソフトウェア Tips</a></nav>
+<article data-pagefind-body>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[software] <span class="cocolog-id">cocolog:91995459</span></td></tr>
+<tr><th>セクション</th><td>JRF のソフトウェア Tips</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2020/06.html">2020年06月22日 08:02:35</a></td></tr>
+<tr><th>元URL</th><td><a href="http://jrf.cocolog-nifty.com/software/2020/06/post-ef863f.html" class="ext-link"><span class="original-url">http://jrf.cocolog-nifty.com/software/2020/06/post-ef863f.html</span></a></td></tr>
+<tr><th>タグ</th><td>[関数型言語・定理証明器]</td></tr>
+</table>
+</div>
+<h1>ケネディと天使の問題を Isabelle で証明 その１ うそつき天使問題</h1>
+<pre class="body">■概要
+  
+ケネディと天使の問題、または、うそつき天使問題、気まぐれ天使問題、三人の天使問題…と言われているものを、定理証明システム Isabelle でその答えが正しいかチェック(証明)した。
+
+これは「その１」で、うそつき天使問題を扱う。
+
+■はじめに
+  
+野崎昭弘『詭弁論理学』(中公新書)の p.14-16, 148-154 に、「ケネディの問題」というのが出てくる。
+
+問題は次のようなものである。
+
+＞
+  凶弾に倒れた R. ケネディの魂が天に昇る途中で、白い翼の天使からこんなことをおそわった。
+  
+  「あなたはもうすぐ、わかれ道につくでしょう。ひとつの道は天国に、もうひとつの道は地獄に行く道です。そこにはふたりの人が立っていて、あなたはそのどちらかひとりに、一回だけ質問をすることができます。天国に行く道がわかるように、上手に質問をしなさい」
+  
+  ああそれはありがたい、とケネディが思っていると、天使は言葉を続けた。
+  
+  「ふたりの人というのは、天使の姿になっているのであなたには区別できないでしょうが、ひとりがチャーチルで、もうひとりはヒトラーです。チャーチルはいつでも本当のことをいいますが、ヒトラーはいつでも、必ずウソをつきます。あなたはそのどちらかに一回だけ、『はい』か『いいえ』で答えられる質問をしなければなりません。二回以上質問をしても、二人とも答えてくれませんよ。では、ご成功を祈ります」
+＜
+
+これを聴いたケネディは一つの質問を思い付き、無事天国に行けたようである。その質問とはどのようなものかというのが、この論理パズルの問題である。
+
+答えはズバリ、「あなたは、『この(右の)道が天国に行く道ですか』ときかれたら、『はい』と答えますか？」というもの。
+
+似た問題はネットでは「うそつき天使」問題として紹介しているところがあった。
+
+その解説は本やネットを読んでいただくとして、その本には気になることが書いている。
+
+＞
+  こんなうまい質問を、誰がどうやって思いついたのだろうか。記号論理学 (論理方程式) の知識を使うと、「相手が正直でもウソツキでも、必ず正しい道がわかる」質問を、計算で求めることができるが、求まる質問 R はあまりエレガントではない(しかしこれでもうまくいく)。
+  
+  「『あなたはチャーチルで右の道が天国に行く』か、あるいは『あなたはヒトラーで左の道が天国に行く』かのどちらかが成り立ちますか？」
+＜
+
+論理方程式？ そんなものは私は聴いたことがない。野崎昭弘『詭弁論理学』には参考図書として前原昭二『記号論理読本』の名が上がっているが、それを読んでみても論理方程式の話はなかった。まぁ、しかし記号論理ならわかるので、記号論理で試しに解いてみよう。
+
+■我流、記号論理方程式
+  
+まず、1 で真を 0 で偽 で and をかけ算の ・ で、or を足し算の + で、否定は私の好みで ' ではなく ¬ を使う。
+
+右の道が天国であるという命題を p とする。p = 1 ならば右の道が天国であり、p = 0 ならば左の道が天国である。
+
+質問を q として、チャーチルへの質問を c(q)、ヒトラーへの質問を h(q) としよう。求めたいのは c(q) = h(q) = p ということになろう。
+
+チャーチルは素直に返すので、c(0) = 0、c(1) = 1 すなわち c(q) = 1・q。ヒトラーはひねくれて返すので、h(0) = 1、h(1) = 0 すなわち h(q) = ¬ q。
+
+ところが c(q) = h(q) でなければならないが、それは 1・q = ¬ q で、これは決して成り立たないことになる。これはおかしい。どこがおかしかったかというと、質問には「あなたは」という主語を付けることができるところにある。
+
+これはオブジェクト指向で self や this がデフォルトで渡せることに相当する。これを反映すると、質問は単に q ではなくある種の関数となり、求めたいのは c(q(c)) = h(q(h)) = p ということになる。
+
+これを解いてみよう。c(x) = 1・x、h(x) = ¬ x で変わらないとして、 c(q(c)) = h(q(h)) は 1・(q(1・)) = ¬(q(¬)) となる。簡単にすると、 q(1・) = ¬q(¬) で、これが p に等しいのだから、q(f) = f(p) とすれば良さそうだ。
+
+実際 q(1・) = 1・p = p で、¬q(¬) = ¬(¬p) = p で等しくなる。
+
+つまり、q(f) = f(p) が答えになるが、これは一体どういう質問だろう。素直に解釈すれば「あなたは…右が天国への道か…と聴かれたらどう答えますか」ということになるだろう。
+
+チャーチルについては、問題ない。ヒトラーについては、右が天国への道かと聴かれたら、それが正しい場合 いいえ と答えるだろう。だから、そう聴かれたらどう答えるかに いいえ と答えたら素直に答えたことになるので はい と答えるということになる。左が天国への道のときも同様である。
+
+結果、ヒトラーでもチャーチルでも、「はい」ならば右が天国への道、「いいえ」ならば左が天国への道となる。
+
+若干、本とは答えが異なるが、同じような質問は求まったと言えよう。
+
+■本の解答との差
+  
+さて、これが「論理方程式」を現代的(?)に私流に解いてみた結果だが、これはまったく本の結果と異なる。私は簡単な高階論理を使ったが、昔は、基本、一階述語論理までのはずであり、どうやって解いたのだろう？
+
+本では、「『あなたはチャーチルで右の道が天国に行く』か、あるいは『あなたはヒトラーで左の道が天国に行く』かのどちらかが成り立ちますか？」が答えになるということだった。
+
+これは上の私の表記を使いながら書くと、q(f) = C(f)・p + H(f)・¬p ということになる。ここで、C(f) は f が c のときのみ真となる関数すなわち C(f) = (f = c)。同様に H(f) = (f = h)。
+
+q(f) は f = c のとき、q(c) = C(c)・p + H(c)・¬p = 1・p + 0・¬p = p となる。f = h のとき q(h) = C(h)・p + H(h)・¬p = 0・p + 1・¬p = ¬p となる。よって f(q(f)) は必ず p になることが示せる。
+
+ではどう方程式を立てるか。それは C(f) の場合の答えを q1、H(f) の場合の答えを q2 として、q(f) = C(f)・q1 + H(f)・q2 と構成すると決めうちすることにする。そして c(q(c)) = q1 = p だから q1 = p、h(q(h)) = ¬q2 = p だから q2 = ¬p として、求める。…ということだろうか？
+
+なんとなくそんな気がするが、これで正しいかは闇の中である。「記号論理方程式」は私にとってはすっかり「ロストテクノロジー」である。
+
+■Isabelle で証明チェック
+  
+定理証明システム Isabelle の HOL (Higher Order Logic: 高階論理)で我流の方法を正しいかチェックしてみよう。ソース KennedyProblem1.thy は次のようになる。
+
+theory KennedyProblem1
+  imports Main
+begin
+
+consts Paradise :: &quot;bool&quot;
+
+datatype angel = Churchill | Hitler
+
+definition churchill :: &quot;bool =&gt; bool&quot; where
+&quot;churchill x == x&quot;
+
+definition hitler :: &quot;bool =&gt; bool&quot; where
+&quot;hitler x == ~x&quot;
+
+fun apply_angel :: &quot;angel =&gt; bool =&gt; bool&quot; where
+&quot;apply_angel Churchill x = churchill x&quot; |
+&quot;apply_angel Hitler x = hitler x&quot;
+
+definition kennedy_problem :: 
+  &quot;((bool =&gt; bool) =&gt; bool) =&gt; bool&quot;
+  where
+    &quot;kennedy_problem Q == 
+ALL x::angel. apply_angel x (Q (apply_angel x)) = Paradise&quot;
+
+lemma kennedy_answer:
+  shows &quot;kennedy_problem (% f. f Paradise)&quot;
+  apply (unfold kennedy_problem_def)
+  apply (intro allI)
+  apply (case_tac x)
+  apply (simp_all add: churchill_def hitler_def)
+  done
+  
+end
+
+我流では、h か c かのどちらかであるというのが、わかっているという暗黙の前提だったが、そういうことも証明チェックするときは明示的に書き出さねばならない。そこで、すべての天使を表す angel という型(集合)に対し、すべての x::angel についてある文が成り立つという構造にする。
+
+h は hitler で かつ (apply_angel Hitler) に等しい。c は churchill で (apply_angel Churchill) に等しい。関数型では h(x) の x をはぶいてそのような表し方ができる。関数 f(x,y) は f x y みたいに書くのが流儀で f x y = (f x) y となっている。
+
+p は Paradise になっている。質問 Q についての問題が kennedy_problem Q で表される。答えは Q = (% f. f Paradise) = (λf. f Paradise) すなわち Q(f) = f Paradise で上の我流と同じものを与えている。
+
+証明はとても簡単で、定義を代入して x を Churchill か Hitler かで総当たり的にケース分けしてから、simplify するだけである。
+
+Isabelle にはソルバーのようなものも付いてる。EX Q. kennedy_problem Q というような式を証明する仮定で、自動的に Q が求まらないかともやってみたが、私には、自動的に求まるよう導くことはできなかった。
+
+なお、最近の Isabelle は apply を使わない証明がデフォルトのようだが、私は古い人間なので、apply を使った証明でお茶をにごした。
+
+■結論
+  
+ケネディと天使の問題を Isabelle の高階論理で解いてみたが、元は一階述語論理的な枠組みで解いているはず、その「記号論理方程式」の技術は、私にとっては、すっかり「ロストテクノロジー」となったのであった。
+
+なお、ケネディと天使の問題は、スターリンという気まぐれ天使の登場によって様相を変える。それはこの次の「その２」に書いている。
+
+■参考
+  
+「その２」「その３」に関する参考文献もここに挙げる。
+
+  ●『詭弁論理学』(野崎 昭弘 著, 中公新書, 1976年・2017年 改版)。今回のネタ本。
+  ●《平木研究室 - 「うそつき村 と 正直村 の なぞなぞ」を知っていますか？》。「うそつき天使」問題・「気まぐれ天使」問題が載っている。「うそつき天使」問題には解決編があるが、「気まぐれ天使」問題についてはさらにググる必要があるようだ。
+  ●《Wand's Box - 2値論理方程式で天使と悪魔問題を解く》。XOR を使った論理方程式で「うそつき天使」問題(天使と悪魔問題)を解いている。ただ、『詭弁論理学』の論理方程式とは別物のようである。(2020年9月3日 追記。)
+  ●定理証明システム《Isabelle》。今回使ったのは Isabelle2020 の HOL。定理証明システムはいろいろあるが、私は昔取った杵柄で、Isabelle を選んだ。これまでは Logics_ZF を使っていた。HOL を使うのはほぼはじめて。
+    
+■ライセンス
+  
+パブリックドメイン。 (数式のような小さなプログラムなので。)
+
+自由に改変・公開してください。
+
+■配布物
+  
+今回の配布物は以下の zip ファイル。更新があれば下のリンクの中身は最新のものに置き変わっているはず。
+
+  ●kennedy_problem.zip
+    
+GitHub にも登録してあるが、更新は、ここの更新のあと1日から3日遅れるかもしれない。
+
+  ●《GitHub - JRF-2018/kennedy_problem》。
+    
+更新：2020-06-22,2020-08-14,2020-09-03
+初公開：2020年06月22日 08:02:32
+最新版：2020年09月03日 14:53:04
+
+
+Comments:
+
+初公開: kennedy_problem-20200622.zip。バージョン 0.0.1。
+
+kennedy_problem-20200622.zip に相当するものは↓からどうぞ。
+
+<a href="https://github.com/JRF-2018/kennedy_problem/releases/tag/v0.0.1" class="ext-link">https://github.com/JRF-2018/kennedy_problem/releases/tag/v0.0.1</a>
+
+<a href="../../../articles/2020/06/statuses_cocolog_91995523.html" class="int-link cocolog-id" title="ひとこと">[cocolog:91995523]</a>(↓)に感想と Isabelle の Tips を書いたのでよければそちらもお読みください。
+
+<a href="../../../articles/2020/06/statuses_cocolog_91995523.html" class="int-link" title="ひとこと">http://jrf.cocolog-nifty.com/statuses/2020/06/post-33e498.html</a>
+＞Isabelle 2020 の HOL を使った「ケネディと天使の問題を Isabelle で証明」という記事を書いた。Isabelle の Tips とともに…。＜
+
+投稿: JRF | 2020-06-22 08:38:10 (JST)
+
+更新: kennedy_problem-20200623.zip。バージョン 0.0.2。
+
+kennedy_problem-20200623.zip に相当するものは↓からどうぞ。
+
+<a href="https://github.com/JRF-2018/kennedy_problem/releases/tag/v0.0.2" class="ext-link">https://github.com/JRF-2018/kennedy_problem/releases/tag/v0.0.2</a>
+
+証明の最初、simp ではなく unfold を使うようにするなど微調整。
+
+投稿: JRF | 2020-06-23 00:13:35 (JST)
+
+更新: ドキュメントのみ。
+
+式の誤字の修正など。
+
+github も更新してあるが、タグは付していない。
+
+投稿: JRF | 2020-08-14 19:24:01 (JST)
+
+更新: ドキュメントのみ。
+
+たまたま「論理方程式」でこの問題を解いてるところを見つけたので「参考」に追記しておいた。
+
+github も更新してあるが、タグは付していない。
+
+投稿: JRF | 2020-09-03 14:59:45 (JST)
+
+更新: kennedy_problem-20201106.zip。バージョン 0.0.2.1。
+
+kennedy_problem-20201106.zip に相当するものは↓からどうぞ。
+
+<a href="https://github.com/JRF-2018/kennedy_problem/releases/tag/v0.0.2.1" class="ext-link">https://github.com/JRF-2018/kennedy_problem/releases/tag/v0.0.2.1</a>
+
+何も更新していない。ただ、これまでのドキュメントの更新をアーカイブにしておきたかったので、アーカイブだけ作っておいた。
+
+投稿: JRF | 2020-11-06 15:41:41 (JST)
+
+
+Links:
+
+詭弁論理学: <a href="../../../articles/2020/06/hbm_01998.html" class="int-link" title="Amazon.co.jp: 詭弁論理学 改版 (中公新書 448): 野崎昭弘著: Books">https://www.amazon.co.jp/dp/4121804481</a>
+記号論理読本: <a href="../../../articles/2020/06/hbm_01997.html" class="int-link" title="Amazon.co.jp: 記号論理読本 (1976年): 前原昭二: Books">https://www.amazon.co.jp/dp/B000J9B7EU</a>
+その２: <a href="../../../articles/2020/06/software_91995468.html" class="int-link" title="ケネディと天使の問題を Isabelle で証明 その２ 気まぐれ天使問題">http://jrf.cocolog-nifty.com/software/2020/06/post-d9cd87.html</a>
+その３: <a href="../../../articles/2020/06/software_91995474.html" class="int-link" title="ケネディと天使の問題を Isabelle で証明 その３ 悪戦苦闘編">http://jrf.cocolog-nifty.com/software/2020/06/post-33c483.html</a>
+平木研究室 - 「うそつき村 と 正直村 の なぞなぞ」を知っていますか？: <a href="../../../articles/2020/06/hbm_01996.html" class="int-link" title="ETC">https://www.osaka-kyoiku.ac.jp/~hiraki/etc/quiz.htm</a>
+Wand's Box - 2値論理方程式で天使と悪魔問題を解く: <a href="../../../articles/2020/09/hbm_02012.html" class="int-link" title="2値論理方程式で天使と悪魔問題を解く - Wand's Box">https://scrapbox.io/wandsbox/2%E5%80%A4%E8%AB%96%E7%90%86%E6%96%B9%E7%A8%8B%E5%BC%8F%E3%81%A7%E5%A4%A9%E4%BD%BF%E3%81%A8%E6%82%AA%E9%AD%94%E5%95%8F%E9%A1%8C%E3%82%92%E8%A7%A3%E3%81%8F</a>
+Isabelle: <a href="../../../articles/2016/01/hbm_01839.html" class="int-link" title="Isabelle">https://isabelle.in.tum.de/</a>
+kennedy_problem.zip: <a href="https://www.sugarsync.com/pf/D252372_79_66177297209" class="ext-link">https://www.sugarsync.com/pf/D252372_79_66177297209</a>
+GitHub - JRF-2018/kennedy_problem: <a href="https://github.com/JRF-2018/kennedy_problem" class="ext-link">https://github.com/JRF-2018/kennedy_problem</a></pre>
+
+
+<section class="backrefs" data-pagefind-ignore>
+<h2>後方参照 (4 件)</h2>
+<ul>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2020/11/statuses_cocolog_92385476.html">ひとこと</a> <span class="backref-date">2020年11月30日</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2020/06/software_91995468.html">ケネディと天使の問題を Isabelle で証明 その２ 気まぐれ天使問題</a> <span class="backref-date">2020年06月22日 08:07:46</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2020/06/software_91995474.html">ケネディと天使の問題を Isabelle で証明 その３ 悪戦苦闘編</a> <span class="backref-date">2020年06月22日 08:10:47</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2020/06/statuses_cocolog_91995523.html">ひとこと</a> <span class="backref-date">2020年06月22日</span></li>
+</ul>
+</section>
+
+</article>
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2020/06.html">2020年06月</a> | <a href="../../../index/software.html">ソフトウェア Tips</a></nav>
+</body>
+</html>

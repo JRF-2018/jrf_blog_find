@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>共有メモ - JRF Blog Archive</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2021/02.html">2021年02月</a> | <a href="../../../index/gsm.html">共有メモ</a></nav>
+<article data-pagefind-body>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[gsm] 2021-02-24T11:37:14Z</td></tr>
+<tr><th>セクション</th><td>グローバル共有メモ</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2021/02.html">2021-02-24T11:37:14Z</a></td></tr>
+<tr><th>元URL</th><td>(URLなし)</td></tr>
+
+</table>
+</div>
+<h1>共有メモ</h1>
+<pre class="body">jrf&gt; [仏教の最適化プログラムの続き。]
+
+年齢による死亡は、60歳から80歳までは毎期一定率で80歳のとき70%が死ぬようにする(r = 0.00500399146216878)。80歳から110歳までも毎期一定率で110歳のとき99%に死ぬようにする(r = 0.0127106677591385)。110歳になれば強制的に死ぬものとする。
+
+一般死亡率は一年で 0.5% とする(r = 0.000417624589192991,100年で 0.394229563509303)。病気のときの加算は将来的には考えるはずだが、今は考えない。3歳までの幼児死亡は、上の一般死亡にあわせて、さらに三年で5%とする(r = 0.00142379916781333)。
+
+妊婦死亡と釣り合いがとれるように、男性死亡率を別に設ける可能性が将来的にはあるが、今のところは入れないでおく。災害や戦争(蛮族の侵入)などを考える際には、男性の死亡率を上げることがあるだろうし。
+
+……。
+
+経済と教育は、毎期、一定の正規分布で上がったり下がったりする感じで。本来なら、子供・被扶養者については特別な扱いが必要なはずだが、simple な実装をとりあえず行う今は、考えないものとする。
+
+消費は資産のだいたい5%、寄付もだいたい 5% 行っているものとする。
+
+……。
+
+死亡にともなう相続や、結婚の際の家族資産の考慮などは今は行わないことにする。行うのは、test_of_matching_2.py に test_of_merchant_peasant_ratio.py を統合してさらに扶養を考慮した所得のルールを定めて以降に承継に関するルールを定める予定。
+
+……。
+
+このような方針のもと、↓に誕生・死亡をプラスした (バージョン 0.0.4)。
+
+《test_of_matching_2.py - マッチングのシミュレーション》  
+<a href="https://gist.github.com/JRF-2018/6650bc84f238e40826251c400f45f328" class="ext-link">https://gist.github.com/JRF-2018/6650bc84f238e40826251c400f45f328</a>
+
+まだ結婚は入れてない。次はその結婚の実装かな…？</pre>
+
+
+</article>
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2021/02.html">2021年02月</a> | <a href="../../../index/gsm.html">共有メモ</a></nav>
+</body>
+</html>

@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>共有メモ - JRF Blog Archive</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2021/10.html">2021年10月</a> | <a href="../../../index/gsm.html">共有メモ</a></nav>
+<article data-pagefind-body>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[gsm] 2021-10-23T07:14:47Z</td></tr>
+<tr><th>セクション</th><td>グローバル共有メモ</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2021/10.html">2021-10-23T07:14:47Z</a></td></tr>
+<tr><th>元URL</th><td>(URLなし)</td></tr>
+
+</table>
+</div>
+<h1>共有メモ</h1>
+<pre class="body">jrf&gt; [仏教の最適化プログラムの続き。]
+
+simbdp3x1.py になってからやってなかった lsth ltom ltomlsth 以外のログも取ってみた。取り方は、make_logs.sh make_figs.sh を参考にしていただきたい。
+
+《グラフ集: 2021-10-16 から 2021-10-23 まで - Issue #6 - JRF-2018/simbd》  
+<a href="https://github.com/JRF-2018/simbd/issues/6" class="ext-link">https://github.com/JRF-2018/simbd/issues/6</a>
+
+fana … 狂信が起こると、予言の効果が薄れて災害が起きやすくなり人が死ぬ。そして、寺の数が増えるということだった。そうなっている。
+
+fanampr は狂信が起きて寺だけでなく僧も増えた場合で、fanamprmprs は僧が増えてもその効果がむなしい場合。fanampr のほうが死者が少なく、fanamprmprs は fana と変わらないぐらいというのが予定通りなのだが、まぁ、だいたいそうなっているか。
+
+mwar は、人口が増えると戦争を望みやすくなるということだった。確かに死者が増えている。そのかわりに人口の目標値が増えるとしたのが mwarmpop で、さらに ambition が増えて経済が活発になるとしたのが mwarmpopmamb である。死亡を率でみると、mwar と mwarmpop がだいたい同じになっているようだ。mwarmpopmamb がそれらより良いのはなぜかいまいちわからない。mwarmpopmamb が経済が活発で予算が多くなるというのはそうなってはいるが、そのわりに一家離散が増えるはずが増えてないのがよくわからない。予算が normal より mwar* のほうが少ないのは injured が増えているから…だと思われる。
+
+「死が増えると僧が増えて教育などが改善し、それが国力となって、災害などに強くなり、死者が減る」…ということが起きるか？ 逆に mwarfpr では僧の増加を抑制して、死者が増えるか見てみようということだった。ところが、今回は逆に mwarfpr のほうが mwar より死者が少ないとなってしまった。これは予定外。最初に大きな変化があっても、それが災害となってはねかえる前に、MeanAmplifier の効果によって変化の効果が薄れてしまったからだろうか。
+
+ltom は墓の数を減らすことで軽犯罪が起きにくく重犯罪が重くなるという効果を持つはずで、ledu は教育が減って軽犯罪が起きやすくなるはずだった。なんとなく予定通りになっているように見える。ここは MeanAmplifier の効果がわりと出ているのではないか。
+
+予言の効果が直接減るというのが lpe だった。それにより災害が重くなり死者が増えるはずだが…そうなっている。lpe は ltom の副作用として現れるということで、ltomlpe ledultomlpe を試しているが、死者数はそんなに変わっていない。ltomlpe のカルマ…軽犯罪の少なさがなぜかかなりよい。
+
+もろもろの最悪の状態を試すのが worst1 で、そこからもろもろの「仏教的」改善をした normal に対し、非仏教的に改善を人口目標増の一点に集中したのが worst2 になる。カルマが normal と worst1 がほぼ同じなのが気にくわないが、その程度の問題である。
+
+以上。</pre>
+
+
+</article>
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2021/10.html">2021年10月</a> | <a href="../../../index/gsm.html">共有メモ</a></nav>
+</body>
+</html>

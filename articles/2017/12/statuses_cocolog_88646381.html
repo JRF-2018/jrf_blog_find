@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>ひとこと - JRF Blog Archive</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2017/12.html">2017年12月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+<article data-pagefind-body>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[statuses] <span class="cocolog-id">cocolog:88646381</span></td></tr>
+<tr><th>セクション</th><td>JRF のひとこと</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2017/12.html">2017年12月27日</a></td></tr>
+<tr><th>元URL</th><td><a href="http://jrf.cocolog-nifty.com/statuses/2017/12/mozil.html" class="ext-link"><span class="original-url">http://jrf.cocolog-nifty.com/statuses/2017/12/mozil.html</span></a></td></tr>
+
+</table>
+</div>
+<h1>ひとこと</h1>
+<pre class="body">Mozilla Firefox と Google Chrome のブラウザ拡張(アドオン)である PP Interrupter Lite を作って公開した。前から作っている PP Interrupter (Original) (<a href="../../../articles/2017/12/statuses_cocolog_88550595.html" class="int-link cocolog-id" title="ひとこと">[cocolog:88550595]</a>)の機能制限版。
+JRF 2017年12月27日
+
+Firefox 用のアドオンのページ:
+
+《PP Interrupter Lite – Firefox 向けアドオン》
+<a href="https://addons.mozilla.org/firefox/addon/pp-interrupter-lite/" class="ext-link">https://addons.mozilla.org/firefox/addon/pp-interrupter-lite/</a>
+
+Chrome 用のアドオンのページ:
+
+《PP Interrupter Lite - Chrome ウェブストア》
+<a href="https://chrome.google.com/webstore/detail/pp-interrupter-lite/denkjiefdjoneofcnkebcjcobpedbncj" class="ext-link">https://chrome.google.com/webstore/detail/pp-interrupter-lite/denkjiefdjoneofcnkebcjcobpedbncj</a>
+
+JRF 2017年12月27日
+
+説明用ホームページ(Original と同じ):
+
+《PP Interrupter》
+<a href="http://jrf.cocolog-nifty.com/archive/pp-interrupter/README_ja.html" class="ext-link">http://jrf.cocolog-nifty.com/archive/pp-interrupter/README_ja.html</a>
+
+サポート用のブログ内ページ:
+
+《PP Interrupter Lite: GET をブロック》
+<a href="../../../articles/2017/12/software_88646059.html" class="int-link" title="PP Interrupter Lite: GET をブロック">http://jrf.cocolog-nifty.com/software/2017/12/post-1.html</a>
+
+JRF 2017年12月27日
+
+「詐欺的な自動ダイレクトを識別するために、逆に普段から健全な自動リダイレクトをブロックする習慣をつけるという逆転の発想のアドオン」であることは PP Interrupter (OOriginal) と変わらない。ただし、Original が Web リクエストのすべてのメソッドをブロックできるのに対し、Lite は GET メソッドしかブロックできない。しかし、この機能制限によって Chrome や Firefox for Android に対応できた。
+
+JRF 2017年12月27日
+
+コード内の話をすると、chrome.webRequest.onBeforeRequest が Firefox では Promise を返せるのに対し、Chrome では返せない。また、ブロックしたとき、メソッドが POST の場合は、requestBody というパラメータでその内容が分かるのだが、その形式が multipart/form-data なのか application/x-www-form-urlencoded なのかは知りようがないようで、後で替わりに実行するということができない。
+
+JRF 2017年12月27日
+
+それで GET のみに対応して Promise せずに警告ページに遷移して待ち、ボタンがクリックされたら GET の URL に飛び直すという形式で実装したのが PP Interrupter Lite ということになる。
+
+JRF 2017年12月27日
+
+また、Firefox for Android は Promise を返すのに対応しているのだが、pageAction のボタンの表示が Firefox for PC と違うらしく、Promise で待っている間にボタンが表示されない。それで仕方なく、警告ページに一度遷移することにした。すると、GET しかとれないのはさっきと同じ。
+
+JRF 2017年12月27日
+
+……。
+
+で、この pageAction のボタンの動作が環境によっていろいろ違うというのがはまりどころだった。
+
+JRF 2017年12月27日
+
+Google Chrome が pageAction をアドレスバーに表示してくれないのにはまいった。PP Authorizer と並用すれば似たボタンが二つ並ぶことになる。うーん、PP Autorizer と PP Interrupter Lite、まとめたほうがいいんだろうか？
+
+JRF 2017年12月27日
+
+そして Firefox for Android。Nightly ではうまくいってたのが、ノーマルではうまくいかないとかあった。アイコンを隠す動作も Chrome や Firefox for PC と違い過ぎる。試さないとわからないことが多過ぎ！
+
+JRF 2017年12月27日
+
+……。
+
+Google と Mozilla にはじめて提出するとき含めるのを忘れたファイルがあったのに、公開できてしまった。やっぱり細かいチェックはしてないみたい。特に Google は Mozilla のようなソースのチェックがいっさいないように思えるのだが…。
+
+多言語対応とか、Google は金取るんだね。Mozilla も manifest.json で i18n 対応してないと description が書き換えられないとかあるみたいだし。まぁ、その辺は今後、考えればいいか…。
+
+JRF 2017年12月27日
+
+ドキュメントは Original を少し書き換えることで対応。しかし、サポートページとかは作っから、いろいろ作業はして、やっといま、ひとこと書きで作業終りに近付いている。
+
+年末なのにいろいろなところに作業を押しつけている感じもして申し訳ない。
+
+もちろん、多くの人に使ってもらいたくていろいろ対応しているのだけど、やはりニッチであることには変わらないから、それは難しいのだろうな…。orz
+
+JRF 2017年12月27日
+
+Trackbacks:
+
+《cocolog:88550595》 from JRF のひとこと
+<a href="../../../articles/2017/12/statuses_cocolog_88550595.html" class="int-link" title="ひとこと">http://jrf.cocolog-nifty.com/statuses/2017/12/firef.html</a>
+
+Firefox のブラウザ拡張(アドオン)である PP Interrupter を作って公開した。詐欺的な自動ダイレクトを識別するために、逆に普段から健全な自動リダイレクトをブロックする習慣をつけるという逆転の発想のアドオン。... 
+
+受信： 2017-12-29 18:13:08 (JST)
+
+《cocolog:88703123》 from JRF のひとこと
+<a href="../../../articles/2018/01/statuses_cocolog_88703123.html" class="int-link" title="ひとこと">http://jrf.cocolog-nifty.com/statuses/2018/01/post-abfc.html</a>
+
+ブラウザ拡張(アドオン)として Tweet Sig を作って公開した。三文判程度の認証に使うことを想定している。 
+
+受信： 2018-03-30 21:39:41 (JST)</pre>
+
+
+<section class="backrefs" data-pagefind-ignore>
+<h2>後方参照 (3 件)</h2>
+<ul>
+<li><span class="backref-label">[cocolog:88646381]参照</span> <a href="../../../articles/2018/01/statuses_cocolog_88703123.html">ひとこと</a> <span class="backref-date">2018年01月06日</span></li>
+<li><span class="backref-label">[cocolog:88646381]参照</span> <a href="../../../articles/2017/12/software_88646059.html">PP Interrupter Lite: GET をブロック</a> <span class="backref-date">2017年12月27日 20:30:50</span></li>
+<li><span class="backref-label">[cocolog:88646381]参照</span> <a href="../../../articles/2017/12/statuses_cocolog_88550595.html">ひとこと</a> <span class="backref-date">2017年12月08日</span></li>
+</ul>
+</section>
+
+</article>
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2017/12.html">2017年12月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+</body>
+</html>

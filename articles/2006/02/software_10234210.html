@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>DDwin を Firefox や Meadow から使うとき latin-1 のアクセント記号を抜くようにした。 - JRF Blog Archive</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2006/02.html">2006年02月</a> | <a href="../../../index/software.html">ソフトウェア Tips</a></nav>
+<article data-pagefind-body>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[software] <span class="cocolog-id">cocolog:10234210</span></td></tr>
+<tr><th>セクション</th><td>JRF のソフトウェア Tips</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2006/02.html">2006年02月27日 00:37:52</a></td></tr>
+<tr><th>元URL</th><td><a href="http://jrf.cocolog-nifty.com/software/2006/02/post_21.html" class="ext-link"><span class="original-url">http://jrf.cocolog-nifty.com/software/2006/02/post_21.html</span></a></td></tr>
+<tr><th>タグ</th><td>[Emacs/Meadow] [Windows アプリ] [Firefox]</td></tr>
+</table>
+</div>
+<h1>DDwin を Firefox や Meadow から使うとき latin-1 のアクセント記号を抜くようにした。</h1>
+<pre class="body">Firefox について同じようなことをやってる人がいた。《chez sugi：firefox と DDWin》を参照すると、EPWING の規格上、独仏語だとアクセント文字がないほうが良いらしい。ちなみに latin-1 の文字列を sjis にencode しようとすると、アクセント記号と文字にわかれるのではなく、文字化けしてしまう。
+
+そういったわけなので、アクセント付の文字をいちいちアクセントなしに変換する関数を書いた。私は独仏語辞典を持ってないから、Deja vu とかそのあたりの国語辞典に載ってる単語でしか確認できないけど。
+
+ついでなので、《ddwin.el》のほうにも同じような関数を書いた。できたスクリプトについては《DDwin.js》へ。
+
+更新：06/02/27
+初公開：2006年02月27日 00:37:55
+最新版：2006年02月27日 10:01:42
+
+
+Links:
+
+chez sugi：firefox と DDWin: <a href="../../../articles/2006/04/hbm_00093.html" class="int-link" title="chez sugi: firefoxとDDWin">http://chez-sugi.net/saq/001220.html</a>
+ddwin.el: <a href="http://jrf.cocolog-nifty.com/archive/ddwin-el.html" class="ext-link">http://jrf.cocolog-nifty.com/archive/ddwin-el.html</a>
+DDwin.js: <a href="http://jrf.cocolog-nifty.com/archive/ddwin-js.html" class="ext-link">http://jrf.cocolog-nifty.com/archive/ddwin-js.html</a></pre>
+
+
+</article>
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2006/02.html">2006年02月</a> | <a href="../../../index/software.html">ソフトウェア Tips</a></nav>
+</body>
+</html>

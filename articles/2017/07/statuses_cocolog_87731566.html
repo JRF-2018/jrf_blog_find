@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>ひとこと - JRF Blog Archive</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2017/07.html">2017年07月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+<article data-pagefind-body>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[statuses] <span class="cocolog-id">cocolog:87731566</span></td></tr>
+<tr><th>セクション</th><td>JRF のひとこと</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2017/07.html">2017年07月13日</a></td></tr>
+<tr><th>元URL</th><td><a href="http://jrf.cocolog-nifty.com/statuses/2017/07/quail.html" class="ext-link"><span class="original-url">http://jrf.cocolog-nifty.com/statuses/2017/07/quail.html</span></a></td></tr>
+
+</table>
+</div>
+<h1>ひとこと</h1>
+<pre class="body">quail-naggy.el をアップデートした。バージョン 0.09。ほんの少しのバグ取りと、罫線がらみのほとんど意味のない変更。
+JRF 2017年7月13日
+
+《quail-naggy.el: 単漢字変換 Input Method for Emacs.》
+<a href="../../../articles/2015/10/software_83641133.html" class="int-link" title="quail-naggy.el: 単漢字変換 Input Method for Emacs.">http://jrf.cocolog-nifty.com/software/2015/10/post.html</a>
+
+《JRF Flag Semaphore for NES Emulator を作った》
+<a href="../../../articles/2014/03/software_79149901.html" class="int-link" title="JRF Flag Semaphore for NES Emulator を作った">http://jrf.cocolog-nifty.com/software/2014/03/post-1.html</a>
+
+quail-naggy.el のほうは、バージョン 0.09 に、jrf_semaphore.pl のほうは、ほぼ影響はないがいちおうバージョン 0.10 になった。
+
+JRF 2017年7月13日
+
+……。
+
+まず、Windows 用 IME 『風』の辞書を dic2txt.pl で変換してできた単漢字辞書を Wind2.txt と名付けたとする。
+
+JRF 2017年7月13日
+
+quial-naggy.el で使っている naggy-backend.pl では、単漢字辞書を指定するとき、いっしょに文字コードが指定できる。単漢字辞書は一文字ずつ並べることで作られているが、文字コード変換のときに、昔の機種依存文字のような丸で数字を囲んだものなどが、特定の文字コードでは一文字だが、Unicode に直すと二文字以上になっていることがありえるのではないかと考え、チェックしてみた。
+
+JRF 2017年7月13日
+
+チェックしてみた結果、EUC-JP (JIS X 0213 領域含む) の場合は、一文字は一文字に対応していることがわかった。しかし、シフトJIS の Wind2.txt には一文字が二文字になっているコードがあるようだった。そこで、シフトJIS の単漢字辞書については、それに対応するよう特殊な処理をするようにした。
+
+JRF 2017年7月13日
+
+そうした上で気付いたのだが、できた二文字はすべて \x{FFFD}\x{XX} という形をしていることに気付いた。\x{FFFD} は Unicode の REPLACEMENT CHARACTER つまり未定義文字用の符号である。その変換前がどうも \x{86}\x{YY} で \x{86} が \x{FFFD} に変換されているようだ。そして、下二ケタの YY は 0xA2 から 0xED までというコードだけのようである。
+
+JRF 2017年7月13日
+
+0x86A2 から 0x86ED というのは、シフトJIS の外字領域で、その部分の読みが「ケイセン」ということから罫線であるらしい。『風』は pc-9801 のころから使われているので、どうも pc-9801 の機種依存文字の罫線のようだが、ググッてそのコードを確かめようとするのだが、その表が見つからない。昔、私も PC-9801DA を持っていて、そこには漢字コード表の冊子があったのだが、その表が見つからない。
+
+JRF 2017年7月13日
+
+ただ、Unicode の罫線素片の表をみると、0x2500 から 0x254B までが区切りよく 0x86A2 と 0x86ED に対応できるように見える。そこで、間違っているかもしれないが、まったく使えないよりはマシなので、そのように Unicode を無理やりあてはめることにした。PC-9801 の機種依存文字の罫線にまで対応してしまうのは過適応のような気もするが、シフトJIS の外字領域なので、外で問題になることもなかろう…と思いたい。
+
+JRF 2017年7月13日
+
+長かったが、今回の変更の経緯はそんな感じで、要は Wind2.txt の罫線に不完全ながら対応したというのがメインの変更点になる。ほとんどの人には意味のない変更ということになるだろう。
+
+JRF 2017年7月13日
+
+あと、Emacs 23 では大丈夫だが、Emacs 25 でバグになるコードのゴミがあって、それを除去したりした。
+
+JRF 2017年7月13日
+
+……。
+
+ところで、罫線を Emacs で使おうとすると、候補ウィンドウなどの表示がズレるなどする。gnupack の Emacs 23 を使っている場合は目立たないが、普通の gnu の Emacs 24 や 25 を使って、Myrica フォントを使っているとそのような症状が出る。
+
+JRF 2017年7月13日
+
+これは罫線素片の char-width が 2 になっていないからで、↓の eaw.el を使うと罫線素片についてはうまくいく。
+
+《GitHub - hamano/locale-eaw: East Asian Ambiguous Width問題と絵文字の横幅問題の修正ロケール》
+<a href="https://github.com/hamano/locale-eaw" class="ext-link">https://github.com/hamano/locale-eaw</a>
+＞
+(require 'eaw)
+(eaw-fullwidth)
+＜
+
+JRF 2017年7月13日
+
+が、<a href="../../../articles/2017/05/statuses_cocolog_87357678.html" class="int-link cocolog-id" title="ひとこと">[cocolog:87357678]</a> でも追記したが、アクセント付きアルファベットについては、eaw.el を使ってもまだズレる。char-width をいじるのは難しくないので、なんとかできないではなさそうだが、あまり標準的でない方法によって環境依存になるのはあまり良くないようにも思う。
+
+まぁ、ガマンして使っていただきたい。…という方向で。
+
+JRF 2017年7月13日
+
+……。
+
+上にも書いたが jrf_semaphore.pl については、naggy-backend.pl 部分が上記のように変わったという以外の変更はない。ほとんど影響のない変更で、バージョンナンバーを上げるか迷ったが、上げておいた。
+
+JRF 2017年7月13日
+
+……。
+
+前回のバージョンアップ(<a href="../../../articles/2017/06/statuses_cocolog_87543251.html" class="int-link cocolog-id" title="ひとこと">[cocolog:87543251]</a>)に比べてほんの少しバグが取れたぐらいで、新たなコードはほとんどの人に意味のないものだと思う。最近、一ヶ月ぐらいでバージョンアップしているので、この一ヶ月ぐらいは見送り、二ヶ月ぐらい待ってみてそれで更新がないなら、更新するとかでもいいかもしれない。
+
+JRF 2017年7月13日
+
+……。
+
+追記。
+
+ちなみに、今回の罫線素片や昔の機種依存文字は、『風』でもうまく表示できていない。Perl の cp932 変換表と今回の無理矢理の罫線素片で、『風』よりも昔の PC-9801 の『風』に近付いていると言えるかもしれない。
+
+JRF 2017年7月13日</pre>
+
+
+<section class="backrefs" data-pagefind-ignore>
+<h2>後方参照 (2 件)</h2>
+<ul>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2017/06/statuses_cocolog_87543251.html">ひとこと</a> <span class="backref-date">2017年06月08日</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2017/05/statuses_cocolog_87357678.html">ひとこと</a> <span class="backref-date">2017年05月08日</span></li>
+</ul>
+</section>
+
+</article>
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2017/07.html">2017年07月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+</body>
+</html>

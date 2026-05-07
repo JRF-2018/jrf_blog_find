@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>共有メモ - JRF Blog Archive</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2025/07.html">2025年07月</a> | <a href="../../../index/gsm.html">共有メモ</a></nav>
+<article data-pagefind-body>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[gsm] 2025-07-14T13:18:45Z</td></tr>
+<tr><th>セクション</th><td>グローバル共有メモ</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2025/07.html">2025-07-14T13:18:45Z</a></td></tr>
+<tr><th>元URL</th><td>(URLなし)</td></tr>
+
+</table>
+</div>
+<h1>共有メモ</h1>
+<pre class="body">jrf&gt; 報酬関数などの戦略的記述からの RLRMDiffusion (RL Result Model Diffusion, <a href="../../../articles/2025/05/statuses_cocolog_95459644.html" class="int-link cocolog-id" title="ひとこと">[cocolog:95459644]</a>(2025年5月))を考えたりしているが、強化学習の方策から、出力されるべきは単純な動作ではない。視覚や感覚などのセンスデータ M に対して、動作を出力する関数 f(M) を出力する必要がある。関数を出力するという時点でメタ的なのだ。
+
+模倣学習から直接 f を求めることもあるのだろうが、模倣学習のビデオ V からはいったん方策 P が得られるとすれば、P(t) = g(V)(t) のような g が学習されてあるということだろう。そして RLRMD(P) = f になる。
+
+ただし、t の作用を考えると難しい。P = g(V) は V の対応する時間によって変化しうる。しかし、それは、実時間 t とは必ずしも一致しなくていい。
+
+実時間 t は M の中に含まれうるとできるが、それを P の変化用の時間にどう伝播するかが問題とはなりうるが、それは AI 的な伝播で十分なのかもしれない。
+
+RLRMDiffusion のころのアイデアでは P を LLM が生成することを考えたが、むしろ V の生成を考えるべきというのが最近のトレンドなのかもしれない。
+
+あと、模倣学習は、ある V の模倣だけに終わらない。いくつもの V1,V2…を学習することで、特定の V からどう学習すべきかを学習するようになっているのだろう。そんな中で g は自然になめらかになるものと思われる。
+
+RLRMD は重要でなく、h = λV. RLRMD(g(V)) の学習だけが問題となるのかもしれない。
+
+(強化学習と関数での出力の関係は、どこかに書いたはずだが見つからない…。)</pre>
+
+
+</article>
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2025/07.html">2025年07月</a> | <a href="../../../index/gsm.html">共有メモ</a></nav>
+</body>
+</html>

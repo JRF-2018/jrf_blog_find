@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>ひとこと - JRF Blog Archive</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2025/09.html">2025年09月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+<article data-pagefind-body>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[statuses] <span class="cocolog-id">cocolog:95612828</span></td></tr>
+<tr><th>セクション</th><td>JRF のひとこと</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2025/09.html">2025年09月04日</a></td></tr>
+<tr><th>元URL</th><td><a href="http://jrf.cocolog-nifty.com/statuses/2025/09/post-527223.html" class="ext-link"><span class="original-url">http://jrf.cocolog-nifty.com/statuses/2025/09/post-527223.html</span></a></td></tr>
+
+</table>
+</div>
+<h1>ひとこと</h1>
+<pre class="body">河原塚健人＆松嶋達也『基盤モデルとロボットの融合』を読んだ。ロボット技術についてちょっとした過去の振り返りとそれが基盤モデルの登場によって劇的に変わったことの「レポート」。ただ、NVIDIA Isaac が載ってないとか、削った部分も多いのだろうという印象。
+JRF 2025年9月4日
+
+『基盤モデルとロボットの融合 - マルチモーダルAIでロボットはどう変わるのか』(河原塚 健人 ＆ 松嶋 達也 著, KS理工学専門書, 2025年8月)
+<a href="https://www.amazon.co.jp/dp/4065395852" class="ext-link">https://www.amazon.co.jp/dp/4065395852</a>
+<a href="https://7net.omni7.jp/detail/1107627732" class="ext-link">https://7net.omni7.jp/detail/1107627732</a>
+
+JRF 2025年9月4日
+
+ロボット技術についてちょっとした過去の振り返りとそれが基盤モデルの登場によって劇的に変わったことの「レポート」。現状の紹介や技術の名前の紹介が多い。数式は少ない。一方、総花的かというと、NVIDIA Isaac が載ってないとか、それらは執筆時になかったわけもなく、それでも載せなかったということは、削った部分も多いのだろうという印象を受けた。
+
+JRF 2025年9月4日
+
+……。
+
+<a href="../../../articles/2025/07/statuses_cocolog_95551700.html" class="int-link cocolog-id" title="ひとこと">[cocolog:95551700]</a>(2025年7月)や <a href="../../../articles/2025/08/gsm_007579.html" class="int-link gsm-tsref" title="jrf&gt; まぁ、ロボットが早期にモノにならなければ、我々「ニート」の老後は物理的">>>2025-08-28T12:14:41Z</a> に書いたが、私は経済敗者「ニート」で、ロボットが早期にモノにならなければ、我々「ニート」の老後は物理的に維持できない。AI・ロボットにより、物がとても安くなることだけがとても低い年金でも生きていける唯一のチャンスなところがある。だからこそ、AI・ロボットに「オールイン」してる面がある。
+
+JRF 2025年9月4日
+
+まぁ、「オール」といっても怠惰な私のことだからそこはそれなりに他のこともしながらなのだが、GCP (Google Cloud Platform) の無料クレジットの期限もあるので、かなり積極的に AI を使っている。
+
+そんな中、ロボットについてもどういう技術が必要か…というのは、この「ひとこと」でもいくつか夢想している。もちろん、実装や実験はやってないのでブレインストーミングぎみの思考実験でしかないのだが。
+
+JRF 2025年9月4日
+
+……。
+
+この本に書かれているように、LLM を使えば、かなり高レベル計画が低レベル計画に落とせるというのは常識的にわかっていて、低レベル計画にしてからどう制御列にするかというところで、私は RLRMDiffusion (Reinforcement Learning Result Model Diffusion)というコンセプトを考えた(<a href="../../../articles/2025/05/statuses_cocolog_95459644.html" class="int-link cocolog-id" title="ひとこと">[cocolog:95459644]</a>(2025年5月))。強化学習で得る制御のためのモデルをビデオ生成みたいに Diffusion などで生成してしまおう…というアイデア。
+
+JRF 2025年9月4日
+
+ただ、それを考え調べるうちに、基本的に制御モデルは、<a href="../../../articles/2025/07/statuses_cocolog_95538601.html" class="int-link cocolog-id" title="ひとこと">[cocolog:95538601]</a>(2025年7月)で書いたように、センスデータ M について f(M) が制御列となるような f を生成することになり、f はとても巨大なものになりうることがわかった。すると現状では、f そのものではなくセンスデータ M はビジョンを含まないような単純な制御列にするか、または、LoRA に留めるかしないといけない…ということになりそうだ。
+
+JRF 2025年9月4日
+
+制御列にする方向としては、すでに Diffusion Policy がこの本の p.96 で紹介され、Human Motion Diffusion Model がこの本の p.113 で紹介されているし、それらも含め <a href="../../../articles/2025/05/statuses_cocolog_95459644.html" class="int-link cocolog-id" title="ひとこと">[cocolog:95459644]</a>(2025年5月) にいくつか論文を追記した。LoRA を生成するというアイデアも SakanaAI が Text-To-Lora というのでやっていた(これはロボティクスではないが)。
+
+だから RLRMDiffusion というのはずっと前からアイデア、および、そこを目指した実装はあるということである。
+
+JRF 2025年9月4日
+
+……。
+
+<a href="../../../articles/2025/07/statuses_cocolog_95538601.html" class="int-link cocolog-id" title="ひとこと">[cocolog:95538601]</a>(2025年7月) では、LLM が低レベルの動作を伝えるのに埋め込みベクトルが使えないかという話もしている。どこにアテンションして動かすか…というのが埋め込みベクトル的に表現可能と考えるからだ。
+
+これは、ある種、指示をエンコードして行動にデコードするエンコーダー・デコーダーモデルの発想ということになるのだと思う。
+
+そういうのに近い発想もこの本には随所に見られた。CLIP を使って言語を埋め込みベクトル的にしてから、それに元づいて動作するなどというのはこの方向だろう。(p.119 の CLIPort など。)
+
+JRF 2025年9月4日
+
+……。
+
+<a href="../../../articles/2025/07/statuses_cocolog_95538601.html" class="int-link cocolog-id" title="ひとこと">[cocolog:95538601]</a>(2025年7月) ではさらに、ロボットのためのビデオによる模倣学習が、ビデオの続きとなるような一操作を生成する…という点で LLM に似ているということを述べている。
+
+そこでは学習規模が大き過ぎてそのような方向を直接追うのは無理だと述べたのだが、この本でも p.218 で紹介される Physical Intelligence の方の洗濯物をたたむロボットのビデオ(↓)を見ていると、どうもその方向もなされている雰囲気がある。
+
+JRF 2025年9月4日
+
+《チェルシー・フィン：何でもできるロボットを作る - YouTube》  
+<a href="https://www.youtube.com/watch?v=a8-QsBHoH94" class="ext-link">https://www.youtube.com/watch?v=a8-QsBHoH94</a>
+
+私は、なんとかモデルを小さくするために転移学習の利用などを考えていたのだが、そうではなく、学習用のデータを厳選して、探索空間を小さくするという方向のようだ。なんでもできるようにトレーニングするというが、動作のチャンクがかなり選ばれているのではないか。
+
+JRF 2025年9月4日
+
+それは上で言えば、埋め込みベクトル＝ある種の特徴量を仕上げていくという方向とはデコーダーオンリーモデルとエンコーダーデコーダーモデルとの違いぐらいの差があるのかもしれない。
+
+これは p.140 の UniPi で書かれるような、または Google の Genie 3 のような世界モデル生成のようなとこでのシミュレーションを通じて、また発展していくのかもしれない。これは、↓で Recollector を考えたころはまさかそこまでできないだろうと思っていたことが、実現するということで、スゴイとこまで到達しているんだなぁ…という印象。
+JRF 2025年9月4日
+
+《Predictor - Actor (- Recollector) モデルと負の学習 - JRF のソフトウェア Tips》  
+<a href="../../../articles/2020/02/software_91662485.html" class="int-link" title="Predictor - Actor (- Recollector) モデルと負の学習">http://jrf.cocolog-nifty.com/software/2020/02/post-c87651.html</a>
+
+JRF 2025年9月4日
+
+ただ、このようなことをするためには、ビデオから逆に操作を割り出す方法が少なくとも学習時には必要になるだろう。そのようなことを行うものとしてこの本では、Toyota Research Institute 社などが開発する UMI (Universal Manipulation Interface) での Visual SLAM というライブラリを使う方法が紹介されていた(p.229)。
+
+JRF 2025年9月4日
+
+……。
+
+LLM が実用になったころ、ただ、そのままではロボットなどに実用の道はすぐに見えなかった。そのころにはスマートスピーカーがあったのだが、そのような仕組みすら一般に広がってなかったころ、AI が工場で使えるというアリバイ作りのために、↓のような実験を行った。これで AI 研究者が時間稼ぎできればという思いがあった。
+
+JRF 2025年9月4日
+
+<a href="../../../articles/2023/07/statuses_cocolog_94301604.html" class="int-link cocolog-id" title="ひとこと">[cocolog:94301604]</a>(2023年7月)
+＞スマートスピーカーのように口頭での命令で何かを動かすオープンで無料な実装のためのテスト。Whisper で音声認識し、SentenceTransformers の埋め込みベクトル化で、コマンドの表現の揺れを吸収する。
+
+(…)
+
+文法解析して部分列を something で置き換えたものをいくつも作り、それが「something を検索しろ」に最も類似度が近いものを選べば、その something に置き換える前の部分列が、検索語句とすべき目的語となる(…)。
+
+JRF 2025年9月4日
+
+(…)
+
+埋め込みベクトル化で自由な目的語を取るコマンドを認識する…プログラムを作ってみた。とても簡単。埋め込みベクトル化で、「～を検索して」みたいなのの「～」が自由に変化する場合のコマンドにそこそこ対応できるようになった。
+
+(…)
+
+「～さんを呼んで」みたいなのに自由な目的語を取る技術が使える。
+＜
+
+JRF 2025年9月4日
+
+このようなことはやはり世界の研究者となれば私より先に当然思い付いているだろう。この本の p.154 にはちょっと違うが埋め込みモデルを使ってタスクプランの類似度を測る方法が紹介されていて、やはり世界はスゴイな…と思った。
+
+JRF 2025年9月4日
+
+……。
+
+現在の私はこの後↓の実装に取りかかろうとしている。
+
+<a href="../../../articles/2025/08/statuses_cocolog_95599211.html" class="int-link cocolog-id" title="ひとこと">[cocolog:95599211]</a>(2025年8月)
+＞AI (LLM) のメモリ機能について悩んで、最適化の際に記憶があればその報酬は独立的になるのでは…とか妄想していたら、それをモデル化する一例として ChatGPT さんが記憶操作のバンディットマシンを作るのを提案してくれた。
+
+JRF 2025年9月4日
+
+(…)
+
+AI さんがツールを使うのは、上すべりで確率的に使っている気がする。そうではなく、「ほぼ強制する」というのが常にあったほうがいい、強制的に試行数を増やしたほうがいい…というとき、バンディットのようなものがあったほうがいいのかもしれない。
+
+すると、バンディットに特定のツールを登録するツールみたいなのを用意して、どういうツールを強制して数を増やして欲しいかを AI さん自身が決められると良いのかもしれない。
+
+もちろん、初期バンディットは与えた上で、強制回数や確率を AI さんに設定可能にするのだ。
+
+こういうのが「下水道的処理」に効くのではないか？
+＜
+
+JRF 2025年9月4日
+
+これを適用する例としていつもの熊剣迷路問題(↓)を使う予定。
+
+《JRF-2018/langchain_maze: 熊剣迷路問題 revisited》  
+<a href="https://github.com/JRF-2018/langchain_maze" class="ext-link">https://github.com/JRF-2018/langchain_maze</a>
+
+ポケモンとか Minecraft とかでできればスゴイんだけどね。そこまでは私の実力・資力では難しいので。
+
+Minecraft についてはそれを自動で実行するエージェント Voyager がこの本の p.170 で紹介されていた。
+
+JRF 2025年9月4日</pre>
+
+
+<section class="backrefs" data-pagefind-ignore>
+<h2>後方参照 (3 件)</h2>
+<ul>
+<li><span class="backref-label">[cocolog:95612828]参照</span> <a href="../../../articles/2025/10/statuses_cocolog_95674080.html">ひとこと</a> <span class="backref-date">2025年10月12日</span></li>
+<li><span class="backref-label">[cocolog:95612828]参照</span> <a href="../../../articles/2025/10/statuses_cocolog_95666408.html">ひとこと</a> <span class="backref-date">2025年10月07日</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2025/09/gsm_007609.html">共有メモ</a> <span class="backref-date">2025-09-04T08:29:53Z</span></li>
+</ul>
+</section>
+
+</article>
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2025/09.html">2025年09月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+</body>
+</html>

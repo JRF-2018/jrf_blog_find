@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>Firefox 1.0.7 から Firefox 1.5.0.1 にバージョンアップした - JRF Blog Archive</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2006/02.html">2006年02月</a> | <a href="../../../index/software.html">ソフトウェア Tips</a></nav>
+<article data-pagefind-body>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[software] <span class="cocolog-id">cocolog:9861152</span></td></tr>
+<tr><th>セクション</th><td>JRF のソフトウェア Tips</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2006/02.html">2006年02月08日 15:54:16</a></td></tr>
+<tr><th>元URL</th><td><a href="http://jrf.cocolog-nifty.com/software/2006/02/post_2.html" class="ext-link"><span class="original-url">http://jrf.cocolog-nifty.com/software/2006/02/post_2.html</span></a></td></tr>
+<tr><th>タグ</th><td>[Windows アプリ] [Firefox]</td></tr>
+</table>
+</div>
+<h1>Firefox 1.0.7 から Firefox 1.5.0.1 にバージョンアップした</h1>
+<pre class="body">今回はほとんどメジャーバージョンアップなので、過去のプラグインがそのままでは使えないことが多いようで、install 後の起動で、ウィザードの指示に従って、そのバージョンアップを行なった。
+
+ただし、いくつかの物については、firefox 1.5 に対応していないとのことで、自動的に無効にされてしまった。しかし、それらのほとんども手動で update してやれば問題なく動いている。
+
+さて、それでも動作しない物が私の環境では一つだけあった。 ImageZoomer である。調べると《互換性について - Firefox更新情報 Wiki*》というところにNightly Tester Toolを使えば良いとの情報があり、実際その通りだった。
+
+ちなみに、そこでは、Nightly Tester Tool Lite でも良いような記述に見えるが、私は Lite ではうまくいかなかった。
+
+また、install 時は毎度のことだが、Emacs バインドを使うために、以前使っていた C:\Program Files\Mozilla Firefox\res\builtin\platformHTMLBindings.xml をキーバインドとするために C:\Program Files\Mozilla Firefox\res\forms.css の一部を以下のように書き換えている。
+
+$ cd /cygdrive/c/Program\ Files/Mozilla\ Firefox/res/
+$ diff forms.css.orig forms.css
+--- forms.css.orig  2006-02-08 14:08:17.609375000 +0900
++++ forms.css   2006-02-08 14:11:06.515625000 +0900
+@@ -90,7 +90,7 @@
+      word-spacing: normal;
+      letter-spacing: normal;
+      cursor: text;
+-  -moz-binding: url(&quot;chrome://global/content/platformHTMLBindings.xml#inputFields&quot;);
++  -moz-binding: url(&quot;resource://gre/res/builtin/platformHTMLBindings.xml#inputFields&quot;);
+      text-indent: 0;
+      -moz-user-select: text;
+    }
+@@ -111,7 +111,7 @@
+      letter-spacing: normal;
+      vertical-align: text-bottom;
+      cursor: text;
+-  -moz-binding: url(&quot;chrome://global/content/platformHTMLBindings.xml#textAreas&quot;);
++  -moz-binding: url(&quot;resource://gre/res/builtin/platformHTMLBindings.xml#textAreas&quot;);
+      -moz-appearance: textfield;
+      text-indent: 0;
+      -moz-user-select: text;
+      
+ちなみに、書き換える前の platformHTMLBindings.xml は C:\Program Files\Mozilla Firefox\toolkit.jar の content/global に入っている。
+
+更新：06/02/08
+初公開：2006年02月08日 15:50:43
+
+
+Links:
+
+互換性について - Firefox更新情報 Wiki*: <a href="../../../articles/2006/04/hbm_00071.html" class="int-link" title="互換性について - Firefox更新情報 Wiki*">http://wikiwiki.jp/firefox/?%B8%DF%B4%B9%C0%AD</a>
+Nightly Tester Tool: <a href="../../../articles/2006/04/hbm_00072.html" class="int-link" title="Nightly Tester Tools">http://users.blueprintit.co.uk/~dave/web/firefox/buildid/nightly.html</a></pre>
+
+
+</article>
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2006/02.html">2006年02月</a> | <a href="../../../index/software.html">ソフトウェア Tips</a></nav>
+</body>
+</html>

@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>ひとこと - JRF Blog Archive</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2012/08.html">2012年08月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+<article data-pagefind-body>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[statuses] <span class="cocolog-id">cocolog:73568723</span></td></tr>
+<tr><th>セクション</th><td>JRF のひとこと</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2012/08.html">2012年08月01日</a></td></tr>
+<tr><th>元URL</th><td><a href="http://jrf.cocolog-nifty.com/statuses/2012/08/amazo.html" class="ext-link"><span class="original-url">http://jrf.cocolog-nifty.com/statuses/2012/08/amazo.html</span></a></td></tr>
+
+</table>
+</div>
+<h1>ひとこと</h1>
+<pre class="body">Amazon のカート内に日付を表示する Greasemonkey スクリプトを書いた。
+JRF 2012年8月1日
+
+私は、クレジットカードはリボ払いにするのはちょっと気が引けるが、毎月のネット通販の支払いはできるだけ一定となるようにしている。
+
+それでクレジットカードの請求日の変わり目が私のカードだと毎月1日なので、毎月1日にどちゃっと買うことになる。
+
+で、たまーに、待ち切れないのか間違って、一日前とかに注文しちゃうことがある。7月31日もそういう失敗をやらかして、サポートに連絡して、支払い日を調整するためだけに一部注文をキャンセルしてもらうみたいな恥かしい対応をしてもらった。
+
+JRF 2012年8月1日
+
+何度もこういうことやっちゃいかんなぁ…と思ったので、解決策になるかわからないけど、改善策として、Amazon のショッピングカート内に日付を表示すればいいのではないかと思い立った。
+
+こういうのは Greasemonkey を使ったらすぐにできる。別に大したことはやってないので参考にできるような工夫はないと思うが、いちおう作ったものも上げておく↓。
+
+《Amazon_Cart_with_Date.user.js》
+<a href="http://jrf.cocolog-nifty.com/archive/javascript/Amazon_Cart_with_Date.user.js" class="ext-link">http://jrf.cocolog-nifty.com/archive/javascript/Amazon_Cart_with_Date.user.js</a>
+
+JRF 2012年8月1日
+
+本当は、レジ確認があったあと、支払金額を記憶しておいて、今月の支払総額とかも表示したいな…と思ったんだけど、テストで何度も買う(そしてキャンセルする)のはめんどうでやってられないのと、セキュリティ的にそこをフックしちゃうのはやめたほうがいいかと考えて、手を出していない。
+
+しばらくはこれで、日付ミスが生じないか、またはスクリプトのバグが出ないか確かめたい。
+
+JRF 2012年8月1日
+
+(その後、エラーメッセージをもう少しまともにした。現在のバージョンは 1.01。私のバージョンの付け方だとバージョン 0.01 ぐらいなんだけど、先の 0.00 に相当するようなものに Greasemonkey のデフォルトで version 1 を付けてしまったので…。)
+
+JRF 2012年8月1日
+
+keyword: 買い過ぎ
+
+Amazon 買い過ぎ防止スクリプト…そのもっとも単純な一種といったことになるのかな？
+
+JRF 2012年8月1日
+
+……。
+
+更新：バージョン 1.02。Amazon のショッピングカート、表示はほとんど変わってないけど、DOM の ID で指定していたのがなくなったので、そこだけ改修。上のリンクのまま。
+
+JRF 2014年3月1日
+
+……。
+
+更新：Amazon Cart with Date バージョン 1.03。またも DOM の ID 指定の変更に対応。今度は、そのときに出るエラーにも日付表示をいちおう付けておいた。また、ファイル encoding が utf-8-dos な変な改行の組み合わせだったのを utf-8-unix なファイルにしておいた。
+
+JRF 2014年5月19日
+
+あと、いちおう↓みたいなアドレスを対象としてるんだけど、母のとか見てると Cart のアドレス違うのもあるっぽいんだよね。だとすると使えない。orz
+
+<a href="http://www.amazon.co.jp/gp/cart/view.html" class="ext-link">http://www.amazon.co.jp/gp/cart/view.html</a>
+
+JRF 2014年5月19日</pre>
+
+
+</article>
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2012/08.html">2012年08月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+</body>
+</html>

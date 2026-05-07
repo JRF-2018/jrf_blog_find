@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>ひとこと - JRF Blog Archive</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2020/01.html">2020年01月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+<article data-pagefind-body>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[statuses] <span class="cocolog-id">cocolog:91629517</span></td></tr>
+<tr><th>セクション</th><td>JRF のひとこと</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2020/01.html">2020年01月23日</a></td></tr>
+<tr><th>元URL</th><td><a href="http://jrf.cocolog-nifty.com/statuses/2020/01/post-7b5084.html" class="ext-link"><span class="original-url">http://jrf.cocolog-nifty.com/statuses/2020/01/post-7b5084.html</span></a></td></tr>
+
+</table>
+</div>
+<h1>ひとこと</h1>
+<pre class="body">quail-naggy.el と jrf_semaphore.pl をアップデートした。バージョン 0.15。 地味だが大きな変更。単語変換(skk 辞書)を使うとき、&quot;:&quot; を先頭に打つのは面倒なので、先頭が大文字なら skk 辞書を参照するようにした。
+JRF 2020年1月23日
+
+《quail-naggy.el: 単漢字変換 Input Method for Emacs.》
+<a href="../../../articles/2015/10/software_83641133.html" class="int-link" title="quail-naggy.el: 単漢字変換 Input Method for Emacs.">http://jrf.cocolog-nifty.com/software/2015/10/post.html</a>
+
+《JRF Flag Semaphore for NES Emulator を作った》
+<a href="../../../articles/2014/03/software_79149901.html" class="int-link" title="JRF Flag Semaphore for NES Emulator を作った">http://jrf.cocolog-nifty.com/software/2014/03/post-1.html</a>
+
+quail-naggy.el も jrf_semaphore.pl のほうも、バージョン 0.15 になった。
+
+JRF 2020年1月23日
+
+……。
+
+quail-naggy.el では、単漢字変換がデフォルトのときに単語変換(skk 辞書)を使うとき、&quot;:&quot; を先頭に打つのは面倒なので、先頭が大文字なら skk 辞書を参照するようにした。ちなみに skk をデフォルトにしている場合は、先頭を大文字にしても単漢字変換にはならない。
+
+JRF 2020年1月23日
+
+jrf_semaphore.pl のほうは、J で convert する際も、先頭が大文字の場合は、tankanji ではなく skk 辞書が選択されるようにした。j で convert する際は、以前のまま。すでに大文字を使って符号化されたものがあれば、変更が必要になる。
+
+JRF 2020年1月23日
+
+実は当初は、skk がデフォルトのときは逆に、先頭を大文字にすると単漢字変換になるようにしようかと思っていたが、jrf_semaphore.pl への影響が大きくなり過ぎるので、それは避けた。
+
+JRF 2020年1月23日
+
+……。
+
+2019年3月のココログの全面アップデート以来、ココログに未だにアップロードできるようになっていないため、ファイルはすべて SugarSync にアップロードしている。が、しかし、↓のような HTML ページは更新すらできない！
+
+《JRF Flag Semaphore for NES Emulators》
+<a href="http://jrf.cocolog-nifty.com/archive/nes_semaphore/jrf_semaphore.html" class="ext-link">http://jrf.cocolog-nifty.com/archive/nes_semaphore/jrf_semaphore.html</a>
+
+JRF 2020年1月23日
+
+……。
+
+……。
+
+追記。
+
+昨日の今日だが、緊急に quail-naggy.el と jrf_semaphore.pl のバージョンを 0.16 に上げた。
+
+JRF 2020年1月24日
+
+内部的な変更で、quail-naggy.el では、先頭が大文字の単漢字変換を SKK にするかどうかを nginit/default-init.nginit 内で指定するようにした。
+
+jrf_semaphore.pl では、J で convert する際に、先頭が大文字の場合の処理を元の tankanji に戻した。
+
+これにより jrf_semaphore.pl については、バージョン 0.15 の悪影響をなくし、元に戻った。
+
+JRF 2020年1月24日</pre>
+
+
+</article>
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2020/01.html">2020年01月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+</body>
+</html>

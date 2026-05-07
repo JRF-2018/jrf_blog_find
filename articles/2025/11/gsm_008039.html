@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>共有メモ - JRF Blog Archive</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2025/11.html">2025年11月</a> | <a href="../../../index/gsm.html">共有メモ</a></nav>
+<article data-pagefind-body>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[gsm] 2025-11-27T14:27:03Z</td></tr>
+<tr><th>セクション</th><td>グローバル共有メモ</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2025/11.html">2025-11-27T14:27:03Z</a></td></tr>
+<tr><th>元URL</th><td>(URLなし)</td></tr>
+
+</table>
+</div>
+<h1>共有メモ</h1>
+<pre class="body">jrf&gt; 「「多層目的＝アテンション」を確かめる二足歩行の実験 その7」を行った。Latent Skill Prompt (LSP) の実験続き。歩行の expert と simple のデータを混合し、そこから expert と simple が LSP で分化するか確かめようとした。分化は成功したと言えるが、expert の抽出は失敗した。
+
+《humanoid_nested_attention_dt_7.ipynb - Colab》  
+<a href="https://colab.research.google.com/drive/1JWWWVb_K2bx1BwBJQLwmqG0KBWN6P20M?hl=ja#scrollTo=qPjZMvYxeSJ2" class="ext-link">https://colab.research.google.com/drive/1JWWWVb_K2bx1BwBJQLwmqG0KBWN6P20M?hl=ja#scrollTo=qPjZMvYxeSJ2</a>
+
+……。
+
+今回のその7で何が変わったか。
+
+まず、その6を終わった直後、ほんの少しの変更でできる大きなアイデアが浮かんだ。その6がうまくいってるかを確かめるには、'mujoco/humanoid/simple-v0' と 'mujoco/humanoid/expert-v0' を同じプロンプト ID (prompt_id=1) にして混合して学習し、その prompt_id=1 が lsp_idx によって最低でもデータセットごとにちゃんと「分化」するか見ればいい。そういう実験をすればいいと思い付いた。
+
+なんでこれがすぐ思い付かなかったかなぁ…。
+
+その変更はごくわずかで済んだのだが、実際に実験してみると、その6の手法では「分化」は(ほぼ)起きていない…という結論になった。分化が起きていれば、expert を学習した LSP では報酬が 10000 を越えるはずである。しかし、そのような LSP は現れずどれも最大で 5000代に留まるものばかりで、特徴的な LSP がないという結論になった。
+
+そこで、これを分化させるにはどうすればいいか Gemini さんに尋ねたところ、提案されたのが、「正規化ロス」を導入する方法だった。これはこれまでのロスの計算について、異なる LSP に対する行動予測どうしが、距離が離れているほどよいというロスを加えるという方法である。
+
+しかし、それだけだとバランスが崩壊し、特定の LSP だけが選ばれるという症状が起き、そこから学習が進まなくなってしまった。
+
+これを解決すべく Gemini さんが提案したのが Soft Assignment である。私のモデルは MoE において「ゲート」として「min(最小)」を使うというものにあたるものだったらしい。それは Hard Assignment と言って、この場合、最小以外の LSP に勾配が及ばないことになる(飢餓状態というらしい)。これを避けるために、min ではなく softmax (softmin) を使うという方法が Soft Assignment である。
+
+こうすると正規化ロスだけで十分で、バランスロスを全体ロスに足し合わせる必要もなくなると Gemini さんはいったのだが、バランスロスをなくして実験すると、成功する一部の LSP とそうでない LSP に分かれたのだった。これはバランスロスをなくしたため、一部の有利なもの以外の学習が、Soft Assingment 導入前の 0 ではないものの、かなり制限されたからだと考えた。
+
+そこで、バランスロスを再導入したのが今回のプログラムになる。この結果、ある程度「分化」が成功したらしい実験結果が数値的には得られたのだが、分析してみると、expert にふさわしい LSP はなく、どうも特定の失敗モードが LSP の特徴として学ばれただけのようだった。一部だけ歩行が成功するのは分化のあかしだが、それ以外は歩行については失敗モードを学んだようである。歩行は、その6よりのきなみ成績が悪化した。expert は数は多いが、学びにくいせいか、失敗モードのほうが優先して学ばれたのであろう。ただ、起立についてはビデオを見る限り、その6に比べて「個性」が発現しているような気はする。ただ、それが「分化」のせいなのかははっきりとは言えない。
+
+つまり、分化はしたが、分化して学んだのは歩行の失敗モードまたは起立の個性であるようだ。expert の分化には失敗した。
+
+expert を学ばせるには報酬への考慮などが結局は必要で、そうでない限り学びやすい失敗モードが学ばれるということかもしれない。または、今後の課題で述べる LoRA 的なものを導入するとき、expert だけを LoRA に覚えさせるという方向でこの点は対応できるのかもしれないとは思う。</pre>
+
+
+</article>
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2025/11.html">2025年11月</a> | <a href="../../../index/gsm.html">共有メモ</a></nav>
+</body>
+</html>

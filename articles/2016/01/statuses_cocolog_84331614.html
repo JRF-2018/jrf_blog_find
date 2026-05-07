@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>ひとこと - JRF Blog Archive</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2016/01.html">2016年01月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+<article data-pagefind-body>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[statuses] <span class="cocolog-id">cocolog:84331614</span></td></tr>
+<tr><th>セクション</th><td>JRF のひとこと</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2016/01.html">2016年01月07日</a></td></tr>
+<tr><th>元URL</th><td><a href="http://jrf.cocolog-nifty.com/statuses/2016/01/isabe.html" class="ext-link"><span class="original-url">http://jrf.cocolog-nifty.com/statuses/2016/01/isabe.html</span></a></td></tr>
+
+</table>
+</div>
+<h1>ひとこと</h1>
+<pre class="body">Isabelle上でのα同値に関する証明の再証明が完成したので、記事にして公開しておいた。渾身の力作なので、私が死んでも残って欲しい。だから、使わなくても、わけがわかんなくても、この「ひとこと」を見たなら、アーカイブをダウンロードして、パソコン内に保存しておいてくれるとうれしい。
+JRF 2016年1月7日
+
+記事は↓。最初は英語で書いているが、あとから日本語でも書いている。
+
+《The Proofs about Alpha-equivalences in Isabelle》
+<a href="../../../articles/2016/01/software_84330372.html" class="int-link" title="The Proofs about Alpha-equivalences in Isabelle">http://jrf.cocolog-nifty.com/software/2016/01/post.html</a>
+
+定理証明システム Isabelle に関する一つ前の「ひとこと」は、<a href="../../../articles/2015/12/statuses_cocolog_84212598.html" class="int-link cocolog-id" title="ひとこと">[cocolog:84212598]</a>。
+
+JRF 2016年1月7日
+
+……。
+
+再証明は、prefer 2 apply assumption を apply (erule_tac [2] asm_rl) で良いと気付くようになったころから、サクサクと進むようになった。そのころには、昔の cut_inst_tac も revcut_rl という定理を使えば解決できるともわかった。
+
+JRF 2016年1月7日
+
+simp や blast や hypsusbt はやっぱり prefer 文を使わないといけなかったり、simp の機能が増えすぎて前と同じ状態にするには一部機能を削りつつ使わねばならないのは辛かったが、それを除けば、変数名も含めて内部的にはほとんど変わってなくて、サブゴールの番号等もだいたいそのままいけたのはありがたかった。
+
+JRF 2016年1月7日
+
+昔やった証明で派生的なものも再証明したが、一部、派生的過ぎて使いでがないなという部分は再証明を省略した。けれども、ほとんどの theory は細部まで再証明している。
+
+JRF 2016年1月7日
+
+正月をあけても de Bruijn 表記法に関する証明が残っていて、もっと時間がかかると思ったが、わりとすんなりカタがついた。それでも一からの証明でなく再証明に過ぎないのに、全体で一ヶ月かかっている。それだけ力を入れた。
+
+JRF 2016年1月7日
+
+……。
+
+「渾身」という表記を使ったのは、私が大学院で道に迷うことになった因縁の証明群であるからでもある。
+
+JRF 2016年1月7日
+
+私の大学での研究室、いわゆる「ゼミ」は、Intelligent Pad という GUI に関する研究と、論理や計算量や学習の理論の研究とを両立していて、前者を教授が、後者を助教授がサポートしていた。私は最初は GUI の研究を望んだのだけど、他になり手がいなかったので、後者のロジックの研究に従事し、そうしながら GUI の研究の道を探ることにした。
+
+JRF 2016年1月7日
+
+そのとき、このシステムを使ってはどうかと勧められたのが定理証明システムの Isabelle。これと、GUI をどう組み合わせるかは自由という感じだった。
+
+JRF 2016年1月7日
+
+しかし、考えてみて、定理証明システムの GUI 化というのはとても難しいことがわかってきた。特定の証明を graphical にすることはできるかもしれない。しかし、一般の定理証明をどう Intelligent Pad のオブジェクト指向に落とし込んでいくかというところで、つまづいてしまった。
+
+JRF 2016年1月7日
+
+私は、そうした苦しみの中、定理証明システムを使っていく上で、graphical な概念、intuitive な概念としての「出現」に注目することになる。「出現」は graphical な概念であるということ、「出現」を様々な datatype に関してほぼ自動的に定義できるようにするというのがオブジェクト指向流のパッケージ化の方向であるということ、と無理矢理こじつけて、GUI ではまったくないが、GUI にすり寄ったつもりでいた。
+
+JRF 2016年1月7日
+
+しかし、その考えは、教授にも助教授にも理解されなかった。それで道に迷って、一応、修士(相当)として修了したものの、研究室に席を置いてもらうことになった。しかし、そこでドロップアウトしてしまって、現在の「何者でもない・仕事もしない」私に致ることになる。
+
+JRF 2016年1月7日
+
+でも、私はこの証明によって、何事かは成し遂げたつもりだった。渾身の力作だった。でも、何年たっても、そこから何かを続けることはできなかった。
+
+今回、再び向き合ってみたが、頭が柔らかかったあのころでもできなかった「続き」が、この先できるとは思えなかった。無意味なことをしていると思いつつ、それでも再証明を続けた。私も「無意味」と認めてる。でも、私が生きた証としてどこかに残っていて欲しい。そういううらみがある作である。
+
+JRF 2016年1月7日
+
+……。
+
+この先、どうすればいいか見えない。
+
+JRF 2016年1月7日
+
+母などに相談すると「介護」の職を目指してはどうかという話も出る。でも、私は、福祉就労みたいなものからはじめないと雇ってくれるところもないはずの情けない境遇なので、福祉就労に「介護」があれば考えようかといったところ。
+
+JRF 2016年1月7日
+
+それ以外、プログラミングも数学も予定はない。しばらくは見たくない気もする。読書は、以前読んだはずのものを再読するという手はあるかもしれない。
+
+JRF 2016年1月7日
+
+近々、精神科の先生のところに診察に行くので少し相談したい。
+
+JRF 2016年1月7日
+
+Trackbacks:
+
+《cocolog:84701441》 from JRF のひとこと
+<a href="../../../articles/2016/03/statuses_cocolog_84701441.html" class="int-link" title="ひとこと">http://jrf.cocolog-nifty.com/statuses/2016/03/amazo.html</a>
+
+Amazon Kindle で道徳本『道を語り解く』と短編小説集『エアロダイバー　他五篇』を発売する手続きをした。2016年3月11日に発売日を設定して、今、予約注文がいちおうできるようになっている。... 
+
+受信： 2016-03-29 17:06:03 (JST)
+
+《cocolog:84354160》 from JRF のひとこと
+<a href="../../../articles/2016/01/statuses_cocolog_84354160.html" class="int-link" title="ひとこと">http://jrf.cocolog-nifty.com/statuses/2016/01/post-c463.html</a>
+
+ジャン・マルテーユ著『ガレー船徒刑囚の回想』を読んだ。壮絶。「生存者バイアス」という言葉が頭に浮かぶ。こういう人生を生きねばならない人が今もいるのかもしれないと思うと身の毛もよだつ。... 
+
+受信： 2016-03-29 18:38:01 (JST)</pre>
+
+
+<section class="backrefs" data-pagefind-ignore>
+<h2>後方参照 (3 件)</h2>
+<ul>
+<li><span class="backref-label">[cocolog:84331614]参照</span> <a href="../../../articles/2016/03/statuses_cocolog_84701441.html">ひとこと</a> <span class="backref-date">2016年03月03日</span></li>
+<li><span class="backref-label">[cocolog:84331614]参照</span> <a href="../../../articles/2016/01/statuses_cocolog_84354160.html">ひとこと</a> <span class="backref-date">2016年01月10日</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2015/12/statuses_cocolog_84212598.html">ひとこと</a> <span class="backref-date">2015年12月24日</span></li>
+</ul>
+</section>
+
+</article>
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2016/01.html">2016年01月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+</body>
+</html>

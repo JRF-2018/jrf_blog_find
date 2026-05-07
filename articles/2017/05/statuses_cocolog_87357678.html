@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>ひとこと - JRF Blog Archive</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2017/05.html">2017年05月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+<article data-pagefind-body>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[statuses] <span class="cocolog-id">cocolog:87357678</span></td></tr>
+<tr><th>セクション</th><td>JRF のひとこと</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2017/05.html">2017年05月08日</a></td></tr>
+<tr><th>元URL</th><td><a href="http://jrf.cocolog-nifty.com/statuses/2017/05/windo.html" class="ext-link"><span class="original-url">http://jrf.cocolog-nifty.com/statuses/2017/05/windo.html</span></a></td></tr>
+
+</table>
+</div>
+<h1>ひとこと</h1>
+<pre class="body">Windows 10 で IME なしの日本語キーボードを追加する方法がどうやらなくなっているらしい。そのため、Emacs で quail-naggy.el を使うには、DIFE.exe がほぼ必須のようだ。
+JRF 2017年5月8日
+
+Windows 用の Emacs (例えばバージョン 25.2) で IME を用いず、leim (quail や skk) を使いたいとき、Emacs の中途半端な IME や TSF の実装が邪魔になる。特に私の作っている quail-naggy.el では、カタカナ確定の「変換」キーがらみでおかしな動作をしてしまう。この悩みは gnupack や NTEmacs では解決できない。
+
+JRF 2017年5月8日
+
+Windows 7 では↓の引用のような対策が取れた。
+
+《quail-naggy.el: 単漢字変換 Input Method for Emacs》
+<a href="../../../articles/2015/10/software_83641133.html" class="int-link" title="quail-naggy.el: 単漢字変換 Input Method for Emacs.">http://jrf.cocolog-nifty.com/software/2015/10/post.html</a>
+
+JRF 2017年5月8日
+
+＞gnupack の Emacs で、Windows の日本語 IME を『風』ではなく、 Windows 標準の Microsoft IME を使っていると、「変換」キーでカタカナ変換をしたあと、変換モードに入ってしまう。これを避けるには、私が標準的でないと思っている、S-tab でカタカナ変換しないといけない。
+
+JRF 2017年5月8日
+
+(…)
+
+これを避けるもう一つの方法は、IME のツールバーを右クリックで出てくる設定において、追加として日本語キーボードに(Microsoft IME でなく)単なる「日本語」と書かれたものも選択しておき、shift+control などで選んで、その Microsoft IME でない、日本語キーボードを使うというものである。
+＜
+
+JRF 2017年5月8日
+
+ところが、Windows10 だと、［スタート］→［時刻と言語］→［地域と言語］→［日本語 の オプション］ で、［キーボードの追加］をしようとして選択肢を見ても IME なしの日本語キーボードがない。英語キーボードとかだと、キーの位置が変わってしまい、そもそも「漢字」キーが使えなくなる。
+
+JRF 2017年5月8日
+
+……。
+
+そこで、必要になってくるのが、Emacs での IME の起動を外から強制的に OFF にする DIFE.exe (Disable IME for Emacs)。
+
+↓で私はまず知ったが、
+
+《GNU emacs で Windows のIMEを無効にする ハードなソフトの話/ウェブリブログ》
+<a href="http://hardsoft.at.webry.info/201203/article_2.html" class="ext-link">http://hardsoft.at.webry.info/201203/article_2.html</a>
+
+JRF 2017年5月8日
+
+結局、↓から取得する。
+
+《Disable Ime For Emacs》
+<a href="https://www.emacswiki.org/emacs/DisableImeForEmacs" class="ext-link">https://www.emacswiki.org/emacs/DisableImeForEmacs</a>
+
+そこの Emacs 23 用と書かれている DIFE-DisableIMEforEmacs-r1-bin.zip を取って来れば良い。Emacs 25.2 でも使えた。
+
+JRF 2017年5月8日
+
+そこのページに書いてるように Emacs を起動させるときに、DIFE.exe も起動するようにすれば良いのだが、Emacs を終了したあとも DIFE は常駐したままになる。ところが、Emacs を再起動したときは、DIFE は二重起動が抑制される上に、再起動した Emacs はフックされないらしく Disable IME が有効にならない。よって、Emacs を再起動するときは、DIFE もタスクバーのアイコンから終了するようにしないといけないようだ。
+
+JRF 2017年5月8日
+
+なお、DIFE.exe のインストーラはなく、runemacs.exe のあるディレクトリにでも EmacsHooker.dll とともにインストールすればいいのだが、Windows 10 そのままだと、実行しようとしても MFC71.dll と MSVCR71.dll がないと言われて実行できない。今、検索すると、MSVCR71.dll のほうは簡単に見つかるが、MFC71.dll のほうは簡単に見つからない。
+
+JRF 2017年5月8日
+
+MFC71.dll は「Microsoft .NET Framework Version 1.1 再頒布可能パッケージ」で入れれば良いという情報があるが、Windows 10 ではそれを使ってもうまくいかないようだった。結局、ライセンスの都合からか、そうとははっきり書いていない↓を使うのが便利だった。
+
+《VC++ .NET ランタイムインストーラーの詳細情報 : Vector ソフトを探す！》
+<a href="http://www.vector.co.jp/soft/win95/util/se353331.html" class="ext-link">http://www.vector.co.jp/soft/win95/util/se353331.html</a>
+
+JRF 2017年5月8日
+
+(なお、これには MFC70.dll もついてくるようだ。)
+
+JRF 2017年5月8日
+
+……。
+
+…と、この段階で、(ActivePerl か Cygwin Perl と Unicode::Japanese をインストールして、適宜設定していれば) quail-naggy.el はいちおう使えるようになるはずだ。ただし、フォントの関係で、候補表示がどうしてもズレてしまう。
+
+JRF 2017年5月8日
+
+これをまともにするにはフォントを別のにするしかない。
+
+↓を参考にして…
+
+《Windows の Emacs で Myrica フォント(等幅)を使う - Qiita》
+<a href="http://qiita.com/ybiquitous/items/5b319a62e9260b65bab0" class="ext-link">http://qiita.com/ybiquitous/items/5b319a62e9260b65bab0</a>
+＞↓の設定を追加。
+
+(add-to-list 'default-frame-alist '(font . &quot;Myrica M&quot;))
+＜
+
+JRF 2017年5月8日
+
+↓のフォントをインストール。フォントのインストールはエクスプローラで ttc ファイルを右クリックしたメニューの中にあるインストールを選べば良い。
+
+《プログラミングフォント Myrica / Estable | Myrica （ミリカ）は、フリーなプログラミング用 TrueType フォントです。》
+<a href="https://myrica.estable.jp/" class="ext-link">https://myrica.estable.jp/</a>
+
+JRF 2017年5月8日
+
+このフォントにすると、quail-naggy.el の以下の設定は 25.2 ではいらなくなった。(24.5 ではこのフォントでも必要だった。)
+
+&lt;pre&gt;
+(if (&gt;= (string-to-number emacs-version) 24.5)
+    (progn 
+      (setq naggy-vk-split-window-length 7)
+      (setq naggy-vk-frame-length 7)))
+&lt;/pre&gt;
+
+JRF 2017年5月8日
+
+……。
+
+Windows 10 は後方互換性もあって広く使われているようだが、私には今一つな要素が多い。父の Windows 7 から Windows 10 に「強制的に」アップデートされたマシンを譲り受けて使っているのだが、バルーンティップが表示されなかったり、DDwin がうまくインストールできなかったり問題が多い。問題といかなくても、IME なしの日本語キーボードがなかったり、スタートメニューに項目の追加が難しくなっていたりして不満点も多い。
+
+JRF 2017年5月8日
+
+Microsoft は本当にこの OS で利を得ているのだろうか？ ちゃんとユーザーの意見はブロックされずに届いているのだろうか？ なぜ、この OS に関する訴訟のニュースを聞くことがないのか、私は不思議に思う。(私がニュースを得ているスラドにマイクロソフトが出資してるから？)
+
+JRF 2017年5月8日
+
+……。
+
+……。
+
+追記。
+
+MS Windows では DIFE.exe を使うのに対し、X Window の場合は、~/.Xresources に次のような設定をすればいいらしい。
+
+&lt;pre&gt;
+Emacs.useXIM: off
+&lt;/pre&gt;
+
+JRF 2017年5月17日
+
+これは↓に書かれた方法。
+
+《Input Methods - EmacsWiki》
+<a href="https://www.emacswiki.org/emacs/InputMethods" class="ext-link">https://www.emacswiki.org/emacs/InputMethods</a>
+
+JRF 2017年5月17日
+
+ただし、他によると
+
+&lt;pre&gt;
+Emacs*useXIM: false
+&lt;/pre&gt;
+
+と書くべきだが、どうもそれが読み込まれない環境があるらしく、
+
+&lt;pre&gt;
+Emacs24*useXIM: false
+&lt;/pre&gt;
+
+と書いたり、emacs を起動するとき、
+
+&lt;pre&gt;
+$ XMODIFIERS=@im=none emacs
+&lt;/pre&gt;
+
+…とすればいいみたい。
+
+JRF 2017年5月17日
+
+でも、この辺り、MS Windows でも X Window でも問題になってるみたいだから、.emacs から設定できるようにしてくれたらいいのに…と思う。
+
+JRF 2017年5月17日
+
+……。
+
+……。
+
+追記。
+
+等幅の Myrica フォントを使うと、その全角・半角が、Emacs で全角か半角かを調べる char-width の結果と異なるため、例えば quail-naggy.el の候補ウィンドウで表示がズレてしまう。
+
+JRF 2017年7月7日
+
+↓を使うと罫線などはちゃんと表示されるようになる。
+
+《GitHub - hamano/locale-eaw: East Asian Ambiguous Width問題と絵文字の横幅問題の修正ロケール》
+<a href="https://github.com/hamano/locale-eaw" class="ext-link">https://github.com/hamano/locale-eaw</a>
+＞
+(require 'eaw)
+(eaw-fullwidth)
+＜
+
+JRF 2017年7月7日
+
+が、アクセント付きアルファベットについては、これでも直らない。これらについては、Myrica フォントが全角にしてしまうのが行儀よくない気もする。
+
+いや、JIS X 0213 にはアクセント付きアルファベットがあり、それは全角で表示してほしい向きもあるかもしれない。そうだとすると eaw.el がそれらに(一部しか)対応してないほうが問題なのか…。
+
+あちらを立てればこちらが立たず…という感じ。
+
+JRF 2017年7月7日
+
+……。
+
+……。
+
+追記。
+
+Windows 10 のアップデートのせいなのか、ウィルス駆除ソフトのせいなのか、判然としないが、DIFE.exe が emacs26.1 で動かなくなっていた。
+
+しかたなく、私は、Microsoft IME の設定をいじって対応することにした。問題になるのは「変換」キーだけのようなので、そのキー入力を無効化してしまう。
+
+JRF 2018年12月22日
+
+具体的には、Windows 10 のタスクバーの「あ」と書いてるところを右クリックして「プロパティ」を選び、そこで「詳細設定」を選ぶと、「Microsft IME の詳細設定」のウィンドウが開く。そこで、「全般」→「編集操作」→「キー設定」→「変更」で、「変換」キーの最初のところを「-」(何もしない)にすればよい。
+
+必要なら「SHIFT+変換」キーを「再変換」に割り当てる(元々「変換」キーに割り当たっていた機能)。
+
+JRF 2018年12月22日
+
+当然、他のソフトも影響するが、メインの日本語入力が私は Emacs なので、しかたなくそうしている。
+JRF 2018年12月22日
+
+……。
+
+追記。
+
+DIFE.exe が emacs26.1 で動かないと書いたが、それは私が 64bit 版 Emacs をインストールしたからだった。DIFE のページによると、64bit 版では DIFE.exe が動かないのは仕様のようだ。
+
+今後、32bit 版の扱いがどうなるか不安だ。せっかく GNU ftp の emacs を使っているのに、他からしか 32bit 版が手に入らないのなら意義が損われる。まぁ、そういう未来には DIFE ももしかするとバージョンアップされて 64bit 版に対応することがあるかもしれない。
+
+JRF 2018年12月28日
+
+どう転ぶかわからないが、先に書いた「変換」キーを「-」にするという方法なら今後も通じるだろう。…と思いたい。
+
+JRF 2018年12月28日
+
+Trackbacks:
+
+《cocolog:87451120》 from JRF のひとこと
+<a href="../../../articles/2017/05/statuses_cocolog_87451120.html" class="int-link" title="ひとこと">http://jrf.cocolog-nifty.com/statuses/2017/05/quail.html</a>
+
+quail-naggy.el と jrf_semaphore.pl をほんの少しアップデートした。バグ修正のみ。 
+
+受信： 2017-06-28 19:14:22 (JST)
+
+《cocolog:87731566》 from JRF のひとこと
+<a href="../../../articles/2017/07/statuses_cocolog_87731566.html" class="int-link" title="ひとこと">http://jrf.cocolog-nifty.com/statuses/2017/07/quail.html</a>
+
+quail-naggy.el をアップデートした。バージョン 0.09。ほんの少しのバグ取りと、罫線がらみのほとんど意味のない変更。 
+
+受信： 2017-09-30 06:56:45 (JST)</pre>
+
+
+<section class="backrefs" data-pagefind-ignore>
+<h2>後方参照 (3 件)</h2>
+<ul>
+<li><span class="backref-label">[cocolog:87357678]参照</span> <a href="../../../articles/2017/07/statuses_cocolog_87731566.html">ひとこと</a> <span class="backref-date">2017年07月13日</span></li>
+<li><span class="backref-label">[cocolog:87357678]参照</span> <a href="../../../articles/2017/05/statuses_cocolog_87451120.html">ひとこと</a> <span class="backref-date">2017年05月23日</span></li>
+<li><span class="backref-label">[cocolog:87357678]参照</span> <a href="../../../articles/2015/10/software_83641133.html">quail-naggy.el: 単漢字変換 Input Method for Emacs.</a> <span class="backref-date">2015年10月16日 20:05:48</span></li>
+</ul>
+</section>
+
+</article>
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2017/05.html">2017年05月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+</body>
+</html>

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>共有メモ - JRF Blog Archive</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2021/04.html">2021年04月</a> | <a href="../../../index/gsm.html">共有メモ</a></nav>
+<article data-pagefind-body>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[gsm] 2021-04-26T00:01:32Z</td></tr>
+<tr><th>セクション</th><td>グローバル共有メモ</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2021/04.html">2021-04-26T00:01:32Z</a></td></tr>
+<tr><th>元URL</th><td>(URLなし)</td></tr>
+
+</table>
+</div>
+<h1>共有メモ</h1>
+<pre class="body">jrf&gt; [仏教の最適化プログラムの続き。]
+
+信仰心は「信仰理解」(faith realization)と呼ぶことにして、1.0 を最大値に、ただし、寄進は 0.5 で最大とするか。
+
+蛮族の侵入(Barbarian invasion) と その他の災害 (disaster) を分け、両者を総称して惨禍(calamity) と呼ぶことにする。日本語や英語のもともとにそんな区別はないようだが、ここではそう区別することにする。
+
+「人望」は普通、popularity と訳すようだが、これは「人気」という意味もあり、どうも語感がそぐわない。そこで「人望」は people's trust …変数名にするには 's を取って people_trust とすることにする。
+
+……。
+
+「反逆」の実装。家系的な hating を重視しようということだった。
+
+家系を辿って家系的恨みを設定する。「王・知事」に恨みがある者と「王・知事」のどちらに家系的距離が近いかを測り、「王・知事」より距離の近い者で、最大のそれらへの hating を持つ者の値を hating_to_king または hating_to_governor に設定する。
+
+その上で、「王・知事」からの慰撫として、soothing_by_king, soothing_by_governor を用意し、良いことがあるとこの値が増え、hating を打ち消すことがあるとする。あくまでも hating がある場合に打ち消すのが目的なので、hating 以上の値にはならないものとする。hating が高くなれば、必ず前からある soothing では足らなくなり、再度の慰撫が必要になるようにする。その一方、冷遇された場合は、マイナスの soothing は起こりうるとする。
+
+…と今のところはこんな感じにしようか…と。</pre>
+
+
+</article>
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2021/04.html">2021年04月</a> | <a href="../../../index/gsm.html">共有メモ</a></nav>
+</body>
+</html>

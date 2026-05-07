@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>ひとこと - JRF Blog Archive</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2024/01.html">2024年01月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+<article data-pagefind-body>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[statuses] <span class="cocolog-id">cocolog:94609126</span></td></tr>
+<tr><th>セクション</th><td>JRF のひとこと</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2024/01.html">2024年01月05日</a></td></tr>
+<tr><th>元URL</th><td><a href="http://jrf.cocolog-nifty.com/statuses/2024/01/post-8137e9.html" class="ext-link"><span class="original-url">http://jrf.cocolog-nifty.com/statuses/2024/01/post-8137e9.html</span></a></td></tr>
+
+</table>
+</div>
+<h1>ひとこと</h1>
+<pre class="body">EPUB電子書籍『宗教学雑考集 易理・始源論・神義論』アーリーアクセス版を Booth にて発売しました。力作ではあるのですが、あまり素人受けを狙っていないので、その辺はご容赦ください。このページでは、作業で使ったツール＆スクリプトを紹介します。
+JRF 2024年1月5日
+
+《宗教学雑考集 易理・始源論・神義論 - ジルパのおみせ - BOOTH》  
+<a href="https://j-rockford.booth.pm/items/5358889" class="ext-link">https://j-rockford.booth.pm/items/5358889</a>
+
+現在は、アーリーアクセス版で、第0.8版になります。900円です。
+
+JRF 2024年1月5日
+
+半年後から一年後までをメドに、この後、本をいろいろ読んでブラッシュアップしたものを正式版として出す予定です。正式版は、Amazon と KOBO でも出す予定ですが、DRM 有りになるので価格を BOOTH 版より安く(700円ぐらい？)設定します。
+
+この BOOTH のアーリーアクセス版を買っていただければ、正式版が出たときに BOOTH 版の正式版も同じところからダウンロードできるようにする予定です。ただ、あくまで予定ですので、そのときにならないとわからない部分もあります。
+
+JRF 2024年1月5日
+
+ある程度売れたら値上げしようと思っています。値上げがいつまでもないようでしたら、「あ、売れてないんだな」とお察し下さい。
+
+本の概要等は、上の Booth のページから見てください。
+
+JRF 2024年1月5日
+
+……。
+
+キャンペーンとして、フォロワーの宗教者・宗教学者などに献本します。また、引用・言及した本の出版社にも献本します。また、Twitter (X) で、URL をクリックした先着3名に献本します。また、同じく Twitter (X) でそれとは別に DM をしてくれた方、先着10名に献本します。
+
+献本は、Booth のギフト機能を使って行います。ですから、こちらにはお金はかかりません。なお、1ヶ月たっても受取りがない場合は、Booth の機能で「回収」します。それ以降は受け取ってダウンロードすることができなくなりますので、ご注意ください。
+
+JRF 2024年1月5日
+
+……。
+
+ここから先は、今回の作業で使ったツール＆スクリプトの紹介です。
+
+EPUB の作成には、Sigil 2.0.2 を使いました。そこに使う html の生成は、テキストファイルをまずエディットし、自作の Perl スクリプトで html にしました。
+
+Sigil で使う CSS は、上の Booth のページの試用版の .epub を Sigil で開けば見れます。ご自身で使ときは、メタデータを変更し、目次を生成し、カバーを変更し表紙に設定するのを忘れないでください。
+
+JRF 2024年1月5日
+
+……。
+
+Section0001.xhtml の生成は、次のようにして行きます。
+
+次の GitHub Gist に行くと、txt2epubhtml.pl と sample.txt と gen_sample.pl が手に入ります。
+
+《『宗教学雑考集』第0.8版で使ったスクリプト - GitHub Gist》  
+<a href="https://gist.github.com/JRF-2018/5c83647696a78467ebb4c2cf511f527d" class="ext-link">https://gist.github.com/JRF-2018/5c83647696a78467ebb4c2cf511f527d</a>
+
+JRF 2024年1月5日
+
+まず sample.txt をエディットします。そして、次のコマンドを実行すると、Section0001.xhtml が生成されます。
+
+perl txt2epubhtml.pl sample.txt -o Section0001.xhtml
+
+できた Section0001.xhtml を先の Sigil で開いた .epub の Sectioni0001.xhtml にコピペして目次を生成し保存すれば完成です。
+
+JRF 2024年1月5日
+
+実際のエディットは sample.txt ではなく main.txt というものにしていきます。
+
+main.txt だと、上記コマンドは、
+
+perl txt2epubhtml.pl
+
+だけで OK です。ただし、参照で警告を出さないようにしたりするのは、Perl スクリプトにベタ書きで指定しているので、他の本を作る際は、Perl の知識も多少必要です。
+
+JRF 2024年1月5日
+
+ここから sample.txt を生成するには、
+
+perl gen_sample.pl main.txt -o sample.txt
+
+…としてください。
+
+ただ、どの節を含めるかなどは、gen_sample.pl にベタ書きしているので、やはり少しは Perl の知識が必要です。
+
+Perl スクリプトは MIT License にしています。自由にエディットして使ってください。
+
+JRF 2024年1月5日
+
+……。
+
+テキストの表記法は sample.txt をご参照いただくのが一番わかりやすいと思いますがいちおう説明します。
+
+まず、ルビは 漢字［かんじ］ などとして指定します。ただし ［］ はこのサイトの都合上全角になっていますが、半角にしてください。少し複雑はルビは {{ruby:漢字:ルビ}} のように書くこともできます。
+
+JRF 2024年1月5日
+
+章(chapter) は、
+
+X. 新たな章 (略称, 日付)
+
+…といった具合に X. を付けて開始します。略称の部分を付けないと、その章は無視されます。わざと無視される章を作ってメモとして使うと便利です。
+
+節(section) は、
+
+  ** セクション
+
+サブセクションは、
+
+  * サブセクション
+
+…というようにはじめます。
+
+JRF 2024年1月5日
+
+章や節は参照ができます。章の参照は {{chapter:略称}} で行います。節の参照は 《セクション》 のように行います。節の参照には自動的に章の参照が付きます。章の参照を禁じたい場合は 《nc:セクション》 とします。なお セクション が「セクション - サブタイトル」という形式の場合、《セクション》だけでも参照できます。
+
+JRF 2024年1月5日
+
+引用は
+
+&lt;quote&gt;
+引用〜
+&lt;/quote&gt;
+
+…とします。
+
+ちょっと浮いた文にしたいときは
+
+&lt;display&gt;
+文
+&lt;/display&gt;
+
+…とします。
+
+ol や ul タグに相当するリストなどは簡易にしか対応していません。
+
+&lt;list&gt;
+● つらつら
+
+2. つらつら
+
+&lt;/list&gt;
+
+…などとします。
+
+JRF 2024年1月5日
+
+pre タグにも(簡易的に)対応しています。
+
+&lt;b&gt;強調&lt;/b&gt; も使えます。
+
+&lt;comment&gt;
+文
+&lt;/comment&gt;
+
+…で、文をコメントアウトできます。
+
+タグのネストはできません。
+
+{{XXX.png}}
+
+…のように .png を指定すると、そこにイメージが表示されます。ただし、その .png は epub の Images ディレクトリにないといけません。
+
+「 -- 」は、emダッシュ×2「——」に変換されます。
+
+JRF 2024年1月5日
+
+なお、半角数字の表記法がほぼ決まっています。詳述しませんが、警告が表示されるのでそれを参考に直してください。ここも Perl の知識があって、警告をコントロールするのが吉です。
+
+JRF 2024年1月5日
+
+……。
+
+参考文献は、「参考文献」という章を作り、本は…、
+
+『参考文献』(著者名, 出版社, 年月日)
+<a href="https://amazon.〜" class="ext-link">https://amazon.〜</a>
+<a href="https://7net.〜" class="ext-link">https://7net.〜</a>
+
+…などと指定します。URL は amazon や 7net ぐらいしか使えないようにわざとしています。他のサイトを足したいときは Perl スクリプトをいじってください。
+
+JRF 2024年1月5日
+
+一般のネットサイトは、
+
+《サイト》  
+<a href="https://〜" class="ext-link">https://〜</a>
+
+…というふうに指定します。
+
+参照するとき 《サイト - サブタイトル》 や 『参考文献 - サブタイトル』という形式は、《サイト》または『参考文献』だけでも参照できます。
+
+JRF 2024年1月5日</pre>
+
+
+<section class="backrefs" data-pagefind-ignore>
+<h2>後方参照 (3 件)</h2>
+<ul>
+<li><span class="backref-label">[cocolog:94609126]参照</span> <a href="../../../articles/2025/03/statuses_cocolog_95320013.html">ひとこと</a> <span class="backref-date">2025年03月11日</span></li>
+<li><span class="backref-label">[cocolog:94609126]参照</span> <a href="../../../articles/2024/09/statuses_cocolog_95034059.html">ひとこと</a> <span class="backref-date">2024年09月04日</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2024/01/gsm_005155.html">共有メモ</a> <span class="backref-date">2024-01-04T16:13:35Z</span></li>
+</ul>
+</section>
+
+</article>
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2024/01.html">2024年01月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+</body>
+</html>

@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>ひとこと - JRF Blog Archive</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2015/11.html">2015年11月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+<article data-pagefind-body>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[statuses] <span class="cocolog-id">cocolog:84021412</span></td></tr>
+<tr><th>セクション</th><td>JRF のひとこと</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2015/11.html">2015年11月30日</a></td></tr>
+<tr><th>元URL</th><td><a href="http://jrf.cocolog-nifty.com/statuses/2015/11/t-ni.html" class="ext-link"><span class="original-url">http://jrf.cocolog-nifty.com/statuses/2015/11/t-ni.html</span></a></td></tr>
+
+</table>
+</div>
+<h1>ひとこと</h1>
+<pre class="body">T. Nipkow &amp; L. C. Paulson &amp; M. Wenzel 『Isabelle/HOL』を読んだ。2002年に出た本で、前回 <a href="../../../articles/2015/11/statuses_cocolog_83987064.html" class="int-link cocolog-id" title="ひとこと">[cocolog:83987064]</a> で読んだ Isabelle2015 の tutorial.pdf の古いバージョンにあたる。
+JRF 2015年11月30日
+
+『Isabelle/HOL』(T. Nipkow &amp; L. C. Paulson &amp; M. Wenzel 著, Springer LNCS 2283, 2002年)
+<a href="http://www.amazon.co.jp/dp/3540433767" class="ext-link">http://www.amazon.co.jp/dp/3540433767</a>
+
+JRF 2015年11月30日
+
+ずっと気になってて、Amazon の欲しい物リストに登録していて、2009年についに買ったんだけど、今になるまで読まなかった。
+
+前回、tutorial.pdf を読んで、この本を読むと、どうもこの本は tutorial.pdf の古いバージョンであることがわかった。
+
+だいたい同じ内容ではあるが、この先、Isabelle を「使う」ことを考えれば、２回読んどくのも悪くなかろう…もったいないし…ということで今回、読んだ。
+
+JRF 2015年11月30日
+
+……。
+
+Isabelle2015 の tutorial.pdf とこの本ではこの表記が少しずつ変わっている他、大枠は同じだった。
+
+JRF 2015年11月30日
+
+ただ、終了性(termination)を証明しながら使う recdef という関数定義が、そんな難しいことを必要としない fun に変わって載っていて、その部分が機能的に欠落しているという印象を受けた。
+
+JRF 2015年11月30日
+
+また、type class の例が、新しいほうは群論で structured Isar proof を使っていたが、古いほうは、順序理論で apply ... done 形式の証明だった。順序理論はいずれやりたいと思っていたので、「やっぱり」先にやられていたなという印象を持った。でも、type class みたいなことは ZF 上ではどうやるんだろう…という疑問は残った。
+
+JRF 2015年11月30日
+
+大きな違いは、ほんと、それぐらいだと思う。あと新しいほうには Find Theorem の方法等の関連も載っていたぐらいか。
+
+その割には読むのに時間がかかった。tutorial.pdf のほうをちゃんと読めてなかったということだと思う。
+
+JRF 2015年11月30日
+
+……。
+
+以前やったラムダ計算のα同値の関する証明を見ると、tactic だけでなく tactical もかなり使っていて、それは現在の Isabelle/Isar では対応していないようだ。複数の定理を変数にまとめるようなこともしているので、その扱いをどうするかも考えないといけない。もし、Isabelle2015 に以前の証明を対応させようとすればの話だが。でも、それはとても面倒くさい。はっきりいってやる気が起きない。
+
+JRF 2015年11月30日
+
+コンピュータ上で証明しなかったが、Barendregt のαの定義(↓)でも OK だと手書きのノート上では考えていた(そのノートは今見つからない)。でも、今、Barendregt の定義の書き方を見ると以前持っていた印象と違ってとまどう。その証明もしたいというのが心に引っかかってることだったのだが。
+
+JRF 2015年11月30日
+
+『The Lambda Calculus, Its Syntax and Semantics』(H. P. Barendregt 著, North Holland, 1985年)
+<a href="http://www.amazon.com/dp/0444875085" class="ext-link">http://www.amazon.com/dp/0444875085</a>
+
+
+
+JRF 2015年12月1日
+
+typo 「Barendregt のαの定義」→「Barendregt のα同値の定義」。
+
+JRF 2015年12月2日
+
+Trackbacks:
+
+《cocolog:84149980》 from JRF のひとこと
+<a href="../../../articles/2015/12/statuses_cocolog_84149980.html" class="int-link" title="ひとこと">http://jrf.cocolog-nifty.com/statuses/2015/12/isabe.html</a>
+
+Isabelle で過去にやった証明を再度証明している。Isabelle の simplifier をうまく働かすことができなくて、辛い。また、最近、寝ているというか横になってる時間がちょっと言えないほど長くなっている。... 
+
+受信： 2015-12-29 13:53:39 (JST)</pre>
+
+
+<section class="backrefs" data-pagefind-ignore>
+<h2>後方参照 (2 件)</h2>
+<ul>
+<li><span class="backref-label">[cocolog:84021412]参照</span> <a href="../../../articles/2015/12/statuses_cocolog_84149980.html">ひとこと</a> <span class="backref-date">2015年12月16日</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2015/11/statuses_cocolog_83987064.html">ひとこと</a> <span class="backref-date">2015年11月26日</span></li>
+</ul>
+</section>
+
+</article>
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2015/11.html">2015年11月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+</body>
+</html>

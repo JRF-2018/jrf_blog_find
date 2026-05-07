@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>ひとこと - JRF Blog Archive</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2011/05.html">2011年05月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+<article data-pagefind-body>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[statuses] <span class="cocolog-id">aboutme:138721</span></td></tr>
+<tr><th>セクション</th><td>JRF のひとこと</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2011/05.html">2011年05月11日</a></td></tr>
+<tr><th>元URL</th><td><a href="http://jrf.cocolog-nifty.com/statuses/2011/05/aboutme138721.html" class="ext-link"><span class="original-url">http://jrf.cocolog-nifty.com/statuses/2011/05/aboutme138721.html</span></a></td></tr>
+
+</table>
+</div>
+<h1>ひとこと</h1>
+<pre class="body">JavaScript で、読み込んだ二つのソースの間(inter-script)で安全に関数を渡す(delegation)の方法を考えていたのだが、現行のバージョンである限り、できなさそうだった。
+JRF 2011年5月11日
+
+↓のコードで inter-script delegation があればいいなってことになって実験していた。
+
+《電子署名の替わりに Loaded Magic》
+<a href="../../../articles/2011/05/software_68180670.html" class="int-link" title="電子署名の替わりに Loaded Magic">http://jrf.cocolog-nifty.com/software/2011/05/post.html</a>
+
+JRF 2011年5月11日
+
+二つのソースの認証みたいなののは、(function (){  ...ここにソース... })() で隠蔽化したところで共有鍵を持っておき、sha1 とかのハッシュを取ったメッセージをやり取りすればいいだろう…というところまでは簡単だが、問題は、delegation 関数の「乗っ取り」。
+
+JRF 2011年5月11日
+
+隠蔽化したとき、別のソースで使える関数は、「グローバル変数」に代入しておくしか受け渡しの方法がないようだが、当然、変数なので、そこに別の値がセットされることも置きうる。
+
+だから、↓に似た感じで、中に入って途中の処理を偽装しながら細工するというのに、弱くなる。
+
+《ICカードの迷信をバカにできるほど端末管理できてる？》
+<a href="../../../articles/2006/04/column_11076503.html" class="int-link" title="ICカードの迷信をバカにできるほど端末管理できてる？">http://jrf.cocolog-nifty.com/column/2006/04/post_8.html</a>
+
+JRF 2011年5月11日
+
+だから、まぁ、delegation はセキュリティとか認証とかは使わずに、それ以外の部分で、電子署名的ハッシュ利用をし、arguments.calllee.caller もチェックすれば、それで、偽造を防ぐことはだいたいでき
+そうだというところまでは作ってみた。(あくまで私個人はアルゴリズム的には「できてる」と考えた。)
+
+ただ、やっぱり delegation に認証がないのは、後日の侵入チェックなどを考えると苦しい気がする。
+
+JRF 2011年5月11日
+
+要は、読み取り専用書き込み不可の変数ができればいいのだが、JavaScript にはそういうのはなかった。
+
+const, watch, freeze とあったが、どれも対応ブラウザが限られている上に、どれもセキュアじゃない。
+
+const はオブジェクトをそこに入れるのは意味が違うだろうし、watch は誰でも unwatch &amp; watch できるので、watch を使ってないことを知らないのが条件になる。freeze はオブジェクトまるごとなので、window オブジェクトをまるごと freeze できない以上、グローバル変数の書き込みを禁じるようには作用させられない。
+
+JRF 2011年5月11日
+
+ただし、Firefox 4 が対応している ECMA-262 5th edition で導入された Object.defineProperty は、適切に機能すると言えそうである。
+
+《defineProperty - MDC Docs》
+<a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Object/defineProperty" class="ext-link">https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Object/defineProperty</a>
+
+JRF 2011年5月11日
+
+が、↓で書いたように Firefox 4 には私にとってはまだクリティカルなバグが残ってるので、使えていないんだけど。(なぜか、 caller も使えなかったし。)
+
+《昨晩、Firefox 4.0.1 にアップデートしてみたのだが、Greasemonkey との絡みなどで、いろいろ不具合が出たので、とりあえず 3.6.17 に戻した。》
+<a href="http://jrf.aboutme.jp/user_statuses/show/138720" class="ext-link">http://jrf.aboutme.jp/user_statuses/show/138720</a>
+
+JRF 2011年5月11日
+
+typo 「関数を渡す(delegation)の方法」→「関数を渡す(delegation の)方法」。
+typo 「置きうる」→「起きうる」。
+行修正 「だいたいでき\nそうだ」→「だいたいできそうだ」。
+修正 「watch を使ってないことを知らないのが条件」→「watch を使っていることを攻撃者が知らないのが条件」。
+
+JRF 2011年5月11日
+
+Trackbacks:
+
+《aboutme:138720》 from JRF のひとこと
+<a href="../../../articles/2011/05/statuses_aboutme_138720.html" class="int-link" title="ひとこと">http://jrf.cocolog-nifty.com/statuses/2011/05/aboutme138720.html</a>
+
+昨晩、Firefox 4.0.1 にアップデートしてみたのだが、Greasemonkey との絡みなどで、いろいろ不具合が出たので、とりあえず 3.6.17 に戻した。 
+
+受信： 2012-01-04 20:51:09 (JST)</pre>
+
+
+<section class="backrefs" data-pagefind-ignore>
+<h2>後方参照 (1 件)</h2>
+<ul>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2011/05/statuses_aboutme_138720.html">ひとこと</a> <span class="backref-date">2011年05月11日</span></li>
+</ul>
+</section>
+
+</article>
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2011/05.html">2011年05月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+</body>
+</html>

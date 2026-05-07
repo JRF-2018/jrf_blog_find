@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>共有メモ - JRF Blog Archive</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2024/10.html">2024年10月</a> | <a href="../../../index/gsm.html">共有メモ</a></nav>
+<article data-pagefind-body>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[gsm] 2024-10-14T11:13:04Z</td></tr>
+<tr><th>セクション</th><td>グローバル共有メモ</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2024/10.html">2024-10-14T11:13:04Z</a></td></tr>
+<tr><th>元URL</th><td>(URLなし)</td></tr>
+
+</table>
+</div>
+<h1>共有メモ</h1>
+<pre class="body">jrf&gt; 更新: 仮想合成人口個票の簡易な実装。バージョン 0.0.2。
+
+初期データに最低限の家族条件を強制するようにした。ライセンスを MIT License にした。
+
+《JRF-2018/simple_synthetic_population: 仮想合成人口個票の簡易な実装》  
+<a href="https://github.com/JRF-2018/simple_synthetic_population" class="ext-link">https://github.com/JRF-2018/simple_synthetic_population</a>
+
+初期データに最低限の家族条件を強制するため、条件に合わない家族は、世帯主以外の家族の人員を他の家族の人員と共に条件に合うよう入れ換える。
+
+最低限の家族条件とは、親の場合は世帯主より年齢が上、子の場合は世帯主より年齢が下、世帯主の配偶者は 16歳以上。
+
+たったこれだけの条件でも、世帯主の年齢が高過ぎたり低過ぎたりして、すべての家族に最低限の家族条件を適用できない場合がしばしば出てくるようだ。
+
+その場合、初期データまるごと生成しなおすことにした。
+
+あと、ライセンスを MIT License にした。私は Public Domain でいいのだが、もしかすると他の人の特許などが絡むのかもしれず、すると MIT License のほうが便利だろうと判断したから。</pre>
+
+
+</article>
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2024/10.html">2024年10月</a> | <a href="../../../index/gsm.html">共有メモ</a></nav>
+</body>
+</html>

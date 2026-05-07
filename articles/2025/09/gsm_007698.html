@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>共有メモ - JRF Blog Archive</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2025/09.html">2025年09月</a> | <a href="../../../index/gsm.html">共有メモ</a></nav>
+<article data-pagefind-body>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[gsm] 2025-09-23T18:20:43Z</td></tr>
+<tr><th>セクション</th><td>グローバル共有メモ</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2025/09.html">2025-09-23T18:20:43Z</a></td></tr>
+<tr><th>元URL</th><td>(URLなし)</td></tr>
+
+</table>
+</div>
+<h1>共有メモ</h1>
+<pre class="body">jrf&gt; MemoryBanditWorkflow の今後の方向としてはいくつか考えられる。マルチエージェントの方向。read したものを HumanMessage で流す方向。workflow に条件分岐やループを認める方向。…など。
+
+  * マルチエージェントの方向。つまり、タスクキューとデータベースの方向。intra_(memory_)new とか作っていく方向。ただ、intra と web と memory の三種をどう混合検索するか、または企業秘密などを考慮して混合検索はあえてしないか…などを考える必要がある。
+
+  * Recursive Limit などの際に read したものを HumanMessage で流す方向。この先にはバックグラウンドでの要約実行などが控える。read したものを HumanMessage ぐらいならなんとかなるが、これまでの bandits と別に管理するのかなど決めねばならない。さらにその先まで考えるとなると、この辺は特定システムのメモリ実装とかでないと要件を定めにくいのではという気がする。
+
+  * workflow に条件分岐やループを認める方向。experimental_rag_0.0.2.ipynb では、結局 workflow:main を書き換えてそのようなことをやったが、それをもうちょっと「フレームワーク内部」でやる方向は考えられる。条件分岐だけなら、workflow_do の aux_prompt で「〜ならば workflow:1001 を 〜 ならば workflow:1002 を呼んでください」とかやれば今でも実現はできるのだが、確率的バンディットがそれに付いて来ないのをどうするかなど考えるべきことはある。
+
+…など。
+
+いずれの課題も難しく、素人の私にできる範囲を超えている気もする。「私がやるのか？」という気はする。AI さん達が実装するか、若者や専門家が実装すべきなのかはよくわからないが。</pre>
+
+
+</article>
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2025/09.html">2025年09月</a> | <a href="../../../index/gsm.html">共有メモ</a></nav>
+</body>
+</html>

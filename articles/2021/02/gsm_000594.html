@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>共有メモ - JRF Blog Archive</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2021/02.html">2021年02月</a> | <a href="../../../index/gsm.html">共有メモ</a></nav>
+<article data-pagefind-body>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[gsm] 2021-02-06T08:42:14Z</td></tr>
+<tr><th>セクション</th><td>グローバル共有メモ</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2021/02.html">2021-02-06T08:42:14Z</a></td></tr>
+<tr><th>元URL</th><td>(URLなし)</td></tr>
+
+</table>
+</div>
+<h1>共有メモ</h1>
+<pre class="body">jrf&gt; [仏教の最適化プログラムの続き。]
+
+不倫関係のアルゴリズムについて。
+
+不倫の終りは確率的にやってくるとして、子供がいるかいないかを関係させるという話だった。それ以外に、財産スッって落ちぶれたなど、好みじゃなくなったから、別れるというのもありうる話だ。
+
+そこまでして意味があるか疑問だから、私が実装する必要はないんじゃないかという気もチラとするが、やるなら、毎度、大きく好みが変わるのに連動するのはあれだから、初期の好意度を覚えていて、そこからの変化を別れの確率に少し反映させるか。
+
+このときの好意度については、temporal な幸運度は除いた(それを 0 と置いた) adultery_favor の計算をすればいいかな。
+
+……。
+
+不倫の終りは最初ガタっと下げて、あとは一定率で別れていく…みたいなことをこれまで考えてきたが、それだと不倫してる人がだんだん多くなり、最後はすべての人が不倫してる…みたくなってしまうのではと心配するようになった。
+
+そこで、新たな不倫者は従来の不倫者と合わせて二割となるように増やしたあと、人口に対する不倫者の割合が一定(一割)となるように、減らすという処理をすればいい。…と考えなおした。
+
+プログラムで書くと↓ (バージョン 0.0.1) みたいな感じ。
+
+《test_of_reduce_2.py - 不倫の終る確率のテスト》  
+<a href="https://gist.github.com/JRF-2018/dee67ffed33e367bec68cc36e1e663dd" class="ext-link">https://gist.github.com/JRF-2018/dee67ffed33e367bec68cc36e1e663dd</a>
+
+新たな不倫者の 6 割が削られ、残りの 4 割と従来からの不倫者を合わせて、そこからその期の終りの不倫者が全体の 1 割となるように不倫の終りが起こる…としている。不倫の終りを選ぶとき、長く不倫をしているものは選ばれにくくなるようにもしている。
+
+選ばれにくくなっているところの処理に上に書いたような、子供がいるかいないか、落ちぶれたかどうかを反映させるのは難しくないはず。
+
+決定稿ではないが、こんな感じにしようかと…。</pre>
+
+
+</article>
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2021/02.html">2021年02月</a> | <a href="../../../index/gsm.html">共有メモ</a></nav>
+</body>
+</html>

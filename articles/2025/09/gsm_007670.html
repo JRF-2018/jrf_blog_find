@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>共有メモ - JRF Blog Archive</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2025/09.html">2025年09月</a> | <a href="../../../index/gsm.html">共有メモ</a></nav>
+<article data-pagefind-body>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[gsm] 2025-09-19T13:17:33Z</td></tr>
+<tr><th>セクション</th><td>グローバル共有メモ</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2025/09.html">2025-09-19T13:17:33Z</a></td></tr>
+<tr><th>元URL</th><td>(URLなし)</td></tr>
+
+</table>
+</div>
+<h1>共有メモ</h1>
+<pre class="body">jrf&gt; 「MemoryBanditWorkflow を使った RAG の試験実装」を作った。書かせた論文は、「日本の失われたウン十年、何をすれば良かったか」。
+
+《experimental_rag_0.0.1.ipynb - GitHub Gist》  
+<a href="https://gist.github.com/JRF-2018/6d7dda3eaf7743b91bca32037574bfc1" class="ext-link">https://gist.github.com/JRF-2018/6d7dda3eaf7743b91bca32037574bfc1</a>
+
+先に MemoryBanditWorkflow というフレームワークを作った。それは迷路問題の一部として作り始めたが、汎用なものになるようこころがけた。それが実際汎用に使えることを示すために、RAG エージェントを作ってみようというのが今回の試みである。
+
+基本的にはメモリ機能とバンディット機能とワークフロー機能を持っているのが MemoryBanditWorkflow で、今回の物はそれをそのまま使って、RagAgent という子クラスを定義している。
+
+なお、MemoryBanditWorkflow はセマンティックサーチとかを用意するのは、めんどくさかったので、そういうバックエンドはこれまた AI さんに「データベース偽装」をしてもらっている。
+
+ところで、RAG エージェントといえばマルチエージェントを使うのが流行りのようだが、今回の物はリニアに順次、シングルスレッドで実行されていくだけである。マルチエージェントを敷衍するなら asyncio を使ったり、メモリにデータベースを使ったりすべきなのだが、そういうことはできる展望すらない。あくまで MemoryBanditWorkflow で RAG も実装できることを示そうとしたものなので、RAG としての新規性はない。
+
+……。
+
+結論。
+
+Gemini 2.5 Pro さんというコストのかかる遅いモデルを使った。やはり頭がいい者にやらせたかったから。ただ、そのため、最初からやり直す気はなかなか起きず、修正しては load してやり直し…といった感じで最後までやらせた。書かせた論文は、「日本の失われたウン十年、何をすれば良かったか」。
+
+すんなり最後までいくかは運の要素があるようだ。途中かなり長いループが続いたところでやり直したりした。完成した草稿のメモリを見失ってしまうことなどがあったようである。あいかわらず、summarize_messages まわりのエラーもあるようで、そこが悪さしてるのかな？…とも思う。
+
+メモリを読んだりするのをバンディットで強制する部分は、いまいち機能してない感じだった。それ以外のツール利用がとても多く、その途中に本来ならバンディットで強制したい感じだった。
+
+完全にうまくいったとはいいがたいが、MemoryBanditWorkflow の実証実験としてはそこそこうまくいったと思う。
+
+なお、再現性がないため、最初からの再実行はやっていないのはご容赦願いたい。コストもかかるしね (^^;。</pre>
+
+
+</article>
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2025/09.html">2025年09月</a> | <a href="../../../index/gsm.html">共有メモ</a></nav>
+</body>
+</html>

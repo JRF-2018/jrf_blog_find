@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>ひとこと - JRF Blog Archive</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2019/04.html">2019年04月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+<article data-pagefind-body>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[statuses] <span class="cocolog-id">cocolog:90888101</span></td></tr>
+<tr><th>セクション</th><td>JRF のひとこと</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2019/04.html">2019年04月06日</a></td></tr>
+<tr><th>元URL</th><td><a href="http://jrf.cocolog-nifty.com/statuses/2019/04/post-7d82.html" class="ext-link"><span class="original-url">http://jrf.cocolog-nifty.com/statuses/2019/04/post-7d82.html</span></a></td></tr>
+
+</table>
+</div>
+<h1>ひとこと</h1>
+<pre class="body">SS『ファルコム クラシックス』の『ドラゴンスレイヤー』を SSF 0.12 beta R4 や TestVer (2018-12-18) では デフォルトのままでは起動できない。R3 なら起動できる。R4 や TestVer でも Bus Wait をチェックすると起動できる。
+JRF 2019年4月6日
+
+SSF はセガ サターン (SS, SEGA SATURN) の Windows 用エミュレータ。2019年4月6日現在、SSF のサイトは Geocities であったため 2019年4月1日以降、読めなくなっている。ただ、Internet Archive には保存されているようなので、そこからファイルのダウンロード等はできるようだ。
+
+《SSF メインページ - Internet Archive Wayback Machine》
+<a href="https://web.archive.org/web/20190331134556/http://www.geocities.jp/mj3kj8o5/ssf/" class="ext-link">https://web.archive.org/web/20190331134556/http://www.geocities.jp/mj3kj8o5/ssf/</a>
+
+JRF 2019年4月6日
+
+作者の Twitter は生きている。
+
+《shima(@FessX)さん:Twitter》
+<a href="https://twitter.com/fessx" class="ext-link">https://twitter.com/fessx</a>
+
+しばらくすれば、SSF のページはどこかに移転されるだろうとは思うが…。
+
+JRF 2019年4月6日
+
+……。
+
+で、本題。
+
+SS『ファルコムクラシックス』は SSF 0.12 beta R4 でも起動はする。そこから『イース (Ys)』や『ザナドゥ (Xanadu)』は起動できるのだが、『ドラゴンスレイヤー (Dragon Slayer)』だけ起動できなかった。突然、ハイスコア画面が出てきたり、エラーのダイアログが表示され MasterSH2 code = XXXX (XXXX はそのときどきで違う)… と表示されたりする。
+
+JRF 2019年4月6日
+
+SSF 0.12 beta R3 のほうが安定しているらしいので、試してみると、R3 ではデフォルトの設定のままで、ちゃんと『ドラゴンスレイヤー』も起動した。
+
+↓で、他のソフトの設定状況を見ていろいろ試していると、Option → Program3 → Bus Wait を ON (チェック)するだけで、0.12 beta R4 でも『ドラゴンスレイヤー』が起動できた。
+
+JRF 2019年4月6日
+
+《SSF ソフト毎の設定 - Internet Archive Wayback Machine》
+<a href="https://web.archive.org/web/20190331080907/http://www.geocities.jp/mj3kj8o5/ssf/setting.html" class="ext-link">https://web.archive.org/web/20190331080907/http://www.geocities.jp/mj3kj8o5/ssf/setting.html</a>
+
+JRF 2019年4月6日
+
+テストバージョン TestVer (2018-12-18) でも R4 と同じ状況。ただ、デフォルトだととても遅かったので、Option → EZ Setting → Standard Compatibility にした上で、R4 と同じく Bus Wait を ON (チェック)した。なお、Option → EZ Setting → Full Compatibility でも Bus Wait が ON になるので、起動できる。
+
+JRF 2019年4月6日
+
+……。
+
+もう一点、SSF の Tips を。
+
+SSF では仮想 CD ドライブを使っている。結論から書くと、DAEMON Tools Lite で cue をマウントしないとうまく使えないことがある。
+
+JRF 2019年4月6日
+
+仮想ドライブソフトはいろいろある。はじめは無料で広告もない ImgDrive 1.7.2 を試した。CD Manipulator で吸い出したものをマウントする。ImgDrive は iso には対応しているが img に対応しているとは書いておらず、マウント時の拡張子に指定できるものとして img はない。が、cue はマウントでき、cue 内に書かれているのが img でもマウントできた。そして、いくつかのゲームが動くことを確認。
+
+JRF 2019年4月6日
+
+しかし、SS『出たなツインビーヤッホー! DELUXE PACK』をプレイしようとすると、最初のゲーム選択画面は出るが、ゲームを選択すると止まってしまった。
+
+試しに、CD-ROM を仮想でないドライブに入れて SSF を動かしてみると…ちゃんと動くぞ！
+
+JRF 2019年4月6日
+
+そこで、原因はよくわからないが、とりあえず他の仮想ドライブソフトも使ってみるか…と DAEMON Tools Lite を試してみる。
+
+DAEMON Tools Lite は img に対応しているらしく img をマウント。しかし、ツインビーはやはりゲームを選択すると止まってしまう。
+
+ダメかぁ…とあきらめかけたが、試しに img ではなく cue をマウント。すると、なぜかツインビーはゲーム選択もでき、ちゃんと動いた！
+
+JRF 2019年4月6日
+
+……。
+
+なお、『ファルコムクラシックス』も『出たなツインビーヤッホー! DELUXE PACK』もクリアまではプレイしていないので、そこんとこはよろしく。
+
+JRF 2019年4月6日
+
+……。
+
+追記。
+
+img と iso は同じ形式らしい。そんなことも知らなかった私…恥ずかしい。
+
+JRF 2019年4月6日
+
+……。
+
+追記。
+
+上で、Bus Wait を ON (チェック)する「だけ」と書いたが、SSF の Readme.txt によると…
+
+JRF 2019年4月22日
+
+＞
+・Bus Wait
+  チェックを入れると各バスのウェイトが有効になります。
+  また、ドットクロックが4.0,スレーブSH2速度が100%,SH2キャッシュが有効,SCU-DMA割り込み遅延が有効になります。
+  実機にかなり近い処理タイミングになりますが非常に重いです。
+
+・Bus Wait Clock
+  バスウェイト有効時、更新するクロック数に加算する値です。
+  大きくすると若干速くなりますがマスタSH2とスレーブSH2の同期がずれていきます。
+  設定できる数値は0〜5です。
+＜
+
+JRF 2019年4月22日
+
+…とあり、かなり重くなるとのこと。
+
+JRF 2019年4月22日
+
+……。
+
+追記。
+
+『ファルコム クラシックス 限定版』に付いてくる初回(?)特典 Special CD (スペシャル CD)。
+
+JRF 2019年4月24日
+
+いつものように CD Manipulator で Rip したものの cue を Daemon Tools Lite でマウントして起動すると、『ドラマ CD「イースI／女神の記憶」』『ビジュアルコレクション』はうまく再生できるのだが、『声優インタビュー』『フィーナのファルコムショップ訪問』『おまけ』のムービーが再生されない。
+
+DVD/CD ドライブにオリジナルの CD を入れて起動すると、SSF でもちゃんと再生される。
+
+JRF 2019年4月24日
+
+ちなみに『おまけ』は、『おまけ』にカーソルを合わせて、Y + START で見ることができる。実機だと『おまけ』は、本体の時刻を 11 月 13 日に指定しないと選択肢に出てこないのだが、今の SSF だとそのような設定をしなくても『おまけ』が表示されるようだ。
+
+JRF 2019年4月24日
+
+『声優インタビュー』の内容は、アドル役の森久保祥太郎、レア役の中川亜紀子、フィーナ役の飯塚雅弓が、各キャラについて少し語る程度。『フィーナのファルコムショップ訪問』は、飯塚雅弓がファルコムショップを訪れる。『おまけ』は『フィーナのファルコムショップ訪問』の続きで、飯塚雅弓が自身の CD を宣伝する。…というもの。
+
+JRF 2019年4月24日
+
+……。
+
+SSF のページには、DiscJuggler (RAW read オプション付き、Scan gaps/indexes オプション付き)で吸い出しているとある。試しに DiscJuggler Demo Edition で、吸い出した『ファルコム クラシックス 限定版』 Special CD の cdi を Daemon Tools Lite でマウントしてみると…、うまくムービーが再生できた！
+
+CD Manipulator は万能ではなかったか…。
+
+JRF 2019年4月24日
+
+……。
+
+追記。
+
+DiscJuggler、常に「Scan gaps/indexes オプション付き」というのも問題があるようだ。例えば、『ファルコム クラシックス II』は Scan gaps/indexes オプションなしじゃないとうまく吸い出せなかった(なしでないと、DAEMON Tools Lite でマウントできるイメージにならなかった)。
+
+JRF 2019年5月9日</pre>
+
+
+<section class="backrefs" data-pagefind-ignore>
+<h2>後方参照 (1 件)</h2>
+<ul>
+<li><span class="backref-label">[cocolog:90888101]参照</span> <a href="../../../articles/2019/04/statuses_cocolog_90939620.html">ひとこと</a> <span class="backref-date">2019年04月26日</span></li>
+</ul>
+</section>
+
+</article>
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2019/04.html">2019年04月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+</body>
+</html>

@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>共有メモ - JRF Blog Archive</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2022/01.html">2022年01月</a> | <a href="../../../index/gsm.html">共有メモ</a></nav>
+<article data-pagefind-body>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[gsm] 2022-01-02T12:27:03Z</td></tr>
+<tr><th>セクション</th><td>グローバル共有メモ</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2022/01.html">2022-01-02T12:27:03Z</a></td></tr>
+<tr><th>元URL</th><td>(URLなし)</td></tr>
+
+</table>
+</div>
+<h1>共有メモ</h1>
+<pre class="body">jrf&gt; 《JRF のひとこと》で使っている jumpbytitle.html が不具合で機能していないので、XREA に同等の機能を持つ CGI … id2url.cgi を作った。
+
+次の二つの生成されたページが、しばしば入れ替わる。
+
+<a href="http://jrf.cocolog-nifty.com/statuses/jumpbytitle.html" class="ext-link">http://jrf.cocolog-nifty.com/statuses/jumpbytitle.html</a>
+<a href="http://jrf.cocolog-nifty.com/statuses/jumpbydate.html" class="ext-link">http://jrf.cocolog-nifty.com/statuses/jumpbydate.html</a>
+
+これは2019年3月のココログ全面リニューアル以来ずっと続いている不具合で、再現性がない。ときどきちゃんと機能したりする。
+
+アーカイブまわりが変わったので jumpbydate.html のほうがあやしいのだが、よく使われるであろう jumpbytitle.html のほうが影響が大きそうだから、jumpbytitle.html だけとりえず代替の機能を作ることにした。
+
+<a href="http://jrockford.s1010.xrea.com/cocolog_helper/id2url.cgi" class="ext-link">http://jrockford.s1010.xrea.com/cocolog_helper/id2url.cgi</a>
+
+…がそれ。
+
+<a href="http://jrf.cocolog-nifty.com/statuses/jumpbytitle.html?q=aboutme:23346" class="ext-link">http://jrf.cocolog-nifty.com/statuses/jumpbytitle.html?q=aboutme:23346</a>
+
+…の代わりに…
+
+<a href="http://jrockford.s1010.xrea.com/cocolog_helper/id2url.cgi?q=aboutme:23346" class="ext-link">http://jrockford.s1010.xrea.com/cocolog_helper/id2url.cgi?q=aboutme:23346</a>
+
+…として使う。
+
+ソースは↓にある。初期バージョンは 0.0.1。
+
+<a href="https://github.com/JRF-2018/cocolog_helper" class="ext-link">https://github.com/JRF-2018/cocolog_helper</a>
+
+使い方はソースを読んでいただくしかない。まぁ、私の他に使う人なんていないだろうけど。
+
+なお、XREA は広告表示の義務があり、Redirect するだけの CGI はダメかもしれない…と思って、すぐ Redirect するのではなく、5 秒間待って転送するようにした。</pre>
+
+
+</article>
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2022/01.html">2022年01月</a> | <a href="../../../index/gsm.html">共有メモ</a></nav>
+</body>
+</html>

@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>共有メモ - JRF Blog Archive</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2025/09.html">2025年09月</a> | <a href="../../../index/gsm.html">共有メモ</a></nav>
+<article data-pagefind-body>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[gsm] 2025-09-10T12:35:23Z</td></tr>
+<tr><th>セクション</th><td>グローバル共有メモ</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2025/09.html">2025-09-10T12:35:23Z</a></td></tr>
+<tr><th>元URL</th><td>(URLなし)</td></tr>
+
+</table>
+</div>
+<h1>共有メモ</h1>
+<pre class="body">jrf&gt; imagine_keywords の話つづき。
+
+ああ、そうか。memory_read を bandit_schedule するだけでは memory:3333 などが読み出された時点でサブタスクが終了とみなされて次に処理が移ってしまうか。すると、そこから逆算して、subwork_done というツールを作り自らサブタスクの終了を宣言できるようにした上で、bandit_schedule を拡張し、&quot;memory_read subwork_done&quot; みたいに複数の流れを schedule できるようにする必要がある。
+
+このような流れの登録はいずれ必要と思っていたが、こんなにすぐに必要となると思うとは思ってなかった。
+
+実装としてはそんなに難しくない。流れの最後のコマンドを監視し、それが出れば、(サブ)ターンの最初から複数含まれているものが順番にクリアされているかチェックすればいい。
+
+aux_prompt をそれぞれに指定できるようにすべきかが問題だが…。
+
+…または bandit_schedule には subwork_done だけ登録し、aux_prompt に「memory:3333 を読みその指示を実行し、そのサブタスクが終ったら、subwork_done してください。」で十分なのか…。拡張してない今のフレームワークならそれが適切だが…。</pre>
+
+
+</article>
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2025/09.html">2025年09月</a> | <a href="../../../index/gsm.html">共有メモ</a></nav>
+</body>
+</html>

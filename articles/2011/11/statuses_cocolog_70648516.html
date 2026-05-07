@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>ひとこと - JRF Blog Archive</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2011/11.html">2011年11月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+<article data-pagefind-body>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[statuses] <span class="cocolog-id">cocolog:70648516</span></td></tr>
+<tr><th>セクション</th><td>JRF のひとこと</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2011/11.html">2011年11月23日</a></td></tr>
+<tr><th>元URL</th><td><a href="http://jrf.cocolog-nifty.com/statuses/2011/11/inksc.html" class="ext-link"><span class="original-url">http://jrf.cocolog-nifty.com/statuses/2011/11/inksc.html</span></a></td></tr>
+
+</table>
+</div>
+<h1>ひとこと</h1>
+<pre class="body">Inkscape のバッチ処理で変なエラーが出る。出たり出なかったりするのが気持ち悪い。調べると既知のバグで、以前(<a href="../../../articles/2011/05/statuses_aboutme_138754.html" class="int-link cocolog-id" title="ひとこと">[aboutme:138754]</a>)ひっかかった rebaseall のバグだった。Inkscape を入れてからまた必要になってたらしい。
+JRF 2011年11月23日
+
+エラーとしては↓のあとにスタックトレースが表示される。
+
+&lt;pre&gt;
+
+ [main] perl 5604 C:\cygwin\bin\perl.exe: *** fatal error - unable to remap \\?\C:\cygwin\lib\perl5\vendor_perl\5.10\i686-cygwin\auto\Image\Magick\Magick.dll to same address as parent
+
+&lt;/pre&gt;
+
+Inkscape で特殊なのは、-z のバッチモードのはずなのに、X11系の libXaw.dll などがないとかいうエラーも出ていたこと。
+
+JRF 2011年11月23日
+
+ただ、今日の上のエラーを見る限り、InkscapeではなくPerl::Magickが吐いてたのかもしれない。
+
+解決方法すなわちrebaseallすればいいよってのは今回は↓で思い出した。
+
+《My Life, Starting Up: *** fatal error - unable to remap to same address as parent : Cygwin, Ruby on Rails, System calls》
+<a href="http://www.mylifestartingup.com/2009/04/fatal-error-unable-to-remap-to-same.html" class="ext-link">http://www.mylifestartingup.com/2009/04/fatal-error-unable-to-remap-to-same.html</a>
+
+JRF 2011年11月23日
+
+あと、異常終了はしないんだけど、警告として Inkscape が↓と言う。
+
+&lt;pre&gt;
+RegistryTool: Could not set the value 'C:\Program Files\Inkscape\inkscape.exe'
+&lt;/pre&gt;
+
+JRF 2011年11月23日
+
+これは Windows 7 系のバグなのかな？「解決」はされてなさそう…。
+
+《Bug #627943 in Inkscape: “Unexpected message RegistryTool: Could not set the value 'c:\program &gt; files\inkscape\inkscape.exe'”》
+<a href="https://bugs.launchpad.net/inkscape/+bug/627943" class="ext-link">https://bugs.launchpad.net/inkscape/+bug/627943</a>
+
+JRF 2011年11月23日</pre>
+
+
+<section class="backrefs" data-pagefind-ignore>
+<h2>後方参照 (1 件)</h2>
+<ul>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2011/05/statuses_aboutme_138754.html">ひとこと</a> <span class="backref-date">2011年05月12日</span></li>
+</ul>
+</section>
+
+</article>
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2011/11.html">2011年11月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+</body>
+</html>

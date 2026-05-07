@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>ひとこと - JRF Blog Archive</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2022/12.html">2022年12月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+<article data-pagefind-body>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[statuses] <span class="cocolog-id">cocolog:93904373</span></td></tr>
+<tr><th>セクション</th><td>JRF のひとこと</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2022/12.html">2022年12月13日</a></td></tr>
+<tr><th>元URL</th><td><a href="http://jrf.cocolog-nifty.com/statuses/2022/12/post-f3383c.html" class="ext-link"><span class="original-url">http://jrf.cocolog-nifty.com/statuses/2022/12/post-f3383c.html</span></a></td></tr>
+
+</table>
+</div>
+<h1>ひとこと</h1>
+<pre class="body">VRChat、Avatar のアップロードを試してみた。いろいろ引っかかりはしたものの、軽量化したモデルのアップロードは簡単にできた。しかし、Quest (Android) 用のモデルまでは作れなかった。
+JRF 2022年12月13日
+
+まず、↓を参考に…。
+
+《VroidをVRChatへアップロードするまとめ》  
+<a href="https://rekor64y.web.fc2.com/" class="ext-link">https://rekor64y.web.fc2.com/</a>
+
+最初に、Unity Hub をインストールするところでつまづく。理由は Visual Studio をインストールしていなかったから。私、プログラミングは基本 Emacs と Cygwin を使っていて、Visual Studio はできるだけ入れないでおこうとしてたんだよね。が、しかたがない。
+
+JRF 2022年12月13日
+
+なお、Visual Studio Community では Unity のモジュールもインストールする必要があるが、右のペーンで Unity Hub のチェックは外す。
+
+それを入れたあとは、↑を元に、Unity の適当なバージョンもインストールが成功した。VRChat のアップロードまではそのまま進み、VRChat でアバターを表示できた！ いちおう。…というのは、品質が Very Poor で↓によると、モデルを軽くする必要があるらしいから。
+
+JRF 2022年12月13日
+
+《VRoid Studioで作ったモデルをVRChatに上げてVRで動かしてみたメモ | 神部まゆみのブログ》  
+<a href="https://knb-mayumi.com/vroid-vrchat/" class="ext-link">https://knb-mayumi.com/vroid-vrchat/</a>
+
+《VRoidStudioで作ったモデルのボーンをblenderで削減してみたメモ | 神部まゆみのブログ》  
+<a href="https://knb-mayumi.com/vroid-boan-sakugen/" class="ext-link">https://knb-mayumi.com/vroid-boan-sakugen/</a>
+
+JRF 2022年12月13日
+
+VRoid Studio のエクスポートでいろいろモデルを軽くするのも試してみる。3つほど試して、結局、Poor のモデルと、Medium のモデルと Good のモデルがアップロードできた。
+
+JRF 2022年12月13日
+
+……。
+
+Good のモデルは Quest (Android) にも使えるんじゃないか…と思って、VRChat SDK で  Switch Build Target to Android にしようとしたら、なんか、モデル評価の部分をみると Switch できてる感じなのに全体として切り換わっている感じじゃなく、今度は Build Target to Windows に切り換えられなくなってしまった。
+
+JRF 2022年12月13日
+
+ググって↓の記事を発見。
+
+《Can't switch target build to android : VRchat》  
+<a href="https://www.reddit.com/r/VRchat/comments/lxv484/cant_switch_target_build_to_android/" class="ext-link">https://www.reddit.com/r/VRchat/comments/lxv484/cant_switch_target_build_to_android/</a>
+
+JRF 2022年12月13日
+
+Unity の File → build setting から、Android 用のをインストールするように Unity Hub へ指示を出し、それはうまくいかなかったのだけど、Unity Hub で Android のモジュールもインストールしたことで、解決した。
+
+で、結局、ポリゴン数もボーンなども Quest の条件に合わないと言われて、Quest 用のアップロードはできなかった。blender でいじれば可能性はあるのかもしれないが、今のところ私は blender まで使うつもりはない。
+
+JRF 2022年12月13日
+
+Fallback は Windows 用で Good ならできるのでは…と当初、解釈していたのだが、それではダメで、Quest 用で Good を出すモデルがないとダメらしい。
+
+JRF 2022年12月13日
+
+……。
+
+このメンドクサさを考えると cluster.mu はエラい楽だった。VRChat は私みたいなマシンパワーの少ない＆技術力のない(＆コミュ障の)人間にはハードルが高い。
+
+まぁ、とにかく、できた Avatar で世界を周るのはまた今度…。
+
+JRF 2022年12月13日</pre>
+
+
+<section class="backrefs" data-pagefind-ignore>
+<h2>後方参照 (3 件)</h2>
+<ul>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2022/12/gsm_002948.html">共有メモ</a> <span class="backref-date">2022-12-12T20:52:40Z</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2022/12/gsm_002949.html">共有メモ</a> <span class="backref-date">2022-12-12T21:41:01Z</span></li>
+<li><span class="backref-label">[cocolog:93904373]参照</span> <a href="../../../articles/2022/12/statuses_cocolog_93887991.html">ひとこと</a> <span class="backref-date">2022年12月05日</span></li>
+</ul>
+</section>
+
+</article>
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2022/12.html">2022年12月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+</body>
+</html>

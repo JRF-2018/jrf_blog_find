@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>共有メモ - JRF Blog Archive</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2021/09.html">2021年09月</a> | <a href="../../../index/gsm.html">共有メモ</a></nav>
+<article data-pagefind-body>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[gsm] 2021-09-12T04:04:56Z</td></tr>
+<tr><th>セクション</th><td>グローバル共有メモ</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2021/09.html">2021-09-12T04:04:56Z</a></td></tr>
+<tr><th>元URL</th><td>(URLなし)</td></tr>
+
+</table>
+</div>
+<h1>共有メモ</h1>
+<pre class="body">jrf&gt; [仏教の最適化プログラムの続き。]
+
+ログ取り直し続き。
+
+lpe の --prophecy-effect に関しては 0.8 ではなく 0.5 になってるのがポイント。
+
+run_simbdp3.sh lpe 10 -L -t 360 --prophecy-effect=0.5
+run_simbdp3.sh ltomlpe 10 -L -t 360 --tombs-population=10000 --prophecy-effect=0.5
+run_simbdp3.sh ledultomlpe 10 -L -t 360 --education-goal=0.35 --education-goal-max=0.5 --education-goal-min=0.20 --tombs-population=10000 --prophecy-effect=0.5
+
+python plot_logs.py normal lpe -p AccDeath -o fig-20210912_01.png
+python plot_logs.py lpe ltomlpe ledultomlpe -p AccDeath -o fig-20210912_02.png
+python plot_logs.py normal ledu ltomlpe ledultomlpe -p AccKarma -o fig-20210912_03.png
+
+《グラフ集: 2021-09-06 から - Issue #2 - JRF-2018/simbd》  
+<a href="https://github.com/JRF-2018/simbd/issues/2" class="ext-link">https://github.com/JRF-2018/simbd/issues/2</a>
+
+AccKarma のグラフはキレイに予定通りだが、AccDeath に関しては lpe がもう少し高くても良い感じか。lpe が ltomlpe や ledultomlpe と割と差がついているのも解せない。ledultomlpe が低教育のためそれだけ AccDeath が高くなる…というならまだ解釈しようがあるのだが、そうなっていない。</pre>
+
+
+</article>
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2021/09.html">2021年09月</a> | <a href="../../../index/gsm.html">共有メモ</a></nav>
+</body>
+</html>

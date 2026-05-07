@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>ココログプロで Google サイトマップインデックスを作る - JRF Blog Archive</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2006/03.html">2006年03月</a> | <a href="../../../index/software.html">ソフトウェア Tips</a></nav>
+<article data-pagefind-body>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[software] <span class="cocolog-id">cocolog:10293851</span></td></tr>
+<tr><th>セクション</th><td>JRF のソフトウェア Tips</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2006/03.html">2006年03月02日 03:12:23</a></td></tr>
+<tr><th>元URL</th><td><a href="http://jrf.cocolog-nifty.com/software/2006/03/post_1.html" class="ext-link"><span class="original-url">http://jrf.cocolog-nifty.com/software/2006/03/post_1.html</span></a></td></tr>
+<tr><th>タグ</th><td>[ウェブログ・ココログ関連]</td></tr>
+</table>
+</div>
+<h1>ココログプロで Google サイトマップインデックスを作る</h1>
+<pre class="body">なかなか Google がクロールしてくれないので、Google Sitemapの機能を試してみる。Google Sitemap には Atom 0.3 でも良いから当初はそうしていたのだが、2 週間ほどたっても音沙汰なしだったので Google Sitemap 専用の XML フォーマットを使うことにした。
+
+すでに下記参考のようにいくつかのサイトで Movable Type や Type Pad のテンプレートを使って Sitemap を作る試みがなされている。しかし、それらのテンプレートはあくまで一つのブログを対象にしたものでしかない。このサイトは複数のブログを管理しており、一つ一つブログのサイトマップを登録することもできるのだが、Google Sitemap Index という形式を使えばよりスマートに Sitemap を作ることができそうだとわかった。
+
+  ■適当に重み付けしたサイトマップを作る。
+    
+サイトマップでは Google にあくまで参考数値としてだが、記事のサイト内における重要度を 0.0 から 1.0 の範囲で設定することができる。
+
+重み付けの方針は次の通りである。
+
+  1.トップページを 1.0 にする。
+  2.最近の記事を高めにする。
+  3.「続きを読む」がある記事を高めにする。
+  4.カテゴリページはそのカテゴリの記事すべてが載るので、高めにする。
+  5.週ごとのアーカイブは今週のものだけ高めにする。
+    
+以上を基に、次のような sitemap-part.xml というテンプレートを作った。
+
+&lt;?xml version='1.0' encoding='UTF-8'?&gt;
+&lt;urlset xmlns=&quot;<a href="http://www.google.com/schemas/sitemap/0.84&amp;quot;" class="ext-link">http://www.google.com/schemas/sitemap/0.84&amp;quot;</a>
+    xmlns:xsi=&quot;<a href="http://www.w3.org/2001/XMLSchema-instance&amp;quot;" class="ext-link">http://www.w3.org/2001/XMLSchema-instance&amp;quot;</a>
+    xsi:schemaLocation=&quot;<a href="http://www.google.com/schemas/sitemap/0.84" class="ext-link">http://www.google.com/schemas/sitemap/0.84</a>
+    <a href="http://www.google.com/schemas/sitemap/0.84/sitemap.xsd&amp;quot;&amp;gt;" class="ext-link">http://www.google.com/schemas/sitemap/0.84/sitemap.xsd&amp;quot;&amp;gt;</a>
+&lt;url&gt;
+&lt;loc&gt;&lt;$MTBlogURL encode_xml=&quot;1&quot;$&gt;&lt;/loc&gt;
+&lt;priority&gt;1.0&lt;/priority&gt;
+&lt;MTEntries lastn=&quot;1&quot;&gt;
+&lt;lastmod&gt;&lt;$MTEntryDateModified timezone=&quot;UTC&quot; format_name=&quot;W3CDTF&quot;$&gt;&lt;/lastmod&gt;
+&lt;/MTEntries&gt;
+&lt;changefreq&gt;daily&lt;/changefreq&gt;
+&lt;/url&gt;
+&lt;MTEntries lastn=&quot;20&quot;&gt;
+&lt;url&gt;
+&lt;loc&gt;&lt;$MTEntryPermalink encode_xml=&quot;1&quot;$&gt;&lt;/loc&gt;
+&lt;lastmod&gt;&lt;$MTEntryDateModified timezone=&quot;UTC&quot; format_name=&quot;W3CDTF&quot;$&gt;&lt;/lastmod&gt;
+&lt;MTEntryIfExtended&gt;
+&lt;priority&gt;0.9&lt;/priority&gt;
+&lt;MTElse&gt;
+&lt;priority&gt;0.6&lt;/priority&gt;
+&lt;/MTElse&gt;
+&lt;/MTEntryIfExtended&gt;
+&lt;changefreq&gt;daily&lt;/changefreq&gt;
+&lt;/url&gt;
+&lt;/MTEntries&gt;
+&lt;MTEntries offset=&quot;20&quot; lastn=&quot;9999&quot;&gt;
+&lt;url&gt;
+&lt;loc&gt;&lt;$MTEntryPermalink encode_xml=&quot;1&quot;$&gt;&lt;/loc&gt;
+&lt;lastmod&gt;&lt;$MTEntryDateModified timezone=&quot;UTC&quot; format_name=&quot;W3CDTF&quot;$&gt;&lt;/lastmod&gt;
+&lt;MTEntryIfExtended&gt;
+&lt;priority&gt;0.7&lt;/priority&gt;
+&lt;MTElse&gt;
+&lt;priority&gt;0.5&lt;/priority&gt;
+&lt;/MTElse&gt;
+&lt;/MTEntryIfExtended&gt;
+&lt;changefreq&gt;monthly&lt;/changefreq&gt;
+&lt;/url&gt;
+&lt;/MTEntries&gt;
+&lt;MTCategories&gt;
+&lt;url&gt;
+&lt;loc&gt;&lt;$MTCategoryArchiveLink encode_xml=&quot;1&quot;$&gt;&lt;/loc&gt;
+&lt;MTEntries lastn=&quot;1&quot;&gt;
+&lt;lastmod&gt;&lt;$MTEntryDateModified timezone=&quot;UTC&quot; format_name=&quot;W3CDTF&quot;$&gt;&lt;/lastmod&gt;
+&lt;/MTEntries&gt;
+&lt;priority&gt;0.8&lt;/priority&gt;
+&lt;changefreq&gt;weekly&lt;/changefreq&gt;
+&lt;/url&gt;
+&lt;/MTCategories&gt;
+&lt;MTBlogIfArchives&gt;
+&lt;MTArchiveList archive_type=&quot;Weekly&quot; offset=&quot;1&quot;&gt;
+&lt;url&gt;
+&lt;loc&gt;&lt;$MTArchiveLink encode_xml=&quot;1&quot;$&gt;&lt;/loc&gt;
+&lt;lastmod&gt;&lt;$MTArchiveDateEnd timezone=&quot;UTC&quot; format_name=&quot;W3CDTF&quot;$&gt;&lt;/lastmod&gt;
+&lt;priority&gt;0.6&lt;/priority&gt;
+&lt;changefreq&gt;yearly&lt;/changefreq&gt;
+&lt;/url&gt;
+&lt;/MTArchiveList&gt;
+&lt;MTArchiveList archive_type=&quot;Weekly&quot; lastn=&quot;1&quot;&gt;
+&lt;url&gt;
+&lt;loc&gt;&lt;$MTArchiveLink encode_xml=&quot;1&quot;$&gt;&lt;/loc&gt;
+&lt;lastmod&gt;&lt;$MTArchiveDateEnd timezone=&quot;UTC&quot; format_name=&quot;W3CDTF&quot;$&gt;&lt;/lastmod&gt;
+&lt;priority&gt;0.8&lt;/priority&gt;
+&lt;changefreq&gt;daily&lt;/changefreq&gt;
+&lt;/url&gt;
+&lt;/MTArchiveList&gt;
+&lt;/MTBlogIfArchives&gt;
+&lt;/urlset&gt;
+
+最低の priority は最近 20 個よりも前の個別記事で、「続きを読む」がないもの、その次が今週以外の週別アーカイブである。
+
+ただ、MTArchiveList には offset を指定することができないため、しかたなく、今週分の週別アーカイブは二重に登録している。Google がこれをどのように解釈するかは、まったくわからない。
+
+  ■サイトマップインデックスファイルを作る。
+    
+方針として、まず、それぞれのブログごとにサイトマップインデックスファイルに入れるべき断片をテンプレートを用いて作り、その後 SSI (サーバーサイドインクルード)を使って、一つのサイトマップインデックスにする。
+
+ただし、ココログでは .xml では SSI が使えず、また .htaccess を設定する方法もないことから、拡張子は .html にする必要がある。これまた、Google がどう解釈するかが問題だが、試した結果、「SITEMAP インデックス」と認識されている。
+sitemap.htmlを次のようなファイルにする。
+  
+&lt;?xml version='1.0' encoding='UTF-8'?&gt;
+&lt;sitemapindex xmlns=&quot;<a href="http://www.google.com/schemas/sitemap/0.84&amp;quot;" class="ext-link">http://www.google.com/schemas/sitemap/0.84&amp;quot;</a>
+    xmlns:xsi=&quot;<a href="http://www.w3.org/2001/XMLSchema-instance&amp;quot;" class="ext-link">http://www.w3.org/2001/XMLSchema-instance&amp;quot;</a>
+    xsi:schemaLocation=&quot;<a href="http://www.google.com/schemas/sitemap/0.84" class="ext-link">http://www.google.com/schemas/sitemap/0.84</a>
+    <a href="http://www.google.com/schemas/sitemap/0.84/siteindex.xsd&amp;quot;&amp;gt;" class="ext-link">http://www.google.com/schemas/sitemap/0.84/siteindex.xsd&amp;quot;&amp;gt;</a>
+&lt;!--#include virtual=&quot;/column/sitemap-index-part.xml&quot; --&gt;
+&lt;!--#include virtual=&quot;/religion/sitemap-index-part.xml&quot; --&gt;
+&lt;!--#include virtual=&quot;/society/sitemap-index-part.xml&quot; --&gt;
+&lt;!--#include virtual=&quot;/software/sitemap-index-part.xml&quot; --&gt;
+&lt;/sitemapindex&gt;
+
+これから読む sitemap-index-part.xml は次のようなテンプレートにした。
+
+&lt;sitemap&gt;
+      &lt;loc&gt;&lt;$MTBlogURL encoded_xml=&quot;1&quot;$&gt;sitemap-part.xml&lt;/loc&gt;
+      &lt;MTEntries lastn=&quot;1&quot;&gt;
+      &lt;lastmod&gt;&lt;$MTEntryDateModified timezone=&quot;UTC&quot; format_name=&quot;W3CDTF&quot;$&gt;&lt;/lastmod&gt;
+      &lt;/MTEntries&gt;
+&lt;/sitemap&gt;
+
+ちなみに Google はサイトマップインデックスに載せるのはサイトマップを最後に作った日付で最新記事の日付ではないと述べているが、記事の投稿ごとに更新するんだから、まぁ、これでいいんじゃないか？
+
+  ■まとめ
+    
+結論を言ってしまうと、このサイトは新しいため、ほとんどキャッシュに入っていない。その状況がいまだに変わっていないので、サイトマップが有効に機能しているかどうか判断がつかない。統計情報は今のところ「上位の検索クエリ」しか表示されない。クロールに関する情報もページ分析も表示できない。
+
+サイトマップの送信とクロールされるかどうかは関係ないと Google も書いているが、まぁ、その通りなんだろうという感想だ。(このサイトがどれだけキャッシュされているかはここをクリックすればわかる。)
+
+あと Google はいくつかのサーバーが時間ごとに交代でクロールや検索フロントエンド、クエリ処理をやっているのだろうか？時間によって、検索できるページが変わっている。今、現在試すと三つの記事しかキャッシュされてないが、たまに 100 個近くキャッシュされてるときもある。その数はバラバラではなく、3 個か 100 個かという感じだ。
+
+自分のところへのリンクを増やすといっても、あんまり関係ない記事にトラックバックをかけるのもいかがかと思うし……といっても最近はできるだけトラックバックしようとはしています。
+
+&lt;b&gt;参考&lt;/b&gt;
+  《観測気球：TypePad 用 Google Sitemaps テンプレート》
+  《Scot Loftesness：Google Sitemaps for TypePad Pro》
+  《Perl Tips：Movable Type で、Google Sitemap に対応する方法》
+  《ココログや Movable Type のシステムと奮戦中》
+  
+更新：06/03/02
+初公開：2006年03月02日 03:12:23
+最新版：2006年04月24日 12:42:07</pre>
+<details class="trackbacks" data-pagefind-ignore><summary>Trackbacks (1 件)</summary><pre>
+Trackbacks:
+
+《<a href="http://otasukepc.cocolog-nifty.com/blog/2007/03/asd.html">googleウェブマスター ツールにココログのサイトマップを登録</a>》 from お助けPC パソコン　トラブル　データ救出　自分で修理、解決。
+googleウェブマスターツールにココログのサイトマッップの作成方法 自分でウェ 
+
+受信： 2007-03-07 11:36:37 (JST)
+
+
+Comments:
+
+Sitemap のバージョンが上がって robots.txt などで設定できるようになったようです。詳しくは下記をご参照ください。
+
+
+http://www.sitemaps.org/
+
+</pre></details>
+
+<section class="backrefs" data-pagefind-ignore>
+<h2>後方参照 (1 件)</h2>
+<ul>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2006/04/column_10899930.html">テンプレート等ブログシステムの更新履歴</a> <span class="backref-date">2006年04月02日 21:42:30</span></li>
+</ul>
+</section>
+
+</article>
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2006/03.html">2006年03月</a> | <a href="../../../index/software.html">ソフトウェア Tips</a></nav>
+</body>
+</html>

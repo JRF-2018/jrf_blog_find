@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>あれっ？Cygwin の ImageMagick がウンともスンともいいやがらねぇ - JRF Blog Archive</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2006/09.html">2006年09月</a> | <a href="../../../index/column.html">雑記</a></nav>
+<article data-pagefind-body>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[column] <span class="cocolog-id">cocolog:13916493</span></td></tr>
+<tr><th>セクション</th><td>JRF の私見：雑記</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2006/09.html">2006年09月04日 19:04:53</a></td></tr>
+<tr><th>元URL</th><td><a href="http://jrf.cocolog-nifty.com/column/2006/09/post_1.html" class="ext-link"><span class="original-url">http://jrf.cocolog-nifty.com/column/2006/09/post_1.html</span></a></td></tr>
+<tr><th>タグ</th><td>[近況] [情報工学・コンピュータ科学]</td></tr>
+</table>
+</div>
+<h1>あれっ？Cygwin の ImageMagick がウンともスンともいいやがらねぇ</h1>
+<pre class="body">7月1日にフィギュア写真をアップしているけど、このときサムネイルを作るのに、ImageMagick の convert と identify を使っているので、その日までは少なくとも使えていた。
+
+それが今日フィギュア写真をアップロードしようとすると、サムネイルができねぇ！
+
+こいつはてぇへんだってんで、調べてみると、
+
+$ convert --help
+
+      (無反応)
+$ identify --help
+
+      (無反応)
+      
+コアも吐いてないし、いったいどうなってんだ。バージョンを新しいのに変えてみたら、jpeg が使えないっていうし、これまで、www.imagemagick.org の cygwin 用バイナリリリース(6.2.5)を使ってたんだけど、それを cygwin のパッケージに変えても症状は変わらない。
+
+とりあえず、cygwin 用ではない Windows 用のものだとうまく動作するんで、パスとかの変換して今は凌いでフィギュア写真投稿したんだけど、他のところでも identify と convert は使っているから、今後も改善されないとムチャクチャ困るんですけど。
+
+昔から PerlMagick の調子は悪かったんだけど、convert は動いてた。7月1日からって大した変化もしてないはず。
+
+Cygwin と Meadow のパッケージのバージョンを上げたけど、そのときに何かおかしなことになったのかな？
+
+ちなみに rebaseall すると /usr/bin/cygiconv2.dll の ReBase が失敗するけど、これが原因でもないと思うし。
+
+更新：2006-09-04
+初公開：2006年09月04日 19:04:56
+最新版：2006年09月04日 19:05:57
+
+
+Comments:
+
+[E:bearing] 上はバージョンを上げていったら、いつの間にか直っていた。Cygwin の setup からもインストールできるようになったし。
+
+ただ、2010-06-03 現在、↓のようなエラーを吐くことがある。
+
+
+/usr/bin/convert.exe: error while loading shared libraries: ?: cannot open shared object file: No such file or directorory
+
+
+これは↓にズバリな症状＆解決策が載っていた。
+
+《ImageMagick shared libraries missing?》
+<a href="http://omgili.com/mailinglist/cygwin/cygwin/com/82hbn49nvnfsfgmailcom.html" class="ext-link">http://omgili.com/mailinglist/cygwin/cygwin/com/82hbn49nvnfsfgmailcom.html</a>
+
+setup.exe で入れることができる libgomp をインストールすれば良いようだ。
+
+ただ、これは GCC4 で使うものでもあるらしく GCC4 を全体的に入れてしまったほうが良さそうだ。GCC4 がないと、Perl 5.10.1 で、CPAN 等からインストールしようとすると、-fstack-protecter に関するエラーが出ることもある。
+
+投稿: JRF | 2010-06-03 18:27:34 (JST)
+
+
+Links:
+
+ImageMagick: <a href="http://www.imagemagick.org/" class="ext-link">http://www.imagemagick.org/</a></pre>
+
+
+</article>
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2006/09.html">2006年09月</a> | <a href="../../../index/column.html">雑記</a></nav>
+</body>
+</html>

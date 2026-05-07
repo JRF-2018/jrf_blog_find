@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>ひとこと - JRF Blog Archive</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2011/05.html">2011年05月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+<article data-pagefind-body>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[statuses] <span class="cocolog-id">aboutme:138968</span></td></tr>
+<tr><th>セクション</th><td>JRF のひとこと</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2011/05.html">2011年05月25日</a></td></tr>
+<tr><th>元URL</th><td><a href="http://jrf.cocolog-nifty.com/statuses/2011/05/aboutme138968.html" class="ext-link"><span class="original-url">http://jrf.cocolog-nifty.com/statuses/2011/05/aboutme138968.html</span></a></td></tr>
+
+</table>
+</div>
+<h1>ひとこと</h1>
+<pre class="body">OAuth を使った CGI アプリを作っている。うすうす感じていたが OAuth は「PPログイン」に使えそうだ。
+JRF 2011年5月25日
+
+キッカケは Google Chrome の「Greasemonkey」の制限が強過ぎるため、これに対応するにはローカルに httpd を起動し CGI の「トンネル」を作る必要があると考えたから。
+
+<a href="http://jrf.aboutme.jp/user_statuses/show/138896" class="ext-link">http://jrf.aboutme.jp/user_statuses/show/138896</a>
+＞GM_xmlhttpRequest にがっちりサイト制限があるうえ、unsafeWindow が使えないとのことで、(…)XMLRPC で投稿する statuses_tool.user.js は使えないことがわかった。＜
+
+JRF 2011年5月25日
+
+どうせ CGI を作るなら、ローカルに動くだけでなく、インターネットのサーバーに置くことで XMLRPC への proxy みたいに動く「掲示板」システムにしてしまおう。ついでだから、ユーザー管理に↓などで言及のある OAuth を使ってみよう。…ともくろんだ。
+
+<a href="../../../articles/2010/05/statuses_aboutme_124333.html" class="int-link cocolog-id" title="ひとこと">[aboutme:124333]</a>
+＞グループIDということなら、複数のグループIDで同時ログインというのもおもしろいか。OpenID で複数のグループとしてログインし、OAuth で個別ユーザーとしてログインするといった使い分けができるようにするとか。＜
+
+JRF 2011年5月25日
+
+……。
+
+で、試験的に実装してみたわけだが、まず、はてな社の OAuth で実験した。
+
+他のレンタルサーバーで CGI が動くようにも作りたいのだから、どういった Perl モジュールが巷[ちまた]のレンタルサーバーにあるかが問題になる。
+
+標準の LWP は入れてあるとして良い。OAuth 関連のパッケージは使えないと思っていなければならない。調べると、こんなご時勢なのに、LWP::Protocol::https が入ってなさそうなところもある。でも、さすがにそれは使わないと https での通信ができない。はてな社のサーバーは https しかしゃべてくれない。
+
+JRF 2011年5月25日
+
+日付パーサーが、入ってるものがまちまちだ。Perl に標準的な日付 parser がないのは昔もそうだが、DateTime はもう使われてないようで 5.10 からデフォルトで付いてくる Time::Piece はどこも入ってない。しかたないので、簡単なルーチンを自作する。
+
+XMLRPC は statses_editor.user.js で生でしゃべるのを書いてたから、そっから書き直すのは簡単だから、特にモジュールは必要なさそう。
+
+セッション関連は…OAuth を使うならユーザー管理のセキュリティもあんまり考えなくていいだろうし、まぁ、自作でいいか。
+
+JRF 2011年5月25日
+
+OAuth を自分でしゃべる…それに必要な Digest::SHA::hmac_sha1 は↓などを参考に、sha1 さえあればできるようにした。
+
+《Digest::SHA を使って HMAC-SHA1 を生成するPerlのコード - adiary開発日誌》
+<a href="http://adiary.blog.abk.nu/0274" class="ext-link">http://adiary.blog.abk.nu/0274</a>
+
+JRF 2011年5月25日
+
+……。
+
+で、はてな社の説明と RFC を見ながらシコシコプログラムする…。難しかったのは、signature の base を作るところ、あとで Twitter の OAuth のチュートリアルを読むと、みんなここでひっかかるみたい。base があってるか確認できないのが辛い。で、OAuth::Lite のソースもチラ見しながら、base があってるのに自信があるのに、なかなか成功しない…。
+
+JRF 2011年5月25日
+
+《Consumer key を取得して OAuth 開発をはじめよう - Hatena Developer Center》
+<a href="../../../articles/2011/06/hbm_01446.html" class="int-link" title="Consumer key を取得して OAuth 開発をはじめよう - Hatena Developer Center">http://developer.hatena.ne.jp/ja/documents/auth/apis/oauth/consumer</a>
+
+《RFC 5849 - The OAuth 1.0 Protocol》
+<a href="http://tools.ietf.org/html/rfc5849" class="ext-link">http://tools.ietf.org/html/rfc5849</a>
+
+JRF 2011年5月25日
+
+で、やっと原因をつきとめると、hmac_sha1 の引数が (key, data) ではなく、(data, key) の並びで、それを私が誤解していただけだったということが判明。orz (鍵を任意の長さにできるため、逆にしても key の長さに関するエラーが出ない！)
+
+…めでたく開通。
+
+JRF 2011年5月25日
+
+……。
+
+ある程度、CGI が動くようになったところで Twitter にも初 ID 登録( <a href="http://twitter.com/jion_rockford/" class="ext-link">http://twitter.com/jion_rockford/</a> )し、Twitter の OAuth を使ってみる。
+
+はてなと違い、Twitter は https じゃなく、http でも使えるところが CGI に易しい。authorize に関しては https だが、ここはブラウザに返して 'redirect'(問題あり！後述)する部分なので、そこが https でも CGI には関係ない。
+
+はてなで試しているのだからプロトコルはあってるはずだから、すんなり…とはいかない。
+
+JRF 2011年5月25日
+
+まず、LWP::UserAgent が Oauth.pm がねぇとか吐[ぬ]かしやがる。LWP::UserAgent の pod をよく読むと、通常の request のほかに、simple_request があり、request のほうは、redirect や authorize を自分で処理しようとしてしまうらしく、自分で OAuth をしゃべるなら simple_request を使う必要があるようだった。
+
+JRF 2011年5月25日
+
+simple_request は HTTP::Request::Common といっしょに使えば $ua-&gt;post(...) のところを $ua-&gt;simple_request(POST ...) に変えるだけで使えるようだ。(ただし、POST のあとに &quot;,&quot; はいらない。)
+
+JRF 2011年5月25日
+
+そうやって、返って来るエラーをちゃんと読むと、callback の指定がダメっていわれている。
+
+Twitter で Application を登録するとき Application Type として Browser を指定していたのだが、Callback URL を空欄にしただめだろう、Client を指定していることになっていた。でも、説明には callback の指定は認証のときでいいって書いてるのに…。
+
+JRF 2011年5月25日
+
+で、ここに私は今はローカルで試しているので、<a href="http://localhost/cgi-bin/" class="ext-link">http://localhost/cgi-bin/</a> の CGI を指定した。…すると、ドメインが custom っぽい(つまりなんかの例のコピペっぽい)といって、メールしろとか指示してくる。authorize additional domains で localhost を指定しても同じ警告…。メール送るのはやだなぁ…ともう少しねばっていると、なんと、localhost をループバック IP(127.0.0.1)に変えるだけで、受け容れてくれた！
+
+…めでたく開通。
+
+JRF 2011年5月25日
+
+……。
+
+昔の自分に戻って、考えなおしてみる。↓で書いた PPログイン では、ユーザーがアクセスする二つのサーバーのプロトコルは自由でいいと考えていた。そのバックヤードの定義もちゃんとやってるのが OAuth だと考えれないか…。
+
+《保証付き匿名ログインと即時銀行振込を可能にして！ ― プライバシープロバイダ API （仮称）》
+<a href="../../../articles/2006/12/column_15631876.html" class="int-link" title="保証付き匿名ログインと即時銀行振込を可能にして！ ― プライバシープロバイダ API （仮称）">http://jrf.cocolog-nifty.com/column/2006/12/post_1.html</a>
+
+JRF 2011年5月25日
+
+OAuth を掲示板ブラウザアプリケーションが使う手順は…、
+
+1. CGI がクライアントの Web ブラウザからログイン要求を受け取る。
+
+2. OAuth サーバーサイトに CGI が request を出し、oauth_token を受け取る。このとき callback を指定しておく。
+
+3. CGI は authorize URL に oauth_token を付した URL を作り、Web ブラウザに渡すページに、そこへリダイレクトするよう指示をする。
+
+JRF 2011年5月25日
+
+4. リダイレクトされた OAuth サーバーサイトは CGI が認証を持ってサーバーにアクセスすることを、許可するかユーザーに聞く。
+
+5. 許可された場合、OAuth サーバーサイトは Web ブラウザに 2 で渡された callback に向かうようページを返す。このとき callback の URL には oauth_verifier が付される。
+
+JRF 2011年5月25日
+
+6. callback を受け取った CGI は oauth_verifier が自分に返ってきたことを OAuth サーバーに知らせる。すると、ユーザーの ID 等が返される。(我々が &quot;ID&quot; だと思ってるのを、はてな社は url_name として、Twitter は screen_name として返して来る。)
+
+7. 普通は、ここからさらにユーザーの ID を使って、サーバーのリソースにアクセスする。しかし、「掲示板」のためには 6 で &quot;ID&quot; が得られたことで十分…となる。
+
+…といった感じである。
+
+JRF 2011年5月25日
+
+で、PPログインで考察したことからすると、問題は 3 である。簡単にリダイレクトしてしまうような常態になると、知らない間に偽装サイトが表示されていることが起きうる。それを私は問題にしていたはずだ。
+
+だから、直接リダイレクトせず、リダイレクトするための URL を表示するだけにする。しかも、そこに a href のリンクを張ってはならない。しかし、span id しておき、ブックマークレットで、それを読んで、遷移する…というのだったらかまわない。
+
+JRF 2011年5月25日
+
+HTML では手動でリダイレクトするよう↓のように促し…
+
+&lt;pre&gt;
+&lt;p&gt;You must manually redirect to &lt;span class=&quot;pp-authorizer&quot; id=&quot;oauth-$m_e&quot;&gt;$url&lt;/span&gt; .&lt;/p&gt;
+&lt;/pre&gt;
+
+クリックするブックマークレットは次のようでいいのではないか。
+
+JRF 2011年5月25日
+
+&lt;pre&gt;
+&lt;a class=&quot;bookmarklet&quot; href=&quot;javascript:l=document.getElementById('oauth-$provider');l=l%26%26(l.textContent||l.innerText);if(l%26%26l.indexOf('$aurl?',0)==0){location.href=l}else{alert('No%20authorization%20link')};&quot;&gt;$disp OAuth&lt;/a&gt; 
+&lt;/pre&gt;
+
+JRF 2011年5月25日
+
+$provider は hatena とか twitter といった OAuth サーバーの識別子。$aurl は authorize 用の URL。$disp は「はてな」や「Twitter」といったサーバーのニックネーム。それぞれ URL 用にエスケープしておく。(ちなみに %20 は ' '、%26 は '&amp;'。)
+
+JRF 2011年5月25日
+
+……。
+
+PPログインのところには、「PP振込」も書いている。
+
+JRF 2011年5月25日
+
+これを実行するには…、
+
+上の 2 で request を出すとき、scope=write_private を設定したうえで、追加で金額「枠」を withdraw=10000 とか指定する。
+
+4 で 10000 ポイントを付与するという情報を表示してその許可も得る。額が大きいときはそれがわかるようにする。
+
+6 で、wallet=10000 というデータも返って来る。で、7 でこの wallet=10000 に関して買ったものをサーバーの API を使って private なリソースとして書き込むことで、支払いが完了する。
+
+…といった感じになるか。
+
+JRF 2011年5月25日
+
+まぁ、新しい OAuth サーバーを作らないといけないってことになるが…。もうすでに誰かがやってるのかな？
+
+keyword: OAuth 振込
+
+JRF 2011年5月25日
+
+typo 「しゃべてくれない。」→「しゃべってくれない。」。
+修正 「oauth-$m_e」→「oauth-$provider」。
+
+JRF 2011年5月25日
+
+OAuth 振込をするなら、$aurl を表示するのも実装としてふさわしくない。URL の形で表示すれば、かならず、そこから自動でリダイレクトする UserScript を書くような「お調子者」が出て来るに違いないから。
+
+だから、oauth_verifier 以降のみを表示して、span id=&quot;oauth-verifier-$provider&quot; で囲めばいい。
+
+JRF 2011年5月27日
+
+それで、「ブックマークレット」でも実現できることだけど、どうせなら「銀行協会」がアドオンでツールバーボタンを提供し、pp-authorizer のクラスの span があって、その id がアドオンにユーザーが登録してある支払い $provider に合致すれば、点灯するなりバルーンチップを出すなるして、ボタンのクリックを促す…といった形がいいんじゃなかろうか。
+
+実体は OAuth なんだけど、普通の人にはそうは見えない感じかな。
+
+JRF 2011年5月27日
+
+……。
+
+OAuth 関連のドキュメントを読んでて気になった点として、上の 2 で scope=read_public が「公開情報を読みとる許可」といったような説明を見た気がするが、それは少しニュアンスが違うのではないか。read_public は(私の例では) CGI が公開するものとして読み取る「約束」で、read_private は CGI 側が公開しない約束で読み取るということ。write_public／write_private は、OAuth サーバーがそれぞれ、公開する／公開しないものとして、そういう約束で CGI が OAuth サーバーにデータを渡す…と表現すべきだと思う。
+JRF 2011年5月27日
+
+だから、read_as_public、write_as_private ぐらいの名前のほうがわかりやすいと思う。
+
+または、authorize 部分では、read_private が設定されているときは「このサイトから読まれるデータは private にしか利用されないと申されています。」、write_private は「このサイトから書き込まれたデータは private にしか利用いたしません。」と書いて、「許可」ボタンを押させる形にすべきではないか。
+
+そうすれば、テストを行う CGI の実装者も scope がそういう意味だと気付くと思う。
+
+JRF 2011年5月27日
+
+……。
+
+keyword: OAuth 決済
+
+クレジットーカードや PayPal でももちろんいいが私は分散的に銀行振込でやって欲しい。
+
+JRF 2011年5月30日
+
+あと、上で authorize の段階で、$aurl を表示しないほうがいいと述べたが、実際のところ、ユーザーがどの $aurl を使うかを CGI 管理者に知らせる必要はない。もちろん、CGI 管理者自身もユーザーとして使えるし、ソースなどから $aurl が何かを知ることはできるだろう。
+
+でも、OAuth 側が複数サーバーで一時的な情報を共有するリスクを払っても、リンクの一部を変えられる自由があることは、例えば、何かの(例えばどのアドオンを使ったかの)調査に使えるだろう。
+
+JRF 2011年5月30日
+
+Trackbacks:
+
+《cocolog:70725852》 from JRF のひとこと
+<a href="../../../articles/2011/11/statuses_cocolog_70725852.html" class="int-link" title="ひとこと">http://jrf.cocolog-nifty.com/statuses/2011/11/post-44ef.html</a>
+
+最近、ページを開くとまず広告を表示されるというサイトが「再び」現れるようになった。私は「広告はおおいに結構」というポリシーを持っているが、クリックせねば内容がわからないサイトは、ラッパーをかけたサイトの乗っ取りを疑う。そういう広告を許容するために私はブラウザに新しい機能が欲しい。... 
+
+受信： 2012-01-04 14:58:28 (JST)
+
+《cocolog:70722096》 from JRF のひとこと
+<a href="../../../articles/2011/11/statuses_cocolog_70722096.html" class="int-link" title="ひとこと">http://jrf.cocolog-nifty.com/statuses/2011/11/javas-2.html</a>
+
+JavaScript の Canvas にもオリジン制限があることを知る。開発者向けにブラウザ起動時にそれを無視するオプションはあるようだが、サーバーオーナーやブロガーが回避する方法はなさそう。 
+
+受信： 2012-01-04 14:59:15 (JST)
+
+《aboutme:139109》 from JRF のひとこと
+<a href="../../../articles/2011/06/statuses_aboutme_139109.html" class="int-link" title="ひとこと">http://jrf.cocolog-nifty.com/statuses/2011/06/aboutme139109.html</a>
+
+Statuses_Editor_Proxy.CGI を公開した。現在は aboutme2cocolog の一部として。万一、アバウトミーがほんとに終っちゃても、ある程度開発を続ける足がかりになるかな。ただ、正直、私はひとことは一人でやってるから、あまり私にメリットはないのだけど。... 
+
+受信： 2012-01-04 18:53:06 (JST)
+
+《cocolog:72357469》 from JRF のひとこと
+<a href="../../../articles/2012/04/statuses_cocolog_72357469.html" class="int-link" title="ひとこと">http://jrf.cocolog-nifty.com/statuses/2012/04/post-1e37.html</a>
+
+グループクレジットカードってできないか？どこかの金融グループのクレカというのではなく、グループ発行のクレジットつまりツタヤとかPontaとかの共通ポイントのカードというのでもなく、グループがある種の「個」としてクレジットカードを共有し、使った額をSNSで皆が見れるようなシステム。... 
+
+受信： 2012-06-27 07:20:01 (JST)</pre>
+
+
+<section class="backrefs" data-pagefind-ignore>
+<h2>後方参照 (6 件)</h2>
+<ul>
+<li><span class="backref-label">[aboutme:138968]参照</span> <a href="../../../articles/2012/04/statuses_cocolog_72357469.html">ひとこと</a> <span class="backref-date">2012年04月17日</span></li>
+<li><span class="backref-label">[aboutme:138968]参照</span> <a href="../../../articles/2011/11/statuses_cocolog_70722096.html">ひとこと</a> <span class="backref-date">2011年11月29日</span></li>
+<li><span class="backref-label">[aboutme:138968]参照</span> <a href="../../../articles/2011/11/statuses_cocolog_70725852.html">ひとこと</a> <span class="backref-date">2011年11月29日</span></li>
+<li><span class="backref-label">[aboutme:138968]参照</span> <a href="../../../articles/2011/06/statuses_aboutme_139109.html">ひとこと</a> <span class="backref-date">2011年06月03日</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2011/05/statuses_aboutme_138896.html">ひとこと</a> <span class="backref-date">2011年05月20日</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2010/05/statuses_aboutme_124333.html">ひとこと</a> <span class="backref-date">2010年05月14日</span></li>
+</ul>
+</section>
+
+</article>
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2011/05.html">2011年05月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+</body>
+</html>

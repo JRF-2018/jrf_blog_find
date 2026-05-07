@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>gengou.js：日付を後付けで元号表示にする - JRF Blog Archive</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2014/02.html">2014年02月</a> | <a href="../../../index/software.html">ソフトウェア Tips</a></nav>
+<article data-pagefind-body>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[software] <span class="cocolog-id">cocolog:78888769</span></td></tr>
+<tr><th>セクション</th><td>JRF のソフトウェア Tips</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2014/02.html">2014年02月08日 00:37:41</a></td></tr>
+<tr><th>元URL</th><td><a href="http://jrf.cocolog-nifty.com/software/2014/02/post.html" class="ext-link"><span class="original-url">http://jrf.cocolog-nifty.com/software/2014/02/post.html</span></a></td></tr>
+<tr><th>タグ</th><td>[JRF 作成ソフトウェア] [JavaScript]</td></tr>
+</table>
+</div>
+<h1>gengou.js：日付を後付けで元号表示にする</h1>
+<pre class="body">ブログ記事の上の日付とかを西暦から元号に変えるための JavaScript。最初の紹介はいちおう <a href="../../../articles/2014/01/statuses_cocolog_78797141.html" class="int-link cocolog-id" title="ひとこと">[cocolog:78797141]</a> になるが、ほぼ説明してない。このサイトで使ってるので、どういう感じになるかは PC でこのサイトを見てればわかるはず。使い方は、次をページ(ブログテンプレートとか)で JavaScript をロードしてる部分に足すだけ。
+
+&lt;script type=&quot;text/javascript&quot; src=&quot;<a href="http://jrf.cocolog-nifty.com/archive/lib/gengou.js&amp;quot;&amp;gt;&amp;lt;/script&amp;gt;" class="ext-link">http://jrf.cocolog-nifty.com/archive/lib/gengou.js&amp;quot;&amp;gt;&amp;lt;/script&amp;gt;</a>
+&lt;script type=&quot;text/javascript&quot;&gt;
+&lt;!--
+add_event_listener_rewrite_gengou(&quot;//div[@class='content']/h2&quot;);
+add_event_listener_rewrite_gengou(&quot;//div[@class='sticky-entry']/h2&quot;);
+--&gt;
+&lt;/script&gt;
+
+どの日付を換えるかは、上の add_event_listener_rewrite_gengou の引数の XPath で指定してるので、そこを変えればほぼどんなサイトでも使えるはず。
+
+もちろん、gengou.js はダウンロードして自分のサイトに置いて使ったほうがいい。そのときは、内部で古いブラウザ用にここから取ってきた XPath のライブラリを使ってるので、それもいっしょに置いて、ソースの GENGOU_XPATH_JS で指定すること。(どうせならと、XPath 2.0とかを選ぶ人もいるかもしれないけど。)
+
+ただ、このスクリプト、元号は直近の記事分は変わらないようになってて、「その日以降元号にする」という部分は、ソース直書きになる。そこはソース中の↓の &quot;2014-02-12&quot; を最新の日付に更新しさえすればいい。私は(生きてれば)だいたい３ヶ月ごとに更新していくはず。三つ組の最後の部分は終了日で、ネット時代になってからずっと平成なので null のまま、ソースには「ももくり三年」にちなんだ例が載ってて、&quot;平成%(数)G年%(和)m%(数)d日&quot; と指定して「平成二十六年如月十一日」と漢数字化するような例も載ってる。
+
+var Gengou = [
+  [null, &quot;2019-04-30&quot;, null], 
+  [&quot;平成%(半)G年(%Y年) %_m月%_d日&quot;, &quot;1989-01-08&quot;, null]
+];
+
+一番上でリンクしたひとことでも書いたんだけど、私が死んだあと誰かがここを引き継ぐと、デフォルトでは元号の表示が切れるわけで、そこは少し失礼にあたる。ずっと同じ元号のほうが失礼が薄いという考え方もあるのは知ってるが、私の後継者が万一現れたとき、よくわからないまま、この先のすごい高齢化社会において「新しく若い元号」を認めないような形になるのをむしろ避けたかった。
+
+そういうことだから、このスクリプトを自分のとこにおけないと、私の更新が止まれば元号表示が止まっちゃう。こういうスクリプトの提供は政府がやってくれたら便利なんだけどね…。政府だと責任とか小回りの点で難しかったら、神社の団体とか、特定のデカい神社とかがやってくれたらありがたいのに。(いちおう、最新の JavaScript には Intl.DateTimeFormat とかいう機能があるらしいけど…。)
+
+「素人」が自分のサイトで使うために作っただけなので、コード品質は「良い」とは言えないと思う。ただ、その程度なのでパブリックドメインが著者たる私の意志。商用だろうが改造しようが、お好きに使っていただいても私は文句言いません。
+
+更新：2014-02-08,2014-02-11,2019-02-21
+初公開：2014年02月08日 00:37:43
+最新版：2019年02月21日 00:26:38
+
+
+Comments:
+
+[E:despair] 更新：記事を書いたあと確認すると、IE でなぜか元号表示になってない！前はうまく行ってたのに…。
+
+調べると、xpath のモジュールを「インクルード」するときに、document.body ができてなかったため、ちょっとダーティだが、そのときは HEAD の部分で include するようにした。(しかも、IE6 だと document.head じゃダメで、document.getElementsByTagName('head')[0] にしないとダメ。Thanks→《javascript - document.head.appendChild or document.createElement not working in IE - Stack Overflow》。)
+
+いろいろやってて、Time-Stamp は名前と合ってないけど、前の分は gengou-20140129.js に、今回の分は gengou-20140208.js にアーカイブしておいた。
+
+投稿: JRF | 2014-02-08 02:12:12 (JST)
+
+[E:basketball] 更新：gengou-20140211.js。バージョン 0.03。
+
+POSIX や GNU の strftime とか date コマンドとかで使えるフォーマットで書くように改めた。もちろん全部が使えるわけではなくサブセット…下位互換にしたということ。ただし、和暦年数指定の &quot;%G&quot; だけは、それらと違う意味になっている。
+
+内部的にはかなり大きな変更で、またまた IE6 のオブジェクトのプロパティリストがらみのシンタックスエラーに悩んでいた。一番最後のカンマの問題ではなく、最後、「ケツカンマ」を避けるために { null: null } みたいにしたところ、最初の null がプロパティとして指定してはいけないたぐいのものらしくエラーになっていた。
+
+投稿: JRF | 2014-02-11 23:25:42 (JST)
+
+[E:tennis] 更新: gengou-20190221.js。バージョン 0.04。
+
+「元年」に対応した。半角数字を普段使うが元年だけ漢字にしたいときは、上のように (半) を使う。
+
+投稿: JRF | 2019-02-21 00:29:48 (JST)
+
+
+Links:
+
+XPath: <a href="../../../articles/2014/02/hbm_01744.html" class="int-link" title="Java 入門 | XPath">http://msugai.fc2web.com/java/XML/XPath.html</a>
+gengou.js: <a href="http://jrf.cocolog-nifty.com/archive/lib/gengou.js" class="ext-link">http://jrf.cocolog-nifty.com/archive/lib/gengou.js</a>
+ここ: <a href="../../../articles/2014/02/hbm_01742.html" class="int-link" title="JavaScript-XPath - CodeRepos::Share - Trac">http://coderepos.org/share/wiki/JavaScript-XPath</a>
+Intl.DateTimeFormat とかいう機能があるらしい: <a href="../../../articles/2014/02/hbm_01743.html" class="int-link" title="JavaScript 日付を元号に Intl.DateTimeFormat - 3DCGおよびプログラミング學習帳">http://3dcg.qlookblog.net/20130724.html</a>
+javascript - document.head.appendChild or document.createElement not working in IE - Stack Overflow: <a href="http://stackoverflow.com/questions/10159130" class="ext-link">http://stackoverflow.com/questions/10159130</a>
+gengou-20140129.js: <a href="http://jrf.cocolog-nifty.com/archive/javascript/gengou-20140129.js" class="ext-link">http://jrf.cocolog-nifty.com/archive/javascript/gengou-20140129.js</a>
+gengou-20140208.js: <a href="http://jrf.cocolog-nifty.com/archive/javascript/gengou-20140208.js" class="ext-link">http://jrf.cocolog-nifty.com/archive/javascript/gengou-20140208.js</a>
+gengou-20140211.js: <a href="http://jrf.cocolog-nifty.com/archive/javascript/gengou-20140211.js" class="ext-link">http://jrf.cocolog-nifty.com/archive/javascript/gengou-20140211.js</a>
+gengou-20190221.js: <a href="http://jrf.cocolog-nifty.com/archive/javascript/gengou-20190221.js" class="ext-link">http://jrf.cocolog-nifty.com/archive/javascript/gengou-20190221.js</a></pre>
+
+
+<section class="backrefs" data-pagefind-ignore>
+<h2>後方参照 (2 件)</h2>
+<ul>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2019/03/statuses_cocolog_90846676.html">ひとこと</a> <span class="backref-date">2019年03月22日</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2014/07/statuses_cocolog_80048087.html">ひとこと</a> <span class="backref-date">2014年07月01日</span></li>
+</ul>
+</section>
+
+</article>
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2014/02.html">2014年02月</a> | <a href="../../../index/software.html">ソフトウェア Tips</a></nav>
+</body>
+</html>

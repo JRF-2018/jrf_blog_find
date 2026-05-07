@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>共有メモ - JRF Blog Archive</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2023/06.html">2023年06月</a> | <a href="../../../index/gsm.html">共有メモ</a></nav>
+<article data-pagefind-body>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[gsm] 2023-06-21T19:04:49Z</td></tr>
+<tr><th>セクション</th><td>グローバル共有メモ</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2023/06.html">2023-06-21T19:04:49Z</a></td></tr>
+<tr><th>元URL</th><td>(URLなし)</td></tr>
+
+</table>
+</div>
+<h1>共有メモ</h1>
+<pre class="body">jrf&gt; PAR (Predictor - Actor - Recollector)。少し考えを改める。
+
+《Google DeepMindから「自己改善型AI」が登場、あらゆる場面でのロボットアームの使い方を勝手に身につけることが可能 - GIGAZINE》  
+<a href="https://gigazine.net/news/20230621-robocat-self-improving/" class="ext-link">https://gigazine.net/news/20230621-robocat-self-improving/</a>
+
+↑もそうなのではないかと思うが LLM も、まず、大規模に雑多な知識を学習する。しかるのちファインチューンを行い、現実の環境に持ってくる。
+
+まず雑多な知識を学習したものが、要は PAR では Recollector に相当するのではないか。すると、ファインチューンは Predictor の学習になるのかもしれない。そして本番環境から学ぶのが Actor ？
+
+いや、ちょっと違うか、本番環境からのフィードバックはファインチューンに対してなされねばならないだろう。だから Predictor にフィードバックをする必要がある。では Actor はいらないかというと、別の出力の出し方として、別のファインチューンを要するものとして必要になるのではないか。
+
+環境、予想、行動の組が Predictor と Actor で結局同じものを使えばいいとなったのであるが、ファインチューンということだと、Predictor と Actor が違う感じに学習でき、 両者のどちらが正しいかを、本番環境で試すみたいになるのではないか？
+
+そのときより正しい方は学習されず、間違ってる方は負の学習をする…とすればよいのではないか。あとはファインチューンがめちゃめちゃ高速なら、負の学習もつかってファインチューンをやり直す感じになればいいのではないか。
+
+そんなうまくいくだろうか？ やってみるべきだが、どういう例でどうコードを築いていくべきなのか…。
+
+これは LLM の議論ではなく、Transformer 的議論ということになるかもしれないが。</pre>
+
+
+</article>
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2023/06.html">2023年06月</a> | <a href="../../../index/gsm.html">共有メモ</a></nav>
+</body>
+</html>

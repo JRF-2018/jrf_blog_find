@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>ひとこと - JRF Blog Archive</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2022/06.html">2022年06月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+<article data-pagefind-body>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[statuses] <span class="cocolog-id">cocolog:93564604</span></td></tr>
+<tr><th>セクション</th><td>JRF のひとこと</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2022/06.html">2022年06月19日</a></td></tr>
+<tr><th>元URL</th><td><a href="http://jrf.cocolog-nifty.com/statuses/2022/06/post-2c0e50.html" class="ext-link"><span class="original-url">http://jrf.cocolog-nifty.com/statuses/2022/06/post-2c0e50.html</span></a></td></tr>
+
+</table>
+</div>
+<h1>ひとこと</h1>
+<pre class="body">sympy_matrix_tools を作った。SymPy で行列計算する上でこういうのがあったらいいんじゃない？…という関数をまとめて、Google Colab から使えるようにしておいた。MatrixFunction, Apply, MatrixWild などが使える。
+JRF 2022年6月19日
+
+ソースと使用例だけからなるドキュメントは、↓にある。
+
+《JRF-2018/sympy_matrix_tools: Some tools for sympy matrices.》  
+<a href="https://github.com/JRF-2018/sympy_matrix_tools" class="ext-link">https://github.com/JRF-2018/sympy_matrix_tools</a>
+
+sympy_matrix_tools の最初のお目見えは、<a href="../../../articles/2022/05/statuses_cocolog_93495591.html" class="int-link cocolog-id" title="ひとこと">[cocolog:93495591]</a>。そこから引用する。
+
+JRF 2022年6月19日
+
+＞このところ SymPy で MatrixSymbol のお試しをしててこういうのがあったらいいんじゃない？…という関数をまとめて、Google Colab から使えるようにしておいた。あくまで自分用で実験的利用のため…と考えていただきたい。＜
+
+＞sympy_matrix_tools に級数の部分展開を行うルーチンや行列の数列を扱う MatrixFunction を作った(version 0.1.0)。＜
+
+JRF 2022年6月19日
+
+＞上にも書いたように sympy_matrix_tools は、自分用で実験的利用のため…が第一の目的。もちろん、他の方に使っていただけてもありがたいのではあるが、MatrixFunction などは本家の SymPy でいつ出てきてもおかしくないようなものだったりするので、使うときは、sympy_matrix_tools と SymPy のバージョンは決め打ちしたほうが良いかもしれない。または、私のようにノートブックにしてそのときどきの出力を残せば十分と考えるか。＜
+
+JRF 2022年6月19日
+
+＞本来は、SymPy の Issues に希望を書いて取り込んでもらうとかするべきなのかもしれないが、私、英語できないし、技術力も大してないしで、そこまで手がまわらない。＜
+
+JRF 2022年6月19日
+
+＞本当はこういった検算・証明は専門の theorem prover を使ってやるべきである。しかし、無料で誰でも使える Google Colab &amp; Python で示せればそれはそれで価値があるのではないかと考えた。…とも README.md に書いたが、行列も扱える theorem prover って何があるのだろう？ 何がいいのだろう？ 教えて欲しい。＜
+
+JRF 2022年6月19日
+
+光栄にも、SymPy の開発者が(部分的にも) sympy_matrix_tools の機能を元の SymPy に統合したいという場合は、どうぞご自由にしてください。
+
+JRF 2022年6月19日
+
+……。
+
+それをアップデートした。バージョン 0.2.0。
+
+Higher-Order Logic ライクな推論が行えるように Apply と resolve_mp を作った。
+
+JRF 2022年6月19日
+
+MatrixWild, MatrixDummy も作ったが、使い道があるのかどうか…。MatrixWild, MatrixDummy を使いたい場合は SymPy のバージョンが 1.10.1 以上である必要がある。Google Colab で使うときは…、
+
+!pip install &quot;sympy&gt;=1.10.1&quot;
+
+…としてから…
+
+JRF 2022年6月19日
+
+!pip install git+<a href="https://github.com/JRF-2018/sympy_matrix_tools" class="ext-link">https://github.com/JRF-2018/sympy_matrix_tools</a>
+
+…とする必要がある。
+
+JRF 2022年6月19日
+
+……。
+
+……。
+
+追記。更新。
+
+sympy_matrix_tools。バージョン 0.2.2。
+
+MatrixWild には少なくとも3年前に先行者(↓)がいるようだが、残念ながら sympy:master には取り込まれていないようす。
+
+《Add matrix wildcards by anpandey · Pull Request #17365 · sympy/sympy》  
+<a href="https://github.com/sympy/sympy/pull/17365" class="ext-link">https://github.com/sympy/sympy/pull/17365</a>
+
+↑を参考に MatrixWild と MatrixDummy の定義をいじった。
+
+JRF 2022年6月24日
+
+……。
+
+……。
+
+追記。更新。
+
+sympy_matrix_tools。バージョン 0.2.3。
+
+大きな更新はない。しばらく、MatrixFunction の微分ができるよう sympy.tensor.array を調べて試験実装をしていた。しかし、結局のところは、うまくいかず、諦めてそのコードはコメントアウトして、痕跡だけ残している。その部分は将来削ることになるだろう。今だけのコードということで、特にこのバージョンを記録するため、ここに書いている。
+
+JRF 2022年6月29日
+
+Array で行列積を使うには、テンソル積のあと、縮約(contraction) を使うらしいのだが、他の部分では対角(diagonal)にする方法を sympy のソースでは用いている。これのパラメータを自由に設定できるなら、自分の考え通りに設定して終りなのだが、そうはいかず、これらはかなり限られた値でないと計算が最後まで行かずエラーが出る。しかも最後まで行くようなものも、MatrixFunction に実際の例を代入すると、エラーが出てしまい、こちらのエラーは結局解決できなかったので、「諦める」という結果になった。
+
+JRF 2022年6月29日
+
+なお、ごく私事だが、私の生活の面倒を見てくれていた母の足の持病に関する入院が決まり、しばらく、コードの更新等が滞ることがありうる。この次は、論理に関するツールを作ろうかと思っていたが、それはだいぶ先の話になるかもしれない。
+
+JRF 2022年6月29日
+
+……。
+
+……。
+
+追記。更新。
+
+sympy_matrix_tools。バージョン 0.2.4。
+
+述語論理の証明ができるように resolve_implications を作り、rename_bound_symbols_uniquely や conditional_apply といった補助ツールも作った。
+
+昔、Isabelle を用いて「研究」していたころのことを思い出しながら作った。昔取った杵柄。
+
+JRF 2022年7月6日
+
+ただ、Isabelle と違い、meta logic があるわけでもなく、対象論理だけで proofstate を作るのにちょっととまどった。また meta variable のリフティングに相当するものはこの前作った Apply 系を Wild シンボルと組み合わせることで無理矢理実現していたりする。
+
+そのため、本気で使うにはかなり苦しい仕様となっている。できた定理が公理的に作った論理式と type で区別できるというわけでもない。だから、実験・お遊び以上のものではない。私の過去の「栄光」を懐かしむためだけに作ったといっても過言ではない。
+
+JRF 2022年7月6日
+
+……。
+
+……。
+
+追記。更新。
+
+sympy_matrix_tools。バージョン 0.2.6。
+
+ちょっとしたバグを取ったのと、forall_eresolve_implications を作った。
+
+まず、問題として、ForAll に変数が複数ある場合の allE をどうするかがあった。
+
+方法 1. ForAll は複数の変数を取らないようにする。…これは素直だが、読みにくくなる。ただ意味論的には正解…というか ForAll に型があれば複数変数を許すのは複数の型を許すことになり自然ではない。
+
+JRF 2022年7月8日
+
+方法 2. allE だけ関数などにして複数変数は特別に扱う。この方が今の方針には合致している。ForAll が取るのはいってみれば関数としての集合でしかなく型は考えなくていいというところを延長すれば、こういうこともありだろう。このほうが見やすく、このセンで行きたい。しかし、allE 以外特別な関数が他にいらないかが問題。
+
+JRF 2022年7月8日
+
+結局、方法 2 をとることにして、forall_eresolve_implications を作ったのだった。ForAll はメタな概念に近く、それについてのみ特別な操作を許しても、他ですべて同じ「いろいろ作る」方針をとらなくていいだろう。…と読んで。ただ、この「読み」が間違いである可能性もけっこうある…。
+
+JRF 2022年7月8日
+
+……。
+
+……。
+
+追記。更新。
+
+sympy_matrix_tools。バージョン 0.2.7。
+
+resolve_implications 系でいろいろな index や num について、論理式に関する query を付せるようにした。get_prems_index や formula_match がその処理をする関数。
+
+JRF 2022年7月8日
+
+resolve_implications(proofstate, z, index=None, num=None) …の index や num に関するものだが、例えば、eresolve_implications だとさらに z のどこを対象にするかという elim_index も指定できる。index はサブゴールの位置、num は答えの何番目を返すかを表す。
+
+JRF 2022年7月8日
+
+これまで resolve_implications の中の前処理で変数名の書き換え等をしていて、それで index や elim_index の位置が予測できないことがあった。そこで query を書けるようにして、そのわずらわしさから抜け出せる(場合がある)ようにした。
+
+JRF 2022年7月8日
+
+例えば…
+
+z = eresolve_implications(z, allE, index=2, elim_index=ForAll)
+
+…などとして指定すると、サブゴール 2 に allE を適用して、allE の前提のうち、ForAll を持つものだけが elim の対象となる。
+
+JRF 2022年7月8日
+
+query m は複雑なものも指定できる。x に対して…
+
+m が Predicate の instance なら m in x.atoms(Predicate) が真でなければならない。
+
+m が type の instance なら、x.atoms(m) が真つまり x に m が含まれてなければならない。
+
+m が SymPy のオブジェクト(つまり式)なら、m.match(x) が真でなければならない。
+
+JRF 2022年7月8日
+
+m が文字列型ならその変数名が x に含まれなければならない。ただし、変数名は前処理で数字付きに置き換わることがあるため、数字をドロップしたものとの比較もなされる。
+
+m が (&quot;sub&quot;, m1) のとき subterm のどれかが query m1 を満たすか調べる。
+
+m が (&quot;prem&quot;, m1) のとき、前提(複数のうちどれか)が query m1 を満たすか調べる。
+
+JRF 2022年7月8日
+
+m が (&quot;concl&quot;, m1) のとき、結論部が query m1 を満たすか調べる。
+
+m が (&quot;premnum&quot;, n) のときは、前提の数が n 個であるかを調べる。(&quot;premnum&quot;, [&quot;&gt;=&quot;, n]) で n 以上といった指定もできる。
+
+JRF 2022年7月8日
+
+m が (&quot;not&quot;, m1) のときは query m1 が満たされないことを調べる。
+
+m が (&quot;or&quot;, [m1, m2]) のときは query m1 か m2 が満たされるかを調べる。
+
+m が リストのときは、これまでのものの列で、そのすべてが満たされることが必要である。
+
+JRF 2022年7月8日
+
+そしてリストに int i が含まれるときは、その数値は、m を満たすものの中で i 番目のものを選ぶことを表す。なお、i が指定されないときは 0 番目を選ぶのが普通である。
+JRF 2022年7月8日
+
+[(&quot;prem&quot;, [ForAll, &quot;V&quot;, &quot;U&quot;]), (&quot;concl&quot;, &quot;W&quot;), 1]
+
+…などという query の場合、前提部に ForAll があって V と U という変数があり、結論部には W があるもののうち、1 番目を選ぶことになる。
+
+JRF 2022年7月8日
+
+……。
+
+……。
+
+追記。更新。
+
+sympy_matrix_tools。バージョン 0.3.0。
+
+FrozenGoal を導入し、proofstate をわかりやすくした。そのため、resolve_implications まわりのコードがかなり変わった。
+
+Isabelle にならい、make_proofstate で prems を返すパターンもできるようにした。Dummy を使って。こんなことやっていいか自信はないが。
+
+JRF 2022年7月9日
+
+……。
+
+……。
+
+追記。更新。
+
+sympy_matrix_tools。バージョン 0.3.2。
+
+remove_trivial_assumptions で check_most_trivial するようにした。これで、unification のあと、同時に消える項などの処理が適切になると思う。
+
+rename_bound_symbols_uniquely において、bound symbols の名前が実行ごとに変わりやすかったのを少し変わりにくくした。これで、free な Wild や束縛変数名を指定しての実行などがまずまず安定すると思う。
+
+JRF 2022年7月14日
+
+……。
+
+……。
+
+追記。更新。
+
+sympy_matrix_tools。バージョン 0.3.3。
+
+解の探索がしやすいよう iter_resolve_implications (resolve_implications のイテレータ版)を作っておいた。
+
+JRF 2022年7月14日
+
+……。
+
+……。
+
+追記。
+
+sympy_matrix_tools。バージョン 0.3.4。
+
+make_proofstate をするときに Dummy があってもよいようにした。ただし、melt_theorem 時には自動的に Dummy のままにならないので、Dummy を普通のシンボルのように使いたい場合は、melt_theorem 時に exclude で指定する必要がある。
+
+JRF 2022年7月25日
+
+これは、make_proofstate を split_prems=True で Dummy を含むような証明状態を作ったときに、prems から何かその Dummy を含むような補助定理をまず証明したいといったことがやりたいときに、Dummy を含むようなゴールが設定できるようにするためのもの。補助定理(のゴール)を g1 とし、No subgoals となった証明状態を z とすると…、
+
+melt_theorem(z, exclude=set([v for v in g1.free_symbols if v.is_Dummy]))
+
+…などとするのが普通である。
+
+JRF 2022年7月25日
+
+……。
+
+……。
+
+追記。更新。
+
+sympy_matrix_tools。バージョン 0.3.5。
+
+0.3.4 の方法はうまくない。意図してやらないと補助定理に Dummy を含ませられず、デフォルトで Wild に変換されてしまうのは、間違いの元だ。
+
+JRF 2022年7月25日
+
+そこで FrozenGoal を、第2の引数を取れるよう改造し、そこに melt_theorem 時に Wild に変換すべき Dummy を記録しておくことにした。これにより 0.3.4 みたいなことは(melt_theorem 時に exclude を指定せず)自動的になされることになった。
+
+ただ、読みにくくなると思ったので、print_proofstate はいじらずにおいた。
+
+JRF 2022年7月25日
+
+……。
+
+……。
+
+追記。更新。
+
+sympy_matrix_tools。バージョン 0.3.6。
+
+SymPy 1.11.1 に対応。案の上というか、1.11.1 を入れるだけですんなり動くということはなくいろいろ修正が必要だった。
+
+JRF 2022年10月12日
+
+また、基本的なライブラリとしては前と同じく動くようになってるが、例は動かなくなったものがあった。Derivative 関連とか。またいくつか「バグ」を発見し Issues に報告している。
+
+《MatAdd should filter out S.Zero . - Issue #24131 - sympy/sympy》  
+<a href="https://github.com/sympy/sympy/issues/24131" class="ext-link">https://github.com/sympy/sympy/issues/24131</a>
+
+JRF 2022年10月12日
+
+《print fails with MatMul and Expectation. - Issue #24132 - sympy/sympy》  
+<a href="https://github.com/sympy/sympy/issues/24132" class="ext-link">https://github.com/sympy/sympy/issues/24132</a>
+
+この先、テストは SymPy の最新のものと 1.10.1 で行うことになりそう。
+
+対応は、conda で(-c conda-forge で)インストールできるまで待ってた。この先も SymPy の最新のものは今回と同じように Anaconda で使えるようになるのを待ってからになる予定。
+
+JRF 2022年10月12日</pre>
+
+
+<section class="backrefs" data-pagefind-ignore>
+<h2>後方参照 (4 件)</h2>
+<ul>
+<li><span class="backref-label">[cocolog:93564604]参照</span> <a href="../../../articles/2025/10/statuses_cocolog_95699207.html">ひとこと</a> <span class="backref-date">2025年10月30日</span></li>
+<li><span class="backref-label">[cocolog:93564604]参照</span> <a href="../../../articles/2022/12/statuses_cocolog_93934149.html">ひとこと</a> <span class="backref-date">2022年12月29日</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2022/10/gsm_002624.html">共有メモ</a> <span class="backref-date">2022-10-12T10:29:36Z</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2022/07/gsm_002349.html">共有メモ</a> <span class="backref-date">2022-07-24T19:26:24Z</span></li>
+</ul>
+</section>
+
+</article>
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2022/06.html">2022年06月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+</body>
+</html>

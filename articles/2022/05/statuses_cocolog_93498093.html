@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>ひとこと - JRF Blog Archive</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2022/05.html">2022年05月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+<article data-pagefind-body>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[statuses] <span class="cocolog-id">cocolog:93498093</span></td></tr>
+<tr><th>セクション</th><td>JRF のひとこと</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2022/05.html">2022年05月17日</a></td></tr>
+<tr><th>元URL</th><td><a href="http://jrf.cocolog-nifty.com/statuses/2022/05/post-75ae48.html" class="ext-link"><span class="original-url">http://jrf.cocolog-nifty.com/statuses/2022/05/post-75ae48.html</span></a></td></tr>
+
+</table>
+</div>
+<h1>ひとこと</h1>
+<pre class="body">Python Tips: PDB で property で break。
+JRF 2022年5月17日
+
+&lt;pre&gt;
+class A:
+    @property
+    def bar(self):
+        return &quot;OK&quot;
+a = A()
+import pdb; pdb.set_trace()
+a.bar
+&lt;/pre&gt;
+
+…として、a.bar に breakpoint を設定したい場合、
+
+JRF 2022年5月17日
+
+&lt;pre&gt;
+(Pdb) b A.bar.fget
+&lt;/pre&gt;
+
+…とすればよい。
+
+JRF 2022年5月17日
+
+こうしないと次のようなエラーが出る。
+
+&lt;pre&gt;
+(Pdb) b a.bar
+*** The specified object 'a.bar' is not a function or was not found along sys.path.
+&lt;/pre&gt;
+
+JRF 2022年5月17日</pre>
+
+
+</article>
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2022/05.html">2022年05月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+</body>
+</html>

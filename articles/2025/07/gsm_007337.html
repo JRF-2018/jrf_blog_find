@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>共有メモ - JRF Blog Archive</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2025/07.html">2025年07月</a> | <a href="../../../index/gsm.html">共有メモ</a></nav>
+<article data-pagefind-body>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[gsm] 2025-07-11T05:01:02Z</td></tr>
+<tr><th>セクション</th><td>グローバル共有メモ</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2025/07.html">2025-07-11T05:01:02Z</a></td></tr>
+<tr><th>元URL</th><td>(URLなし)</td></tr>
+
+</table>
+</div>
+<h1>共有メモ</h1>
+<pre class="body">jrf&gt; Colab の gemini-cli で Imagen。やっと GENMEDIA_BUCKET に生成できた。足りないのは次のコマンドだった。
+
+&lt;pre&gt;
+gcloud storage buckets add-iam-policy-binding gs://&lt;YOUR_BUCKET&gt; \
+   --member=&quot;serviceAccount:service-&lt;YOUR_VERTEX_AI_SERVICE_NUMBER&gt;@gcp-sa-aiplatform.iam.gserviceaccount.com&quot; \
+   --role=&quot;roles/storage.objectUser
+&lt;/pre&gt;
+
+これでもし不十分なら以下をしていただきたい。
+
+&lt;pre&gt;
+gcloud projects add-iam-policy-binding &lt;YOUR_PROJECT_ID&gt; \
+  --member=&quot;serviceAccount:service-&lt;YOUR_VERTEX_AI_SERVICE_NUMBER&gt;@gcp-sa-aiplatform.iam.gserviceaccount.com&quot; \
+  --role=&quot;roles/storage.admin&quot;
+&lt;/pre&gt;
+
+service-&lt;YOUR_VERTEX_AI_SERVICE_NUMBER&gt; は、GCP にストレージ(バケット)を作ったとき権限を見るとあるはずの Vertex AI サービス エージェント の ID。
+
+imagen をいじってるだけではこのエラーはわからなかった。500 Internal Error と表示されるだけだから。veo で生成しようとして、はじめて、ここにエラーの元があるのがわかった。orz
+
+本来なら、私のメールアドレスに権限があるだけで十分だと思うんだけど(そこには rules/storage.objectUser はすでに付与していた)、これが原因だったようだ。</pre>
+
+
+</article>
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2025/07.html">2025年07月</a> | <a href="../../../index/gsm.html">共有メモ</a></nav>
+</body>
+</html>

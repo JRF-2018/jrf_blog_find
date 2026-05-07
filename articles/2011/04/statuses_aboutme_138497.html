@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>ひとこと - JRF Blog Archive</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2011/04.html">2011年04月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+<article data-pagefind-body>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[statuses] <span class="cocolog-id">aboutme:138497</span></td></tr>
+<tr><th>セクション</th><td>JRF のひとこと</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2011/04.html">2011年04月25日</a></td></tr>
+<tr><th>元URL</th><td><a href="http://jrf.cocolog-nifty.com/statuses/2011/04/aboutme138497.html" class="ext-link"><span class="original-url">http://jrf.cocolog-nifty.com/statuses/2011/04/aboutme138497.html</span></a></td></tr>
+
+</table>
+</div>
+<h1>ひとこと</h1>
+<pre class="body">ココログの XMLRPC の dateCreated の「バグ」にはまる。iso8601 形式というが融通が利かず、&quot;20110425T01:02:03Z&quot; という形式でなければならず、&quot;2011-04-25T01:02:03Z&quot; とかでもダメらしい。
+JRF 2011年4月25日
+
+さらに私は、Javascript で整数を toString せずに使っていたら、&quot;0&quot; でパディングするところでもバグってしまい、さらにハマってしまった。
+
+ちなみに、パディングのミスは XMLRPC が fail を返してくれるのでわかりやすいが、&quot;-&quot; が使えないというミスは、投稿はできるのに記事がいきなり消えたように見えて焦った。
+
+「いきなり消えた」ように見えたのは、記事が 1 月 1 日の日付として解釈されたため、その日付にアーカイブされてしまい、トップページに現れなくなったためであった。
+
+
+JRF 2011年4月25日
+
+他にも XMLRPC 関連はいろいろ融通が利かない。トラックバック関連でもおかしかったように記憶している。
+
+JRF 2011年4月25日</pre>
+
+
+</article>
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2011/04.html">2011年04月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+</body>
+</html>

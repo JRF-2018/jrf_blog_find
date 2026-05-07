@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>共有メモ - JRF Blog Archive</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2021/07.html">2021年07月</a> | <a href="../../../index/gsm.html">共有メモ</a></nav>
+<article data-pagefind-body>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[gsm] 2021-07-30T12:53:01Z</td></tr>
+<tr><th>セクション</th><td>グローバル共有メモ</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2021/07.html">2021-07-30T12:53:01Z</a></td></tr>
+<tr><th>元URL</th><td>(URLなし)</td></tr>
+
+</table>
+</div>
+<h1>共有メモ</h1>
+<pre class="body">jrf&gt; [仏教の最適化プログラムの続き。]
+
+指名により子や孫、兄弟から選ばれる件、嫡出、非嫡出、養子の扱いについて。
+
+まずは、嫡出子つまり正式な結婚による関係の子や孫、兄弟が選ばれる。それらがいない場合、非嫡出な関係までみて、子や孫、兄弟から選ばれる。それらもいない場合、養子までみて子や孫、兄弟から選ばれる…とする。
+
+もしかすると、嫡出的な弟の子より、非嫡出な孫のほうがリアルには優先されるかもしれないが、アルゴリズムは上記のほうが簡単なのでそうする。
+
+……。
+
+指名を試すプログラムを作った。結局、親子のデータのテストは、test_of_matching_2.py のデータを読み込み、その親子データの上に支配層の構造をランダムに構築することで行った。それが test_of_domination_3.py。(バージョン 0.0.1)
+
+《simbd/test_of_domination_3.py at master - JRF-2018/simbd》  
+<a href="https://github.com/JRF-2018/simbd/blob/master/test_of_domination_3.py" class="ext-link">https://github.com/JRF-2018/simbd/blob/master/test_of_domination_3.py</a>
+
+この実行の前には…、
+
+python test_of_matching_2.py -S -t 1200
+
+…を実行し正常終了し、test_of_matching_2.pickle ができている必要がある。
+
+test_of_matching_2.pickle の変わりに simbdp1.pickle が使えるようにしたかったが、pickle のモジュールシステムに関する仕様が難しく諦めた。test_of_matching_2.py であって、test_of_domination_2.py でも simbdp1.py でも simbdp2.py でもないのでお間違えないよう。
+
+……。
+
+いちおう、test_of_domination_2.py に指名のアルゴリズムも入れておいた。(バージョン 0.0.6)
+
+ただし、test_of_domination_2.py には親子関係が入っていないのであまり意味はない。
+
+《simbd/test_of_domination_2.py at master - JRF-2018/simbd》  
+<a href="https://github.com/JRF-2018/simbd/blob/master/test_of_domination_2.py" class="ext-link">https://github.com/JRF-2018/simbd/blob/master/test_of_domination_2.py</a></pre>
+
+
+</article>
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2021/07.html">2021年07月</a> | <a href="../../../index/gsm.html">共有メモ</a></nav>
+</body>
+</html>

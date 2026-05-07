@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>ひとこと - JRF Blog Archive</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2026/03.html">2026年03月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+<article data-pagefind-body>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[statuses] <span class="cocolog-id">cocolog:95917075</span></td></tr>
+<tr><th>セクション</th><td>JRF のひとこと</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2026/03.html">2026年03月25日</a></td></tr>
+<tr><th>元URL</th><td><a href="http://jrf.cocolog-nifty.com/statuses/2026/03/post-b22b37.html" class="ext-link"><span class="original-url">http://jrf.cocolog-nifty.com/statuses/2026/03/post-b22b37.html</span></a></td></tr>
+
+</table>
+</div>
+<h1>ひとこと</h1>
+<pre class="body">TinyLoRA は普通の LoRA が和なのに対し、積の LoRA のような感じになるようだ。極小パラメータの TinyLoRA は生物の「ファインチューニング」の効率の良さとつながりがあるという直感から興味を持ったのだった。
+JRF 2026年3月25日
+
+ランダム行列を使うのが納得できず、いろいろ試してもらう中でそういう認識に私は落ちついた。
+
+(「グローバル共有メモ」と Twitter (X) に書いたことのコピペ。主に ChatGPT さんに教わって書いている。)
+
+JRF 2026年3月25日
+
+……。
+
+まず結論となるコピペから。
+
+○ 2026-03-25T10:29:41Z
+
+TinyLoRA の式は W' = W + U Σ (Σ_{i=1}^{u} v_i P_i) V^⊤ だが、これは W' = W (I + v1 P1 + v2 P2 +…) という式で行ってもだいたい遜色なくできる。つまり単純な「積」である。I P1 P2 … を正規直交化すれば、訓練が早くなるようだ。
+
+これはモデルをとても単純にする。TinyLoRA を「低ランク更新」から「低次元群作用」に再定式化している…と言える。
+
+JRF 2026年3月25日
+
+ChatGPT さんによるとスタッキングを可能とする方向として W' = W exp(v1 A1 + v2 A2 + ...) という方向がおもしろそうだと示された。
+
+実は、TinyLoRA について以前、調べたのだが、実験失敗だけが結果報告になっていて、何も有用な結果として残ってなかったのが気にかかっていて、その議論で、意味がありそうなもののみ、再度 ChatGPT さんにお願いして実験してもらったのだった。そして以上がその結論になる。
+
+JRF 2026年3月25日
+
+ChatGPT さんとの会話は↓になる。
+
+<a href="https://chatgpt.com/share/69c3b83b-f118-8322-a439-203f184d03b6" class="ext-link">https://chatgpt.com/share/69c3b83b-f118-8322-a439-203f184d03b6</a>
+
+JRF 2026年3月25日
+
+……。
+
+ちなみに TinyLoRA の論文として参照してもらったのは↓。
+
+《Learning to Reason in 13 Parameters - John X. Morris, Niloofar Mireshghallah, Mark Ibrahim, Saeed Mahloujifar》
+<a href="https://arxiv.org/pdf/2602.04118" class="ext-link">https://arxiv.org/pdf/2602.04118</a>
+
+JRF 2026年3月25日
+
+……。
+
+……。
+
+さて、上で書いた「以前の失敗」が次からの文になる。生物の「ファインチューニング」とのつながりの直感などは、こちらに書かれているので、「失敗」ではあるが、書き残しておくことにする。
+
+JRF 2026年3月25日
+
+○ 2026-03-11T09:53:31Z
+
+ChatGPT さんに実験してもらったところ、TinyLoRA と進化的アルゴリズム（遺伝的アルゴリズム）の組み合わせが有効そうだ、という結果が得られた。
+
+TinyLoRA では、SVD (特異値分解)した空間の中で、ランダム行列で「方向」を作り、その方向での係数 v を学習する。しかし私は、そのランダム行列を固定してしまうところに疑問を持っていた。いろいろ試してもらう中、そのランダム行列に関して進化的アルゴリズムを使えばよいのではないかとアイデアを出し、toy 実験してもらったところ、確かに、loss の改善が見られたようだ。
+
+JRF 2026年3月25日
+
+しかも、遺伝的アルゴリズムにおける交差ありとなしも試してもらったところ、交差ありのほうが結果がよく、これが ChatGPT さんにはやや意外だったようだ。交差ありが効くということは、「LoRA空間がモジュール構造を持つ」ことを示唆しているようだ。
+
+ただし、ある意味これは当然の結果とも言える。というのは、遺伝的アルゴリズムでランダム行列を扱うということは、ランダム行列をパラメータとして「学習」することに相当し、「Tiny」な探索ではすでになくなっているからだ。探索空間がとても広くなっているのである。
+
+JRF 2026年3月25日
+
+しかし、とはいえ、ChatGPT さんが提案した、他のパラメータを「少し」増やす方法では TinyLoRA の loss を破れなかったのに対し、遺伝的アルゴリズムは確かに破ったので、少なくとも、何か意味のある方向性ではあるのではないかと私は思っている。もちろんこれは小さな toy 実験なので一般化はできないが、LoRA 空間の探索構造については少し面白い示唆があるように思える。
+
+JRF 2026年3月25日
+
+ちなみに、なぜ遺伝的アルゴリズムがよいと思ったかというと、そこには生物の「ファインチューニング」の効率の良さの謎があった。なぜ生物はそんなにうまく「ファインチューニング」できるのか、パラメータを少なくする方向にその謎を解く端緒を見出したいというのが私に TinyLoRA に注目させ、さらに遺伝的アルゴリズムに注目させたのだった。
+
+JRF 2026年3月25日
+
+……。
+
+○ 2026-03-11T11:27:59Z
+
+先に、「ChatGPT さんに実験してもらったところ、TinyLoRA と進化的アルゴリズム（遺伝的アルゴリズム）の組み合わせが有効そうだ、という結果が得られた。」と書いたが、これは間違っていた。
+
+グラフを良く見たところ、進化的アルゴリズムを使ったものは確かにそうでないものより loss が低いのだが、世代を経るごとにむしろ loss は高くなっていっている。これは、単純に、ランダム行列の数を多く試しているので、loss が低いものがその中にあっただけで、進化はむしろマイナスにしか機能していないことを示唆している。
+
+JRF 2026年3月25日
+
+残念だ。ランダム固定行列がなぜこんなにいいのか、私には再び謎になった。SVD が探索空間をせばめている。それにしても…という謎。
+
+<a href="https://x.com/jion_rockford/status/2031693526107582686" class="ext-link">https://x.com/jion_rockford/status/2031693526107582686</a>
+
+JRF 2026年3月25日
+
+……。
+
+○ 2026-03-11T13:05:33Z
+
+TinyLoRA。遺伝的アルゴリズム(GA)では、次第に多様性がなくなるため、最もフィットするものが残ってない場合が出てくる(似たものばかりで探索空間が小さくなる)という分析になった。ChatGPT さんは、結局は、(複数のランダム行列の) MoE (Mixture of Experts)のほうがいいという。
+
+MoE にすると、パラメータは多少増えるが、劇的な改善があるようだ。LoRA そのものよりは、増えるパラメータ数はかなり少ないため、有効な方法である。…とのこと。
+
+JRF 2026年3月25日
+
+……。
+
+TinyLoRA の MoE を試すミニコードは↓に置いておく。
+
+《tinylora_moe_by_chatgpt.ipynb - TinyLoRA に MoE を使う - Colab》  
+<a href="https://colab.research.google.com/drive/1Yq7GmLCtA1m038S5UHw0TmBHcTLAWcby" class="ext-link">https://colab.research.google.com/drive/1Yq7GmLCtA1m038S5UHw0TmBHcTLAWcby</a>
+<a href="https://gist.github.com/JRF-2018/549a5ecd4b04596709774759e7d8b2c3" class="ext-link">https://gist.github.com/JRF-2018/549a5ecd4b04596709774759e7d8b2c3</a>
+
+JRF 2026年3月25日</pre>
+
+
+</article>
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2026/03.html">2026年03月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+</body>
+</html>

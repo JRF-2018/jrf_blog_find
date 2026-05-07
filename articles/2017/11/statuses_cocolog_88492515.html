@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>ひとこと - JRF Blog Archive</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2017/11.html">2017年11月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+<article data-pagefind-body>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[statuses] <span class="cocolog-id">cocolog:88492515</span></td></tr>
+<tr><th>セクション</th><td>JRF のひとこと</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2017/11.html">2017年11月27日</a></td></tr>
+<tr><th>元URL</th><td><a href="http://jrf.cocolog-nifty.com/statuses/2017/11/firef-2.html" class="ext-link"><span class="original-url">http://jrf.cocolog-nifty.com/statuses/2017/11/firef-2.html</span></a></td></tr>
+
+</table>
+</div>
+<h1>ひとこと</h1>
+<pre class="body">Firefox のブラウザ拡張(アドオン)である PP Authorizer を作って公開した。匿名的ログインや匿名的支払いをサポートするためのアドオン。2,3 日で終った突貫工事で、完成度は高くないとは思うが…。
+JRF 2017年11月27日
+
+アドオンのページ:
+
+《PP Authorizer – Firefox 向けアドオン》
+<a href="https://addons.mozilla.org/firefox/addon/pp-authorizer/" class="ext-link">https://addons.mozilla.org/firefox/addon/pp-authorizer/</a>
+
+説明用ホームページ:
+
+《PP Authorizer》
+<a href="http://jrf.cocolog-nifty.com/archive/pp-authorizer/README_ja.html" class="ext-link">http://jrf.cocolog-nifty.com/archive/pp-authorizer/README_ja.html</a>
+
+JRF 2017年11月27日
+
+サポート用のブログ内ページ:
+
+《PP Authorizer: 匿名的ログイン・匿名的支払いをサポートするアドオン》
+<a href="../../../articles/2017/11/software_88492149.html" class="int-link" title="PP Authorizer: 匿名的ログイン・匿名的支払いをサポートするアドオン">http://jrf.cocolog-nifty.com/software/2017/11/post.html</a>
+
+JRF 2017年11月27日
+
+……。
+
+Firefox Quantum になって不満たらたらで(<a href="../../../articles/2017/11/statuses_cocolog_88438901.html" class="int-link cocolog-id" title="ひとこと">[cocolog:88438901]</a>)、特に大きく変わった Greasemonkey をいじって苦労してた(<a href="../../../articles/2017/11/statuses_cocolog_88438902.html" class="int-link cocolog-id" title="ひとこと">[cocolog:88438902]</a>)んだけど、そんな中で大きく変わった Firefox のアドオンのシステムに興味を持った。それは、Web Extension という規格らしい。
+
+JRF 2017年11月27日
+
+調べているうちに何か作れないかと考えるようになった。最近は、「積ん読」していたものをあらかた実際に読んでしまってやることがなく、何かネタになることはないかと考えていたところ、「アドオン製作」もいいかもしれないと思うようになった。
+
+JRF 2017年11月27日
+
+…と言ってもそんなたいそうなものが作れるわけはない。しかし、以前から私には作りたい「シンプル」なアドオンがあった。それが↓で説明した「ブックマークレット」をアドオンにしたものである。Web Extension の説明を読んでいるうちに、それを実現するアドオンが簡単に作れるのではないかと考えるようになった。
+
+JRF 2017年11月27日
+
+《保証付き匿名ログインと即時銀行振込を可能にして！ - プライバシープロバイダ API （仮称）》
+<a href="../../../articles/2006/12/column_15631876.html" class="int-link" title="保証付き匿名ログインと即時銀行振込を可能にして！ ― プライバシープロバイダ API （仮称）">http://jrf.cocolog-nifty.com/column/2006/12/post_1.html</a>
+
+JRF 2017年11月27日
+
+Firefox には、アドオンを作るためのデバッガが標準でついてくるようなので、敷居が低い。とにかくテストをかねて作ってみるか…と、エイヤッと作りはじめた。
+
+JRF 2017年11月27日
+
+いくつか引っかかる部分があったが、とにかく思ったようなものができたので、テストは不十分かもしれないが、「公開」のテストもかねて、Firefox のアドオン登録のレビューというものがどういうものか知りたかったこともあり、勢いで公開用の登録まで行ってしまった。
+
+そこまでやってしまってはしかたがない…とドキュメント等も突貫で仕上げたしだい。
+
+JRF 2017年11月27日
+
+……。
+
+引っかかった部分。
+
+JRF 2017年11月27日
+
+まず、browserAction のアイコンの popup.js を書くときに、それと background.js を sendMessage でつなげようとするのだが、これがなかなか繋らない。sendMessage はできるのだが、sender.tab が参照できない…タブの id が得られないとかいうことがあった。しかたないから sendResponse を使おうとしたら、それもなぜかまともに動かないというていたらくだった。結局、sendMessage ではなく getBackgroundPage で情報を読み出すことになってしまった。
+
+JRF 2017年11月27日
+
+次に、options.js で、なぜか、ページのモード切り換えがうまくいかないということがあった。これは完全に私が悪く、document (ぐらいの全体)に addEventListener してボタン以外への click をチェックしていたのだが、ボタンがクリックされたときも全体に click のイベントが送られることを見逃していたのだった。stopPropagation 等をする必要があるのを見逃していたのだった。
+
+JRF 2017年11月27日
+
+さらに、*.js というページならばそこにラッパーしてスクリプトを実行をできるのだが、*.json というページではスクリプトを実行させられないことにもはまった。
+
+JRF 2017年11月27日
+
+さらに、manifest.json の versionString を 0.01 に設定していたのが AMO の登録の際に問題とされた。どうも途中で 01 のような 0 が前に来るものはダメらしく、やりたければ 0.0.1 などにしろということだった。
+
+JRF 2017年11月27日
+
+さらに、Web Extension という規格に順ったので Firefox 以外でも動くかと Google Chrome で試してみたのだが、Chrome は Web Extension の規格どおりではないらしく動かなかった。まず、変数(定数)の browser がなく chrome でアクセスしなければならず、Promise ではなくコールバックを使わねばならないらしい。
+
+JRF 2017年11月27日
+
+その違いを吸収する browser-polyfill.js (webextension-polyfill) というものもあるようだが、npm でコンパイルしろとかライセンスが MPL 2.0 だとか面倒なので、今回は使わずに Firefox 専用とした。
+
+JRF 2017年11月27日
+
+……。
+
+ただ、このアドオン、動作はシンプルなのだが、そのために OAuth を使うサイトの手順(プロトコル？)を今までと違うものにしないといけないなど、導入が難しい。企業等で使えばセキュリティの向上が狙えるとは思うが、こんなどこの誰とも知らない私が作ったソフトをセキュリティ向上のために使う気になるかというとそれは難しいだろう。他の人が使うとは考えにくい。
+
+JRF 2017年11月27日
+
+また、私が OAuth サーバーを持っているわけでもないので、私自身、テストが十分にできていない。私が日常的に使うものでもないため、更新の契機となるものがなく、今後、i18n まわりをやればいいか…と思うぐらいで、それ以上の改善が思いつかない。更新は滞るものと考えられる。
+
+JRF 2017年11月27日
+
+せっかく作ったのだから使って欲しいが、まず自分が使う機会さえなさそうなのでどうしようもない。まぁ、コンセプトを示して、実装できることを示しただけで、今回はヨシとしようかと思う。
+
+JRF 2017年11月27日
+
+……。
+
+追記。更新。
+
+バージョン 0.2 にした。
+
+大きな変更点は、browserAction から pageAction にしたところ。アドオンのアイコンが普段は表示されず、表示されるときはアドレスバーの中に表示されるようになった。
+
+JRF 2017年11月28日
+
+また、内部的にはポップアップで browser_style を使うようにした。popup の表示に(私の環境だと)頻繁にゴミがまじるのでそうしたのだが、改善されなかった。この点は原因不明なので今のところどうしようもない。
+
+JRF 2017年11月28日
+
+やろうかな…と思ってやらなかったことがいくつかある。
+
+まず i18n 化(国際化)。これは他の人が使ってくれるならやってもいいが、今はメンテナンスのしやすさを優先するため、i18n 化は遠慮しておいた。
+
+JRF 2017年11月28日
+
+次に、何もしなくても使えるアドオンにするため、Authorizer に自動的にリダイレクトするのをブロックするようにしてはどうかと考えた。本当は、信用できないリダイレクトをブロックしたいのだが、それは判断できないので、逆に信用できるところを常にブロック(ストップ)するようにすればよいのではないかと考えた。
+
+JRF 2017年11月28日
+
+それでwebRequest に関する拡張を調べていたのだが、どうも、ストップしたあとそこにもう一回ちゃんとアクセスしたい…ということがとてもやりにくそうだった。普通はブロックするときは広告ブロックなどで、そこにもう一度行きたいとかは考えることが少なそうだからそうなのだろうと思う。(でも、なんとなくそういう機能は欲しいから私がうまく読みとれてないだけで、できそうな気はするな…。)
+
+JRF 2017年11月28日
+
+常にストップできないなら、効果は薄いというか逆効果なので、やめておくことにした。
+
+JRF 2017年11月28日
+
+あと、上の説明用ホームページに書き足したのだが &lt;link rel=&quot;pp-authorizer&quot; href=&quot;XXXX&quot;/&gt; などができればカッコいいと思ったが、HTML 5 の標準は rel 属性を勝手に使ってはならないことになっているらしく、諦めた。まぁ、提案は受け付けているらしいからそうすればいいのだが、全々使われてない段階でそれをするのは恥ずかしい…。
+
+JRF 2017年11月28日
+
+……。
+
+追記。
+
+検討。やろうかな…と思ってやらなかったこと。
+
+JRF 2017年12月2日
+
+まず、細かいところで、URL をページから取ってきて、それがパターンに一致するか試して、一致したものをポップアップに並べるわけだけど、そのとき、Options 画面の順番がより反映されるようにする…ということはしなかった。
+
+JRF 2017年12月2日
+
+ある Authorizer 例えば Twitter の URL が二つ含まれているときどうするかという問題があって、最初の一つだけ選ばれるよりは、二つが順番に表示されるほうが自然だろうと考えたため。それを受け容れると、Options 画面の常に順番を守るのではないほうが自然になる。ちなみに、その場合、ポップアップを hover したとき URL をどこかに表示すべきなのだが、その方法が私にはわからない…。
+
+JRF 2017年12月2日
+
+次に、大きなところとして、今、すべてのページで pp-authorizer クラスがないかチェックしているが、それが「重い」のではないかというのが気になった。そこで、チェックするページを http*://*/*/ppauth?* または http*://*/*.ppauth.html* というページに限定することを考えた。
+
+JRF 2017年12月2日
+
+しかし、重いといっても大したことはなく、それが気になるなら URL のパターンチェックも気になるだろうから、まぁ、よかろうと思ったのが一点。また、掲示板システムで、どのページからもログインできるようにできたほうが便利で、その際のプロトコルは OAuth ではなくなるかもしれないが、そういうのもアリにしたいというのが、もう一点。その二点の理由から、限定するのはやめておいた。
+
+JRF 2017年12月2日
+
+ただ、これらも実際に利用する者が出てきて、批判が出てくればもちろん再考したいと思う。
+
+JRF 2017年12月2日
+
+……。
+
+追記。更新。
+
+バージョン 0.4 にした。
+
+内部的にかなり大きな変更をした。
+
+JRF 2017年12月4日
+
+上でやらないと言っていた http*://*/*/ppauth?* または http*://*/*.ppauth.html* というページへの限定、オプションで限定することを選択できるようにした。デフォルトは「限定しない」。
+
+また、*.ppauth.js を開いたとき Authorizer データをインストールするのを禁止するオプションも作った。
+
+JRF 2017年12月4日
+
+さらに、ストレージを storage.local から storage.sync に変更した。ディスク容量が 100KB と、アイコンイメージを data URL で登録することが考えると少ないが、利便性をとった。また、ストレージの変更で、これまで設定していたことがふいになるが、使っているのは私だけのようなので、設定の引き継ぎはしなかった。
+
+JRF 2017年12月4日
+
+さらに、上で、sendMessage ではなく getBackgroundPage を使ったという部分、sendMessage でそこそこうまくいったので、getBackgroundPage をまったく使わないようにできた。getBackgroundPage はプライベートウィンドウでは動作しないとあったので、そうできてよかった。
+
+JRF 2017年12月4日
+
+さらに、ここには書いてなかったがバージョン 0.3 にするとき、連続して notification しようとするとうまくいかないので、前に notification してから 10 秒間待つようにした。
+
+JRF 2017年12月4日
+
+……。
+
+追記。更新。
+
+バージョン 0.5 にした。
+
+上で webRequest でブロックしようかと考えていたが、それを行うために別のアドオン PP Interrupter を作った(<a href="../../../articles/2017/12/statuses_cocolog_88550595.html" class="int-link cocolog-id" title="ひとこと">[cocolog:88550595]</a>)。
+
+PP Authorizer にはそれとの相互作用を足した。内部的にはとても小さな変更。
+
+あとバグも少し取った。
+
+JRF 2017年12月8日
+
+……。
+
+追記。更新。
+
+バージョン 0.6。
+
+小さな変更。設定画面に Add Defaults ボタンを足した。Authorities のデフォルトで現在ない分を足すボタン。バージョンアップがあってデフォルトが増えたときとかに便利。また、ロケールごとにデフォルトを変えられるようにした。
+
+JRF 2017年12月12日
+
+まだ、Authorities が増える段階でもなく、ロケールごとにするのはちょっと誇大妄想的かとも思うが、やってしまった。企業などが Authorities に足してくれと言ってきたとき、多くなり過ぎては困るから、国ごとに分えれたほうがいいとか考えてしまったのだが、…まだ、そんなことを考える段階ではないな。…反省。恥ずかしい。
+
+JRF 2017年12月12日
+
+こうしてしまうと、あるロケールではこれこれ、それ以外のロケールではこれこれ…というのもやりたくなるが、「それ以外の」をやる方法はない。一つ一つロケール別に設定するということしかできない。…そこまでやったら複雑になる。…って、ロケールで変えられること自体が複雑だという話もある。
+
+JRF 2017年12月12日
+
+もっと、i18n のデフォルトの機能を使って実装する方法もあるのかもしれないが、それは今後の課題ということで…。
+
+JRF 2017年12月12日
+
+……。
+
+追記。検討。
+
+Firefox for Android への対応をどうするか。これは現在、対応なしになっている。
+
+JRF 2017年12月14日
+
+コード上で対応するのは難しくない。しかし、私は現在 Android 端末を持っていないという情けない開発者なのでテストができない。誰かに借りて…というあてもない。新たに買ってまでやる価値があるかも含めての検討。
+
+必要な変更点は、具体的には、まず、browser.pageAction の setTitle と setIcon を Android の場合は使わないようにしないといけない。これは簡単で、それほどクリティカルな問題ではない。
+
+JRF 2017年12月14日
+
+そして、storage.sync ではなく、storage.local を使わないようにしないといけない。これは問題。if 文で、'sync' in storage かどうかを見てどちらを使うか決めること自体は簡単だが、将来の Firefox for Android のバージョンアップで突然、storage.sync が使えるようになったとき、データの引き継ぎができないのが問題になる。
+
+…と、とはいえ、変更するとすればそれぐらいでよいようだ。
+
+JRF 2017年12月14日
+
+ただ、Android は基本、Chrome を作ってる Google のもので、Firefox for Android を使うというのはかなり特殊な人に限られるように思う。シェアもかなり少ないだろう。それに対応するのにコードのシンプルさを犠牲にするほどの価値があるとは、申し訳ないが正直なところ、思えない。…ということで、今回は、対応を見送ることにした。
+
+JRF 2017年12月14日
+
+実は、バージョンアップのたびに Firefox for Android への対応を聴かれるので、それがうっとうしいというのはあるのだが、まぁ、そこは甘受しよう…ということで。
+
+JRF 2017年12月14日
+
+Android 自体に興味がないわけでなく、『易双六』アプリを作れたらステキだな…とか思うが、Java の学習が面倒(大昔 Swing とか触ったことがあるぐらい)。メディアプレイヤーに Android 使ってるとかいうのに前、興味を持っていたが、そういうブームは過ぎたようだし…。Android 端末を買えば、練習もかねて、まず、PP Authorizer と PP Interrupter の Firefox for Android への対応をするかもしれないが、たぶん、買わないなぁ…というのが今のところ。
+
+JRF 2017年12月14日
+
+……。
+
+追記。更新。
+
+バージョン 0.7。
+
+アイコンまわりを変更した。具体的には、アイコンとテキストの間にスペースを入れたのと、Twitter 社だけでなく、はてな社の favicon も含むようにした…のはちょとした変更。大きな変更は、パッケージ(XPI)に含まれたアイコンイメージなら使えるようにしたこと。
+
+JRF 2017年12月14日
+
+上で「アイコンイメージを data URL で登録することが考える」と、storage.sync が 100KB なのは少ないと書いたが、storage.sync をデフォルトのアイコンで埋め尽くすのは不毛なので、その対策としてこのようにした。
+
+JRF 2017年12月14日
+
+一応、どんなイメージでも指定可能とならないように、manifest.json で web_accessible_resources を見て、そこに登録されているイメージだけをアイコンとして使えるようにしている。ただし、アイコンとして使うには web_accessible_resources として指定する必要はシステム的にはない。用途外の web_accessible_resources の利用となるが、manifest.json を拡張するわけにもいかないし、他にファイルが含まれているか調べるいい方法がなさそうだったので、許して欲しい。
+
+JRF 2017年12月14日
+
+まぁ、今のデフォルトの認証局が二つの段階でこんなこと考える必要はないんだけどね。バージョン 0.6 と同じく誇大妄想的な変更といえるかもしれない。orz
+
+JRF 2017年12月14日
+
+……。
+
+追記。更新。
+
+バージョン 0.8。
+
+小さな変更。クリックを促す通知をしないよう設定できるようにした。これは Google や特に Facebook など OAuth 2.0 のサイトは、ログインを待つ画面なく OAuth 用の URL を示すことができ、いたるところで OAuth 用の URL が使える可能性があり、そうすると、通知がうっとうしいことこの上ないだろうと判断したため、そのような設定を可能にした。
+
+JRF 2017年12月15日
+
+また、バージョンアップでデフォルト認証局が増えた際に、追加で足されるようにした。これも前回から引き続き誇大妄想的だが、まぁ、これでデフォルト認証局がらみで布石すべきところに手は打ったかなという感じ…まぁ、打ち過ぎかもしれないが。
+
+更新頻度が早過ぎるかな…とちょっと反省。クリティカルなミスがなければ次回は最低 1 週間は空けたい。
+
+JRF 2017年12月15日
+
+……。
+
+追記。検討。
+
+storage.sync の容量が 100 KB なのがどうしても気になる。ユーザー(企業・組織)にも気にして欲しいということで、今、どれだけディスクを使っているかを表示しようとしたら、browser.storage.sync.getBytesInUse が Firefox だけまだ対応していないという… orz。 Edge ですら対応してるのに！
+
+JRF 2017年12月16日
+
+……。
+
+追記。検討。
+
+今は.ppauth.js でインストールしているものを .ppauth.json でもインストールできるようにするために、読み込まれたファイルに browser.tabs.executeScript するのではなく、例えば install_dialog.html というものを作ってパラメータを与えてそのページに遷移し、そこで .ppauth.json を XMLHttpRequest で読み込むといった方法が考えられる。
+
+JRF 2017年12月19日
+
+.ppauth.json ファイルが http(s) で普通にアクセスできるなら、それで OK だ(実験してみると可能だった)が、scheme が file であったり、http でもパスワードが必要だったりすると、ファイルが取れなくなる。browser.tabs.executeScript の場合は読み込んだあとなのでその心配はないが、XMLHttpRequest で読み込む場合はダメ。
+
+JRF 2017年12月19日
+
+どっちを取るか。やはり、scheme が file のときも取りたい…となると、browser.tabs.executeScript で .ppauth.js でしかできなくなる。JSON ファイルになぜか browser.tabs.executeScript は効かないから。
+
+JRF 2017年12月19日
+
+拡張子が js か json かで、処理を分けることは不可能ではない。しかし、それは見とおしを悪くするし、事情を知らないユーザーがネットワークごしに .ppauth.json なら取れるのにファイルでは .ppauth.json が入力できないが、.ppauth.js なら入力できるとかいう状況は混乱するだけのように思う。
+
+そこでやはり .ppauth.json はダメにして、従来どおり、.ppauth.js のみを受け付けることにした。まぁ、JSON 形式なのに .json はダメというのも混乱しがちではあるんだけど。
+
+JRF 2017年12月19日
+
+……。
+
+追記。更新。
+
+バージョン 0.9。
+
+軽微な変更。関数名に統一性をもたせるなどソースの整理をした。また、ユーザーからは見えないデバッグ時の警告を減らすような工夫をした。
+
+次回、Google Chrome でも使えるようにすべきか、今、検討中。ある意味、古い規格に沿うことになるので、迷っている。
+
+JRF 2017年12月23日
+
+……。
+
+追記。更新。
+
+バージョン 0.10。
+
+Firefox for Android に対応した。
+
+JRF 2017年12月25日
+
+上で書いた browser.storage.local から browser.storage.sync への切り換わりにも対応した。
+
+browser.pageAction がらみで、Android 版はかなり動作が違うので、それに対応した。この辺はやってみないと気付けないこと。
+
+JRF 2017年12月25日
+
+その中で、manifest.json の page_action で browser_style: true にするのは普通の Firefox では動くが、Chrome や Firefox for Android では動かないようなので、それを false にして、chrome://browser/content/extension.css から必要最小限のコードを一部引用することにした。ちょっとプログラム著作権的にグレーだが、「引用」として問題ない範囲だと思う。
+
+JRF 2017年12月25日
+
+PP Interrupter のほうは簡単には Firefox for Android に対応させることはできない感じ。
+
+なお、Android でのテストは Android Studio のエミュレータで行った。そのあたりの「苦労」は <a href="../../../articles/2017/12/statuses_cocolog_88637062.html" class="int-link cocolog-id" title="ひとこと">[cocolog:88637062]</a> に書いてある。
+
+次は Google Chrome への対応。今、いろいろ準備しているところ。
+
+JRF 2017年12月25日
+
+……。
+
+追記。更新。
+
+バージョン 0.11。
+
+Google Chrome に対応した。ダウンロードページは↓。
+
+《PP Authorizer - Chrome ウェブストア》
+<a href="https://chrome.google.com/webstore/detail/pp-authorizer/oknpogbkcakfonnjljamageafmjbmpck" class="ext-link">https://chrome.google.com/webstore/detail/pp-authorizer/oknpogbkcakfonnjljamageafmjbmpck</a>
+
+JRF 2017年12月27日
+
+大きな変更。変数 browser を chrome に書き換える作業で、Promise ベースなのを callback ベースにした。ただ、Promise 自体が使えないわけではないので、ところどころ callback を Promise を使うように書き換え対応した。少し前からいろいろ調べて検討していたこともあって、思ったより早く書き換えることができた。
+
+JRF 2017年12月27日
+
+途中バグに気付いたりしたのは効用だが、書き換えが大きいので、ミスが発生していると思われる。それを今後取り除きたいが、アドオンを使用する機会がないのでミスに気付けるかどうか…。
+
+JRF 2017年12月27日
+
+Trackbacks:
+
+《cocolog:88637062》 from JRF のひとこと
+<a href="../../../articles/2017/12/statuses_cocolog_88637062.html" class="int-link" title="ひとこと">http://jrf.cocolog-nifty.com/statuses/2017/12/andro.html</a>
+
+Android エミュレータを使うために Android Studio 3.0.1 をインストール。しかし、エミュレータを起動するまでにかなり手間どった。 
+
+受信： 2017-12-29 18:12:53 (JST)
+
+《cocolog:88550595》 from JRF のひとこと
+<a href="../../../articles/2017/12/statuses_cocolog_88550595.html" class="int-link" title="ひとこと">http://jrf.cocolog-nifty.com/statuses/2017/12/firef.html</a>
+
+Firefox のブラウザ拡張(アドオン)である PP Interrupter を作って公開した。詐欺的な自動ダイレクトを識別するために、逆に普段から健全な自動リダイレクトをブロックする習慣をつけるという逆転の発想のアドオン。... 
+
+受信： 2017-12-29 18:13:03 (JST)
+
+《cocolog:88703123》 from JRF のひとこと
+<a href="../../../articles/2018/01/statuses_cocolog_88703123.html" class="int-link" title="ひとこと">http://jrf.cocolog-nifty.com/statuses/2018/01/post-abfc.html</a>
+
+ブラウザ拡張(アドオン)として Tweet Sig を作って公開した。三文判程度の認証に使うことを想定している。 
+
+受信： 2018-03-30 21:39:31 (JST)</pre>
+
+
+<section class="backrefs" data-pagefind-ignore>
+<h2>後方参照 (7 件)</h2>
+<ul>
+<li><span class="backref-label">[cocolog:88492515]参照</span> <a href="../../../articles/2018/01/statuses_cocolog_88703123.html">ひとこと</a> <span class="backref-date">2018年01月06日</span></li>
+<li><span class="backref-label">[cocolog:88492515]参照</span> <a href="../../../articles/2017/12/statuses_cocolog_88637062.html">ひとこと</a> <span class="backref-date">2017年12月25日</span></li>
+<li><span class="backref-label">[cocolog:88492515]参照</span> <a href="../../../articles/2017/12/software_88550402.html">PP Interrupter: 健全なサイトをブロック!?</a> <span class="backref-date">2017年12月08日 16:17:00</span></li>
+<li><span class="backref-label">[cocolog:88492515]参照</span> <a href="../../../articles/2017/12/statuses_cocolog_88550595.html">ひとこと</a> <span class="backref-date">2017年12月08日</span></li>
+<li><span class="backref-label">[cocolog:88492515]参照</span> <a href="../../../articles/2017/11/software_88492149.html">PP Authorizer: 匿名的ログイン・匿名的支払いをサポートするアドオン</a> <span class="backref-date">2017年11月27日 11:55:00</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2017/11/statuses_cocolog_88438901.html">ひとこと</a> <span class="backref-date">2017年11月17日</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2017/11/statuses_cocolog_88438902.html">ひとこと</a> <span class="backref-date">2017年11月17日</span></li>
+</ul>
+</section>
+
+</article>
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2017/11.html">2017年11月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+</body>
+</html>

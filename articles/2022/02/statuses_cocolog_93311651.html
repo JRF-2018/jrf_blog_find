@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>ひとこと - JRF Blog Archive</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2022/02.html">2022年02月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+<article data-pagefind-body>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[statuses] <span class="cocolog-id">cocolog:93311651</span></td></tr>
+<tr><th>セクション</th><td>JRF のひとこと</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2022/02.html">2022年02月13日</a></td></tr>
+<tr><th>元URL</th><td><a href="http://jrf.cocolog-nifty.com/statuses/2022/02/post-92628f.html" class="ext-link"><span class="original-url">http://jrf.cocolog-nifty.com/statuses/2022/02/post-92628f.html</span></a></td></tr>
+
+</table>
+</div>
+<h1>ひとこと</h1>
+<pre class="body">西田＆花木『マルチエージェントのための行動科学：実験経済学からのアプローチ』を読んだ。合理的経済人の仮定はしばしば破れるが、マルチエージェントシミュレーションに市場実験をエミュレートさせることで、経済人がどこまで無脳であることが許されるか見定めることができるようだ。
+JRF 2022年2月13日
+
+『マルチエージェントのための行動科学：実験経済学からのアプローチ』(西田 成昭 ＆ 花木 伸行 著, コロナ社, 2021年4月)
+<a href="https://www.amazon.co.jp/dp/4339028169" class="ext-link">https://www.amazon.co.jp/dp/4339028169</a>
+<a href="https://7net.omni7.jp/detail/1107183868" class="ext-link">https://7net.omni7.jp/detail/1107183868</a>
+
+JRF 2022年2月13日
+
+先に、本の内容を述べる。
+
+この本も最初に述べているように、経済シミュレーション、社会シミュレーションはいちおう簡単には作れるものだ。しかし、それはしばしば「ヤッコー」…ヤッてみたらコーなった…ぐらいしか言えないのがしばしばである。
+
+しかし、それを心理学実験のような市場実験の実験経済学と、コンピュータ上でのシミュレーションを組み合わせることで、乗り越えようとしているようだった。
+
+JRF 2022年2月13日
+
+この本で使うソフトは、市場実験を行う枠組みを提供するプログラムが z-Tree で、シミュレーション…マルチエージェント・シミュレーションのプログラムが NetLogo という言語である。
+
+通常経済学では、合理的経済人の仮定を置き、どこまでも人は合理的に振る舞うと想定するものだが、市場実験をしてみたりすると、そこまで人は合理的に働いていない。ならば、それをどう理論化すれば良いのか？
+
+JRF 2022年2月13日
+
+コンピューターのマルチエージェントプログラムでは、まるっきりランダムなゼロ知識＝無脳の状態で市場規則を守らせて実行させるところから、少しずつ脳を改善していくことで、あいかわらず「無脳」とはいえ、人の市場実験とそっくりになるまでにならせることができる。
+
+そのことで、経済的合理性をそこまで仮定しなくても、現実と同じような市場が成り立つには、どこまで無脳であることが許されるか見定めることができる。
+
+それはどういうマルチエージェントプログラムなのか、実際記述するところがこの本のエラいところで、そこから市場の原理的理解がすすむものと考えて良さそうだ。
+
+JRF 2022年2月13日
+
+……。
+
+さて、あとさきになったが、この本を読む準備について。
+
+私はちょっと読んで、↓で z-Tree と NetLogo について予習した。
+
+《z-Tree チュートリアルマニュアル》  
+<a href="https://www.ztree.uzh.ch/static/doc/zTree2.1-Nihongo.pdf" class="ext-link">https://www.ztree.uzh.ch/static/doc/zTree2.1-Nihongo.pdf</a>
+
+《NetLogo 5.3.1 User Manual 日本語版》  
+<a href="http://www.u.tsukuba.ac.jp/~kurahashi.setsuya.gf/NetLogo-ja/index.html" class="ext-link">http://www.u.tsukuba.ac.jp/~kurahashi.setsuya.gf/NetLogo-ja/index.html</a>
+
+JRF 2022年2月13日
+
+ただ、資料やソースなどは↓から手に入り、そこに z-Tree と NetLogo のチュートリアルがあるので、普通の人はそちらだけ参照すればこと足りるかもしれない。
+
+《マルチエージェントシリーズ A-6 マルチエージェントのための行動科学：実験経済学からのアプローチ | コロナ社》  
+<a href="https://www.coronasha.co.jp/np/isbn/9784339028164/" class="ext-link">https://www.coronasha.co.jp/np/isbn/9784339028164/</a>
+
+JRF 2022年2月13日
+
+教科書のソースはだいたい読めばわかる程度の簡単さだが、of と active を同時に使うところなど、わかりにくいところはあった。また、練習問題として穴空きになっている部分もあり、そこは普通の学習者にとっては不親切だな…と思った。
+
+私の興味としては、micro_economy_*.py (↓)を作ったり、その拡張を <a href="../../../articles/2021/11/statuses_cocolog_93150989.html" class="int-link cocolog-id" title="ひとこと">[cocolog:93150989]</a> で考えていたことから、経済シミュレーションについて何か学ぶことがないかと、特に目次を見て、資産市場に関する記述があると知って、買ったのだった。
+
+JRF 2022年2月13日
+
+《ミクロ経済学の我流シミュレーション その５ 大改良》  
+<a href="../../../articles/2020/02/society_91677009.html" class="int-link" title="ミクロ経済学の我流シミュレーション その５ 大改良">http://jrf.cocolog-nifty.com/society/2020/02/post-3f22aa.html</a>
+
+《資産市場の簡易シミュレーション》  
+<a href="../../../articles/2019/05/society_91037181.html" class="int-link" title="資産市場の簡易シミュレーション">http://jrf.cocolog-nifty.com/society/2019/05/post-9da6e7.html</a>
+
+JRF 2022年2月13日
+
+しかし、資産市場はバブルの発生のメカニズムを負うのがメインで、私の経済シミュレーションよりも規模が小さい…というか原理的なものしか扱っておらず、いまいちその面では参考にならなかった。
+
+私の期待した通りの本ではなかったが、考え方の参考にはなったと思う。
+
+JRF 2022年2月13日</pre>
+
+
+</article>
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2022/02.html">2022年02月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+</body>
+</html>

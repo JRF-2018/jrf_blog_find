@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>lwp-request で https を使うと Segmentation Fault する。 - JRF Blog Archive</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2006/02.html">2006年02月</a> | <a href="../../../index/software.html">ソフトウェア Tips</a></nav>
+<article data-pagefind-body>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[software] <span class="cocolog-id">cocolog:10048916</span></td></tr>
+<tr><th>セクション</th><td>JRF のソフトウェア Tips</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2006/02.html">2006年02月21日 04:15:15</a></td></tr>
+<tr><th>元URL</th><td><a href="http://jrf.cocolog-nifty.com/software/2006/02/post_13.html" class="ext-link"><span class="original-url">http://jrf.cocolog-nifty.com/software/2006/02/post_13.html</span></a></td></tr>
+<tr><th>タグ</th><td>[Cygwin] [Perl]</td></tr>
+</table>
+</div>
+<h1>lwp-request で https を使うと Segmentation Fault する。</h1>
+<pre class="body">現在、Cygwin の setup でインストールされる openssl-0.9.8a を使うと、 Crypt::SSLeay が make test で失敗します。openssl-0.9.8-2 などにすれば大丈夫なはずです。
+
+'lwp-request -m GET <a href="https://...'が失敗するのも同じ理由と思われます。" class="ext-link">https://...'が失敗するのも同じ理由と思われます。</a> Crypt::SSLeay が対応するまで openssl-0.9.8a を使わないようにするのが今のところの対処法のようです。
+
+参考：<a href="../../../articles/2006/04/hbm_00086.html" class="int-link" title="Crypt::SSLeay Installation Failure">http://www.issociate.de/board/post/298986/Crypt::SSLeay_Installation_Failure.html</a>
+
+更新：06/02/16,06/02/21
+初公開：2006年02月17日 13:18:10</pre>
+<details class="trackbacks" data-pagefind-ignore><summary>Trackbacks (2 件)</summary><pre>
+Trackbacks:
+
+《<a href="http://jrf.cocolog-nifty.com/software/2006/02/post_15.html">lwp-request のオプション -m を忘れて http://www.GET.com が表示されていた</a>》 from JRF のソフトウェア Tips
+ さっき気付いた。ここに載っていた 'lwp-request GET' をそのまま使うと、何か変な HTML データが先に表示される。よく見ると、'lwp-request -m GET' じゃないとダメだった。 参考に次のような感じになる。 $ /usr/bin/lwp-request GET | head html head titleGreat Eastern Technology - Sun... 
+
+受信： 2006-02-21 04:31:04 (JST)
+
+
+《<a href="http://d.hatena.ne.jp/odz/20060811/1155264420">[Perl]Crypt::SSLeay のインストール</a>》 from odz buffer
+ CPANモジュールをざくざくインストールしてたら、Crypt::SSLeay がテストでこける。ぐぐったらopenssl-0.98aからopenssl-0.97にスイッチしたらいけたって報告があったので、これかなと思ったわけだけど、Ubuntuは openssl0.98 と libcrypt-ssleay-perl の組み合わせで問題な... 
+
+受信： 2006-08-30 08:55:47 (JST)
+
+
+
+
+</pre></details>
+
+</article>
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2006/02.html">2006年02月</a> | <a href="../../../index/software.html">ソフトウェア Tips</a></nav>
+</body>
+</html>

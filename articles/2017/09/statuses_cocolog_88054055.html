@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>ひとこと - JRF Blog Archive</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2017/09.html">2017年09月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+<article data-pagefind-body>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[statuses] <span class="cocolog-id">cocolog:88054055</span></td></tr>
+<tr><th>セクション</th><td>JRF のひとこと</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2017/09.html">2017年09月09日</a></td></tr>
+<tr><th>元URL</th><td><a href="http://jrf.cocolog-nifty.com/statuses/2017/09/post-aa6b.html" class="ext-link"><span class="original-url">http://jrf.cocolog-nifty.com/statuses/2017/09/post-aa6b.html</span></a></td></tr>
+
+</table>
+</div>
+<h1>ひとこと</h1>
+<pre class="body">過剰診断論に関するシミュレーションを少しだけアップデートした。ほとんど意味のない変更。
+JRF 2017年9月9日
+
+《過剰診断論に関するシミュレーション 中間報告》
+<a href="../../../articles/2017/04/software_87253124.html" class="int-link" title="過剰診断論に関するシミュレーション 中間報告">http://jrf.cocolog-nifty.com/software/2017/04/post.html</a>
+
+バージョン 0.02。
+
+JRF 2017年9月9日
+
+変更点はまず、基礎寿命の計算を変えた(追加した)こと、そして、<a href="../../../articles/2017/08/statuses_cocolog_87988713.html" class="int-link cocolog-id" title="ひとこと">[cocolog:87988713]</a> で説明した医師のバイアスによるがん死亡割合の増加に関して、理屈が正しいことを確認したことが挙げられる。(詳しくはアーカイブに含まれる 00README2.txt を読んで欲しい。)
+
+JRF 2017年9月9日
+
+基礎寿命の計算の変更によって、罹患後生命力(基礎寿命 - 罹患時年齢)から死亡時がんステージへの逆関数が書けることになった。これにより、罹患後生命力を先にランダムに決めるという策が可能となる。このほうが、侵襲などによる基礎寿命減をモデル化しやすいかもしれない。今後、そのほうがよいなら、そういうコードを書くかもしれない。
+
+JRF 2017年9月9日
+
+次に、医師のバイアスに関して理屈が正しいことを確認したという点に関しては、<a href="../../../articles/2017/08/statuses_cocolog_87988713.html" class="int-link cocolog-id" title="ひとこと">[cocolog:87988713]</a> に書いた最終的な議論にしたがって実装したに過ぎず、「確認」ができるのは当たり前のこと。
+
+JRF 2017年9月9日
+
+がん死亡割合増があり、がん寿命減があるということが「有意」であることを、差の検定で示しはした。しかし、元のシミュレーションの段階ですでに平均値を求めており、それを複数回して検定することにどれだけ意味があるのか、よくわからない。
+
+正直、意味がないように思うが、統計学(多変量解析含む)の学習の成果をなんでもいいから出したかったので、アーカイブに加えることにした。
+
+JRF 2017年9月9日
+
+……。
+
+今やってることは「シミュレーション」で、「モデル」がすでにある。わざわざ重回帰分析のモデルとかを考える必要が見えてこない。学んだので多変量解析をなんとか使いたいが、使いどころがわからない。
+
+多変量解析等を使うためには、少し他のことに目を向けてみようかと考えはじめている。
+
+JRF 2017年9月9日</pre>
+
+
+<section class="backrefs" data-pagefind-ignore>
+<h2>後方参照 (1 件)</h2>
+<ul>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2017/08/statuses_cocolog_87988713.html">ひとこと</a> <span class="backref-date">2017年08月28日</span></li>
+</ul>
+</section>
+
+</article>
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2017/09.html">2017年09月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+</body>
+</html>

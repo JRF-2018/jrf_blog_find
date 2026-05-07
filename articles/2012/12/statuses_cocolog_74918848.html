@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>ひとこと - JRF Blog Archive</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2012/12.html">2012年12月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+<article data-pagefind-body>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[statuses] <span class="cocolog-id">cocolog:74918848</span></td></tr>
+<tr><th>セクション</th><td>JRF のひとこと</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2012/12.html">2012年12月07日</a></td></tr>
+<tr><th>元URL</th><td><a href="http://jrf.cocolog-nifty.com/statuses/2012/12/firef.html" class="ext-link"><span class="original-url">http://jrf.cocolog-nifty.com/statuses/2012/12/firef.html</span></a></td></tr>
+
+</table>
+</div>
+<h1>ひとこと</h1>
+<pre class="body">Firefox 17 で Greasemonkey のユーザースクリプトが動かなくなった。@grant 文を疑ったが、原因はそこではなく、E4X が廃止されたことにあった。
+JRF 2012年12月7日
+
+E4X の除去は、
+
+&lt;pre&gt;
+val m1 = &lt;member&gt;
+  &lt;name&gt;{name}&lt;/name&gt;
+  &lt;id&gt;{id}&lt;/id&gt;
+  &lt;/member&gt;;
+&lt;/pre&gt;
+
+とかいうときは、
+
+&lt;pre&gt;
+val m1 = '&lt;member&gt;'
+  + '&lt;name&gt;' + escapeHTML(name) + '&lt;/name&gt;'
+  + '&lt;id&gt;' + escapeHTML(id) + '&lt;/id&gt;
+  + '&lt;/member&gt;';
+&lt;/pre&gt;
+
+とかする必要がある。
+
+JRF 2012年12月7日
+
+いちいちクォートするのではなく \ とかで改行を活かすのを好む方もいるかもしれないが、escapeHTML みたいなのがいるのが大事なところ。
+
+JRF 2012年12月7日
+
+escapeHTML、escapeXML に相当するものは、すでにだいたい使っていると思うが、↓みたいな関数。
+
+&lt;pre&gt;
+function escapeHTML(s) {
+  return s.toString().replace(/\&amp;/g, &quot;&amp;amp;&quot;)
+    .replace(/\&quot;/g, &quot;&amp;quot;&quot;)
+    .replace(/&lt;/g, &quot;&amp;lt;&quot;)
+    .replace(/&gt;/g, &quot;&amp;gt;&quot;);
+}
+&lt;/pre&gt;
+
+なお、escapeHTML 内の s.toString() がない実装だと、ちょっとエラーが出るので注意。
+
+JRF 2012年12月7日
+
+……。
+
+《Firefox 17でE4Xが無効に | Yuji Noizumi's blog》
+<a href="http://yuji.noizumi.org/blog/2012/11/23/firefox-17%E3%81%A7e4x%E3%81%8C%E7%84%A1%E5%8A%B9%E3%81%AB/" class="ext-link">http://yuji.noizumi.org/blog/2012/11/23/firefox-17%E3%81%A7e4x%E3%81%8C%E7%84%A1%E5%8A%B9%E3%81%AB/</a>
+
+《E4X | MDN》
+<a href="https://developer.mozilla.org/ja/docs/E4X" class="ext-link">https://developer.mozilla.org/ja/docs/E4X</a>
+
+今だと about:config で有効にできるが、Firefox 18 では完全除去されるらしい。
+
+JRF 2012年12月7日
+
+……。
+
+しかし、こんな文法が変わるような変更が許されるのか？E4X はそれほど Flexible でもないんで、E4X で書いたのを後からさらにいじるとか、私もやってたけど、そういうのって単純な書き換えだけで済まないこともあると思うんだけど…。
+
+JRF 2012年12月7日
+
+レガシーコードがダメになって、それをチマチマ書き直さないといけないとか、どんだけ人月かけさせるの？使ってる人に前もって警告画面でも表示していれば、ある程度時間使って準備もできるけど、例えば私なんか、これで、書こうと思った「ひとこと」を書けなくなったわけで、そういうリアルタイムな要求で損害が出てても知らんぷりで通ずるのか？
+
+デフォルトから外すとしても、about:config じゃなくて、スクリプトのプラグマとかで E4X を有効にできる方法とか残すのが、普通のやり方じゃないか？
+
+JRF 2012年12月7日
+
+今は、JavaScript がメジャー言語となって、他の言語を JavaScript へのコンパイラとして実装するみたいな話もよく聞く。だったら、例えば、特定のアドオンでコンパイラを用意し、プラグマによってはそこでコンパイルされた JavaScript を実行するとかいう機構を実装する道もあるだろう。そういうのがあれば、E4X が使える JavaScript を E4X が使えない JavaScript に変換するという「コンパイラ」を指定すれば、「対応終り」とできる方法もありえたはず。
+
+JRF 2012年12月7日
+
+これを知って私はちょっと正直かなり怒っちゃって、他の人から電話応対に粗相を来たしちゃったぐらいで、今冷静になろうとしてるところなんだけど、やっぱり「技術者の劣化」(<a href="../../../articles/2010/03/statuses_aboutme_120990.html" class="int-link cocolog-id" title="ひとこと">[aboutme:120990]</a>とか)はここまで来たか…ぐらいのことは言ってしまわないと気がおさまらない！
+
+(まぁ、本当の昔かたぎのオープンソースな技術者なら文句があるなら自分でなんとかしろってところなんだろうね。結局のところ私がダメなんであって、他人のせいにしちゃいけないな。orz)
+
+JRF 2012年12月7日
+
+typo 「'&lt;/id&gt;」→「'&lt;/id&gt;'」。
+
+JRF 2012年12月7日</pre>
+
+
+<section class="backrefs" data-pagefind-ignore>
+<h2>後方参照 (2 件)</h2>
+<ul>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2010/03/statuses_aboutme_120990.html">ひとこと</a> <span class="backref-date">2010年03月15日</span></li>
+<li><span class="backref-label">[cocolog:74918848]参照</span> <a href="../../../articles/2006/03/software_10750678.html">Firefox でココログを印刷しようとすると本文が１ページ目しか表示されない</a> <span class="backref-date">2006年03月27日 02:07:13</span></li>
+</ul>
+</section>
+
+</article>
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2012/12.html">2012年12月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+</body>
+</html>

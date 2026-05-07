@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>ひとこと - JRF Blog Archive</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2020/04.html">2020年04月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+<article data-pagefind-body>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[statuses] <span class="cocolog-id">cocolog:91803660</span></td></tr>
+<tr><th>セクション</th><td>JRF のひとこと</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2020/04.html">2020年04月05日</a></td></tr>
+<tr><th>元URL</th><td><a href="http://jrf.cocolog-nifty.com/statuses/2020/04/post-ad270e.html" class="ext-link"><span class="original-url">http://jrf.cocolog-nifty.com/statuses/2020/04/post-ad270e.html</span></a></td></tr>
+
+</table>
+</div>
+<h1>ひとこと</h1>
+<pre class="body">メインのマシンを Windows 7 のマシンから父が使っていた Windows 10 マシンに換えた。メールなどを使えるようにし、Cygwin を入れた。いくつかはまった部分があった。
+JRF 2020年4月5日
+
+GitHub にファイルをアップロードしようとしていた。
+
+しかし、Windows 7 マシンでは入っている Cygwin の git がバージョンが古過ぎて使えないらしく、Cygwin のアップデートをしようとしたが、そのマシンの Cygwin の setup.exe が古過ぎるらしく使えなかった。
+
+JRF 2020年4月5日
+
+そこで思い立って死んだ父からもらい受けた Windows 10 マシンにメインマシンを切り換えることにした。
+
+前の Windows 7 マシンは EPSON Endeavor NP15 (参: <a href="../../../articles/2011/05/statuses_aboutme_138754.html" class="int-link cocolog-id" title="ひとこと">[aboutme:138754]</a>)、父のマシンは、NEC Mate ML-T (MK27ML-T)。
+
+JRF 2020年4月5日
+
+……。
+
+Cygwin のインストールは簡単。ftp.jaist.ac.jp を使ったおかげか texlive-collection-langjapanese も簡単にインストールできた。
+
+Emacs はすでに入れていたが、26.3 にアップデート。これも簡単。
+
+Mew のインストールも簡単。Cygwin の stunnel 5 を使い、<a href="../../../articles/2019/07/statuses_cocolog_91172368.html" class="int-link cocolog-id" title="ひとこと">[cocolog:91172368]</a> で書いたことを守って設定。
+
+JRF 2020年4月5日
+
+……。
+
+次に、ブログ投稿用の perl スクリプトを動かすために perl -MCPAN -e shell で、XMLRPC::Lite をインストールしようとする。
+
+そこで、まず、ウィルスバスターに perl.exe をウィルスとして消されてしまう。トレンドマイクロ、何やってくれんだ！
+
+ウィルスバスターをアンインストール。
+
+JRF 2020年4月5日
+
+次に、XMLRPC::Lite をインストールしようとすると、SOAP::Lite のところでエラー。しかも mod_perl をなぜかインストールしようとされてしまう。
+
+しかたなく、force install SOAP::Lite して、istall XMLRPC::Lite を成功させる。しかし、XMLRPC::Lite 程度をインストールするのに、どれだけモジュールが必要なんだ！ ビックリ。
+
+この辺、XMLRPC::Lite を使わないようにアップデートできればいいんだけど…。
+
+JRF 2020年4月5日
+
+……。
+
+ブログ投稿用の perl スクリプトがエラーを吐く。昔書いたものなので、エラーの場所の特定にも時間がかかる。
+
+'ref-to-glob cast' trapped by operation mask
+
+…みたいなエラーが出る。これは、Data::Dumper で出力したものを Safe.pm で読もうとすると出るエラーらしい。↓を参考に解決。
+
+JRF 2020年4月5日
+
+《Safe.pm: Which parameter for permit_only?》
+<a href="https://www.perlmonks.org/?node_id=1089808" class="ext-link">https://www.perlmonks.org/?node_id=1089808</a>
+
+JRF 2020年4月5日
+
+……。
+
+次に USB メモリに home の内容をバックアップしようと cp -p しようとしてエラーが出る。「cp: `...' のパーミッションを保存しています: Not supported」というエラーでググると、表現が変わっているが次の記事が見つかる。
+
+《エラー &quot;cp: preserving permissions for `hogehoge`: サポートされていない操作です&quot; が出た - Qiita》
+<a href="https://qiita.com/213/items/a2c81a867b59dffab42f" class="ext-link">https://qiita.com/213/items/a2c81a867b59dffab42f</a>
+
+JRF 2020年4月5日
+
+さらに探すと次の記事が見つかる。
+
+《permissions - Cygwinからcp.exeを使用してパーミッションを保護する方法》
+<a href="https://stackoverrun.com/ja/q/2179522" class="ext-link">https://stackoverrun.com/ja/q/2179522</a>
+
+JRF 2020年4月5日
+
+&lt;pre&gt;
+$ cat fstab
+(…)
+# none /cygdrive cygdrive binary,posix=0,user 0 0
+none /cygdrive cygdrive binary,posix=0,user,noacl 0 0
+&lt;/pre&gt;
+
+JRF 2020年4月5日
+
+これで良さそうだとわかり、この「ひとこと」を書こうとして次の記事を見つける。
+
+《Cygwin x Windowsでアクセス権限にはまる(chmod/setfacl/getfacl) - くらげになりたい。》
+<a href="https://www.memory-lovers.blog/entry/2017/11/24/153038" class="ext-link">https://www.memory-lovers.blog/entry/2017/11/24/153038</a>
+
+JRF 2020年4月5日
+
+なんと、noacl をすると chmod が使えなくなるらしい。確かに chmod が使えない！ +x ができないのは痛すぎる！
+
+しかたなく noacl をはずし、USB メモリにバックアップする際は BunBackup を使う方向で。
+
+JRF 2020年4月5日</pre>
+
+
+<section class="backrefs" data-pagefind-ignore>
+<h2>後方参照 (1 件)</h2>
+<ul>
+<li><span class="backref-label">[cocolog:91803660]参照</span> <a href="../../../articles/2019/07/statuses_cocolog_91172368.html">ひとこと</a> <span class="backref-date">2019年07月19日</span></li>
+</ul>
+</section>
+
+</article>
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2020/04.html">2020年04月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+</body>
+</html>

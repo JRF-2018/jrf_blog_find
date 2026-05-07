@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>ユーザーによるコメント「削除」をココログプロで実現する - JRF Blog Archive</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2012/02.html">2012年02月</a> | <a href="../../../index/software.html">ソフトウェア Tips</a></nav>
+<article data-pagefind-body>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[software] <span class="cocolog-id">cocolog:71637031</span></td></tr>
+<tr><th>セクション</th><td>JRF のソフトウェア Tips</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2012/02.html">2012年02月16日 12:03:53</a></td></tr>
+<tr><th>元URL</th><td><a href="http://jrf.cocolog-nifty.com/software/2012/02/post-1.html" class="ext-link"><span class="original-url">http://jrf.cocolog-nifty.com/software/2012/02/post-1.html</span></a></td></tr>
+<tr><th>タグ</th><td>[ウェブログ・ココログ関連] [セキュリティ] [JavaScript]</td></tr>
+</table>
+</div>
+<h1>ユーザーによるコメント「削除」をココログプロで実現する</h1>
+<pre class="body">Web 掲示板の中には、ユーザーがコメントを入力するとき「削除パスワード」を同時に入力させ、ユーザーが後から自分でコメントの削除をできるようにしている実装がある。MovableType, TypePad をもとにしているココログ(プロ)にはそのような機能はないが、JavaScript で書かれた暗号技術を用い、「削除」に相当する機能を実装してみた。
+
+■ポリシー
+  
+JavaScript を用いてサーバーの内容を変更するわけではない「削除」だから、当然、サーバーから送られるデータの削除になるわけではなく、JavaScript を使っているユーザーに「非表示」になるだけである。サーバー管理者などの立場からすれば、一見、無意味だがソーシャルな面を考えると必しもそうではない。すなわち…
+
+ユーザーが削除の意思を実効を伴って表示できる。
+
+…ことに価値があるのである。人と人とのコミュニケーションはあいまいなもので、消してくれと口ではいいつつ、本当は消して欲しくないの…といったクネクネした反応がありうる。これは削除申請の様式を決めたからと言って済む話ではなく、少し対応が遅れると、消えてない前例があるので、消えないと思った…などという「クネクネ」を許すことになる。消えている実例がすぐに発効しているとなることで、これをかなり封じることができる。
+
+暗号ライブラリを使うついでなので、コメントの暗号化も実装した。暗号はココログのシステムでは、入力した「メールアドレス」は常に非表示だが、管理者にはそれがメールで届くことを利用し、暗号化パスワードを常に管理者が知るようにした。もちろん、暗号化後のデータがずっとネットに公開されたままになるし、「パスワード」が平文でメールサーバー間を渡っていくわけで、暗号といっても強固なものではない。
+
+それでも意味があると私が考えたのは、上の「削除」の理由に似たもの、すなわち、これは「他の人に見せたくない」という意思表示としては有用なものだろうということである。その返信には、おそらく管理者の側がユーザーのパスワードを使って暗号化して書き込むことになる。これは、管理者の側がウェブに証拠を残すという点で、メールよりも少しユーザーに有利という面も出せる。
+
+計算機をぶんまわしての暗号解読については、当然、システムとして「盗聴」を封じれるわけがない。常識的に考えれば、そこまでやる相手には逆らわないのが吉である。しかし、解読されたものを読む人がいてこそ意味があると考えたとき、私はソーシャルハック的な「盗聴」探知策を思いついた。
+
+それは暗号化するとき、ユーザーの入力した文の最後に、ランダムにことわざやニュースを付け足すというものである。もし暗号の鍵がバラまかれるようなことが起きているなら、そこに同時に表示されることわざやニュースが人々の口にのぼるようになる、そこまでの影響力がないとしても、はっきりとは言えない立場のものが、盗聴があるのをそれとなくほのめかすのに使えるようになる…と夢想した。
+
+システムを造る際にソーシャルな要素を考慮に入れるとは、個人情報を PC に入力させその支配を高らかにうたう「帝国趣味」的な SNS の拡大をはかることではなく、これまでの社会に存在する自由の限界にネットを使う人々が触れ考える機会を作ることこそ本道ではないか、それこそが Openness ではないか、と夢想した。
+
+■仕組み
+  
+まず、ココログには「メールアドレス」は他人に知らせない機能があり、それはコメント送信時に管理者に平文で送られてくる。これを暗号化パスワードとして使う。これが、本当のメールアドレスである必要はないが、管理者まで中継するプロバイダ等が、その「パスワード」を知ってしまうことが前提にある。
+
+コメント暗号化の際は、暗号化(Base64でテキスト化)したものを、適当な BEGIN と END でくくってサーバーに書き込み、サーバーから読み出すとき、 JavaScript でそれを発見して、暗号解除用の HTML ウィジェットに置き換える。
+
+コメント削除のルーチンはもう少し手順が必要で、次のようにする。
+
+  ●ユーザーの「メールアドレス」を「パスワード」として使うところは、暗号化と共用。
+  ●コメントが書かれたとき、コメントごとに二つの乱数列を生成する。例えば、1234 と 5678 がそれだとする。1234 は「コメント識別子」として使う。5678 は「削除キー」として使う。
+  ●コメントの最後に［omit-info 1234 abcd efgh］と付け足す。ここで、 abcd は 1234 を「削除キー」5678 で暗号化したことで得られた文字列、 efgh は 5678 を「メールアドレス」で暗号化したことで得られた文字列。
+    
+  …ここでサーバーに書かれ、しばらくして別の機会にそのユーザーが読み出したとする。
+  
+    ●そのコメントで削除ボタンを押すと「メールアドレス」の入力が求められる。
+    ●「メールアドレス」により、efgh を複号化し、「削除キー」 5678 を得る。そのコメント番号が 100 番とすると、コメントとして、「omit: 100 1234 5678」をサーバーに書き込む。
+      
+…別のユーザーが訪れ、読み出しをする。
+
+  ●最後から読んでいって、「omit 100 1234 5678」を見つけると、100 番より前のコメントで 1234 の識別子を持つもので、1234 を 5678 で暗号化した abcd が omit-info にあるものを非表示にする。成功した omit を含むコメントも消す。
+    
+なお、1234 から abcd を得るのは複号の必要がないのでハッシュで良く、実装では HMAC-SHA1 を使っている。暗号は AES。「コメント識別子」は 4 ケタの数字、「削除キー」は16バイトのバイナリ列。適宜、Base64 にエンコードしている。
+
+暗号ライブラリを使う際の注意点として、文字コードの問題がある。今回使った Crpto-JS はデフォルトでは、String はすべて漢字等を含む文字列、すなわち、8bit バイナリではない文字列として考え、渡されたあと、UTF8 のエンコードの処理をしてしまう。これは、データだけでなくキーに関してもそうである。
+
+しかし、上のランダムに生成された削除キーなどは、バイナリとして解釈されたほうが有利で、さんざん日本語の文字コードに苦しめられてきたせいか、文字コードをアプリケーションプログラマ側が責任をもって変換して、バイナリで受け渡すほうが私の趣味にあうので、そうなるようなラッパーコードを挟んで実装している。
+
+■導入方法
+  
+ココログプロで導入するのにテンプレートをいじる必要がある。これを自動化するわけにもいかず、煩雑な手作業が必要になる。まず要点のみ書く。
+
+  1.必要なライブラリをダウンロードし、自分のココログサイトに置く。
+  2.テンプレートの Individual Archives のコメント入力欄をいじる。
+  3.CSS を設定する。
+  4.コメント確認画面に対応できるよう「サブタイトル」の設定に script 文を入れ、ライブラリをロードできるようにする。(←これがミソ)
+    
+まず、1 の「必要なライブラリをダウンロードし、自分のココログサイトに置く」こと。JavaScript なので、ライブラリを直接、配布サイトから引っぱることも可能だが、他のまともなサイトと違って、私は私のためにスクリプトをいじってしまうことがしょっちゅうあるので、そこでバージョン違いのスクリプトを引っぱって来ないように、また、殊勝にも、サイトへの負荷を軽減するために、自分のところに置いたほうがよい。
+
+&lt;b&gt;必要なライブラリ&lt;/b&gt;は次の通りである。
+
+  ●Crypto-JS。暗号ライブラリ。下のものはサイズを小さくするための「難読化」がされているが、配布されている zip には読めるソースが入っている。下はそのソースの crypto.js と sha1.js と hmac.js と pbkdf2.js と blockmodes.js と aes.js を連結したものに相当するようで、Base64 とかもこのファイルだけで使えるようになる。
+    
+      <a href="http://crypto-js.googlecode.com/files/2.5.3-crypto-sha1-hmac-pbkdf2-blockmodes-aes.js" class="ext-link">http://crypto-js.googlecode.com/files/2.5.3-crypto-sha1-hmac-pbkdf2-blockmodes-aes.js</a>
+  ●ことわざ集。下のは私が本などをもとに選びながら入力したものである。ことわざ自体は伝統的なもので、そこに著作権が生じるとは考えにくいが、ただ、データベースに著作権がある昨今なので、もしかすると、問題にする向きもあるかもしれない。
+    
+      <a href="http://jrf.cocolog-nifty.com/archive/lib/proverbs.js" class="ext-link">http://jrf.cocolog-nifty.com/archive/lib/proverbs.js</a>
+  ●マジックナンバー生成ツール。これは《電子署名の替わりに Loaded Magic》に書いたようにソースそのものではなく、これをロードして使うことに意味がある。よって、これについては私のサイトのものを使ってもよいだろう。
+    
+      <a href="http://jrf.cocolog-nifty.com/archive/javascript/summoner.js" class="ext-link">http://jrf.cocolog-nifty.com/archive/javascript/summoner.js</a>
+  ●今回の JavaScript プログラム本体。
+    
+    <a href="http://jrf.cocolog-nifty.com/archive/javascript/jrf_crypt_comment.js" class="ext-link">http://jrf.cocolog-nifty.com/archive/javascript/jrf_crypt_comment.js</a>
+    
+(最初のバージョンのころは、「ランダムことわざ」の下に、「今日のネットの話題」として、はてなブックマーク の社会のホットエントリからタイトルと URL を拾っていた。しかし、そこで使っていた Google Feed API が 2016年12月にサービス終了したため、その部分のコードを削除した。)
+
+次に、2 の「テンプレートの Individual Archives のコメント入力欄をいじる」わけだが、JavaScript が使えないときのことも多少考慮するため、複雑になっている。具体的には、同じことわざやニュースが表示されるのも芸がないので、《Wings-Winds Scripts［SSI］ - ランダム表示》を参考に SSI の機能で、最低限のランダムさを取り入れたりしている。
+
+コメント入力部の class が comment-form である div について下記のようにする。(自分のコードにコピペできるように長く引用している。コードのあとで順に要点を説明する。)
+
+&lt;div class=&quot;comment-form&quot;&gt;
+&lt;h2&gt;&lt;$MTTrans phrase=&quot;Post a comment&quot;$&gt;&lt;/h2&gt;
+
+&lt;div id=&quot;comment-form-data&quot;&gt;
+&lt;form onsubmit=&quot;handleSubmit(this)&quot; method=&quot;post&quot; action=&quot;&lt;$MTCGIPath$&gt;&lt;$MTCommentScript$&gt;&quot; name=&quot;comments_form&quot;&gt;
+&lt;input type=&quot;hidden&quot; name=&quot;static&quot; value=&quot;1&quot; /&gt;
+&lt;input type=&quot;hidden&quot; name=&quot;entry_id&quot; value=&quot;&lt;$MTEntryID$&gt;&quot; /&gt;
+&lt;input type=&quot;hidden&quot; name=&quot;user_id&quot; value=&quot;&lt;$MTUserID&gt;&quot; /&gt;
+
+&lt;div id=&quot;comment-data&quot;&gt;
+&lt;p id=&quot;comment-name&quot;&gt;&lt;label for=&quot;author&quot;&gt;&lt;$MTTrans phrase=&quot;Name:&quot;$&gt;&lt;/label&gt;&lt;br /&gt;
+&lt;input onchange=&quot;handleChange(this)&quot; tabindex=&quot;1&quot; id=&quot;author&quot; name=&quot;author&quot; /&gt;&lt;/p&gt;
+
+&lt;p id=&quot;comment-email&quot;&gt;&lt;label for=&quot;email&quot;&gt;暗号化パスワード：&lt;/label&gt;&lt;br /&gt;
+&lt;span class=&quot;comment-form-note&quot; style=&quot;display:inline&quot;&gt;(メールアドレス形式)&lt;/span&gt;&lt;br /&gt;
+&lt;input onchange=&quot;handleChange(this)&quot; tabindex=&quot;2&quot; id=&quot;email&quot; name=&quot;email&quot; /&gt;&lt;/p&gt;
+
+&lt;p id=&quot;comment-url&quot;&gt;&lt;label for=&quot;url&quot;&gt;&lt;$MTTrans phrase=&quot;URL:&quot;$&gt;&lt;/label&gt;&lt;br /&gt;
+&lt;input onchange=&quot;handleChange(this)&quot; tabindex=&quot;3&quot; id=&quot;url&quot; name=&quot;url&quot; /&gt;&lt;/p&gt;
+&lt;/div&gt;
+
+&lt;div id=&quot;comment-regist&quot;&gt;
+&lt;p id=&quot;rememberme&quot;&gt;&lt;label&gt;&lt;input tabindex=&quot;5&quot; onclick=&quot;handleCheck(this)&quot; type=&quot;checkbox&quot; id=&quot;bakecookie&quot; name=&quot;bakecookie&quot; value=&quot;1&quot; /&gt; &lt;$MTTrans phrase=&quot;Remember personal info?&quot;$&gt;&lt;/label&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&quot;comment-help&quot;&gt;
+※匿名投稿を許可しています。&lt;a href=&quot;<a href="http://jrf.cocolog-nifty.com/column/2006/02/post_20.html#comment-policy&amp;quot;&amp;gt;ゆるめのコメント管理のポリシー&amp;lt;/a&amp;gt;を持っています。この記事にまったく関係のないコメントは&amp;lt;a" class="ext-link">http://jrf.cocolog-nifty.com/column/2006/02/post_20.html#comment-policy&amp;quot;&amp;gt;ゆるめのコメント管理のポリシー&amp;lt;/a&amp;gt;を持っています。この記事にまったく関係のないコメントは&amp;lt;a</a> href=&quot;<a href="http://jrf.cocolog-nifty.com/column/2006/02/post_35.html&amp;quot;&amp;gt;このリンク先&amp;lt;/a&amp;gt;で受け付けています。&amp;lt;br" class="ext-link">http://jrf.cocolog-nifty.com/column/2006/02/post_35.html&amp;quot;&amp;gt;このリンク先&amp;lt;/a&amp;gt;で受け付けています。&amp;lt;br</a> /&gt;
+※暗号化パスワードを設定すれば、後に「削除」、すなわち JavaScript で非表示に設定できます。暗号解読者を気にしないならメールアドレスでもかまいません。この設定は平文のメールで管理者に届きます。&lt;br /&gt;
+※コメントを書くために&lt;b&gt;&lt;b&gt;ボールド&lt;/b&gt;&lt;/b&gt;、&lt;pre&gt;詩文やソースコード&lt;/pre&gt;、&lt;a href=&quot;&quot;&gt;&lt;a href=&quot;<a href="http://support.cocolog-nifty.com/&amp;quot;&amp;gt;リンク&amp;lt;/a&amp;gt;&amp;lt;/a&amp;gt;、&amp;lt;a" class="ext-link">http://support.cocolog-nifty.com/&amp;quot;&amp;gt;リンク&amp;lt;/a&amp;gt;&amp;lt;/a&amp;gt;、&amp;lt;a</a> href=&quot;<a href="http://support.cocolog-nifty.com/howto/2006/03/post_c72b.html#tag&amp;quot;&amp;gt;その他のHTMLタグ&amp;lt;/a&amp;gt;が使えます。また、漢字[かんじ]でルビが、[google:" class="ext-link">http://support.cocolog-nifty.com/howto/2006/03/post_c72b.html#tag&amp;quot;&amp;gt;その他のHTMLタグ&amp;lt;/a&amp;gt;が使えます。また、漢字[かんじ]でルビが、[google:</a> キーワード] で検索指定が使えます。
+&lt;/div&gt;
+&lt;br id=&quot;comment-separator&quot; style=&quot;clear: both;&quot; /&gt;
+&lt;p id=&quot;comment-text-field&quot;&gt;&lt;label for=&quot;comment-text&quot;&gt;&lt;$MTTrans phrase=&quot;Comments:&quot;$&gt;&lt;$MTWeblogIncludeModule module=&quot;comment-emoticon&quot;$&gt;←今の気持ちを表す絵文字をコメントの最初に付けるの推奨。&lt;/label&gt;&lt;br /&gt;
+&lt;textarea tabindex=&quot;4&quot; id=&quot;comment-text&quot; name=&quot;text&quot; rows=&quot;10&quot; cols=&quot;50&quot;&gt;&lt;/textarea&gt;&lt;/p&gt;
+
+&lt;div id=&quot;comment-submit&quot; align=&quot;center&quot;&gt;
+&lt;input id=&quot;preview&quot; tabindex=&quot;6&quot; type=&quot;submit&quot; name=&quot;preview&quot; onclick=&quot;if (!append_omit_info()) return false; return true;&quot; value=&quot; &lt;$MTTrans phrase=&quot;Preview&quot;$&gt; &quot; /&gt;
+&lt;input id=&quot;post&quot; tabindex=&quot;7&quot; style=&quot;font-weight: bold;&quot;  onclick=&quot;if (! append_omit_info()) return false; disableButton(this); return false;&quot; type=&quot;submit&quot; name=&quot;post&quot; value=&quot; &lt;$MTTrans phrase=&quot;_POST_VERB&quot;$&gt; &quot; /&gt;
+&lt;/div&gt;
+
+&lt;/form&gt;
+&lt;/div&gt;
+
+&lt;div id=&quot;encrypt-form-data&quot;&gt;
+&lt;form&gt;
+&lt;!--#config timefmt=&quot;%S&quot; --&gt;
+&lt;!--#set var=&quot;sec&quot; value=&quot;$DATE_LOCAL&quot; --&gt;
+&lt;input type=&quot;hidden&quot; id=&quot;encrypt-backup&quot; /&gt;
+
+&lt;p id=&quot;random-proverb&quot;&gt;
+ランダムことわざ:
+&lt;!--#if expr=&quot;$sec=/[01]$/&quot; --&gt;
+&lt;span id=&quot;salt-proverb&quot;&gt;身から出た錆。&lt;/span&gt;
+&lt;!--#elif expr=&quot;$sec=/[23]$/&quot; --&gt;
+&lt;span id=&quot;salt-proverb&quot;&gt;猿も木から落ちる。&lt;/span&gt;
+&lt;!--#elif expr=&quot;$sec=/[45]$/&quot; --&gt;
+&lt;span id=&quot;salt-proverb&quot;&gt;鶴は千年、亀は萬年。&lt;/span&gt;
+&lt;!--#elif expr=&quot;$sec=/[67]$/&quot; --&gt;
+&lt;span id=&quot;salt-proverb&quot;&gt;温故知新。&lt;/span&gt;
+&lt;!--#else --&gt;
+&lt;span id=&quot;salt-proverb&quot;&gt;七転び八起き。&lt;/span&gt;
+&lt;!--#endif--&gt;
+&lt;/p&gt;
+
+&lt;div class=&quot;crypt-widget&quot; align=&quot;center&quot;&gt;
+&lt;label&gt;パスワードヒント: &lt;/label&gt; &lt;input id=&quot;email-hint&quot; type=&quot;text&quot; tabindex=&quot;8&quot; size=&quot;30&quot; value=&quot;コメンテーターの「メールアドレス」&quot; /&gt;&lt;br/&gt;
+&lt;noscript&gt;暗号を使うには JavaScript を有効にする必要があります。あなたの家・社の管理者にご相談ください。&lt;br/&gt;&lt;/noscript&gt;
+&lt;input id=&quot;encrypt&quot; tabindex=&quot;9&quot; onclick=&quot;encrypt_textarea();return false;&quot; type=&quot;button&quot; name=&quot;encrypt&quot; disabled=&quot;disabled&quot; value=&quot; 暗号化 &quot; /&gt;
+&lt;input id=&quot;cancel-encrypt&quot; tabindex=&quot;10&quot; disabled=&quot;disabled&quot; onclick=&quot;cancel_encrypt();return false;&quot; type=&quot;button&quot; name=&quot;cancel-encrypt&quot; disabled=&quot;disabled&quot; value=&quot; キャンセル &quot; /&gt;
+&lt;/div&gt;
+
+&lt;/form&gt;
+&lt;/div&gt;
+
+&lt;/div&gt;
+
+まず、form が二つに分かれているのは、submit 時に付け足しの部分がサーバーに送られたくないからである。
+
+最初の id が comment-form-data の div の form について。
+
+INPUT SUBMIT の id が preview と post のボタンで、append_omit_info 関数を呼んで、omit-info を comment-text に追加するよう変更している。
+
+あとは、「メールアドレス:(ウェブには掲載されません)」のところを「暗号化パスワード:(メールアドレス形式)」と変え、これまで私のサイトでは表示してきた注意書きを増やしているぐらい。
+
+次の id が encrypt-form-data の div の form について。
+
+ここでは前述のように SSI で一端、ランダムにことわざとニュースを選んでいるが、後で、JavaScript で別のものに差しかえている。
+
+他の掲示板の使い方をならってというか、「パスワードのヒント」を入力させるようにしている(空欄可)。
+
+暗号化ボタンが押されたとき、ブラウザキャッシュが効きやすいよう、INPUT HIDDEN なところに平文を待避させている。
+
+なお、標準のテンプレートにはないが、私のサイトには「最新コメント一覧」等があり、そのテンプレートをいじって、comment-content という class の div を作り、(完全ではないが)なるだけ「削除」が反映されるようにした。さらに最新コメントの RSS もあるのだが、JavaScript が使えない以上、その点については諦めた。
+
+そして 3 の「CSS を設定する」だが、私は、jrf_crypt_comment.css というのを別に作ってそれを読みこむようにしているが、要はどこかに次のような設定を書けばいい。omit-info については、私はコードを作った人なので仕組みに気付かれるよう表示しているが、他の人は display:none で良いと思う。
+
+/* p.omit-info { display: none; } */
+p.omit-info { font-size: xx-small; color: gray; }
+
+p.omitted {
+  font-size: small;
+  color: gray;
+  text-align: center;
+  border: dashed 2px gray;
+  padding: 3px;
+  margin: 5px;
+}
+
+.popup-container { position: relative; }
+
+.popup-overlay {
+    position: absolute;
+    top: 10px;
+    left: -18em;
+    z-index: 10; 
+    width: 20em;
+    text-align: left;
+    padding: 3px;
+    font-size: medium;
+    color: black;
+    background: white;
+    border: solid 1px black;
+}
+
+.crypted {
+  text-align: left;
+  border: solid 1px gray;
+  padding: 3px;
+}
+
+.crypted em {
+  color: red;
+}
+
+.decrypted-tail {
+  color: gray;
+  font-size: small;
+}
+
+最後に変態的な 4 の「コメント確認画面に対応できるようサブタイトルの設定に script 文を入れる」こと。
+
+お上品には、JavaScript ライブラリは HTML の HEAD で読み込むのが「おやくそく」だが、コメントを「削除」と言ってる手前、コメント確認画面などでスクリプトが読まれず、削除したはずのコメントが表示されるようじゃカッコ悪い。
+
+ココログのコメント確認画面はブログ管理人のサイトから離れたとこにあるが、styles.css は読んでくれる。ただ、スクリプトを読むような機能はなさそうで、普通は、そこでスクリプトを実行しようとするのは「邪道」なのだと思う。
+
+が、不可能というわけでもなくて、確認画面にタイトルとサブタイトルが表示されるのを利用して、どちらかに script タグを仕込んでしまえば目的は達することができる。
+
+ただし、これは当然「想定外」とすべき使い方だから、ココログの管理画面でサブタイトルのところの表示がやたら見にくくなるのは甘受せねばならないようだ。
+
+サブタイトルの設定に入れ込むコードは次のようになる。
+
+サブタイトルをここに書いた上で…。
+
+&lt;script src=&quot;<a href="http://jrf.cocolog-nifty.com/archive/lib/2.5.3-crypto-sha1-hmac-pbkdf2-blockmodes-aes.js&amp;quot;" class="ext-link">http://jrf.cocolog-nifty.com/archive/lib/2.5.3-crypto-sha1-hmac-pbkdf2-blockmodes-aes.js&amp;quot;</a> type=&quot;text/javascript&quot;&gt;&lt;/script&gt;
+&lt;script src=&quot;<a href="http://jrf.cocolog-nifty.com/archive/lib/proverbs.js&amp;quot;" class="ext-link">http://jrf.cocolog-nifty.com/archive/lib/proverbs.js&amp;quot;</a> type=&quot;text/javascript&quot;&gt;&lt;/script&gt;
+&lt;script src=&quot;<a href="http://jrf.cocolog-nifty.com/archive/javascript/summoner.js&amp;quot;" class="ext-link">http://jrf.cocolog-nifty.com/archive/javascript/summoner.js&amp;quot;</a> type=&quot;text/javascript&quot;&gt;&lt;/script&gt;
+&lt;script src=&quot;<a href="http://jrf.cocolog-nifty.com/archive/lib/jrf_crypt_comment.js&amp;quot;" class="ext-link">http://jrf.cocolog-nifty.com/archive/lib/jrf_crypt_comment.js&amp;quot;</a> type=&quot;text/javascript&quot;&gt;&lt;/script&gt;
+
+ここで、jrf.cocolog-nifty.com/archive/lib/ の部分は、自分がダウンロードしたライブラリを置いているところに書き換えていただきたい。
+
+以上の準備をしたうえで、ブログのデザインを再構築すれば、暗号化と削除ができるようになっている…はず。
+
+■今回の配布物
+  
+ライセンス的なことについては、私が作った部分についてはパブリックドメインでいいのだが、ことわざ集は、下記の本や Wikitionary、また電子辞書(広辞苑等)を参考にしており、コメント入力欄は、ココログ標準テンプレートをいじったもので、そのあたりの権利関係は明暸ではない。非商用の個人で使うならいざ知らず、業務で使うようなことが万一あるなら、そういったところに注意する必要があるだろう。
+
+  ●ことわざ集。
+    
+    <a href="http://jrf.cocolog-nifty.com/archive/lib/proverbs.js" class="ext-link">http://jrf.cocolog-nifty.com/archive/lib/proverbs.js</a>
+  ●JavaScript プログラム本体。
+    
+    <a href="http://jrf.cocolog-nifty.com/archive/javascript/jrf_crypt_comment.js" class="ext-link">http://jrf.cocolog-nifty.com/archive/javascript/jrf_crypt_comment.js</a>
+    
+■参考
+  
+下に挙げたもののほか、《aboutme2cocolog》、《易双六》と作ってきた経験、コードが役に立っている。
+
+  ●Crypto-JS は先に挙げた。試験実装の当初は別の暗号ライブラリ等を使っていたが、結局、Crypto-JS がいろいろ揃っていて便利で、こちらに移行した。
+  ●《Wings-Winds Scripts［SSI］ - ランダム表示》も上述。MovableType + SSI のテクニックは私のサイトでは頻出。
+  ●『学研まんが事典シリーズ ことわざ大事典』(森久保 安美 監修, 学研, 1986年)。《Wiktionary:四字熟語の一覧 - ウィクショナリー日本語版》。ことわざを入力するときに参考にしたもの。
+  ●アイデアは最初《ひとこと》で出した。<a href="../../../articles/2012/01/statuses_cocolog_71400198.html" class="int-link cocolog-id" title="ひとこと">[cocolog:71400198]</a> で削除のアルゴリズムを述べ、<a href="../../../articles/2012/02/statuses_cocolog_71567131.html" class="int-link cocolog-id" title="ひとこと">[cocolog:71567131]</a> で盗聴の痕跡をソーシャルに残すアイデアを述べている。
+    
+更新：2012-02-16,2017-03-29
+初公開：2012年02月16日 12:03:57
+最新版：2017年03月30日 02:03:03
+
+
+Comments:
+
+Hint: パスワードは a@b.c です。試してみてください。
+
+--BEGIN:AES_BASE64--
+RTdfwKXUUu3s+7dFDS0av07pxgrhhxTFR/WwbuXZs6J2dPN9M1vgEsssnZxutJJrt3eO2QbuSgaR
+rA3JV6xVxpu/eziLGfCY6D7KPC2+R9gP/XJqtBBnG7uD2dCEclei7maMIT4n7sjl+zDFhcgMCkYJ
+AKeRBvvyk2J6xwTPzzrIOdLNjw7I60U0BCmLVcW4JqI8NnLa1T3znP+Z6+PMBrHKNx/1znRSCfj6
+HE4wNQLGVLpActafHHSvey4OIgYhlP/o3GZQzgvpGfwo6mMwyu15uL+a1RiMIOiIYumxy1v+BGjX
+DhwcS/Qft59g6wC7ZG0b7/jjV6lwgH2Qi5Qfk0FSXXycFFfJ5aN4DbYLaPCy2myt66MzvjPj2j1f
+xIqu126/m7N0yMmUoFf0l9jqnHw7EtC2XgxFHnnpobRgNmqr5+nM4w/hHyZ8d9ZmfeQELE7XtKJM
+F9t/56fyzxbDt4krVViwSjRwsp55o1B+daUntJoZ9dw4TcU4NPblLhC2I93l/fw4m9yMGxxqBu3y
+kF4Bkq8bX/9xxx61dxmES1QZZt+OBItgfFA
+--END:AES_BASE64--
+
+[omit-info: 0392 hmac_sha1_base64:0bqNBpz7UB7bRc95xE+dny23OQQ aes_base64:m6/jveRSl3bB0s6f+a8LyskKpUGf+nLNOrIfkjKgL3xTE1M]
+
+投稿: JRF | 2012-02-16 12:30:42 (JST)
+
+[E:camera] 「削除」のテストのため、消されるエントリ。
+
+[omit-info: 8916 hmac_sha1_base64:4XFOOVqefrgbZy1wrwSaXrD0RgI aes_base64:mOJ7PD5gvK+lq/O/JrJWj1LgGd2Zpf2pKsDCNoz8W5uKdIo]
+
+投稿: JRF | 2012-02-16 12:33:00 (JST)
+
+[omit: 1 8916 base64:DSWrgJhAzLItk9HlxCBG9g]
+
+テストのため削除。
+匿名投稿 | 2012-02-16 12:34:31 (JST)
+
+[E:chick] デモンストレーションのために、上で a@b.c というパスワードで、暗号化と削除のテストをしています。
+
+暗号化した文は、「[E:good] 見[み]えてますね。テストＯＫ！」で、ランダムことわざは、「骨折り損の草臥[くたびれ]儲[もう]け。」でした。
+
+是非、暗号解除を試してみてください。削除ボタンを押してもダイアログがまずでますので、そこまでやってみてください。でも、本当に消したらダメですよ。(^^; あとで私が削除文だけを本当に削除することでしょう。
+
+なお、このエントリについては、試験書き込みも可とします。試験書き込みを削除して欲しい方はそう書くか、「削除」をしておいてください。
+
+投稿: JRF | 2012-02-16 12:43:24 (JST)
+
+[E:run] 更新：jrf_crypt_comment.js を少しいじった。公開寸前に見つけたバグを直したとき、feed を読みこむタイミングを変えたのだが、どうもそれが体感速度の低下をもたらしてるような気がして、他のテキスト変換後に読むよう修正した。
+
+いちおう、前回のバージョンは jrf_crypt_comment-20120216.js として置いてある。今回のバージョンは jrf_crypt_comment-20120216_2.js がユニークリンク。
+
+あと、上の記事の proverbs.js を proverb.js とタイプミスしてたのを修正した。
+
+投稿: JRF | 2012-02-16 15:33:49 (JST)
+
+[E:music] 更新：記事のみ。いくつか typo を見つけたので、その修正ついでに説明を少し足した。
+
+投稿: JRF | 2012-02-17 20:11:39 (JST)
+
+[E:bread] 更新：バージョン 0.13。jrf_crypt_comment-20120218.js。
+
+スクリプトが使えないときの微調整。
+
+投稿: JRF | 2012-02-18 00:41:10 (JST)
+
+[E:book] 更新：バージョン 0.14。jrf_crypt_comment-20120223.js。
+
+「削除」のポップアップに確認ボタンを足して、テストしやすいようにした。
+
+投稿: JRF | 2012-02-23 22:40:13 (JST)
+
+[E:shoe] 更新：バージョン 0.15。jrf_crypt_comment-20120224.js。
+
+0.14 からすぐだが、緊急というわけではない。コメントで HTML を有効にしているため、URL 直書きがそのままではリンクされないココログの方式は不便かと思い、直書きがリンクになるようにしておいた。
+
+例えば↓。
+
+<a href="http://en.wikipedia.org/wiki/WWW_(disambiguation" class="ext-link">http://en.wikipedia.org/wiki/WWW_(disambiguation</a>
+
+(<a href="../../../articles/2012/02/software_71637031.html" class="int-link" title="ユーザーによるコメント「削除」をココログプロで実現する">http://jrf.cocolog-nifty.com/software/2012/02/post-1.html</a>
+
+投稿: JRF | 2012-02-24 00:34:28 (JST)
+
+[E:chair] 更新：バージョン 0.16。jrf_crypt_comment-20120518.js.。
+
+空行があれば p タグで囲む処理を加えた。どこかでやったつもりでいたが、少なくとも前のバージョンにはなかった。ダーティに処理しているので、ちょっと自信がない。
+
+あと、proverbs.js に「名言」集を加えた。いろいろなところから取ってるが、主な出典は次の二つ。
+
+「座右の銘」研究会『こども座右の銘』 (メトロポリタンプレス, 2012年)
+<a href="http://www.amazon.co.jp/dp/4904759087" class="ext-link">http://www.amazon.co.jp/dp/4904759087</a>
+
+《富士見台の館：過去の「今日の名言（＆迷言）」》
+<a href="../../../articles/2012/05/hbm_01559.html" class="int-link" title="過去の「今日の名言（＆迷言）」">http://www.geocities.jp/fuji3461/wise_saying.html</a>
+
+投稿: JRF | 2012-05-18 02:52:32 (JST)
+
+[E:punch] 更新：バージョン 0.17。jrf_crypt_comment-20120523.js。
+
+ちょっと失敗。関数名が重なっていて statuses_tools.js と共存できなかった。突貫で、こちらの decorate_comment, undecorate_comment, decorate_comments の前に区別のため cpt_ を付けた。
+
+投稿: JRF | 2012-05-23 21:34:07 (JST)
+
+[E:rain] proverbs.js (バージョン 0.13)に 2ch まとめサイト(↓)からの名言をさらに足した。
+
+《関係ないAAに世界史の名言を言わせるスレ:哲学ニュースnwk》
+<a href="../../../articles/2012/07/hbm_01588.html" class="int-link" title="関係ないAAに世界史の名言を言わせるスレ:哲学ニュースnwk">http://blog.livedoor.jp/nwknews/archives/4225008.html</a>
+
+投稿: JRF | 2012-07-01 23:29:20 (JST)
+
+[E:yacht] 更新：バージョン 0.18。jrf_crypt_comment-20140131.js。
+
+jrf_crypt_comment.css をダウンロードする場所が js  と違ったので、js と同じディレクトリからもダウンロードできるようにしたのと、そこからダウンロードできるということがわかるように js にコメントを足しただけ。プログラムは何も変わってない。
+
+投稿: JRF | 2014-01-31 20:51:50 (JST)
+
+[E:club] 更新：バージョン 0.19。jrf_crypt_comment-20151106.js。
+
+ルビを付けるとき、「々」と「〆」に対応。ライセンス等は最近は新しい文を使っているが、変更が軽微なため、あえて変えなかった。
+
+投稿: JRF | 2015-11-06 00:44:08 (JST)
+
+[E:golf] 更新：バージョン 0.20。jrf_crypt_comment-20170329.js。
+
+この前のバージョンまでは、コメント欄の下に今もある「ランダムことわざ」の下に、「今日のネットの話題」として、はてなブックマーク の社会のホットエントリからタイトルと URL を拾っていた。しかし、そこで使っていた Google Feed API が 2016年12月にサービス終了したため、その部分のコードを削除した。それに合わせて、上の記事も書き換えた。
+
+削除しただけなので、バージョンアップだが、コードとしてはむしろ簡単になっている。
+
+投稿: JRF | 2017-03-30 02:13:59 (JST)
+
+
+Links:
+
+Crypto-JS: <a href="../../../articles/2012/02/hbm_01516.html" class="int-link" title=" crypto-js -  Project Hosting on Google Code">http://code.google.com/p/crypto-js/</a>
+電子署名の替わりに Loaded Magic: <a href="../../../articles/2011/05/software_68180670.html" class="int-link" title="電子署名の替わりに Loaded Magic">http://jrf.cocolog-nifty.com/software/2011/05/post.html</a>
+はてなブックマーク: <a href="../../../articles/2007/07/hbm_00803.html" class="int-link" title="はてなブックマーク">http://b.hatena.ne.jp/</a>
+Google Feed API: <a href="../../../articles/2012/02/hbm_01520.html" class="int-link" title="Google Feed API — Google Developers">https://developers.google.com/feed/</a>
+Wings-Winds Scripts［SSI］ - ランダム表示: <a href="../../../articles/2012/02/hbm_01519.html" class="int-link" title="Wings-Winds Scripts[SSI] -- ランダム表示">http://home.wi-wi.jp/scripts/log/2006061301/index.html</a>
+jrf_crypt_comment.css: <a href="http://jrf.cocolog-nifty.com/archive/lib/jrf_crypt_comment.css" class="ext-link">http://jrf.cocolog-nifty.com/archive/lib/jrf_crypt_comment.css</a>
+aboutme2cocolog: <a href="../../../articles/2011/04/software_67976071.html" class="int-link" title="aboutme2cocolog: アバウトミーの「ひとこと」をココログプロへ移転するツール">http://jrf.cocolog-nifty.com/software/2011/04/post.html</a>
+易双六: <a href="../../../articles/2011/11/hbm_01498.html" class="int-link" title="易双六(ようすこう) - タロットカードを使った一人遊び [ JRF の私見：雑記 ]">http://jrf.cocolog-nifty.com/column/2011/11/post.html</a>
+学研まんが事典シリーズ ことわざ大事典: <a href="http://www.amazon.co.jp/dp/4051019977" class="ext-link">http://www.amazon.co.jp/dp/4051019977</a>
+Wiktionary:四字熟語の一覧 - ウィクショナリー日本語版: <a href="../../../articles/2012/02/hbm_01517.html" class="int-link" title="四字熟語の一覧 - Wiktionary">http://ja.wiktionary.org/wiki/Wiktionary:%E5%9B%9B%E5%AD%97%E7%86%9F%E8%AA%9E%E3%81%AE%E4%B8%80%E8%A6%A7</a>
+ひとこと: <a href="http://jrf.cocolog-nifty.com/statuses/" class="ext-link">http://jrf.cocolog-nifty.com/statuses/</a>
+jrf_crypt_comment-20120216.js: <a href="http://jrf.cocolog-nifty.com/archive/javascript/jrf_crypt_comment-20120216.js" class="ext-link">http://jrf.cocolog-nifty.com/archive/javascript/jrf_crypt_comment-20120216.js</a>
+jrf_crypt_comment-20120216_2.js: <a href="http://jrf.cocolog-nifty.com/archive/javascript/jrf_crypt_comment-20120216_2.js" class="ext-link">http://jrf.cocolog-nifty.com/archive/javascript/jrf_crypt_comment-20120216_2.js</a>
+jrf_crypt_comment-20120218.js: <a href="http://jrf.cocolog-nifty.com/archive/javascript/jrf_crypt_comment-20120218.js" class="ext-link">http://jrf.cocolog-nifty.com/archive/javascript/jrf_crypt_comment-20120218.js</a>
+jrf_crypt_comment-20120223.js: <a href="http://jrf.cocolog-nifty.com/archive/javascript/jrf_crypt_comment-20120223.js" class="ext-link">http://jrf.cocolog-nifty.com/archive/javascript/jrf_crypt_comment-20120223.js</a>
+jrf_crypt_comment-20120224.js: <a href="http://jrf.cocolog-nifty.com/archive/javascript/jrf_crypt_comment-20120224.js" class="ext-link">http://jrf.cocolog-nifty.com/archive/javascript/jrf_crypt_comment-20120224.js</a>
+jrf_crypt_comment-20120518.js.: <a href="http://jrf.cocolog-nifty.com/archive/javascript/jrf_crypt_comment-20120518.js" class="ext-link">http://jrf.cocolog-nifty.com/archive/javascript/jrf_crypt_comment-20120518.js</a>
+jrf_crypt_comment-20120523.js: <a href="http://jrf.cocolog-nifty.com/archive/javascript/jrf_crypt_comment-20120523.js" class="ext-link">http://jrf.cocolog-nifty.com/archive/javascript/jrf_crypt_comment-20120523.js</a>
+jrf_crypt_comment-20140131.js: <a href="http://jrf.cocolog-nifty.com/archive/javascript/jrf_crypt_comment-20140131.js" class="ext-link">http://jrf.cocolog-nifty.com/archive/javascript/jrf_crypt_comment-20140131.js</a>
+jrf_crypt_comment.css: <a href="http://jrf.cocolog-nifty.com/archive/javascript/jrf_crypt_comment.css" class="ext-link">http://jrf.cocolog-nifty.com/archive/javascript/jrf_crypt_comment.css</a>
+jrf_crypt_comment-20151106.js: <a href="http://jrf.cocolog-nifty.com/archive/javascript/jrf_crypt_comment-20151106.js" class="ext-link">http://jrf.cocolog-nifty.com/archive/javascript/jrf_crypt_comment-20151106.js</a>
+jrf_crypt_comment-20170329.js: <a href="http://jrf.cocolog-nifty.com/archive/javascript/jrf_crypt_comment-20170329.js" class="ext-link">http://jrf.cocolog-nifty.com/archive/javascript/jrf_crypt_comment-20170329.js</a></pre>
+
+
+<section class="backrefs" data-pagefind-ignore>
+<h2>後方参照 (4 件)</h2>
+<ul>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2012/02/statuses_cocolog_71653595.html">ひとこと</a> <span class="backref-date">2012年02月17日</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2012/02/statuses_cocolog_71567131.html">ひとこと</a> <span class="backref-date">2012年02月10日</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2012/01/statuses_cocolog_71400198.html">ひとこと</a> <span class="backref-date">2012年01月26日</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2006/04/column_10899930.html">テンプレート等ブログシステムの更新履歴</a> <span class="backref-date">2006年04月02日 21:42:30</span></li>
+</ul>
+</section>
+
+</article>
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2012/02.html">2012年02月</a> | <a href="../../../index/software.html">ソフトウェア Tips</a></nav>
+</body>
+</html>

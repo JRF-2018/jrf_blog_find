@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>ひとこと - JRF Blog Archive</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2023/06.html">2023年06月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+<article data-pagefind-body>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[statuses] <span class="cocolog-id">cocolog:94265741</span></td></tr>
+<tr><th>セクション</th><td>JRF のひとこと</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2023/06.html">2023年06月21日</a></td></tr>
+<tr><th>元URL</th><td><a href="http://jrf.cocolog-nifty.com/statuses/2023/06/post-20e3af.html" class="ext-link"><span class="original-url">http://jrf.cocolog-nifty.com/statuses/2023/06/post-20e3af.html</span></a></td></tr>
+
+</table>
+</div>
+<h1>ひとこと</h1>
+<pre class="body">Predictor - Actor - Recollector モデルと OpenAI Function calling やエビデンスの引用付き解答を関連させられないか…。「PAR分解」とか言って AI を説明可能にでいないか。…とか妄想した。
+JRF 2023年6月21日
+
+<a href="../../../articles/2023/06/statuses_cocolog_94260074.html" class="int-link cocolog-id" title="ひとこと">[cocolog:94260074]</a> で、易占いを ChatGPT などの LLM (Large Language Models) でできるかどうかというのを試しながら考えていて、タロット占いだと、絵を読むのに、相談の内容から識別器の動作を変えるのが必要だなぁ…とか、OpenAI Function calling やエビデンスの引用付き解答とかすごいなぁ…というのを考えているうち、これを私が以前考えた Predictor - Actor - Recollector モデルと関連付けられるんじゃないか…とぼんやり考えはじめた。
+
+JRF 2023年6月21日
+
+《Predictor - Actor (- Recollector) モデルと負の学習 - JRF のソフトウェア Tips》  
+<a href="../../../articles/2020/02/software_91662485.html" class="int-link" title="Predictor - Actor (- Recollector) モデルと負の学習">http://jrf.cocolog-nifty.com/software/2020/02/post-c87651.html</a>
+
+それをブレインストーミングぎみに考えてみる。
+
+JRF 2023年6月21日
+
+……。
+
+その前に OpenAI Function calling への私の関心は文脈としては、↓から来ている。
+
+○ 2023-05-26T23:44:44Z
+
+AI での機械の操作とか運転とかも ChatGPT などの LLM (Large Language Models) でなんとかなるのでは？…とかボンヤリ思っていたが、↓をみると時代はその方向に動いてる感じか…？ そういう場合、「ハルシネーション(幻覚)」が問題になってるんだね。
+
+JRF 2023年6月21日
+
+《1600以上のAPIを適切に呼び出してAIに付き物の「幻覚」を大幅に減らす言語モデル「Gorilla」が公開される - GIGAZINE》  
+<a href="https://gigazine.net/news/20230526-llm-connected-massive-api-gorilla/" class="ext-link">https://gigazine.net/news/20230526-llm-connected-massive-api-gorilla/</a>
+
+JRF 2023年6月21日
+
+……。
+
+では本題。最初に Predictor Actor Recollector モデルを説明する。
+
+おもちゃの車の自動運転を例として考える。
+
+Predictor は、環境 + 行動 → 結果(予想) がすでに学習されているとする。
+
+Recollector は、車が右に曲がろうとしている…とかいうコンテクストにおいて、次にあるべき結果(1)を予想する。そして、そこから Actor が 環境 + 予想 → 行動計画 を出してくる。
+
+JRF 2023年6月21日
+
+それを Predictor に与えて、環境 + 行動 → 結果予想…あるべき結果(2)がわかる。あるべき結果(2) と あるべき結果(1) の違いから、Actor を学習していく。…というのが私の枠組だった。
+
+ただそれは、結局、Predictor の学習のときに、Actor も同じデータで学習できるので意味がない。となったのであった。
+
+JRF 2023年6月21日
+
+……。
+
+基本的には LLM (ChatGPT などの将来形) で自動運転するときは、Predictor の役割がまずあるだろう。右に曲がって欲しいという要求を与えたとき、環境を調べるよう LLM が要求する。ただ、それは単に今の環境だけでなく、Recollector が出すような予想を求めることになるだろう。それはタロット占いで相談によって識別器の動作が変わるように、要求によって、Recollector の動作が変わる。
+
+JRF 2023年6月21日
+
+その環境+予想から次の行動を指定する Actor としても LLM は働く。その行動+環境が予相につながることを確かめるよう Predictor としても LLM は働きながら、Actor と Predictor のつじつまが合うよう、LLM は「推論」する…ということになるのだろう。
+
+しかし、ちょっと考えると、Recollector の働きも LLM がやればいいことに気付く。環境だけから LLM が行動を推論すればいいのだ。
+
+ならば、Predictor Actor Recollector は必要ないではないか…ということになりうる。
+
+そこで出てくるのがエビデンスの考え方だ。
+
+JRF 2023年6月21日
+
+なぜ、環境から行動を選択したかというとき、次どういう予想が欲しかったか(Recollector の出力として、Recollector に再度問い直すというのもありうるが)、当初行動計画は何でどういう推論過程で、実際行動に結びついたか(Actor と Predictor で)という形に分解し、それをエビデンスとする…のに使えるのではないか。そのエビデンスで、XAI(Explainable AI: 説明可能な AI)的になり、今後の分析などに耐えるようになるのではないか。
+JRF 2023年6月21日
+
+「Predictor - Actor - Recollector (PAR)分解」とか言って、耐えるようになったらいいなぁ…とか妄想した。
+
+JRF 2023年6月21日
+
+typo 「説明可能にでいないか。」→「説明可能にできないか。」。
+
+JRF 2023年6月21日
+
+……。
+
+……。
+
+追記。
+
+○ 2023-06-21T19:04:49Z
+
+PAR (Predictor - Actor - Recollector)。少し考えを改める。
+
+《Google DeepMindから「自己改善型AI」が登場、あらゆる場面でのロボットアームの使い方を勝手に身につけることが可能 - GIGAZINE》  
+<a href="https://gigazine.net/news/20230621-robocat-self-improving/" class="ext-link">https://gigazine.net/news/20230621-robocat-self-improving/</a>
+
+JRF 2023年6月24日
+
+↑もそうなのではないかと思うが LLM も、まず、大規模に雑多な知識を学習する。しかるのちファインチューンを行い、現実の環境に持ってくる。
+
+まず雑多な知識を学習したものが、要は PAR では Recollector に相当するのではないか。すると、ファインチューンは Predictor の学習になるのかもしれない。そして本番環境から学ぶのが Actor ？
+
+JRF 2023年6月24日
+
+いや、ちょっと違うか、本番環境からのフィードバックはファインチューンに対してなされねばならないだろう。だから Predictor にフィードバックをする必要がある。では Actor はいらないかというと、別の出力の出し方として、別のファインチューンを要するものとして必要になるのではないか。
+
+JRF 2023年6月24日
+
+環境、予想、行動の組が Predictor と Actor で結局同じものを使えばいいとなったのであるが、ファインチューンということだと、Predictor と Actor が違う感じに学習でき、 両者のどちらが正しいかを、本番環境で試すみたいになるのではないか？
+
+JRF 2023年6月24日
+
+そのときより正しい方は学習されず、間違ってる方は負の学習をする…とすればよいのではないか。あとはファインチューンがめちゃめちゃ高速なら、負の学習もつかってファインチューンをやり直す感じになればいいのではないか。
+
+そんなうまくいくだろうか？ やってみるべきだが、どういう例でどうコードを築いていくべきなのか…。
+
+これは LLM の議論ではなく、Transformer 的議論ということになるかもしれないが。
+
+JRF 2023年6月24日
+
+……。
+
+○ 2023-06-22T02:32:06Z
+
+JRF 2023年6月24日
+
+Actor に入力される予想を「目的」と呼び、Predictor の出力を「結果予想」、現実の行動結果を「行動結果」と呼ぼう。基本的に「目的」「行動結果」「行動」で、まずは、Actor Predictor ともに学習する。その上で、「行動結果」-「目的」 と 「結果予想」- 「目的」 の絶対値を比較し、前者が大きければ、Actor を負の学習をする。後者が大きければ、Predictor を負の学習をする。さらに、「行動結果」-「結果予想」の絶対値が小さいときは、(「行動結果」+「結果予想」)/2 を正例として、Recollector を学習する。
+
+JRF 2023年6月24日
+
+この Recollector の学習は、Recollector の目的はどういう行動をしても達成できないという解釈により、そのような学習をする。
+
+ただ、今回の議論は、以前までの学習の枠組みで言えることであって、ファインチューニングだからどう、という最近の議論にマッチするものではない。
+
+JRF 2023年6月24日
+
+……。
+
+○ 2023-06-22T04:01:30Z
+
+いや、Recollector の学習はそれではダメか。限界は、目的として正しいとは限らないから。目的が複数出力されそのどれかに迷いがある場合、そのどれを選ぶのかに限界のデータは利用できるかもしれないが。「それは目的として達成できない」というのを学習し、Recollector の再学習のときに、そういう達成できないような Path は排除されるようにするべきではないか。
+
+JRF 2023年6月24日
+
+いや、そもそも実際の行動をする前に Recollector をファインチューンするとき、Actor と Predictor を使って、達成不能な目的の生成は除外されるように学習されるべきなのではないか？ 実際行動時に変容すべきなのは、Recollector に除外させる何か。それはまた別のものなのかもしれない。
+
+JRF 2023年6月24日
+
+そもそも「自分に可能な」目的のパスを見つけるのが Recollector の役割で、大目的を小目的に分ける方策をいくつか提案してその方策が実際可能なのかを Actor Predictor で「推論」を行う。それはとても難しいだろう。そうやって推論したにもかかわらず、行動結果を見ると、なお、目的が限界を超えている…そのとき何を学習すればいいのか？提案の破壊的創造が必要ということだろうか、これまでしなかったような提案にチャレンジ推論してみるべき…ランダム探索を増やす…ということだろうか？
+
+JRF 2023年6月24日
+
+(この辺りは強化学習に似ている。)
+JRF 2023年6月24日
+
+……。
+
+……。
+
+○ 2023-06-22T15:03:50Z
+
+前は Predictor と Actor の負の学習に勾配を求めるなど小難しいことをやっていたが、そんなことは必要ないのではないか。負の学習率を持った学習自体がいらないように思う。
+
+JRF 2023年6月24日
+
+「行動結果」-「目的」 と 「結果予想」- 「目的」 の絶対値を比較し、前者が大きければ、Actor を負の学習をする。後者が大きければ、Predictor を負の学習をする。…ということであったが、ここで、「結果予想」を Actor に食わせた「対予想行動」と「行動結果」を Actor に食わせた「対結果行動」を求めることができる。このうち後者の組になるべきは、「行動結果」「環境」「対結果行動」となるが、これはリアルな「行動結果」「環境」「行動」より悪いデータだから捨てる。
+
+JRF 2023年6月24日
+
+仮に　Actor が負けたとしよう。このとき相対的に Predictor が正しいので、「対予想行動」についても正しい判断ができると考える。そこで Predictor に「対予想行動」「環境」を食わせて得た「対予想行動結果予想」も相対的に正しいと考える。そして、Actor についてのみ「対予想行動」「環境」「対予想行動結果予想」を正しい例として小さめの学習率で学ぶ。
+
+JRF 2023年6月24日
+
+逆に Predictor が負けた場合は少し簡単で、負けた Predictor のみ、「対予想行動」「結果予想」「環境」を正しい例として小さめの学習率で学べばよいのではないか。
+
+…なお、これらは私の以前の実験例でもいえることなので、以前の実験例について、今回考えたアルゴリズムでどうなるか、まず実験してみるべき…となるのだが、TensorFlow とかいろいろアップデートされて、また、私の忘却もあって、ちょっと難しい。時間をかけるべきか否か…。
+
+JRF 2023年6月24日
+
+……。
+
+○ 2023-06-22T15:22:34Z
+
+Actor が負けたとき、対予想行動に関してやるよりも、目的の周辺(複数)について、Actor で行動提案を出し、その結果を Predictor で予想して、その複数のデータを Actor が学ぶ…ほうがいいかもしれない。
+
+Predictor が負けたときも、目的の周辺(複数)について、Actor で行動提案し、その複数のデータを Predictor が学ぶ…ほうがいいのかもしれない。
+
+JRF 2023年6月24日
+
+周辺については、「行動結果」-「目的」 と 「結果予想」- 「目的」 それぞれの絶対値のうち大きい方を半径とすればいい感じだろうか？ いや、前者は行動限界を超えた場合に大きすぎることがありうるので、後者のみかな？ または、大きい方の半径にして(epochで変わる)上限を設けるか…。
+
+ただ、複数化を単純にやれば過学習が起きやすいかもしれない…。
+
+JRF 2023年6月24日
+
+……。
+
+……。
+
+○ 2023-06-22T21:09:27Z
+
+大規模モデルをファインチューンするという見立てでいくと、「環境」には「自分の状態・自分は何であるか」の情報も含まれるし、「環境」は固定した長さではなく、何らかの記述で、記述の一部が欠落したものが学習されてることもある…となるのだろう。
+
+そして「結果予想」なども、記述となり、固定長ではなくなるのかもしれない。「行動」はどうか、これは固定長でもよいかもしれないが、記述かもしれない。
+
+JRF 2023年6月24日
+
+……。
+
+○ 2023-06-23T03:36:36Z
+
+記述の比較は、ベクトルデータベース(?)に使うような、ベクトル化を介すれば、多少欠落したデータがあってもうまい具合に比較できるのだろうか？ 比較できたらいいなぁ…。
+
+JRF 2023年6月24日
+
+……。
+
+○ 2023-06-23T07:48:25Z
+
+《vicuna-13bで embedding vectorの計算 (&amp; GPT･RWKVとの比較)｜Kan Hatakeyama》  
+<a href="https://note.com/kan_hatakeyama/n/n2fbd81ac1d45" class="ext-link">https://note.com/kan_hatakeyama/n/n2fbd81ac1d45</a>
+
+うーん、ベクトル化は時間かかりすぎかも…。
+
+JRF 2023年6月24日
+
+……。
+
+○ 2023-06-23T15:58:57Z
+
+vicuna-13b はモデルが大き過ぎて Google Colabo Pro だと GPU を A100 にしても GPU メモリが足りなかった。orz
+
+そこで opencalm-3B を使ってやってみた。
+
+JRF 2023年6月24日
+
+《embedding_vector_test.ipynb》  
+<a href="https://gist.github.com/JRF-2018/b664ddfd4fc22ee7bd260e59aba20556" class="ext-link">https://gist.github.com/JRF-2018/b664ddfd4fc22ee7bd260e59aba20556</a>
+
+JRF 2023年6月24日
+
+やってみると、ベクトル化はまったくといっていいほど時間がかからない様子だった。その点は思ったよりもよかった。使えそうだった。先に「ベクトル化は時間かかりすぎかも」…と言ったのは私の間違いだった。
+
+JRF 2023年6月24日
+
+ただし、記述のベクトルで似てるはずの「吾輩は猫である」と「私は猫です」が(vicuna-13b と違い opencalm-3b では)離れ過ぎており、類似性の判定としては役に立っていない。その意味ではこの方法に疑問符が付く。
+
+JRF 2023年6月24日
+
+……。
+
+追記。
+
+○ 2023-06-23T22:44:54Z
+
+記述の類似度を表すためのベクトル化のテスト。opencalm-3b ではなく Rinna 3.6B (sft-v2) でやれば、速い上に、「吾輩は猫である」と「私は猫です」のベクトルも近い。これなら使えそう！
+
+《embedding_vector_test_r.ipynb》  
+<a href="https://gist.github.com/JRF-2018/95b9be8f842c76e30a879de4f2301c3d" class="ext-link">https://gist.github.com/JRF-2018/95b9be8f842c76e30a879de4f2301c3d</a>
+
+JRF 2023年6月24日
+
+……。
+
+……。
+
+追記。
+
+○ 2023-06-25T17:37:52Z
+
+なんとかコストの高いファインチューンや追加学習を避けて few-shot learning だけで迷路を解くプログラムが作れないか？ Rinna 3.6B であたりを付けてみるが…ダメだった orz。ChatGPT ならうまくいくんだろうか？ ちなみに Google Bard だと最初はうまくいかなかったが、途中からかなり良い回答をしてくれた。
+
+JRF 2023年6月26日
+
+《rinna_maze_test.ipynb》  
+<a href="https://gist.github.com/JRF-2018/f6c71cbc5dd69079b02a79201d9a06e6" class="ext-link">https://gist.github.com/JRF-2018/f6c71cbc5dd69079b02a79201d9a06e6</a>
+
+JRF 2023年6月26日</pre>
+
+
+<section class="backrefs" data-pagefind-ignore>
+<h2>後方参照 (2 件)</h2>
+<ul>
+<li><span class="backref-label">[cocolog:94265741]参照</span> <a href="../../../articles/2023/07/statuses_cocolog_94293132.html">ひとこと</a> <span class="backref-date">2023年07月07日</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2023/06/gsm_004242.html">共有メモ</a> <span class="backref-date">2023-06-21T00:50:54Z</span></li>
+</ul>
+</section>
+
+</article>
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2023/06.html">2023年06月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+</body>
+</html>

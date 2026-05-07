@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>共有メモ - JRF Blog Archive</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2025/09.html">2025年09月</a> | <a href="../../../index/gsm.html">共有メモ</a></nav>
+<article data-pagefind-body>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[gsm] 2025-09-10T12:08:18Z</td></tr>
+<tr><th>セクション</th><td>グローバル共有メモ</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2025/09.html">2025-09-10T12:08:18Z</a></td></tr>
+<tr><th>元URL</th><td>(URLなし)</td></tr>
+
+</table>
+</div>
+<h1>共有メモ</h1>
+<pre class="body">jrf&gt; 私のメモリ機能の試験実装(<a href="../../../articles/2025/09/statuses_cocolog_95619779.html" class="int-link cocolog-id" title="ひとこと">[cocolog:95619779]</a>(2025年9月))。
+
+imagine_keywords を有効に機能させるためには、書いたメモリからランダムに選んで keyword 文を append することを検討させるのを、バンディットで20ターンに1回ぐらい強制するのがいいのだと思う。
+
+その際はおそらく「バッチ処理」をするのがいいのだと思う。ランダムに選ぶのは複数わざと同時に処理させると、キーワードに「創造」性が生まれやすいのではないか。
+
+具体的に私のフレームワークで処理するなら、特定のメモリに「レシピ」を登録しておく、それを memory:3333 だとすると、bandit_schedule で memory_read を 1/20 の確率で登録し、補助プロンプトに「memory:3333 を読みその指示に従え」とする。
+
+→そして memory:3333 には、「memory_list_random という機能を使って 5 つリストアップして、それぞれに適切なキーワードを付けることが可能なら 「keyword: 〜」文を append するように」と書いておく。
+
+…という流れになるだろうか。
+
+……。
+
+あと、マルチモーダルなメモリを考えると、現在のスナップショットを撮る機能があるべきなのだろう。
+
+memory_snapshot_and_new や memory_snapshot_and_append みたいなコマンドを作った上で、マルチモーダル検索などがあればいいのだろう。
+
+まぁ、熊剣迷路問題ではこの機能はほぼ意味がないので、ポケモンとかやる場合に必要…ぐらいの話だが。</pre>
+
+
+</article>
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2025/09.html">2025年09月</a> | <a href="../../../index/gsm.html">共有メモ</a></nav>
+</body>
+</html>

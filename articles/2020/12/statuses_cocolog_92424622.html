@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>ひとこと - JRF Blog Archive</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2020/12.html">2020年12月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+<article data-pagefind-body>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[statuses] <span class="cocolog-id">cocolog:92424622</span></td></tr>
+<tr><th>セクション</th><td>JRF のひとこと</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2020/12.html">2020年12月19日</a></td></tr>
+<tr><th>元URL</th><td><a href="http://jrf.cocolog-nifty.com/statuses/2020/12/post-2bb16f.html" class="ext-link"><span class="original-url">http://jrf.cocolog-nifty.com/statuses/2020/12/post-2bb16f.html</span></a></td></tr>
+
+</table>
+</div>
+<h1>ひとこと</h1>
+<pre class="body">うぉ〜。Windows 用 Emacs 26.3 と Cygwin 3.1.7 の bash の関係がメチャクチャだ。
+JRF 2020年12月19日
+
+昔のように、
+
+&lt;pre&gt;
+(add-hook 'shell-mode-hook
+          (lambda ()
+           (set-buffer-process-coding-system 'utf-8-unix 'utf-8-unix)))
+&lt;/pre&gt;
+
+…とかやってればいいという話ではない。
+
+JRF 2020年12月19日
+
+なぜかは知らないが、コマンドラインは cp932 に指定する必要がありながら、同時に (setenv &quot;LANG&quot; &quot;ja_JP.UTF8&quot;) をする必要がある。矛盾している。
+
+だから…
+
+&lt;pre&gt;
+(setenv &quot;LANG&quot; &quot;ja_JP.UTF8&quot;)
+&lt;/pre&gt;
+
+…した上で…、
+
+JRF 2020年12月19日
+
+&lt;pre&gt;
+(let ((coding-system-for-read 'utf-8-unix)
+      (coding-system-for-write 'cp932))
+  (start-file-process &quot;test&quot; (get-buffer-create &quot;*test*&quot;)
+		      &quot;c:/cygwin/bin/bash&quot; &quot;-c&quot; &quot;echo ほげほげ&quot;))
+&lt;/pre&gt;
+
+JRF 2020年12月19日
+
+…とかやってやっとまともな表示になる。なんだそれ。
+
+JRF 2020年12月19日
+
+……。
+
+grep とかメッチャ困る。
+
+私は、日本語 grep を perl で作って ~/bin/jgrep に置いてるとして、とりあえず次のようにしている。
+
+JRF 2020年12月19日
+
+&lt;pre&gt;
+(setq grep-command &quot;~/bin/jgrep -n &quot;)
+(defadvice grep
+    (around grep-set-coding-system activate)
+  (let ((coding-system-for-read 'utf-8-unix)
+	(coding-system-for-write 'cp932))
+    ad-do-it))
+&lt;/pre&gt;
+
+JRF 2020年12月19日
+
+前提として…
+
+&lt;pre&gt;
+(setq shell-file-name &quot;bash&quot;)
+(setq shell-command-switch &quot;-c&quot;)
+(setq explicit-shell-file-name &quot;bash&quot;)
+&lt;/pre&gt;
+
+JRF 2020年12月19日
+
+このようにすると誤解するかもしれないが、~/bin/jgrep には引数が cp932 でなくちゃんと utf-8 で渡されている。笑っちゃうね。
+
+もっといい方法はないものか…。
+
+JRF 2020年12月19日</pre>
+
+
+<section class="backrefs" data-pagefind-ignore>
+<h2>後方参照 (1 件)</h2>
+<ul>
+<li><span class="backref-label">[cocolog:92424622]参照</span> <a href="../../../articles/2020/12/gsm_000464.html">共有メモ</a> <span class="backref-date">2020-12-18T19:30:39Z</span></li>
+</ul>
+</section>
+
+</article>
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2020/12.html">2020年12月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+</body>
+</html>

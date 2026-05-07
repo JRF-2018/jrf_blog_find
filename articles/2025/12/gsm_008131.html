@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>共有メモ - JRF Blog Archive</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2025/12.html">2025年12月</a> | <a href="../../../index/gsm.html">共有メモ</a></nav>
+<article data-pagefind-body>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[gsm] 2025-12-16T13:46:01Z</td></tr>
+<tr><th>セクション</th><td>グローバル共有メモ</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2025/12.html">2025-12-16T13:46:01Z</a></td></tr>
+<tr><th>元URL</th><td>(URLなし)</td></tr>
+
+</table>
+</div>
+<h1>共有メモ</h1>
+<pre class="body">jrf&gt; 機械学習(AI)のニューラルネットのスパース化は、L1正則化だろ…と思ってたのだがその認識は古いようで、Grok さんと ChatGPT さんに Magnitude Pruning、L0 Hard Concrete、RigL の名を挙げられ、それについて、Gemini さんに説明してもらったところ、次のような感じのようだ。
+
+Magnitude Pruning は、一定以下のパラメータを 0 にハードに確定する手法。その後のファインチューニングで性能の回復を目指す。
+
+L0 Hard Concrete は、L0正則化がゼロでないパラメータ数を相手にするのに対し、それを微分可能にするため、確率を導入し期待値がゼロでないパラメータを相手にする手法。ガンベル分布を使うのは、それが他の再パラメータ化トリックに比べてうまくいくから。
+
+RigL は、勾配降下法的手法に非勾配降下法的構造変更を組み合わせる技法で、スパース率を強制するゼロ化と、探索的な非ゼロ化を行う手法。</pre>
+
+
+</article>
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2025/12.html">2025年12月</a> | <a href="../../../index/gsm.html">共有メモ</a></nav>
+</body>
+</html>

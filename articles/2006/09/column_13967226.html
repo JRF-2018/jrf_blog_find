@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>コンピュータ定理証明における弁証法 − 私が作りたいシステム - JRF Blog Archive</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2006/09.html">2006年09月</a> | <a href="../../../index/column.html">雑記</a></nav>
+<article data-pagefind-body>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[column] <span class="cocolog-id">cocolog:13967226</span></td></tr>
+<tr><th>セクション</th><td>JRF の私見：雑記</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2006/09.html">2006年09月07日 17:29:34</a></td></tr>
+<tr><th>元URL</th><td><a href="http://jrf.cocolog-nifty.com/column/2006/09/post_2.html" class="ext-link"><span class="original-url">http://jrf.cocolog-nifty.com/column/2006/09/post_2.html</span></a></td></tr>
+<tr><th>タグ</th><td>[論理学] [情報工学・コンピュータ科学] [プログラム・ウィッシュリスト]</td></tr>
+</table>
+</div>
+<h1>コンピュータ定理証明における弁証法 − 私が作りたいシステム</h1>
+<pre class="body">■コンピュータ定理証明
+  
+コンピュータ上での定理証明は、整えられた環境でコンピュータにガイドされながら、特殊なプログラムを書く作業であると言っていい。そのプログラムが実行されると、入力物である真偽不明であった命題が、真なる定理として型付けされ出力されるのだ。
+
+記号論理を勉強したことがある方は、その証明のフェーズを思い出して欲しい。まず証明しようとする命題を一番下に置き、その命題に使えるルールを上に足したり、上に書かれた前提からルールを使って一時的な定理を導出したりして下の命題とルールで結ぼうとする。
+
+コンピュータ上では、これがさらに便利になって、自動的に適用するルールを決めたり、ルールの繰り返しができたりする。
+
+それどころか、ほとんどのフェーズを自動的にやってしまい、命題を入力したあとは、適当なルールセットを指定すれば、本当に自動的に証明がなされ、定理が得られることも多い。
+
+ただ、なぜ「多い」かというと、命題を小分けにしてほとんど自明なものにする場合が「多い」だけなのかもしれないけれど。
+
+■理論モジュール
+  
+一種のプログラムであることもあり、C や JAVA などと同じくモジュールに分けることがある。基礎となる集合論のモジュールがあり、そこに実数の理論のモジュールを足したり、ラムダ計算のモジュールを足したり、といった感じである。
+
+モジュールというのは加えたり加えなかったりが簡単にできることがその原義だが、理論のモジュールはプログラミング言語のモジュールほど柔軟ではない。
+
+プログラミング言語の場合、関数名がその中のプログラムを隠して「モジュール化」してしまうが、定理証明システムの場合、定理がその証明プログラムを隠しても、定理そのものが構造を持っているため、その定理のちょっとした変更などが、その理論モジュールを使うモジュールに影響してしまう。
+
+しかし、このしばりも若干緩和することができる。それは自動証明のルールセットの中に定理を入れ、理論モジュールを使うときは定理をそのまま使うのではなく、自動証明のルールセットを使うようにすれば、定理の形の多少の違いは自動証明のフェーズの中で消化されてしまう。
+
+ただし、自動証明は万能なものではないため、結局定理やその変形物をそのまま扱わねばならないこともしばしばである。
+
+■弁証法
+  
+さて少し話は変わるが、「弁証法」という論理的手法をご存知だろうか。記号論理ばかりやってる方は意外に忘れるか習わない言葉である。
+
+ヘーゲルの書で有名な手法で《Wikipedia：弁証法》には
+
+  ＞
+    ●ある命題（テーゼ＝正）と、それと矛盾する命題（アンチテーゼ＝反）、もしくは、それを否定する反対の命題、そして、それらを本質的に統合した命題（ジンテーゼ＝合）の３つである。全てのものは己のうちに矛盾を含んでおり、それによって必然的に己と対立するものを生み出す。生み出したものと生み出されたものは互いに対立しあうが（ここに優劣関係はない）、同時にまさにその対立によって互いに結びついている（相互媒介）。最後には二つがアウフヘーベン aufheben（止揚）される。このアウフヘーベンは「否定の否定」であり、一見すると単なる二重否定すなわち肯定＝正のようである。しかしアウフヘーベンにおいては、正のみならず、正に対立していた反もまた保存されているのである。ドイツ語のアウフヘーベンは「捨てる」と「持ち上げる」という、互いに相反する二つの意味をもちあわせている。
+      
+    (なお、ヘーゲルの弁証法における「矛盾」は数学や(記号)論理学における「矛盾」 とは全く別物であるので注意が必要である。)
+  ＜
+  
+とある。(私は「矛盾」は「全く別物」とは思っていない。念のため。)
+
+記号論理においては矛盾があれば、それで終りであるが、記号論理において弁証法をムリヤリあてはめるとすると、それは矛盾を解消するための理論の再構築を意味するだろう。
+
+高階論理の立場から私は最も単純に弁証法とは矛盾などの解消のため理論のパラメータを一つ足す行為に相当すると考える。Pure Type System などの高階論理の立場では公理を足すのもパラメータを足すのとほぼ同じことなので、これだけで私の言いたいことは言い得ていると思う。
+
+パラメータを一つ足すと言えば簡単に聞こえるかもしれないが、その影響は測りしれない。足された定理だけでなくその理論やそれに続く理論すべてに影響が及ぶことがあるのである。
+
+だから、このようなことはコストが高く、記号論理の世界では慎しむべきことだった。
+
+記号論理の世界では？
+
+では、コンピュータ定理証明ではどうだろうか。
+
+自動証明が、その影響を打消してくれるなら、必ずしもコストが高いとは限らない。もちろん、今は自動証明そのものがマシンコストがかかるものではあるが、これもコンピュータの発展により少なくなってきている。
+
+私は「弁証法」に対応することを目的としたコンピュータ定理証明の改良を夢見て研究をしていた。
+
+■私が作りたいシステム
+  
+しかし、上のようなシステムの提案は難しく、今は、上のコンピュータ定理証明を想起させるようなプログラミング言語のインタプリタを創りたいと考えています。
+
+スピードなどより主に仕様を重視して、Smalltalk が「オブジェクト指向」を提示したように、一つのパラダイムを提示するものを作りたいと考えています。とはいえ、これも現在、言語の仕様のアイデアを羅列していくところまでしかいっていません
+
+■参考文献
+  
+自動証明のくだりなどは Isabelle のシステムを参考に書いています。
+
+Pure Type Systemは“Lambda calculi with types” (Henk P. Barendregt, In “Handbook of Logic in Computer Science, Vol.II”, Oxford University Press, 1992)に載っている高解論理のメタシステムです。
+
+哲学者的な「弁証法」理解は私のものとはかなり違うようです。《数学屋のメガネ：弁証法論理の理解》を参考に挙げておきます。
+
+以前、このブログで少しこのあたりのことを言及しています。《なぜ記号論理学から社会科学を目指すようになったのか》
+
+更新：2006-09-07
+初公開：2006年09月07日 17:29:40
+最新版：2006年09月07日 18:10:20</pre>
+<details class="trackbacks" data-pagefind-ignore><summary>Trackbacks (2 件)</summary><pre>
+Trackbacks:
+
+《<a href="http://jrf.cocolog-nifty.com/society/2011/01/post.html">外作用的簡易経済シミュレーションのアイデアと Perl による実装</a>》 from JRF の私見：税・経済・法
+抽象化された確率モデルにおいて、内的作用(内作用)により作られたモデルと外的作用(外作用)から作られたモデルが同じ臨界をもたらすことがある。経済に関するモデルを作るとき、ミクロな部分でなしたことがマクロに影響するということがいいたいことがあるが、マクロの大きな数と複雑な動きを表すにはコンピュータを用いても限界がある。確率モデルのようなアイデアをもってすれば、コンピュータシミュレーションなどで解析で... 
+
+受信： 2011-01-09 19:08:27 (JST)
+
+
+《<a href="http://jrf.cocolog-nifty.com/statuses/2011/09/post-1d5e.html">cocolog:69727785</a>》 from JRF のひとこと
+(続き 2011年9月8日) 「式でパラメータが落ちる」はちょうど私にとっての「弁証法」の逆になるわけだが、lock と(高階論理で使われる)ラムダ式の関係みたいなのが私には見えはじめてる。強い単一の lock の式への変換みたいなのもありそうで、そうすると計算オーダーみたいに lock にオーダーがあるという話になり、その量を「負のパラメータ」につなげられたりするのだろうか？... 
+
+受信： 2011-09-08 18:02:55 (JST)
+
+
+Comments:
+
+Look! Only now! Discounts!
+Free ringtone for prepaid phone  Godfather ringtones  Phone ringtone software  Sweet home alabama ringtone  Qcp ringtones  Download free nextel i710 ringtones  Panasonic ringtone composer  Ringtones to your cell phone  Weezer ringtones  Mobile phone prepaid ringtone virgin  Dukes of hazzard ringtone  Old british phone ringtone  Free ringtones for Nokia 1100b  Casting crowns ringtones  Ringtones for hearing impaired  Motorola ringtone composer  Free Motorola v60i polyphonic ringtone  Lynyrd skynyrd ringtones  Motorola ringtones  Free virgin ringtones  Hindi ringtone  Free ringtones alltell  Nextel gobble ringtones  Nextel mp3 ringtones  Create polyphonic ringtones  Free ringtone for a sanyo 4900 sprint phone  LG vx8100 ringtones  Ringtones for Kyocera phones  Nokia 6102 free ringtones  How to download ringtone
+投稿: Free ringtone  tvc | 2007-04-15 20:02:56 (JST)
+
+Great work and pretty colors!
+Buy Diflucan online  Order Diflucan  Generic Diflucan  Cheap Diflucan  Purchase Diflucan
+投稿: Buy Diflucan s | 2007-05-23 17:04:48 (JST)
+
+
+Links:
+
+Wikipedia：弁証法: http://ja.wikipedia.org/wiki/%E5%BC%81%E8%A8%BC%E6%B3%95
+Isabelle: http://www.cl.cam.ac.uk/Research/HVG/Isabelle/
+Handbook of Logic in Computer Science, Vol.II: http://www.amazon.com/gp/product/0198537611
+数学屋のメガネ：弁証法論理の理解: http://blog.livedoor.jp/khideaki/archives/20071840.html
+なぜ記号論理学から社会科学を目指すようになったのか: http://jrf.cocolog-nifty.com/column/2006/01/post_4.html
+Free ringtone  tvc: http://free-ringtone.ringtonewilly.info/index.html
+Buy Diflucan s: http://blog.360.yahoo.com/blog-PDIuqPYhdLFvSSs7XV3w_9I-?cq=1&amp;p=1
+
+
+
+</pre></details>
+
+<section class="backrefs" data-pagefind-ignore>
+<h2>後方参照 (6 件)</h2>
+<ul>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2015/05/statuses_cocolog_82413218.html">ひとこと</a> <span class="backref-date">2015年05月09日</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2011/09/statuses_cocolog_69727785.html">ひとこと</a> <span class="backref-date">2011年09月08日</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2010/05/statuses_aboutme_125348.html">ひとこと</a> <span class="backref-date">2010年05月29日</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2010/05/statuses_aboutme_123928.html">ひとこと</a> <span class="backref-date">2010年05月05日</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2010/05/statuses_aboutme_123874.html">ひとこと</a> <span class="backref-date">2010年05月04日</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2009/06/statuses_aboutme_102938.html">ひとこと</a> <span class="backref-date">2009年06月13日</span></li>
+</ul>
+</section>
+
+</article>
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2006/09.html">2006年09月</a> | <a href="../../../index/column.html">雑記</a></nav>
+</body>
+</html>

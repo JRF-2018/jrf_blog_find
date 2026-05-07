@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>電子署名の替わりに Loaded Magic - JRF Blog Archive</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2011/05.html">2011年05月</a> | <a href="../../../index/software.html">ソフトウェア Tips</a></nav>
+<article data-pagefind-body>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[software] <span class="cocolog-id">cocolog:68180670</span></td></tr>
+<tr><th>セクション</th><td>JRF のソフトウェア Tips</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2011/05.html">2011年05月07日 22:32:13</a></td></tr>
+<tr><th>元URL</th><td><a href="http://jrf.cocolog-nifty.com/software/2011/05/post.html" class="ext-link"><span class="original-url">http://jrf.cocolog-nifty.com/software/2011/05/post.html</span></a></td></tr>
+<tr><th>タグ</th><td>[セキュリティ] [JavaScript]</td></tr>
+</table>
+</div>
+<h1>電子署名の替わりに Loaded Magic</h1>
+<pre class="body">今、私は「ひとこと」を書くためのウェブ上のエディタを MovableType、SSI、 Javascript を使って作っている。追加的な機能として「ひとこと」に電子署名のようなものを付けて、その偽造がないことを証明できたらカッコイイだろうなぁと考えた。
+
+しかし、ウェブの標準的で本格的な電子署名技術を、上記の枠組みだけから使うことは不可能だろうし、例えば、コメントのハッシュを付すにしても、そのハッシュの偽造もコメントの偽造とほぼ同程度の容易さと考えるべきだから、逆に変な信用を与えて、話をややこしくしてもいけない。
+
+この「セキュリティ」を考慮する以前の段階で、まず、コメントの一部削除をするとき、自分が開いた別のページのデータが先に反映したのを忘れて、意図しないコメントの削除が行われないように、コメントにマジックナンバーを付け、そのマジックナンバーが合っているかどうかをチェックするという、簡単な安全策を取っていた。
+
+このマジックナンバーのテクニックは、昔のウェブ掲示板などではよく使われるテクニックだったと思う。複数のコメントのマジックナンバーが重ならなければよいので、私が使うマジックナンバーは四ケタの数字を乱数的に生成したものでしかない。
+
+これをコメントのハッシュの最初の四ケタなどとする実装も可能だが、それは上記のように電子署名としての意味をもたず、変な誤解を与えかねない。
+
+でも、何かできないかなぁ…と考えているうちにヒラめいた。
+
+&lt;b&gt;「悪者」が、ページの送信途中に人知れず偽造を行える環境なら、「正義の味方」も、ページの送信途中に人知れず細工できるだろう。その可能性があることが、「悪者」を牽制できるのではないか？&lt;/b&gt;
+
+具体的には下のようなマジックナンバーをランダムに返す関数をわざわざロードしてから使うのである。(summoner.js がその現実のプログラム。)
+
+function allot_magic(text) {
+    return Math.random().toFixed(5).substr(2,4);
+}
+
+「正義の味方」はこのプログラムを送信途中に次のようなプログラムに差し替える。
+
+var SALT = &quot;ABCD&quot;;
+var UPLOAD_TEXT_JS = &quot;<a href="https://your.server/tools/upload_text.js&amp;quot;;" class="ext-link">https://your.server/tools/upload_text.js&amp;quot;;</a>
+var CLIENT_PERMIT = &quot;XYZ12345&quot;;
+var pending_texts = new Array();
+var pending_timer = null;
+
+function allot_magic(text) {
+    chrsz = 16;
+    var hash = dec_sha1(SALT + text);
+    pending_texts.push([text, hash]);
+    if (! pending_timer) {
+      pending_timer = setTimeout(upload_pending_texts, 500);
+    }
+    return hash.substr(0,4);
+}
+
+function upload_pending_texts(res) {
+    if (pending_texts.length) {
+      var p = pending_texts.shift();
+      var text = p[0];
+      var hash = p[1];
+      upload_text(text, hash, upload_pending_texts);
+    } else {
+      pending_timer = null;
+    }
+}
+
+function dec_sha1(s) {
+    var binarray = core_sha1(str2binb(s), s.length * chrsz);
+    var r = &quot;&quot;;
+    for (i = 0; i &lt; binarray.length; i++) {
+      var n = binarray[i].toString(10);
+      r += n.substring(n.length - 1, n.length);
+    }
+    return r;
+}
+
+var scr;
+scr = document.createElement(&quot;script&quot;);
+scr.src = '<a href="http://oauth.googlecode.com/svn/code/javascript/sha1.js';" class="ext-link">http://oauth.googlecode.com/svn/code/javascript/sha1.js';</a>
+document.body.appendChild(scr);
+
+scr = document.createElement(&quot;script&quot;);
+scr.src = UPLOAD_TEXT_JS + &quot;?permit=&quot; + encodeURI(CLIENT_PERMIT);
+document.body.appendChild(scr);
+
+上は最後で sha1.js と「正義の味方」が管理するセキュアなサーバーのディレクトリ(上の例では <a href="https://your.server/tools/)に置いた次の" class="ext-link">https://your.server/tools/)に置いた次の</a> upload_text.js を読み込む。
+
+var LOG_SERVER = &quot;<a href="https://your.server/log_text_database.cgi&amp;quot;;" class="ext-link">https://your.server/log_text_database.cgi&amp;quot;;</a>
+
+function upload_text(text, hash, callback) {
+    var data = &quot;text=&quot; + encodeURI(text) + &quot;&amp;hash=&quot; + encodeURI(hash)
+      + &quot;&amp;uri=&quot; + encodeURI(location.href);
+    var httpobj = requestFile(data, &quot;POST&quot;, LOG_SERVER, true, callback);
+}
+
+function createHttpRequest() {
+    if(window[&quot;ActiveXObject&quot;]){
+      try {
+        return new ActiveXObject(&quot;Msxml2.XMLHTTP&quot;);
+      } catch (e) {
+        try {
+          return new ActiveXObject(&quot;Microsoft.XMLHTTP&quot;);
+        } catch (e2) {
+          return null;
+        }
+      }
+    } else if(window[&quot;XMLHttpRequest&quot;]){
+      return new XMLHttpRequest();
+    } else {
+      return null;
+    }
+}
+
+function requestFile(data, method, fileName, async, on_loaded) {
+    var httpoj = createHttpRequest();
+    
+    httpoj.open(method, fileName, async);
+    httpoj.onreadystatechange = function() { 
+      if (httpoj.readyState==4 &amp;&amp; on_loaded) { 
+        on_loaded(httpoj);
+      }
+    }
+    if (data) {
+      httpoj.setRequestHeader(&quot;Content-Type&quot;,
+                              &quot;application/x-www-form-urlencoded&quot;);
+    }
+    httpoj.send(data);
+    
+    return httpoj;
+}
+
+すると、「悪者」が知らずに勝手にマジックナンバーを割り振ったものを見せて、誰かにユーザーの別の印象を与えているとき、「正義の味方」は、それがユーザーの意図ではないという証拠をネット上に保持し、場合によってはユーザーも「悪者」も知らないところで対抗することができる。
+
+もちろん、「悪者」が summoner.js を狙ってくることもあるだろう。しかし、国家や信託銀行など合法的な「正義の味方」はブログのプロバイダを味方に付けられるのだから、最終的に有利なのは「正義の味方」だろう。
+
+……とかなり妄想が入ったことを考えた。セキュリティ的には、「正義の味方」であれ、こういうことあっちゃならんのだろうけど。
+
+(ちなみに、スクリプトを分けたのは、XMLHttpRequest のクロスドメイン制限を避けるため。ユーザーが何者かは https の Cookie などで確かめているとすべきで、SALT はもちろん、CLIENT_PERMIT もセッションごとに変えられるとしても、それはサーバーへの DOS 攻撃を少しだけ難しくするぐらいの意味しかない。あと、sha1.js は外部のサーバーから &quot;include&quot; するのではなく、ライセンスをクリアにした上で、ソースにベタ書きするなり、自分のサーバーに置くなりすべきだし、一般に、関数名が重ならないよう考慮する必要もある。)
+
+(えーっと、私はセキュリティどころかプログラムの専門家ではないことに注意！専門家から見れば、ツっこみどころはいろいろあると思う。例えば、ハッシュの使い方として、SALT なんて今は使わないし、dec_sha1 はかなり反則だと思う。この記事の最初のバージョンではクロスドメイン制限を忘れていたぐらいだし。)
+
+■参考
+  ●《aboutme2cocolog：アバウトミーの「ひとこと」をココログプロへ移転するツール》。最初に書いた今私が作ってる「ひとこと」を書くためのウェブ上のエディタ。
+  ●《Ajaxはじめの一歩　XMLHttpRequest - [Javascript] All About》。上のソースの XMLHttpRequest あたりの元。
+  ●《sha1.js - oauth - API needz authorized? - Google Project Hosting》。他の OAuth を使う記事からこの SHA-1 のソースを見つけた。上で &quot;include&quot; して使っている。
+    
+更新：2011-05-07,2011-05-09
+初公開：2011年05月07日 22:32:11
+最新版：2011年05月09日 05:29:37
+
+
+Comments:
+
+[E:pencil] 更新：ほんのちょっとしたところ。送信するデータに location.href  も渡すようにしておいた。Cookie とかあればいいんで、逆にこれがあることで余計な判断が増えるかもしれないとは思ったが、いちおう。
+投稿: JRF | 2011-05-08 03:12:49 (JST)
+
+[E:pen] 更新：LOG_SERVER のところで XMLHttpRequest のクロスドメイン制限への注意を喚起した。実際には、upload_text 部分は別のファイルにし、別のセキュアなサーバーから、ソースの最後でやってるように script タグを書き込んで (つまり &quot;include&quot; して)使えばクロスドメインで通信できるようになる(と思う)。
+
+逆に、上で script タグで書き込んでいる sha1.js については、セキュアサーバー上にコピーしてから読み込んだり、ライセンス関係をクリアにした上で、ソースの中にベタ書きしたほうがいい。(上で私が書いたソースのライセンスに関してはもちろん Public Domain、数式的利用の範囲ってことでいいです。)
+
+投稿: JRF | 2011-05-08 21:04:06 (JST)
+
+[E:clip] 更新：一つ前のコメントの検討結果を、記事に反映させ、「正義の味方」が差し替えたソースが一つだったものを二つに分けた。ついでに、ソースを archive に置きリンクも張っておいた。……より正確にはなったかもしれないが、わかりにくくなったと思う。可能性を酌んでくれる人が増えるならうれしいが、変に私の書き方が信頼されやすくなったとすれば失敗。
+
+投稿: JRF | 2011-05-09 03:47:12 (JST)
+
+[E:sleepy] 更新：pending_timer のチェックの処理を入れる。(入れたあとちょっと修正もする。)最初の投稿の前の段階で入っていたチェックだったが、何を血迷ったか抜いてしまっていた。javascript の thread まわりのロックとかどうなっているのか自信がないので、血迷った感じ。リーダライタロックとかどう書くんだろう？
+
+投稿: JRF | 2011-05-09 05:32:43 (JST)
+
+[E:pouch] 更新：記事は変えてない。リンクしてあるソースの中を、変数名の衝突が起きにくいように隠蔽化(カプセル化？)した。でも、これで十分なのか自信はない。これ以上ややこしくしても読みにくくなるだけだから、記事のほうには反映しなかった。
+
+投稿: JRF | 2011-05-10 04:10:39 (JST)
+
+[E:cd] 更新：記事は変えてない。上に引き続きリンクしてあるソースを頻繁に変えていることを報告しようと思ってコメント。横から関数を乗っ取ることへの防御を考えてた。どこまでうまくいっているか不明。今のバージョンだと関数の caller 属性も使っているが、これは今後使っちゃダメって話も見たし、なんか私に根本的な誤解がありそうな雰囲気。
+
+投稿: JRF | 2011-05-10 18:02:44 (JST)
+
+[E:memo] 更新：…というか、隠蔽化に関してちょっと検討してみた。inter-script delegation みたいに言えばいいのかな。それがどうもムリそうなので、caller をチェックするルーチンを入れていたりしていたが、新しいブラウザにはある defineProperty を使えば、ラクに安全を確保できそうに思う。まぁ、ただ私がそう思うだけで、s が付いてない http で CLIENT_KEY を渡したりするんだから、専門家から見れば安全じゃあありえないんだろうけど。
+
+投稿: JRF | 2011-05-13 12:25:55 (JST)
+
+[E:down] 更新：記事は変えてない。リンクしてあるソースで、aboutme2cocolog の statuses_editor.user.js のからみで、USER_NAME も updater_hint としてサーバーに送ることにした。あくまでヒント。
+
+投稿: JRF | 2011-05-19 05:19:19 (JST)
+
+
+Links:
+
+summoner.js: <a href="http://jrf.cocolog-nifty.com/archive/summoner.js" class="ext-link">http://jrf.cocolog-nifty.com/archive/summoner.js</a>
+次のようなプログラム: <a href="http://jrf.cocolog-nifty.com/archive/javascript/summoner_trusted.js" class="ext-link">http://jrf.cocolog-nifty.com/archive/javascript/summoner_trusted.js</a>
+upload_text.js: <a href="http://jrf.cocolog-nifty.com/archive/javascript/upload_text.js" class="ext-link">http://jrf.cocolog-nifty.com/archive/javascript/upload_text.js</a>
+aboutme2cocolog：アバウトミーの「ひとこと」をココログプロへ移転するツール: <a href="../../../articles/2011/04/software_67976071.html" class="int-link" title="aboutme2cocolog: アバウトミーの「ひとこと」をココログプロへ移転するツール">http://jrf.cocolog-nifty.com/software/2011/04/post.html</a>
+Ajaxはじめの一歩　XMLHttpRequest - [Javascript] All About: <a href="../../../articles/2011/05/hbm_01443.html" class="int-link" title="Ajaxはじめの一歩　XMLHttpRequest - [Javascript] All About">http://allabout.co.jp/gm/gc/24097/</a>
+sha1.js - oauth - API needz authorized? - Google Project Hosting: <a href="http://code.google.com/p/oauth/source/browse/code/javascript/sha1.js" class="ext-link">http://code.google.com/p/oauth/source/browse/code/javascript/sha1.js</a>
+ちょっと検討してみた: <a href="http://jrf.aboutme.jp/user_statuses/show/138721" class="ext-link">http://jrf.aboutme.jp/user_statuses/show/138721</a></pre>
+
+
+<section class="backrefs" data-pagefind-ignore>
+<h2>後方参照 (10 件)</h2>
+<ul>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2025/05/statuses_cocolog_95457095.html">ひとこと</a> <span class="backref-date">2025年05月22日</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2025/05/gsm_006997.html">共有メモ</a> <span class="backref-date">2025-05-21T17:31:18Z</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2025/02/statuses_cocolog_95269284.html">ひとこと</a> <span class="backref-date">2025年02月06日</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2020/06/statuses_cocolog_91960637.html">ひとこと</a> <span class="backref-date">2020年06月07日</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2018/03/statuses_cocolog_89103582.html">ひとこと</a> <span class="backref-date">2018年03月26日</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2013/06/statuses_cocolog_76692463.html">ひとこと</a> <span class="backref-date">2013年06月04日</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2012/02/software_71637031.html">ユーザーによるコメント「削除」をココログプロで実現する</a> <span class="backref-date">2012年02月16日 12:03:53</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2011/09/statuses_cocolog_69727785.html">ひとこと</a> <span class="backref-date">2011年09月08日</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2011/05/statuses_aboutme_138720.html">ひとこと</a> <span class="backref-date">2011年05月11日</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2011/05/statuses_aboutme_138721.html">ひとこと</a> <span class="backref-date">2011年05月11日</span></li>
+</ul>
+</section>
+
+</article>
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2011/05.html">2011年05月</a> | <a href="../../../index/software.html">ソフトウェア Tips</a></nav>
+</body>
+</html>

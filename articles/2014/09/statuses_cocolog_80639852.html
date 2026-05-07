@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>ひとこと - JRF Blog Archive</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2014/09.html">2014年09月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+<article data-pagefind-body>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[statuses] <span class="cocolog-id">cocolog:80639852</span></td></tr>
+<tr><th>セクション</th><td>JRF のひとこと</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2014/09.html">2014年09月16日</a></td></tr>
+<tr><th>元URL</th><td><a href="http://jrf.cocolog-nifty.com/statuses/2014/09/firef.html" class="ext-link"><span class="original-url">http://jrf.cocolog-nifty.com/statuses/2014/09/firef.html</span></a></td></tr>
+
+</table>
+</div>
+<h1>ひとこと</h1>
+<pre class="body">Firefox 32.0.1 になってから私がこの「ひとこと」を書くのに使っている Greasemonkey スクリプトがほとんど使えなくなった。開発コンソールで見ると Permission denied が連発している。
+JRF 2014年9月16日
+
+ただ、奇跡的に動く手順があるのでその手順で今は書いてる。
+
+直すのは、一応、次のバージョンを待ってからにしようと思う。今は読書を優先したい。
+
+JRF 2014年9月16日
+
+リリースノートには、それらしい記述はないようだが…。
+
+《Firefox 32.0.1 リリースノート》
+<a href="http://www.mozilla.jp/firefox/32.0.1/releasenotes/" class="ext-link">http://www.mozilla.jp/firefox/32.0.1/releasenotes/</a>
+
+JRF 2014年9月16日
+
+……。
+
+32.0.2 になっても直ってなかったので対応した。statuses_editor.user.js のみの更新で、その他はチェックしてない。(あと dump_blog.pl 関連も前に少しいじったのが入ってるかな？)
+
+JRF 2014年9月20日
+
+《aboutme2cocolog: アバウトミーの「ひとこと」をココログプロへ移転するツール》
+<a href="../../../articles/2011/04/software_67976071.html" class="int-link" title="aboutme2cocolog: アバウトミーの「ひとこと」をココログプロへ移転するツール">http://jrf.cocolog-nifty.com/software/2011/04/post.html</a>
+
+《ブログのバックアップ＆「ひとこと」のクロスリファレンス》
+<a href="../../../articles/2012/01/software_71180305.html" class="int-link" title="ブログのバックアップ＆「ひとこと」のクロスリファレンス">http://jrf.cocolog-nifty.com/software/2012/01/post.html</a>
+
+JRF 2014年9月20日
+
+……。
+
+どうもおかしい。バグがある感じだ。上の aboutme2cocolog-20140920.shar は使わないほうがいいかもしれない。再現性がまだなく、理屈が推測できないので、バグ取りは時間がかかりそう。
+
+JRF 2014年9月22日
+
+……。
+
+たぶん修正できたので一応公開しておいた。
+
+コールバック関数で Greasemonkey の関数を呼び出すのがダメになったので、dispatchEvent で change イヴェントを変化のときに出して、それを listen して Greasemonkey 側で対応するという形にしたのだが、そのとき、前は、イヴェントをブロック単位で検出してたら、エディタで文をいじったときの change イヴェントも拾っていたのに気付いた。だから、input type=&quot;hidden&quot; の value を作って、そこに addEventListener するようにした。少しはマシになったはず。
+JRF 2014年9月23日
+
+Trackbacks:
+
+《cocolog:80717742》 from JRF のひとこと
+<a href="../../../articles/2014/09/statuses_cocolog_80717742.html" class="int-link" title="ひとこと">http://jrf.cocolog-nifty.com/statuses/2014/09/post-714d.html</a>
+
+近況。本を乱読…というか、つい最近まで山本七平氏の著作を続けて読んでいて、やっと違う著者の本、あの、ゲーテの『ヴィルヘルム・マイスターの修業時代』を読みはじめた。 
+
+受信： 2014-09-28 14:07:19 (JST)</pre>
+
+
+<section class="backrefs" data-pagefind-ignore>
+<h2>後方参照 (1 件)</h2>
+<ul>
+<li><span class="backref-label">[cocolog:80639852]参照</span> <a href="../../../articles/2014/09/statuses_cocolog_80717742.html">ひとこと</a> <span class="backref-date">2014年09月26日</span></li>
+</ul>
+</section>
+
+</article>
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2014/09.html">2014年09月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+</body>
+</html>

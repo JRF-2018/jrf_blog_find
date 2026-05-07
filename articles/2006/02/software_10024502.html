@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>ココログでスクリプトなどからファイルを削除する - JRF Blog Archive</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2006/02.html">2006年02月</a> | <a href="../../../index/software.html">ソフトウェア Tips</a></nav>
+<article data-pagefind-body>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[software] <span class="cocolog-id">cocolog:10024502</span></td></tr>
+<tr><th>セクション</th><td>JRF のソフトウェア Tips</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2006/02.html">2006年02月21日 04:14:13</a></td></tr>
+<tr><th>元URL</th><td><a href="http://jrf.cocolog-nifty.com/software/2006/02/post_11.html" class="ext-link"><span class="original-url">http://jrf.cocolog-nifty.com/software/2006/02/post_11.html</span></a></td></tr>
+<tr><th>タグ</th><td>[ウェブログ・ココログ関連] [HTML/XML/CSS]</td></tr>
+</table>
+</div>
+<h1>ココログでスクリプトなどからファイルを削除する</h1>
+<pre class="body">ココログでは XML-RPC を使って同じ名前のファイルをアップロードすると付番されてしまう。Atom や XML-RPC API でスクリプトなどを使って管理する者にとって非常にやっかいな問題である。なぜなら、これらの API にはメディアファイルをアップロードする機能はあっても削除する機能はないからである。 (記事は削除できる。)
+
+ただ、Perl の LWP モジュールなど https が使えるのならば、ココログのユーザー向けスクリプトに直接コマンドを送ってしまうことができる。このとき POST じゃなくても良く GET で良い。例えば column/test/test.css-1 というファイルを消そうと思ったら、コマンドライン上からなら次のようにすれば良いようだ。
+
+lwp-request -m GET &quot;<a href="https://app.cocolog-nifty.com/t/app/control/files?__mode=delete&amp;type=file&amp;path=column/test&amp;id=column/test/test.css-1&amp;username=XXX&amp;password=XXX&amp;quot;" class="ext-link">https://app.cocolog-nifty.com/t/app/control/files?__mode=delete&amp;type=file&amp;path=column/test&amp;id=column/test/test.css-1&amp;username=XXX&amp;password=XXX&amp;quot;</a>
+
+ユーザーは普段は __mode=delete_confirm を使っているが、__mode=delete を使うと確認なしに削除してくれるので都合が良い。もちろん XXX のところは自分のアカウント名とパスワードでなければならない。
+
+&lt;b&gt;参考&lt;/b&gt;
+  《ココログの XML-RPC API で気になっていること》
+  
+更新：05/03/30,06/02/16,06/02/21
+初公開：2006年02月16日 04:22:36</pre>
+<details class="trackbacks" data-pagefind-ignore><summary>Trackbacks (2 件)</summary><pre>
+Trackbacks:
+
+《<a href="http://jrf.cocolog-nifty.com/software/2006/02/post_13.html">lwp-request で https を使うと Segmentation Fault する。</a>》 from JRF のソフトウェア Tips
+ 現在、Cygwin の setup でインストールされる openssl-0.9.8a を使うと、 Crypt::SSLeay が make test で失敗します。openssl-0.9.7e-1 などにすれば大丈夫なはずです。 'lwp-request GET https://...'が失敗するのも同じ理由と思われます。 Crypt::SSLeay が対応するまで openssl-0.9.8... 
+
+受信： 2006-02-18 01:25:58 (JST)
+
+
+《<a href="http://jrf.cocolog-nifty.com/software/2006/02/post_15.html">lwp-request のオプション -m を忘れて http://www.GET.com が表示されていた</a>》 from JRF のソフトウェア Tips
+ さっき気付いた。ここに載っていた 'lwp-request GET' をそのまま使うと、何か変な HTML データが先に表示される。よく見ると、'lwp-request -m GET' じゃないとダメだった。 参考に次のような感じになる。 $ /usr/bin/lwp-request GET | head html head titleGreat Eastern Technology - Sun... 
+
+受信： 2006-02-21 04:29:26 (JST)
+
+
+Links:
+
+ココログの XML-RPC API で気になっていること: http://watcher.moe-nifty.com/memo/2004/06/_xmlrpc_api_.html
+
+
+
+</pre></details>
+
+</article>
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2006/02.html">2006年02月</a> | <a href="../../../index/software.html">ソフトウェア Tips</a></nav>
+</body>
+</html>

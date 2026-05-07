@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>共有メモ - JRF Blog Archive</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2021/10.html">2021年10月</a> | <a href="../../../index/gsm.html">共有メモ</a></nav>
+<article data-pagefind-body>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[gsm] 2021-10-16T04:26:51Z</td></tr>
+<tr><th>セクション</th><td>グローバル共有メモ</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2021/10.html">2021-10-16T04:26:51Z</a></td></tr>
+<tr><th>元URL</th><td>(URLなし)</td></tr>
+
+</table>
+</div>
+<h1>共有メモ</h1>
+<pre class="body">jrf&gt; [仏教の最適化プログラムの続き。]
+
+重犯罪をいじった simbdp3x1.py を試す。前回、MeanAmplifier BlockMeanAmplifier の alpha1 alpha2 を 0.3 にして試した結果が pnormal。今回のが normal、ちなみに alpha1 alpha2 は 0.3。
+
+python plot_logs.py normal pnormal -p AccDeath -o fig-20211016_01.png
+python plot_logs.py normal pnormal -p AccAbortion -o fig-20211016_02.png
+python plot_logs.py normal pnormal -p Education -o fig-20211016_03.png
+python plot_logs.py normal pnormal -p AccKarma -o fig-20211016_04.png
+python plot_logs.py normal pnormal -p Population -o fig-20211016_05.png
+python plot_logs.py normal pnormal -p Power -o fig-20211016_06.png
+python plot_logs.py normal pnormal -p NewKarma2 -o fig-20211016_07.png
+python plot_logs.py normal pnormal -p AccVKarma -o fig-20211016_08.png
+
+《グラフ集: 2021-10-16 から - Issue #6 - JRF-2018/simbd》  
+<a href="https://github.com/JRF-2018/simbd/issues/6" class="ext-link">https://github.com/JRF-2018/simbd/issues/6</a>
+
+AccDeath や Population や AccAbortioin は変わって欲しくないところだが、少し違いがある。カルマ関連に違いがあるのはいい傾向だが、肝心の AccVKarma に変化がないのが気にかかる。
+
+問題の lsth がらみを見て行こう。コマンドは省略する。
+
+normal lsth ltom ltomlsth のどれもほとんど差がない。ltom ltomlsth が AccKarma で下がっている…というのも今回は観測できない。肝心の AccVKarma にも差がない。これは、VirutalHating が1200期の前に下がりぎみだったため、ltom の効果がなくなったからではないか。それを確かめるために 1期から1200期までの VitrualHating の変化を描いてみる。
+
+python plot_logs.py simbdp3x1 -p VirtualHating -o fig-20211016_16.png
+python plot_logs.py simbdp3x1 -p Hating -o fig-20211016_17.png
+
+ltom の効果はそれで説明がつくとしても、lsth にまったく効果がないのが説明できない。Hating が上がって VirtualHating が上がって(ここまでは上がっている)、AccKarma も上がるはずなのだがそうなってない…。
+
+なぜこんなにダメだったのか理由がわからない。MeanAmplifier という考え方がいけなかったのだろうか？</pre>
+
+
+</article>
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2021/10.html">2021年10月</a> | <a href="../../../index/gsm.html">共有メモ</a></nav>
+</body>
+</html>

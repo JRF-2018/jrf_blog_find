@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>Movable Type で「記事と同じカテゴリ内の最近の記事」を表示する。 - JRF Blog Archive</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2006/02.html">2006年02月</a> | <a href="../../../index/software.html">ソフトウェア Tips</a></nav>
+<article data-pagefind-body>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[software] <span class="cocolog-id">cocolog:10143002</span></td></tr>
+<tr><th>セクション</th><td>JRF のソフトウェア Tips</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2006/02.html">2006年02月22日 17:46:31</a></td></tr>
+<tr><th>元URL</th><td><a href="http://jrf.cocolog-nifty.com/software/2006/02/post_16.html" class="ext-link"><span class="original-url">http://jrf.cocolog-nifty.com/software/2006/02/post_16.html</span></a></td></tr>
+<tr><th>タグ</th><td>[ウェブログ・ココログ関連]</td></tr>
+</table>
+</div>
+<h1>Movable Type で「記事と同じカテゴリ内の最近の記事」を表示する。</h1>
+<pre class="body">プラグインを使わなくてもSSI とインデックステンプレートを組み合わせて使えば、「記事と同じカテゴリ内の最近の記事」を表示することができる。
+
+当初、 Movable Type では Movable Type のタグの中で Movable Type のタグをネストして使うことはできないため、このようなことは不可能だと思っていた。
+
+しかし、Apache 1.2 以降の SSI には if 文があり、その中で正規表現(というか部分文字列のサーチ = strstr)が使えることを知り、ココログプロで使える「新しいインデックステンプレート」と組み合わせれば、可能なはずだと思い致った。
+
+問題は、このサイトではカテゴリ名に '/' を使っており、ラベルでカテゴリを指定すると正規表現の '/.../' とぶつかってしまうため、MTCategoryID を使いたいところだが、MTCategoryID は Category Archive 内などでそのまま使えない。今のところ Indivisual Archive に表示するだけなのであまり関係ないが、Archive 内などでサイドバーとして読み込もうとすると不具合が出るようにはしたくない。
+
+しばしとまどったが《MovableType Tips: MovableType Tips Archives》にある方法でそれが解決できることがわかった。
+
+基本的には、まず、表示したい(複数の)カテゴリの MTCategoryID を ',' で連結した文字列を作り、それを SSI の変数 CATEGORY_IDS に代入する。
+
+次に、インデックステンプレートで、それぞれのカテゴリごとに if 文を付け、そのカテゴリの MTCategoryID (の前後に','を付けたもの)が、変数 CATEGORY_IDS 内に含まれていれば表示し、そうでなければ表示しないようにした。
+
+  ■Individual Archives テンプレートの変更
+    
+このサイトでは Individual Archives の最初に次のような変更を加えた。
+
+&lt;!DOCTYPE html PUBLIC &quot;-//W3C//DTD XHTML 1.0 Transitional//EN&quot; &quot;<a href="http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd&amp;quot;&amp;gt;" class="ext-link">http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd&amp;quot;&amp;gt;</a>
+
+&lt;!--#set var=&quot;CATEGORY_IDS&quot;
+    value=&quot;,&lt;MTEntryCategories&gt;&lt;$MTCategoryID$&gt;,&lt;/MTEntryCategories&gt;&quot; --&gt;
+&lt;html xmlns=&quot;<a href="http://www.w3.org/1999/xhtml&amp;quot;&amp;gt;" class="ext-link">http://www.w3.org/1999/xhtml&amp;quot;&amp;gt;</a>
+&lt;head&gt;
+
+また、次のように更新情報のあとに include 文を足した。
+
+&lt;p class=&quot;posted&quot;&gt;...&lt;/p&gt;
+&lt;div class=&quot;entry-recent-lists&quot;&gt;
+&lt;!--#include virtual=&quot;/&lt;$MTBlogDirname$&gt;/recent-lists.shtml&quot; --&gt;
+&lt;/div&gt;
+&lt;MTEntryIfAllowPings&gt;
+
+  ■新しいインデックステンプレートとして recent-lists.shtml を作る。
+    
+本当は拡張子を .shtml じゃなく .inc にしたかったのだが、ココログは .inc にするとコントロールパネルのファイルから見えなくなるという「仕様」なので、しかたなく .shtml にした。
+
+Recent Lists というテンプレートを作成した。次のようなファイルである。
+
+&lt;a id=&quot;recent-lists&quot;&gt;&lt;/a&gt;
+&lt;MTCategories&gt;
+&lt;!--#if expr=&quot;$CATEGORY_IDS = /,&lt;$MTCategoryID$&gt;,/&quot; --&gt;
+&lt;MTBlogIfArchives&gt;
+&lt;h2&gt;「&lt;a href=&quot;&lt;$MTCategoryArchiveLink$&gt;&quot;&gt;&lt;$MTCategoryLabel$&gt;&lt;/a&gt;」カテゴリ内の最近の記事&lt;/h2&gt;
+&lt;MTEntries lastn=&quot;5&quot;&gt;
+&lt;div class=&quot;recent-lists-content&quot;&gt;
+&lt;div class=&quot;recent-lists-title&quot;&gt;&lt;$MTEntryDate format=&quot;%Y-%m-%d&quot;$&gt; &lt;a
+href=&quot;&lt;$MTEntryPermalink$&gt;&quot;&gt;&lt;$MTEntryTitle$&gt;&lt;/a&gt;&lt;/div&gt;
+&lt;!--
+&lt;div class=&quot;recent-lists-body&quot;&gt;
+&lt;$MTEntryExcerpt$&gt;
+&lt;/div&gt;
+--&gt;
+&lt;/div&gt;
+&lt;/MTEntries&gt;
+&lt;/MTBlogIfArchives&gt;
+&lt;!--#endif --&gt;
+&lt;/MTCategories&gt;
+&lt;!--#if expr=&quot;$CATEGORY_IDS = /,TOP,/&quot; --&gt;
+&lt;h2&gt;「&lt;a href=&quot;&lt;$MTBlogURL$&gt;&quot;&gt;&lt;$MTBlogName$&gt;&lt;/a&gt;」内の最近の記事&lt;/h2&gt;
+&lt;MTEntries lastn=&quot;5&quot;&gt;
+&lt;div class=&quot;recent-lists-content&quot;&gt;
+&lt;div class=&quot;recent-lists-title&quot;&gt;&lt;$MTEntryDate format=&quot;%Y-%m-%d&quot;$&gt; &lt;a
+href=&quot;&lt;$MTEntryPermalink$&gt;&quot;&gt;&lt;$MTEntryTitle$&gt;&lt;/a&gt;&lt;/div&gt;
+&lt;!--
+&lt;div class=&quot;recent-lists-body&quot;&gt;
+&lt;$MTEntryExcerpt$&gt;
+&lt;/div&gt;
+--&gt;
+&lt;/div&gt;
+&lt;/MTEntries&gt;
+&lt;!--#endif --&gt;
+
+はじめ Excerpt も表示されるよう書いてみたが、うっとうしかったのでコメントアウトしている。
+
+また、CATEGORY_IDS に ',TOP,' を含めれば、そのブログ全体の最近の記事もリストされる。これを同じサイトの別のブログのサイドバーにでも入れようかと思ったのだが、これまた冗長になるのでやめた。……と思ったが《雑記》だけを他のブログのページに入れ、《雑記》には他のブログを入れることにした。
+
+あとは CSS で適当に整えれば完成。
+
+&lt;b&gt;参考&lt;/b&gt;
+  《MovableType Tips: MovableType Tips Archives》
+  《個別エントリーアーカイブに同一カテゴリーのエントリーを表示》
+  
+■更新
+  
+  &lt;b&gt;2006-03-30&lt;/b&gt;&lt;$MTEntryExcerpt remove_html='1'$&gt; を &lt;$MTEntryExcerpt remove_html='1' encode_html='1'$&gt; にした。
+  &lt;b&gt;2006-03-28&lt;/b&gt;トラックバックをいただいた《観測気球》の記事を参考に tooltip に &lt;$MTEntryExcerpt remove_html='1'$&gt; を表示するようにしました。現在は上の記事とは違う設定になっています。
+  &lt;b&gt;2006-03-02&lt;/b&gt;プラグイン MTTagInvoke を使えばできることを知った。
+    
+更新：06/02/22,06/03/02
+初公開：2006年02月22日 03:00:10
+最新版：2006年03月30日 14:35:37</pre>
+<details class="trackbacks" data-pagefind-ignore><summary>Trackbacks (3 件)</summary><pre>
+Trackbacks:
+
+《<a href="http://jrf.cocolog-nifty.com/column/2006/02/post_33.html">ココログや Movable Type のシステムと奮戦中</a>》 from JRF の私見：雑記
+ MTEntries では sort_by と last_n を同時に使うことができず、 MTArchiveList では offset を使うことができないようだ。 また、XML-RPC で更新情報として TIMESTAMP を書き込んだとき、月をまたぐと、(週別の)個別アーカイブの位置が変わるため、Permalink が変更されてしまうようだ。 ... 
+
+受信： 2006-02-24 01:29:24 (JST)
+
+
+《<a href="http://watcher.moe-nifty.com/memo/2006/03/post_f031.html">当該記事の所属するカテゴリの最近の記事一覧を表示する</a>》 from 観測気球
+PHP も JavaScript も使わずに、Movable Type のテンプレートと SSI を駆使することで、個別記事にカテゴリ別最新記事一覧を差し込む方法があることを知り、採用してみました。 
+
+受信： 2006-03-28 01:42:21 (JST)
+
+
+《<a href="http://jrf.cocolog-nifty.com/software/2010/05/post.html">Movable Type と SSI を使って注目を避けるために一時的に「休止」や「ブックマーク拒否」をする</a>》 from JRF のソフトウェア Tips
+現在、ココログプロのシステムを使い「同人サイト」(というかほぼ個人のつぶやきサイトとなってる…)を整備している。そこは、仲間が見つけられるように公開ではありたいが、目立つのはあまり好ましくない。そこで、万一、目立ってしまったとき、アクセスを一時お断りするような機構が欲しいと考えた。 方法として思いついたのは、記事のカテゴリとして「休止中」や「ブックマーク拒否」というのを作り、そのカテゴリに属する場... 
+
+受信： 2010-05-06 19:26:26 (JST)
+
+
+Comments:
+
+なお、現在のココログではデフォルトでこれと同等のことができるようになっています。この記事はココログ以外の方向けになったということですね。
+投稿: JRF | 2007-07-15 18:14:14 (JST)
+
+よぼらぼ
+情色おんな秘図
+襦袢の裾を乱れさせ、喘ぐ女の艶姿、悶えながらも男の精を吸い尽くす―江戸の世を舞台に繰り広げられる、淫らで妖しき五つの
+http://www.8568985.com/mmgjkin/
+http://www.8568985.com/garegky/
+投稿: よぼらぼ | 2007-11-02 21:48:08 (JST)
+
+According to my own exploration, thousands of persons all over the world get the credit loans at good banks. So, there is a good chance to get a bank loan in every country.
+投稿: home loans | 2011-11-27 17:56:00 (JST)
+
+
+Links:
+
+SSI: http://httpd.apache.org/docs/1.3/mod/mod_include.html
+Movable Type: http://www.sixapart.com/movabletype/docs/mtmanual
+MovableType Tips: MovableType Tips Archives: http://sid-web.com/mtt/archives/movabletype_tips/
+雑記: http://jrf.cocolog-nifty.com/column/
+個別エントリーアーカイブに同一カテゴリーのエントリーを表示: http://www.koikikukan.com/archives/2005/05/02-013827.php
+観測気球: http://watcher.moe-nifty.com/memo/
+よぼらぼ: http://www.8568985.com/garegky/
+home loans: http://goodfinance-blog.com
+
+
+
+</pre></details>
+
+<section class="backrefs" data-pagefind-ignore>
+<h2>後方参照 (2 件)</h2>
+<ul>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2010/05/software_63218036.html">Movable Type と SSI を使って注目を避けるために一時的に「休止」や「ブックマーク拒否」をする</a> <span class="backref-date">2010年05月06日 19:20:17</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2006/04/column_10899930.html">テンプレート等ブログシステムの更新履歴</a> <span class="backref-date">2006年04月02日 21:42:30</span></li>
+</ul>
+</section>
+
+</article>
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2006/02.html">2006年02月</a> | <a href="../../../index/software.html">ソフトウェア Tips</a></nav>
+</body>
+</html>

@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>テンプレート等ブログシステムの更新履歴 - JRF Blog Archive</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2006/04.html">2006年04月</a> | <a href="../../../index/column.html">雑記</a></nav>
+<article data-pagefind-body>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[column] <span class="cocolog-id">cocolog:10899930</span></td></tr>
+<tr><th>セクション</th><td>JRF の私見：雑記</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2006/04.html">2006年04月02日 21:42:30</a></td></tr>
+<tr><th>元URL</th><td><a href="http://jrf.cocolog-nifty.com/column/2006/04/post_2.html" class="ext-link"><span class="original-url">http://jrf.cocolog-nifty.com/column/2006/04/post_2.html</span></a></td></tr>
+<tr><th>タグ</th><td>[ウェブログ・ココログ関連] [自己紹介]</td></tr>
+</table>
+</div>
+<h1>テンプレート等ブログシステムの更新履歴</h1>
+<pre class="body">&lt;b&gt;2024-10-08&lt;/b&gt;
+  サブタイトルに style や javascript を指定する裏技を使って、モバイルで表示したときのページを若干、改善した。これで Google のページランクが上ったりすると、うれしいのだが。
+  
+&lt;b&gt;2022-01-02&lt;/b&gt;
+  「ひとこと」の ココログ ID から URL を生成する jumpbytitle.html が jumpbydate.html としばしば逆になる不具合が2019年 3月以来起きている。とりあえず jumpbytitle.html を XREA で cgi を使って実装しなおした。
+&lt;b&gt;2021-10-01&lt;/b&gt;
+  statuses_tools.js と jrf_crypt_comment.js で、Wikipedia のサーチのリンクが効かなくなっていたのを効くようにした。
+&lt;b&gt;2020-05-14&lt;/b&gt;
+  /archive/lib/ 下の JavaScript のリンクを /mylib/ 下に置きかえるなどし、全面リニューアル後の状況に少し対応。
+&lt;b&gt;2019-03-19&lt;/b&gt;
+  ココログ全面リニューアル。このサイトのいろいろな機能が使えなくなる。
+&lt;b&gt;2017-11-27&lt;/b&gt;
+  Google 翻訳のプラグインをサイドバーに表示するようにした。
+&lt;b&gt;2017-10-15&lt;/b&gt;
+  自分の作成した小説やゲームの宣伝のための jrf_pr_widget_2.js を作った。これまでの宣伝の方式を変えた。
+&lt;b&gt;2017-03-30&lt;/b&gt;
+  Google Feed API の終了にともない《ユーザーによるコメント「削除」をココログプロで実現する》に書いた機構のバージョンアップというか、機能一部削除をした。また、サイドバーに「サイト内の検索」として Google カスタム検索を導入した。
+&lt;b&gt;2014-03-26&lt;/b&gt;
+  Google 翻訳用 meta タグのみ導入。また、column のみ opacity の効かない IE 9 未満は meta タグ の rating を mature に設定。
+&lt;b&gt;2014-01-30&lt;/b&gt;
+  hide_img.js を導入。モロな18禁コンテンツは置かないが、男性と女性がからむものや、児童が挑発的なポーズを取るものなど、閲覧者が18歳以上であることが推奨されるコンテンツを置くため、性的寛容の確認を求めるワンクッションを入れられるようにした。
+&lt;b&gt;2014-01-28&lt;/b&gt;
+  gengou.js を導入。記事の一番上の日付を、新聞みたく元号も書くようにした。私が死んだあととか、いつまでも元号が変わらないとかいうのはいかにもマズいので、JavaScript ソースに直書きの日付以前のみ元号にすることにした。
+&lt;b&gt;2013-09-17&lt;/b&gt;
+  個別記事に「ロボット取得拒否」カテゴリを設定できるようにした。《勝手に PR》にはすでにあった機能。
+&lt;b&gt;2012-05-23&lt;/b&gt;
+  《勝手に PR》を正式オープンし、勝手 PR をサイドバーに表示するようにした。ついでに、個別記事のネットコミュニティ欄に Twitter も表示するようにした。
+&lt;b&gt;2012-02-16&lt;/b&gt;
+  《ユーザーによるコメント「削除」をココログプロで実現する》に書いたような機構を導入し、ユーザーがコメント非表示や暗号化をできるようにした。
+&lt;b&gt;2011-10-01&lt;/b&gt;
+  《雑記》に「ストーリー」カテゴリを足し、「箴言・辛言・戯れ言」その他のカテゴリの記事をそのカテゴリに移した。
+&lt;b&gt;2011-05-02&lt;/b&gt;
+  コメント欄で pre タグを使うと改行がおかしくなる等を、 CSS を使って直し、アスキーアートにも(ほぼ)対応した。
+&lt;b&gt;2010-05-06&lt;/b&gt;
+  《Movable Type と SSI を使って注目を避けるために一時的に「休止」や「ブックマーク拒否」をする》の記事に書いたような機構を導入した。
+&lt;b&gt;2010-04-29&lt;/b&gt;
+  RSS などに統計をとる目的で要約のみを載せている旨の注意書きを足した。ユーザー等の処理により私の統計をとる目的が達せられないからといって、著作物へのアクセス方法を著作権者が任意に制限できるとするような「著作権」に反するという主張や、robot の実情を知りえない消費者に対し一方的に不公正な商業慣行であるという主張をするつもりはありません。ただ、私が自分の影響力を誤認して為した行為の責任について、他者からユーザー等へ追及があったとしても、当方はログを得られてない以上、当然、関知しません。そのような場合は、プロバイダ等にご相談ください。
+&lt;b&gt;2009-02-11&lt;/b&gt;
+  InternetExplorer 6 でフォントがおかしくなっていた問題を修正。XP SP3 などの IE6 で UTF-8 のときに MS PMincho などを指定するとフォントが崩れていた。弥縫策として HTML の body 要素に lang=&quot;ja&quot; をつけた。
+&lt;b&gt;2008-10-24&lt;/b&gt;
+  MTCategoryDescription に対応。主に自己紹介のカテゴリの説明のため、導入。ついでにメールの非表示方針にあわせる。
+&lt;b&gt;2008-02-09&lt;/b&gt;
+  コメント欄の絵文字がココログに対応していたので、このサイトのテンプレートでも採用。「今の気持ちを表す絵文字をコメントの最初に付けるの推奨」する。絵文字を一度使ってもらうこと、短かいコメントの誤読をなくすこと、将来的に先頭の絵文字をコメントの「メタデータ」として利用することでブログへの感情を数値化すること、を狙っている。
+&lt;b&gt;2007-07-12&lt;/b&gt;
+  はてなスターに対応し、それについれてブックマーク数の表示位置も変えた。Niftyのアバウトミーへのリンクをサイドバーに足した。サイドバーにアプラグを使って、はてなブックマークの「注目されてるエントリ」を表示していたが、はてなブックマークをされることはほとんどなく、知らない間にアプラグ使用のバナーが表示されるようになっていたこともあり、いい機会なのでサイドバーの「注目されてるエントリ」をなくした。
+&lt;b&gt;2007-04-01&lt;/b&gt;
+  ３月下旬にメインページやアーカイブページの各記事のタイトルにアンカーを付けた。サイドバーのトラックバックのリンクにも rel=&quot;nofollow&quot; を付けた。
+&lt;b&gt;2007-01-29&lt;/b&gt;
+  個別記事のコメント機能の簡易ヘルプをよりわかりやすくした。Google サイトマップで daily のものをなくし、すべて weekly 以上の変更頻度と設定した。
+&lt;b&gt;2006-12-11&lt;/b&gt;
+  個別記事については、タイトルの隣りに <a href="http://b.hatena.ne.jp/entry/image/" class="ext-link">http://b.hatena.ne.jp/entry/image/</a> を使って被はてなブックマーク数を表示するようにした。
+&lt;b&gt;2006-06-12&lt;/b&gt;
+  サイドバーに「注目されてるエントリ」を表示し、はてなブッブックマークされているものを簡単に表示できるようにした。ただ、今は他の人に気付いてもらうためプロフィールの下に表示しているけど、しばらくしたら、最近のコメントの前にでも表示するつもり。
+&lt;b&gt;2006-04-16&lt;/b&gt;
+  ココログに上げた要望が通ったらしく、ココログヘルプの「コメントで使える HTML タグ」の節に tag が付いたので、ついでにコメント、トラックバックのポリシーへの記事と、そのヘルプへのガイドを個別記事に付けた。
+&lt;b&gt;2006-04-02&lt;/b&gt;
+  《弁理士の日々：ブログ記事のインデックス》に共感し、「全ての記事」を表示できるようにした。本当は索引も作りたいけど、それはブログ検索におまかせするということで。
+&lt;b&gt;2006-04-01&lt;/b&gt;
+  主に更新情報の配信を目的として最近のコメント一覧とその RSS を作った。ポリシーは《このサイトの参考文献とリンク、トラックバックとコメントについて》。
+&lt;b&gt;2006-03-31&lt;/b&gt;
+  更新を《ココログバージョンアップにあわせたわけじゃないけど》に書いた。
+&lt;b&gt;2006-02-27&lt;/b&gt;
+  《ソフトウェア Tips：ココログプロで Google サイトマップインデックスを作る》ようにした。
+&lt;b&gt;2006-02-24&lt;/b&gt;
+  重大な誤解の修正。《重要な更新情報: 初公開日が書き換わっていました》
+&lt;b&gt;2006-02-22&lt;/b&gt;
+  《ソフトウェア Tips：Movable Type で「記事と同じカテゴリ内の最近の記事」を表示する》ようにした。
+&lt;b&gt;2006-01-28&lt;/b&gt;
+  本格運用開始。
+&lt;b&gt;2005-03-22&lt;/b&gt;
+  ココログアカウント取得。
+  
+更新：2006-04-02,2006-04-16,2006-06-12,2006-12-11,2007-01-29,2007-04-01,2007-07-12,2008-02-09,2008-10-24,2009-02-11,2010-04-29,2010-05-06,2011-05-02,2011-10-01,2012-02-16,2012-05-23,2013-09-17,2014-01-28,2014-01-30,2014-03-26,2017-03-30,2017-10-15,2017-11-27,2020-05-14,2021-10-01,2022-01-02,2024-10-08
+初公開：2006年04月02日 21:42:30
+最新版：2024年10月08日 02:27:50
+
+
+Comments:
+
+更新：最新コメント一覧 RSS のバグ修正。 MTCommentDate のバグ？によりコメントの日付けが間違っていた。
+投稿: JRF | 2006-04-07 18:13:30 (JST)
+
+更新：ココログヘルプの「コメント欄で使える HTML タグ」の節に tag が付いたのをうけて更新。
+投稿: JRF | 2006-04-16 02:10:12 (JST)
+
+更新：匿名投稿時のサイドバーの表示を変更した。
+投稿: JRF | 2006-04-23 19:15:12 (JST)
+
+更新：コメントやトラックバックの tooltip として表示されるガイドを、ブログに不慣れな方にもわかりやすいよう少し改善した。
+投稿: JRF | 2006-04-28 20:32:54 (JST)
+
+更新：「注目されてるエントリ」を足した。ほんとはブログパーツにしたり、アクセス解析からやるのがスジなのかもしれないけど、アクセス数はあるけど全々ブクマされないのとかよく見るので、やはり、ブクマを基準にしたほうがいいのかなと思って、今回のようにしました。
+投稿: JRF | 2006-06-12 16:48:14 (JST)
+
+アプラグを試してみた、バナーを消したい衝動にかられる。
+投稿: JRF | 2006-07-15 03:47:58 (JST)
+
+更新：被はてなブックマーク数を表示するようにした。
+投稿: JRF | 2006-12-11 15:52:24 (JST)
+
+更新：主にコメントのヘルプを充実させた。
+投稿: JRF | 2007-01-29 22:08:24 (JST)
+
+更新：細々とした調整をした。
+投稿: JRF | 2007-04-01 14:29:01 (JST)
+
+Hello. I love your!
+Verizon LG cell phone instructions  Toshiba cell phones  How to unlock cingular cell phones  Used cingular gsm cell phones  Verizon cellular phone cover  Online cellphone reverse lookup  Unlimited cell phone plans  Wireless cell phone providers  Calling international from cell phone  Nokia cell phone software  Trac cell phones  Jpg files to cell phone pix  List cell phone providers  Louis vuitton cell phone holders  Satellite cellular phones  Samsung x497 cell phone  Unlimited cell phone plans  Alltel cell phone numbers  Freeware LG cell phone  Pda cell phone with window
+投稿: Cell phone raq | 2007-04-09 10:10:14 (JST)
+
+更新：Sitemap のバージョンアップに関してちょこちょこっといじった。
+
+で、そのとき気付いた。なんてこったい！いくつかのトラックバックが自動的に非公開になってるよ！
+
+スパム対策なのでしょうが、まともなトラバまでスパム指定されていたのか非公開になっていました。今、スパムも含めて、すべて公開するように指示しなおしました。
+投稿: JRF | 2007-04-14 23:58:10 (JST)
+
+更新：はてなスターに対応した。
+投稿: JRF | 2007-07-12 21:17:29 (JST)
+
+更新：Nifty アバウトミーへのリンクを足した。
+投稿: JRF | 2007-07-13 10:50:29 (JST)
+
+更新：「アクセス・ブックマーク報告」と「はてな関連」のカテゴリを作り、少し分類しなおした。
+投稿: JRF | 2007-07-15 08:18:46 (JST)
+
+[E:note]更新：コメント欄の絵文字に対応。
+投稿: JRF | 2008-02-09 23:58:02 (JST)
+
+[E:note] 更新：MTCategoryDescription に対応。
+投稿: JRF | 2008-10-24 23:48:22 (JST)
+
+[E:coldsweats01] 更新:XP SP3 の IE6 のフォントに関するバグに対応。
+投稿: JRF | 2009-02-11 00:28:26 (JST)
+
+[E:bleah] 更新：RSS への注意書きを足した。その意図について、新しい記事にしようか迷ったが、とりあえずここに書いておいた。キッカケは一部のアメーバブログの RSS の注記を見て。
+投稿: JRF | 2010-04-29 16:23:53 (JST)
+
+[E:note] 更新：「ブックマーク拒否」や「休止中」のカテゴリの特別処理を設けた。
+投稿: JRF | 2010-05-06 19:38:47 (JST)
+
+[E:sad] アスキーアートに対応しようといろいろがんばったが、失敗している。コメント欄の pre タグの動作が安定してない？
+
+
+   ^    ^
+      |
+ ＼－／
+
+
+投稿: JRF | 2011-05-02 00:53:43 (JST)
+
+[E:cloud] 更新：「ストーリー」カテゴリの追加。ただ、「散文詩」の扱いにはまだ迷いがある。
+
+投稿: JRF | 2011-10-02 02:29:37 (JST)
+
+[E:note] 更新：ユーザーによるコメント非表示・暗号化の機構を導入した。
+
+投稿: JRF | 2012-02-16 13:11:24 (JST)
+
+[E:sun] 更新：《JRF の勝手に PR》を正式にオープン。
+
+投稿: JRF | 2012-05-23 01:45:19 (JST)
+
+[E:clover] 更新：「ロボット取得拒否」機能を《勝手に PR》以外でも導入。
+
+これまでフィギュア写真等をブログにアップしてきたが、さらに著作権的な問題の大きいデスクトップ壁紙の(ダウンロード数を数えながらの)アップロード(と縮小版の紹介)をしようかと悩んでいる。
+
+拾った画像の拡大縮少＆カット程度でも、どこでカットするかで悩んだりして結構手間がかかってるのに自分だけで使うのはもったいない感じ。著者には迷惑でしかないかもしれないけど、私は正規商品を買えるものは買ってるし、いちおうダウンロード者も「同好の士」で、商品を持つことを薦めるつもりだから、「宣伝」にもなる。まぁ、「宣伝になるからいい」というのはダメだと散々いわれてきたのは知ってるけど…。
+
+その場合はできる限り著者サイトへリンク(＆自分でクリック)はするが、一方で、検索よけはしようかと考えており、とりあえず、今回の機能追加だけは先にしとこう…となった。
+
+(機能的に画像のアップロードのありえない《ひとこと》には今回はとりあえず未導入。)
+
+投稿: JRF | 2013-09-17 10:38:55 (JST)
+
+[E:pass] 更新：gengou.js を導入。直書きの日付は毎期(３ヶ月)ごとの更新の予定。
+
+投稿: JRF | 2014-01-28 05:16:20 (JST)
+
+[E:club] 更新：hide_img.js の導入。レーティング対策がこれで十分だったらいいんだけど…。
+
+投稿: JRF | 2014-01-30 17:37:19 (JST)
+
+[E:golf] 更新：jrf_crypt_comment.js のダウングレードと、Google カスタム検索の導入。
+
+投稿: JRF | 2017-03-30 02:23:23 (JST)
+
+[E:tennis] 更新: jrf_pr_widget_2.js の導入。自己宣伝をランダムにした。
+
+投稿: JRF | 2017-10-15 21:25:56 (JST)
+
+[E:gasstation] 更新: Google 翻訳のプラグインを導入。
+
+投稿: JRF | 2017-11-27 12:58:11 (JST)
+
+更新： 全面リニューアル後の状況に少し対応。
+投稿: JRF | 2020-05-14 04:46:38 (JST)
+
+
+Links:
+
+ユーザーによるコメント「削除」をココログプロで実現する: <a href="../../../articles/2012/02/software_71637031.html" class="int-link" title="ユーザーによるコメント「削除」をココログプロで実現する">http://jrf.cocolog-nifty.com/software/2012/02/post-1.html</a>
+hide_img.js: <a href="http://jrf.cocolog-nifty.com/mylib/hide_img.js" class="ext-link">http://jrf.cocolog-nifty.com/mylib/hide_img.js</a>
+gengou.js: <a href="http://jrf.cocolog-nifty.com/mylib/gengou.js" class="ext-link">http://jrf.cocolog-nifty.com/mylib/gengou.js</a>
+勝手に PR: <a href="http://jrf.cocolog-nifty.com/pr/" class="ext-link">http://jrf.cocolog-nifty.com/pr/</a>
+雑記: <a href="../../../articles/2006/03/hbm_00001.html" class="int-link" title="JRF の私見：雑記">http://jrf.cocolog-nifty.com/column/</a>
+Movable Type と SSI を使って注目を避けるために一時的に「休止」や「ブックマーク拒否」をする: <a href="../../../articles/2010/05/software_63218036.html" class="int-link" title="Movable Type と SSI を使って注目を避けるために一時的に「休止」や「ブックマーク拒否」をする">http://jrf.cocolog-nifty.com/software/2010/05/post.html</a>
+はてなスター: <a href="../../../articles/2007/07/hbm_00802.html" class="int-link" title="はてなスター">http://s.hatena.ne.jp/</a>
+アバウトミー: <a href="http://aboutme.jp/" class="ext-link">http://aboutme.jp/</a>
+アプラグ: <a href="../../../articles/2006/07/hbm_00394.html" class="int-link" title="アプラグβ">http://aplug.nifty.com/</a>
+はてなブックマーク: <a href="../../../articles/2007/07/hbm_00803.html" class="int-link" title="はてなブックマーク">http://b.hatena.ne.jp/</a>
+弁理士の日々：ブログ記事のインデックス: <a href="../../../articles/2006/04/hbm_00012.html" class="int-link" title="弁理士の日々：ブログ記事のインデックス">http://blog.goo.ne.jp/bongore789/e/00fb97d1c37db2d725559aa231e95f69</a>
+このサイトの参考文献とリンク、トラックバックとコメントについて: <a href="../../../articles/2006/02/column_9987388.html" class="int-link" title="このサイトの参考文献とリンク、トラックバックとコメントについて">http://jrf.cocolog-nifty.com/column/2006/02/post_20.html</a>
+ココログバージョンアップにあわせたわけじゃないけど: <a href="../../../articles/2006/03/column_10838412.html" class="int-link" title="ココログバージョンアップにあわせたわけじゃないけど">http://jrf.cocolog-nifty.com/column/2006/03/post_25.html</a>
+ソフトウェア Tips：ココログプロで Google サイトマップインデックスを作る: <a href="../../../articles/2006/03/software_10293851.html" class="int-link" title="ココログプロで Google サイトマップインデックスを作る">http://jrf.cocolog-nifty.com/software/2006/03/post_1.html</a>
+重要な更新情報: 初公開日が書き換わっていました: <a href="../../../articles/2006/02/column_10179035.html" class="int-link" title="重要な更新情報: 初公開日が書き換わっていました">http://jrf.cocolog-nifty.com/column/2006/02/post_34.html</a>
+ソフトウェア Tips：Movable Type で「記事と同じカテゴリ内の最近の記事」を表示する: <a href="../../../articles/2006/02/software_10143002.html" class="int-link" title="Movable Type で「記事と同じカテゴリ内の最近の記事」を表示する。">http://jrf.cocolog-nifty.com/software/2006/02/post_16.html</a>
+Cell phone raq: <a href="http://new-cell-phones.cellcophones.info/index.html" class="ext-link">http://new-cell-phones.cellcophones.info/index.html</a>
+JRF の勝手に PR: <a href="http://jrf.cocolog-nifty.com/pr/" class="ext-link">http://jrf.cocolog-nifty.com/pr/</a></pre>
+
+
+</article>
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2006/04.html">2006年04月</a> | <a href="../../../index/column.html">雑記</a></nav>
+</body>
+</html>

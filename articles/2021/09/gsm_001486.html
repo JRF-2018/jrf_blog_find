@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>共有メモ - JRF Blog Archive</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2021/09.html">2021年09月</a> | <a href="../../../index/gsm.html">共有メモ</a></nav>
+<article data-pagefind-body>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[gsm] 2021-09-21T18:00:14Z</td></tr>
+<tr><th>セクション</th><td>グローバル共有メモ</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2021/09.html">2021-09-21T18:00:14Z</a></td></tr>
+<tr><th>元URL</th><td>(URLなし)</td></tr>
+
+</table>
+</div>
+<h1>共有メモ</h1>
+<pre class="body">jrf&gt; [仏教の最適化プログラムの続き。]
+
+lsth (less soothe) を見るために再度ログを取り直す。normal については前のものに --no-frozen を付けたもの。
+
+lsth は次のようになる。
+
+run_simbdp3.sh lsth 10 -L -t 360 --soothe-nation-threshold=0.6 --soothe-nation-threshold-min=0.5 --soothe-nation-threshold-max=0.7
+
+まずは前回の normal を pnormal とリネームし、それを今回の normal と比較してみる。
+
+python plot_logs.py normal pnormal -p AccDeath -o fig-20210922_01.png
+python plot_logs.py normal pnormal -p AccAbortion -o fig-20210922_02.png
+python plot_logs.py normal pnormal -p Education -o fig-20210922_03.png
+python plot_logs.py normal pnormal -p NewKarma -o fig-20210922_04.png
+python plot_logs.py normal pnormal -p Hating -o fig-20210922_05.png
+python plot_logs.py normal pnormal -p PoliticalHating -o fig-20210922_06.png
+python plot_logs.py normal pnormal -p Population -o fig-20210922_07.png
+
+AccDeath に違いが現れているのが良くわからない。Population を調べると最初のころに大きな違いがあるようなので、それが後々に影響したということだろうか。リクツで言えば違いが出そうなのは PoliticalHating で、それが normal では低く出て欲しいところなのだが、ほんの少しだけしかそうなっていない。
+
+次に lsth と normal を比較してみる。
+
+python plot_logs.py normal lsth -p AccDeath -o fig-20210922_08.png
+python plot_logs.py normal lsth -p AccKarma -o fig-20210922_09.png
+python plot_logs.py normal lsth -p Hating -o fig-20210922_10.png
+python plot_logs.py normal lsth -p VirtualHating -o fig-20210922_11.png
+
+AccDeath の違いが出てないのはリクツ通り。AccKarma に差がまったくないのはなぜだろう？ lsth は soothe が少なくなっていることから、Hating が上がり、継いで VirtualHating が上がるはずで、それにつれて AccKarma も上がるはずである。Hating も VirtualHating も上がっているが、VirtualHating の差は 0.005 程度と、差が少な過ぎるのが問題か。
+
+グラフは↓にも貼っておく。
+
+《グラフ集: 2021-09-22 から - Issue #4 - JRF-2018/simbd》  
+<a href="https://github.com/JRF-2018/simbd/issues/4" class="ext-link">https://github.com/JRF-2018/simbd/issues/4</a></pre>
+
+
+</article>
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2021/09.html">2021年09月</a> | <a href="../../../index/gsm.html">共有メモ</a></nav>
+</body>
+</html>

@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>共有メモ - JRF Blog Archive</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2021/01.html">2021年01月</a> | <a href="../../../index/gsm.html">共有メモ</a></nav>
+<article data-pagefind-body>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[gsm] 2021-01-17T20:14:18Z</td></tr>
+<tr><th>セクション</th><td>グローバル共有メモ</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2021/01.html">2021-01-17T20:14:18Z</a></td></tr>
+<tr><th>元URL</th><td>(URLなし)</td></tr>
+
+</table>
+</div>
+<h1>共有メモ</h1>
+<pre class="body">jrf&gt; [仏教の最適化プログラムの続き。]
+
+↓を改良。バージョン 0.0.2。--strong-donation をバージョン 0.0.1 から変えてみた。(これまでの --strong-donation は --strong-asset-tax で指定できる。)
+
+《test_of_income_1.py - 主に商業財産から決まる収入のテスト経済シミュレーション。》  
+<a href="https://gist.github.com/JRF-2018/39ed54ff14cb3c79c21f42f7254fa7bc" class="ext-link">https://gist.github.com/JRF-2018/39ed54ff14cb3c79c21f42f7254fa7bc</a>
+
+まず、おわびとして、実験で余計なことをしていたコードが残っていて、意図したコードになっていなかった。すみません。それを除くと、--strong-donation なしでは、test_of_income_1.py では、50 ステップ後、平均が 72300、最大が 1560000 とかのさらにメチャクチャな数字になる。
+
+それを踏まえた上で --strong-donation の変更…。
+
+資産税(寄進)を、資産が少ないうちからかかるようにした。ただし、資産が多いほど「寄進」の確率が上がり、資産が 300 を超えると必ず寄進するとする。寄進額は、資産の0割から 7 割までランダムに決める。
+
+こういう割と古代にはもっともらしそうな「税」で、かなり安定した経済になるのは良い感じか。ただ、まだ平均が 85 付近で高いのが気になるが。ただ、寄進額を7割までというのを3割までとすれば、50 ステップで平均 230 付近になり、最大値が 2500 近くと、やや不満な形となる。
+
+(寄進額が 7 割までというのは --donation-rate=0.7 で指定する。資産が 300 を超えると必ず寄進するというのは --donation-limit=300 で指定する。)
+
+「株式」「債券」「大バクチ」の危険度すなわちθを設計に反してむりやり 10 倍にすると、わりと貧乏な者が増え、分布としては満足いく形にはなるが、「農地」を持つ者が有利になりすぎるし、変動が大き過ぎるのもいかがなものか…。(これを試すのは --strong-donation --theta-mag=10.0 にする。)</pre>
+
+
+</article>
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2021/01.html">2021年01月</a> | <a href="../../../index/gsm.html">共有メモ</a></nav>
+</body>
+</html>

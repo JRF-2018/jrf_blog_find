@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>ひとこと - JRF Blog Archive</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2020/04.html">2020年04月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+<article data-pagefind-body>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[statuses] <span class="cocolog-id">cocolog:91824909</span></td></tr>
+<tr><th>セクション</th><td>JRF のひとこと</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2020/04.html">2020年04月13日</a></td></tr>
+<tr><th>元URL</th><td><a href="http://jrf.cocolog-nifty.com/statuses/2020/04/post-e6572c.html" class="ext-link"><span class="original-url">http://jrf.cocolog-nifty.com/statuses/2020/04/post-e6572c.html</span></a></td></tr>
+
+</table>
+</div>
+<h1>ひとこと</h1>
+<pre class="body">新型コロナウィルス(COVID-19)関連のレポートの「追実験」を R や Python の練習としてやってみた。JAGS と Stan の使い方・変換の仕方がいまいちわからない。
+JRF 2020年4月13日
+
+新型コロナウィルス関連でいくつかのレポートが出ている。
+
+最初に興味を持ったのが、↓。
+
+《COVID-19 日本国内の潜在的な陽性者数を推定する試み - StatModeling Memorandum》
+<a href="../../../articles/2020/05/hbm_01985.html" class="int-link" title="COVID-19 日本国内の潜在的な陽性者数を推定する試み - StatModeling Memorandum">http://statmodeling.hatenablog.com/entry/covid19-estimate-total-number-of-positives-in-japan</a>
+
+JRF 2020年4月13日
+
+これは R で JAGS を用いているのだが、これを Python でできるようにするのを一つの目標にした。
+
+とにかく、↑が動くように R のインストールからはじめる。JAGS、rjags は簡単にインストールできた。↑はすぐに動くようになった。
+
+JRF 2020年4月13日
+
+……。
+
+次に Python の側、pyjags をインストールするところでつまづく。pyjags は POSIX の環境でのみコンパイルできるとかなんとかで、Windows では現在インストールできないようだ。(たぶん)
+
+諦めて、JAGS がダメなら Stan があるさ…と、pystan を入れる。しかし、conda istall pystan のみで↓でインストールしたのとほぼ同じ状況にできているようだ…。しかし example をやろうとするとエラーが出る。ImportError ではないが、↓を見て解決。
+
+JRF 2020年4月13日
+
+《ImportError: DLL load failed: The specified module could not be found. · Issue #520 · stan-dev/pystan》  
+<a href="https://github.com/stan-dev/pystan/issues/520" class="ext-link">https://github.com/stan-dev/pystan/issues/520</a>
+
+JRF 2020年4月13日
+
+なんと、
+
+素で、
+
+&lt;pre&gt;
+sm = pystan.StanModel(model_code=schools_code)
+fit = sm.sampling(data=schools_dat, iter=1000, chains=4)
+&lt;/pre&gt;
+
+…とかするとエラーが出るのに。
+
+JRF 2020年4月13日
+
+&lt;pre&gt;
+if __name__ == &quot;__main__&quot;:
+    sm = pystan.StanModel(model_code=schools_code)
+    fit = sm.sampling(data=schools_dat, iter=1000, chains=4)
+&lt;/pre&gt;
+
+…とかにするとエラーが出なくなった！
+
+なんじゃそりゃ。
+
+JRF 2020年4月13日
+
+……。
+
+pystan なら使える。ならば、上のレポートの JAGS のコードを Stan に書き換え、それを PyStan に書き換えればいいだろうとあたりを付ける。ただし、上のレポートには「Stanは整数値を推定するのが少し手間」…と書いている。不吉な…しかし、やってみる。
+
+JRF 2020年4月13日
+
+…まず、rstan を R に入れるところでつまづく。インストールはできるのだが、example コードを実行すると、Stan から g++ を呼ぶところでつまづいている。もちろん、Rtools を入れてもダメ。どうも &quot;Program Files&quot; というパスがダメそうな感じだが…。↓を見つける。
+
+《rstan2.10.1が動かない！ | Sunny side up!》  
+<a href="https://norimune.net/2832" class="ext-link">https://norimune.net/2832</a>
+
+JRF 2020年4月13日
+
+…ということで、R を C:\Program Files 下ではなくルートの C:\ 以下にインストールしなおす。
+
+JRF 2020年4月13日
+
+……。
+
+上のレポートを stan に書き換えてみる。…しかしうまくいかない。どうも、Stan は parameters のなかに int を使えないらしい。generated quantities の中で、binomial_rng を使ってみると良いみたいな記事もあるが、上のレポートのモデルは、推論レベルで int を返す binomial を使うからうまくいかない。
+
+「Stanは整数値を推定するのが少し手間」…どころか「できない」んじゃないか？
+
+少なくとも今の私のレベルでは無理と判断し、これは今後の課題とする。…
+
+JRF 2020年4月13日
+
+ちなみに…。PyStan も使えない。pyjags が入らない。…ので、「Python でできるようにする」目標については、PyperR を使って、R を Python から使う方針で行くことにする。PypeR 経由で rjags は使えたことから目標は一応達成ということに…。
+
+JRF 2020年4月13日
+
+……。
+
+……。
+
+次に↓の記事について、
+
+《「このままでは8割減できない」 「8割おじさん」こと西浦博教授が、コロナ拡大阻止でこの数字にこだわる理由》
+<a href="https://www.buzzfeed.com/jp/naokoiwanaga/covid-19-nishiura" class="ext-link">https://www.buzzfeed.com/jp/naokoiwanaga/covid-19-nishiura</a>
+
+JRF 2020年4月13日
+
+こういうので使われるモデルって何なんだろう…、パーコレーションのコンタクト・プロセス？…とか考えていると、どこかで「SIR モデルだ」という記述を見る。Wikipedia には常微分方程式が書かれている。ほとんどしたことないが、常微分方程式のシミュレーションって興味ある。差分に直せばいいはずだが…とググっていると、↓を見つける。
+
+JRF 2020年4月13日
+
+《感染病の数学予測モデルの紹介　(SIRモデル） - Qiita》
+<a href="https://qiita.com/kotai2003/items/3078f4095c3e94e5325c" class="ext-link">https://qiita.com/kotai2003/items/3078f4095c3e94e5325c</a>
+
+ここの Python コードは、そのまま動かせた。
+
+JRF 2020年4月13日
+
+ここでは scipy.integrate の odeint を使っている。先に差分に直せばいいと書いたが、odeint を使わず簡単に差分にしたバージョンも作ってみると、それは odeint を使ったものと結果がほぼ一致した。
+
+↓の記事によると SEIR モデルも使われているようだ。
+
+《牧野淳一郎 新型コロナウィルスに関するメモ》
+<a href="http://jun-makino.sakura.ne.jp/articles/corona/face.html" class="ext-link">http://jun-makino.sakura.ne.jp/articles/corona/face.html</a>
+
+SEIR モデルも odeint で試してみたが、問題なくできるようだ。
+
+JRF 2020年4月13日
+
+さらに牧野メモによると、↓のモデルが紹介されている。
+
+《都道府県ごとのシミュレーションによる検討 – COVID-19情報共有 — COVID19-Information sharing》
+<a href="https://www.fttsus.jp/covinfo/pref-simulation/" class="ext-link">https://www.fttsus.jp/covinfo/pref-simulation/</a>
+
+これは「佐藤レポート」として参照しよう。
+
+JRF 2020年4月13日
+
+佐藤レポートでは、確率微分方程式が出てくる。確率微分方程式も Python で書いてみる…みたいな記事はあるが、dW(t - τ) のような遅れ要素を含むウィーナー過程をどう処理すればいいかは、ググっても見つからない。
+
+しかたなく、dW[t] の列を先に発生させ、dW[t - tau] の乱数を使うということでやってみた。
+
+JRF 2020年4月13日
+
+北海道の α と β の数値を使って確率微分方程式のシミュレーションのみ試してみる。いちおう、そうすると、グラフは佐藤レポートと同じような形になった。
+
+ただし、I_0 から α と β の推定を行うことなどはやっていない。
+
+JRF 2020年4月13日
+
+ただ、やってみて気になったのは、N の値。SIR モデルでは N = S + I + R は一定なのだけど、佐藤モデルでは遅れ要素があるため、dS に含まれる部分と dI に含まれる部分に若干の差がある。そのため N をプロットすると、確かに変化していることがわかる。「この程度」のことは別に気にしなくていいということだろうか？
+
+JRF 2020年4月13日
+
+……。
+
+あと、気になっているのが↓。
+
+《志村けんのパラドックス - アスペ日記》
+<a href="../../../articles/2020/05/hbm_01984.html" class="int-link" title="志村けんのパラドックス - アスペ日記">https://takeda25.hatenablog.jp/entry/2020/03/28/083257</a>
+
+これを JAGS か Stan で示せたらカッコイなとか夢想している。そこで、まずは JAGS と Stan の本を買って勉強したいな…と思っている。
+
+JRF 2020年4月13日
+
+……。
+
+追記。
+
+おっと修正。
+
+上で「conda istall pystan のみで↓でインストールしたのとほぼ同じ状況にできているようだ」と書いたが、「↓」の先を書いてなかった。それは↓。
+
+《Pystanのインストール（anaconda環境） - Qiita》  
+<a href="https://qiita.com/Gyutan/items/c7d3c341efe09454a5e1" class="ext-link">https://qiita.com/Gyutan/items/c7d3c341efe09454a5e1</a>
+
+JRF 2020年4月13日
+
+これを見て追加でやったのは、conda install libpython m2w64-toolchain -c msys2 ぐらいだが、これは、conda install pystan をすればほぼすでにされているはず。distutils.cfg に付け加えろというコマンドもすでに付け加わっていた。
+
+JRF 2020年4月13日
+
+……。
+
+……。
+
+追記。
+
+「志村けん問題」については記事を書いた(↓+ <a href="../../../articles/2020/05/statuses_cocolog_91890615.html" class="int-link cocolog-id" title="ひとこと">[cocolog:91890615]</a>)。
+
+《「志村けん問題」を JAGS で解く その１ 結論編》  
+<a href="../../../articles/2020/05/software_91890591.html" class="int-link" title="「志村けん問題」を JAGS で解く その１ 結論編">http://jrf.cocolog-nifty.com/software/2020/05/post-918b0f.html</a>
+
+JRF 2020年5月23日
+
+で、↓を読んで離散確率分布を Stan で扱う方法のヒントを得た。
+
+《西浦先生らによる実効再生産数の統計モデルを解説＆拡張する試み - StatModeling Memorandum》  
+<a href="http://statmodeling.hatenablog.com/entry/covid19-estimate-effective-reproduction-number" class="ext-link">http://statmodeling.hatenablog.com/entry/covid19-estimate-effective-reproduction-number</a>
+
+JRF 2020年5月23日
+
+…ので、この「ひとこと」の一番上の StatModeling Memorandum の記事の Stan 化に再挑戦してみる。
+
+が、うまくいかない。
+
+JRF 2020年5月23日
+
+&lt;pre&gt;
+functions {
+  real continuous_binomial_lpdf(real k, real n, real p) {
+    real lp = if_else(n &gt;= k, k * log(p) + (n - k) * log(1 - p)
+      - log(n + 1) - lbeta(n - k + 1, k + 1), 0);
+    return lp;
+  }
+}
+&lt;/pre&gt;
+
+JRF 2020年5月23日
+
+…みたいにして、binomial を使う替わりに continuous_binomial を使っていく。upper lower もできる限り定義して…。
+
+JRF 2020年5月23日
+
+でも、うまくいかない。一番上の記事では n.pos.sum の平均が 7500 ぐらいなんだけど、私の Stan のモデルでは、5000 ぐらいになったり 270 ぐらいになったりで安定しない。4 つの chain で、50000 回ずつ回しても n.pos.sum の effectiveSize は 90 ぐらいで全々足りない感じ。
+
+もっと回さないとダメなのかな…でも、これでも一時間以上かかるんだよね…。
+
+JRF 2020年5月23日
+
+それとも何か間違ってるのかな？
+JRF 2020年5月23日</pre>
+
+
+<section class="backrefs" data-pagefind-ignore>
+<h2>後方参照 (4 件)</h2>
+<ul>
+<li><span class="backref-label">[cocolog:91824909]参照</span> <a href="../../../articles/2022/04/statuses_cocolog_93421636.html">ひとこと</a> <span class="backref-date">2022年04月09日</span></li>
+<li><span class="backref-label">[cocolog:91824909]参照</span> <a href="../../../articles/2022/04/gsm_002018.html">共有メモ</a> <span class="backref-date">2022-04-05T22:18:25Z</span></li>
+<li><span class="backref-label">[cocolog:91824909]参照</span> <a href="../../../articles/2020/05/statuses_cocolog_91890615.html">ひとこと</a> <span class="backref-date">2020年05月09日</span></li>
+<li><span class="backref-label">[cocolog:91824909]参照</span> <a href="../../../articles/2020/04/statuses_cocolog_91836101.html">ひとこと</a> <span class="backref-date">2020年04月18日</span></li>
+</ul>
+</section>
+
+</article>
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2020/04.html">2020年04月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+</body>
+</html>

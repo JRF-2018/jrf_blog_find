@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>native2ascii.pl をいちおう作ってみた - JRF Blog Archive</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2006/02.html">2006年02月</a> | <a href="../../../index/software.html">ソフトウェア Tips</a></nav>
+<article data-pagefind-body>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[software] <span class="cocolog-id">cocolog:10215138</span></td></tr>
+<tr><th>セクション</th><td>JRF のソフトウェア Tips</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2006/02.html">2006年02月26日 05:31:33</a></td></tr>
+<tr><th>元URL</th><td><a href="http://jrf.cocolog-nifty.com/software/2006/02/post_18.html" class="ext-link"><span class="original-url">http://jrf.cocolog-nifty.com/software/2006/02/post_18.html</span></a></td></tr>
+<tr><th>タグ</th><td>[Perl] [Windows アプリ] [JRF 作成ソフトウェア]</td></tr>
+</table>
+</div>
+<h1>native2ascii.pl をいちおう作ってみた</h1>
+<pre class="body">Firefox の .xpi をいじろうとすると、locale の部分で .properties の拡張子を持ったファイルを JAVA で使える形式にしないとダメなんだそうだ。そのためのコマンドとして native2ascii というものが JDK に入っているらしい。
+
+ただ、それだけのために JDK を入れるのもバカらしいので、Perl のスクリプトを書いてみた。native2ascii.pl がそのファイル。
+
+ものすごいテキトー。フィルタらしく一行づつ処理せず、ファイル全部をいったん読んで、一気に処理してる。--encoding=japanese と指定すると自動判別するんだけど、guess_encoding も最初の n バイトとかじゃなくて、全部わたして guess させてる。
+
+まぁ、自分が使えりゃそれでいいし、ダメだったら JDK をすなおにインストールすればいいし。
+
+■更新
+  
+  &lt;b&gt;2006-02-28&lt;/b&gt;Surrogate Pair に対応。
+    《Javaにおける文字／文字列の扱い方》を参考に \uuXXXX に対応。
+  &lt;b&gt;2006-02-26&lt;/b&gt;公開。
+    
+更新：06/02/26,06/02/28
+初公開：2006年02月26日 05:31:34
+最新版：2006年02月28日 03:47:16</pre>
+<details class="trackbacks" data-pagefind-ignore><summary>Trackbacks (1 件)</summary><pre>
+Trackbacks:
+
+《<a href="http://d.hatena.ne.jp/n_shuyo/20070330/firefox">[firefox] Firefox 拡張のパッケージング手順 (2) 落ち穂拾い編（ぉぃ</a>》 from Mi manca qualche giovedi`?
+ id:n_shuyo:20070216:firefox にて「片手落ちのような気がして仕方がない」とFirefox拡張開発におけるパッケージングの手順をまとめようと試みていたのだが。 Mash up Award で もけもけ遊んでいるうちに、Software Design 2007/4 月号 に特集「Firefox拡張機能開発チュート... 
+
+受信： 2007-03-30 13:43:46 (JST)
+
+
+Comments:
+
+更新： native2ascii.pl version 0.03: Perl 5.10 では Getopt::Long に pod2usage が入ってないようなので、use Pod::Usage するようにしただけです。
+
+ちなみに昔からこれに書いてる \u でなく大文字の \U についてはなんちゃってで書いてるだけで、使わないほうがいいです。
+投稿: JRF | 2009-09-08 17:24:42 (JST)
+
+
+Links:
+
+native2ascii: http://java.sun.com/j2se/1.5.0/ja/docs/ja/tooldocs/windows/native2ascii.html
+JDK: http://java.sun.com/j2se/1.5.0/ja/download.html
+native2ascii.pl: http://jrf.cocolog-nifty.com/archive/native2ascii.pl
+Javaにおける文字／文字列の扱い方: http://www.javaworld.jp/beginners/-/10422.html
+
+
+
+</pre></details>
+
+</article>
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2006/02.html">2006年02月</a> | <a href="../../../index/software.html">ソフトウェア Tips</a></nav>
+</body>
+</html>

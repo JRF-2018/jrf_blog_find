@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>hide_img.js：画像のクラス指定に順って閲覧を要クリック化する - JRF Blog Archive</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2014/02.html">2014年02月</a> | <a href="../../../index/software.html">ソフトウェア Tips</a></nav>
+<article data-pagefind-body>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[software] <span class="cocolog-id">cocolog:78894927</span></td></tr>
+<tr><th>セクション</th><td>JRF のソフトウェア Tips</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2014/02.html">2014年02月08日 17:22:42</a></td></tr>
+<tr><th>元URL</th><td><a href="http://jrf.cocolog-nifty.com/software/2014/02/post-1.html" class="ext-link"><span class="original-url">http://jrf.cocolog-nifty.com/software/2014/02/post-1.html</span></a></td></tr>
+<tr><th>タグ</th><td>[JRF 作成ソフトウェア] [JavaScript]</td></tr>
+</table>
+</div>
+<h1>hide_img.js：画像のクラス指定に順って閲覧を要クリック化する</h1>
+<pre class="body">暴力表現や性的表現を含むような画像で、「18禁」まではいかないが、「見たくないものを見ない権利」に多少配慮して、何か&lt;ruby&gt;&lt;rb&gt;覆&lt;/rb&gt;&lt;rt&gt;おお&lt;/rt&gt;&lt;/ruby&gt;いはかけておきたいといったことがある。本サイトではそういうとき、img タグの class に sexual や violence を指定してやると、あとから JavaScript が要クリックの覆いをかけるようになっている。パスワードによる「閲覧制限」まではしない。
+
+例としては《壁紙化：「moecco vol.31」 その１》だと、おとなしめなので覆いを(モデル活動を知らない家族以外の)誰が外してもそれほどの不快がないはず。私の、覆いをかける基準とか哲学みたいなのは、今のところ《デスクトップ壁紙公開についてのこのサイトのポリシー》のコメント欄が参照先になる。
+
+使い方は、次をページ(ブログテンプレートとか)で CSS や JavaScript をロードしてる部分に足すだけ。ただし、私は下のように書かず、CSS はブログ全体のスタイルシートから @import するようにしている。
+
+&lt;style type=&quot;text/css&quot;&gt;
+  @import url('<a href="http://jrf.cocolog-nifty.com/archive/lib/hide_img.css');" class="ext-link">http://jrf.cocolog-nifty.com/archive/lib/hide_img.css');</a>
+&lt;/style&gt;
+&lt;script type=&quot;text/javascript&quot; src=&quot;<a href="http://jrf.cocolog-nifty.com/archive/lib/hide_img.js&amp;quot;&amp;gt;&amp;lt;/script&amp;gt;" class="ext-link">http://jrf.cocolog-nifty.com/archive/lib/hide_img.js&amp;quot;&amp;gt;&amp;lt;/script&amp;gt;</a>
+
+もちろん、hide_img.js と hide_img.css はダウンロードして自分のサイトに置いて使ったほうがいい。難しいことはやってないので、ソースを読めるなら、sexual や violence を指定したときの表示等も簡単に変えられるはず。
+
+そして、ブログ記事等を書くときは、img タグに class=&quot;sexual&quot; とするか、すでに class=&quot;nantoka kantoka&quot; ってのがあれば class=&quot;nantoka kantoka sexual&quot;みたいにスペースを開けて sexual を足すだけで機能するはず。このあたりは、自作の「電子小切手」的な広告非表示ツール No_Ad_URL と相性がいい。
+
+ただ、このスクリプト、置き換えた要素の CSS 周りが難しくて、 vertical-align とか float 等のからみで相性良くないページとかはありそうで要注意。このスクリプトのひとことでの紹介は <a href="../../../articles/2014/01/statuses_cocolog_78822199.html" class="int-link cocolog-id" title="ひとこと">[cocolog:78822199]</a> なんだけど、そこでは float がらみでハマった経験を書いている。
+
+スクリプトのブラウザ対応状況に関しても注意が必要で、スクリプト自体は IE 6 でも動くんだけど、古い IE は CSS の opacity に対応してない。このスクリプトでは、画像を隠すのに CSS で opacity をまず 0.0 して、表示するときに、それを 1.0 にするというトリックを使う。JavaScript を OFF にしてると、opacity が 0.0 で画像が見れなくなり、IE 6 みたいに opacity が効かないと、覆うまでの時間差でチラっと見えちゃう。だから、私のサイトではその辺りの注意書きとして次のようなことをしている。
+
+&lt;style type=&quot;text/css&quot;&gt;
+#nonjs-warning { font-size: x-small; }
+#opa-warning { font-size: x-small; opacity: 0.0; }
+&lt;/style&gt;
+
+(…中略…)
+
+&lt;!-- 下をサブタイトル部分などに挿入 --&gt;
+&lt;noscript&gt;&lt;span id=&quot;nonjs-warning&quot;&gt;JavaScript が OFF のため、機能が制限されています。画像が見えなかったり、要クリックの画像がいきなり見えたりする可能性があります。&lt;/span&gt;&lt;/noscript&gt;
+&lt;script type=&quot;text/javascript&quot;&gt;
+&lt;!--
+document.write('&lt;span id=&quot;opa-warning&quot;&gt;本サイトには閲覧者が成人であることを前提にした画像があります。御不快、御寛恕願います。&lt;/span&gt;');
+--&gt;
+&lt;/script&gt;
+
+(…略…)
+
+「素人」が自分のサイトで使うために作っただけなので、コード品質は「良い」とは言えないと思う。ただ、その程度なのでパブリックドメインが著者たる私の意志。商用だろうが改造しようが、お好きに使っていただいても私は文句言いません。
+
+とはいえ、上で書いたように使う上で注意すべきことが多くて正直、他のサイトでは使いにくいと思う。普及させようとして設定する人と使う人が違うと、導入よりも class 指定のほうが敷居が高いかもしれず、もっと広く、大手がちゃんとした機能として導入するなら、「素人」の私のソースは使わないだろうし。機能の実現性を聞かれたときとかにプレゼンで使うにはいいかも…といったぐらいか。
+
+更新：2014-02-08,2014-02-12
+初公開：2014年02月08日 17:22:44
+最新版：2014年07月25日 11:16:35
+
+
+Comments:
+
+[E:basketball] 更新：hide_img-20140212.js。バージョン 0.05。
+
+ほとんど変更はなく、将来に向けて２重読み込みなどで hide_img_hide_all がもう一度呼ばれても大丈夫なようにしたのと、あとはシンタックス関連で気になったところを改善したぐらい。
+
+投稿: JRF | 2014-02-12 00:39:35 (JST)
+
+[E:noodle] 更新：hide_img-20140212_2.js。バージョン 0.06。
+
+正規表現がらみでちょっち失敗してたのを、0.05 アップのあとすぐに気付いたので修正。
+
+投稿: JRF | 2014-02-12 01:28:15 (JST)
+
+[E:diamond] typo 「御寛如」→「御寛恕」。
+
+投稿: JRF | 2014-07-25 11:19:01 (JST)
+
+
+Links:
+
+パスワードによる「閲覧制限」: <a href="../../../articles/2014/02/hbm_01747.html" class="int-link" title="簡単閲覧制限！JavaScriptでパスワード認証 - [ホームページ作成] All About">http://allabout.co.jp/gm/gc/23839/</a>
+壁紙化：「moecco vol.31」 その１: <a href="../../../articles/2014/02/column_78832433.html" class="int-link" title="壁紙化：「moecco vol.31」 その１">http://jrf.cocolog-nifty.com/column/2014/02/post.html</a>
+デスクトップ壁紙公開についてのこのサイトのポリシー: <a href="../../../articles/2013/09/column_77735537.html" class="int-link" title="デスクトップ壁紙公開についてのこのサイトのポリシー">http://jrf.cocolog-nifty.com/column/2013/09/post.html</a>
+hide_img.js: <a href="http://jrf.cocolog-nifty.com/archive/lib/hide_img.js" class="ext-link">http://jrf.cocolog-nifty.com/archive/lib/hide_img.js</a>
+hide_img.css: <a href="http://jrf.cocolog-nifty.com/archive/lib/hide_img.css" class="ext-link">http://jrf.cocolog-nifty.com/archive/lib/hide_img.css</a>
+「電子小切手」: <a href="../../../articles/2006/09/society_14040853.html" class="int-link" title="別サイト記事再録 − 「日銀カード(仮称)」構想">http://jrf.cocolog-nifty.com/society/2006/09/post.html</a>
+No_Ad_URL: <a href="http://jrf.cocolog-nifty.com/statuses/jumpbytitle.html?q=cocolog%3A76692463" class="ext-link">http://jrf.cocolog-nifty.com/statuses/jumpbytitle.html?q=cocolog%3A76692463</a>
+古い IE は CSS の opacity に対応してない: <a href="../../../articles/2014/02/hbm_01746.html" class="int-link" title="今日のPython: CSSで半透明にできるOpacityプロパティとIEでの問題について">http://blog1.erp2py.com/2011/04/cssopacityie.html</a>
+hide_img-20140212.js: <a href="http://jrf.cocolog-nifty.com/archive/javascript/hide_img-20140212.js" class="ext-link">http://jrf.cocolog-nifty.com/archive/javascript/hide_img-20140212.js</a>
+hide_img-20140212_2.js: <a href="http://jrf.cocolog-nifty.com/archive/javascript/hide_img-20140212_2.js" class="ext-link">http://jrf.cocolog-nifty.com/archive/javascript/hide_img-20140212_2.js</a></pre>
+
+
+</article>
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2014/02.html">2014年02月</a> | <a href="../../../index/software.html">ソフトウェア Tips</a></nav>
+</body>
+</html>

@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>ひとこと - JRF Blog Archive</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2014/01.html">2014年01月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+<article data-pagefind-body>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[statuses] <span class="cocolog-id">cocolog:78731905</span></td></tr>
+<tr><th>セクション</th><td>JRF のひとこと</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2014/01.html">2014年01月20日</a></td></tr>
+<tr><th>元URL</th><td><a href="http://jrf.cocolog-nifty.com/statuses/2014/01/post-a4bb.html" class="ext-link"><span class="original-url">http://jrf.cocolog-nifty.com/statuses/2014/01/post-a4bb.html</span></a></td></tr>
+
+</table>
+</div>
+<h1>ひとこと</h1>
+<pre class="body">タロットのカード印刷のため『ラベル屋さん９』で作った画像を取り込んで印刷すると異様に汚い。しかたなく、Image::Magick 等で pdf の「版下」を作った。
+JRF 2014年1月20日
+
+『易双六』の The JRF Tarot、作ってから大分たって変更もない。PTC 版の QR コードも変わってない。「まさか」に備えて、または、記念のために、ここらで一度、カードとして印刷しておこうと考えた。
+
+《易双六 Youscout ～ a Tarot Solitaire》
+<a href="http://jrf.cocolog-nifty.com/archive/youscout/" class="ext-link">http://jrf.cocolog-nifty.com/archive/youscout/</a>
+
+JRF 2014年1月20日
+
+本当は、同人的な売り物になるように印刷所とかに頼みたいところなのだけど、ネットで探せば昔よりは安くはなってるものの、それなりの額が必要なことに変わりない。
+
+いきなりそこに行くよりは、まず自分んちで、親が年賀状印刷に使ってるだけのインクジェット・カラープリンタがあるんだから、それでまず試しにプリントアウトしてみて、また「次」を考えたらいい。
+
+そこで、まずカード印刷用の切れ込みありの「特厚口」の用紙やカードの角を丸くする文具を買って、途中で切れたら怖いインクを買い足した。
+
+JRF 2014年1月20日
+
+……。
+
+その用紙は A-one 社のもので、A-one 社はその用紙に印刷するために、ありがたいことに印刷用ツールを無料で配布している。今のバージョンは『ラベル屋さん９』らしい。ダウンロード版を使うには Adobe AIR というライブラリをインストールしてから、本体のインストールを行うだけ。
+
+《ラベル屋さん.com》
+<a href="http://www.labelyasan.com/" class="ext-link">http://www.labelyasan.com/</a>
+
+JRF 2014年1月20日
+
+用紙はカード10枚分で一枚の用紙になっていて、このツールは一枚のカードへの割り付けのために、画像の取り込みや文字の書き込みといった最低限だが必要十分な編集機能まで使えるようになっている。
+
+JRF 2014年1月20日
+
+カード印刷ツールは、本来の用途としては名刺印刷が主らしいので、今回のタロットやトランプといったカードは「想定外」にあたるのかもしれない。タロットなどは、カードごとに違う画像を全面に貼っていくのだが、それを効率よく行うような機能がどうもない。
+
+しかたなく背景として取り込むのだが、「全体に表示」だとカード画像の左右比が変更されてしまい、「中央に表示」だと元画像を 72dpi と解釈するのか全体が入らないほど…というか真ん中だけが少し表示されてるだけといった感じで、ものすごく拡大されてしまう。
+
+よって、「並べて表示」で並べる数を 1 にするぐらいしか思ったようにならない。
+
+JRF 2014年1月20日
+
+思ったようになったはいいが、画像の角がぴったりカード枠の角に合うのではなく、なぜかハミ出してしまう。いろいろ試すと、これは「環境設定」の「塗り足し幅」の分がハミ出すようだ。
+
+だから、塗り足し幅の分だけ、元のカード画像に枠を足す感じにすると、ピッタリ来るようになったように思う。
+
+JRF 2014年1月20日
+
+……。
+
+で、肝心のカード画像だが、Illustrator のフリーソフト版的な Inkscape で作ってあって、それを解像度を指定して出力し、Perl の Image::Magick で枠とか付ける加工をし、png にした。(ググると、『ラベル屋さん』の以前のバージョンだと tiff が読み込めたようだが、今は tiff は読めないらしい。)
+
+最初は、解像度は目いっぱいに 1200 dpi にして出力、それを『ラベル屋さん９』にさっき書いた手順で取り込む。
+
+JRF 2014年1月20日
+
+ヨシッ、ちゃんと印刷される。…が、なんか異様に汚ないんですが？
+
+「よく見るとジャギーが目立つ」とかそういうレベルでなく、細かい字がつぶれて読めないレベル。ディスプレイ用に 72dpi にしたのを拡大したぐらいの感じ。
+
+JRF 2014年1月20日
+
+ググると、『ラベル屋さん』を使ってる人は皆、300dpi とか 350dpi とかその辺を指定している。もしかすると、画像が大きくなりすぎて逆にうまく処理できないのかもしれない。…と考えて解像度を 300dpi に下げてまた同じ手順でやってみたら…やっぱり異様に汚い。1200dpi より字がクッキリ出るなどマシになった点もあるが、細かい字がつぶれるのはあいかわらず。
+
+もしかするとマトモに印刷する方法があるのかもしれないが、ググっっても見つからず、私には知りようがない…と判断し、『ラベル屋さん』の利用は諦めた。
+
+JRF 2014年1月20日
+
+……。
+
+レイアウト後の一枚画像にして、プリンタユーティリティか何かで出力できないか…と考えた。
+
+プリンタはプリンタごとの印刷不能領域とか用紙の質に合わせた設定とかがあるので、変に A4 の比率でビットマップにしても、ちゃんと合わせてくれるかわからない。
+
+JRF 2014年1月20日
+
+そこでヒラめいたのが、PDF 化。PDF なら A4 で画像を作れば、A4 でビシッと来るように印刷できないと困るはずだから、印刷位置の問題は少ないはずで、あとの用紙選択は pdf のリーダーで設定すればいい！
+
+JRF 2014年1月20日
+
+Image::Magick は pdf も出力できるようなのだから、まずは試してみっか…と試すと、うまくいかない。
+
+出力された pdf には何も写ってない。Image::Magick のオブジェクトに units=&gt;'PixelsPerInch', density=&gt;'300x300', page=&gt;'A4' とかやっても、全々、そのサイズにならない。size=&gt;'???x???' みたいにサイズ指定をやれば、そのサイズでは出力されるのに。
+
+英語サイトとかググって読んでみたけど、Image::Magick のバージョンのせいなのか、解決できなかった。
+
+JRF 2014年1月20日
+
+……。
+
+で、ググるうちに Image::Magick と PDF::Create の比較をやっているサイトを見つけた。
+
+《r271-635：jpegからpdfを作成。Image::MagickとPDF::Createの速度比較》
+<a href="http://netlog.jpn.org/r271-635/2010/12/perl_jpeg2pdf_benchmark.html" class="ext-link">http://netlog.jpn.org/r271-635/2010/12/perl_jpeg2pdf_benchmark.html</a>
+
+JRF 2014年1月20日
+
+ものは試しと、大(?)改造して Image::Magick で PDF を出力してたところを PDF::Create を使うようにしてみたところ、成功！
+
+(とは言え、PDF::Create は PNG は使えず 256色 GIF か JPEG じゃないとダメとか、JPEG は透過色使えないからグラデーションが出なかったとか、いろいろ失敗しながらだけど。)
+
+JRF 2014年1月20日
+
+それを Adobe Reader に読み込んで、用紙の設定をして出力すれば、先の「異様の汚さ」とは比べ物にならないほどの美しい出力を得た。(今の段階では、まだ微妙に位置ずれが残ってる気がするけど…。)
+
+JRF 2014年1月20日
+
+……。
+
+で、できたカードは「遊び用」が建て前。たぶん飾ってるだけになるだろうけど。
+
+だから、できれば角は丸く落としておきたいと、『かどまる３』という文具を使ってパチンパチンと四隅の角を落とす…のだが、あまりキレイにいかない。特厚口はさすがに厚すぎるのか？
+
+JRF 2014年1月20日
+
+同じとこを何回かやってればそれなりに丸くなるとはいえ、遊び用カードの性質上、丸くなり方がカードごとに違うのが一番ダメなんだが…。最初から角丸カードな用紙を買えばいいんだろうか？いや、それも買っておいたんだけど、小さいしやや薄くて、薄いのはそれはそれで「遊び」には向いてないし…。近所の電器屋に特厚口のは置いてるけど、角丸のはなくって、それも「もしも」のときを考えるとヤなんだよね。
+
+JRF 2014年1月20日
+
+とりあえず表で四隅一回ずつ角を落としたあと、裏返してもう一回ずつ四隅をパチンとやれば、まずまずの丸さになる。プロでもないからあんまりこだわっても仕方ないので、それで満足することにした。
+
+JRF 2014年1月20日
+
+《Amazon.co.jp： サンスター文具 かどまる3 S4765028: 文房具・オフィス用品》
+<a href="http://www.amazon.co.jp/dp/B0014IJWUG" class="ext-link">http://www.amazon.co.jp/dp/B0014IJWUG</a>
+
+《かどまる商品案内 | サンスター文具》
+<a href="http://www.sun-star-st.jp/sscmssys/dd?DEPLOY_CODE=merchanttab&amp;SK_SERIES_ID=336" class="ext-link">http://www.sun-star-st.jp/sscmssys/dd?DEPLOY_CODE=merchanttab&amp;SK_SERIES_ID=336</a>
+
+JRF 2014年1月20日
+
+修正 「『ラベル屋さん９』で作った画像を」 →「作った画像を『ラベル屋さん９』で」。
+JRF 2014年1月20日
+
+……。
+
+PDF::Create は GIF と JPG でないとダメと書いたが、さらに GIF も使える種類が限られてるっぽい。Perl モジュールのドキュメントにも GIF のサポートはいまいちで遅いよ…的なことも書いてある。
+
+突然↓みたいなエラーが出る。
+
+&lt;pre&gt;
+PDF::Image::GIF.pm: LZW minimum code size is 2, must be 8 to be supported.
+&lt;/pre&gt;
+
+前は 2 のところが 6 のこともあったと思う。
+
+JRF 2014年1月23日
+
+Image::Magick で Write のとき depth =&gt; 8 を指定したりしたのだが、直らなかった。でも、これに関しては Image::Magick のほうがワケわかんない感じ。白一色の GIF でも depth =&gt; 8 を指定してるのに上が出てる。
+
+JRF 2014年1月23日
+
+……。
+
+で、まぁ、そういったなんやかんやにぶち当たりつつ「版下」を作る Perl スクリプトを書いてる。Inkscape 使ったやつは他の人が使いようがないけど、プチコンの QR コードをカードに印刷するのは他の人も使えるかもしれないので、いちおうネットに置いとくことにする。
+
+かなり自分用に最適化してる。QR コードの上に字書いてるの消してるとことか、QR コードの大きさが違えば違ってきたりする。そういったのがあるから、基本は「参考」程度の扱いで。
+
+ソースも、いちおうそれなりに整えたんだけど、元が自分で使うことしか考えてなかったから、一般基準では汚い部類になるかも。
+
+
+JRF 2014年1月23日
+
+ファイルの位置は↓。
+
+<a href="http://jrf.cocolog-nifty.com/archive/perl/compose_qr_pdf.pl" class="ext-link">http://jrf.cocolog-nifty.com/archive/perl/compose_qr_pdf.pl</a>
+
+JRF 2014年1月23日
+
+ここの「プチコン mkII 用の QR コード」は、↓の gen_qrcode.pl &amp; make_qrcodes_html.pl  で作ったやつが対象。
+
+《STACKLIB: プチコンmkII用スタックライブラリ》
+<a href="../../../articles/2013/02/software_75676987.html" class="int-link" title="STACKLIB: プチコンmkII用スタックライブラリ">http://jrf.cocolog-nifty.com/software/2013/02/post-1.html</a>
+
+JRF 2014年1月23日
+
+keyword: paperkey
+
+<a href="../../../articles/2009/06/statuses_aboutme_103078.html" class="int-link cocolog-id" title="ひとこと">[aboutme:103078]</a> とか、公開鍵に対する秘密鍵を印刷しておいておくべきだ…といった主張も私は持ってるんだけど、QR コード化してカード印刷ってのはその実現性の実証という側面があるかな？
+
+JRF 2014年1月30日
+
+Trackbacks:
+
+《cocolog:79720640》 from JRF のひとこと
+<a href="../../../articles/2014/05/statuses_cocolog_79720640.html" class="int-link" title="ひとこと">http://jrf.cocolog-nifty.com/statuses/2014/05/post-703a.html</a>
+
+一ヶ月と少しという入院期間は、(日本の？)精神病の入院としてはかなり短いほうだと思う。 
+
+受信： 2014-06-28 17:29:33 (JST)
+
+《cocolog:82715763》 from JRF のひとこと
+<a href="../../../articles/2015/06/statuses_cocolog_82715763.html" class="int-link" title="ひとこと">http://jrf.cocolog-nifty.com/statuses/2015/06/post-925d.html</a>
+
+近況。物理を少しかじってみた。水野敬也『夢をかなえるゾウ』を読んだ。小林昌廣『病い論の現在形』を読んだ。アニメ『攻殻機動隊ARISE』を7話から10話(最終話)まで観た。 
+
+受信： 2015-06-28 14:26:02 (JST)</pre>
+
+
+<section class="backrefs" data-pagefind-ignore>
+<h2>後方参照 (9 件)</h2>
+<ul>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2015/07/column_82774604.html">前期の翌日(2015-04-01)から昨日(2015-06-30)まで 91 日間のアクセス解析・近況など</a> <span class="backref-date">2015年07月01日 05:36:05</span></li>
+<li><span class="backref-label">[cocolog:78731905]参照</span> <a href="../../../articles/2015/06/statuses_cocolog_82715763.html">ひとこと</a> <span class="backref-date">2015年06月22日</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2015/04/column_82138851.html">前期の翌日(2015-01-01)から昨日(2015-03-31)まで 90 日間のアクセス解析・近況など</a> <span class="backref-date">2015年04月01日 09:16:30</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2015/01/column_81484128.html">前期の翌日(2014-10-01)から昨日(2014-12-31)まで 92 日間のアクセス解析・近況など</a> <span class="backref-date">2015年01月01日 06:55:14</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2014/10/column_80751818.html">前期の翌日(2014-07-01)から昨日(2014-09-30)まで 92 日間のアクセス解析・近況など</a> <span class="backref-date">2014年10月01日 05:31:54</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2014/07/column_80047968.html">前期の翌日(2014-04-01)から昨日(2014-06-30)まで 91 日間のアクセス解析・近況など</a> <span class="backref-date">2014年07月01日 09:02:01</span></li>
+<li><span class="backref-label">[cocolog:78731905]参照</span> <a href="../../../articles/2014/05/statuses_cocolog_79720640.html">ひとこと</a> <span class="backref-date">2014年05月20日</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2014/04/column_79318735.html">前期の翌日(2014-01-01)から昨日(2014-03-31)まで 90 日間のアクセス解析・近況など</a> <span class="backref-date">2014年04月01日 06:35:22</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2009/06/statuses_aboutme_103078.html">ひとこと</a> <span class="backref-date">2009年06月15日</span></li>
+</ul>
+</section>
+
+</article>
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2014/01.html">2014年01月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+</body>
+</html>

@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>Haskell の callCC で goto を作る - JRF Blog Archive</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2011/01.html">2011年01月</a> | <a href="../../../index/software.html">ソフトウェア Tips</a></nav>
+<article data-pagefind-body>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[software] <span class="cocolog-id">cocolog:66773047</span></td></tr>
+<tr><th>セクション</th><td>JRF のソフトウェア Tips</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2011/01.html">2011年01月20日 19:37:45</a></td></tr>
+<tr><th>元URL</th><td><a href="http://jrf.cocolog-nifty.com/software/2011/01/post-2.html" class="ext-link"><span class="original-url">http://jrf.cocolog-nifty.com/software/2011/01/post-2.html</span></a></td></tr>
+<tr><th>タグ</th><td>[関数型言語・定理証明器]</td></tr>
+</table>
+</div>
+<h1>Haskell の callCC で goto を作る</h1>
+<pre class="body">本稿では、callCC を使ってループを作り、まるで goto のように見えるような動作を構成してみる。Haskell は、強く型付けされた関数型言語だが、十分実用的であって、無限ループも普通に書ける。goto が作れたからと言ってうれしいことはないかもしれないが、その動作がおよそ非直観的で興味深く、これはぜひ紹介したいと考えたのが、本稿を書いた動機である。
+
+callCC は call with current-continuation の略とされ、(callCC (\k -&gt;return (M k))) という形で利用されることが多いだろう。これは、何かを取ってどこかに返す k :: (a-&gt;Cont r b) が仮にあるとすると、それを利用した (M k) が k が取るべき引数と同じ型を持つように (M k) :: a を作れば、最初 (M k) を return するが、k という関数に引数が与えられると、その return を「なかったこと」にして、こんどは k に与えられたはずの引数を return したものとして動作する。ややこしいが、例を見ればわかるかもしれない。
+
+この M の構成に抽象データ型を用いて、k を保持するようにもでき、それを利用すれば、k が goto のように作用するループが書ける。以下の example_goto.hs がその例である。
+
+module Main where
+import System
+import Control.Monad.Cont
+
+data While a b c = LoopEnd a b
+                  | LoopStart a b ((While a b c)-&gt;c)
+                  | Label1 a b ((While a b c)-&gt;c)
+                  | Label2 a b ((While a b c)-&gt;c)
+                  
+looper input output
+  = (callCC $ \goto -&gt;return (LoopStart input output goto));
+  
+testloop input = (looper input &quot;&quot;) &gt;&gt;= \z -&gt; case z of
+  {
+    LoopEnd input output -&gt; case input of
+        {
+          [] -&gt; return (output ++ &quot; lend &quot;);
+          c : r -&gt; return (output ++ c ++ &quot; lastnext &quot;);
+        };
+    LoopStart input output goto -&gt; case input of
+      {
+        [] -&gt; goto (LoopEnd [] (output ++ &quot; lse &quot;));
+        c : r -&gt; goto (Label1 r (output ++ &quot; lsn &quot; ++ c) goto);
+      };
+    Label1 input output goto -&gt; case input of
+      {
+        [] -&gt; goto (LoopEnd [] (output ++ &quot; l1e &quot;));
+        c : r -&gt; goto (Label2 r (output ++ &quot; l1n &quot; ++ c) goto);
+      };
+    Label2 input output goto -&gt; case input of
+      {
+        [] -&gt; goto (LoopEnd [] (output ++ &quot; l2e &quot;));
+        c : r -&gt; goto (LoopStart r (output ++ &quot; l2n &quot; ++ c) goto);
+      };
+  }
+  
+main = do runCont (testloop [&quot;a&quot;, &quot;b&quot;, &quot;c&quot;, &quot;d&quot;]) putStrLn
+
+この実行結果は、次のようになる。
+
+Prelude&gt; :load *example_goto
+[1 of 1] Compiling Main             ( example_goto.hs, interpreted )
+Ok, modules loaded: Main.
+*Main&gt; main
+  lsn a l1n b l2n c lsn d l1e  lend 
+  
+動作を説明しよう。
+
+まず、While という抽象データ型を定義している。これは、上の説明の callCC の k すなわち goto を渡すならば、Either を使った「ラベル付け」だけでは infinite type となるため、それを避けるために必要なものである。
+
+runCont で継続を実行に移し、putStrLn で出力するように指定する。その中の testloop は callCC で作ったものを While に関しケース分けする関数に突っ込んでいる。looper において callCC が「返す」のは、まず LoopStart ラベルが付いたものであると定義している。
+
+input に [&quot;a&quot;, &quot;b&quot;, &quot;c&quot;, &quot;d&quot;] が渡されて、そこから testloop の関数で、文字列に変換していく。LoopStart ラベルが付いたところに来たとき、input のリストの最初のもの c を処理して、output に &quot; lsn &quot; ++ c を継ぎ足し、次のラベル Label1 に goto する。以下、Label1 で &quot;b&quot; が Label2 で &quot;c&quot; が処理され、もう一度 &quot;LoopStart&quot; に戻り &quot;d&quot; が処理されて、Label1 に行く。Label1 ではリストが空になっているので、output に &quot; l1e &quot; を足して、 LoopEnd に goto する。LoopEnd では output に &quot; lend &quot; を足したものを return してループを脱出する。
+
+このとき、callCC が返す「値」が何度も「なかったこと」にされているわけだが、そこの「成果」を一部引き継ぐことには成功すると言える。
+
+ここまでの時点でさえおよそ関数型言語らしくない動作だが、さらにおかしなことが可能となっている。すなわち、goto そのものを return してしまうようなことができるのだ。
+
+通常、ラムダ抽象 (λx. M[x]) の外にその束縛変数 x を出すことはできない。しかし、callCC(\k -&gt; return (M k)) の k はあたかもそれが外に出るかのような定義が許される。以下の example_goto_3.hs がその例である。
+
+module Main where
+import System
+import Control.Monad.Cont
+
+data While a b m c d = LoopEnd a b
+                        ((While a b m c d)-&gt;m (c, a -&gt; b -&gt; (d -&gt; m d) -&gt; m c))
+                      | LoopStart a b
+                        ((While a b m c d)-&gt;m (c, a -&gt; b -&gt; (d -&gt; m d) -&gt; m c))
+                      | LoopMain a b
+                        ((While a b m c d)-&gt;m (c, a -&gt; b -&gt; (d -&gt; m d) -&gt; m c))
+                      | Method1 a b (d -&gt; m d)
+                        ((While a b m c d)-&gt;m (c, a -&gt; b -&gt; (d -&gt; m d) -&gt; m c))
+                      | Receive1 a b
+                        ((While a b m c d)-&gt;m (c, a -&gt; b -&gt; (d -&gt; m d) -&gt; m c))
+                      | Dummy
+                      
+looper input output
+  = (callCC $ \goto -&gt;return (LoopStart input output goto));
+  
+runserver input = (looper input &quot;&quot;) &gt;&gt;= \z -&gt; case z of
+  {
+    LoopEnd input output goto -&gt; case input of
+        {
+          [] -&gt; return (output ++ &quot; slend &quot;, 
+                        (\x y r -&gt; (goto (Method1 x y r goto)) 
+                                  &gt;&gt;= \(u, v) -&gt; return u));
+          c : r -&gt; return (output ++ c ++ &quot; slastnext &quot;,
+                        (\x y r -&gt; (goto (Method1 x y r goto)) 
+                                  &gt;&gt;= \(u, v) -&gt; return u));
+        };
+    LoopStart input output goto -&gt; case input of
+      {
+        [] -&gt; goto (LoopEnd [] (output ++ &quot; slse &quot;) goto);
+        c : r -&gt; goto (LoopStart r (output ++ &quot; slsn &quot; ++ c) goto);
+      };
+      
+    {- client から要求を受けとる。 -}
+    Method1 input output ret goto -&gt; case input of
+      {
+        [] -&gt; goto (LoopEnd [] (output ++ &quot; sm1e &quot;) goto);
+        c : r -&gt; (if (c == &quot;stop&quot;) then
+                    {- ここから return に向かうこともできる。しかし、
+                        そこからどこへ行くのだろう？ -}
+                    (goto (LoopEnd r (output ++  &quot; sm11e &quot; ++ c) goto))
+                  else
+                    {- client に結果を送信する。 -}
+                    (ret (output ++ &quot; sm1n &quot; ++ c)) &gt;&gt;= (\y -&gt; goto Dummy));
+      };
+  }
+  
+server = runserver [];
+
+runclient input = (looper input &quot;&quot;) &gt;&gt;= \z -&gt; case z of
+  {
+    LoopEnd input output goto -&gt; case input of
+        {
+          [] -&gt; return (output ++ &quot; clend &quot;, 
+                        (\x y r -&gt; (goto (Method1 x y r goto)) 
+                                  &gt;&gt;= \(u, v) -&gt; return u));
+          c : r -&gt; return (output ++ c ++ &quot; clastnext &quot;,
+                        (\x y r -&gt; (goto (Method1 x y r goto)) 
+                                  &gt;&gt;= \(u, v) -&gt; return u));
+        };
+    LoopStart input output goto -&gt; case input of
+      {- server の出力を保存する。 -}
+      server &gt;&gt;= (\(sout, service)
+                  -&gt; goto (LoopMain input (sout ++ output) goto));
+    LoopMain input output goto -&gt; case input of
+      {
+        [] -&gt; goto (LoopEnd [] (output ++ &quot; clme &quot;) goto);
+        {- server に [c] を送信して結果を待つ。 -}
+        c : r -&gt; server &gt;&gt;= (\(sout, service)
+                              -&gt; (service [c] (output ++ &quot; clmn &quot; ++ c)
+                                  (\y -&gt; ((goto (Receive1 r y goto))
+                                          &gt;&gt;= \(u, v) -&gt; return u))))
+                  &gt;&gt;= (\y -&gt; goto Dummy);
+      };
+      
+    {- server から結果を受けとる。 -}
+    Receive1 input output goto -&gt; case input of
+      {
+        [] -&gt; goto (LoopEnd [] (output ++ &quot; cr1e &quot;) goto);
+        c : r -&gt; goto (LoopMain r (output ++ &quot; cr1n &quot; ++ c) goto);
+      };
+  }
+  
+main = do runCont ((runclient [&quot;a&quot;, &quot;b&quot;, &quot;c&quot;, &quot;d&quot;, &quot;e&quot;])
+                    &gt;&gt;= \(u, v) -&gt; return u) putStrLn
+                    
+実行結果は以下のようになる。
+
+Prelude&gt; :load *example_goto_3
+[1 of 1] Compiling Main             ( example_goto_3.hs, interpreted )
+Ok, modules loaded: Main.
+*Main&gt; main
+  slse  slend  clmn a sm1n a cr1n b clmn c sm1n c cr1n d clmn e sm1n e cr1e  clend 
+  
+動作を説明しよう。
+
+まず、最初の例と同様に While という抽象データ型を定義し、infinite type を避けている。goto をそのまま返すことは infinite type になるためできなさそうだが、goto を使うような(一時的な)関数を返すことはできる。
+
+looper の定義は同じ。手抜きで runclient の返す型を runserver のものと同じにしてしまったため、runCont させるとき、返り値(u,v)から goto の部分(v)を削る必要がある。
+
+まず、何も入力せずに runserver で server を起動してあると読める。 server はすでに return され、output として &quot; slse slend &quot; が出る。
+
+client は LoopStart でサーバーの出力を保存し、LoopMain に処理を移す。 LoopMain では、入力されたリストの要素 c を一つ service に渡す。これまでの出力に &quot; clmn &quot; ++ c を足しておく。
+
+このとき、return したはずの server に処理が移る。service には goto Method1 が返されていたので、Method1 の処理になる。ここでは、これまでの出力に &quot; sm1n &quot; ++ c を足す。この c は送られて来たものである。そして、 Method1 の第三引数に指定された client に戻る「復帰」に出力を渡す。
+
+このとき、server は return することなく、client に処理が戻る。client は戻り先の ret に goto Receive1 を指定してあったので、Receive1 の処理になる。Receive1 は渡された値 output の他、元の input も知るよう ret に指定してあった。input のリストから要素 c を取り出した上で、出力に &quot; cr1n &quot; ++ c を足して、LoopMain に goto する。
+
+リストの要素が空になったところで、LoopEnd に行き、出力に &quot; clend &quot; を足して return する。
+
+こんなことができるのである。関数型言語をわざわざ選んで使う方には、とてもいやな感じが伝わると思うがどうだろう？
+
+●関連
+  
+Haskell のインタプリタは、HaskellPlatform-2010.2.0.0 の WinGHCi を使った。
+
+  ●momo_hs.shar。上のソースの他、callCC に関する例をまとめたアーカイブ。(シェルアーカイブ形式。シェルコマンドとして実行するか unshar を使う。)大きいループから小さいループに移る例もある。
+  ●《時間泥棒の夕べ》。本稿の姉妹記事。本稿は左の記事の副産物で、その実験中に思い付いたものである。callCC の理論面に関してもそちらで少し書いている。
+  ●《HaskellのContモナドに触れてみる - Hatena’s Kitchen》。《Call-with-current-continuation - Wikipedia, the free encyclopedia》。Haskell や call/cc を今回はじめて使ってみた。はじめてなのでいろいろなサイトを参考したが、代表して、これらのページを挙げておく。はじめてだったが、他の関数型言語・定理証明器はかなり前に触ったことがあって、その知識が役に立った。
+  ●《Haskellの継続モナド（Continuation Monad）を理解するポイント - よくわかりません》。投稿後見つけた。Haskell では、特別な実装を行わずにモナドとラムダ抽象をうまく使った遅延評価により「継続」を実現している。その解説がわかりやすかった。
+    
+更新：2011-01-20
+初公開：2011年01月20日 19:37:45
+最新版：2011年01月31日 19:03:12</pre>
+<details class="trackbacks" data-pagefind-ignore><summary>Trackbacks (1 件)</summary><pre>
+Trackbacks:
+
+《<a href="http://jrf.cocolog-nifty.com/column/2011/01/post-1.html">時間泥棒の夕べ</a>》 from JRF の私見：雑記
+「量子」という考え方を御存知あろう。その特徴として、複数の排他的状態が「可能性」として現実に並存し、観測によってその状態が確定する解釈が有名である。喩[たと]えれば、先に書いた七芒星の埋め込みの記事で、平面への展開図が発散する方向は確定していないが、空間への埋め込みにおいては、グラフの作画者はスピンの巻き方を左(InLeft)か右(InRight)に決定せざるをえないようなものだ。 この図のグラフ... 
+
+受信： 2011-01-20 19:42:10 (JST)
+
+
+Comments:
+
+[E:sharp] 更新：リンクを足した。
+
+投稿: JRF | 2011-01-31 19:05:07 (JST)
+
+[E:cherry] 更新：記事に変更はないが、example_goto_3.hs を少しいじり example_goto_4.hs を作ったので、それを momo_hs.shar に足した。今回のアーカイブは、momo_hs-20110214.shar。
+
+goto が返す型に意味がないということを、型変数を残すことで表現しようと考えた。次のような結果になる。(main の出力は example_goto_3.hs と変わらない。)
+
+Prelude&gt; :load *example_goto_4.hs
+[1 of 1] Compiling Main             ( example_goto_4.hs, interpreted )
+Ok, modules loaded: Main.
+*Main&gt; :t server
+server
+  :: Cont
+       (IO ())
+       (Either [Char] d,
+        [[Char]]
+        -&gt; [Char]
+        -&gt; (Either [Char] d -&gt; Cont (IO ()) d)
+        -&gt; Cont (IO ()) d)
+
+
+投稿: JRF | 2011-02-14 16:23:45 (JST)
+
+
+Links:
+
+HaskellPlatform: http://hackage.haskell.org/platform/
+momo_hs.shar: /archive/haskell/momo_hs.shar
+時間泥棒の夕べ: http://jrf.cocolog-nifty.com/column/2011/01/post-1.html
+HaskellのContモナドに触れてみる - Hatena’s Kitchen: http://d.hatena.ne.jp/tom-lpsd/20090125/1232879691
+Call-with-current-continuation - Wikipedia, the free encyclopedia: http://en.wikipedia.org/wiki/Call-with-current-continuation
+Haskellの継続モナド（Continuation Monad）を理解するポイント - よくわかりません: http://d.hatena.ne.jp/r-west/20070520/1179686305
+momo_hs-20110214.shar: http://jrf.cocolog-nifty.com/archive/haskell/momo_hs-20110214.shar
+
+
+
+</pre></details>
+
+<section class="backrefs" data-pagefind-ignore>
+<h2>後方参照 (6 件)</h2>
+<ul>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2025/01/statuses_cocolog_95231673.html">ひとこと</a> <span class="backref-date">2025年01月12日</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2025/01/gsm_006547.html">共有メモ</a> <span class="backref-date">2025-01-10T03:08:18Z</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2022/08/statuses_cocolog_93692583.html">ひとこと</a> <span class="backref-date">2022年08月24日</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2012/09/statuses_cocolog_74037700.html">ひとこと</a> <span class="backref-date">2012年09月14日</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2011/03/statuses_aboutme_137323.html">ひとこと</a> <span class="backref-date">2011年03月04日</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2011/01/statuses_aboutme_135754.html">ひとこと</a> <span class="backref-date">2011年01月17日</span></li>
+</ul>
+</section>
+
+</article>
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2011/01.html">2011年01月</a> | <a href="../../../index/software.html">ソフトウェア Tips</a></nav>
+</body>
+</html>

@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>二封筒問題のシミュレーション その１ 基礎編 - JRF Blog Archive</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2020/11.html">2020年11月</a> | <a href="../../../index/software.html">ソフトウェア Tips</a></nav>
+<article data-pagefind-body>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[software] <span class="cocolog-id">cocolog:92328105</span></td></tr>
+<tr><th>セクション</th><td>JRF のソフトウェア Tips</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2020/11.html">2020年11月05日 22:51:24</a></td></tr>
+<tr><th>元URL</th><td><a href="http://jrf.cocolog-nifty.com/software/2020/11/post-91f890.html" class="ext-link"><span class="original-url">http://jrf.cocolog-nifty.com/software/2020/11/post-91f890.html</span></a></td></tr>
+<tr><th>タグ</th><td>[シミュレーション] [Python]</td></tr>
+</table>
+</div>
+<h1>二封筒問題のシミュレーション その１ 基礎編</h1>
+<pre class="body">■概要
+  
+二封筒問題(参: 三浦俊彦『可能世界の哲学』)を Python を用いたシミュレーションで解く。
+
+最初は誤解して、「求めているのは、単に、相手を見たとき相手の額が自分の何倍かを調べると平均で 1.25 倍になるということ。交換したとしてもしなかったとしてもそうなる。じゃあ、交換すれば結果が変わるかというと変わらない。開封も未開封も関係ない。」と考えた。
+
+しかし、その後、開封バージョンを実際にシミュレーションをすれば、確かに交換したら 1.25 倍になるということが(予想外にも)示せた。この「その１」では、その「驚き」までを示す。
+
+そして、その２、その３では、なぜそうなるかを示すために議論を実数バージョン、一般的な整数バージョンに拡張する。
+
+■はじめに
+  
+三浦俊彦『可能世界の哲学』によると「二封筒問題」とは次のような問題である。
+
+＞
+  あなたはゲームのプレイヤーです。胴元が、二つの見分けのつかない封筒を提示して、こう言います。「どちらか一方を取ってください。それぞれ金額の書かれた小切手が入っていて、取った方の金額を差し上げますよ。ちなみに、一方は他方の２倍の金額なんですけどね」
+  
+  あなたは左の封筒を取りました。そして、開封しないまま、胴元が最初に言った言葉を思い出します。「ファイナルアンサーを決める前に、一度だけ、選択を変えるチャンスが与えられている」と。
+  
+  あなたは考えます。いま手に取った封筒内金額をＡ円としよう。あっちの封筒の中にあるのは、２Ａ円かＡ／２円か、どちらかだ。確率は五分五分。では、交換した場合の期待値を求めてみよう。２Ａ／２＋（Ａ／２）／２=５Ａ／４。交換しなかった場合の期待値はもちろんＡ。
+  
+  そうか、Ａがいくらであるかにかかわらず、交換すると期待値はＡ／４だけ多くなるぞ。交換しよう！
+  
+  さあどうでしょう。この計算は正しいでしょうか。そして、交換すると実際に得なのでしょうか。(p.270-271)
+＜
+
+もし、得だとすれば、交換したあと、また同じように考えるとまた交換すべきとなり、交換によって 5(5A/4)/4 に期待値が大きくなる。そして続けると交換するだけで無限に期待値が大きくなる。…
+
+そんなことは起こるはずはない。三浦もここでは、交換しても得をすることはないと答えている。
+
+ただし、封筒が未開封の場合と限る。…と。
+
+＞
+  自分が選んだ封筒をあなたは交換しないまま開封しました。小切手に１万円と書かれていました。ここであなたは胴元が最初に言った言葉を思い出します。「ファイナルアンサーを決める前に、一度だけ、選択を変えるチャンスが与えられている。選択変更は、最初に選んだ封筒を開封して金額を見てからでもけっこうである」と。(p.274)
+＜
+
+こうすると、確かに交換すると金額の期待値は A/4 だけ大きくなるというのだ。
+
+■私の誤解
+  
+何かがおかしい。１万円というのは仮の値で、そこはいくらでもいいはずである。元の封筒の額を A、もう一つの封筒の額を B としよう。もし、交換が得なら B/A を集計すれば、その値が 1 ではなく 1.25 などになるはずだ。…と私は考えた。
+
+そこで作ってみたのが下の two_envelopes_1.py である。プログラム上では、元の封筒の額を a、もう一つの封筒の額を b、基準となる額を x、コインの表裏で a と b どちらに二倍入れるかを r (r == 0 で a に二倍、r == 1 で b に二倍)とした。
+
+import random
+import numpy as np
+import argparse
+ARGS = argparse.Namespace()
+
+ARGS.trials = 10000
+ARGS.x_max = 200
+
+def main ():
+    s = 0
+    for trial in range(ARGS.trials):
+        r = random.randrange(2)
+        x = random.randrange(1, ARGS.x_max + 1)
+        if r == 0:
+            a = x * 2
+            b = x
+        else:
+            a = x
+            b = x * 2
+        s += np.array([a, b, x, b/a, a/b])
+    av = s / ARGS.trials
+    
+    print(&quot;E(A) =&quot;, av[0])
+    print(&quot;E(B) =&quot;, av[1])
+    print(&quot;E(X) =&quot;, av[2])
+    print(&quot;E(B/A) =&quot;, av[3], &quot;(== 1.25)&quot;)
+    print(&quot;E(A/B) =&quot;, av[4], &quot;(== 1.25)&quot;)
+    print(&quot;E(B)/E(A) =&quot;, av[1] / av[0], &quot;(== 1.00)&quot;)
+    
+if __name__ == '__main__':
+    main()
+    
+実行結果は次のようになる。
+
+$ python two_envelopes_1.py
+E(A) = 151.2315
+E(B) = 149.3442
+E(X) = 100.1919
+E(B/A) = 1.2425 (== 1.25)
+E(A/B) = 1.2575 (== 1.25)
+E(B)/E(A) = 0.9875204570476388 (== 1.00)
+
+B/A の平均は 1.25 近くになっているが、B の平均を A の平均で割ったものはほぼ 1.0 である。B にかならず交換したとしても得をしないことがわかる。
+
+にもかかわらず E(B/A) は 1.0 ではない。これは少し不思議だが、E(X)/E(Y) が 1 になっても、E(X/Y) が 1 になるとは限らないのはよくあることだ。例えば、サイコロを二個振ってその目(X と Y)どうしを割ると、E(X)/E(Y) = 1 だが、E(X/Y) = 1.428166... となる (div_of_dice.py で答えを求めている)。
+
+つまり、1.25倍といって求めているのは、単に、相手を見たとき相手の額が自分の何倍かを調べると平均で 1.25 倍(2倍と1/2倍の中間)になるということなのである。交換したとしてもしなかったとしてもそうなる。もちろん、交換すれば結果が変わるかというと変わらない…となる。
+
+開封か未開封かは疑似問題に過ぎない。「隣の芝生は青い」というのの数学的根拠にはなるかもしれないが。…とひとまず私は結論したのだった。
+
+ここで一応確認のため「1万円と固定した場合は異る」のだから、固定した場合のシミュレーションもやってみておくか…と作ったのが次の two_envelopes_2.py である。なお、少ない試行で答えを得るために 1万円 ではなく 50 円で試している。
+
+import random
+import numpy as np
+import argparse
+ARGS = argparse.Namespace()
+
+ARGS.trials = 100000
+ARGS.x_max = 200
+ARGS.q = 50
+
+def main ():
+    s = 0
+    valid = 0
+    for trial in range(ARGS.trials):
+        r = random.randrange(2)
+        x = random.randrange(1, ARGS.x_max + 1)
+        if r == 0:
+            a = x * 2
+            b = x
+        else:
+            a = x
+            b = x * 2
+        if ARGS.q != a:
+            continue
+        valid += 1
+        s += np.array([a, b, x, b/a, a/b])
+    av = s / valid
+    
+    print(&quot;valid: &quot;, valid, &quot;/&quot;, ARGS.trials)
+    print(&quot;E(A) =&quot;, av[0])
+    print(&quot;E(B) =&quot;, av[1])
+    print(&quot;E(X) =&quot;, av[2])
+    print(&quot;E(B/A) =&quot;, av[3])
+    print(&quot;E(A/B) =&quot;, av[4])
+    print(&quot;E(B)/E(A) =&quot;, av[1] / av[0])
+    
+if __name__ == '__main__':
+    main()
+    
+実行結果は次のようになる。
+
+$ python two_envelopes_2.py
+valid:  531 / 100000
+E(A) = 50.0
+E(B) = 61.440677966101696
+E(X) = 37.14689265536723
+E(B/A) = 1.228813559322034
+E(A/B) = 1.271186440677966
+E(B)/E(A) = 1.228813559322034
+
+なんと、E(B/A) はもちろん、E(B)/E(A) もほぼ 1.25 になっている！ 交換は確かに得になるのだ！
+
+なぜ、こんなことが起こるのだろう。それを調べるために…
+
+        if ARGS.q != a:
+            continue
+            
+…の部分で、 ARGS.q != a すなわち 50 != a でなく 50 != a and 51 != a と変えてみると、E(B)/E(A) は 1.5 ぐらいになる。50 != a and 52 != a にすると、E(B)/E(A) は 1.25 に戻る。210 != a にすると、E(B)/E(A) は 0.5 になる。
+
+どうも上限 ARGS.x_max が結果に関係しているようだ。また、a が偶数か奇数かも問題になっているようだ。まず、上限に関して調べるためにこの問題の額を実数を取るものに拡張してみる。それが「その２ 実数拡張編」になる。
+
+■参考
+  
+この記事には、その１ 基礎編、その２ 実数拡張編、その３ 整数拡張編がある。
+
+まず、参考文献として最初に挙げるべきは…
+
+  ●『改定版 可能世界の哲学 - 「存在」と「自己」を考える』(三浦 俊彦著, 二見文庫, 2017年)。今回のネタ本。様相論理について載っている。
+    
+一連の記事を書いたあと、ググったりして関連を調べた。二封筒問題は有名な問題で、私と同様の解答をしているものがすでにあるだろうと思ったが、まったく同じものは見つけられなかった。ただ、私に理解できない記述も多かったため、私のやったことを包含してさらに難しく論じたものもあるものと思われる。そもそも私が問題を理解できていないという可能性も認めねばならない。そういった中で私の結論に近そうなものを一つだけ挙げておくと以下になるか。
+
+  ●《封筒のパラドックス。。。５。。。シミュレーション編。。。：来生自然の。。。》
+    
+三浦俊彦の紹介する問題の関連も挙げておく。
+
+  ●《眠り姫問題のプログラム - JRF のソフトウェア》。三浦俊彦『多宇宙と輪廻転生』で紹介している問題に対する私の解答。
+  ●《モンティ・ホール問題または三囚人問題の拡張とその確率操作シミュレーション - JRF のソフトウェア》。以前、私が書いた記事。ベイズの定理を用いた推論で、直観に反するものの有名な例を詳しめに解説している。
+  ●《シミュレーション・アーギュメントを論駁する - JRF の私見：宗教と動機付け》。三浦俊彦『ゼロからの論証』にも載っているシミュレーション・アーギュメントについて私が論じた記事。この宇宙は巨大なシミュレーションなのか？……という問題。
+  ●<a href="../../../articles/2017/02/statuses_cocolog_86854015.html" class="int-link cocolog-id" title="ひとこと">[cocolog:86854015]</a> で、終末論法を少し論じている。そこは、三浦俊彦『多宇宙と輪廻転生』の紹介を行う「ひとこと」である。
+    
+■著者
+  
+JRF ( <a href="../../../articles/2006/03/hbm_00004.html" class="int-link" title="JRF のソフトウェア Tips">http://jrf.cocolog-nifty.com/software/</a> )
+
+■ライセンス
+  
+私が作った部分に関してはパブリックドメイン。 (数式のような小さなプログラムなので。)
+
+自由に改変・公開してください。
+
+■配布物
+  
+今回の配布物は以下の zip ファイル。更新があれば下のリンクの中身は最新のものに置き変わっているはず。
+
+  ●two_envelopes.zip
+    
+GitHub にも登録してあるが、更新は、ここの更新のあと1日から3日遅れるかもしれない。
+
+  ●《GitHub - JRF-2018/two_envelopes》。
+    
+更新：2020-11-05--2020-11-12
+初公開：2020年11月05日 22:51:23
+最新版：2020年11月12日 23:01:28
+
+
+Comments:
+
+初公開: two_envelopes-20201105.zip。バージョン 0.0.1。
+
+two_envelopes-20201105.zip に相当するものは↓からどうぞ。
+
+<a href="https://github.com/JRF-2018/two_envelopes/releases/tag/v0.0.1" class="ext-link">https://github.com/JRF-2018/two_envelopes/releases/tag/v0.0.1</a>
+
+<a href="../../../articles/2020/11/statuses_cocolog_92328204.html" class="int-link cocolog-id" title="ひとこと">[cocolog:92328204]</a>(↓)に感想を書いたのでよければそちらもお読みください。
+
+<a href="../../../articles/2020/11/statuses_cocolog_92328204.html" class="int-link" title="ひとこと">http://jrf.cocolog-nifty.com/statuses/2020/11/post-0c9790.html</a>
+＞「二封筒問題のシミュレーション」という記事(のシリーズ)を書いた。開封後だと交換するほうが得というこの問題、最初に決める額の上限額より開封して見た額が小さく、かつ、偶数の額であるということ…それが 1.25 倍という結果を導いているというのが私の解答。＜
+
+投稿: JRF | 2020-11-06 00:12:42 (JST)
+
+更新: 記事すなわち 00_README.txt の更新のみ。
+
+「その３」の「結論」と「今後に向けて」それぞれに＞領域 c に属すことと、1万円とわかることには違いがある。＜からはじまる段落を足した。
+
+アーカイブは更新してないが、GitHub は更新してあるので、ドキュメントのアーカイブが欲しい方は GitHub から master ブランチをダウンロードしていただきたい。
+
+投稿: JRF | 2020-11-06 09:00:36 (JST)
+
+更新: two_envelopes-20201107.zip。バージョン 0.0.2。
+
+two_envelopes-20201107.zip に相当するものは↓からどうぞ。
+
+<a href="https://github.com/JRF-2018/two_envelopes/releases/tag/v0.0.2" class="ext-link">https://github.com/JRF-2018/two_envelopes/releases/tag/v0.0.2</a>
+
+two_envelopes_5.py を足して、その３に説明を少し書いた。差分を取るところ、偶奇に関してどうするのかと悩んでいたが、とりあえずやってみたところ、そういうの以前に、期待値の差分という発想がまったくのあてはずれであることがわかったのだった。
+
+投稿: JRF | 2020-11-07 03:17:51 (JST)
+
+更新: two_envelopes-20201112.zip。バージョン 0.0.3。
+
+two_envelopes-20201112.zip に相当するものは↓からどうぞ。
+
+<a href="https://github.com/JRF-2018/two_envelopes/releases/tag/v0.0.3" class="ext-link">https://github.com/JRF-2018/two_envelopes/releases/tag/v0.0.3</a>
+
+誤字修正などちょこちょこと修正。
+
+投稿: JRF | 2020-11-12 23:10:09 (JST)
+
+
+Links:
+
+可能世界の哲学: <a href="../../../articles/2020/11/hbm_02020.html" class="int-link" title="Amazon.co.jp: 改訂版 可能世界の哲学 「存在」と「自己」を考える (二見文庫): 三浦俊彦: Books">https://www.amazon.co.jp/dp/4576170619</a>
+その２: <a href="../../../articles/2020/11/software_92328124.html" class="int-link" title="二封筒問題のシミュレーション その２ 実数拡張編">http://jrf.cocolog-nifty.com/software/2020/11/post-8d2f26.html</a>
+その３: <a href="../../../articles/2020/11/software_92328134.html" class="int-link" title="二封筒問題のシミュレーション その３ 整数拡張編">http://jrf.cocolog-nifty.com/software/2020/11/post-cc834b.html</a>
+two_envelopes_1.py: <a href="https://github.com/JRF-2018/two_envelopes/blob/master/two_envelopes_1.py" class="ext-link">https://github.com/JRF-2018/two_envelopes/blob/master/two_envelopes_1.py</a>
+div_of_dice.py: <a href="https://github.com/JRF-2018/two_envelopes/blob/master/div_of_dice.py" class="ext-link">https://github.com/JRF-2018/two_envelopes/blob/master/div_of_dice.py</a>
+two_envelopes_2.py: <a href="https://github.com/JRF-2018/two_envelopes/blob/master/two_envelopes_2.py" class="ext-link">https://github.com/JRF-2018/two_envelopes/blob/master/two_envelopes_2.py</a>
+その１: <a href="../../../articles/2020/11/software_92328105.html" class="int-link" title="二封筒問題のシミュレーション その１ 基礎編">http://jrf.cocolog-nifty.com/software/2020/11/post-91f890.html</a>
+改定版 可能世界の哲学 - 「存在」と「自己」を考える: <a href="../../../articles/2020/11/hbm_02020.html" class="int-link" title="Amazon.co.jp: 改訂版 可能世界の哲学 「存在」と「自己」を考える (二見文庫): 三浦俊彦: Books">https://www.amazon.co.jp/dp/4576170619</a>
+封筒のパラドックス。。。５。。。シミュレーション編。。。：来生自然の。。。: <a href="../../../articles/2020/11/hbm_02018.html" class="int-link" title="封筒のパラドックス。。。５。。。シミュレーション編。。。 : 来生自然の。。。">https://jinen.exblog.jp/5875263/</a>
+眠り姫問題のプログラム - JRF のソフトウェア: <a href="../../../articles/2017/02/software_86853962.html" class="int-link" title="眠り姫問題のプログラム">http://jrf.cocolog-nifty.com/software/2017/02/post-1.html</a>
+多宇宙と輪廻転生: <a href="https://www.amazon.co.jp/dp/4791763831" class="ext-link">https://www.amazon.co.jp/dp/4791763831</a>
+モンティ・ホール問題または三囚人問題の拡張とその確率操作シミュレーション - JRF のソフトウェア: <a href="../../../articles/2016/08/software_85821961.html" class="int-link" title="モンティ・ホール問題または三囚人問題の拡張とその確率操作シミュレーション">http://jrf.cocolog-nifty.com/software/2016/08/post.html</a>
+シミュレーション・アーギュメントを論駁する - JRF の私見：宗教と動機付け: <a href="../../../articles/2006/10/religion_14794101.html" class="int-link" title="シミュレーション・アーギュメントを論駁する">http://jrf.cocolog-nifty.com/religion/2006/10/post.html</a>
+ゼロからの論証: <a href="https://www.amazon.co.jp/dp/4791762827" class="ext-link">https://www.amazon.co.jp/dp/4791762827</a>
+two_envelopes.zip: <a href="https://www.sugarsync.com/pf/D252372_79_67893194617" class="ext-link">https://www.sugarsync.com/pf/D252372_79_67893194617</a>
+GitHub - JRF-2018/two_envelopes: <a href="https://github.com/JRF-2018/two_envelopes" class="ext-link">https://github.com/JRF-2018/two_envelopes</a></pre>
+
+
+<section class="backrefs" data-pagefind-ignore>
+<h2>後方参照 (4 件)</h2>
+<ul>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2020/12/statuses_cocolog_92396511.html">ひとこと</a> <span class="backref-date">2020年12月05日</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2020/11/software_92328124.html">二封筒問題のシミュレーション その２ 実数拡張編</a> <span class="backref-date">2020年11月05日 22:59:45</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2020/11/software_92328134.html">二封筒問題のシミュレーション その３ 整数拡張編</a> <span class="backref-date">2020年11月05日 23:05:33</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2020/11/statuses_cocolog_92328204.html">ひとこと</a> <span class="backref-date">2020年11月05日</span></li>
+</ul>
+</section>
+
+</article>
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2020/11.html">2020年11月</a> | <a href="../../../index/software.html">ソフトウェア Tips</a></nav>
+</body>
+</html>

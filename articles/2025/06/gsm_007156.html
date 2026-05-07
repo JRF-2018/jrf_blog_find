@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>共有メモ - JRF Blog Archive</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2025/06.html">2025年06月</a> | <a href="../../../index/gsm.html">共有メモ</a></nav>
+<article data-pagefind-body>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[gsm] 2025-06-14T13:49:45Z</td></tr>
+<tr><th>セクション</th><td>グローバル共有メモ</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2025/06.html">2025-06-14T13:49:45Z</a></td></tr>
+<tr><th>元URL</th><td>(URLなし)</td></tr>
+
+</table>
+</div>
+<h1>共有メモ</h1>
+<pre class="body">jrf&gt; CLAUDE.md についての記事を読んだ。あれだけお世話になってる Gemini さんにも支払いできてないのにましてや Claude Code を使うのになんて課金できないビンボーな私 orz。実際に触ったことないまま記事などを参考に、jrf_pdb_agent_lib を使って、CLAUDE.md に似たようなことをやるにはどうすればいいかを考える。
+
+まず、simplest-pal で導入できたので、エージェント用の Python ファイルは .apy とする。pal.do で関数やクラスを書くにはどうすればいいんだとか…気になる点は出てきてるのだが、その点は置いておいて、今回のことに集中する。
+
+.apy はどんどん書き換えていくべきだが、ホットリローディングとかは基本的にないので、おそらく AI は書き換えたものを .apy.new みたいなファイルに残しておき、実行が終了したときに .apy.new を .apy にムーヴするのだろう。もし、デバッグのためにデバッグの途中で何度も書き換えるべき .apy があるとすれば、それは _tmp.apy みたいいったん別のファイルにして何度も reload_module しながら、完成版を作り、それを .apy.new にしておいて、最後に .apy にムーヴするとなるのだろう。
+
+たとえば run_server.apy は次のような感じで作られたとする。
+
+import jrf_pdb_agent_lib as pal
+from textwrap import dedent as d_py
+from textwrap import dedent as d_md
+
+pal.login()
+
+pal.do(d_md(&quot;\
+  主目的: サーバーを立てる。
+
+  ( ) データを持ってくる。
+  ( ) サーバーを立てる。
+  ( ) テストを行う。
+
+  留意事項: ライブラリやアプリが足りない場合はいったん終了する。
+&quot;))
+
+これを実行して、処理が終了するごとに ( ) 内に X が付けられていく。だからデータを持ってくるというのが終った時点の run_server.apy.new は次のような感じになるかもしれない。
+
+import jrf_pdb_agent_lib as pal
+from textwrap import dedent as d_py
+from textwrap import dedent as d_md
+
+pal.login()
+
+pal.do(d_md(&quot;&quot;&quot;\
+  主目的: サーバーを立てる。
+
+  (X) データを持ってくる。
+  ( ) サーバーを立てる。
+  ( ) テストを行う。
+
+  留意事項: ライブラリやアプリが足りない場合はいったん終了する。
+&quot;&quot;&quot;), current_code = d_py(&quot;&quot;&quot;\
+  pal.do(&quot;サーバーを立てる。&quot;)
+  raise LoopRequestException
+&quot;&quot;&quot;))
+
+ここでエラーが出てライブラリやアプリのインストールが必要な場合処理が人に戻されて、それが促される。run_server.apy.new は run_server.apy に上書きされている。インストールをやったあと。
+
+ふたたび run_server.apy が呼ばれると、run_server.apy.new の pal.do の部分が…
+
+pal.do(d_md(&quot;&quot;&quot;\
+  主目的: サーバーを立てる。
+
+  (X) データを持ってくる。
+  (X) サーバーを立てる。
+  ( ) テストを行う。
+
+  留意事項: ライブラリやアプリが足りない場合はいったん終了する。
+&quot;&quot;&quot;), current_code = d_py(&quot;&quot;&quot;\
+  pal.do(&quot;テストを行う。&quot;)
+  raise LoopRequestException
+&quot;&quot;&quot;))
+
+…と書き換わり、最終的にはテストもうまくいけば…
+
+pal.do(d_md(&quot;&quot;&quot;\
+  主目的: サーバーを立てる。
+
+  (X) データを持ってくる。
+  (X) サーバーを立てる。
+  (X) テストを行う。
+
+  留意事項: ライブラリやアプリが足りない場合はいったん終了する。
+&quot;&quot;&quot;), current_code = d_py(&quot;&quot;&quot;\
+  pass
+&quot;&quot;&quot;))
+
+…となって、最終的にそれが run_server.apy の内容になるのだろう。
+
+こうすると、再度、run_server.apy が呼ばれたとき何も実行されなくなるが、それが正しく、再度立てたい場合は git で最初のバージョンに戻す必要がある…というのがこの場合の素直な使い方ではないか。</pre>
+
+
+</article>
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2025/06.html">2025年06月</a> | <a href="../../../index/gsm.html">共有メモ</a></nav>
+</body>
+</html>

@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>共有メモ - JRF Blog Archive</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2026/01.html">2026年01月</a> | <a href="../../../index/gsm.html">共有メモ</a></nav>
+<article data-pagefind-body>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[gsm] 2026-01-29T12:35:15Z</td></tr>
+<tr><th>セクション</th><td>グローバル共有メモ</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2026/01.html">2026-01-29T12:35:15Z</a></td></tr>
+<tr><th>元URL</th><td>(URLなし)</td></tr>
+
+</table>
+</div>
+<h1>共有メモ</h1>
+<pre class="body">jrf&gt; LangChain に私が欲しいのは skill tree または tool tree になるか。
+
+Claude Code が MemoryBanditWorkflow を使うような「実行エージェント」を作り動かすことで、その実行エージェントでは権限を制約できる…メモリにハーネスを効かしたりできる…ことになる。実行エージェントで重要なのは、Claude Code のように何でもできることではなく、指示されたツールしか使えないこと。
+
+ただ、それでも長く動く実行エージェントにしたいなら、様々なツールを使わせたいのが人情。ツールの記述がコンテクストを圧迫するのを防ぐために Claude Code のような Skills の仕組みが欲しい。
+
+ツールの skill_show でそのディレクトリのスキルを調べ、skill_do でスキルを実行し、skill_cd で作業ディレクトリを変えるようなもの…。能力の低い LLM だと、フルパスの入力ミスが増えるだろうから skill_cd みたいなのはあったほうがいいだろう。
+
+MemoryBanditWorkflow の場合、memory 関連はツールとして残すが bandit や workflow 関連のツールはスキル化してしまうほうがいいだろう。
+
+そして、Claude Code が簡単にスキルを移譲できるように、そういう skill tree で使えるツール形式に SKILL.md などを「コンパイル」できるようになって欲しい。
+
+…とここまで考えてググると、すでに LangChain には Skills の機能があるようだ。それで十分なのかな…。
+
+《Skills - Docs by LangChain》  
+<a href="https://docs.langchain.com/oss/python/langchain/multi-agent/skills" class="ext-link">https://docs.langchain.com/oss/python/langchain/multi-agent/skills</a>
+
+Grok さんや Claude さんによると「ほぼ LangChain の Skills でできる」ようだ。細かい部分はもちろん私の「構想」とは違うのだが。</pre>
+
+
+</article>
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2026/01.html">2026年01月</a> | <a href="../../../index/gsm.html">共有メモ</a></nav>
+</body>
+</html>

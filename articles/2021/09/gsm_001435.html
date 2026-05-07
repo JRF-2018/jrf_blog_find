@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>共有メモ - JRF Blog Archive</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2021/09.html">2021年09月</a> | <a href="../../../index/gsm.html">共有メモ</a></nav>
+<article data-pagefind-body>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[gsm] 2021-09-09T03:44:05Z</td></tr>
+<tr><th>セクション</th><td>グローバル共有メモ</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2021/09.html">2021-09-09T03:44:05Z</a></td></tr>
+<tr><th>元URL</th><td>(URLなし)</td></tr>
+
+</table>
+</div>
+<h1>共有メモ</h1>
+<pre class="body">jrf&gt; [仏教の最適化プログラムの続き。]
+
+mwar をもう一度試してみよう。今度は、戦争が増えたとき上昇指向が増え人口目標が増えた状態を試そう。人口目標が増えた状態を much population で mpop、上昇指向が増えた状態を much ambition で mamb とする。人口が違うと比較しにくいので、比較用に人口目標が増えただけの mwarmpop も実験しておいた。
+
+run_simbdp3.sh mwar 10 -L -t 360 --invasion-average-term-min=60
+run_simbdp3.sh mwarmpopmamb 10 -L -t 360 --invasion-average-term-min=60 --population=11000,11000,5500 --change-ambition --ambition-goal=0.70
+run_simbdp3.sh mwarmpop 10 -L -t 360 --invasion-average-term-min=60 --population=11000,11000,5500
+
+python plot_logs.py normal mwar mwarmpopmamb mwarmpop -p AccDeath -o fig-20210909_01.png
+python plot_logs.py normal mwar mwarmpopmamb mwarmpop -p AccDeathRate -o fig-20210909_02.png
+python plot_logs.py normal mwar mwarmpopmamb mwarmpop -p AccAbortion -o fig-20210909_03.png
+python plot_logs.py normal mwar mwarmpopmamb mwarmpop -p AccBreakup -o fig-20210909_04.png
+python plot_logs.py normal mwar mwarmpopmamb mwarmpop -p Budget -o fig-20210909_05.png
+python plot_logs.py normal mwar mwarmpopmamb mwarmpop -p Power -o fig-20210909_06.png
+
+《グラフ集: 2021-09-06 から - Issue #2 - JRF-2018/simbd》  
+<a href="https://github.com/JRF-2018/simbd/issues/2" class="ext-link">https://github.com/JRF-2018/simbd/issues/2</a>
+
+AccDeathRate でも mwarmpopmamb はかなり死者が多いとなっているのは理由がいまいちわからない。mwarmpopmamb と mwarmpop で「堕胎」が少ないのは人口増加過程にあるからで予定通り。
+
+活発な経済の mwarmpopmamb が mwarmpop より一家離散 AccBreakup が当然多いはずだがそれほど差がない。ただ、経済規模を反映する Budget が大きくなるはずというのはその通りになっている。ただ、人口が多いはずの mwarmpop が mwar よりも Budget が小さくなってるのはよくわからない。財産を持ってない子供が増えたせいだろうか。
+
+Budget が normal より mwar シリーズで減るのは戦争で障害(injured)が多くなるせいだと思う。障害があると労働力(tmp_labor)が低くなり、経済的に不利になる。死者が増えると僧に相続税と取られる分、経済の規模が小さめになりやすいということもありうるのだが、戦争で死者があまり増えてる感じじゃないのでこの効果は薄いだろう。</pre>
+
+
+</article>
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2021/09.html">2021年09月</a> | <a href="../../../index/gsm.html">共有メモ</a></nav>
+</body>
+</html>

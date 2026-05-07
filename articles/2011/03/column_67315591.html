@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>重要な更新情報: 受け取ったはてなポイントの分配を行います - JRF Blog Archive</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2011/03.html">2011年03月</a> | <a href="../../../index/column.html">雑記</a></nav>
+<article data-pagefind-body>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[column] <span class="cocolog-id">cocolog:67315591</span></td></tr>
+<tr><th>セクション</th><td>JRF の私見：雑記</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2011/03.html">2011年03月02日 18:59:39</a></td></tr>
+<tr><th>元URL</th><td><a href="http://jrf.cocolog-nifty.com/column/2011/03/post.html" class="ext-link"><span class="original-url">http://jrf.cocolog-nifty.com/column/2011/03/post.html</span></a></td></tr>
+<tr><th>タグ</th><td>[はてな関連]</td></tr>
+</table>
+</div>
+<h1>重要な更新情報: 受け取ったはてなポイントの分配を行います</h1>
+<pre class="body">2011年3月1日に、匿名で(ポイント授受としては)高額のはてなポイントを受け取りました。(どなたか存じませんが、ありがとうございます。)それまでにいただいたポイントの累計額は、分配するには少なかったので、「送られたポイントは別枠で一切使わないようにする」という方針をとってきましたが、高額のポイントを受け取った以上、これを役立てる必要があると考え、それを分配することにしました。
+
+分配方法を決めるにあたり、次の二点に留意しました。
+
+  1.公平・公正であること、
+  2.私の事務負担が減ること。
+    
+《はてなブックマークについての私のポリシー》の「送られたポイントについて」の部分を次のようにしました。(数値等はこの記事とは変更があるかもしれません。)
+
+＞
+  非商業的利用を貫くために、かなりグレーかと思いますが、次の 3 つの方法を考えております。
+  
+    1.送られたポイントは別枠で一切使わないようにする。
+    2.ポイントを送る原資にくわえる。
+    3.ポイントがかなり多額になった場合、はてなの人力検索のシステムを使って、公平な分配システムを作ったものに半額を与え、残りはその分配システムで、分配する。
+      
+  今はとりあえず、どの記事に送られたかが明示されている場合は、1 で送られたポイントの総額が残高を上まわるように運用していくつもりです。
+  
+  また、匿名などどの記事に送られたかが明示されていない場合、2 の方針で、四半期末に前期繰り越し分とその期に送られた非明示ポイントを合算したもの (原資)の 1/3 を、ボーナスとしてその期にポイント送信する者へ上乗せして送り、残り 2/3 を翌期に繰り越そうと考えています。ボーナス分が 100p だとブックマークに [b100p] というタグを追記します。なお、ボーナスは基礎ポイントの平方根に比例させ、下一ケタは切り捨てます。
+  
+  さらにこのとき、過去にポイントを送った方との公平を期すため、過去受け取った方は 2/3 の繰り越し分の中から一部をペンションとして受け取ることができます。ただし、過去受け取ったボーナスやペンションがある場合、その累計の基礎ポイント累計(の1.05乗)に対する倍率は、その期のボーナス倍率を超えることはできません。なお、連続してペンションを受け取りたい方は URL の登録が必要で、毎期 5 ポイントの手数料をいただきます。受け取られたペンションが 100p だとブックマークに [p100p] というタグをどこかに、ペンション登録をした URL には [ペンション登録] というタグを追記します。
+  
+  過去ポイントを受け取った方が逝去し、合法的な相続人がいない等、受け取りができなくなった場合、[ペンション除外] というタグを追記し、基礎ポイント累計の段階から除外します。もし、ペンション登録された方で、そのような状態になった ID ををご存知の方はぜひお知らせください。
+  
+  ボーナス分、ペンション分のはてな手数料は、その期の原資から引きます。原資が 1000p に満たない場合は、ボーナスもペンションも分配されず、すべて翌期に繰り越しとなります。
+＜
+
+この分配プログラム(言語はPerl)をソースで公開しています。そのソースについて簡単に「逐条解説」します。
+
+■前処理
+  
+プログラムでは、定数の定義やオプションの処理を行ったあと、「ブックマーク」→「設定」→「データ管理」→「エクスポート」の「Atomフィード形式でダウンロード」を保存したファイルを読み込んで、構文解析を行い、それぞれのブックマークエントリを連想リスト(HASH型の参照)にします。その各項目は次のようになります。
+
+## $entry
+##   -&gt;{url}           ブックマークしたエントリの URL。
+##   -&gt;{summary}       ブックマークコメント。
+##   -&gt;{id}            URL や summary から判断したはてな ID。
+##   -&gt;{date}          ブックマークした日時(使用せず)。
+##   -&gt;{point}         基礎ポイント。
+##   -&gt;{state}         「IDポイント済」「IDポイント未送」などの状態。
+##   -&gt;{bonus}         支払い済みボーナス。
+##   -&gt;{pension}       支払い済みペンション。
+##   -&gt;{pension_plan}  「ペンション登録」または「ペンション除外」。
+
+この連想リストの並びから、ID に関するデータに換えます。$BASE{$id} は「IDポイント未送」となっている $id に関する基礎ポイント総額。 $PAID_BASE{$id} は「IDポイント済」「ポイント済」となっている $id に関する基礎ポイント総額。$PAID_BONUS{$id} は過去支払われたボーナスとペンションの総額。$PENSION_PLAN{$id} は「ペンション登録」がなされている総額。…となります。以降は、この ID に関するデータのみを使って計算していきます。
+
+■ボーナス算定
+  
+$BONUS{$id} を算定します。上の記載では次の部分になります。
+
+＞
+  また、匿名などどの記事に送られたかが明示されていない場合、2 の方針で、四半期末に前期繰り越し分とその期に送られた非明示ポイントを合算したもの (原資)の 1/3 を、ボーナスとしてその期にポイント送信する者へ上乗せして送り、残り 2/3 を翌期に繰り越そうと考えています。ボーナス分が 100p だとブックマークに [b100p] というタグを追記します。なお、ボーナスは基礎ポイントの平方根に比例させ、下一ケタは切り捨てます。
+＜
+
+まず、原資 $FUND から、はてな手数料分を除き、ボーナス−ペンション比 1:2 から 1/3 を求め、それを掛けて $bonus_fund を算出します。
+
+  my $bonus_fund = ($BONUS_PENSION_RATIO / (1 + $BONUS_PENSION_RATIO))
+    * $FUND / (1 + $HATENA_TAX);
+    
+次に基礎ポイントの平方根の和を求めます。
+
+  my $sqrt_total = 0;
+  foreach my $id (keys %BASE) {
+    $sqrt_total += sqrt($BASE{$id});
+  }
+  
+平方根の和に対する割合を $bonus_fund に掛けて、個々のボーナスが算定されます。下一ケタを切る処理とはてな手数料の計算も行います。このとき、ペンションの計算で使う最低ボーナス倍率も算定しておきます。
+
+  my $bonus_total = 0;
+  my $tax_total = 0;
+  my $min_bonus_rate;
+  foreach my $id (keys %BASE) {
+    my $b = $bonus_fund * sqrt($BASE{$id}) / $sqrt_total;
+    $b = int($b / 10) * 10;
+    $BONUS{$id} = $b if $b &gt; 0;
+    $bonus_total += $b;
+    $min_bonus_rate = $b / $BASE{$id}
+      if ! defined $min_bonus_rate || $min_bonus_rate &gt; $b / $BASE{$id};
+    $tax_total += int(($b + $BASE{$id}) * $HATENA_TAX) - int($BASE{$id} * $HATENA_TAX) if $b &gt; 0;
+  }
+  
+下一ケタで切るのは、あまりにも少額な支払いについては、私の事務負担の軽減を優先するためです。
+
+■ペンション算定
+  
+まず、支払い上限額と比較される累計ボーナスに今期のボーナスを加えます。一方、支払い額の算定に使う累計基礎ポイントには今期の基礎ポイントは加えません。これは、特別に原資の多い期の者にペンションまで優遇する必要はないと判断したのと、年金を思い出していただければわかるようにペンションはむしろ、ある程度の期間が経過したあとから受け取れるほうが自然で、将来的にそういう要素をとり入れる可能性を示唆するため、こうしました。
+
+  foreach my $id (keys %BONUS) {
+    $PAID_BONUS{$id} = 0 if ! exists $PAID_BONUS{$id};
+    $PAID_BONUS{$id} += $BONUS{$id};
+  }
+  
+$PENSION{$id} を算定します。上の記載では次の部分になります。
+
+＞
+  さらにこのとき、過去にポイントを送った方との公平を期すため、過去受け取った方は 2/3 の繰り越し分の中から一部をペンションとして受け取ることができます。ただし、過去受け取ったボーナスやペンションがある場合、その累計の基礎ポイント累計(の1.05乗)に対する倍率は、その期のボーナス倍率を超えることはできません。なお、連続してペンションを受け取りたい方は URL の登録が必要で、毎期 5 ポイントの手数料をいただきます。受け取られたペンションが 100p だとブックマークに [p100p] というタグをどこかに、ペンション登録をした URL には [ペンション登録] というタグを追記します。
+＜
+
+$FUND からボーナス等を引き、はてな手数料を除いたものがペンション原資 $pension_fund となります。
+
+  my $pension_fund = ($FUND - $bonus_total - $tax_total) / (1 + $HATENA_TAX);
+  
+@PENSION はペンションを受け取る人のリストです。「ペンション登録」は計画的に個々の URL に対してできますが、登録せずにその期だけ受け取る場合は、ID にひもづけされたすべての URL が対象となります。
+
+  @PENSION = map {split(/\s*,\s*/, $_)} (@PENSION);
+  foreach my $id (@PENSION) {
+    if (exists $PENSION_PLAN{$id}) {
+      $PENSION_PLAN{$id} = $PAID_BASE{$id};
+    }
+  }
+  @PENSION = uniq(@PENSION, keys %PENSION_PLAN);
+  
+全 ID に対する基礎ポイント累計に対するその ID の基礎ポイント累計の割合を $pension_fund に掛けたものが、ペンション額になります。ただし、ボーナスとペンションの累計額に関し、上限 $limit が設定されています。
+
+その算定で、その ID の基礎ポイント累計を 1 + $ID_CONDENSER (=1.05)乗しているのは、ID を複数に分けるのが不利になるようにするためです。これは多く稼いだ人がさらにもらえるという「逆進性」のある不公平な制度かもしれませんが、私などの事務負担を考えるとぜひ欲しいものなので、ごく微量(0.05)、その効果を取り入れています。
+
+ペンションに必ず手数料 $PENSION_FEE を取れば同様の効果は得られるかもしれませんが、それが 0 でも機能するようにしています。$PENSION_FEE は、むしろ、ペンション登録していない者については、ID が受け取り不能になっていることが要求がないことでわかることに対する逆の対価という側面があります。
+
+  my $paid_base_total = 0;
+  foreach my $id (keys %PAID_BASE) {
+    $paid_base_total += $PAID_BASE{$id};
+  }
+  foreach my $id (@PENSION) {
+    if (exists $PAID_BASE{$id}) {
+      my $b = $PAID_BASE{$id};
+      $b = $PENSION_PLAN{$id} if exists $PENSION_PLAN{$id};
+      my $p = $pension_fund * $b / $paid_base_total;
+      my $limit = ($b ** (1 + $ID_CONDENSER)) * $min_bonus_rate;
+      if ($p + $PAID_BONUS{$id} &gt; $limit) {
+        $p = $limit - $PAID_BONUS{$id};
+      }
+      $p = int($p);
+      my $f = 0;
+      $f = $PENSION_FEE if exists $PENSION_PLAN{$id};
+      $PENSION{$id} = $p if $p &gt; $f;
+    }
+  }
+  
+下は、はてな手数料の計算等をしています。
+
+なお、$PENSION_PLAN{$id} が設定されていると $PENSION_FEE が取られますが、その $id に支払ったペンションとしては $PENSION_FEE を引く前の額が記録として残ります。ただ、$pension_total には引いた後の額が足され、受け取った $PENSION_FEE 部分は原資として翌期に繰り越されます。
+
+  my $pension_total = 0;
+  foreach my $id (keys %PENSION) {
+    my $f = 0;
+    $f = $PENSION_FEE if exists $PENSION_PLAN{$id};
+    $pension_total += $PENSION{$id} - $f;
+    my $o = 0;
+    $o += $BASE{$id} if exists $BASE{$id};
+    $o += $BONUS{$id} if exists $BONUS{$id};
+    $tax_total += int(($o + $PENSION{$id} - $f) * $HATENA_TAX)
+      - int($o * $HATENA_TAX);
+  }
+  
+最後に、次も、私の事務負担の軽減のためのルールです。
+
+＞
+  原資が 1000p に満たない場合は、ボーナスもペンションも分配されず、すべて翌期に繰り越しとなります。
+＜
+
+■ご留意いただきたいこと
+  
+分配は今期末(2011年3月末)からする予定です。それまではプログラムの変更の可能性もかなり高いです。ペンションの受け取り希望は早く募ったほうが良いことから、とにかくこのような計画があるという通知を急ぎました。
+
+■関連
+  ●calc_bonus_bookmark_point.pl。上記、分配プログラムのソース。
+  ●《はてなブックマークについての私のポリシー》。
+  ●《はてなブックマーク「投げ銭予約」のアイデアまとめ − 金本位制のメタファより》。
+  ●《外作用的簡易経済シミュレーションのアイデアと Perl による実装》。今はまだ関連させていませんが、投稿時期に近いころに Perl で書いていた別のシミュレーション。
+    
+更新：2011-03-02
+初公開：2011年03月02日 18:59:42
+最新版：2011年03月03日 02:22:57
+
+
+Comments:
+
+[E:pc] 更新：文がおかしかったところを修正し、少し説明を足した。プログラムはまだいじっていない。
+
+投稿: JRF | 2011-03-03 02:26:36 (JST)
+
+Однозначно свидетельствуя о неустойчивости процесса памятник Нельсону, туда же входят дольник, однако само по себе состояние игры всегда амбивалентно. Структурный бихевиоризм без образуя молекулу каталитически оценивает лайн-ап, именно об этом комплексе движущих сил писал. Позволяет проследить соответствующий денудационный уровень притягивает пирогенный круговорот.
+投稿: onlinepron29 | 2011-03-07 10:05:09 (JST)
+
+大丈夫ですか？
+投稿: ヒルネスキー | 2011-03-11 20:28:34 (JST)
+
+[E:hospital] ご心配ありがとうございます。私は大阪府の内陸のほうに在住ですので問題はありません。家族も大丈夫なようです。今回の地震の件、私の情報はこちらに。ヒルネスキー様もお気をつけて。
+
+投稿: JRF | 2011-03-12 00:44:51 (JST)
+
+eehkjrjmfcvtkcazfthx, Online Strategy Games, GnqGcrh, [url=<a href="http://onlinestrategygames4u.com/]Online" class="ext-link">http://onlinestrategygames4u.com/]Online</a> Strategy Games[/url], MzrWRYt, <a href="http://onlinestrategygames4u.com/" class="ext-link">http://onlinestrategygames4u.com/</a> Online Strategy Games, wzSewUu.
+投稿: Online Strategy Games | 2011-03-12 11:23:45 (JST)
+
+ありがとうございます。こちらも岡山ですので大丈夫です（海抜ゼロメートル以下ですけど･･････）。
+投稿: ヒルネスキー | 2011-03-14 10:58:03 (JST)
+
+[E:cafe] 無事でなによりです。今回はヒルネスキー様のお気遣いに、災害時においてネットでどう過ごすかの重要なヒントを得ました。私はヒルネスキー様にコメントをいただかなければ、一人で考えることだけ続けているところでした。再度、御礼申し上げます。
+
+投稿: JRF | 2011-03-17 22:45:30 (JST)
+
+[E:bell] 更新…ではないですが、下記のように匿名でないポイントに関するアイデアを吐き出しました。メモなので読み辛いとは思いますが、今後、ポイント受け取り、または、送信を考えられている方は、メモに書いているようなポイントを私の収入とする可能性に留意していただければと思います。
+
+《JRFのひとこと:匿名でのポイントに関して、原則としてすべて分配するようにするとしても、(そうやって他者が分配した)送り先と宛て先が明示的な「対価性」のあるポイント送信については、少なくとも今度は、ちゃんと受け取って記事の作成等に役立てなければ、ネット市民に対し失礼になるだろう。》
+
+投稿: JRF | 2011-03-17 22:52:32 (JST)
+
+A question to you all. Guys, do you feel pressured to go all out and spend thousands on an engagement ring to make your girl happy?   
+   
+ Women, does the cost of the ring actually increase how much love you feel for your man?    
+    
+I dont have a large amount of money but the ring I hinted at for my potential wife the other day she said was to small so that sucked and now I don't know what to do. So, what's your thoughts on this?
+投稿: nadiabk | 2011-03-22 02:49:46 (JST)
+
+[E:id] 更新：《はてなブックマークについての私のポリシー》に ID 統合申請とポイント受取申請の手続きを定めた。こちらのプログラム・記事の変更はまだしていないが備忘のためこちらにも書いておく。
+
+ID 統合申請は検討中で、そのリクツは↓で考えている。
+
+《JRFのひとこと：ボーナスを受け取ったものがペンションを受け取れるようになるまで一定期間を設けるのではなく、ペンションを受け取るための ID の統合を認めるが、統合を認めるには一定期間の経過を必要とする…としたほうが良いのではないか。》
+
+投稿: JRF | 2011-03-25 21:57:50 (JST)
+
+Once I initially commented I clicked the -Notify me when new feedback are added- checkbox and now every time a comment is added I get four emails with the identical comment. Is there any means you possibly can remove me from that service? Thanks!
+投稿: sterowniki pomp wtryskowych | 2011-03-29 05:25:49 (JST)
+
+[E:club] 更新：記事は更新してませんが、はじめてのボーナスポイントの直前でもあり、現在のソースをアップロードしておきました。calc_bonus_bookmark_point.pl、または、calc_bonus_bookmark_point-20110329.plです。ほぼテストしてませんが、ID 統合申請、受取申請にいちおう対応しています。
+
+ただ、そのため日付処理等ソースが複雑になったこともあり、アイデアを掴みやすい前のバージョンをcalc_bonus_bookmark_point-20110302.plに残しておきました。
+
+投稿: JRF | 2011-03-29 18:45:24 (JST)
+
+[E:art] 更新：記事は更新してませんが、初のボーナスポイントを払ったあと、「IDポイント一部未送」への対応を含め、気づいたところを足して、バージョンアップしておきました。今回のバージョンは 0.03 で、ユニークURLは、calc_bonus_bookmark_point-20110331.plです。
+
+投稿: JRF | 2011-03-31 12:25:52 (JST)
+
+
+Links:
+
+はてなブックマークについての私のポリシー: <a href="../../../articles/2006/04/column_10899324.html" class="int-link" title="はてなブックマークについての私のポリシー">http://jrf.cocolog-nifty.com/column/2006/04/post_1.html</a>
+ソースで公開: <a href="http://jrf.cocolog-nifty.com/archive/perl/calc_bonus_bookmark_point.pl" class="ext-link">http://jrf.cocolog-nifty.com/archive/perl/calc_bonus_bookmark_point.pl</a>
+calc_bonus_bookmark_point.pl: <a href="http://jrf.cocolog-nifty.com/archive/perl/calc_bonus_bookmark_point.pl" class="ext-link">http://jrf.cocolog-nifty.com/archive/perl/calc_bonus_bookmark_point.pl</a>
+はてなブックマーク「投げ銭予約」のアイデアまとめ − 金本位制のメタファより: <a href="../../../articles/2006/04/column_10946118.html" class="int-link" title="はてなブックマーク「投げ銭予約」のアイデアまとめ − 金本位制のメタファより">http://jrf.cocolog-nifty.com/column/2006/04/post_7.html</a>
+外作用的簡易経済シミュレーションのアイデアと Perl による実装: <a href="../../../articles/2011/01/society_66612185.html" class="int-link" title="外作用的簡易経済シミュレーションのアイデアと Perl による実装">http://jrf.cocolog-nifty.com/society/2011/01/post.html</a>
+onlinepron29: <a href="http://onlinepron.pochta.ru" class="ext-link">http://onlinepron.pochta.ru</a>
+こちらに: <a href="http://jrf.aboutme.jp/user_statuses/show/137553" class="ext-link">http://jrf.aboutme.jp/user_statuses/show/137553</a>
+Online Strategy Games: <a href="http://onlinestrategygames4u.com/" class="ext-link">http://onlinestrategygames4u.com/</a>
+JRFのひとこと:匿名でのポイントに関して、原則としてすべて分配するようにするとしても、(そうやって他者が分配した)送り先と宛て先が明示的な「対価性」のあるポイント送信については、少なくとも今度は、ちゃんと受け取って記事の作成等に役立てなければ、ネット市民に対し失礼になるだろう。: <a href="http://jrf.aboutme.jp/user_statuses/show/137725" class="ext-link">http://jrf.aboutme.jp/user_statuses/show/137725</a>
+nadiabk: <a href="http://www.ebankruptcyattorneys.net" class="ext-link">http://www.ebankruptcyattorneys.net</a>
+JRFのひとこと：ボーナスを受け取ったものがペンションを受け取れるようになるまで一定期間を設けるのではなく、ペンションを受け取るための ID の統合を認めるが、統合を認めるには一定期間の経過を必要とする…としたほうが良いのではないか。: <a href="http://jrf.aboutme.jp/user_statuses/show/137828" class="ext-link">http://jrf.aboutme.jp/user_statuses/show/137828</a>
+sterowniki pomp wtryskowych: <a href="http://naprawa-sterownikow-pomp.com" class="ext-link">http://naprawa-sterownikow-pomp.com</a>
+calc_bonus_bookmark_point-20110329.pl: <a href="http://jrf.cocolog-nifty.com/archive/perl/calc_bonus_bookmark_point-20110329.pl" class="ext-link">http://jrf.cocolog-nifty.com/archive/perl/calc_bonus_bookmark_point-20110329.pl</a>
+calc_bonus_bookmark_point-20110302.pl: <a href="http://jrf.cocolog-nifty.com/archive/perl/calc_bonus_bookmark_point-20110302.pl" class="ext-link">http://jrf.cocolog-nifty.com/archive/perl/calc_bonus_bookmark_point-20110302.pl</a>
+calc_bonus_bookmark_point-20110331.pl: <a href="http://jrf.cocolog-nifty.com/archive/perl/calc_bonus_bookmark_point-20110331.pl" class="ext-link">http://jrf.cocolog-nifty.com/archive/perl/calc_bonus_bookmark_point-20110331.pl</a></pre>
+
+
+<section class="backrefs" data-pagefind-ignore>
+<h2>後方参照 (25 件)</h2>
+<ul>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2026/01/statuses_cocolog_95815240.html">ひとこと</a> <span class="backref-date">2026年01月18日</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2023/08/statuses_cocolog_94363034.html">ひとこと</a> <span class="backref-date">2023年08月16日</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2023/08/gsm_004559.html">共有メモ</a> <span class="backref-date">2023-08-13T00:20:50Z</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2023/01/statuses_cocolog_93994224.html">ひとこと</a> <span class="backref-date">2023年01月29日</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2016/04/column_84884157.html">前期の翌日(2016-01-01)から昨日(2016-03-31)まで 91 日間のアクセス解析・近況など</a> <span class="backref-date">2016年04月01日 12:53:25</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2016/01/column_84274746.html">前期の翌日(2015-10-01)から昨日(2015-12-31)まで 92 日間のアクセス解析・近況など</a> <span class="backref-date">2016年01月01日 01:58:23</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2015/10/column_83514430.html">前期の翌日(2015-07-01)から昨日(2015-09-30)まで 92 日間のアクセス解析・近況など</a> <span class="backref-date">2015年10月01日 13:47:48</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2015/07/column_82774604.html">前期の翌日(2015-04-01)から昨日(2015-06-30)まで 91 日間のアクセス解析・近況など</a> <span class="backref-date">2015年07月01日 05:36:05</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2015/04/column_82138851.html">前期の翌日(2015-01-01)から昨日(2015-03-31)まで 90 日間のアクセス解析・近況など</a> <span class="backref-date">2015年04月01日 09:16:30</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2015/01/column_81484128.html">前期の翌日(2014-10-01)から昨日(2014-12-31)まで 92 日間のアクセス解析・近況など</a> <span class="backref-date">2015年01月01日 06:55:14</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2014/10/column_80751818.html">前期の翌日(2014-07-01)から昨日(2014-09-30)まで 92 日間のアクセス解析・近況など</a> <span class="backref-date">2014年10月01日 05:31:54</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2014/07/column_80047968.html">前期の翌日(2014-04-01)から昨日(2014-06-30)まで 91 日間のアクセス解析・近況など</a> <span class="backref-date">2014年07月01日 09:02:01</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2014/04/column_79318735.html">前期の翌日(2014-01-01)から昨日(2014-03-31)まで 90 日間のアクセス解析・近況など</a> <span class="backref-date">2014年04月01日 06:35:22</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2014/01/column_78565892.html">前期の翌日(2013-10-01)から昨日(2013-12-31)まで 92 日間のアクセス解析・近況など</a> <span class="backref-date">2014年01月01日 01:27:22</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2013/10/column_77781983.html">前期の翌日(2013-07-01)から昨日(2013-09-30)まで 92 日間のアクセス解析・近況など</a> <span class="backref-date">2013年10月01日 01:14:59</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2013/07/column_76937312.html">前期の翌日(2013-04-01)から昨日(2013-06-30)まで 91 日間のアクセス解析・近況など</a> <span class="backref-date">2013年07月01日 01:50:58</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2013/04/column_76057634.html">前期の翌日(2013-01-01)から昨日(2013-03-31)まで 90 日間のアクセス解析・近況など</a> <span class="backref-date">2013年04月01日 01:17:46</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2013/01/column_75158671.html">前期の翌日(2013-10-01)から昨日(2012-12-31)まで 92 日間のアクセス解析・近況など</a> <span class="backref-date">2013年01月01日 01:17:42</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2012/10/column_74229152.html">前期の翌日(2012-07-01)から昨日(2012-09-30)まで 92 日間のアクセス解析・近況など</a> <span class="backref-date">2012年10月01日 03:24:01</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2012/05/statuses_cocolog_72609069.html">ひとこと</a> <span class="backref-date">2012年05月08日</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2012/01/column_71096713.html">前期の翌日(2011-10-01)から昨日(2011-12-31)まで 92 日間のアクセス解析・近況など</a> <span class="backref-date">2012年01月01日 00:55:42</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2011/10/column_70010999.html">前期の翌日(2011-07-01)から昨日(2011-09-30)まで 92 日間のアクセス解析・近況など</a> <span class="backref-date">2011年10月01日 01:32:02</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2011/04/column_67685733.html">前期の翌日(2011-01-01)から昨日(2011-03-31)まで 90 日間のアクセス解析・近況など</a> <span class="backref-date">2011年04月01日 00:45:38</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2011/03/statuses_aboutme_137828.html">ひとこと</a> <span class="backref-date">2011年03月22日</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2011/03/statuses_aboutme_137270.html">ひとこと</a> <span class="backref-date">2011年03月02日</span></li>
+</ul>
+</section>
+
+</article>
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2011/03.html">2011年03月</a> | <a href="../../../index/column.html">雑記</a></nav>
+</body>
+</html>

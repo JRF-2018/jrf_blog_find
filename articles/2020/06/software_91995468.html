@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>ケネディと天使の問題を Isabelle で証明 その２ 気まぐれ天使問題 - JRF Blog Archive</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2020/06.html">2020年06月</a> | <a href="../../../index/software.html">ソフトウェア Tips</a></nav>
+<article data-pagefind-body>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[software] <span class="cocolog-id">cocolog:91995468</span></td></tr>
+<tr><th>セクション</th><td>JRF のソフトウェア Tips</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2020/06.html">2020年06月22日 08:07:46</a></td></tr>
+<tr><th>元URL</th><td><a href="http://jrf.cocolog-nifty.com/software/2020/06/post-d9cd87.html" class="ext-link"><span class="original-url">http://jrf.cocolog-nifty.com/software/2020/06/post-d9cd87.html</span></a></td></tr>
+<tr><th>タグ</th><td>[関数型言語・定理証明器]</td></tr>
+</table>
+</div>
+<h1>ケネディと天使の問題を Isabelle で証明 その２ 気まぐれ天使問題</h1>
+<pre class="body">■概要
+  
+ケネディと天使の問題、または、うそつき天使問題、気まぐれ天使問題、三人の天使問題…と言われているものを、定理証明システム Isabelle でその答えが正しいかチェック(証明)した。
+
+これは「その２」で、気まぐれ天使問題を扱う。
+
+■スターリン登場
+  
+野崎昭弘『詭弁論理学』(中公新書)の p.14-16, 148-154 に、「ケネディの問題」があり、それを「その１」で説明したが、それには続きがある。
+
+＞
+  ケネディの問題を、次のように変更してみよう。まず登場人物をチャーチル、ヒトラー、スターリンの三人にふやす。そしてチャーチルはいつでも正しいことをいい、ヒトラーはいつでもウソをつくが、スターリンはウソをつくか本当のことをいうか、きまっていないとする。ケネディはこれらのうちの (誰ともわからない) 二人に、一回ずつ、「はい」か「いいえ」で答えられる質問をする。三回以上質問をしても、誰も答えてくれない。ケネディは正しい道をみつけられるのだろうか？
+＜
+
+答えはケネディは正しい道を見つけることができて、その質問は、わからないなりに三人を A B C とラベル付けした上で、
+
+＞
+  天使 A (誰でもよい) をつかまえて、次のようにきく。
+  
+  「あなたは、『この方(と天使 B を指さしながら) がスターリンですか』ときかれたら、『はい』と答えますか？」
+  
+  (…)
+  
+  前の答が「はい」なら C に、「いいえ」なら B にきく。
+  
+  「あなたは『この (右の) 道が天国に行く道であうか』ときかれたら『はい』と答えますか？」
+＜
+
+…と質問すればよい。これがネットで「気まぐれ天使」問題・三人の天使問題と言われているものの解答である。
+
+■記号論理的解答
+  
+問題は、スターリンをどう定式化するかである。つまり乱数を返してくるのがスターリンということになる。これを記号論理という「関数型プログラミング」の世界でどう表すか？
+
+一つよくやる手が、環境の導入である、今回はそのテでいく。つまり、「何時何分何秒 経度緯度何分で言った」という子供のあおりがあるが、それを地で行き、環境(時間・場所)を指定すれば、スターリンと言えど言ったことは一つだったはずであるとするのである。
+
+そして、基本、質問はみずに環境だけ見てると考える。スターリン関数 s は、環境 e について s(e) を返すが、その値はわからないとする。(質問 q について s(q, e) とすることもできるが、本質的な差はない。)
+
+そして、s(e) がどんな値になるかわからないが成り立つ、というのは、すべての e について成り立つことと定式化する。
+
+最初の質問 Q1 は Q1(f) = f(f = s) ということになる。p1 = f(Q1(f)) とすると、何らかの選択関数 ch について y = ch(p1) とし y(Q2(y)) = p となるようにしたいということ。
+
+ch は p1 が真ならば C を 偽ならば B を返す関数で、Q2 は、「その１」の q に等しく Q1(f) = f(p) とすればいいというのが解答になる。
+
+■Isabelle でのチェック
+  
+ここまで難しくなるとチェックしがいがあるというものである。ソース KennedyProblem2.thy は次のようになる。
+
+theory KennedyProblem2
+  imports Main
+begin
+
+typedecl env 
+
+consts Paradise :: &quot;bool&quot;
+
+datatype angel = Churchill | Hitler | Stalin
+
+definition churchill :: &quot;bool =&gt; bool&quot; where
+&quot;churchill x == x&quot;
+
+definition hitler :: &quot;bool =&gt; bool&quot; where
+&quot;hitler x == ~x&quot;
+
+consts stalin :: &quot;env =&gt; bool&quot;
+
+fun apply_angel :: &quot;angel =&gt; env =&gt; bool =&gt; bool&quot; where
+&quot;apply_angel Churchill e x = churchill x&quot; |
+&quot;apply_angel Hitler e x = hitler x&quot; |
+&quot;apply_angel Stalin e x = stalin e&quot;
+
+definition kennedy_problem ::
+  &quot;((bool =&gt; bool) =&gt; angel =&gt; angel =&gt; angel =&gt; bool) =&gt; 
+    (bool =&gt; nat) =&gt; 
+    ((bool =&gt; bool) =&gt; angel =&gt; angel =&gt; angel =&gt; bool) =&gt; 
+    bool&quot;
+  where
+&quot;kennedy_problem Q1 C Q2 == 
+ALL a::angel. ALL b::angel. ALL c::angel.
+  a ~= b &amp; b ~= c &amp; c ~= a
+--&gt;
+(ALL p1::bool. ALL y::angel.
+  ALL e1::env. ALL e2::env. ALL e3::env. ALL e4::env.
+  apply_angel a e1 (Q1 (apply_angel a e2) a b c) = p1
+  &amp; y = nth [a, b, c] (C p1)
+  --&gt;
+  apply_angel y e3 (Q2 (apply_angel y e4) a b c) = Paradise)&quot;
+  
+lemma kennedy_answer:
+  shows &quot;kennedy_problem (%f a b c. f (b = Stalin))
+            (%p. if p then 2 else 1) (% f a b c. f Paradise)&quot;
+  apply (unfold kennedy_problem_def)
+  apply (intro allI)
+  apply (case_tac [!] a)
+  apply (case_tac [!] b)
+  apply (case_tac [!] c)
+  apply (simp_all add: churchill_def hitler_def)
+  done
+  
+end
+
+apply_angel は「その１」と違い、環境 e::env を取るものとなっている。そして A B C は a b c とローカルに表されることになる。その a b c が使えるように Q1 や Q2 は a b c も引数として取るように変更されている。
+
+しかし、ch は C になっているが、この C は質問を介さないので、a b c のことは知らないというのを表現するために、C の結果を何番目かという数値として出し、その番号で a b c のうちの一つが選ばれるようになっている。
+
+解答である Q1 f a b c は、f (b = Stalin) に、C p1 は、 if p1 then 2 else 1 に、Q2 f a b c は、f Paradise になっている。
+
+証明はとても簡単で、a b c をそれぞれ Churchill Hitler Stalin に総当り的に割り当ててから simplify すればよい。
+
+■結論
+  
+Isabelle で「気まぐれ天使」問題の解答をチェックした。
+
+a b c が誰かを「知らない」ということを a b c を「区別できない」まますべての a b c について成り立つと表現しているのがおもしろい。さらに、「知らない」というのは C が a b c を直接使わないことで表現されているのもおもしろい。
+
+また stalin 関数の詳しい内容が定義されていなくても、それが使われないように消えるので問題ないというのもおもしろい。
+
+「その３」では気まぐれ天使問題について、悪戦苦闘した経緯を話したい。ただ、そこは「失敗」が語られるだけなので、普通の人は、この「その２」までで十分かもしれない。
+
+(配布物・参考文献・ライセンス・更新の情報は「その１」にあります。)
+
+更新：2020-06-22
+初公開：2020年06月22日 08:07:44
+最新版：2020年06月23日 00:14:58
+
+
+Links:
+
+詭弁論理学: <a href="../../../articles/2020/06/hbm_01998.html" class="int-link" title="Amazon.co.jp: 詭弁論理学 改版 (中公新書 448): 野崎昭弘著: Books">https://www.amazon.co.jp/dp/4121804481</a>
+その１: <a href="../../../articles/2020/06/software_91995459.html" class="int-link" title="ケネディと天使の問題を Isabelle で証明 その１ うそつき天使問題">http://jrf.cocolog-nifty.com/software/2020/06/post-ef863f.html</a>
+その３: <a href="../../../articles/2020/06/software_91995474.html" class="int-link" title="ケネディと天使の問題を Isabelle で証明 その３ 悪戦苦闘編">http://jrf.cocolog-nifty.com/software/2020/06/post-33c483.html</a></pre>
+
+
+<section class="backrefs" data-pagefind-ignore>
+<h2>後方参照 (3 件)</h2>
+<ul>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2020/06/software_91995459.html">ケネディと天使の問題を Isabelle で証明 その１ うそつき天使問題</a> <span class="backref-date">2020年06月22日 08:02:35</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2020/06/software_91995474.html">ケネディと天使の問題を Isabelle で証明 その３ 悪戦苦闘編</a> <span class="backref-date">2020年06月22日 08:10:47</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2020/06/statuses_cocolog_91995523.html">ひとこと</a> <span class="backref-date">2020年06月22日</span></li>
+</ul>
+</section>
+
+</article>
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2020/06.html">2020年06月</a> | <a href="../../../index/software.html">ソフトウェア Tips</a></nav>
+</body>
+</html>

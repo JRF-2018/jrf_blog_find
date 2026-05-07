@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>共有メモ - JRF Blog Archive</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2021/09.html">2021年09月</a> | <a href="../../../index/gsm.html">共有メモ</a></nav>
+<article data-pagefind-body>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[gsm] 2021-09-08T03:45:19Z</td></tr>
+<tr><th>セクション</th><td>グローバル共有メモ</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2021/09.html">2021-09-08T03:45:19Z</a></td></tr>
+<tr><th>元URL</th><td>(URLなし)</td></tr>
+
+</table>
+</div>
+<h1>共有メモ</h1>
+<pre class="body">jrf&gt; [仏教の最適化プログラムの続き。]
+
+fanampr は本当にくじ運が悪かっただけななのか？ 確かめるためそれだけもう一度実験してみた。
+
+run_simbdp3.sh fanampr2 10 -L -t 360 --nation-education-power-threshold=0.925 --faith-realization-power-threshold=0.925 --priests-rate-max=0.0125 --priests-rate=0.00666666666666667 --priests-rate-min=0.004
+
+python plot_logs.py fanampr fanampr2 -p AccDeath -o fig-20210908_01.png
+python plot_logs.py normal fana fanampr fanamprmprs fanampr2 -p Education -o fig-20210908_02.png
+python plot_logs.py normal fana fanampr fanamprmprs fanampr2 -p AccDeath -o fig-20210908_03.png
+python plot_logs.py normal fana fanampr fanamprmprs fanampr2 -p Population -o fig-20210908_04.png
+python plot_logs.py normal fana fanampr fanamprmprs fanampr2 -p AccAbortion -o fig-20210908_05.png
+
+《グラフ集: 2021-09-06 から - Issue #2 - JRF-2018/simbd》  
+<a href="https://github.com/JRF-2018/simbd/issues/2" class="ext-link">https://github.com/JRF-2018/simbd/issues/2</a>
+
+fanampr(2) は、fana より AccDeath では下に、AccAbortion では上に来て欲しいのだが、そうなってない。Education は予定通り fanampr(2) が上に来ているがその差は 0.54 - 0.50 = 0.04 程度で、Education の効果はほとんどないということになるようだ。
+
+……。
+
+国力を見てみると…、
+
+python plot_logs.py normal fana fanampr fanamprmprs fanampr2 -p Power -o fig-20210908_06.png
+
+…確かに fanampr(2) のほうが高く、差はあるのだが、その差が少な過ぎて効いてない…ということなのだろうか？ 長期で見ればまた違いがあるのだろうか？</pre>
+
+
+</article>
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2021/09.html">2021年09月</a> | <a href="../../../index/gsm.html">共有メモ</a></nav>
+</body>
+</html>

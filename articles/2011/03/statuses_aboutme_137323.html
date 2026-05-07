@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>ひとこと - JRF Blog Archive</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2011/03.html">2011年03月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+<article data-pagefind-body>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[statuses] <span class="cocolog-id">aboutme:137323</span></td></tr>
+<tr><th>セクション</th><td>JRF のひとこと</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2011/03.html">2011年03月04日</a></td></tr>
+<tr><th>元URL</th><td><a href="http://jrf.cocolog-nifty.com/statuses/2011/03/aboutme137323.html" class="ext-link"><span class="original-url">http://jrf.cocolog-nifty.com/statuses/2011/03/aboutme137323.html</span></a></td></tr>
+
+</table>
+</div>
+<h1>ひとこと</h1>
+<pre class="body">「高級言語」で例外処理は必要だと思うが、C言語で try {} catch {} 文は必要性が見えないというか、使っちゃいけないものだろう。というのは C 言語だとメモリーリークがないよう自分で管理する必要があり、try catch を使っても労力分散ができないから。
+JRF 2011年3月4日
+
+CPS 変換とかいうのもあるけど、普通に引き数にポインタとって、エラーかどうかを返り値で返すという作業をするのは (C++ とか C# とかじゃなく生の) C言語では普通にある実装で、どこかで malloc したあとエラーがあるようならメモリーを free するのをそのプロシージャで書いておくのがセオリー。
+
+JRF 2011年3月4日
+
+try catch ができるというのは、そういうったメモリー割り当てがないか、全部 catch の中でするという話になる。「高級言語」だとどうメモリーを割り当てたかなんて気にしないから、とにかく例外を投げとけ…って話で、下の者にプログラミングをまかせることができるけど、C言語ではメモリーについて勝手したいなら、自分の下で、throw がないのがほぼ前提になる。もちろん、他人のコードを使うときは、try でかこっておくのがマナーだという言い方もできようが、それするぐらいなら、上のエラーかどうかを返り値にすることをチームで調整したほうがいいだろう。
+
+JRF 2011年3月4日
+
+まぁ、昔話かな。今なら C 言語は高級言語から呼び出されるのが前提で、 (高級言語が提供したものではない)malloc でメモリ割り当てしたものを高級言語側に渡すとか危険すぎてできないだろうし。
+
+JRF 2011年3月4日
+
+(…というか、少なくとも昔は、C言語では、try 文の中でしか throw が使えないんじゃなかったっけ。try から呼び出す関数内で throw が使えないトホホ仕様だったりしなかった？)
+
+JRF 2011年3月4日
+
+関連かな？↓
+
+《Haskell の callCC で goto を作る [ JRF のソフトウェア Tips ]》
+<a href="../../../articles/2011/01/software_66773047.html" class="int-link" title="Haskell の callCC で goto を作る">http://jrf.cocolog-nifty.com/software/2011/01/post-2.html</a>
+
+JRF 2011年3月4日</pre>
+
+
+</article>
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2011/03.html">2011年03月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+</body>
+</html>

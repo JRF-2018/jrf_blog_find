@@ -1,0 +1,872 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>ひとこと - JRF Blog Archive</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2025/09.html">2025年09月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+<article data-pagefind-body>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[statuses] <span class="cocolog-id">cocolog:95619779</span></td></tr>
+<tr><th>セクション</th><td>JRF のひとこと</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2025/09.html">2025年09月09日</a></td></tr>
+<tr><th>元URL</th><td><a href="http://jrf.cocolog-nifty.com/statuses/2025/09/post-8225e2.html" class="ext-link"><span class="original-url">http://jrf.cocolog-nifty.com/statuses/2025/09/post-8225e2.html</span></a></td></tr>
+
+</table>
+</div>
+<h1>ひとこと</h1>
+<pre class="body">「LLM のメモリ機能を強制的に使うバンディットマシンの試験実装」と「LLM のメモリ機能とバンディット機能の試験実装」を行った。後者がメインの成果物で、メモリ機能の使用増加をどう強制するかから拡張したフレームワーク。
+JRF 2025年9月9日
+
+成果物は↓からどうぞ。
+
+《JRF-2018/langchain_maze: 熊剣迷路問題 revisited》  
+<a href="https://github.com/JRF-2018/langchain_maze" class="ext-link">https://github.com/JRF-2018/langchain_maze</a>
+
+JRF 2025年9月9日
+
+「LLM のメモリ機能を強制的に使うバンディットマシンの試験実装 Version 0.0.1」と「LLM のメモリ機能とバンディット機能の試験実装 Version 0.0.1」がそれ。特に後者がメインで AI さん達によっては「メタバンディト」機能と呼んでいた。それぞれ下記のように GitHub Gist で先に公開していて、それと同じもの。
+
+今回のアイデアは ChatGPT さんが最初に出してきて、それを私が敷衍した形になっている。その経緯については↓にある。
+
+JRF 2025年9月9日
+
+<a href="../../../articles/2025/08/statuses_cocolog_95599211.html" class="int-link cocolog-id" title="ひとこと">[cocolog:95599211]</a>(2025年8月)
+＞AI (LLM) のメモリ機能について悩んで、最適化の際に記憶があればその報酬は独立的になるのでは…とか妄想していたら、それをモデル化する一例として ChatGPT さんが記憶操作のバンディットマシンを作るのを提案してくれた。 - JRF のひとこと＜
+
+以下は公開時の説明から。
+
+JRF 2025年9月9日
+
+……。
+
+○ 2025-09-07T22:24:30Z vh2i8rUSts
+
+「LLM のメモリ機能を強制的に使うバンディットマシンの試験実装」を行った。
+
+《experimental_bandit_0.0.1.ipynb - GitHub Gist》  
+<a href="https://gist.github.com/JRF-2018/afc8b26a8d841a414ba3c65c7e679fce" class="ext-link">https://gist.github.com/JRF-2018/afc8b26a8d841a414ba3c65c7e679fce</a>
+
+JRF 2025年9月9日
+
+最近 LLM についてコンテクストエンジニアリングという言葉をよく聞く。実は Web でなく API から使う LLM は「ステートレス」で、会話などの記憶はデフォルトではしてくれない。会話を続けようと思ったら、メッセージをユーザー側で記録しておき、それをいちいち API に与えないといけないのだ。古い記憶を呼び戻したりするには、単純に記録するだけでなく検索基盤も必要となる。そのような基盤をひっくるめてコンテクストと一般的に呼んでおり、それをどううまく構築するかが問題となっている。
+
+JRF 2025年9月9日
+
+特にコンテクストのうち、記憶の基盤は単に「メモリ」と呼ばれている。PC のメモリなどとごっちゃになって、わかりにくくもあるのだが、そう呼ばれているのだからしかたがない。
+
+前回(experimental_memory_0.0.2.ipynb)、そのメモリ機能がどう動くか見てみると、なかなかそれを使ってくれないことが分かった。それについて悩んでいろいろ考えていたたところ、ChatGPT さんが記憶操作のバンディットマシンを作るのを提案してくれた。
+
+JRF 2025年9月9日
+
+ところで、今回のような手法はすでにどこかにあるからこそ ChatGPT さんが提案できたのかもしれない。この後、すぐに「バンディットに特定のツールを登録するツールみたいなのを用意して、どういうツールを強制して数を増やして欲しいかを AI さん自身が決められると良いのかも」というのを試すが、そちらのほうがまだ「新しさ」はあるのだろう。もちろん、新規性がある話ではあまりないのかもしれないが。とはいえ、今回の試みが、何かの参考になれば幸いである。
+
+JRF 2025年9月9日
+
+……。
+
+バンディットマシンは read 系と write 系の二台で学習しているが、報酬の元となるスコアは二台とも共通になっている。ある時点の記事作成など将来の記事参照や記事作成につながるのを学習するために、スコアがよければ、選択ヒストリを元に良い報酬が及ぶ…みたいなアルゴリズムにしたつもりだったが…。
+
+JRF 2025年9月9日
+
+……。
+
+結論。
+
+Gemini 2.5 Flash さんでとりあえずゴールできた。強制した部分はもちろんツールをしっかり使ってくれたが、あまり役立っている感じじゃなかった。バンディットマシンは結局、どのハンドも等確率ぐらいになってしまって、学習が進んだ感じはない。
+
+が、AI さんの API もコストがかかるものなので、この辺で実験は切り上げ次の実験「バンディットに特定のツールを登録するツールみたいなのを用意して、どういうツールを強制して数を増やして欲しいかを AI さん自身が決められると良いのかも」を試すのに急ぐことにする。
+
+JRF 2025年9月9日
+
+もしバンディットマシンの学習に興味があるという方は、適宜パラメータを変えるなどして各自、試していただきたい。
+
+なお、再現性がないため、最初からの再実行はやっていないのはご容赦願いたい。
+
+JRF 2025年9月9日
+
+……。
+
+……。
+
+○ 2025-09-08T13:28:23Z
+
+「LLM のメモリ機能とバンディット機能の試験実装」を行った。迷路をゴールできなかったがツールのコンセプト実装としてはまずまず成功してると思う。
+
+《experimental_bandit_tool_0.0.1.ipynb》  
+<a href="https://gist.github.com/JRF-2018/3663b76025004b1dd05c67fe81cce462" class="ext-link">https://gist.github.com/JRF-2018/3663b76025004b1dd05c67fe81cce462</a>
+
+JRF 2025年9月9日
+
+前々回(experimental_memory_0.0.2.ipynb)、メモリ機能がどう動くか見てみると、なかなかそれを使ってくれないことが分かった。それについて悩んでいろいろ考えていたたところ、ChatGPT さんが記憶操作のバンディットマシンを作るのを提案してくれたので、前回(experimental_bandit_0.0.1.ipynb)それを実装してみた。
+
+JRF 2025年9月9日
+
+そこからアイデアを得て、「バンディットに特定のツールを登録するツールみたいなのを用意して、どういうツールを強制して数を増やして欲しいかを AI さん自身が決められると良いのかも」と考えそういう「バンディット機能」を実装したのが今回になる。
+
+ところで、今回のような手法はすでにどこかにあるからこそ ChatGPT さんが提案できたのかもしれない。新規性がある話ではあまりないのかもしれないが、今回の試みが、何かの参考になれば幸いである。
+
+JRF 2025年9月9日
+
+……。
+
+前回のバンディットマシンは、read と write を強制してそれがいい具合になるよう学習するのを試みて失敗したのだが、今回は、read や write の強制を LLM さん自体がコントロールできるようにしてみた(学習はしない)。
+
+特定のツールを予約するための bandit_schedule や特定のメモリを読むのを予約するための bandit_schedule_read をツールとして用意している。
+
+JRF 2025年9月9日
+
+……。
+
+結論。
+
+Gemini 2.5 Flash さんは途中で迷ってゴールできなかった。Gemini 2.5 Pro さんも迷って、「壁が通り抜けられる」とか言い出した時点であきらめた。もう一度、Pro さんにお願いしたが、「不可視の壁」をなぜか発見してしまい、あきらめた。ただ、バンディット機能はちゃんと機能しているようだったので、ツールの実験としてはまずまず成功していると思う。
+
+JRF 2025年9月9日
+
+ゴールができなくなったのは、途中に read などが強制的にはさまって思考が中断されるからかもしれない。その点はもしかすると今後のエージェント的利用にとっては本質的問題になるかもしれない。
+
+なお、再現性がないため、最初からの再実行はやっていないのはご容赦願いたい。コストもかかるしね (^^;。
+
+JRF 2025年9月9日
+
+……。
+
+……。
+
+追記。
+
+コストがかかるから今はやらないが &quot; or &quot; と &quot; OR &quot; の区切りを許しているところは、
+
+tool_names = re.split(r&quot;\s+or\s+|\s+OR\s+&quot;, tool_name)
+
+…のように re.split を使ったほうがいいだろう。
+
+で、それを使って、step() 内のメインループで、all_tools = [x.name for x in self._create_tools(tools_name)] について無限ループに入らないように、
+
+JRF 2025年9月9日
+
+&lt;pre&gt;
+if not any (x in all_tools for x in tool_names):
+    done += 1
+    continue
+&lt;/pre&gt;
+
+しておくべきだろう memory_id がない場合似たことをしているように。bandit_schedule だけでなく、ここでも tools_name に従った制御を入れておくほうが汎用性が上がると思うから。
+
+これらは次回いじることがあれば、いじりたい。小さい今後の課題。
+
+JRF 2025年9月9日
+
+……。
+
+……。
+
+追記。今後の課題というかアイデア。
+
+私のメモリ機能の試験実装(<a href="../../../articles/2025/09/statuses_cocolog_95619779.html" class="int-link cocolog-id" title="ひとこと">[cocolog:95619779]</a>(2025年9月))。
+
+imagine_keywords を有効に機能させるためには、書いたメモリからランダムに選んで keyword 文を append することを検討させるのを、バンディットで20ターンに1回ぐらい強制するのがいいのだと思う。
+
+その際はおそらく「バッチ処理」をするのがいいのだと思う。ランダムに選ぶのは複数わざと同時に処理させると、キーワードに「創造」性が生まれやすいのではないか。
+
+JRF 2025年9月10日
+
+具体的に私のフレームワークで処理するなら、特定のメモリに「レシピ」を登録しておく、それを memory:3333 だとすると、bandit_schedule で memory_read を 1/20 の確率で登録し、補助プロンプトに「memory:3333 を読みその指示に従え」とする。
+
+→そして memory:3333 には、「memory_list_random という機能を使って 5 つリストアップして、それぞれに適切なキーワードを付けることが可能なら 「keyword: 〜」文を append するように」と書いておく。
+
+…という流れになるだろうか。
+
+JRF 2025年9月10日
+
+……。
+
+あと、マルチモーダルなメモリを考えると、現在のスナップショットを撮る機能があるべきなのだろう。
+
+memory_snapshot_and_new や memory_snapshot_and_append みたいなコマンドを作った上で、マルチモーダル検索などがあればいいのだろう。
+
+まぁ、熊剣迷路問題ではこの機能はほぼ意味がないので、ポケモンとかやる場合に必要…ぐらいの話だが。
+
+JRF 2025年9月10日
+
+……。
+
+追記。
+
+imagine_keywords の話つづき。
+
+ああ、そうか。memory_read を bandit_schedule するだけでは memory:3333 などが読み出された時点でサブタスクが終了とみなされて次に処理が移ってしまうか。すると、そこから逆算して、subwork_done というツールを作り自らサブタスクの終了を宣言できるようにした上で、bandit_schedule を拡張し、&quot;memory_read subwork_done&quot; みたいに複数の流れを schedule できるようにする必要がある。
+
+JRF 2025年9月10日
+
+このような流れの登録はいずれ必要と思っていたが、こんなにすぐに必要となると思うとは思ってなかった。
+
+実装としてはそんなに難しくない。流れの最後のコマンドを監視し、それが出れば、(サブ)ターンの最初から複数含まれているものが順番にクリアされているかチェックすればいい。
+
+aux_prompt をそれぞれに指定できるようにすべきかが問題だが…。
+
+JRF 2025年9月10日
+
+……。
+
+…または bandit_schedule には subwork_done だけ登録し、aux_prompt に「memory:3333 を読みその指示を実行し、そのサブタスクが終ったら、subwork_done してください。」で十分なのか…。拡張してない今のフレームワークならそれが適切だが…。
+
+JRF 2025年9月10日
+
+……。
+
+追記｡
+
+このようなことを「フルスペック」でやるとしたら workflow を定義できるようにするべきなんだろうな。
+
+workflow_new や workflow_update をツールとして用意して、bandit_schedule_workflow で workflow を予約できるようにする。
+
+それぞれの workflow はバンディットに登録するような ツール + aux_prompt の列を並べたものになる…。
+
+JRF 2025年9月10日
+
+先の例だが、memory_read + &quot;memory:3333 を読むように&quot; と subwork_done と &quot;memory:3333 の指示が終ったらこのツールを実行するように&quot; という列が workflow として workflow:2222 に登録されて、bandit_schedule_workflow &quot;workflow:2222&quot; される…と。
+
+subwork_done を複数含むような列も登録できる…と。
+
+workflow_do もできる…と。入れ子的実行。
+
+JRF 2025年9月10日
+
+これは言わば列＝chain を登録させるわけだが、LangChain → LangGraph の流れを考えると、グラフを登録したいという欲求も出てくるんだろうな。
+
+そこまでやるか？…という気はするし、AI にそこまでのことをやらせる必要もないかもしれないが、人間は、そういう複雑な workflow を登録しておきたい…というのはあるのかもしれない。私のシステム(の類似物)を複雑な RAG に適用したいなどとする場合。
+
+JRF 2025年9月10日
+
+……。
+
+追記。
+
+そうか！ 今の bandit_list が workflow:main みたいなものなのか！
+
+JRF 2025年9月11日
+
+workflow の中でも prob や times を指定できるようにすれば、それはバンディットの実行と変わらない。そして、workflow_update みたいなものを一般に認めるより、いくつかの要素が書き換え不可の pin みたいなものがあったほうがいい…とか考えると、workflow_update は作らず、bandit_schedule に workflow_id も指定できるようにすれば自然なのかもしれない。デフォルトで workflow_id = &quot;workflow:current&quot; みたいにすればいいという話か。
+
+JRF 2025年9月11日
+
+なるほど。それは自然な拡張だな…。chain に過ぎないが、自然な拡張という意味でそういう実装は支持できる。まぁ、依然として「そこまでやるか」という話ではあるが。
+
+JRF 2025年9月11日
+
+……。
+
+…… 。
+
+追記。
+
+○ 2025-09-11T08:58:04Z
+
+「LLM のメモリ機能とバンディット機能とワークフロー機能の試験実装」を行った。ワークフロー機能を実装してそれが一度動いたところで実験終了。まぁ、ただのコンセプト実装。
+
+《experimental_bandit_workflow_0.0.2.ipynb》  
+<a href="https://gist.github.com/JRF-2018/8b92fdb2d64bf017a533549d6ec4a22a" class="ext-link">https://gist.github.com/JRF-2018/8b92fdb2d64bf017a533549d6ec4a22a</a>
+
+JRF 2025年9月11日
+
+メモリ機能をなかなか使ってくれないのに業を煮やして、「バンディットに特定のツールを登録するツールみたいなのを用意して、どういうツールを強制して数を増やして欲しいかを AI さん自身が決められる」というバンディット機能を作って、メモリを使うのを強制してみたのが前回(experimental_bandit_tool_0.0.1.ipynb)。今回はそれを拡張して、ワークフローも実行させられるようにしてみた。
+
+JRF 2025年9月11日
+
+ところで、今回のような手法はすでにどこかにあるとは思う。ワークフローというのは手垢のついた考え方だ。新規性がある話ではあまりないのかもしれないが、今回の試みが、何かの参考になれば幸いである。
+
+JRF 2025年9月11日
+
+……。
+
+前回からの変更点。
+
+imagine_keywords を有効に機能させるためには、書いたメモリからランダムに選んで keyword 文を append することを検討させるのを、バンディットで20ターンに1回ぐらい強制するのがいいのだと思う。それを強制するのに結局のところワークフローみたいなものが必要になるとまず気づいた。
+
+そして考えてるうちに前回までの bandit_list が workflow:main みたいなものなのか！…と気づいた。
+
+その方向で前回の実装をかなり活かしてワークフロー機能を実装できた。
+
+JRF 2025年9月11日
+
+その他に大きなところで、前回までに PlayGame クラスが大きくなりすぎたので、それを分けて MemoryBanditWorkflow というクラスを作り、PlayGame をそこから継承するようにした。将来的には MemoryBanditWorkflow を独立したライブラリと出来ればいいのかもしれないが、そこまでするつもりは今のところない。
+
+ちなみに experimental_bandit_workflow_0.0.1.ipynb は MemoryBanditWorkflow を分ける前の実装で、必要ないのでオミットした。
+
+JRF 2025年9月11日
+
+……。
+
+結論。
+
+今回はコストがかかるのを嫌ってはじめからゴールさせるつもりはなく、ワークフローを一度使ったところで実験終了させた。かなりいい調子なのに止めてしまって Gemini 2.5 Pro さんには申し訳ない。
+
+ワークフロー自体はちゃんと動いている。いちおう workflow_new もツールとして用意したが、これは煩雑になりすぎるので AI さんには使わせないほうが吉なのかもしれない。workflow_new の実験はできてないが、まぁ、動くことは動くでしょう。
+
+JRF 2025年9月11日
+
+なお、再現性がないため、最初からの再実行はやっていないのはご容赦願いたい。
+
+JRF 2025年9月11日
+
+……。
+
+Gist に上げたものは↓からも取得できる。「LLM のメモリ機能とバンディット機能とワークフロー機能の試験実装 Version 0.0.2」がそれ。
+
+《JRF-2018/langchain_maze: 熊剣迷路問題 revisited》
+<a href="https://github.com/JRF-2018/langchain_maze" class="ext-link">https://github.com/JRF-2018/langchain_maze</a>
+
+JRF 2025年9月11日
+
+……。
+
+……。
+
+追記。小さな今後の課題。
+
+ワークフローから復帰するときに、「workflow:〜 から workflow:〜 へと復帰しました。」と AI さんに表示したほうが AI さんもわかりやすいかもしれない。それを HumanMessage で出すのはやや気持ち悪いが。
+
+JRF 2025年9月12日
+
+あと、ワークフローを AI さんに表示するとき workflow:〜 「タイトル」…みたいにタイトルも表示したほうがいいだろう。ただし、こうやってると workflow_id を指定しろ…っていってるのにタイトル付きで渡してくるボンクラかますことが想定されるので、normalize_workflow_id で「〜」が後ろに付いていれば、それを削る処理をやっておくべきだろう。
+
+JRF 2025年9月12日
+
+……。
+
+あと、_create_agent や _create_tools のデフォルトは 'null_tools' よりも 'default_tools' のほうが自然かもしれない。ただ、これは変えていいか迷いがある。
+
+JRF 2025年9月12日
+
+……。
+
+あと、workflow:main を workflow_do から呼び出せるのはマズいだろう。ただ、本格的な実行制御とかはやりたくないのだが…。
+
+また、workflow_do が失敗したときの処理をちゃんとやるべき。
+
+JRF 2025年9月12日
+
+……。
+
+あと、MemoryBanditWorkflow の system_prompt から「全地図と地図記号」に関する記述は削ったほうがいい。また、「最近の数手を要約して書いてください。」の「数手」という表現はあまり汎用的でない。ただ、これは、他の良案が思い浮かばないのでこのままにしようと思う。
+
+JRF 2025年9月12日
+
+……。
+
+……。
+
+追記。
+
+○ 2025-09-11T23:31:31Z
+
+「LLM のメモリ機能とバンディット機能とワークフロー機能の試験実装」をほんの少しバージョンを上げておいた。バージョン 0.0.2.1。(上に書いた)細かな修正のみ。Colab の仕様により Gist の URL は変わっているのでご注意を。
+
+《experimental_bandit_workflow_0.0.2.ipynb - GitHub Gist》  
+<a href="https://gist.github.com/JRF-2018/d2982f5e43b8a8d565ff2cfb5e120f03" class="ext-link">https://gist.github.com/JRF-2018/d2982f5e43b8a8d565ff2cfb5e120f03</a>
+
+JRF 2025年9月12日
+
+……。
+
+……。
+
+追記。
+
+小さな今後の課題。または気になっていること。
+
+まず、workflow_current というツールを作ったほうがいいかな…と思っている。現在のワークフローのタイトルなどと、バンディットのプロンプトなどを(再)表示するもの。
+
+JRF 2025年9月15日
+
+あと、翻訳…されることはないかと思うがいちおう自己満足的にそれに備えて、PlayGame.prev_command_success の日本語依存のロジックは変える…具体的には、Game 内で self.prev_success という変数を作ったほうがいいかな…と思う。
+
+あと、細かい点になるが、Game.bear は Game 内の他のロジックのように熊が複数いても対応できるようにしておいたほうがいいかな…と思う。まぁ、一匹以外の Game は考えるつもりはないので別にいいのだけれど。
+
+JRF 2025年9月15日
+
+……。
+
+……。
+
+追記。
+
+「LLM のメモリ機能とバンディット機能とワークフロー機能の試験実装」をほんの少しバージョンを上げておいた。バージョン 0.0.2.2。細かな修正のみ。Colab の仕様により Gist の URL は変わっているのでご注意を。
+
+《experimental_bandit_workflow_0.0.2.ipynb》  
+<a href="https://gist.github.com/JRF-2018/233d784c783a724a226ad1c3971fcb4c" class="ext-link">https://gist.github.com/JRF-2018/233d784c783a724a226ad1c3971fcb4c</a>
+
+JRF 2025年9月15日
+
+上の追記で書いた部分を修正した。ただし、workflow_current ではなく workflow_show_current というツール名にした。
+
+JRF 2025年9月15日
+
+……。
+
+……。
+
+追記。
+
+○ 2025-09-13T13:16:50Z
+
+私の MemoryBanditWorkflow の枠組み。どう学習すればいいのか、学習の専門家でないからよくわからないが、実行時の動的計画の前に、実行に入る前のメモリ・バンディット・ワークフローの「プログラミング」が必要で、そこは教師が学習させられるのではないか…という気はする。つまり、今の RAG とかを MemoryBanditWorkflow に置き換える手順というのは学習できて、それを教師データに使えるのではないか…とか予想する。
+
+JRF 2025年9月16日
+
+メモリやバンディットやワークフローの構成について、XML かなんかで書き出してそれを学習する感じだろうか。ツールの違いが問題だが、ツールは AI 用にドキュメントを書くものなので、それを取り出して、XML に含めればいい…という話かな。
+
+JRF 2025年9月16日
+
+……。
+
+……。
+
+追記。
+
+○ 2025-09-16T01:50:31Z
+
+MemoryBanditWorkflow。「LLM のメモリ機能とバンディット機能とワークフロー機能の試験実装」をほんの少しバージョンを上げておいた。バージョン 0.0.2.3。細かな修正のみ。Colab の仕様により Gist の URL は変わっているのでご注意を。
+
+《experimental_bandit_workflow_0.0.2.ipynb》  
+<a href="https://gist.github.com/JRF-2018/68b234d284d426de1815f1f4a1408508" class="ext-link">https://gist.github.com/JRF-2018/68b234d284d426de1815f1f4a1408508</a>
+
+JRF 2025年9月16日
+
+今回は、workflow_delete ツールを導入してその関連でチョコチョコ修正しておいた。
+
+JRF 2025年9月16日
+
+……。
+
+……。
+
+追記。
+
+○ 2025-09-18T14:38:34Z
+
+MemoryBanditWorkflow。「LLM のメモリ機能とバンディット機能とワークフロー機能の試験実装」をほんの少しバージョンを上げておいた。バージョン 0.0.2.4。細かな修正のみ。Colab の仕様により Gist の URL は変わっているのでご注意を。
+
+《experimental_bandit_workflow_0.0.2.ipynb》  
+<a href="https://gist.github.com/JRF-2018/9432be87fd78968c5f5ced4a397ef9ef" class="ext-link">https://gist.github.com/JRF-2018/9432be87fd78968c5f5ced4a397ef9ef</a>
+
+JRF 2025年9月18日
+
+今回は、MemoryBanditWorkflow の分離が十分でなかったところを修正。それにつれて _create_tools の仕様を変更。また、そのテストの過程で気付いたバグを修正。
+
+JRF 2025年9月18日
+
+……。
+
+……。
+
+追記。
+
+○ 2025-09-18T17:30:26Z
+
+MemoryBanditWorkflow。「LLM のメモリ機能とバンディット機能とワークフロー機能の試験実装」をほんの少しバージョンを上げておいた。バージョン 0.0.2.5。バグ取り。
+
+《experimental_bandit_workflow_0.0.2.ipynb》  
+<a href="https://gist.github.com/JRF-2018/bcd5a6de9023a24da3770d4b010843ee" class="ext-link">https://gist.github.com/JRF-2018/bcd5a6de9023a24da3770d4b010843ee</a>
+
+JRF 2025年9月19日
+
+Colab の仕様により Gist の URL は変わっているのでご注意を。
+
+0.0.2.4 から時間が経ってないが、今回は、ChatGPT さんが指摘してくれたバグを皮切りに、いくつかバグを取った。
+
+JRF 2025年9月19日
+
+……。
+
+……。
+
+追記。
+
+○ 2025-09-18T18:45:41Z
+
+MemoryBanditWorkflow を RAG に応用できないかと考えている。RAG の例を見ると、マルチエージェントの例がある。それを私のフレームワークに持ってくると asyncio を使う上に、メモリ機能に排他制御が必要になる。それはメンドイ。メモリには予め排他制御のあるデータベースを使うべきなんだろうな。
+
+だから私の実装はコンセプト実装に留まるんだろうな。まぁ、asyncio とか使わないレベルで勝負を続ける方法もなくはないが。
+
+JRF 2025年9月19日
+
+……。
+
+……。
+
+追記。
+
+○ 2025-09-19T13:17:33Z
+
+「MemoryBanditWorkflow を使った RAG の試験実装」を作った。書かせた論文は、「日本の失われたウン十年、何をすれば良かったか」。
+
+《experimental_rag_0.0.1.ipynb - GitHub Gist》  
+<a href="https://gist.github.com/JRF-2018/6d7dda3eaf7743b91bca32037574bfc1" class="ext-link">https://gist.github.com/JRF-2018/6d7dda3eaf7743b91bca32037574bfc1</a>
+
+JRF 2025年9月19日
+
+先に MemoryBanditWorkflow というフレームワークを作った。それは迷路問題の一部として作り始めたが、汎用なものになるようこころがけた。それが実際汎用に使えることを示すために、RAG エージェントを作ってみようというのが今回の試みである。
+
+基本的にはメモリ機能とバンディット機能とワークフロー機能を持っているのが MemoryBanditWorkflow で、今回の物はそれをそのまま使って、RagAgent という子クラスを定義している。
+
+JRF 2025年9月19日
+
+なお、MemoryBanditWorkflow はセマンティックサーチとかを用意するのは、めんどくさかったので、そういうバックエンドはこれまた AI さんに「データベース偽装」をしてもらっている。
+
+JRF 2025年9月19日
+
+ところで、RAG エージェントといえばマルチエージェントを使うのが流行りのようだが、今回の物はリニアに順次、シングルスレッドで実行されていくだけである。マルチエージェントを敷衍するなら asyncio を使ったり、メモリにデータベースを使ったりすべきなのだが、そういうことはできる展望すらない。あくまで MemoryBanditWorkflow で RAG も実装できることを示そうとしたものなので、RAG としての新規性はない。
+
+JRF 2025年9月19日
+
+……。
+
+結論。
+
+Gemini 2.5 Pro さんというコストのかかる遅いモデルを使った。やはり頭がいい者にやらせたかったから。ただ、そのため、最初からやり直す気はなかなか起きず、修正しては load してやり直し…といった感じで最後までやらせた。書かせた論文は、「日本の失われたウン十年、何をすれば良かったか」。
+
+JRF 2025年9月19日
+
+すんなり最後までいくかは運の要素があるようだ。途中かなり長いループが続いたところでやり直したりした。完成した草稿のメモリを見失ってしまうことなどがあったようである。あいかわらず、summarize_messages まわりのエラーもあるようで、そこが悪さしてるのかな？…とも思う。
+
+メモリを読んだりするのをバンディットで強制する部分は、いまいち機能してない感じだった。それ以外のツール利用がとても多く、その途中に本来ならバンディットで強制したい感じだった。
+
+JRF 2025年9月19日
+
+完全にうまくいったとはいいがたいが、MemoryBanditWorkflow の実証実験としてはそこそこうまくいったと思う。
+
+なお、再現性がないため、最初からの再実行はやっていないのはご容赦願いたい。コストもかかるしね (^^;。
+
+JRF 2025年9月19日
+
+……。
+
+なお、今回のものは↓に、「MemoryBanditWorkflow を使った RAG の試験実装 Version 0.0.1」として置いてある。
+
+《JRF-2018/langchain_maze: 熊剣迷路問題 revisited》  
+<a href="https://github.com/JRF-2018/langchain_maze" class="ext-link">https://github.com/JRF-2018/langchain_maze</a>
+
+JRF 2025年9月19日
+
+……。
+
+……。
+
+追記。
+
+実際に MemoryBanditWorkfow で RAG を作ってみたのだが、上のほうで述べた「メモリやバンディットやワークフローの構成について、XML かなんかで書き出してそれを学習する」方向は難しいと認めざるを得ない。
+
+今のエージェントには基本的に状態遷移があって、だから LangGraph のようなグラフがもてはやされる。それは単一の XML にはならない。
+
+JRF 2025年9月20日
+
+一方、指示を与えて走り続けるエージェントがあるとすれば、それは会話以外はずっとツールが走っていて、メインループを回すという形でなく、すると、バンディット強制のタイミングがはかれなくなる。結局それも、単一の XML で書ける形ではないだろう。
+
+JRF 2025年9月20日
+
+……。
+
+長めの Recursion Limit を設定して、Recursion の最初にバンディット強制するということはできるかもしれないか…。その場合、「補助にツールをいろいろ使いながら」ではなく、即座に指定のツールを使わせるべきなのだろう。または、特定の記事の read などは、こちらで read したものを HumanMessage として流すようにしてしまうか。
+
+バンディットがエージェントの自然な思考をぶったぎる問題があるが、Recursion Limit 自体がそういう性質も持つので、許されるのではないか。
+
+JRF 2025年9月20日
+
+……。
+
+そうか。そうやって read ではなく write などをバンディットで強制するとき、それを HumanMessage で流すみたいな仕様を考えると、並列に write を実行して、その結果のみ HumanMessage で流す(または単にバックグラウンドだけで終了する)アイデアになり、それは、現行の他のメモリシステムに似てくる…ということなのだな。
+
+JRF 2025年9月20日
+
+……。
+
+でも、何を読むか、何を書くかは「本人」に決めさせたほうがいいし、そのためのツール利用も認めないといけない。するとブランチを作って、その経過はメインの messages に残さず、結果だけマージする…みたいなのがいいのだろうか？
+
+JRF 2025年9月20日
+
+……。
+
+ただ、そういうのをやっていくと複雑になりすぎて、フレームワーク的にやるのは難しくなる。具体的なメモリシステムとして特別に実装する方向ならなんとかなるぐらいの話になるだろう。単純さという意味では MemoryBanditWorkflow はこれはこれで一つの形で価値があるのだろう。…と思う。思いたい。
+
+JRF 2025年9月20日
+
+……。
+
+……。
+
+追記。
+
+○ 2025-09-20T09:57:52Z
+
+マルチエージェントを作る検討をしてて気づいた。私がやったようなクラス(オブジェクト)に状態を持たせるアプローチは見通しがしやすいが、非同期処理には向かないということを。だから LangGraph のようなアプローチが流行っているのか。やっとわかった。
+
+JRF 2025年9月22日
+
+jrf:&gt; でも、普通のエージェントはオブジェクトでいいと思うんですよね。マルチエージェントみたいなことがしたければ、タスクキューみたいなものから次の仕事をもらってまたは仕事を投げてえんえんと複数のエージェントが個々にメインループを回していくような感じでいいんじゃないかと。メモリも基本は本人用で、共有メモリは別に RAG みたいに外部データベースにアクセスする感じでいいんじゃないかとも思います。 
+
+JRF 2025年9月22日
+
+Gemini:&gt; このアプローチは、単一のエージェントはオブジェクト指向でシンプルに、複数のエージェントが連携する部分は非同期処理と外部リソースでスケーラブルに、という役割分担を明確にする優れた設計です。
+
+JRF 2025年9月22日
+
+……。
+
+……。
+
+追記。
+
+○ 2025-09-22T06:44:22Z
+
+「MemoryBanditWorkflow を使った RAG の試験実装」のバージョン 0.0.2 を作った。0.0.1 からは RAG のループを少し変えて、一章ごと取材・執筆をするように指示を出し、バンディットが呼ばれやすくならないか試してみた。
+
+JRF 2025年9月22日
+
+《experimental_rag_0.0.2.ipynb - GitHub Gist》  
+<a href="https://gist.github.com/JRF-2018/0e9663f14ef41a73abefae3a475451e9" class="ext-link">https://gist.github.com/JRF-2018/0e9663f14ef41a73abefae3a475451e9</a>
+
+JRF 2025年9月22日
+
+Gemini 2.5 Pro さんというコストのかかる遅いモデルを使った。やはり頭がいい者にやらせたかったから。前回は修正しながら load して resume をやったが、今回は、ほぼ一発出し。タイトルの設定だけお忘れになったが、他はだいたい論文として仕上がってると思う。
+
+JRF 2025年9月22日
+
+一章ずつというわけにはいかなかったが、おおむね細かい単位で取材してくれて、バンディットが強制されやすくはなっていたと思う。前回に引き続き MemoryBanditWorkflow の実証実験としてはそこそこうまくいったと思う。
+
+(ちょっと前にアイデアにあった Recursion Limit ごとに read したものを HumanMessage したり…とかはやってないです。それは今後の課題(だいぶ先?)です。)
+
+JRF 2025年9月22日
+
+なお、再現性がないため、最初からの再実行はやっていないのはご容赦願いたい。コストもかかるしね (^^;。
+
+JRF 2025年9月22日
+
+……。
+
+なお、今回のものは↓に、「MemoryBanditWorkflow を使った RAG の試験実装 Version 0.0.2」として置いてある。
+
+《JRF-2018/langchain_maze: 熊剣迷路問題 revisited》  
+<a href="https://github.com/JRF-2018/langchain_maze" class="ext-link">https://github.com/JRF-2018/langchain_maze</a>
+
+JRF 2025年9月22日
+
+……。
+
+……。
+
+追記。
+
+MemoryBanditWorkflow の今後の方向としてはいくつか考えられる。マルチエージェントの方向。read したものを HumanMessage で流す方向。workflow に条件分岐やループを認める方向。…など。
+
+  * マルチエージェントの方向。つまり、タスクキューとデータベースの方向。intra_(memory_)new とか作っていく方向。ただ、intra と web と memory の三種をどう混合検索するか、または企業秘密などを考慮して混合検索はあえてしないか…などを考える必要がある。
+
+JRF 2025年9月24日
+
+* Recursive Limit などの際に read したものを HumanMessage で流す方向。この先にはバックグラウンドでの要約実行などが控える。read したものを HumanMessage ぐらいならなんとかなるが、これまでの bandits と別に管理するのかなど決めねばならない。さらにその先まで考えるとなると、この辺は特定システムのメモリ実装とかでないと要件を定めにくいのではという気がする。
+
+JRF 2025年9月24日
+
+* workflow に条件分岐やループを認める方向。experimental_rag_0.0.2.ipynb では、結局 workflow:main を書き換えてそのようなことをやったが、それをもうちょっと「フレームワーク内部」でやる方向は考えられる。条件分岐だけなら、workflow_do の aux_prompt で「〜ならば workflow:1001 を 〜 ならば workflow:1002 を呼んでください」とかやれば今でも実現はできるのだが、確率的バンディットがそれに付いて来ないのをどうするかなど考えるべきことはある。
+
+JRF 2025年9月24日
+
+…など。
+
+いずれの課題も難しく、素人の私にできる範囲を超えている気もする。「私がやるのか？」という気はする。AI さん達が実装するか、若者や専門家が実装すべきなのかはよくわからないが。
+
+JRF 2025年9月24日
+
+……。
+
+workflow に条件分岐やループを認める方向。なぜ「フレームワーク内部」でそれをやるのがいいかというと AI さん達がそのワークフローを参照して参考にできるから…なんだよね。うーん、今ある workflow 機能は bandit workflow ということにして、それとは別に RagAgent でやった _execute と main_loop (または resume) を取り出したような execution workflow というのを定義できるようにして、それを show_execution_workflow というツールで見れるようにする…という方向はあるのかな？
+
+JRF 2025年9月24日
+
+なんか、bandit workflow の外にさらにメタな execution workflow を設定するという話で、だんだんメタな方向に拡張する…となって、それなら、普通にコンピュータ言語でいいじゃん、今実行する Python コードを AI さん達に見せようよ…という話になっていきそうにも思うのだけど。
+
+JRF 2025年9月24日
+
+とりあえずなら、show_execution(_workflow) は、仕様を文章で記述でもいいのかもしれない(今の RagAgent なら agent.current_state も表示してあげるといいかもしれない)。とにかく用意するのを推奨するという方向はあるのかも。
+
+JRF 2025年9月24日
+
+……。
+
+……。
+
+追記。
+
+○ 2025-09-24T10:25:08Z
+
+「MemoryBanditWorkflow を使った RAG の試験実装」をバージョン 0.0.2.1 に更新。実行制御の全体像を AI に伝えるための show_execution ツールの導入のみ。
+
+《experimental_rag_0.0.2.ipynb - GitHub Gist》  
+<a href="https://gist.github.com/JRF-2018/01eb6a319a76b8f3f60886f61c374fb0" class="ext-link">https://gist.github.com/JRF-2018/01eb6a319a76b8f3f60886f61c374fb0</a>
+
+JRF 2025年9月24日
+
+ちなみに、前からだが、State の遷移を番号で表して goto っぽいことしてる部分は、いにしえの BASIC に戻ったみたいでなんか申し訳ない (^^;。
+
+JRF 2025年9月24日
+
+……。
+
+……。
+
+追記。
+
+「MemoryBanditWorkflow を使った RAG の試験実装」をバージョン 0.0.2.2 に更新。summarize_messages のエラー対策と、show_execution を show_execution_map に名称変更しただけ。
+
+《experimental_rag_0.0.2.ipynb - GitHub Gist》  
+<a href="https://gist.github.com/JRF-2018/66ebd59fc86a2819c94bf7883356aa55" class="ext-link">https://gist.github.com/JRF-2018/66ebd59fc86a2819c94bf7883356aa55</a>
+
+JRF 2025年9月25日
+
+……。
+
+……。
+
+追記。
+
+○ 2025-09-25T07:29:21Z
+
+YAML が大事という意見をしばしば聞くが GitHub のワークフローで使われるそれがなぜ大事なのか私はガテンがいかずにいた。それを Gemini さんに聞いたところ、先の experimental_rag_0.0.2.ipynb とかで必要となったワークフローの記述やタスクリスト… state 依存性も含めた記述に便利なことを例を挙げて教えてくれて納得した。なるほど～。
+
+JRF 2025年9月25日
+
+タスクリストは experimental_rag_0.0.2.ipynb では execute_* がまさにタスクリストの並びだし、show_execution_map で示したのが YAML で記述するようなワークフローになる。
+
+JRF 2025年9月25日
+
+《finalvent:X:2025-09-24》  
+<a href="https://x.com/finalvent/status/1970645468058394701" class="ext-link">https://x.com/finalvent/status/1970645468058394701</a>
+＞そういえば、技術系の人でなくても、現状AIを活用するなら、
+
+　Markdown
+　YAML
+
+は使えるといいと思いますね。なぜそうなのか、どう使うのか、とか、入門書があればいいと思うけどみかけないですね。
+
+JRF 2025年9月25日
+
+(…)
+
+まあ、簡単にぶっちゃけて言うならばMarkdownっていうのは、構成化のことで、YAMLってのは要素分析ですね。
+
+知的操作っていうのは、基本的に構成化と要素分析から成り立ってるんですよね。
+＜
+
+JRF 2025年9月25日
+
+そして、YAML がずいぶん前に話題になったということは、私が今通ってるところはすでに皆がずいぶん前に通ったところなのだろう orz。
+
+JRF 2025年9月25日
+
+……。
+
+……。
+
+追記。
+
+MemoryBanditWorkflow について、気になってること。
+
+ツールおよび app.stream の仕様だともしかすると、stream に上がってくる前に複数のツールが呼ばれる可能性がある。
+
+すると、stream に上がってくる前に command が二回実行されたり、workflow が二回実行されたりということがありうる。この排他制御をやる必要があったように思う。
+
+JRF 2025年9月29日
+
+本来は、stream の入れ子などにも対応するために stream の側で leak=False とか rigid_streaming=True とか設定して、そういうことも防止してくれればいいのだけど。
+
+JRF 2025年9月29日
+
+……。
+
+……。
+
+追記。
+
+「LLM のメモリ機能とバンディット機能とワークフロー機能の試験実装」をバージョン 0.0.2.6 に更新。「MemoryBanditWorkflow を使った RAG の試験実装」をバージョン 0.0.2.3 に更新。安全策を足した。
+
+《experimental_bandit_workflow_0.0.2.ipynb - GitHub Gist》  
+<a href="https://gist.github.com/JRF-2018/efdbfad461fd63fdd6d57ff60aa28f72" class="ext-link">https://gist.github.com/JRF-2018/efdbfad461fd63fdd6d57ff60aa28f72</a>
+
+JRF 2025年9月29日
+
+《experimental_rag_0.0.2.ipynb - GitHub Gist》  
+<a href="https://gist.github.com/JRF-2018/08033c5600ccaf769d8421aed5d40842" class="ext-link">https://gist.github.com/JRF-2018/08033c5600ccaf769d8421aed5d40842</a>
+
+現在の app.stream の仕様によりありえた command や workflow_do の二重実行を排除するようにした。
+
+JRF 2025年9月29日
+
+今回、ipynb をコピーして Gemini Pro さんででなく Gemini Flash さんを使ったが、元の ipynb にコードだけ統合しておき、そちらを公開している。そのため、コードセルは変更したが、結果セルは前のバージョンのままなので、あしからず…。
+
+JRF 2025年9月29日
+
+……。
+
+……。
+
+追記。
+
+<a href="../../../articles/2025/10/statuses_cocolog_95661854.html" class="int-link cocolog-id" title="ひとこと">[cocolog:95661854]</a>(2025年10月)
+＞＞
+
+JRF 2025年10月5日
+
+Claude の Anthropic のコンテクストエンジニアリングの話や私が MemoryBanditWorkflow を作ったところの知識から思うのだけど、コンテクスト長が長くても注目が十分得られない状況は今後も続き、または巨大なコンテクストを扱うためにビューをコンパクトにしたほうがいい状況が続くなら、マルチエージェントにして役割を分けて専門家を作り、そこのコンテクストを別なふうに構築するという手法が今後しばらくは有効なのかもしれない…と思う。逆に、超巨大なコンテクストに等分に注目が行くならその必要はなくなる…ということだが。
+
+JRF 2025年10月5日
+
+あと、ツールでのメモリ機能ってなんか今だけの技術な気もするんだよね、もっと本丸の技術が出てこないといけない気がする。そうなったとき専門家が役に立つのかわからないし、今のツールのメモリ機能という非効率なシステムに支えられる専門家が巨大化しても効率的であるという保証も今のところはないと思う。
+
+JRF 2025年10月5日
+
+…… 。
+
+ただ、そういえば LLM 自身がある種の専門家がいいと思われていたところをあえてジェネラリスト的にすべてを学ぶことで、逆に専門性も獲得していったのだった。
+
+もしかすると、ビューが巨大になっていったときジェネラリストを極めていると逆にすべての専門家を凌駕するポイントがあるのかもしれない。…とチラと思う。
+＜＜
+
+JRF 2025年10月5日</pre>
+
+
+<section class="backrefs" data-pagefind-ignore>
+<h2>後方参照 (21 件)</h2>
+<ul>
+<li><span class="backref-label">[cocolog:95619779]参照</span> <a href="../../../articles/2026/02/statuses_cocolog_95858241.html">ひとこと</a> <span class="backref-date">2026年02月16日</span></li>
+<li><span class="backref-label">[cocolog:95619779]参照</span> <a href="../../../articles/2026/02/gsm_008470.html">共有メモ</a> <span class="backref-date">2026-02-14T08:00:48Z</span></li>
+<li><span class="backref-label">[cocolog:95619779]参照</span> <a href="../../../articles/2026/02/gsm_008408.html">共有メモ</a> <span class="backref-date">2026-02-03T16:59:18Z</span></li>
+<li><span class="backref-label">[cocolog:95619779]参照</span> <a href="../../../articles/2026/02/statuses_cocolog_95833608.html">ひとこと</a> <span class="backref-date">2026年02月01日</span></li>
+<li><span class="backref-label">[cocolog:95619779]参照</span> <a href="../../../articles/2026/01/statuses_cocolog_95822546.html">ひとこと</a> <span class="backref-date">2026年01月24日</span></li>
+<li><span class="backref-label">[cocolog:95619779]参照</span> <a href="../../../articles/2026/01/gsm_008352.html">共有メモ</a> <span class="backref-date">2026-01-24T06:01:57Z</span></li>
+<li><span class="backref-label">[cocolog:95619779]参照</span> <a href="../../../articles/2026/01/gsm_008345.html">共有メモ</a> <span class="backref-date">2026-01-23T15:31:14Z</span></li>
+<li><span class="backref-label">[cocolog:95619779]参照</span> <a href="../../../articles/2025/10/statuses_cocolog_95696014.html">ひとこと</a> <span class="backref-date">2025年10月27日</span></li>
+<li><span class="backref-label">[cocolog:95619779]参照</span> <a href="../../../articles/2025/10/gsm_007879.html">共有メモ</a> <span class="backref-date">2025-10-27T00:26:49Z</span></li>
+<li><span class="backref-label">[cocolog:95619779]参照</span> <a href="../../../articles/2025/10/statuses_cocolog_95674080.html">ひとこと</a> <span class="backref-date">2025年10月12日</span></li>
+<li><span class="backref-label">[cocolog:95619779]参照</span> <a href="../../../articles/2025/10/gsm_007799.html">共有メモ</a> <span class="backref-date">2025-10-11T15:14:54Z</span></li>
+<li><span class="backref-label">[cocolog:95619779]参照</span> <a href="../../../articles/2025/10/statuses_cocolog_95666408.html">ひとこと</a> <span class="backref-date">2025年10月07日</span></li>
+<li><span class="backref-label">[cocolog:95619779]参照</span> <a href="../../../articles/2025/10/gsm_007771.html">共有メモ</a> <span class="backref-date">2025-10-06T16:59:01Z</span></li>
+<li><span class="backref-label">[cocolog:95619779]参照</span> <a href="../../../articles/2025/10/statuses_cocolog_95661854.html">ひとこと</a> <span class="backref-date">2025年10月05日</span></li>
+<li><span class="backref-label">[cocolog:95619779]参照</span> <a href="../../../articles/2025/10/statuses_cocolog_95656351.html">ひとこと</a> <span class="backref-date">2025年10月01日</span></li>
+<li><span class="backref-label">[cocolog:95619779]参照</span> <a href="../../../articles/2025/10/gsm_007737.html">共有メモ</a> <span class="backref-date">2025-10-01T13:52:27Z</span></li>
+<li><span class="backref-label">[cocolog:95619779]参照</span> <a href="../../../articles/2025/09/gsm_007646.html">共有メモ</a> <span class="backref-date">2025-09-13T13:16:50Z</span></li>
+<li><span class="backref-label">[cocolog:95619779]参照</span> <a href="../../../articles/2025/09/gsm_007638.html">共有メモ</a> <span class="backref-date">2025-09-11T08:58:04Z</span></li>
+<li><span class="backref-label">[cocolog:95619779]参照</span> <a href="../../../articles/2025/09/gsm_007634.html">共有メモ</a> <span class="backref-date">2025-09-10T12:08:18Z</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2025/09/gsm_007629.html">共有メモ</a> <span class="backref-date">2025-09-09T04:15:34Z</span></li>
+<li><span class="backref-label">[cocolog:95619779]参照</span> <a href="../../../articles/2025/08/statuses_cocolog_95599211.html">ひとこと</a> <span class="backref-date">2025年08月25日</span></li>
+</ul>
+</section>
+
+</article>
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2025/09.html">2025年09月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+</body>
+</html>

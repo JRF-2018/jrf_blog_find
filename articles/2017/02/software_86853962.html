@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>眠り姫問題のプログラム - JRF Blog Archive</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2017/02.html">2017年02月</a> | <a href="../../../index/software.html">ソフトウェア Tips</a></nav>
+<article data-pagefind-body>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[software] <span class="cocolog-id">cocolog:86853962</span></td></tr>
+<tr><th>セクション</th><td>JRF のソフトウェア Tips</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2017/02.html">2017年02月11日 19:24:07</a></td></tr>
+<tr><th>元URL</th><td><a href="http://jrf.cocolog-nifty.com/software/2017/02/post-1.html" class="ext-link"><span class="original-url">http://jrf.cocolog-nifty.com/software/2017/02/post-1.html</span></a></td></tr>
+<tr><th>タグ</th><td>[Perl] [シミュレーション]</td></tr>
+</table>
+</div>
+<h1>眠り姫問題のプログラム</h1>
+<pre class="body">「眠り姫問題」は意志決定問題と人間原理という二つの分野で共通のテーマセッターとなっている有名な難問なのだそうだ。三浦俊彦『多宇宙と輪廻転生』によると、次のような問題である。
+
+  ＞
+    日曜日に、ある実験が始められる。まず、あなたは眠らされる。そのあとフェアなコインが投げられ、表か裏かによって、次の二つの措置が選ばれる。
+    
+    場合A■表が出た場合 - あなたは月曜日に一度起こされ、インタビューされ、また眠らされ、ずっと眠り続ける。
+    
+    場合B■裏が出た場合 - あなたは月曜日に一度起こされ、インタビューされ、また眠らされ、火曜日に一度起こされ、インタビューされ、また眠らされ、ずっと眠り続ける。眠りは記憶を消すほど深いので、目覚めたとき月曜か火曜かはわからない。
+    
+    いずれの場合もあなたは、実験の手続きについてはすべてわかっているものとする。目覚めたときに自分が月曜にいるか火曜にいるか、そしてコインは表だったのか裏だったのかがわからないだけである。
+    
+    ちなみにコイン投げがなされるタイミングについては融通が利く。コイン投げは、あなたが最初に起こされる前でも、月曜にあなたが目覚めた後でも、問題の論理構造は変化しない。
+    
+    さて、あなたへのインタビューは次のようなものである。
+    
+    問1■「いまは日曜日、実験開始直前である。場合 A である確率は？」
+    
+    問2■「さあ、あなたは目覚めた。場合 A である確率は？」
+    
+    問3■「さあ、あなたは目覚めた。今は月曜日である。場合 A である確率は？」
+    
+    (p.235-236)
+  ＜
+  
+このうち問2と問3が「眠り姫問題」であるという。この答えには、二つの流派がある。問2 の答えに 1/2 と答える派と、1/3 と答える派である。
+
+問2に 1/2 と答える派はたいてい、問3に 2/3 と答える。問2 に 1/3 と答える派はたいてい、問3 に 1/2 と答える。
+
+それぞれの派について、その考えに基づくシミュレーションをして数え上げるプログラムを Perl で記述してみよう……というのが本稿である。
+
+■1/2 派
+  
+まず 1/2 派の考え方をプログラミングしてみる。sleeping_beauty_h.pl がそれであるが、大事な部分を次に抜き出す。
+
+our $TRIALS = 10000;		# 試行数
+
+MAIN:
+{
+  my $Mon_A = 0;
+  my $Trial2 = 0;
+  my $Trial3 = 0;
+  
+  for (my $i = 0; $i &lt; $TRIALS; $i++) {
+    my $A_or_B = (rand(1) &lt; 0.5)? &quot;A&quot; : &quot;B&quot;;
+    my $Mon_or_Tue = (rand(1) &lt; 0.5)? &quot;Mon&quot; : &quot;Tue&quot;;
+    
+    if ($A_or_B eq &quot;A&quot;) {
+      $Trial2++;
+      $Trial3++;
+      $Mon_A++;
+    } elsif ($A_or_B eq &quot;B&quot; &amp;&amp; $Mon_or_Tue eq &quot;Mon&quot;) {
+      $Trial2++;
+      $Trial3++;
+    } elsif ($A_or_B eq &quot;B&quot; &amp;&amp; $Mon_or_Tue eq &quot;Tue&quot;) {
+      $Trial2++;
+    }
+  }
+  printf(&quot;result 2 = %g\n&quot;, $Mon_A / $Trial2);
+  printf(&quot;result 3 = %g\n&quot;, $Mon_A / $Trial3);
+}
+
+実行すると次のようになる。
+
+$ perl sleeping_beauty_h.pl
+result 2 = 0.5044
+result 3 = 0.671548
+
+上で result 2 が問2 の確率、result 3 が問3 の確率になる。
+
+1/2 派の考え方のキモは、場合 B において 問2 や 問3 が問われるとき、月曜と火曜のどちらか一方でしか尋ねられず、おそらく等確率で月曜か火曜に問われることが決まると考えるところだろう。問3 については、火曜に問われると決まったときは、「今は月曜日である」のところを「今は火曜日である」と変えたものが問われると考えるとなる。
+
+上掲書の三浦(など)は多数回実験が繰り返される場合は、1/3 派になるようなことを述べるが、上のプログラムのように多数回でも 1/2 派の数え方は可能であると私は考えた。
+
+場合 A で月曜である事象を MonA、場合 B で月曜の事象を MonB、場合 B で火曜の事象を TueB と表すと、P(MonA) = 1/2、P(MonB) = 1/4、P(TueB) = 1/4 となる。月曜日であると告げられる事象を Mon と表すと、P(MonA|Mon) は次のように求まる。
+
+P(MonA|Mon) = P(MonA)P(Mon|MonA)
+    / (P(MonA)P(Mon|MonA) + P(MonB)P(Mon|MonB) + P(TueB)P(Mon|TueB))
+  = (1/2)(1)
+    / ((1/2)(1) + (1/4)(1) + (1/4)(0))
+  = 2/3
+  
+これは上の実験結果と一致する。
+
+■1/3 派
+  
+次に 1/3 派の考え方をプログラミングしてみる。sleeping_beauty_t.pl がそれであるが、大事な部分を次に抜き出す。
+
+our $TRIALS = 10000;		# 試行数
+
+MAIN:
+{
+  my $Mon_A = 0;
+  my $Trial2 = 0;
+  my $Trial3 = 0;
+  
+  for (my $i = 0; $i &lt; $TRIALS; $i++) {
+    my $A_or_B = (rand(1) &lt; 0.5)? &quot;A&quot; : &quot;B&quot;;
+    
+    if ($A_or_B eq &quot;A&quot;) {
+      $Trial2++;
+      $Trial3++;
+      $Mon_A++;
+    } elsif ($A_or_B eq &quot;B&quot;) {
+      # Mon
+      $Trial2++;
+      $Trial3++;
+      
+      # Tue
+      $Trial2++;
+    }
+  }
+  printf(&quot;result 2 = %g\n&quot;, $Mon_A / $Trial2);
+  printf(&quot;result 3 = %g\n&quot;, $Mon_A / $Trial3);
+}
+
+実行すると次のようになる。
+
+$ perl sleeping_beauty_t.pl
+result 2 = 0.334223
+result 3 = 0.501
+
+上で result 2 が問2 の確率、result 3 が問3 の確率になる。
+
+1/3 派の考え方のキモは、試行数の数え方をコインを投げた回数ではなく、目覚めた回数で数えることだろう。1/2 派と違って「月曜か火曜に」ではなく「月曜も火曜も」同様のインタビューを受けると考えるとする。
+
+事象 MonA、MonB、TueB を 1/2 派の場合と同じ事象を表すとすると、P(MonA) = 1/3、P(MonB) = 1/3、P(TueB) = 1/3 となる。P(MonA|Mon) は次のように求まる。
+
+P(MonA|Mon) = P(MonA)P(Mon|MonA)
+    / (P(MonA)P(Mon|MonA) + P(MonB)P(Mon|MonB) + P(TueB)P(Mon|TueB))
+  = (1/3)(1)
+    / ((1/3)(1) + (1/3)(1) + (1/3)(0))
+  = 1/2
+  
+これは上の実験結果と一致する。
+
+■1/3 派その２
+  
+基本、上の 1/2 派の考え方に立ちながら、結果、問2 に 1/3 の答えが出るような数え方もある。それをプログラミングしてみる。sleeping_beauty_t2.pl がそれであるが、大事な部分を次に抜き出す。
+
+our $TRIALS = 10000;		# 試行数
+
+MAIN:
+{
+  my $Mon_A = 0;
+  my $Trial2 = 0;
+  my $Trial3 = 0;
+  
+  for (my $i = 0; $i &lt; $TRIALS; $i++) {
+    my $A_or_B = (rand(1) &lt; 0.5)? &quot;A&quot; : &quot;B&quot;;
+    my $Mon_or_Tue = (rand(1) &lt; 0.5)? &quot;Mon&quot; : &quot;Tue&quot;;
+    
+    if ($A_or_B eq &quot;A&quot; &amp;&amp; $Mon_or_Tue eq &quot;Mon&quot;) {
+      $Trial2++;
+      $Trial3++;
+      $Mon_A++;
+    } elsif ($A_or_B eq &quot;A&quot; &amp;&amp; $Mon_or_Tue eq &quot;Tue&quot;) {
+      # do nothing.
+    } elsif ($A_or_B eq &quot;B&quot; &amp;&amp; $Mon_or_Tue eq &quot;Mon&quot;) {
+      $Trial2++;
+      $Trial3++;
+    } elsif ($A_or_B eq &quot;B&quot; &amp;&amp; $Mon_or_Tue eq &quot;Tue&quot;) {
+      $Trial2++;
+    }
+  }
+  printf(&quot;result 2 = %g\n&quot;, $Mon_A / $Trial2);
+  printf(&quot;result 3 = %g\n&quot;, $Mon_A / $Trial3);
+}
+
+実行すると次のようになる。
+
+$ perl sleeping_beauty_t2.pl
+result 2 = 0.331815
+result 3 = 0.49829
+
+上で result 2 が問2 の確率、result 3 が問3 の確率になる。
+
+1/2 派の考え方のキモとして、月曜と火曜のどちらか一方でしか尋ねられず、等確率で月曜か火曜に問われることが決まると考えることを挙げた。場合 Aのとき「火曜」と決まったら、上の 1/2 派のプログラムにおいては、強制的に「月曜」と解釈して数えたが、こちらのプログラムでは、その試行は「なかったこと」にすることにした。すると、1/3 派と同じ答えが得られるようだ。場合 A で 火曜 と決まったときは、実験条件にあわないので、問2 においても数えないことに注意して欲しい。
+
+事象 MonA、MonB、TueB をこれまでと同じで、さらに場合 A で火曜である事象 TueA も考える。P(MonA) = 1/4、P(TueA) = 1/4、P(MonB) = 1/4、P(TueB) = 1/4 となる。今回はまず実験条件に合うという事象 Q について先に考えないといけない。問 2 の答えは P(MonA|Q) になるが、それは次のように計算する。
+
+P(MonA|Q) = P(MonA)P(Q|MonA)
+    / (P(MonA)P(Q|MonA) + P(TueA)P(Q|TueA)
+          + P(MonB)P(Q|MonB) + P(TueB)P(Q|TueB))
+  = (1/4)(1)
+    / ((1/4)(1) + (1/4)(0) + (1/4)(1) + (1/4)(1))
+  = 1/3
+  
+問3 の答え P(MonA|QかつMon) は次のように求まる。
+
+P(MonA|QかつMon) = P(MonA)P(QかつMon|MonA)
+    / (P(MonA)P(QかつMon|MonA) + P(TueA)P(QかつMon|TueA)
+          + P(MonB)P(QかつMon|MonB) + P(TueB)P(QかつMon|TueB))
+  = (1/4)(1)
+    / ((1/4)(1) + (1/4)(0) + (1/4)(1) + (1/4)(0))
+  = 1/2
+  
+これらは上の実験結果と一致する。
+
+■ニック・ボストロムの考え方
+  
+モンティ・ホール問題で、司会者が一つのドアを開示したあとプレイヤーこと「観測者」にとってドアごとに確率が異なることになる。しかし、その経過を知らずに突然、その場に現れた者がいたとしたら、その者にとって、ドアの確率は等しいと仮定せざるを得ない。観測によって可能世界の形が変形を受ける……ということはありえる。それを「観測選択効果」と呼ぶかどうかはわからないが……。
+
+情報が与えられているか否かで、確率の評価は変わりうる。情報を与えられるごとに確率は変わりうる。
+
+上掲書の「眠り姫問題」の拡張を論じるところ(p.259)で、ニック・ボストロムが、上の問2 と問3 に相当する問題について確率が共に 1/2 だと答えるのは、私には必ずしもおかしいとは思えない。それは上掲書にあるようなボストロムの反論に納得するからではなく、情報の与えられ方の問題だと考えるからだ。
+
+つまり、私は、問2と問3で共に 1/2 と答える流儀もあるという考え方を認める。それは、問2 の段階では曜日が大事であるという認識はなかったため、1/2 派の観方をしていたが、問3 の段階で曜日が大事であるという情報が手に入ったため 1/3 派のフレームで問題をとらえなおした……ということはありうるからである。
+
+上掲書ではさらに、コインの「先投げ」「後投げ」で観方が変わるという論をとっている。プログラムでは「先投げ」をしているが、「後投げ」に変えるとなると 1/2 派のプログラムではうまく適合せず、1/3 派か 1/3派 その２をベースに使うことになるだろう。つまり、「後投げ」ならば 問2 には 1/3 と答えるしかなくなる。ただし、「先投げ」「後投げ」に関して語られる「眠り姫問題」と「終末論法」との関係は私にはよくわからなかった。
+
+■グルジェフ版眠り姫問題
+  
+上掲書に載っている「グルジェフ版眠り姫問題」は「眠り姫問題」を次のように変えた問題である。
+
+  ＞
+    日曜日に、ある実験が始められる。まず、あなたは眠らされる。そのあとフェアなコインが投げられ、表か裏かによって、次の二つの措置が選ばれる。
+    
+    場合 A■表が出た場合 - あなたは月曜日に一度起こされ、インタビューされ、また眠らされ、ずっと眠り続ける。
+    
+    場合 B■裏が出た場合 - あなたは月曜日に一度起こされ、インタビューされ、また眠らされ、t 秒後にもう一度起こされ、インタビューされ、また眠らされ、ずっと眠り続ける。二度の覚醒の間の眠りは記憶を消すほど深いので、目指めたとき一度目か二度目かは教えられないとわからない。
+    
+    ここで、場合 B の t 秒後の間隔はまちまちで、二千秒のこともあれば一万秒のこともあり、十秒のこともあれば四秒のこともあるとしよう。そして特殊な場合として t = 0、つまり二つの覚醒が完全に重なっている場合もあるものとする。そのときは二倍の覚醒状態を経験させられる。一度の覚醒がランプの点灯に喩えられるとして、いっぺんに二回分の点灯を行なう、つまり二倍の明るさで点灯するのと同じように、二倍の明晰度で覚醒する、ということである。
+    
+    今、あなたはこの実験で目醒めた、場合 A である確率は？
+    
+    (p.244-245)
+  ＜
+  
+この t = 0 の場合が、「グルジェフ版眠り姫問題」のようだ。
+
+上掲書が「グルジェフ版眠り姫問題」については、1/3 派でしかないということに異論はない。なぜなら、1/2 派のプログラムでしたような月曜か火曜かをランダムに決めるという要素がないと確実に言えるからである。
+
+上の記述にしたがってプログラムで書こうとすると、t をランダムにすることが考えられる。そうすると t = 0 となるのはほとんど不可能になるが、ごくまれにそれは起こりうるかもしれない。その場合が起こったとして特別な確率を考える……というのは何か意味がありそうにも思えるが、この問題の設定であれば、ごく簡単な結論しかない。上で述べたように、場合 A の確率は 1/3 と数えるということでしかない。
+
+上掲書ではこの問題の説明の際に、明晰さや覚醒に関していろいろ述べているが、私にはよくわからなかった。
+
+■参考
+  ●『多宇宙と輪廻転生 - 人間原理のパラドクス』(三浦 俊彦 著, 青土社, 2007年)。この記事の元ネタ。<a href="../../../articles/2017/02/statuses_cocolog_86854015.html" class="int-link cocolog-id" title="ひとこと">[cocolog:86854015]</a> で「眠り姫問題」以外の問題……終末論法や三浦版輪廻転生について少し論じている。
+  ●《モンティ・ホール問題または三囚人問題の拡張とその確率操作シミュレーション》。以前、私が書いた記事。ベイズの定理を用いた推論で、直観に反するものの有名な例を詳しめに解説している。
+  ●《シミュレーション・アーギュメントを論駁する》。三浦俊彦『ゼロからの論証』にも載っているシミュレーション・アーギュメントについて私が論じた記事。この宇宙は巨大なシミュレーションなのか？……という問題。
+  ●《時間泥棒の夕べ − 排中律と call/cc》。夢の国のモモの物語。「眠り姫問題のプログラム」という題に惹かれてやって来た人が望むものに近いのは、ひょっとするとこちらの記事かもしれない。
+    
+更新：2017-02-11--2017-02-13
+初公開：2017年02月11日 19:24:13
+最新版：2017年02月13日 05:06:20
+
+
+Comments:
+
+[E:event] 更新：コインの「先投げ」「後投げ」について、最初に投稿したときは「変わらない」と考えていたが、考えを改め、「後投げ」だと 1/3 派になることを認め、そのあたりを書き直した。
+
+投稿: JRF | 2017-02-12 12:08:37 (JST)
+
+
+Links:
+
+多宇宙と輪廻転生: <a href="https://www.amazon.co.jp/dp/4791763831" class="ext-link">https://www.amazon.co.jp/dp/4791763831</a>
+sleeping_beauty_h.pl: <a href="http://jrf.cocolog-nifty.com/archive/perl/sleeping_beauty_h.pl" class="ext-link">http://jrf.cocolog-nifty.com/archive/perl/sleeping_beauty_h.pl</a>
+sleeping_beauty_t.pl: <a href="http://jrf.cocolog-nifty.com/archive/perl/sleeping_beauty_t.pl" class="ext-link">http://jrf.cocolog-nifty.com/archive/perl/sleeping_beauty_t.pl</a>
+sleeping_beauty_t2.pl: <a href="http://jrf.cocolog-nifty.com/archive/perl/sleeping_beauty_t2.pl" class="ext-link">http://jrf.cocolog-nifty.com/archive/perl/sleeping_beauty_t2.pl</a>
+モンティ・ホール問題: <a href="../../../articles/2016/08/software_85821961.html" class="int-link" title="モンティ・ホール問題または三囚人問題の拡張とその確率操作シミュレーション">http://jrf.cocolog-nifty.com/software/2016/08/post.html</a>
+多宇宙と輪廻転生 - 人間原理のパラドクス: <a href="https://www.amazon.co.jp/dp/4791763831" class="ext-link">https://www.amazon.co.jp/dp/4791763831</a>
+モンティ・ホール問題または三囚人問題の拡張とその確率操作シミュレーション: <a href="../../../articles/2016/08/software_85821961.html" class="int-link" title="モンティ・ホール問題または三囚人問題の拡張とその確率操作シミュレーション">http://jrf.cocolog-nifty.com/software/2016/08/post.html</a>
+シミュレーション・アーギュメントを論駁する: <a href="../../../articles/2006/10/religion_14794101.html" class="int-link" title="シミュレーション・アーギュメントを論駁する">http://jrf.cocolog-nifty.com/religion/2006/10/post.html</a>
+時間泥棒の夕べ − 排中律と call/cc: <a href="../../../articles/2011/01/column_66773085.html" class="int-link" title="時間泥棒の夕べ − 排中律と call/cc">http://jrf.cocolog-nifty.com/column/2011/01/post-1.html</a></pre>
+
+
+<section class="backrefs" data-pagefind-ignore>
+<h2>後方参照 (6 件)</h2>
+<ul>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2025/10/statuses_cocolog_95683424.html">ひとこと</a> <span class="backref-date">2025年10月19日</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2021/09/statuses_cocolog_93023146.html">ひとこと</a> <span class="backref-date">2021年09月23日</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2021/09/gsm_001472.html">共有メモ</a> <span class="backref-date">2021-09-19T00:45:42Z</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2020/12/statuses_cocolog_92396511.html">ひとこと</a> <span class="backref-date">2020年12月05日</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2020/11/software_92328105.html">二封筒問題のシミュレーション その１ 基礎編</a> <span class="backref-date">2020年11月05日 22:51:24</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2017/02/statuses_cocolog_86854015.html">ひとこと</a> <span class="backref-date">2017年02月11日</span></li>
+</ul>
+</section>
+
+</article>
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2017/02.html">2017年02月</a> | <a href="../../../index/software.html">ソフトウェア Tips</a></nav>
+</body>
+</html>

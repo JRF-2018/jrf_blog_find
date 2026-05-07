@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>「志村けん問題」を JAGS で解く その２ 試行錯誤編 - JRF Blog Archive</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2020/05.html">2020年05月</a> | <a href="../../../index/software.html">ソフトウェア Tips</a></nav>
+<article data-pagefind-body>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[software] <span class="cocolog-id">cocolog:91890593</span></td></tr>
+<tr><th>セクション</th><td>JRF のソフトウェア Tips</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2020/05.html">2020年05月09日 05:28:58</a></td></tr>
+<tr><th>元URL</th><td><a href="http://jrf.cocolog-nifty.com/software/2020/05/post-e84089.html" class="ext-link"><span class="original-url">http://jrf.cocolog-nifty.com/software/2020/05/post-e84089.html</span></a></td></tr>
+<tr><th>タグ</th><td>[シミュレーション] [R]</td></tr>
+</table>
+</div>
+<h1>「志村けん問題」を JAGS で解く その２ 試行錯誤編</h1>
+<pre class="body">JAGS に慣れていないこともあり、「その１ 結論編」に達するまでにはかなり試行錯誤した。その「苦労」を記録しておく。
+
+JAGS は確率に関する Prolog みたいなものという認識で、それがおもしろいと思っていたのだが、「苦労」した結果、Prolog みたいに使うのは間違いかと思うようになった。
+
+■初期モデル
+  
+2020年4月16日ごろに最初に作ったのは次のようなモデルである。これを sk_problem01.jag とする。
+
+data {
+  # N &lt;- 100
+  # n.fam.sk &lt;- 5
+  SK &lt;- 1
+  one1 &lt;- 1
+  one2 &lt;- 1
+}
+
+model {
+  n.pos.sk ~ dbinom(p.pos.sk, N)
+  n.pos.nsk ~ dbinom(p.pos.nsk, N)
+  p.pos.sk ~ dbeta(0.5, 1)
+  p.pos.nsk ~ dbeta(0.5, 1)
+  diff &lt;- n.pos.sk - n.pos.nsk
+  gr &lt;- n.pos.sk &gt; n.pos.nsk
+  
+  for (i in 1:N) {
+    pi.fam[i] &lt;- 1
+  }
+  for (i in 1:N) {
+    pi.pos[i] &lt;- 1
+  }
+  for (i in 1:n.fam.sk) {
+    m.fam[i] ~ dcat(pi.fam)
+    eq.fam[i] &lt;- equals(m.fam[i], SK)
+  }
+  for (i in 1:N) {
+    m.pos[i] ~ dcat(pi.pos)
+    eq.pos[i] &lt;- ifelse(i &lt;= n.pos.sk, equals(m.pos[i], SK), 0)
+  }
+  one1 ~ sum(step(sum(eq.fam) - 1) * 1, 0)
+  one2 ~ sum(step(sum(eq.pos) - 1) * 1, 0)
+}
+
+まず、感染者数 n.pos.sk を決めてしまう。その上で、有名人 100人の中に志村けん氏すなわち SK がいると同時に、n.pos.sk の中にも SK がいる…というふうに考えた。(あとで述べるが、この想定は間違っている。)
+
+番号 SK は 1 に固定して考える。SK は重複して選ばれうるが、1番であれば、あまり問題はないはず。
+
+ただ、このモデルは、N = 100 までが限界で、N = 10000 とかにするとほとんど止まってしまうのだった。
+
+ここから、志村けん氏は特別なリスク群に属するとした場合、そのリスク群とそれ以外のリスクの差(倍率)はどれぐらいになるかを知ろうとしたのが sk_problem02.jag である。かなり大きな倍率が必要となっていまい、「おかしい」となる。
+
+リスク群倍率 mag と n.pos.sk と n.pos.nsk の diff を同時に見ようとしたのが sk_problem03.jag になる。
+
+「おかしい」ので、逆に志村けんとは逆の人物、非リスク群の人物も感染しているとしたらどうなるのかを調べたのが sk_problem04.jag になる。こうしても、mag は変わらないはず…と考えていたのだが、結果は予想に反し、mag がかなり抑えられることになった。
+
+もしかして、有名人である必要はないのではないかと、sk_problem01.jag の one1 の行をコメントアウトして作ったのが、sk_problem05.jag である。…これにより有名人であることはほぼ意味のないことになっていることが判明した。
+
+そこでロジックを変えたのが sk_problem06.jag である。まず、感染者数 n.pos.sk を決める。その上で、感染者の名前を上げていくと、有名人 100人の中に含まれる者がいる。…というふうなモデルにした。どうもこのほうが正しそうだ。sk_problem01.jag は間違っていた。
+
+sk_problem06.jag に対する sk_problem02.jag に対応するのが sk_problem07.jag、sk_problem06.jag に対する sk_problem04 に対応するのが sk_problem08.jag である。
+
+sk_problem2.jag の方向ではなく、逆に何倍リスクが高ければ、n.pos.sk と n.pos.nsk に差がなくなるのだろうか？ それを探ろうと sk_problem09.jag を作った。ここでは芸能人はすべてリスク群になるという仮定を置いている。リスクは 1000倍ぐらいにしないと効果がない。そこまで倍率を大きくするとリスク群が小さいほど差がなくなる。ただ、差のなくなり方はそれほど大きくない。
+
+逆にリスクが少ないと思われている芸能人であれば結果は異なるのではないか。それを試すのが sk_problem10.jag である。n.risk が 50 ぐらいであれば差を大きくし、n.risk が 10 ぐらいであれば差は変わらない。
+
+■中期モデル
+  
+2020年4月30日、Kruschke『ベイズ統計モデリング』を6章まで読んで、エクササイズ等を見ることでアイデアが浮かんだ。
+
+dcat を使わない方法がわかった。その 1 が dbern を使うもの。その 2 が dbinom を使うもの。その 1 を sk_problem11.jag として、その 2 を sk_problem12.jag として実装した。まずまずうまくいったようだ。何より速い。
+
+「有名人も隠蔽」のフィルタを設定してみる。確率 0.9 で隠蔽に失敗するとする。sk_problem06.jag sk_problem11.jag sk_problem12.jag に相当するものを sk_problem13.jag sk_problem14.jag sk_problem15.jag として作ってみる。
+
+二項分布の結果が別の二項分布の結果に含まれるというのを指示するのに、不等式を使えばいいのではないかと思って作ったのが sk_problem16.jag。
+
+しかし、不等式が多いせいか、結果が安定しない。そこで、不等式を減らしたのが、sk_problem17.jag。それよりさらに不等式を減らしたのが sk_problem18.jag でこれが「その１ 結論編」の最初のモデルである。
+
+当初は、sk_problem18.jag は遅く、sk_problem17.jag のほうで「完璧か」と思ったのだが、filter.fam を 0.5 から 0.9 に上げたときなぜか、差が開く方向に出てしまう。sk_problem18.jag だとそのようなことはない。
+
+これは、包含の不等式がまずいのだろうと考え直した。その上で、dbern を dbinom に置き換える方法を思い付き、それをコード化したのが、sk_problem19.jag になり、これが今回の完成形である。
+
+このころになると、ESS (Effective Sample Size, 実効サンプル数) も気になり出す。幸いsk_problem19.jag はそれなりに ESS があるようだ。しかし、 ESS が小さくなっているのは不等式があるせいではないかと疑い、作ったのが sk_problem20.jag で、これは志村けん問題とはほぼ関係がない。
+
+sk_problem20.jag はそんなに ESS が小さくなるような感じはしないのだが、n.iter = 10000 × n.chains = 4 に対し、n1 の ESS はたったの 10.81684 しかないという惨憺たるありさま。
+
+sk_problem19.jag において不等式をコメントアウトしたのが sk_problem21.jag。そこで mcmc.list を得たあとに、one1 の条件を満たす要素数を数えてみた。sk_problem19.jag の ESS は、n.pos.sk について、4482.228 ぐらい。sk_problem21.jag の one1 の条件を満たす要素数は、 28765 とかなり多い。不等式を使うと ESS はかなり小さくなるとは言えそうだ。
+
+■終期モデル
+  
+2020年5月7日に Kruschke『ベイズ統計モデリング』を読み終わる。そこから再度考える。
+
+元のツイートでは「200人を無作為に抽出して1人…」という部分があった。それを考慮したほうがいいかもしれない。
+
+有名人が「1人以上」ではなく「1人だけ」感染しているとわかったというモデルにする。200人ではなく2万人とかになれば、逆に有名人から1人しか出ていないことが効いてくるかも…などと考えていた。
+
+感染者のうち、マスコミ等でフィルターされた人数 n.pos.pub (= 200)がわかっているとするモデルにしたのが、sk_problem22.jag である。しかし、これの ESS はとんでもなく小さくなり、まともな比較ができている様子はない。
+
+リスク群をはじめから考えて、それについて sum を固定しようとしているのがダメなのか…とリスク群を考えないようにしたのが、 sk_problem23.jag。しかし、これも ESS がとんでもなく小さくなる。
+
+その ESS を thinning などをしながら無理矢理大きくして結果をみると、どうやっても n.pos.sk と n.pos.nsk に差が出てこない。これは、フィルター filter.pub が固定されているからだろう。ならば、filter.pub を動かそうとしたのが、sk_problem24.jag である。それは次のようになる。
+
+data {
+  # N &lt;- 100000000
+  # n.fam.sk &lt;- 100
+  # alpha.pos &lt;- 0.5
+  # beta.pos &lt;- 1
+  # n.pos.pub &lt;- 200
+  # filter.fam.mag &lt;- 10
+  # filter.pub &lt;- 0.001
+  # n.pos.pub.fam &lt;- 1
+  n.pos.pub.rest &lt;- n.pos.pub - n.pos.pub.fam
+}
+
+model {
+  p.pos.sk ~ dbeta(alpha.pos, beta.pos)
+  p.pos.nsk ~ dbeta(alpha.pos, beta.pos)
+  filter.pub.sk ~ dbeta(alpha.filter, beta.filter)
+  filter.pub.nsk ~ dbeta(alpha.filter, beta.filter)
+  filter.pub.fam &lt;- min(1, filter.pub.sk * filter.fam.mag)
+  
+  n.pos.sk.nfam ~ dbinom(p.pos.sk, N - n.fam.sk)
+  n.pos.nsk ~ dbinom(p.pos.nsk, N)
+  
+  n.pos.fam ~ dbinom(p.pos.sk, n.fam.sk)
+  
+  n.pos.pub ~ dbinom(filter.pub.nsk, n.pos.nsk)
+  n.pos.pub.rest ~ dbinom(filter.pub.sk, n.pos.sk.nfam)
+  n.pos.pub.fam ~ dbinom(filter.pub.fam, n.pos.fam)
+  
+  n.pos.sk &lt;- n.pos.sk.nfam + n.pos.fam
+  
+  diff &lt;- n.pos.sk - n.pos.nsk
+  gr &lt;- n.pos.sk &gt; n.pos.nsk
+}
+
+しかし、この ESS は絶望的に小さく、結果私はいまだにちゃんと評価できていない。
+
+■結論
+  
+いろいろ苦労して、とりあえず「その１ 結論編」を書けたのは良かったが、よりまともなモデルを作ろうとして、うまくいかなかった。
+
+JAGS は確率に関する Prolog みたいなものという認識で、それがおもしろいと思っていた。しかし、そのような使い方だと ESS が小さくなり、実質的に評価ができないことがわかった。不等式を使う場合だけでなく、sk_problem24.jag のような不等式のトリックを使わないようなものでも、ESS がとても小さくなるのは意外だった。その「苦労」の結果、Prolog みたいに使うのは間違いだと結論せざるを得ない。(そもそも Prolog 自体、万能推論機でないので、逆にそこが似てるのかもしれないが。)
+
+■配布物＆ライセンス
+  
+「その１ 結論編」をご参照ください。更新情報もそちらで。
+
+更新：2020-05-09
+初公開：2020年05月09日 05:28:59
+最新版：2020年05月09日 05:28:59
+
+
+Links:
+
+その１ 結論編: <a href="../../../articles/2020/05/software_91890591.html" class="int-link" title="「志村けん問題」を JAGS で解く その１ 結論編">http://jrf.cocolog-nifty.com/software/2020/05/post-918b0f.html</a>
+ベイズ統計モデリング: <a href="../../../articles/2020/05/hbm_01986.html" class="int-link" title="Amazon.co.jp: ベイズ統計モデリング: R,JAGS, Stanによるチュートリアル 原著第2版: Kruschke,John K. (著), 和寛,前田 (翻訳), 考司,小杉 (翻訳): Books">https://www.amazon.co.jp/dp/4320113160</a></pre>
+
+
+<section class="backrefs" data-pagefind-ignore>
+<h2>後方参照 (2 件)</h2>
+<ul>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2020/05/software_91890591.html">「志村けん問題」を JAGS で解く その１ 結論編</a> <span class="backref-date">2020年05月09日 05:25:43</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2020/05/statuses_cocolog_91890615.html">ひとこと</a> <span class="backref-date">2020年05月09日</span></li>
+</ul>
+</section>
+
+</article>
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2020/05.html">2020年05月</a> | <a href="../../../index/software.html">ソフトウェア Tips</a></nav>
+</body>
+</html>

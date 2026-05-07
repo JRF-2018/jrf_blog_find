@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>オブジェクト指向にできないテキストフィルタの難しさにヘタれる - JRF Blog Archive</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2006/02.html">2006年02月</a> | <a href="../../../index/column.html">雑記</a></nav>
+<article data-pagefind-body>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[column] <span class="cocolog-id">cocolog:9846668</span></td></tr>
+<tr><th>セクション</th><td>JRF の私見：雑記</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2006/02.html">2006年02月07日 23:26:30</a></td></tr>
+<tr><th>元URL</th><td><a href="http://jrf.cocolog-nifty.com/column/2006/02/post_11.html" class="ext-link"><span class="original-url">http://jrf.cocolog-nifty.com/column/2006/02/post_11.html</span></a></td></tr>
+<tr><th>タグ</th><td>[近況] [情報工学・コンピュータ科学]</td></tr>
+</table>
+</div>
+<h1>オブジェクト指向にできないテキストフィルタの難しさにヘタれる</h1>
+<pre class="body">現在作っているプログラムは昔ながらの「テキストフィルタ」になるのですが、少し処理が複雑なため、あちらを直せばこちらにバグが出るといった感じになっています。今の GUI のソフトのように簡単なプログラムを積み上げてくという感じにはなっていないので、ちょっと大変です。
+
+そういえば、学生時代にオブジェクト指向言語 SmallTalk でファイルを読み込んで処理するプログラムを書いていると、エラい先生に、オブジェクト指向は小さなプログラムを積み上げるもので、そんなに大きな関数を作ってはいけないと注意されたことがあります。
+
+「だったら、お前、再帰バリバリの関数呼び出しで parser を書いて見ろよ」といいたくなりましたが、まぁ、オブジェクト指向に大きな関数は作るべきでないのは事実だし、何を作っているかの説明も面倒だったので、黙っていました。
+
+だからこその XML なんでしょうね……。ツリー構造に落としてしまえば、まさに再帰関数の呼び出しに都合がいいし、タグの定義部は別実装だから変数束縛のスコープも考えなくていいし。
+
+私は XML 自体は好きなんですが、あの冗長で読みにくいソースをユーザーに書かせるというのには強い抵抗があって、そのくせ、WYSIWYG の GUI バリバリの Office 製品も好きになれないんです。
+
+だって、プログラマにとっての推論のしやすさが、ユーザーにとってのわかりやすさになるとは限らないし、ユーザーにとっての見た目の良さが、操作の簡単さにつながるとも限らないわけですから。
+
+そういったわけで、エディタ内でだいたい自由にエディットすると、それと本質的には見た目が同じなんだけど、ちょっと見ばえが良い形に成型される……って辺りを狙ってるんですけど、私のプログラミングレベルでは難しいんですよ。
+
+インデントの位置の変わった変わらないをどう判定するか、とか、リンクやイメージの埋め込みのために代入のような形式を認めるとしても lazy evaluation をどこまで認めるか、とか、イメージの再利用やサイトとの同期をどうするか、とかね。実装でもいろいろ迷うし、微妙なつじつま合わせがあって結構タイヘン。
+
+更新：06/02/07
+初公開：2006年02月07日 20:42:15</pre>
+
+
+<section class="backrefs" data-pagefind-ignore>
+<h2>後方参照 (1 件)</h2>
+<ul>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2011/04/statuses_aboutme_138437.html">ひとこと</a> <span class="backref-date">2011年04月21日</span></li>
+</ul>
+</section>
+
+</article>
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2006/02.html">2006年02月</a> | <a href="../../../index/column.html">雑記</a></nav>
+</body>
+</html>

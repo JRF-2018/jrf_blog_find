@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>Statuses_Editor_Proxy.CGI - XMLRPC と OAuth を組み合わせた「ひとことサイト」ソリューション - JRF Blog Archive</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2011/06.html">2011年06月</a> | <a href="../../../index/software.html">ソフトウェア Tips</a></nav>
+<article data-pagefind-body>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[software] <span class="cocolog-id">cocolog:68520060</span></td></tr>
+<tr><th>セクション</th><td>JRF のソフトウェア Tips</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2011/06.html">2011年06月03日 05:28:30</a></td></tr>
+<tr><th>元URL</th><td><a href="http://jrf.cocolog-nifty.com/software/2011/06/post.html" class="ext-link"><span class="original-url">http://jrf.cocolog-nifty.com/software/2011/06/post.html</span></a></td></tr>
+<tr><th>タグ</th><td>[ウェブログ・ココログ関連] [Perl] [JRF 作成ソフトウェア] [JavaScript]</td></tr>
+</table>
+</div>
+<h1>Statuses_Editor_Proxy.CGI - XMLRPC と OAuth を組み合わせた「ひとことサイト」ソリューション</h1>
+<pre class="body">■このアプリケーションは何？
+  
+ユーザーとして MovableTyle の機能を XMLRPC から使い、Twitter.com やはてな社が実装する OAuth をユーザー認証に用いることで、CGI のサーバーにリソース・セキュリティが乏しい場合でも、ユーザー追加型の「ひとこと」サイトを一般ユーザーが比較的安心して運用できる Web アプリケーションです。
+
+MovableType のテンプレート、そのサーバーに置く Javascript、ユーザー側で起動する Greasemonkey JavaScript(Google Chrome の UserScript にも対応)、(ローカルで起動する) httpd で使う CGI Perl スクリプトから構成されます。
+
+当初は、アバウトミーの「ひとこと」をココログプロへ移転するツールとして作られたため、その変換のための Perl スクリプトも添付されています。
+
+配布される MovableType のテンプレートは「ココログプロ」用に調整されていますが、SSI が使える MovableType 環境に対応させるのは困難ではないでしょう。
+
+■手順要旨
+  
+まず、00README.txt の手順に従い Firefox で Greasemonkey を使って記事・コメントの投稿ができるところまで、構築してください。このソリューションを使う場合、statuses_editor.user.js は不用になりますが、インストール作業をなさる方は、テスト用にいつでも動かして確認できる環境を保持してください。
+
+  0.事前に必要なもの：
+    ○00README.txt に挙げたもの。
+    ○httpd が利用できること。httpde で Perl の CGI が動き、Perl のバージョンは 5.8 以上で、モジュールとして LWP::Protocol::https が入っていること。また、Digest::SHA または Digest::SHA1 が入っていること。
+    ○OAuth プロバイダとして使う Twitter.com と、はてな社のアカウント。
+  1.00README.txt に順って運用ができるところまで構築する。
+  2.Twitter.comと、はてな社にネット上で申請して OAuth アプリケーション用の Consumer Key 等をもらう。(2011年6月1日現在無料。)
+  3.httpd のディレクトリに CGI、JavaScript、CSS を置き、アクセスできるようにする。
+  4.Greasemonkey または UserScript に上の httpd からスクリプトを読むためのスクリプトを登録する。
+    
+■手順 1.00README.txt に順った構築。
+    
+「ひとこと」サイトとしてこれから運用なさるだけのかたは、アバウトミーのデータからの変換については無視していただいてかまいません。
+
+■手順 2.OAuth アプリケーション用の Consumer Key 等の取得。
+    
+次の両サイトに行き、はてなのサイトに関しては「OAuth 開発者向け設定ページ」というリンクから、Twitter のサイトに関しては「Client Applications」というリンクから、Consumer Key と Consumer Secret を取得してください。 Application Name、Website についてはご自由に決めてください。
+
+  ●《Consumer key を取得して OAuth 開発をはじめよう - Hatena Developer Center》。
+  ●《Authenticating Requests with OAuth | dev.twitter.com》。
+    
+このとき注意すべきなのは、Twitter.com のサイトでは、Applictation Typeと Callback URL の登録があり、ここを間違えると認証ができないことです。ここは、Application Type に Browser を、Callback URL に後述の statuses_editor_proxy.cgi の URL を指定するべきところです。
+
+しかしながら、少なくともテストでは statuses_editor_proxy.cgi を localhost におき、httpd を利用されると思いますが、Callback URL に localhost の URL を登録することができないようなのです。
+
+ただし、localhost のところを、ループバックアドレス 127.0.0.1 にすれば私は登録できました。これで試してみてください。そして、この場合、 authorize additional domains というリンクから辿ったところで、いちおう localhost を足しておいてください。
+
+■手順 3.httpd への登録。
+    
+私は Windows 7 Home Premium 上で、次の AN HTTPD の Version 1.42p をローカルに使っています。
+
+  ●《AN HTTPD Home Page》
+    
+なお Windows Vista 以降で c:/Program Files/ 以下にインストールされる場合は、インストールする前にディレクトリ ( c:/Program Files/httpd142p )を作ったあと、そのディレクトリの「プロパティ」→「セキュリティ」でインストールするユーザーがフルコントロールできるようにしたあと、そこに httpd142p.zip の内容を展開することをおすすめします。(もちろん、可能であれば、もっと適切な UAC をなさればよいです。)
+
+使う HTTPD のディレクトリ構成が決まったところで、config.ph の変数をすべて決定できるようになっていると思います。その設定をし、次を再実行してください。
+
+perl make_templates.pl
+
+HTTPD の CGI 用のディレクトリに generated/statuses_editor_proxy.cgi をコピーしてください。HTTPD_DATA_DIR に設定したそのデーター用のフォルダを作るのを忘れないでください。
+
+HTTPD の JavaScript や CSS 用のフォルダに、次の三つのファイルをコピーしてください。
+
+generated/statuses_editor_client.js
+generated/statuses_editor_client.css
+generated/statuses_editor_proxy.css  
+
+この段階で、ちゃんと HTTPD にアクセスできるか確認してください。 CLIENT_JS_URL や CLIENT_CSS_URL や CGI_CSS_URL で設定した URL からロードできているか確認してください。CGI_URL で設定した URL にアクセスし「Welcome to ...」というタイトルのページが表示されることを確認してください。
+
+■手順 4.Greasemonkey または UserScript への登録。
+    
+Google Chrome の UserScript や Firefox の Greasemonkey への登録は、 load_statuses_editor_client.js のドラッグ＆ドロップでできるはずです。
+
+ただし、Google Chrome の問題として、ブラウザのウィンドウが小さいというだけで(デフォルトのままでもダメだったと思う)、インストールするかどうかの質問が表示されないという不具合があります。ご注意ください。
+
+Firefox の Greasemonkey では、登録されたとき、ファイル名が長すぎるので、それを短くして登録されることになるでしょう。編集の際はご注意ください。
+
+なお、load_statuses_editor_client.js の中の SESSION_SPEC の順序を変えることで、選好される OAuth を変えることができます。
+
+Firefox の Greasemonkey の編集コマンドを使った場合は別として、 load_statuses_editor_client.js の変数をいじったあとは登録をやりなおしてください。
+
+なお、あなたに勇気があるなら、load_statuses_editor_client.js を使わず、 MovableTyle テンプレートの HeadInfo.template に次のような文を挿入し、誰にでもこのツールが見えるようにしてしまうこともできます。テストはまったくしていませんが、そのように動くよう作ったつもりなので、テストして不具合を報告していただければ、うれしいです。（当然、ホストやディレクトリの名前はご自身のものに替えてください。）
+
+&lt;link rel=&quot;stylesheet&quot; type=&quot;text/css&quot; href=&quot;<a href="http://your.server/misc/statuses_editor_client.css&amp;quot;" class="ext-link">http://your.server/misc/statuses_editor_client.css&amp;quot;</a>  /&gt;
+&lt;script type=&quot;text/javascript&quot;&gt;
+&lt;!--
+var CGI_URL = &quot;<a href="http://your.server/cgi-bin/statuses_editor_proxy.cgi&amp;quot;;" class="ext-link">http://your.server/cgi-bin/statuses_editor_proxy.cgi&amp;quot;;</a>
+var CLIENT_CSS = &quot;<a href="http://your.server/misc/statuses_editor_client.css&amp;quot;;" class="ext-link">http://your.server/misc/statuses_editor_client.css&amp;quot;;</a>
+var is_editable_area = function () {
+    var remote_addr = '&lt;!--#echo var=&quot;REMOTE_ADDR&quot; --&gt;';
+    if (remote_addr == '127.0.0.1'
+        || remote_addr.match(/^192\.168\./)) {
+      return true;
+    }
+    return false;
+};
+--&gt;
+&lt;/script&gt;
+&lt;script src=&quot;<a href="http://your.server/misc/statuses_editor_client.js&amp;quot;" class="ext-link">http://your.server/misc/statuses_editor_client.js&amp;quot;</a> type=&quot;text/javascript&quot;&gt;&lt;/script&gt;
+
+■機能
+  
+00README.txt で Greasemonkey だけでの実装にない点として、セッション管理用のツールバーがページ上に表示されます。マルチセッション機能があり、少なくとも OAuth プロバイダの数だけ複数 ID での同時ログインに対応しています。
+
+残念ながら、Greasemonkey だけでの実装から消えた点としては、「保存」ボタン等、投稿のスピードアップのための要素がなくなっています。
+
+各ユーザーの設定は CGI の URL に &quot;?mode=config&quot; を付けたところで行います。日本語訳は迷ったのですが、使う人も少なかろうと甘えて、かなり独持訳を使いました。例えば、login は「参席」、logout は「退席」といったふうにまで訳しています。
+
+■管理
+  
+データディレクトリには、ログやデータベースファイルができます。CGI を止めて、起動しない状況で、*.sdb.* をバックアップし、*.log はコピーしたあと削除するなりすればよいでしょう。なお、CGI が起動してない状況であれば、 sep_entry_lock.sdb.* はロック機構に使うためのものですので削除していただいてかまいません。sep_publish.sdb.* も再構築待ち行列管理用ですので削除していただいてかまいません。また statuses_editor_proxy.lck はファイルロック機構用の通常 0 バイトのファイルで、バックアップの必要はありません。
+
+再構築待ち行列を使った処理の途中で致命的なエラーを起こした場合など、プロセスが残り続けることが起こりえます。この場合、残っている perl プロセスを kill した上で、一端、sep_publish.sdb.* をすべて消去し、記事の再構築をしてください。(特定の記事を再構築キューに追加したいときは、「章節の管理」で「仕分け」はそのままで「変更」ボタンを押せばいいでしょう。)
+
+■ブラウザの互換性問題
+  
+残念ながら、セッションツールバーは、IE では表示されません。IE 6 ではユーザーの別名表示や、trust、untrust のための変数の動的変更に対応していません。XMLHttpRequest 関連がネックになっています。
+
+確認は、Firefox 4.0.1、Google Chrome 11.0.696.71、Internet Explorer 8 で行っています。IE 6 より前では、まったく確認しておらず、 statuses_tools.js の機能もまともに働かないかもしれません。
+
+■参考サイト ＆ 著作権に関して ＆ 更新履歴 ＆ 配布物
+  
+00README.txt をご覧ください。配付物のバージョン aboutme2cocolog-20110603.shar 以降に付いてきます。なお、2011年6月現在、充分なテストもしていない初期バージョンであることをお忘れなく。更新情報もあちらになります。
+
+更新：2011-06-03,2011-06-06,2011-06-24
+初公開：2011年06月03日 05:28:31
+最新版：2011年06月24日 03:42:59</pre>
+<details class="trackbacks" data-pagefind-ignore><summary>Trackbacks (2 件)</summary><pre>
+Trackbacks:
+
+《<a href="http://jrf.cocolog-nifty.com/software/2011/06/post-1.html">Exhaustive Lock Dependency Emulator</a>》 from JRF のソフトウェア Tips
+マルチスレッドまたはマルチプロセスの最も簡易な lock/unlock 機構において、その依存を総当たり的に調べるプログラムを(Perlで)書いた。 総当たり的なので、特に工夫があるといえるわけではなく、おそらく他の方が特に言及することなく為していることについて、たまたま私もプログラムする順番が回ってきたぐらいのことになると思う。「車輪の再発明」だが、調べるよりは自分で作ったほうが早い部類の話で、... 
+
+受信： 2011-06-20 03:03:58 (JST)
+
+
+《<a href="http://jrf.cocolog-nifty.com/software/2012/01/post.html">ブログのバックアップ＆「ひとこと」のクロスリファレンス</a>》 from JRF のソフトウェア Tips
+私の《ひとこと》サイトで「クロスリファレンス」を張ろうと思い立った。少し試した段階でスパム制限等のため時間がかかることがわかったので、その前に《ひとこと》を「ダンプ」つまりフルバックアップすることにした。 ココログの機能として、他所に移転するのを支援するために、バックアップの機能がもとからあるが、これは、元の URL やトラックバック URL、記事 ID などを記録しないため、今回の目的には適さな... 
+
+受信： 2012-01-07 14:31:53 (JST)
+
+
+Comments:
+
+[E:taurus] 更新：「管理」の節を、簡単にだけど、追加。
+
+ただ…やはり面倒なので、これからは、00REAME.txt こと aboutme2cocolog の記事のほうでのみ更新コメントを出し、こちらのほうの更新情報はドキュメントを大きくいじった場合のみすることになると思います。
+
+投稿: JRF | 2011-06-04 14:16:22 (JST)
+
+[E:chick] ↓にも書きましたが、このアプリケーションには昔考えた「PPログイン」に近いものができることを「実証」しているという側面があります。
+
+
+</pre></details>
+
+<section class="backrefs" data-pagefind-ignore>
+<h2>後方参照 (8 件)</h2>
+<ul>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2017/11/software_88492149.html">PP Authorizer: 匿名的ログイン・匿名的支払いをサポートするアドオン</a> <span class="backref-date">2017年11月27日 11:55:00</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2014/01/statuses_cocolog_78739712.html">ひとこと</a> <span class="backref-date">2014年01月21日</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2012/04/statuses_cocolog_72357469.html">ひとこと</a> <span class="backref-date">2012年04月17日</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2012/04/column_72172241.html">今後の(主に勉学の)方針 (2012年度版)</a> <span class="backref-date">2012年04月01日 09:53:27</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2012/01/software_71180305.html">ブログのバックアップ＆「ひとこと」のクロスリファレンス</a> <span class="backref-date">2012年01月07日 14:28:08</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2011/11/statuses_cocolog_70722096.html">ひとこと</a> <span class="backref-date">2011年11月29日</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2011/06/statuses_aboutme_139417.html">ひとこと</a> <span class="backref-date">2011年06月25日</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2011/06/statuses_aboutme_139109.html">ひとこと</a> <span class="backref-date">2011年06月03日</span></li>
+</ul>
+</section>
+
+</article>
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2011/06.html">2011年06月</a> | <a href="../../../index/software.html">ソフトウェア Tips</a></nav>
+</body>
+</html>

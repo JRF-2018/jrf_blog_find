@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>ひとこと - JRF Blog Archive</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2021/10.html">2021年10月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+<article data-pagefind-body>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[statuses] <span class="cocolog-id">cocolog:93064720</span></td></tr>
+<tr><th>セクション</th><td>JRF のひとこと</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2021/10.html">2021年10月13日</a></td></tr>
+<tr><th>元URL</th><td><a href="http://jrf.cocolog-nifty.com/statuses/2021/10/post-ccf3d3.html" class="ext-link"><span class="original-url">http://jrf.cocolog-nifty.com/statuses/2021/10/post-ccf3d3.html</span></a></td></tr>
+
+</table>
+</div>
+<h1>ひとこと</h1>
+<pre class="body">Python 少しアップデートしたら matplotlib が font cache まわりで Permission denied を吐くようになった。やめてくれよぉ…。
+JRF 2021年10月13日
+
+&lt;pre&gt;
+PermissionError: [Errno 13] Permission denied: 'C:\\home\\[USERNAME]\\.matplotlib\\fontlist-v330.json'
+&lt;/pre&gt;
+
+JRF 2021年10月13日
+
+Python 3.7.11 で matplotlib 3.4.2 での問題。うまくいっていた前は Python 3.7.7 で matplotlib 3.1.3 だった。
+
+JRF 2021年10月13日
+
+conda install matplotlib=3.1.3 matplotlib-base=3.1.3
+
+JRF 2021年10月13日
+
+…としても、結局、~/.matplotlib/fontlist-v310.json を消してやりなおすと同様のエラーが出た。すると matplotlib のエラーではないのだろう。
+
+JRF 2021年10月13日
+
+とりあえず、
+
+conda install matplotlib matplotlib-base
+
+…にして元に戻してから、fontlist-v330.json のパーミッションが 070 だったのを以前の fontlist-v310.jon と同じ 774 にして動いてはいるが、この先が心配なところ。
+
+JRF 2021年10月13日
+
+おそらく matplotlib のエラーではなく、Python 本体のエラーなのだろう。または、ググっても出ないあたり、私の特殊な Cygwin 環境とのからみで出ているエラーかもしれない。
+
+報告すべきか…。でも、原因が特定できないし…。なにより英語が…。
+
+JRF 2021年10月13日
+
+……。
+
+ちなみに python を 3.7.11 から python 3.7.7 に下げてみてもダメだった。Python 本体というより、ライブラリのどれかがおかしいのだろう。
+
+JRF 2021年10月13日
+
+……。
+
+OS は Windows 10。conda は 4.10.3。anaconda は custom になってる。Cygwin の bash &amp; mintty から Windows の Anaconda の Python を使っている。
+
+ちなみに Python 3.8 系で試そうと conda install python=3.8 をしたら、conflict がどうとかで時間がかかり過ぎて実質インストールできなかった。
+
+JRF 2021年10月13日
+
+……。
+
+……。
+
+あっ、解決した。
+
+結局のところは、一度、fontlist-v330.json だけでなく ~/.matplotlib のディレクトリを全部削除し、~/.matplotlib のディレクトリを再度作らせれば良かった。
+
+しかし、なぜそうなのかがわからない。
+
+JRF 2021年10月14日
+
+試しに、json.dump でファイルを書くだけのプログラムを作っていろいろ試したところ、他のディレクトリだとパーミッションが正しいのに、~/.matplotlib に書いたときだけなぜかパーミッションが 070 になってしまうということになっていた。
+
+そこで試しに ~/.matplotlib を削除してみたらどうなるか…と試してみたらうまくいった…という感じ。ただ、前の ~/.matplotlib のディレクトリの何が悪かったかは未だにというか、もうわからない。
+
+JRF 2021年10月14日
+
+なんとなく Windows 10 のアップデートがらみで、以前の Python が作った「不正」なディレクトリ・パーミッションに関しエラーが出ているのではないか？
+
+JRF 2021年10月14日
+
+……。
+
+結局、Anaconda を anaconda-clean を利用してアンインストールしてから再インストールした。.conda なども .matplotlib と同じ症状があったため。env 等が変わるがしかたがない。
+
+JRF 2021年10月14日</pre>
+
+
+<section class="backrefs" data-pagefind-ignore>
+<h2>後方参照 (1 件)</h2>
+<ul>
+<li><span class="backref-label">[cocolog:93064720]参照</span> <a href="../../../articles/2021/10/gsm_001546.html">共有メモ</a> <span class="backref-date">2021-10-13T16:16:46Z</span></li>
+</ul>
+</section>
+
+</article>
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2021/10.html">2021年10月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+</body>
+</html>

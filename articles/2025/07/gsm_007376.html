@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>共有メモ - JRF Blog Archive</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2025/07.html">2025年07月</a> | <a href="../../../index/gsm.html">共有メモ</a></nav>
+<article data-pagefind-body>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[gsm] 2025-07-17T01:50:04Z</td></tr>
+<tr><th>セクション</th><td>グローバル共有メモ</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2025/07.html">2025-07-17T01:50:04Z</a></td></tr>
+<tr><th>元URL</th><td>(URLなし)</td></tr>
+
+</table>
+</div>
+<h1>共有メモ</h1>
+<pre class="body">jrf&gt; LangChain で熊剣迷路問題 Ver. 0.0.6。LangGraph 系の stream を使って 1 invoke につき 1 command が確かにできることを確かめるだけの試験実装。
+
+《langchain_maze_0.0.6.ipynb》  
+<a href="https://gist.github.com/JRF-2018/2cb8eba04d6ab7be0631fbbd0657cb13" class="ext-link">https://gist.github.com/JRF-2018/2cb8eba04d6ab7be0631fbbd0657cb13</a>
+
+Version 0.0.6 での違い。
+
+1 invoke につき 1 command というのを stream という機能を使って実装するテストです。それ以外は前回 0.0.5 からの変更はほぼありません。今回は無理やり制限をつける形に近いので、0.0.5 のほうが良いプログラムと言えます。ただ、0.0.4 までのころに問題としてた 1 invoke につき 1 command が LangGraph 系ならこんな簡単にできるということを示すためだけに 0.0.6 を作ってみました。
+
+ちなみに LangGraph 系でない 0.0.4 まで使っていた AgentExecutor でも stream はあって同様の実装ができたようなのですが、LangGraph 系ほど使いやすくないようです。
+
+そうやって、またたまたまゴールできたので、それを公開しておくことにしました。</pre>
+
+
+</article>
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2025/07.html">2025年07月</a> | <a href="../../../index/gsm.html">共有メモ</a></nav>
+</body>
+</html>

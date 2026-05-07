@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>共有メモ - JRF Blog Archive</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2020/12.html">2020年12月</a> | <a href="../../../index/gsm.html">共有メモ</a></nav>
+<article data-pagefind-body>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[gsm] 2020-12-08T07:15:24Z</td></tr>
+<tr><th>セクション</th><td>グローバル共有メモ</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2020/12.html">2020-12-08T07:15:24Z</a></td></tr>
+<tr><th>元URL</th><td>(URLなし)</td></tr>
+
+</table>
+</div>
+<h1>共有メモ</h1>
+<pre class="body">jrf&gt; 更新: shared_memo-20201207.zip。バージョン 0.1.1。
+
+このバージョンが特に欲しい方は↓からどうぞ。
+
+<a href="https://github.com/JRF-2018/shared_memo/releases/tag/v0.1.1" class="ext-link">https://github.com/JRF-2018/shared_memo/releases/tag/v0.1.1</a>
+
+今回は、基本、ログページのリンクに a タグや ruby タグを付し、それを「ページを保存」したものでも check_log.cgi などが通るようにしただけ。
+
+ただ、その過程で、200個以上のメモがあるときに書込するとハッシュがうまく取れなバグをなおした。
+
+さらに、バージョン 0.0.9 のバグである \x0d が混入することの後遺症をなんとかする必要があり、お行儀が悪いが、\x0d が含まれるメモは、\x0d を除去した上でメモごとのハッシュを取り直すことにした。正常な動作ではメモごとのハッシュは一度決まれば変わらない。それが変わるわけだから問題があるが、今回のみの一回の対応でできるということでお許しいただきたい。
+
+ちなみに、更新しただけでは \x0d の除去は起きない。一度、メモを書くとそのときに一度だけ一気に全メモの \x0d の除去を行うことになる。(以前から普段の投稿において常に \x0d の除去が行われているのでそうなる以前のメモが対象。)</pre>
+
+
+</article>
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2020/12.html">2020年12月</a> | <a href="../../../index/gsm.html">共有メモ</a></nav>
+</body>
+</html>

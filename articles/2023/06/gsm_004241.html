@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>共有メモ - JRF Blog Archive</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2023/06.html">2023年06月</a> | <a href="../../../index/gsm.html">共有メモ</a></nav>
+<article data-pagefind-body>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[gsm] 2023-06-21T00:11:21Z</td></tr>
+<tr><th>セクション</th><td>グローバル共有メモ</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2023/06.html">2023-06-21T00:11:21Z</a></td></tr>
+<tr><th>元URL</th><td>(URLなし)</td></tr>
+
+</table>
+</div>
+<h1>共有メモ</h1>
+<pre class="body">jrf&gt; Predictor - Actor - Recollector モデルと OpenAI Function calling やエビデンスの引用付き解答を関連させられないか…。「PAR分解」とか言って AI を説明可能にでいないか。…とか妄想した。
+
+《Predictor - Actor (- Recollector) モデルと負の学習 - JRF のソフトウェア Tips》  
+<a href="../../../articles/2020/02/software_91662485.html" class="int-link" title="Predictor - Actor (- Recollector) モデルと負の学習">http://jrf.cocolog-nifty.com/software/2020/02/post-c87651.html</a>
+
+おもちゃの車の自動運転を例として考える。
+
+Predictor は、環境 + 行動 → 結果(予想) がすでに学習されているとする。
+
+Recollector は、車が右に曲がろうとしている…とかいうコンテクストにおいて、次にあるべき結果(1)を予想する。そして、そこから Actor が 環境 + 予想 → 行動計画 を出してくる。
+
+それを Predictor に与えて、環境 + 行動 → 結果予想…あるべき結果(2)がわかる。あるべき結果(2) と あるべき結果(1) の違いから、Actor を学習していく。…というのが私の枠組だった。
+
+ただそれは、結局、Predictor の学習のときに、Actor も同じデータで学習できるので意味がない。となったのであった。
+
+基本的には LLM (ChatGPTなどの将来形) で自動運転するときは、Predictor の役割がまずあるだろう。右に曲がって欲しいという要求を与えたとき、環境を調べるよう LLM が要求する。ただ、それは単に今の環境だけでなく、Recollector が出すような予想を求めることになるだろう。それはタロット占いで相談によって識別器の動作が変わるように、要求によって、Recollector の動作が変わる。
+
+その環境+予想から次の行動を指定する Actor としても LLM は働く。その行動+環境が予相につながることを確かめるよう Predictor としても LLM は働きながら、Actor と Predictor のつじつまが合うよう、LLM は「推論」する…ということになるのだろう。
+
+しかし、いってみれば、Recollector の働きも LLM がやればいいことに気付く。環境だけから LLM が行動を推論すればいいのだ。
+
+ならば、Predictor Actor Recollector は必要ないではないか…ということになりうる。
+
+そこで出てくるのがエビデンスの考え方だ。なぜ、環境から行動を選択したかというとき、次どういう予想が欲しかったか(Recollector の出力として、Recollector に再度問い直すというのもありうるが)、当初行動計画は何でどういう推論過程で、実際行動に結びついたか(Actor と Predictor で)という形に分解し、それをエビデンスとする…のに使えるのではないか。そのエビデンスで、XAI(Explainable AI: 説明可能な AI)的になり、今後の分析などに耐えるようになるのではないか。「Predictor - Actor - Recollector (PAR)分解」とか言って、耐えるようになったらいいなぁ…とか妄想した。</pre>
+
+
+</article>
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2023/06.html">2023年06月</a> | <a href="../../../index/gsm.html">共有メモ</a></nav>
+</body>
+</html>

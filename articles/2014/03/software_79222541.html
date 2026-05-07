@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>Cocolog_Pro_Analyzer：ココログプロ用アクセス解析補助 Greasemonkey - JRF Blog Archive</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2014/03.html">2014年03月</a> | <a href="../../../index/software.html">ソフトウェア Tips</a></nav>
+<article data-pagefind-body>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[software] <span class="cocolog-id">cocolog:79222541</span></td></tr>
+<tr><th>セクション</th><td>JRF のソフトウェア Tips</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2014/03.html">2014年03月20日 03:46:54</a></td></tr>
+<tr><th>元URL</th><td><a href="http://jrf.cocolog-nifty.com/software/2014/03/post-3.html" class="ext-link"><span class="original-url">http://jrf.cocolog-nifty.com/software/2014/03/post-3.html</span></a></td></tr>
+<tr><th>タグ</th><td>[ウェブログ・ココログ関連] [JavaScript]</td></tr>
+</table>
+</div>
+<h1>Cocolog_Pro_Analyzer：ココログプロ用アクセス解析補助 Greasemonkey</h1>
+<pre class="body">ココログの新しいアクセス解析が 2013年12月に導入され、2014年2月に完全に切り換わった。基本的には便利になって、要望の多いらしい生ログなども将来的に対応していくそうだから、私は大きな不満はない。
+
+ただ、ココログプロを使っていて複数のブログを扱っていると、ブログを横断したデータの閲覧性が低下した点は気になる。そういうのは、前は Perl などで robot を書けば、なんとかなったんだが、今回のアクセス解析は JavaScript がメインの動的なページのため、それが難しい。そのあたりを補うための Greasemonkey スクリプトを書いてみた。
+
+■配布物
+  ●Cocolog_Pro_Analyzer.user.js。メイン配布物。
+  ●count_access.pl。上記をページビューに関して使って生成した JSON の後処理として計数する Perl スクリプトの例。というか私のアクセス解析報告で使う(予定の)スクリプト。
+  ●count_access_2.pl。JSON の取得がうまくいかないことがある。そういうときは、手作業でコピペしたテキストを用意するしかない。タイトルのところで改行が入るので、二行ずつで一データのテキストを得てそれを処理する。
+    
+■解説
+  
+機能は大きく三つ。
+
+  1.アクセス解析の最初のページ(app.cocolog-nifty.com 内)に、ブログごとの概要の切り換えがあるが、それを一ページ内に一気にすべてのブログの概要を表示してしまえるようにした。
+  2.ua.userlocal.jp 内で、右上のブログタイトルを変えれば、一度、 app.cocolog-nifty.com に戻って、そのブログを選択したあと、同じページに自動的に戻って来れるようにした。
+  3.ページビュー数ランキングで、そのブログ内または自分の全ブログに関して集計を取って、それを JSON 形式でダウンロードできるようにした。
+    
+もうちょっと凝っても良かったのだが、これ以外は、別のスクリプトに分けたほうが見通しが良くなると考え、これだけの機能で公開してみることにした。
+
+近い将来にココログのほうで対応するらしい自サイト内の自分のアクセスを除外する機能の代替として、自分がアクセスしたときにそれを localStorage に残しておいて、あとから、そのデータを JSON として取り出せるようにすれば、あとは Perl スクリプトなどで簡単に除外処理を書ける。これをこのスクリプトに統合するかちょっと迷ったが、いずれやりたいと思っている翻訳等のためのツールバーに統合しても良く、とりあえず、ココログの対応を見てからにしようと今回は見送った。
+
+できた JSON の中身は、不親切で申し訳ないが、↓のようにすれば構造がわかると思う。ラベルが label に配列で入ってて、「タプル」＝各行のデータが tuples に配列の配列として入っている。
+
+$ cat 'ダウンロードしたファイル名.json'  | \
+  perl -e 'use JSON; use Data::Dumper;'\
+        -e 'my $json = decode_json(join(&quot;&quot;, &lt;STDIN&gt;));'\
+        -e ' print Dumper($json);' | more
+        
+完成度は正直高くない。エラー処理等をかなり、はしょっている。ココログプロの人口は少なく、かつ、JSON を Perl 等で後処理ができるような人物となると、かなり限られて来て、そういう人なら、今回のようなプログラムは書けるだろう。その手間を少し省く程度の意味しかない。
+
+その程度なので私は「パブリックドメイン」でいいのだが、ココログのアクセス解析の文法・機能にかなり依存していて、特にココログ外で転用するときは、注意が必要かもしれない。アーカイブを置いている場所はココログサーバー内でココログ側は割と自由にできるので、ここからダウンロードできる限りはココログで使用してもそれほど問題はないと思うが…。
+
+■無駄話
+  
+注意書き「数値の反映にはタイムラグが発生する場合があります。」は当初からあったかな？
+
+リアルタイムに覗かれていると、アクセスしたあと失敗したなというとき消せない。それなら、いっそのこと最初からアクセスを隠す…みたいなことになりうる。ココログ側にしてみれば、これまでも「消せなかった」という主張ではあるんだろうが、「新規参入者」にやさしくあって欲しい。
+
+今、そういう実装でなかったとしても、「アクセスしても２時間ぐらい反映されないことがある」と注記してあれば、今のネット上にはいなくてもいずれ「それぐらいだったら、クレカみたいに何かあったらあとから文句つけれればいいか」って大手企業IT担当者も出てくるかもしれない。
+
+近い将来付けるそうだが、生ログはやっぱりあったほうがいい。私のような中小なところだと、生ログを全部見たって時間がかからない。ある意味、そこで直感を得られるのが中小サイトの有利点で、生ログをつぶすのは中小つぶし、ひいては技術者の独立可能性つぶしにつながる。
+
+生ログは「少しわかりにくいけど探せばみつかる」ぐらいの形でいいので残しておいて欲しい。「オレが作りたいシステム」がある有能な技術者ほど、独立への憧れを持つもの。独立を突っぱねるよりその可能性を緩く認めてそういう技術者を周りに留めるほうが御社に新しい技術を持たらしますよ！…ってのは、安請け合い過ぎるか。
+
+あと、今回のにはあまり関係がない要望だが、aboutme2cocologで付けたココログの記事 ID からココログのその記事に飛ぶ機能、先のは自分のブログ内でしか効かないが、ココログ全体で効くようにするのはコードとしてはむしろ先のものより簡単にでき、負荷もほぼないはずだから、公式にサポートして欲しい。
+
+ココログのコードに依存しないように今回のコードを書くことは不可能ではないんだけど、一般化しすぎるとセキュリティの問題が怖い。このコードはサイト間を渡っていくループの側面を持っている。マインクラフトで学んだ(思い出した)面も大きいが、ループが存在するとリレー式計算機みたいなことができる。電脳侵食みたいなことがあったときに、まさかの方法として、そういう機構を使えるようにしておくのはサイバーパンク小説としてはおもしろそうだけど、今そこに凝っても大した意味はない。そういうのを本気で必要と考える人が現れた&lt;ruby&gt;&lt;rb&gt;未来&lt;/rb&gt;&lt;rt&gt;とき&lt;/rt&gt;&lt;/ruby&gt;に、それができる人材がいるというほうが大切で、それには「組織」がやっぱり必要で、この「個人サイト」の役割を越えてるかな…と。
+
+ネットのアクセス数ってのはどうもおかしなことがあって、広告のリンクをクリックすると、なぜか、そのサイトから自分のブログへのアクセスが増えたりすることがある。「偶然」でしかないと強弁されれば証拠はなく放置するしかなかったが、今回のアクセス解析の改変はそのあたりの証拠をさらに得にくくするものという側面がある。わかってるはずなのに何も言ってこないから、皆それでいいってことにされて行政が介入できなかったのが、わかってないんだからインフラ側はもっと責任感を持てという話になるのかな？まぁ、普通、そうはならないよな…。
+
+■参考
+  ●《新アクセス解析の機能追加予定: お知らせココログ:@nifty》。こちらに生ログや自サイト内の自分のアクセスを除外する機能を付け加える予定と書いている。
+    
+初公開：2014年03月20日 03:46:54
+最新版：2019年09月12日 21:34:46
+
+
+Comments:
+
+[E:maple] 初公開：Cocolog_Pro_Analyzer-20140320.user.js。バージョン 0.01。
+
+年度末のかなりの突貫工事。できたてホヤホヤだが、少しでも早く公開したほうが、3月末日までにバグが取れる可能性が広がるかと思って、まず公開してみた。
+
+投稿: JRF | 2014-03-20 03:55:32 (JST)
+
+[E:mobaq] 更新：Cocolog_Pro_Analyzer-20140321.user.js。バージョン 0.02。
+
+初公開：count_access-20140321.pl。バージョン 0.01。
+
+JSON ダウンロード後の後処理を行う Perl スクリプトの例として count_access.pl を公開し、そのほか、記事にいろいろ書き足した。count_access.pl に関しては「例題」レベルのコードなので「パブリックドメイン」でいいはず。
+
+投稿: JRF | 2014-03-21 05:30:53 (JST)
+
+[E:ticket] 更新：count_access-20140701.pl。バージョン 0.02。
+
+数値にコンマ(,)が使われている場合にそれを除く処理を足した。うちはアクセス少ないから気付くのが遅くなった。orz
+
+投稿: JRF | 2014-07-01 09:19:11 (JST)
+
+[E:yacht] 初公開：count_access_2-20140717.pl。バージョン 0.02。
+
+JSON がどうもうまく取得できない。適当に wait を入れないとダメっぽい。しかたなく、JSON を諦めて、手でコピペしていったデータで count_access するスクリプトも書いておいた。
+
+投稿: JRF | 2014-07-17 16:44:28 (JST)
+
+[E:event] 更新: Cocolog_Pro_Analyzer-20151026.user.js。バージョン 0.03。
+
+@grant 文を足しただけで、内容的には何も変わってない。というか、初公開当時から、私のところの Greasemonkey のバージョンがかなり古かったため @grant 文が必要になってることに気付かなかっただけっぽい。
+
+投稿: JRF | 2015-10-26 22:14:49 (JST)
+
+[E:basketball] 更新：Cocolog_Pro_Analyzer-20171117.user.js。バージョン 0.04。
+
+Greasemonkey 4.0 に対応するための緊急リリース。ただし、「集計」「全集計」の機能はうまく動いていないようだ。以前からだいたいそうなのでもうその機能を使っている人はいないと判断しているが、…申し訳ない。
+
+投稿: JRF | 2017-11-17 03:17:01 (JST)
+
+[E:gasstation] 更新: Cocolog_Pro_Analyzer-20171119.user.js。バージョン 0.05。
+
+Greasemonkey 4 にバグがあるのか、私のプログラムにバグがあるのかよくわからないが、バージョン 0.04 は iframe まわりで妖しい動作をしていた。iframe 内では処理をしないようにしておいた。
+
+投稿: JRF | 2017-11-19 21:12:59 (JST)
+
+[E:freedial] 更新: Cocolog_Pro_Analyzer-20171124.user.js。バージョン 0.06。
+
+「集計」「全集計」の機能も動くようにしてみた。「完璧」とは程遠いと思うが。
+
+なお、Greasemonkey のバグなのか、ときどき Greasemonkey スクリプトの実行がされないことがあり、そのため集計の途中で止まることがあった。その場合は、落ち着いてその段階のページをリロードしてみると再度、途中から動き出すようだ。そうなったときはお試しあれ。
+
+投稿: JRF | 2017-11-24 10:31:41 (JST)
+
+[E:maple] 更新: Cocolog_Pro_Analyzer-20190320.user.js。バージョン 0.07。
+
+2019年3月19日のココログ全面リニューアルのため使えなくなっていたのを、突貫工事で使えるようにした。
+
+ただし、現在、ファイルのアップロードができないらしいので、SugarSync にアップロードしておく(↓)。
+
+<a href="https://www.sugarsync.com/pf/D252372_79_6749281173" class="ext-link">https://www.sugarsync.com/pf/D252372_79_6749281173</a>
+
+これは、ココログでアップロードができるようになったら、ココログにアップして、SugarSync のは消す予定。
+
+投稿: JRF | 2019-03-20 22:18:19 (JST)
+
+更新: Cocolog_Pro_Analyzer-20190912.user.js。バージョン 0.08。
+
+ダウンロードは↓から。
+
+<a href="https://www.sugarsync.com/pf/D252372_79_6464410999" class="ext-link">https://www.sugarsync.com/pf/D252372_79_6464410999</a>
+
+サイレントに、ココログが ua.userlocal.jp に https でアクセスするようになったので、その対応をした。user.js のヘッダ部分しかいじってない。
+
+投稿: JRF | 2019-09-12 21:37:24 (JST)
+
+
+Links:
+
+Cocolog_Pro_Analyzer.user.js: <a href="https://www.sugarsync.com/pf/D252372_79_6464419334" class="ext-link">https://www.sugarsync.com/pf/D252372_79_6464419334</a>
+count_access.pl: <a href="http://jrf.cocolog-nifty.com/archive/perl/count_access.pl" class="ext-link">http://jrf.cocolog-nifty.com/archive/perl/count_access.pl</a>
+アクセス解析報告: <a href="http://jrf.cocolog-nifty.com/column/cat7614093/index.html" class="ext-link">http://jrf.cocolog-nifty.com/column/cat7614093/index.html</a>
+count_access_2.pl: <a href="http://jrf.cocolog-nifty.com/archive/perl/count_access_2.pl" class="ext-link">http://jrf.cocolog-nifty.com/archive/perl/count_access_2.pl</a>
+aboutme2cocolog: <a href="../../../articles/2011/04/software_67976071.html" class="int-link" title="aboutme2cocolog: アバウトミーの「ひとこと」をココログプロへ移転するツール">http://jrf.cocolog-nifty.com/software/2011/04/post.html</a>
+マインクラフト: <a href="../../../articles/2014/03/hbm_01773.html" class="int-link" title="Minecraft">https://minecraft.net/</a>
+リレー式計算機: <a href="../../../articles/2014/03/hbm_01774.html" class="int-link" title="富士通リレー式計算機 技術継承プロジェクト : 富士通">http://jp.fujitsu.com/museum/relay/</a>
+新アクセス解析の機能追加予定: お知らせココログ:@nifty: <a href="../../../articles/2014/03/hbm_01772.html" class="int-link" title="新アクセス解析の機能追加予定: お知らせココログ:@nifty">http://info.cocolog-nifty.com/info/2013/12/post-36b9.html</a>
+Cocolog_Pro_Analyzer-20140320.user.js: <a href="http://jrf.cocolog-nifty.com/archive/javascript/Cocolog_Pro_Analyzer-20140320.user.js" class="ext-link">http://jrf.cocolog-nifty.com/archive/javascript/Cocolog_Pro_Analyzer-20140320.user.js</a>
+Cocolog_Pro_Analyzer-20140321.user.js: <a href="http://jrf.cocolog-nifty.com/archive/javascript/Cocolog_Pro_Analyzer-20140321.user.js" class="ext-link">http://jrf.cocolog-nifty.com/archive/javascript/Cocolog_Pro_Analyzer-20140321.user.js</a>
+count_access-20140321.pl: <a href="http://jrf.cocolog-nifty.com/archive/perl/count_access-20140321.pl" class="ext-link">http://jrf.cocolog-nifty.com/archive/perl/count_access-20140321.pl</a>
+count_access-20140701.pl: <a href="http://jrf.cocolog-nifty.com/archive/perl/count_access-20140701.pl" class="ext-link">http://jrf.cocolog-nifty.com/archive/perl/count_access-20140701.pl</a>
+count_access_2-20140717.pl: <a href="http://jrf.cocolog-nifty.com/archive/perl/count_access_2-20140717.pl" class="ext-link">http://jrf.cocolog-nifty.com/archive/perl/count_access_2-20140717.pl</a>
+Cocolog_Pro_Analyzer-20151026.user.js: <a href="http://jrf.cocolog-nifty.com/archive/javascript/Cocolog_Pro_Analyzer-20151026.user.js" class="ext-link">http://jrf.cocolog-nifty.com/archive/javascript/Cocolog_Pro_Analyzer-20151026.user.js</a>
+Cocolog_Pro_Analyzer-20171117.user.js: <a href="http://jrf.cocolog-nifty.com/archive/javascript/Cocolog_Pro_Analyzer-20171117.user.js" class="ext-link">http://jrf.cocolog-nifty.com/archive/javascript/Cocolog_Pro_Analyzer-20171117.user.js</a>
+Cocolog_Pro_Analyzer-20171119.user.js: <a href="http://jrf.cocolog-nifty.com/archive/javascript/Cocolog_Pro_Analyzer-20171119.user.js" class="ext-link">http://jrf.cocolog-nifty.com/archive/javascript/Cocolog_Pro_Analyzer-20171119.user.js</a>
+Cocolog_Pro_Analyzer-20171124.user.js: <a href="http://jrf.cocolog-nifty.com/archive/javascript/Cocolog_Pro_Analyzer-20171124.user.js" class="ext-link">http://jrf.cocolog-nifty.com/archive/javascript/Cocolog_Pro_Analyzer-20171124.user.js</a></pre>
+
+
+<section class="backrefs" data-pagefind-ignore>
+<h2>後方参照 (11 件)</h2>
+<ul>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2017/11/statuses_cocolog_88438901.html">ひとこと</a> <span class="backref-date">2017年11月17日</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2016/04/column_84884157.html">前期の翌日(2016-01-01)から昨日(2016-03-31)まで 91 日間のアクセス解析・近況など</a> <span class="backref-date">2016年04月01日 12:53:25</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2016/01/column_84274746.html">前期の翌日(2015-10-01)から昨日(2015-12-31)まで 92 日間のアクセス解析・近況など</a> <span class="backref-date">2016年01月01日 01:58:23</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2015/10/column_83514430.html">前期の翌日(2015-07-01)から昨日(2015-09-30)まで 92 日間のアクセス解析・近況など</a> <span class="backref-date">2015年10月01日 13:47:48</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2015/07/column_82774604.html">前期の翌日(2015-04-01)から昨日(2015-06-30)まで 91 日間のアクセス解析・近況など</a> <span class="backref-date">2015年07月01日 05:36:05</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2015/04/column_82138851.html">前期の翌日(2015-01-01)から昨日(2015-03-31)まで 90 日間のアクセス解析・近況など</a> <span class="backref-date">2015年04月01日 09:16:30</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2015/01/column_81484128.html">前期の翌日(2014-10-01)から昨日(2014-12-31)まで 92 日間のアクセス解析・近況など</a> <span class="backref-date">2015年01月01日 06:55:14</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2014/10/column_80751818.html">前期の翌日(2014-07-01)から昨日(2014-09-30)まで 92 日間のアクセス解析・近況など</a> <span class="backref-date">2014年10月01日 05:31:54</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2014/07/column_80047968.html">前期の翌日(2014-04-01)から昨日(2014-06-30)まで 91 日間のアクセス解析・近況など</a> <span class="backref-date">2014年07月01日 09:02:01</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2014/04/column_79318735.html">前期の翌日(2014-01-01)から昨日(2014-03-31)まで 90 日間のアクセス解析・近況など</a> <span class="backref-date">2014年04月01日 06:35:22</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2014/03/statuses_cocolog_79241255.html">ひとこと</a> <span class="backref-date">2014年03月22日</span></li>
+</ul>
+</section>
+
+</article>
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2014/03.html">2014年03月</a> | <a href="../../../index/software.html">ソフトウェア Tips</a></nav>
+</body>
+</html>

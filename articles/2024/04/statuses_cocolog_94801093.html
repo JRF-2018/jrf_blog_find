@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>ひとこと - JRF Blog Archive</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2024/04.html">2024年04月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+<article data-pagefind-body>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[statuses] <span class="cocolog-id">cocolog:94801093</span></td></tr>
+<tr><th>セクション</th><td>JRF のひとこと</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2024/04.html">2024年04月20日</a></td></tr>
+<tr><th>元URL</th><td><a href="http://jrf.cocolog-nifty.com/statuses/2024/04/post-abc849.html" class="ext-link"><span class="original-url">http://jrf.cocolog-nifty.com/statuses/2024/04/post-abc849.html</span></a></td></tr>
+
+</table>
+</div>
+<h1>ひとこと</h1>
+<pre class="body">坂本俊之『作ってわかる! アンサンブル学習アルゴリズム入門』を読んだ。ソースを読めれば、わかりやすい本だと思う。出版が生成 AI 流行前なので、LLM などでもアンサンブル学習的な要素があるようで、そこが知りたいと思うのにそこに続く道は見えなかった。
+JRF 2024年4月20日
+
+『作ってわかる! アンサンブル学習アルゴリズム入門』(坂本 俊之 著, シーアンドアール研究所, 2019年5月)
+<a href="https://www.c-r.com/book/detail/1316" class="ext-link">https://www.c-r.com/book/detail/1316</a>
+<a href="https://www.amazon.co.jp/dp/4863542801" class="ext-link">https://www.amazon.co.jp/dp/4863542801</a>
+<a href="https://7net.omni7.jp/detail/1106992937" class="ext-link">https://7net.omni7.jp/detail/1106992937</a>
+
+JRF 2024年4月20日
+
+なお、AI の本は直近では他に、斎藤康毅『ゼロから作るDeep Learning 5 - 生成モデル編』を読んでいる(<a href="../../../articles/2024/04/statuses_cocolog_94787819.html" class="int-link cocolog-id" title="ひとこと">[cocolog:94787819]</a>)。
+
+JRF 2024年4月20日
+
+……。
+
+○ 2024-04-19T16:49:58Z
+
+坂本俊之『作ってわかる! アンサンブル学習アルゴリズム入門』を読んだ。ソースを読めれば、わかりやすい本だと思う。ただ、9章ではかなり複雑なこともやる。
+
+拙著『宗教学雑考集』でアンサンブル学習に言及しているのに、まともに本を読んでいないのが気になっていた。そこでこれを買って読んだ次第。
+
+JRF 2024年4月20日
+
+AI 学習はこのところ進歩が急速で、出版が生成 AI 流行前の 2019年だと情報が古いということになるのかもしれないが、LLM などでもアンサンブル学習的な要素があるよう(例: ↓)だが、そこが知りたいと思うのにそこに続く道が見えなかった。まぁ、しかたない。
+JRF 2024年4月20日
+
+《erukiti:X:2024-04-15》  
+<a href="https://twitter.com/erukiti/status/1779665800527569091" class="ext-link">https://twitter.com/erukiti/status/1779665800527569091</a>
+＞
+arxiv.org/abs/2402.05120
+More Agents Is All You Need面白いな
+
+JRF 2024年4月20日
+
+一つのLLMに同一のプロンプトを複数回投げる。temperatureを上げるなりして回答に揺らぎが生じる。それらを機械的に判定する（選択問題なら頻出する。オープン記述なら他と共通項が多い）
+
+これだけでモデルの性能が上がるらしい
+＜
+
+JRF 2024年4月20日
+
+内容的には、ブースティングがいまいちよくわからなかった。特に勾配ブースティング(p.200 あたり)が、なぜ、差分を学習していて、それを重みありで足せばいいのかというが、いまいち私にはわからなかった。その都度改善されたパラメータで学習するではダメなのか？…ブースティングがアンサンブルとして有効な理由は何か？…みたいなものがわからなかった。
+
+JRF 2024年4月20日
+
+Amazon 評にもあるが、ソースに誤植があるようだ。しょっぱな(p.40)の support.py からして、prob_to_clz の pred は prob の間違いだと私は思う…。↓の正誤表にあるね。あと、agerage (p.149)も私は見つけられたが、それ以外もいろいろあるのか。
+
+JRF 2024年4月20日
+
+《坂本俊之『作ってわかる! アンサンブル学習アルゴリズム入門』の誤植情報を集める #Python - Qiita》  
+<a href="https://qiita.com/hoxo_m/items/82f6fa2fd2cbae4bdfdb" class="ext-link">https://qiita.com/hoxo_m/items/82f6fa2fd2cbae4bdfdb</a>
+<a href="http://webcache.googleusercontent.com/search?&amp;q=cache%3Ahttps%3A%2F%2Fqiita.com%2Fhoxo_m%2Fitems%2F82f6fa2fd2cbae4bdfdb" class="ext-link">http://webcache.googleusercontent.com/search?&amp;q=cache%3Ahttps%3A%2F%2Fqiita.com%2Fhoxo_m%2Fitems%2F82f6fa2fd2cbae4bdfdb</a>
+
+JRF 2024年4月20日</pre>
+
+
+<section class="backrefs" data-pagefind-ignore>
+<h2>後方参照 (1 件)</h2>
+<ul>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2024/04/gsm_005538.html">共有メモ</a> <span class="backref-date">2024-04-19T16:59:37Z</span></li>
+</ul>
+</section>
+
+</article>
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2024/04.html">2024年04月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+</body>
+</html>

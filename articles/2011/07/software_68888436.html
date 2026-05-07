@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>Exhaustive Lock Dependency Emulator その２ wait_and_lock - JRF Blog Archive</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2011/07.html">2011年07月</a> | <a href="../../../index/software.html">ソフトウェア Tips</a></nav>
+<article data-pagefind-body>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[software] <span class="cocolog-id">cocolog:68888436</span></td></tr>
+<tr><th>セクション</th><td>JRF のソフトウェア Tips</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2011/07.html">2011年07月01日 22:37:18</a></td></tr>
+<tr><th>元URL</th><td><a href="http://jrf.cocolog-nifty.com/software/2011/07/post.html" class="ext-link"><span class="original-url">http://jrf.cocolog-nifty.com/software/2011/07/post.html</span></a></td></tr>
+<tr><th>タグ</th><td>[Perl] [シミュレーション] [関数型言語・定理証明器]</td></tr>
+</table>
+</div>
+<h1>Exhaustive Lock Dependency Emulator その２ wait_and_lock</h1>
+<pre class="body">※その１の最後に「「虚実行」またはこの仕組みの大きなミスについて」として追記したようにこのフレームワークには大きなミスが見つかっている。以下は参考のために残しておく議論である。※
+
+その１で、このフレームワークにおいて「入力待ち…は…特殊な枝刈りの仕方」ではないかというアイデアを書いた。本稿では、それを実装してみる。
+
+■理屈
+  
+入力待ちは、最も単純にはループして、他のプロセスが $context を変更するのを待てば良い。しかし、それは普通、非効率的で、このエミュレータだと、探索すべき lock 仕様の木の深さを無限に大きくすることになる。
+
+もう少しマシな方法ということであれば、unlock したあと、次に他のプロセスが lock/unlock するのを待ってから lock する「wait_and_lock」と呼ぶべき機構を考えることができる。この方法を先のフレームワークで実現するには、 lock 仕様を見て、間に他の lock がなければ、それを枝刈りするだけで良い。とても簡易で、枝を伸ばすのではなく枝を刈るのだから効率的ですらある。
+
+■実装
+  
+しかし、話としてはそれだけなのだが、実装にはやや大きな改造を必要とする。つまり、他の lock が間にない仕様だと枝刈りするということは、先の実装だと、そこから伸びた枝であるところも実行されなくなるため、単純な枝刈りだと wait_and_lock は決して実行されないとなってしまう。
+
+Perl では、C などで言うところの try {} catch {} と throw は、eval と die で実装できる。先の実装では、lock 仕様が満たせないとわかると die &quot;NORMAL:...&quot; をし、&quot;NORMAL: &quot; という文字列で大域脱出がはかられたので、それは正常終了の一種で枝刈りを要求していると判断していた。
+
+ここからさらに wait_and_lock を実現するためには、die &quot;WAIT:...&quot; という大域脱出を認め、その場合は、枝刈りをしないことにした。また、unlock された$context を配列に保存しているところでは、$context が未定義になったということで配列の最後に undef を残すようにした。もちろん、wait の条件に合いようのない lock 仕様は、die &quot;NORMAL:...&quot; で枝刈りする。
+
+「やや大きな改造」と書いたが、diff を取ってもらえばわかるように、ソースはほぼ数十行の追加のみである。しかし、確実に複雑さを増しており、今後、 lock 仕様を見て枝刈りするという考え方が、この他にも出てくれば、注意を払うだけで論理を実装できるか定かではない。
+
+■実行例
+  
+二つのプロセスがあって、一方が「出力」をしたあと「入力待ち」に入り、もう一方は「入力待ち」をしたあと「出力」するという例を作る。
+
+$emu-&gt;new_process(sub {
+                    my ($context) = @_;
+                    $context-&gt;lock();
+                    my $a = $context-&gt;get(&quot;a&quot;);
+                    print $a . &quot;\n&quot; if defined $a;
+                    $context-&gt;set(&quot;a&quot;, 1);
+                    $context-&gt;unlock();
+                    
+                    $context-&gt;wait_and_lock();
+                    my $a2 = $context-&gt;get(&quot;a&quot;);
+                    print $a2 . &quot;\n&quot; if defined $a2;
+                    $context-&gt;set(&quot;a&quot;, 3);
+                    $context-&gt;unlock();
+                  },
+                  lock_limit =&gt; 2,
+                  );
+$emu-&gt;new_process(sub {
+                    my ($context) = @_;
+                    $context-&gt;wait_and_lock();
+                    my $a = $context-&gt;get(&quot;a&quot;);
+                    print $a . &quot;\n&quot; if defined $a;
+                    $context-&gt;set(&quot;a&quot;, 2);
+                    $context-&gt;unlock();
+                  },
+                  lock_limit =&gt; 1,
+                  );
+                  
+実行結果の最後あたりは次のようになる。
+
+(...続き...)
+Result:
+run_by_lock_spec:
+run_by_lock_spec: P0U0-&gt;P1L0
+1
+run_by_lock_spec: P0U0-&gt;P1L0,P1U0-&gt;P0L1
+2
+1
+run_by_lock_spec: P1U0-&gt;P0L0
+cut!
+run_by_lock_spec: P0U1-&gt;P1L0
+cut!
+run_by_lock_spec: P1U0-&gt;P0L1
+cut!
+
+
+Result Tree:
+
+  [ [c000,undef], [undef] ]
+P0U0-&gt;P1L0
+  [ [c000,undef], [c001] ]
+P0U0-&gt;P1L0,P1U0-&gt;P0L1
+  [ [c000,c002], [c001] ]
+  
+その１にはなかったが、最後に lock 仕様に対する $context の配列の要旨も表示し、wait で終了したものを undef で終る列で表示してわかるようにしてある。
+
+結局、この例だと π0υ0→π1λ0,π1υ0→π0λ1 という lock 仕様のときのみ、正常に終了する。それ以外で Result Tree に表示されているのは、それの前段階で wait 中のプロセスが残るもののみである。
+
+私は他の例も試してみたが、「デッドロック」と判断すべき場合は、ある lock 仕様が wait(undef で終了) を含んでいるが、その lock 仕様の子の仕様において正常終了したものがない場合とでもすれば良いのだろう。もちろん、通常のプログラムにおいて複数のプログラムが入力待ちで終了するのは普通のことであったとしても、このフレームワークだけでは、それと「デッドロック」を区別するのは難しいように思う。
+
+■今後の課題
+  
+その１で挙げた以外で考えたことは、エラーがらみでない確率的なこと。
+
+二つのプロセスがあって、一方では lock 後ある変数に 1 を足し他方では 1 を引くとする。例えば、それをそれぞれ２度繰り返したあと一方が答えを表示する。当然、-2 から 2 までの幅で場合の数というのも考えられようが、「現実」は、lock が一度もブロックされないことが圧倒的に多いとなるだろう。「現実」にはまともな「確率」が存在しない。
+
+しかし、ここにそれぞれ wait_and_lock を挟むとどうなるか。とたんに中間的な値が「現実」味を帯びてくる。wait_and_lock は枝刈りを行うが、その場合の数以上にとても大きな「現実」も枝刈りしたとできるのかもしれない。
+
+以前、乱数の値の重なりついて少し考えたとき、重なりを順序を決める乱数をもう一つ使って解決するのは不自然だと思ったが、同じことが続く chaotic な乱数か特殊な順序決めアルゴリズムなら許せると思った。その感覚が、上の考察につながるような気がする。
+
+ここを理論的に詰めるのは難しいかもしれないが、今後、別のシミュレーションや、多変数乱数計算アルゴリズムに結実させたい。
+
+■関連
+  ●《Exhaustive Lock Dependency Emulator》。その１。
+  ●《クリティカルセクション - Wikipedia》。基本用語として。8 bit 機のころの割り込みでもこういう言葉を使ったと思う。あとこのあたりの基本としては、並行プログラミングと並列プログラミングの違いとかがよく話に上った。当然論文はあまたあるはずだが、専門でやってたわけでないので、私の「車輪の再発明」をどう転がしていくといいのかの検討がつかない。
+    
+■配布物
+  ●exhaustive_lock_dependency_emulator_wl.pl。バージョン 0.01。
+    
+更新：2011-07-01,2018-04-06
+初公開：2011年07月01日 22:37:24
+最新版：2018年04月06日 01:39:21
+
+
+Comments:
+
+[E:basketball] 更新：関連に「クリティカル・セクション」を足しておいた。知識不足で論文とかは挙げられないので、後続者のためのキーワード的なものを書いておいた。
+
+修正 「try {} catch {} 」→「try {} catch {} と throw」。
+
+投稿: JRF | 2011-07-02 15:26:35 (JST)
+
+[E:parking] 更新: フレームワークに大きなミスを発見。「その１」に「「虚実行」またはこの仕組みの大きなミスについて」の節を追記した。
+
+とても恥ずかしい。
+
+投稿: JRF | 2018-04-06 01:44:40 (JST)
+
+
+Links:
+
+その１: <a href="../../../articles/2011/06/software_68738226.html" class="int-link" title="Exhaustive Lock Dependency Emulator その１ 並列処理の総当り">http://jrf.cocolog-nifty.com/software/2011/06/post-1.html</a>
+乱数の値の重なりついて少し考えた: <a href="../../../articles/2011/02/statuses_aboutme_136350.html" class="int-link" title="ひとこと">http://jrf.cocolog-nifty.com/statuses/2011/02/aboutme136350.html</a>
+Exhaustive Lock Dependency Emulator: <a href="../../../articles/2011/06/software_68738226.html" class="int-link" title="Exhaustive Lock Dependency Emulator その１ 並列処理の総当り">http://jrf.cocolog-nifty.com/software/2011/06/post-1.html</a>
+クリティカルセクション - Wikipedia: <a href="http://ja.wikipedia.org/wiki/%E3%82%AF%E3%83%AA%E3%83%86%E3%82%A3%E3%82%AB%E3%83%AB%E3%82%BB%E3%82%AF%E3%82%B7%E3%83%A7%E3%83%B3" class="ext-link">http://ja.wikipedia.org/wiki/%E3%82%AF%E3%83%AA%E3%83%86%E3%82%A3%E3%82%AB%E3%83%AB%E3%82%BB%E3%82%AF%E3%82%B7%E3%83%A7%E3%83%B3</a>
+exhaustive_lock_dependency_emulator_wl.pl: <a href="http://jrf.cocolog-nifty.com/archive/perl/exhaustive_lock_dependency_emulator_wl.pl" class="ext-link">http://jrf.cocolog-nifty.com/archive/perl/exhaustive_lock_dependency_emulator_wl.pl</a></pre>
+
+
+<section class="backrefs" data-pagefind-ignore>
+<h2>後方参照 (3 件)</h2>
+<ul>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2018/04/software_89194818.html">Exhaustive Lock Dependency Emulator その３ 修正とチェック</a> <span class="backref-date">2018年04月13日 21:00:17</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2018/04/statuses_cocolog_89156596.html">ひとこと</a> <span class="backref-date">2018年04月06日</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2012/06/statuses_cocolog_72947619.html">ひとこと</a> <span class="backref-date">2012年06月06日</span></li>
+</ul>
+</section>
+
+</article>
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2011/07.html">2011年07月</a> | <a href="../../../index/software.html">ソフトウェア Tips</a></nav>
+</body>
+</html>

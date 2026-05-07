@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>CON_PRINT: プチコンmkII用コンソールPRINT - JRF Blog Archive</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2013/02.html">2013年02月</a> | <a href="../../../index/software.html">ソフトウェア Tips</a></nav>
+<article data-pagefind-body>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[software] <span class="cocolog-id">cocolog:75686369</span></td></tr>
+<tr><th>セクション</th><td>JRF のソフトウェア Tips</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2013/02.html">2013年02月22日 07:58:04</a></td></tr>
+<tr><th>元URL</th><td><a href="http://jrf.cocolog-nifty.com/software/2013/02/post-2.html" class="ext-link"><span class="original-url">http://jrf.cocolog-nifty.com/software/2013/02/post-2.html</span></a></td></tr>
+<tr><th>タグ</th><td>[プチコン]</td></tr>
+</table>
+</div>
+<h1>CON_PRINT: プチコンmkII用コンソールPRINT</h1>
+<pre class="body">プチコンの PRINT の実装は何かと「不完全」である。下画面は PRINT ではなく PNLSTR を使わねばならないし、上画面のコンソールの文字の読み出しはできるが、色までは読み出せない。そもそも、プチコンは、文字列が &quot;\xXX&quot; といった「エスケープシーケンス」に対応しておらず、文字列として改行やダブルクォート(&quot;)を入力する方法はなく、CHR$() でアスキーコードを文字列にしてから連結する必要がある…。等々。
+
+しかし、逆に言えば、エスケープシーケンスみたいなものを実装した「僕の考えた完全な PRINT」ルーチンを実装するには、変に処理がはさまれないので都合が良く、少なくとも表示はできるだけの要素は揃っているとも言える。これはそういうのを作れという暗示なのかもしれない。
+
+作ってみた。
+
+それが STACKLIB のアーカイブに含まれる stdlib.prg の中の @CON_PRINT になる。これは PRINT するときにいちいち何を書いたかを(VIRTUAL_CON$[]に)記録し、私好みのエスケープシーケンスも解釈する。引数に(文字列化された)「配列」を渡すことで、\[0] や \[1] と番号を指定して、それを文字列に取り込みながら、PRINT できる。また、例えばボタンを表す文字など特定の文字に常に色を付けることができる。…といったようなゴテゴテしたものを作ってしまった。
+
+■関数の引数
+  
+まずは、関数呼び出しの方法から、@CON_PRINT は 5 つの引数をとる。第一引数は上画面か下画面か。第二引数、第三引数は、LOCATE する場所の X, Y (コンソール座標系)。第四引数が PRINT すべき文字列で、第五引数が \[0] や \[1] などで参照するための配列パラメータとなる。
+
+次のように呼び出す。
+
+  R = 0: GOSUB @PUSH_R
+  R = 20: GOSUB @PUSH_R
+  R = 15: GOSUB @PUSH_R
+  R$ = &quot;I am in the \[1].\n&quot;: GOSUB @PUSH_RS
+  R$ = &quot;CHICKEN,KITCHEN&quot;: GOSSUB @PUSH_RS
+  GOSUB @CON_PRINT
+  
+こうすれば、&quot;I am in the KITCHEN.&quot; と(改行して) PRINT する。呼び出しがとても長くなるのは、しかたがない。(この点が気になるときは後述の @CON_PRINT_L を使うようにすればいい。)
+
+■グローバル変数
+  
+さて、パラメータはこれだけなのだが、@CON_PRINT はこれ以外のグローバル変数をいくつか使っている。それが次のものになる。なお、これらの中で例えば CLIP_CX[] などと配列になっているものの要素の数は 2 で、例えば、 CLIP_CX[0] は上画面、CLIP_CX[1] は下画面で別にパラメータを保存している。
+
+  &lt;b&gt;CLIP_CX[]&lt;/b&gt;クリッピング領域の設定。X 座標。
+  &lt;b&gt;CLIP_CY[]&lt;/b&gt;クリッピング領域の設定。Y 座標。
+  &lt;b&gt;CLIP_CW[]&lt;/b&gt;クリッピング領域の設定。横の幅。
+  &lt;b&gt;CLIP_CH[]&lt;/b&gt;クリッピング領域の設定。縦の長さ。
+  &lt;b&gt;LAST_CX[]&lt;/b&gt;PRINT した最後の続きの位置。X 座標。
+  &lt;b&gt;LAST_CY[]&lt;/b&gt;PRINT した最後の続きの位置。X 座標。
+  &lt;b&gt;LAST_DISP&lt;/b&gt;PRINT した最後の画面。(バージョン 0.02 から。)
+  &lt;b&gt;CON_COL[]&lt;/b&gt;文字色。
+  &lt;b&gt;CON_BGCOL[]&lt;/b&gt;文字背景色。下画面では意味なし。
+  &lt;b&gt;DEBUG_CON_COL&lt;/b&gt;PRINT したあと、デバッグ用にこの色に常に戻す。
+  &lt;b&gt;CON_DECORATE&lt;/b&gt;特定の文字に色を付けるか。TRUE or FALSE。
+  &lt;b&gt;DECORATE_CHARS$&lt;/b&gt;その「特定の文字」を並べて指定。
+  &lt;b&gt;DECORATE_COLS$&lt;/b&gt;その「特定の文字」に対応させる色を並べて指定。
+    
+クリッピング領域内にしか書かれず、改行をすると、CLIP_CX[] に指定したところに戻る。後述の @CON_CLS もこの中しか消さない。
+
+@CON_PRINT をするときに、第二引数、第三引数に LAST_CX[], LAST_CY[] を指定するのが常套テクニックになる。
+
+DEBUG_CON_COL を 0 に指定しておくと、普段のテキストを黒で書いていても、 @CON_PRINT でなく普通の PRINT を使ってデバッグをするとき、白で書くといったことができる。
+
+■エスケープシーケンス
+  
+@CON_PRINT で使える「エスケープシーケンス」は &quot;\*&quot; という形をしていて次のようなものがある。
+
+  &lt;b&gt;\\&lt;/b&gt;\。これがあると他で文字列処理が難しくなるが、伝統なので…。
+  &lt;b&gt;\n&lt;/b&gt;改行。
+  &lt;b&gt;\t&lt;/b&gt;タブ。
+  &lt;b&gt;\0&lt;/b&gt;空文字列。CHR$(0) ではなく &quot;&quot;。
+  &lt;b&gt;\xXX&lt;/b&gt;CHR$(VAL(&quot;&amp;H&quot; + XX))。XX は16進二ケタ。
+  &lt;b&gt;\cX&lt;/b&gt;文字色を指定。X は16進一ケタ。ただし、X を &quot;R&quot; にすると、 CON_COL[] に戻る。
+  &lt;b&gt;\CX&lt;/b&gt;文字背景色を指定。X は \c と同じ。下画面では無意味。
+  &lt;b&gt;\[n]&lt;/b&gt;第五引数の「パラメータ参照」。
+  &lt;b&gt;\N[NAME]&lt;/b&gt;NAME の名を持った文字を参照。
+    
+最後の \N について、NAME は stdlib.prg の CHR_NAME_* に定義されている。例えば、\N[A] で A ボタンを表す文字、\N[J_KA] で &quot;カ&quot; が出る。
+
+パラメータ参照されたものの中では、エスケープシーケンスが評価されない(展開されない)。
+
+改行について、行末の行の折り返しの位置に改行があるときどうするかというのが問題になるようで、これは、計算のしやすさから、改行を一スペース分とすることにした。つまり、一行 32 文字で、0番から数えてちょうど31番に改行があるのは別にいいが、32番に改行があったとき、二重に改行されて予期しない空行ができることになる。
+
+■バグ
+  
+どうもときどき一文字抜けるバグがある。再現性がない。プチコン側…例えば VSYNC がらみでそういうことがあるのか、スタック関連等で私のミスなのか、よくわからない。
+
+■仲間の関数
+  
+いわゆる CLS を行う @CON_CLS は、一つ上画面か下画面かの引数を取る。
+
+@PRINT_SIZE_R は @CON_PRINT されるときのサイズを返す。 第一引数に改行が含まれていた場合折り返す横幅を指定し、第二引数、第三引数には、 @CON_PRINTの第四引数、第五引数の文字列と配列を渡すと、VAL(RR$[0]) に横幅、VAL(RR$[1])に縦の長さを返す。ただし、エスケープシーケンスの使い方が間違っている場合(例えば、\N で使う名前のものがないとか \x のあとに数字がないとか。)、同じサイズにならないことがある。
+
+@CON_PRINT_L は、第一引数にラベルを取り、第二引数には @CON_PRINT の第五引数のリストを取る。そして、ラベルから文字列を順次呼び出し、LAST_DISP の LAST_CX[]、LAST_CY[] に続けて PRINT していく。空文字列 &quot;&quot; を読み出したときに処理を終了する。
+
+@CON_PRINT_RR は、第五引数の代わりに RR$[] で「パラメータ参照」を行うもので、実際は @CON_PRINT は、@POP_RR したあとこの @CON_PRINT_RR に移行している。
+
+@CON_CHK_R は、第一引数に上画面か下画面か、第二、第三引数に X, Y を取り、RR$[0]、RR$[1]、RR$[2] にその場所のキャラクタの文字列、文字色、背景色(をSTR$したもの)を、それぞれ返す。ただ、これを使わず VIRTUAL_CON$[] をそのまま参照しても問題ないとしたい。
+
+@PUSH_CWIN は、第一引数に上画面か下画面か、第二から第五で X,Y,W,H を指定して、その範囲を専用のスタックに積んで保存する。このとき、その範囲の BG 手前面も保存される。CLIP_CX[] なども保存される。
+
+@POP_CWIN は引数をとらず、直前に @PUSH_CWIN したものを元に戻す。上画面か下画面かは指定できず、push した順にしか pop できない。
+
+@DRAW_CWIN は、第一引数に上画面か下画面か、第二引数に奥か手前か、第三から第六引数に X,Y,W,H を取って、BG 面に簡単なウィンドウを描く。なお、このとき BG に描かれるキャラクター を CWIN_CHR_BG_{TL,T,L,C} に指定できる。指定した場合は、DRAW_CWIN_NOINIT を TRUE にしておく。
+
+■配布物やライセンス、関連等
+  
+STACKLIBの記事をご参照ください。
+
+更新：2013-02-22,2013-02-23
+初公開：2013年02月22日 07:58:10
+最新版：2013年02月23日 09:21:28
+
+
+Comments:
+
+[E:notes] 更新：記事の更新。stacklib_ptc がバージョン 0.02 になって @CON_PRINT_L まわりを少し変えたりしたことに記述を対応させた。
+
+投稿: JRF | 2013-02-23 09:39:28 (JST)
+
+
+Links:
+
+STACKLIB: <a href="../../../articles/2013/02/software_75676987.html" class="int-link" title="STACKLIB: プチコンmkII用スタックライブラリ">http://jrf.cocolog-nifty.com/software/2013/02/post-1.html</a></pre>
+
+
+<section class="backrefs" data-pagefind-ignore>
+<h2>後方参照 (2 件)</h2>
+<ul>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2013/02/software_75696191.html">HLPVIEW: プチコンmkII用の簡易アドヴェンチャーゲーム用ルーチン</a> <span class="backref-date">2013年02月23日 09:53:30</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2013/02/software_75690273.html">POPUP_MNU_RA: プチコンmkII用のポップアップメニュー</a> <span class="backref-date">2013年02月22日 18:17:29</span></li>
+</ul>
+</section>
+
+</article>
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2013/02.html">2013年02月</a> | <a href="../../../index/software.html">ソフトウェア Tips</a></nav>
+</body>
+</html>

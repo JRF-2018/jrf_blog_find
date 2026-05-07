@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>ひとこと - JRF Blog Archive</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2023/07.html">2023年07月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+<article data-pagefind-body>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[statuses] <span class="cocolog-id">cocolog:94301604</span></td></tr>
+<tr><th>セクション</th><td>JRF のひとこと</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2023/07.html">2023年07月12日</a></td></tr>
+<tr><th>元URL</th><td><a href="http://jrf.cocolog-nifty.com/statuses/2023/07/post-93a02c.html" class="ext-link"><span class="original-url">http://jrf.cocolog-nifty.com/statuses/2023/07/post-93a02c.html</span></a></td></tr>
+
+</table>
+</div>
+<h1>ひとこと</h1>
+<pre class="body">スマートスピーカーのように口頭での命令で何かを動かすオープンで無料な実装のためのテスト。Whisper で音声認識し、SentenceTransformers の埋め込みベクトル化で、コマンドの表現の揺れを吸収する。
+JRF 2023年7月12日
+
+具体的な手法についてはまず次の二つの IPYNB を読んでいただきたい。
+
+《choose_command.ipynb: 埋め込みベクトル化で自由な目的語を取るコマンドを認識する》  
+<a href="https://gist.github.com/JRF-2018/6fec96e9c69789a513fbd77157eb5946" class="ext-link">https://gist.github.com/JRF-2018/6fec96e9c69789a513fbd77157eb5946</a>
+
+JRF 2023年7月12日
+
+《whisper_maze.ipynb: Whisper と SentenceTransformers を使って口頭で指示を出して操作するテスト (無料)》  
+<a href="https://gist.github.com/JRF-2018/8dd83daae1739f5b9088564d33a1afcf" class="ext-link">https://gist.github.com/JRF-2018/8dd83daae1739f5b9088564d33a1afcf</a>
+
+whisper_maze.ipynb のほうが先に作ったので、コマンド認識の品質がまだ低い。
+
+JRF 2023年7月12日
+
+……。
+
+以下、ここに致る経緯を書いていく。有用な情報もあるかもしれない。(「グローバル共有メモ」と Twitter で書いたことのコピペが中心。)
+
+JRF 2023年7月12日
+
+……。
+
+まず、この以前に、↓のようなことをやっていた。
+
+<a href="../../../articles/2023/07/statuses_cocolog_94293132.html" class="int-link cocolog-id" title="ひとこと">[cocolog:94293132]</a>
+＞「熊剣迷路問題」。Google Bard で簡単な迷路ゲームを教師付きで無理やりクリアさせてみた。なんとかコストの高いファインチューンや追加学習を避けて「few-shot learning」だけで迷路を解くプログラムが作れないか？…とはじめたができなくて、目標を変更した。＜
+
+JRF 2023年7月12日
+
+しかし、Google Bard の使用回数制限が厳しくなり、有料で使えないか Google Cloud Platform のサポートに尋ねている間に、それ以外に関心があったこととして、音声認識を試してみることにした。
+
+Google Colab はブラウザから使う。ブラウザでマイクを使えるのかもまず興味があった。結果的に、一般的な手法の SpeechRecognition は使えなかったが、gradio がマイクに対応してたので、音声認識も試すことができた。
+
+JRF 2023年7月12日
+
+その話に行く前に、表現の揺れを吸収するのに、日本語の埋め込みベクトル化について試していた話をする。
+
+JRF 2023年7月12日
+
+……。
+
+○ 2023-07-06T05:28:59Z
+
+#AI (日本語の)ベクトル埋め込みの定番は、OpenAI の text-embedding-ada-002 のようだが、有料のため前は OpenCALM を使っていた。しかし、(無料の物の中には)どうももっとよいものがあるようだ。sentence-transformers/paraphrase-multilingual-mpnet-base-v2 がそれ。
+
+JRF 2023年7月12日
+
+《sentence_transformer_test.ipynb: SentenceTransformer を使ったベクトル埋め込み(Embedding Vector)のテスト》  
+<a href="https://gist.github.com/JRF-2018/10ac6e6a6d862d03eab96c74a454d223" class="ext-link">https://gist.github.com/JRF-2018/10ac6e6a6d862d03eab96c74a454d223</a>
+
+JRF 2023年7月12日
+
+……。
+
+私の話に反応したのか、いくつか SentenceTransformers の話題を見て、長文に適用してうまくいかなそうな感じがあったので次の書き込みとなった。
+
+○ 2023-07-09T08:48:21Z
+
+SentenceTransformers の話。
+
+トークン長が 128 なので、長文には向かないと思う。私の今回のプログラムは「命令」の表記揺れ(だ・ですの違いとか)が問題だったからそれにはピッタリの感じだった。
+
+JRF 2023年7月12日
+
+……。
+
+「命令」ということだと、口頭での命令にも使えそうだと頭に浮かび、それを試してみることにした。
+
+○ 2023-07-10T03:07:33Z
+
+#AI Whisper と SentenceTransformers を使って口頭で指示を出して操作するテスト (無料)。しゃべって動かすとか、ユーザーレベルで、もう簡単にできるんだね。すごい世の中だ。
+
+JRF 2023年7月12日
+
+《whisper_maze.ipynb: Whisper と SentenceTransformers を使って口頭で指示を出して操作するテスト (無料)》  
+<a href="https://gist.github.com/JRF-2018/8dd83daae1739f5b9088564d33a1afcf" class="ext-link">https://gist.github.com/JRF-2018/8dd83daae1739f5b9088564d33a1afcf</a>
+
+JRF 2023年7月12日
+
+……。
+
+○ 2023-07-10T04:35:10Z
+
+(承前)
+
+上はさっき私が作ったものですが、技術的に新しい情報ではないです。Whisper は 2022年9月より。SentenceTransformers はもっと前。
+
+JRF 2023年7月12日
+
+……。
+
+○ 2023-07-10T10:58:54Z
+
+Python の SpeechRecognition は Colab 上ではマイクが動かないのか…。残念。
+
+JRF 2023年7月12日
+
+……。
+
+SpeechRecognition は、例では recognize_google を使っている例が多いが、recognize_whisper もある。ソース(speech_recognition/speech_recognition/__init__.py)を見れば使い方がわかる。
+
+JRF 2023年7月12日
+
+《GitHub - Uberi/speech_recognition: Speech recognition module for Python, supporting several engines and APIs, online and offline.》  
+<a href="https://github.com/Uberi/speech_recognition#readme" class="ext-link">https://github.com/Uberi/speech_recognition#readme</a>
+
+JRF 2023年7月12日
+
+……。
+
+ここから先は、コマンド認識の高度化をどう行うかという話題である。
+
+○ 2023-07-11T07:07:55Z
+
+埋め込みベクトル化を使うと、「右へ行け」を「右に行く」と解釈するなど表記の揺れを吸収できる。しかし、この方法は「～を検索して」みたいなのの「～」が自由に変化するようなときに使えない。こういうのの揺れを吸収するには、Bard とか ChatGPT にまかせるとかしかないのか？ ベクトル的方法はないものか…。スマートスピーカーとかはどうやっていたのだろう？
+
+JRF 2023年7月12日
+
+……。
+
+○ 2023-07-11T09:07:59Z
+
+(承前)
+
+オープンな LLM に欲しいのは「そこ」なのかもしれない。高度な言語能力ではなく、スマートスピーカーがやってる(はずの)ような表記の揺れの吸収をともなう、コンピュータコマンドへの置き換えの一般的なもの。それがあれば GPU が多少高くても広く使われるようになるのでは？
+
+JRF 2023年7月12日
+
+……。
+
+○ 2023-07-11T09:24:18Z
+
+(承前)
+
+コンピュータコマンド(JSON)への翻訳ってことになるのかな？ でも、使えるコマンドへの翻訳でないと意味がないとかありそうだが、それは後処理でなんとかできるものなのか？
+
+JRF 2023年7月12日
+
+……。
+
+使えるコマンドに絞るのは、ファインチューニングによればいいのだろうか？ 現物がありそうなのに、検索してもないので、実際のところはわからない。学習データがなく、こういう学習モデルがまだないのだろうか？ それとも製品などではすでにあるのだろうか？ ありそうなものだが…、ないとすれば、実用的でないことがわかっているということかもしれない。
+
+JRF 2023年7月12日
+
+……。
+
+○ 2023-07-11T11:43:14Z
+
+(承前)
+
+JSON の表記の揺れを吸収するために、検索語句などの目的語を適当に置き換えた JSON と手元の JSON コマンドが似ているかを SentenceTransformers のようなもので判定すればいいのだろうか？ しかし、いくらなんでもそれは遠回り過ぎやしないか、という気はする。
+
+JRF 2023年7月12日
+
+……。
+
+○ 2023-07-11T13:08:11Z
+
+(承前)
+
+いや、文法解析して部分列を something で置き換えたものをいくつも作り、それが「something を検索しろ」に最も類似度が近いものを選べば、その something に置き換える前の部分列が、検索語句とすべき目的語となる…で十分か…？ そんなにうまくいくものだろうか？ 試すべきだな…。
+
+JRF 2023年7月12日
+
+……。
+
+そして試してみた結果、わりとうまくいった。
+
+○ 2023-07-11T22:34:51Z
+
+埋め込みベクトル化で自由な目的語を取るコマンドを認識する…プログラムを作ってみた。とても簡単。埋め込みベクトル化で、「～を検索して」みたいなのの「～」が自由に変化する場合のコマンドにそこそこ対応できるようになった。
+
+JRF 2023年7月12日
+
+《choose_command.ipynb: 埋め込みベクトル化で自由な目的語を取るコマンドを認識する》  
+<a href="https://gist.github.com/JRF-2018/6fec96e9c69789a513fbd77157eb5946" class="ext-link">https://gist.github.com/JRF-2018/6fec96e9c69789a513fbd77157eb5946</a>
+
+JRF 2023年7月12日
+
+……。
+
+文法解析には fugashi (MeCab) を使った。本当は、SentenceTransformers の tokenizer でなんとかできるのかもしれないが、なんとなく難しそうでその方向は採用しなかった。
+
+JRF 2023年7月12日
+
+……。
+
+choose_command.ipynb は、基本的にうまくいったが、「私は「～」を検索して欲しい」といった文においては「～」ではなく「私は「～」」が切り出されてしまい、望んだ結果になったとはいいがたい。
+
+また、多くの例を試したわけではないので、たまたまうまくいった可能性はある。
+
+JRF 2023年7月12日
+
+この方法は、「～があったら、～して欲しい」といった条件付きのものまで対応はできないだろう。単純な命令のみの対応となる。もし、条件付きのような複雑なものが欲しければ、上で述べた「日本語の JSON への翻訳」みたいなものがなければならないのかもしれない。
+
+JRF 2023年7月12日
+
+……。
+
+……。
+
+追記。
+
+○ 2023-07-15T04:21:45Z
+
+choose_command.ipynb の手法、工場とかで、手がふさがてるけど口は使えるという状況で、簡単なコマンドを出すのに便利で、革新的だと思うのだけどな。「～さんを呼んで」みたいなのに自由な目的語を取る技術が使える。Bard さんには革新的と褒めてもらえたけど…反応はほぼなし orz。
+
+JRF 2023年7月16日
+
+すでにほぼ同じ実装があり、革新性はないということなんだろうか？ Bard さんは、非常に簡潔でいいといってくれたけど、その辺、従来情報に詳しくなかったりするからな…。
+
+JRF 2023年7月16日
+
+○ 2023-07-15T20:06:17Z
+
+Bard さん、「従来情報に詳しくなかったりする」と書いたけど、ハルシネーションがあるのはそうなのだが、あと、かなり情報取得を制限されてそうなんだよね。URL を読んでといっても、GitHub は読んだふりはするけど(読めてないけど)、他は私のブログもはてなブックマークも読んだふりもしない。
+JRF 2023年7月16日
+
+……。
+
+……。
+
+追記。
+
+○ 2023-07-17T09:59:41Z
+
+Kyo (@kyo_takano) さんが紹介していた gzip で文章の距離を求める方法で SentenceTransformers の代わりにコマンド認識ができるか試してみた。結果としてはいまひとつだった。gzip の方法は一方が長文の場合にはよい方法であるかもだが。
+
+《gzip_and_st_test.ipynb》  
+<a href="https://gist.github.com/JRF-2018/6985ba52dca473233aef89ab4619df7b" class="ext-link">https://gist.github.com/JRF-2018/6985ba52dca473233aef89ab4619df7b</a>
+
+JRF 2023年7月17日
+
+……。
+
+……。
+
+追記。
+
+○ 2023-07-23T09:11:43Z
+
+日本語から JSON への翻訳。ChaSen とかを使えばできる気がしてきた。助動詞とかも JSON 化する方向なら。ただ、そうやると、JSON にしたあとの解析がメチャメチャ難しくなる…というだけ。結局、表記の揺れの吸収をしながら JSON に直すのが難しいということだと思う。
+
+JRF 2023年7月23日
+
+自由な JSON から、特定のフォーマットの JSON への「要約」みたいなものが必要になる。まぁ、ChatGPT の function calling とかは結局、そういうことをするというのが売りなんだろう。
+
+JRF 2023年7月23日
+
+……。
+
+○ 2023-07-23T09:44:33Z
+
+JSON 翻訳の話つづき。
+
+Microsoft の TypeChat というものがあるらしい。function calling と目的は似ているらしい。
+
+《シュッと TypeChat を使ってみたのだ｜bbz》  
+<a href="https://note.com/bbz662bbz/n/n6fce789ed58d" class="ext-link">https://note.com/bbz662bbz/n/n6fce789ed58d</a>
+
+JRF 2023年7月23日</pre>
+
+
+<section class="backrefs" data-pagefind-ignore>
+<h2>後方参照 (5 件)</h2>
+<ul>
+<li><span class="backref-label">[cocolog:94301604]参照</span> <a href="../../../articles/2025/09/statuses_cocolog_95612828.html">ひとこと</a> <span class="backref-date">2025年09月04日</span></li>
+<li><span class="backref-label">[cocolog:94301604]参照</span> <a href="../../../articles/2024/07/statuses_cocolog_94937590.html">ひとこと</a> <span class="backref-date">2024年07月10日</span></li>
+<li><span class="backref-label">[cocolog:94301604]参照</span> <a href="../../../articles/2024/05/statuses_cocolog_94833189.html">ひとこと</a> <span class="backref-date">2024年05月07日</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2024/04/column_94770411.html">今後の(主に勉学の)方針 (2024年度版)</a> <span class="backref-date">2024年04月01日 11:42:55</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2023/07/gsm_004394.html">共有メモ</a> <span class="backref-date">2023-07-12T02:04:07Z</span></li>
+</ul>
+</section>
+
+</article>
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2023/07.html">2023年07月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+</body>
+</html>

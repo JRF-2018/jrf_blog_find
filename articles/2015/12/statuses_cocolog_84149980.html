@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>ひとこと - JRF Blog Archive</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2015/12.html">2015年12月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+<article data-pagefind-body>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[statuses] <span class="cocolog-id">cocolog:84149980</span></td></tr>
+<tr><th>セクション</th><td>JRF のひとこと</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2015/12.html">2015年12月16日</a></td></tr>
+<tr><th>元URL</th><td><a href="http://jrf.cocolog-nifty.com/statuses/2015/12/isabe.html" class="ext-link"><span class="original-url">http://jrf.cocolog-nifty.com/statuses/2015/12/isabe.html</span></a></td></tr>
+
+</table>
+</div>
+<h1>ひとこと</h1>
+<pre class="body">Isabelle で過去にやった証明を再度証明している。Isabelle の simplifier をうまく働かすことができなくて、辛い。また、最近、寝ているというか横になってる時間がちょっと言えないほど長くなっている。
+JRF 2015年12月16日
+
+Isabelle について前回言及したのは、<a href="../../../articles/2015/11/statuses_cocolog_84021412.html" class="int-link cocolog-id" title="ひとこと">[cocolog:84021412]</a> だが、そこで以前、ラムダ計算のα同値に関する証明を昔やったと書いたが、その証明を基礎の部分から辿って、「再証明」していっている。
+
+JRF 2015年12月16日
+
+以前やったのは tactic、tactical を使った証明で、それを参考に apply ... done 形式の証明にしていっている。定理の名前などが15年以上前からほとんど変わっていないのはありがたく、証明の細部を理解できないのに再証明ができてしまっている。
+
+ただ、昔はプログラム言語 ML を使って、symmetric な証明を自動的に解くとかいったことをやっていたのだが、そういうのは(私の技術不足もあり)使えなくなっている。
+
+JRF 2015年12月16日
+
+昔は asm_full_simp_tac で今は simp になっている simplifier は、昔はいちいち、どの理論のものを使うか指定して、一番軽そうなのを選んでやっていたのが、定理に simp の属性を付けて積み上げていく方式になっているため、重く、内部がわかりにくくなっている。
+
+JRF 2015年12月16日
+
+その simplifier だが昔の設定に近い設定で試そうとすると、やたらと無限ループに落ち込んでしまう。simplifier に add する定理がまずいらしい。でも、原因がはっきりと掴めず、いろいろ悩んでしまって辛い。細々と declare THEOREMs [simp] や declare THEOREMs [simp del] をやって調整したりするのが普通の方法なんだろうか、そういうことも妥当かどうかわからず、やってしまうしかないのが苦しい。
+
+JRF 2015年12月16日
+
+まだ、証明が最初のほうで simplifier とかの出番が少ないところをやってるから、昔の定理の証明の書き直し版でも通ってる面がありそうで、この先のことを考えると気がめいる。
+
+JRF 2015年12月16日
+
+もし、大きく詰まることがあったら、諦めるのも選択肢の一つだと思っている。諦めて、できたところまでで(legacy なソースと共に)公開してお茶をにごすかもしれない。
+
+JRF 2015年12月16日
+
+……。
+
+Isabelle を離れて、近況も少し。
+
+最近、ものすごく寝る時間が長い。一度起きてごはん食べて、すぐに寝て、ずっと布団の中にいるみたいなふうな日がある。横になっているだけで眠りはしていない時間も長いのだけど、それでもずっと横になっている。その時間がどれぐらいかというのは、働いている人に申し訳なくて、ちょっと言えない。前から、そうだったんだけど、最近、特に長くなってしまった。怠惰になってしまった。
+
+JRF 2015年12月16日
+
+でも、夜中は目が冴えることがあって、朝まで PC に向かって、プログラミング…上の証明をしたりすることもあったりする。それで、朝になって寝ないとダメだと思って、朝から寝るんだけど、眠りが浅くて、またダラダラと長く寝てしまったりしている。本当に申し訳ない。…申し訳ないといいつつ、それを変えたりはしないのだけれど…。つくづく私は怠惰だ。
+
+JRF 2015年12月16日
+
+この怠惰と Isabelle での証明との関係はほぼないはず…。前から寝過ぎだったから。が、Isabelle での証明は私の過去に触れる行為で、それが少しストレスになっているという面はあるかもしれない。証明そのものがストレスフルだというのも少しはあるかもしれない。これが終ったあと何もすることがなくなるのではないか…という不安も少しある。関係あるかは、よくわからない。
+
+JRF 2015年12月16日
+
+あと、表現規制の強化のニュースをチラと見て、へこむ。本当は闘志を燃やさないといけないところなのに気がめいる。私がトシをとって若い人ほどアダルト分野への関心を持たなくなってる面はなきにしもあらずで、他も「高齢化」により保守的な方向に流れがちなように思う。若い人のために今ある自由ぐらいは少なくとも残さねばならないと思う。私のこの先、関心は維持しようと思わないと維持できないのかもしれない。
+
+JRF 2015年12月16日
+
+Trackbacks:
+
+《cocolog:84212598》 from JRF のひとこと
+<a href="../../../articles/2015/12/statuses_cocolog_84212598.html" class="int-link" title="ひとこと">http://jrf.cocolog-nifty.com/statuses/2015/12/c-72ed.html</a>
+
+近況。<a href="../../../articles/2015/12/statuses_cocolog_84149980.html" class="int-link cocolog-id" title="ひとこと">[cocolog:84149980]</a> から状況は変わってない。Isabelle で過去にやった証明を再証明している。無意味なことだと思いつつ、続けているが、無意味という自覚が強いためかやる気が出ず、なかなか前に進まない。... 
+
+受信： 2015-12-29 13:53:23 (JST)</pre>
+
+
+<section class="backrefs" data-pagefind-ignore>
+<h2>後方参照 (3 件)</h2>
+<ul>
+<li><span class="backref-label">[cocolog:84149980]参照</span> <a href="../../../articles/2015/12/statuses_cocolog_84212598.html">ひとこと</a> <span class="backref-date">2015年12月24日</span></li>
+<li><span class="backref-label">[cocolog:84149980]参照</span> <a href="../../../articles/2015/12/statuses_cocolog_84101572.html">ひとこと</a> <span class="backref-date">2015年12月10日</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2015/11/statuses_cocolog_84021412.html">ひとこと</a> <span class="backref-date">2015年11月30日</span></li>
+</ul>
+</section>
+
+</article>
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2015/12.html">2015年12月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+</body>
+</html>

@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>ケネディと天使の問題を Isabelle で証明 その３ 悪戦苦闘編 - JRF Blog Archive</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2020/06.html">2020年06月</a> | <a href="../../../index/software.html">ソフトウェア Tips</a></nav>
+<article data-pagefind-body>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[software] <span class="cocolog-id">cocolog:91995474</span></td></tr>
+<tr><th>セクション</th><td>JRF のソフトウェア Tips</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2020/06.html">2020年06月22日 08:10:47</a></td></tr>
+<tr><th>元URL</th><td><a href="http://jrf.cocolog-nifty.com/software/2020/06/post-33c483.html" class="ext-link"><span class="original-url">http://jrf.cocolog-nifty.com/software/2020/06/post-33c483.html</span></a></td></tr>
+<tr><th>タグ</th><td>[関数型言語・定理証明器]</td></tr>
+</table>
+</div>
+<h1>ケネディと天使の問題を Isabelle で証明 その３ 悪戦苦闘編</h1>
+<pre class="body">■概要
+  
+ケネディと天使の問題、または、うそつき天使問題、気まぐれ天使問題、三人の天使問題…と言われているものを、定理証明システム Isabelle でその答えが正しいかチェック(証明)した。
+
+これは「その３」で、気まぐれ天使問題について悪戦苦闘した私の「失敗」を扱う。
+
+■ブラックボックス登場
+  
+野崎昭弘『詭弁論理学』(中公新書)の p.14-16, 148-154 に、「ケネディの問題」があり、その「うそつき天使」問題を「その１」で、「気まぐれ天使」問題を「その２」で説明した。
+
+さて、スターリンが登場した「気まぐれ天使」問題を記号論理で解くには紆余曲折があった。
+
+私はずっと以前、大学院にいたころ、PTS (Pure Type System) にブラックボックス ■ を導入することを考えたことがある。
+
+ある P の証明 p があるとき、Γ |- p : P となるのだが、このとき p は何でも良いので、Γ |- ■ : P と書くとする。そして、Γ |- (λx:A. ■) : (Π x:A. P) となったとしたら、これも Γ |- ■: (Π x:A. P) と書き換えてよいとする。結果 (λx. ■) = ■、■(f) = ■ などとしていくわけである。
+
+結果、■ はなんだかわらかないがとにかくそこにある「ブラックボックス」を表す。こういうのを導入してもいいはずだ…と考えていた。
+
+今回のスターリンはまさに、■ だ！ というのが最初の直感だった。しかし、問題が出てくる。B がスターリンかどうかを尋ねるというのが解答に出てくるが、それは B が ■ かどうかを問うということ。これが難しいのだ。
+
+■ホワイトボックス登場
+  
+ある x が ■ なら真となる関数を □(x) と定義しよう。簡単に □x と書く。
+
+ところが、■というのは「メタレベル」の話であって、それを判定する□はメタに判定しなければならないのに、それを地のロジックで使うとなれば、当然に矛盾が出てくる。
+
+つまり、Γ |- a: B とすると、Γ |- ■: B ということだった。今、□ で判定できるということだから、Γ |- ■ : ¬□ a、Γ |- ■ : □ ■ でなければならないということになる。
+
+Γ = Δ, a: B だったとすると、Δ |- ■: (Π a:B. ¬□ a) になるが、Γ |- ■: B だったから Γ |- ■■: ¬□ ■ で、これは Γ |- ■: ¬□ ■ になる。これは Γ |- ■ : □ ■ と矛盾する。
+
+■矛盾を生じないようにするには？
+  
+矛盾を生じないようにするにはどうすればよいのだろうか？
+
+問題は、¬□ a の a に ■ を代入するときに起きていると考えれば、de Bruijn 表記法のようなものを □ ■ に導入することが考えられる。
+
+つまり、□ = □_0、 ■ = ■_0 だったとして、□_0 a の a に ■_0 代入しようと思えば 0 がぶつかるため、■ の数値を増やさねばならない。よって、¬ □_0 a [a:= ■_0] = ¬ □_0 ■_1 と考え、これは ¬ □_0 ■_0 とは別のものと考えるのである。
+
+…ただ、これが、ちゃんと無矛盾なロジックになっているかは、確認していない。
+
+■スマートな方法
+  
+ここまで考えたところで、de Bruijn 表記法がいるってことは変数書き換えが必要なんだな…といったところから、「その２」に述べたような環境を変数に取ることを考えついた。
+
+逆に言えば、■ は、環境を変数に扱うような意味論で定式化できるのかもしれない…と直感的には思う。上で見るようにあてにならない直感だが。
+
+■結論
+  
+昔考えた「ブラックボックス」が正しかったのかさえ、疑問に思うようになった。
+
+ここまで読んでいただきありがとうございます。
+
+(配布物・参考文献・ライセンス・更新の情報は「その１」にあります。)
+
+更新：2020-06-22
+初公開：2020年06月22日 08:10:45
+最新版：2020年06月23日 00:15:09
+
+
+Links:
+
+詭弁論理学: <a href="../../../articles/2020/06/hbm_01998.html" class="int-link" title="Amazon.co.jp: 詭弁論理学 改版 (中公新書 448): 野崎昭弘著: Books">https://www.amazon.co.jp/dp/4121804481</a>
+その１: <a href="../../../articles/2020/06/software_91995459.html" class="int-link" title="ケネディと天使の問題を Isabelle で証明 その１ うそつき天使問題">http://jrf.cocolog-nifty.com/software/2020/06/post-ef863f.html</a>
+その２: <a href="../../../articles/2020/06/software_91995468.html" class="int-link" title="ケネディと天使の問題を Isabelle で証明 その２ 気まぐれ天使問題">http://jrf.cocolog-nifty.com/software/2020/06/post-d9cd87.html</a>
+PTS: <a href="https://en.wikipedia.org/wiki/Pure_type_system" class="ext-link">https://en.wikipedia.org/wiki/Pure_type_system</a>
+de Bruijn 表記法: <a href="https://ja.wikipedia.org/wiki/%E3%83%89%E3%83%BB%E3%83%96%E3%83%A9%E3%82%A6%E3%83%B3%E3%83%BB%E3%82%A4%E3%83%B3%E3%83%87%E3%83%83%E3%82%AF%E3%82%B9" class="ext-link">https://ja.wikipedia.org/wiki/%E3%83%89%E3%83%BB%E3%83%96%E3%83%A9%E3%82%A6%E3%83%B3%E3%83%BB%E3%82%A4%E3%83%B3%E3%83%87%E3%83%83%E3%82%AF%E3%82%B9</a></pre>
+
+
+<section class="backrefs" data-pagefind-ignore>
+<h2>後方参照 (3 件)</h2>
+<ul>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2020/06/software_91995459.html">ケネディと天使の問題を Isabelle で証明 その１ うそつき天使問題</a> <span class="backref-date">2020年06月22日 08:02:35</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2020/06/software_91995468.html">ケネディと天使の問題を Isabelle で証明 その２ 気まぐれ天使問題</a> <span class="backref-date">2020年06月22日 08:07:46</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2020/06/statuses_cocolog_91995523.html">ひとこと</a> <span class="backref-date">2020年06月22日</span></li>
+</ul>
+</section>
+
+</article>
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2020/06.html">2020年06月</a> | <a href="../../../index/software.html">ソフトウェア Tips</a></nav>
+</body>
+</html>

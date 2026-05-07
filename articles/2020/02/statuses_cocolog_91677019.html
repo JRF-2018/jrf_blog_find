@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>ひとこと - JRF Blog Archive</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2020/02.html">2020年02月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+<article data-pagefind-body>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[statuses] <span class="cocolog-id">cocolog:91677019</span></td></tr>
+<tr><th>セクション</th><td>JRF のひとこと</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2020/02.html">2020年02月13日</a></td></tr>
+<tr><th>元URL</th><td><a href="http://jrf.cocolog-nifty.com/statuses/2020/02/post-59b062.html" class="ext-link"><span class="original-url">http://jrf.cocolog-nifty.com/statuses/2020/02/post-59b062.html</span></a></td></tr>
+
+</table>
+</div>
+<h1>ひとこと</h1>
+<pre class="body">「ミクロ経済学の我流シミュレーション」の記事の「その５ 大改良」を書いた。micro_economy_7.py の紹介。改良と統合。企業数の(半)固定化のための standardProfitRate 導入。tanh を利用しまくる。
+JRF 2020年2月13日
+
+《ミクロ経済学の我流シミュレーション その５ 大改良》
+<a href="../../../articles/2020/02/society_91677009.html" class="int-link" title="ミクロ経済学の我流シミュレーション その５ 大改良">http://jrf.cocolog-nifty.com/society/2020/02/post-3f22aa.html</a>
+
+micro_economy_7.py は、大改良と統合の成果。企業数の(半)固定化のための standardProfitRate 導入した。最適化の複数項目の「粒をそろえる」ために tanh を利用しまくっている。
+
+企業数を(半)固定化するアイデアは最初に <a href="../../../articles/2019/10/statuses_cocolog_91372755.html" class="int-link cocolog-id" title="ひとこと">[cocolog:91372755]</a> で出している。
+
+JRF 2020年2月13日
+
+上の記事のコメントでも書いたが、他に
+
+＞これまでの micro_economy_*.py については、socialDebt の計算間違いを主に訂正している。
+
+micro_economy_7.py では様々な工夫があるが、最適化が基本失敗し、inf が返ってきたとき raise ValueError(&quot;Economy Collapesed.&quot;) するようにした。そもそも、inf が返りにくくはなっているが。＜
+
+JRF 2020年2月13日
+
+さらに、
+
+＞最後まで迷ったこと。tanh と arctan は似た関数で、これまでは arctan を使ってきたのだが、今回からは tanh を使うことにした。これまで使っていた arctan を tanh に変えるか、かなり迷ったのだが、統一感の他に変える大きな理由もなく、歴史的な理由しかなく逆にどちらでも良いことがわかるということで、残すことにした。が、今後批判があればわからない。＜
+
+JRF 2020年2月13日
+
+……。
+
+tanh を使うもののいろいろ敏感すぎて、当初は失敗したかと思うことが多かった。
+
+企業数を 5 にするのも、standardProfitRate を動かすというのに辿り着くまで、他の方法がないか検討したりした。
+
+JRF 2020年2月13日
+
+生産の分担も指数関数を使わず、線形でできないかと考えたりしたが、マイナスの扱いとかが難しく諦めた。
+
+standardProfitRate の初期値の設定で手間どり、経済がまともに動くようにしたり、Economy Collapsed が何度も出るのをなおすのに時間がかかった。
+
+JRF 2020年2月13日
+
+……。
+
+次こそ、「交易」について考えたい。「自己交易」が鍵かな…と思っているが、どうなるかわからない。それが難しいので先に、「大改良」という細かな改造をしたという面がある。
+
+ただ、考えるとしても、先にやりたいこと(本を読む・インプットを増やす)があるので、当分、先になりそう。
+
+JRF 2020年2月13日
+
+……。
+
+……。
+
+追記。
+
+あっ！ micro_economy_4*.py を micro_economy_7.py に統合するのを忘れてた。
+
+それは今後の課題ということで…。
+
+JRF 2020年2月13日
+
+……。
+
+……。
+
+追記。
+
+バージョン 0.0.8 にアップデート。
+
+micro_economy_4.py を統合した micro_economy_7li.py を足した。が、実験はあまりうまくいかなかった。
+
+他、「生産の分担」など細かくいじっている。
+
+JRF 2020年2月15日
+
+……。
+
+……。
+
+追記。
+
+バージョン 0.0.9 にアップデート。
+
+最適化に関する細かな修正。
+
+JRF 2020年2月22日
+
+……。
+
+……。
+
+追記。
+
+バージョン 0.0.10 にアップデート。
+
+「公共事業」の成長を考えてみた。
+
+JRF 2020年3月10日
+
+……。
+
+追記。
+
+記事のみ更新。ドキュメントは次回アップデートがあればそのとき更新されるはず。足したのは次の一文。
+
+＞原料だけでなく、一製品あたり労働量も増やすほうが公共事業のイメージには近いかもしれないが、このモデルは、機械化なども同時に起こり、それが人材の高度利用と打ち消しあい、一製品あたり労働量が増えてない場合をとらえているということになるのだろう。＜
+
+JRF 2020年3月26日</pre>
+
+
+<section class="backrefs" data-pagefind-ignore>
+<h2>後方参照 (1 件)</h2>
+<ul>
+<li><span class="backref-label">[cocolog:91677019]参照</span> <a href="../../../articles/2018/03/society_89066973.html">ミクロ経済学の我流シミュレーション その１ 基礎経済モデル</a> <span class="backref-date">2018年03月19日 17:04:10</span></li>
+</ul>
+</section>
+
+</article>
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2020/02.html">2020年02月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+</body>
+</html>

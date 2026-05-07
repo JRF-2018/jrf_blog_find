@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>ひとこと - JRF Blog Archive</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2020/03.html">2020年03月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+<article data-pagefind-body>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[statuses] <span class="cocolog-id">cocolog:91788631</span></td></tr>
+<tr><th>セクション</th><td>JRF のひとこと</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2020/03.html">2020年03月30日</a></td></tr>
+<tr><th>元URL</th><td><a href="http://jrf.cocolog-nifty.com/statuses/2020/03/post-9e60d0.html" class="ext-link"><span class="original-url">http://jrf.cocolog-nifty.com/statuses/2020/03/post-9e60d0.html</span></a></td></tr>
+
+</table>
+</div>
+<h1>ひとこと</h1>
+<pre class="body">Amazon の仕様変更で、ウィッシュリスト(ほしい物リスト)でマーケットプレイスの価格が表示されなくなった。ウィッシュリストにその機能は必須だと私は思うので、表示を復活させるような Greasemonkey スクリプトを作った。
+JRF 2020年3月30日
+
+スクリプトは↓からダウンロードできる。
+
+《Amazon_Wishlist_Aux_Price_JP.user.js》
+<a href="https://www.sugarsync.com/pf/D252372_79_7270000938" class="ext-link">https://www.sugarsync.com/pf/D252372_79_7270000938</a>
+
+JRF 2020年3月30日
+
+ダウンロードしたときにすぐに Greasemonkey のインストールができない場合は、Greasermonkey の「ユーザースクリプトの新規作成」をしてダウンロードしたファイルの内容をコピペしてセーブすればよい。
+
+ライセンスは本当に小さなプログラムなので、Public Domain でいいと思うが、それが気になる方は (New) BSD License として扱っていただければと思う。
+
+JRF 2020年3月30日
+
+Amazon の仕様変更で、ウィッシュリスト(ほしい物リスト)でマーケットプレイスの価格が表示されなくなった。ウィッシュリストにその機能は必須なので、復活して欲しいと Amazon に要望はしたのだが、Amazon.co.jp だけでなくアメリカの Amazon.com でもそういう表示になっているので、復活はなかなか難しいのかもしれない。
+
+JRF 2020年3月30日
+
+そこで、Greasemonkey スクリプトを作った。が、これは「完璧」を目指すものではなく、将来的にアドオン化するようなつもりもない。Amazon の仕様はどんどんアップデートされるので、こちらもある程度はアップデートするつもりはあるが、どこまで追えるかは未知数。
+
+JRF 2020年3月30日
+
+マーケットプレイスの価格とポイントを表示しているが、基本は、本と Kindle 本と CD あたりのそれらがわかれば私は十分なので、それ以上が今、うまく表示されているとしても、今後は対応されない可能性が高いと考えて欲しい。それでは問題があるという方々は、簡単なプログラムなので、どんどん改造して欲しい。
+
+JRF 2020年3月30日
+
+あと、これは Amazon という名を出して商標法的な問題が少しあるかもしれないが、もちろん、Amazon 公式というわけではない。上のファイル名に JP が入っているのでわかるように Amazon.co.jp 専用である。
+
+できるだけ迷惑がかからないようなプログラミングを心掛けたが、Amazon に怒られたらすぐに取り下げるつもり。
+
+JRF 2020年3月30日
+
+……。
+
+↓を参考にした。MDN (developer.mozilla.org) のページとか他にもいろいろ参考にしている。
+
+《要素が画面内にあるかどうかの判定 - Qiita》
+<a href="https://qiita.com/shoheihei/items/58ddfae8fcd52caf310a" class="ext-link">https://qiita.com/shoheihei/items/58ddfae8fcd52caf310a</a>
+
+JRF 2020年3月30日
+
+……。
+
+リンクは一番上のリンクを使えば最新のものが得られるようにするつもりだが、特定の時期のものが欲しいという人がいるかもしれないので、それも用意しておく。
+
+初公開時は バージョン 0.01 の↓。
+
+《Amazon_Wishlist_Aux_Price_JP-20200330.user.js》
+<a href="https://www.sugarsync.com/pf/D252372_79_7270001648" class="ext-link">https://www.sugarsync.com/pf/D252372_79_7270001648</a>
+
+JRF 2020年3月30日
+
+……。
+
+追記。
+
+バージョン 0.02 にした。
+
+《Amazon_Wishlist_Aux_Price_JP-20200405.user.js》
+<a href="https://www.sugarsync.com/pf/D252372_79_7205132023" class="ext-link">https://www.sugarsync.com/pf/D252372_79_7205132023</a>
+
+不必要なコードの除去と、ASIN の処理のミスを修正。
+
+JRF 2020年4月5日
+
+……。
+
+GitHub にもアップロードした。
+
+《JRF-2018/awap_jp: Amazon.co.jp のウィッシュリスト(ほしい物リスト)でマーケットプレイスの価格を復活させる Greasemonkey スクリプト。》
+<a href="https://github.com/JRF-2018/awap_jp" class="ext-link">https://github.com/JRF-2018/awap_jp</a>
+
+Greasemokey アドオンの入った Firefox では  Amazon_Wishlist_Aux_Price_JP.user.js をクリックした画面で、そこの Raw を押せばインストールできるはず。
+
+JRF 2020年4月5日
+
+……。
+
+……。
+
+追記。
+
+バージョン 0.03 にした。
+
+ウィッシュリストのディレクトリ名が変わったようなので対応しただけ。他に対応すべきところがあるかもしれないが、いじってない。
+
+ダウンロードは、GitHub からしていただきたい。
+
+JRF 2021年2月13日
+
+……。
+
+……。
+
+追記。
+
+バージョン 0.04 にした。
+
+ウィッシュリストのフォーマットがほんの少し変わったのでそれに合わせた変更。ただ、それ以外の変わったところには対応していない。
+
+ずいぶん前から、マーケットプレイスの価格は、ウィッシュリストに再び表示されるようになっていたため、ある意味、このソフトは役割りを終えていた。
+
+ただ、このソフトは、Kindle のポイント値引きを知るのにだけは便利だった。そのポイント値引きの表示がちょっと前からされなくなったので、Amazon 側の変更に気付いた。
+
+ダウンロードは、GitHub からしていただきたい。
+
+JRF 2022年1月10日
+
+……。
+
+……。
+
+追記。
+
+バージョン 0.05 にした。
+
+Kindle の販売ページのみフォーマットが少し変わったようで、それに合わせた変更。
+
+JRF 2023年2月17日
+
+……。
+
+……。
+
+追記。
+
+バージョン 0.06 にした。
+
+ダウンロードは上の GitHub のところからどうぞ。
+
+Amazon の仕様変更により中古本などの表示がうまくいってなかったのを修正。ただし、Amazon の元の商品ページも「の￥573その他の中古品、新品、コレクター商品」みたいに日本語としてヘンなので、またすぐに仕様変更される可能性があるが…。
+
+JRF 2023年8月16日
+
+……。
+
+……。
+
+追記。
+
+バージョン 0.07 にした。
+
+ダウンロードは上の GitHub のところからどうぞ。
+
+ほんの少し対応範囲を増やした。
+
+あとライセンスは MIT License でもいいよ…ということを書いた。
+
+JRF 2024年8月25日
+
+……。
+
+……。
+
+追記。
+
+バージョン 0.08 にした。
+
+ダウンロードは上の GitHub のところからどうぞ。
+
+Amazon の変更により Kindle についてポイントが取得できなくなっていたのを緊急に修正。
+
+JRF 2024年9月12日
+
+……。
+
+……。
+
+追記。
+
+バージョン 0.09 にした。
+
+ダウンロードは上の GitHub のところからどうぞ。
+
+Amazon の変更によりまったく表示されなくなっていたのを緊急に修正。
+
+JRF 2025年1月10日
+
+……。
+
+……。
+
+追記。
+
+更新: awap_jp をバージョン 0.10 にした。
+
+ダウンロードは上の GitHub のところからどうぞ。
+
+Amazon の変更により一部表示がおかしくなっていたところを修正。
+
+JRF 2025年7月16日</pre>
+
+
+</article>
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2020/03.html">2020年03月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+</body>
+</html>

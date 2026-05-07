@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>共有メモ - JRF Blog Archive</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2025/07.html">2025年07月</a> | <a href="../../../index/gsm.html">共有メモ</a></nav>
+<article data-pagefind-body>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[gsm] 2025-07-05T05:18:35Z</td></tr>
+<tr><th>セクション</th><td>グローバル共有メモ</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2025/07.html">2025-07-05T05:18:35Z</a></td></tr>
+<tr><th>元URL</th><td>(URLなし)</td></tr>
+
+</table>
+</div>
+<h1>共有メモ</h1>
+<pre class="body">jrf&gt; LangChain で熊剣迷路問題 Ver. 0.0.3。
+
+《langchain_maze_0.0.3.ipynb - GitHub Gist》  
+<a href="https://gist.github.com/JRF-2018/2a3fdae8f848c13754eaf85c64fbefcc" class="ext-link">https://gist.github.com/JRF-2018/2a3fdae8f848c13754eaf85c64fbefcc</a>
+
+前回(0.0.1で)、気になっていたこととして、１回の invoke に対し、1度だけ command して欲しいのに、AgentExecutor にはそのようなことをするオプションがないらしいことでした。また agent_scratchpad はあるものの、行動結果に関して memory がうまく機能しそうにないことも気になっていました。
+
+そこで command については、tool として提供するのではなく invoke の Final Answer として受け取るように変えてみました。このようにすれば、invoke のときの行動データが自然に memory にたまるようになるはずです。
+
+あと CoT (Chain of Thought) が有効なことが多いと聞きますが、gemini flash は CoT してるという噂ですが、とにかく、行動コマンドしか出力しないと何を考えているかわからないので express_thought というツールを作り、プロンプトで考えを吐露するように促すこともやってみました。
+
+さらに、かなり迷ってしまうので、可能な行動を明示するようにもしました。
+
+そうやって、またたまたまゴールできたので、それを公開しておくことにしました。</pre>
+
+
+</article>
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2025/07.html">2025年07月</a> | <a href="../../../index/gsm.html">共有メモ</a></nav>
+</body>
+</html>

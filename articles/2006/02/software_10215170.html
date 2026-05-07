@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>Windows のコマンドライン cmd.exe 用のエスケープってどうやるの？ - JRF Blog Archive</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2006/02.html">2006年02月</a> | <a href="../../../index/software.html">ソフトウェア Tips</a></nav>
+<article data-pagefind-body>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[software] <span class="cocolog-id">cocolog:10215170</span></td></tr>
+<tr><th>セクション</th><td>JRF のソフトウェア Tips</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2006/02.html">2006年02月26日 05:47:03</a></td></tr>
+<tr><th>元URL</th><td><a href="http://jrf.cocolog-nifty.com/software/2006/02/post_19.html" class="ext-link"><span class="original-url">http://jrf.cocolog-nifty.com/software/2006/02/post_19.html</span></a></td></tr>
+<tr><th>タグ</th><td>[Perl] [Windows アプリ]</td></tr>
+</table>
+</div>
+<h1>Windows のコマンドライン cmd.exe 用のエスケープってどうやるの？</h1>
+<pre class="body">ActivePerl からパイプを使って GnuPG を起動しようとしたが、 perlipc に載ってる方法ではダメみたい。pipe の fileno で取ったファイルディスクリプタもうまく渡せないみたいだし。
+
+それで次のようなことをしようとしたんだけど、pipe のコマンドの引数をリストでは渡せないっていわれる。
+
+open(GPG, '-|', $GPG, '--list-keys') or die;
+
+しょうがないので、コマンドラインを連結しましょうということになったのだが、Windows の cmd.exe の構文がわからない。
+
+ググってみると《CMD.EXE TIPs》という Wiki に構文が書いてあった。そこの文章を参考にいろいろ試してみたけど、次みたいのでいいのかな？
+
+sub quote_for_command {
+    my $r = &quot;&quot;;
+    while (@_) {
+      my $arg = shift;
+      $arg =~ s/\%/^\%/gs;
+      $arg =~ s/&quot;/&quot;&quot;&quot;/gs;
+      $r .= &quot; &quot; if $r ne &quot;&quot;;
+      $r .= &quot;\&quot;$arg\&quot;&quot;;
+    }
+    return $r;
+}
+
+でもこういうのは需要あるはずだから探せば見つかりそうなものなのに、 Perl でやってるのを、ちょっと見つけられなかった。
+
+更新：06/02/26
+初公開：2006年02月26日 05:47:05
+最新版：2006年03月11日 03:58:07
+
+
+Links:
+
+ActivePerl: <a href="../../../articles/2006/04/hbm_00098.html" class="int-link" title="ActiveState Tool Corp. - ActivePerl">http://www.activestate.com/Products/ActivePerl/</a>
+GnuPG: <a href="../../../articles/2006/04/hbm_00099.html" class="int-link" title="The GNU Privacy Guard - GnuPG.org">http://www.gnupg.org/</a>
+perlipc: <a href="../../../articles/2006/04/hbm_00100.html" class="int-link" title="perlipc - Perl interprocess communication (signals, fifos, pipes, safe subprocesses, sockets, and semaphores) - search.cpan.org">http://search.cpan.org/dist/perl/pod/perlipc.pod</a>
+CMD.EXE TIPs: <a href="../../../articles/2006/04/hbm_00101.html" class="int-link" title="FrontPage - CMD.EXE TIPs">http://it-is-it.net/CMD/?FrontPage</a></pre>
+
+
+<section class="backrefs" data-pagefind-ignore>
+<h2>後方参照 (1 件)</h2>
+<ul>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2009/01/column_55817991.html">前期の翌日(2008-10-01)から昨日(2008-12-31)まで 92 日間のアクセス解析など</a> <span class="backref-date">2009年01月01日 00:53:34</span></li>
+</ul>
+</section>
+
+</article>
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2006/02.html">2006年02月</a> | <a href="../../../index/software.html">ソフトウェア Tips</a></nav>
+</body>
+</html>

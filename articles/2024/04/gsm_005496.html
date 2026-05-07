@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>共有メモ - JRF Blog Archive</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2024/04.html">2024年04月</a> | <a href="../../../index/gsm.html">共有メモ</a></nav>
+<article data-pagefind-body>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[gsm] 2024-04-11T14:59:24Z</td></tr>
+<tr><th>セクション</th><td>グローバル共有メモ</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2024/04.html">2024-04-11T14:59:24Z</a></td></tr>
+<tr><th>元URL</th><td>(URLなし)</td></tr>
+
+</table>
+</div>
+<h1>共有メモ</h1>
+<pre class="body">jrf&gt; 斎藤康毅『ゼロから作るDeep Learning 5 - 生成モデル編』を読んだ。画像生成 AI の作り方が書いてある。VAE から拡散モデルを導くのが一つの流れで書かれているのがハッとさせられた。オススメ。
+
+岡野原大輔『拡散モデル』を読んだときは(<a href="../../../articles/2023/06/statuses_cocolog_94256676.html" class="int-link cocolog-id" title="ひとこと">[cocolog:94256676]</a>)、数式が難しく歯が立たなかったが、これはサンプルコードも充実していて、かなりわかった(気にさせてくれた)。正規分布から説きはじめており、がんばれば高校生でも読めるのではないかと思う。
+
+それでも私はレベルが低いため詰まったところが何箇所もあった。
+
+一例として、p.162 ぐらいで、VAE の ELBO に KL ダイバージェンスが含まれてるのはすでに ELBO を導く過程で KL ダイバージェンスを除いているので間違いじゃないかと思ったが、ちゃんと読み直すと、KL ダイバージェンスがまた必要になってるのがわかった。
+
+あとその部分のすぐあとで、正規乱数の ε にバックプロパゲーションがいらないというのには、そうなのかと驚いた。そうだったかもしれないが、知らなかったか忘れていた。
+
+忘れていたということに関しては、p.219 の例で、v.view(N, C, 1, 1) にして x + v しているのがわからなかった。Gemini さんに聞いて、それが「ブロードキャスト」の機能であることをやっと思い出した。でも、なぜブロードキャストで OK なのかはわかってないが。
+
+p.239 の pθ(x0|y) の数式。p(xT) が p(xT|y) でないのも間違いじゃないかと一瞬思ったのだが、これは、p(xT) が y に関係ない乱数になるからそれでいいってことだよ…ね？
+
+あと、p.289 の step8/hvae.py の reparameterize の eps は github を見ると式の書き忘れのはず。私が見つけた誤植はその程度で、まぁ、私はその程度の目しか持ってないということで…。
+
+この本自体はいい本だが、この本が「わかった」からと言って、概念そのものが数学的に難しく、この後、何か新しいアイデアにつなげられないのが、私の情けないところ。</pre>
+
+
+</article>
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2024/04.html">2024年04月</a> | <a href="../../../index/gsm.html">共有メモ</a></nav>
+</body>
+</html>

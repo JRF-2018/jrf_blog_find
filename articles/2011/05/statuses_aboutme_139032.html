@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>ひとこと - JRF Blog Archive</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2011/05.html">2011年05月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+<article data-pagefind-body>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[statuses] <span class="cocolog-id">aboutme:139032</span></td></tr>
+<tr><th>セクション</th><td>JRF のひとこと</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2011/05.html">2011年05月30日</a></td></tr>
+<tr><th>元URL</th><td><a href="http://jrf.cocolog-nifty.com/statuses/2011/05/aboutme139032.html" class="ext-link"><span class="original-url">http://jrf.cocolog-nifty.com/statuses/2011/05/aboutme139032.html</span></a></td></tr>
+
+</table>
+</div>
+<h1>ひとこと</h1>
+<pre class="body">Firefox の XMLHttpRequest で CGI からエラーを返すと、Uncaught exception が起きる。onerror とかのハンドラを設定してもダメ。結局、try { } catch { } で囲んでやるほかなかった。
+JRF 2011年5月30日
+
+で、exception を無視して request オブジェクトを調べると、status が 0 になり、statusText も responseText も空文字列になる。
+
+Web コンソールのほうには、ちゃんとエラーステータスが返って来ていると表示されているのに、javascript からはまともに  error が処理できなさそうな感じ。
+
+JRF 2011年5月30日
+
+もう仕方がないから、CGI 側のエラー処理を見直し、XML でデータを渡そときは、die するとき $SIG{__DIE__} をキャッチしても、status に 200 を返して、responseText にエラーを示す XML を返すようにした。
+
+JRF 2011年5月30日
+
+で、それが解決したと思ったら、どうもセッション関連でエラーが出てる。CGI のログを調べると、XMLHttpRequest を使ったときだけ、Cookie が渡ってないっぽい。
+
+ググると、クロスドメイン処理のため、Access-Control-Allow-Origin を付けたときは、Credentials に付いても設定する必要があるそう。↓のコードにしたがって解決した。
+
+《Access-Control-Allow-Origin試してみた。その２ - ミルク色の手紙》
+<a href="http://d.hatena.ne.jp/ushiboy/20100902/1283436155" class="ext-link">http://d.hatena.ne.jp/ushiboy/20100902/1283436155</a>
+
+JRF 2011年5月30日
+
+しかし、そのホストからロードしたスクリプトから XMLHttpRequest で通信してるんで、クロスドメイン制限にはひっかからないはず。実際、Access-Control-Allow-Origin をなくしても、通信はできてる。でも、やっぱり、その場合も Cookie が渡ってないようす。
+
+ゲーっ、それは制限キツいっすよ。javascript も　CGI かませてロードさせて、そこにセッションIDしこんどけってこと？いや、結局それでいいんなら、その制限はメンドクサイというだけなのでは？
+
+JRF 2011年5月30日
+
+typo 「データを渡そとき」→「データを渡すとき」。
+typo 「に付いても設定」→「についても設定」。
+修正 「status に 200 を返して」→「status に 200 をセットして」。
+
+JRF 2011年5月30日
+
+Trackbacks:
+
+《cocolog:70722096》 from JRF のひとこと
+<a href="../../../articles/2011/11/statuses_cocolog_70722096.html" class="int-link" title="ひとこと">http://jrf.cocolog-nifty.com/statuses/2011/11/javas-2.html</a>
+
+JavaScript の Canvas にもオリジン制限があることを知る。開発者向けにブラウザ起動時にそれを無視するオプションはあるようだが、サーバーオーナーやブロガーが回避する方法はなさそう。 
+
+受信： 2012-01-04 14:58:49 (JST)
+
+《aboutme:139035》 from JRF のひとこと
+<a href="../../../articles/2011/05/statuses_aboutme_139035.html" class="int-link" title="ひとこと">http://jrf.cocolog-nifty.com/statuses/2011/05/aboutme139035.html</a>
+
+Google ChromeのUserScriptの制限がGreasemonkeyに比べて強いので、メインのスクリプトを(ローカルの)httpdからロードし、そのロードさせる部分のみUserScriptとして書くという方針にするとして、「環境変数」を渡すのをどうするか考えた。... 
+
+受信： 2012-01-04 18:56:11 (JST)</pre>
+
+
+<section class="backrefs" data-pagefind-ignore>
+<h2>後方参照 (1 件)</h2>
+<ul>
+<li><span class="backref-label">[aboutme:139032]参照</span> <a href="../../../articles/2011/11/statuses_cocolog_70722096.html">ひとこと</a> <span class="backref-date">2011年11月29日</span></li>
+</ul>
+</section>
+
+</article>
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2011/05.html">2011年05月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+</body>
+</html>

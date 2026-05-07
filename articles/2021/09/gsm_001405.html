@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>共有メモ - JRF Blog Archive</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2021/09.html">2021年09月</a> | <a href="../../../index/gsm.html">共有メモ</a></nav>
+<article data-pagefind-body>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[gsm] 2021-09-01T20:23:04Z</td></tr>
+<tr><th>セクション</th><td>グローバル共有メモ</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2021/09.html">2021-09-01T20:23:04Z</a></td></tr>
+<tr><th>元URL</th><td>(URLなし)</td></tr>
+
+</table>
+</div>
+<h1>共有メモ</h1>
+<pre class="body">jrf&gt; [仏教の最適化プログラムの続き。]
+
+「死が増えると僧が増えて教育などが改善し、それが国力となって、災害などに強くなり、死者が減る」…などというこが本当に起きているだろうか。
+
+試しに死が増えると僧が増える…という部分を止めて、それで死者が増える一方になるか見てみようとした。
+
+ただこれをするためには、simbdp3.py を少し変更する必要があった。僧がほとんど増減しないでもエラーが出ないようにする必要があった。その上で…、
+
+run_simbdp3.sh mwar2fpr 10 -L -t 360 --change-random-seed --invasion-average-term-min=60 --priests-rate-max=0.005 --priests-rate-min=0.005
+python plot_logs.py normal2 mwar2 mwar2fpr -p AccDeath
+
+…を実行してみた。(fpr は fixed priests の略)
+
+結果としては、mwar2 と mwar2fpr にそこまでの差が出なかった。いちおう私のところでは mwar2fpr が予想通り若干 mwar2 よりも上に来たのはではあるのだが…。
+
+……。
+
+もうちょっとあとからでいいかと思うが、特に plot_logs.py がまともになった面があるので、更新を公開しておく。(バージョン 0.0.3)
+
+simbdp3.py も上記のようにほんの少しいじっている。(バージョン 0.0.5)
+
+《simbd/plot_logs.py at master - JRF-2018/simbd》  
+<a href="https://github.com/JRF-2018/simbd/blob/master/stats_simbdp3/plot_logs.py" class="ext-link">https://github.com/JRF-2018/simbd/blob/master/stats_simbdp3/plot_logs.py</a>
+
+《simbd/simbdp3.py at master - JRF-2018/simbd》  
+<a href="https://github.com/JRF-2018/simbd/blob/master/simbdp3.py" class="ext-link">https://github.com/JRF-2018/simbd/blob/master/simbdp3.py</a></pre>
+
+
+</article>
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2021/09.html">2021年09月</a> | <a href="../../../index/gsm.html">共有メモ</a></nav>
+</body>
+</html>

@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>Movable Type と SSI を使って注目を避けるために一時的に「休止」や「ブックマーク拒否」をする - JRF Blog Archive</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2010/05.html">2010年05月</a> | <a href="../../../index/software.html">ソフトウェア Tips</a></nav>
+<article data-pagefind-body>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[software] <span class="cocolog-id">cocolog:63218036</span></td></tr>
+<tr><th>セクション</th><td>JRF のソフトウェア Tips</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2010/05.html">2010年05月06日 19:20:17</a></td></tr>
+<tr><th>元URL</th><td><a href="http://jrf.cocolog-nifty.com/software/2010/05/post.html" class="ext-link"><span class="original-url">http://jrf.cocolog-nifty.com/software/2010/05/post.html</span></a></td></tr>
+<tr><th>タグ</th><td>[ウェブログ・ココログ関連]</td></tr>
+</table>
+</div>
+<h1>Movable Type と SSI を使って注目を避けるために一時的に「休止」や「ブックマーク拒否」をする</h1>
+<pre class="body">現在、ココログプロのシステムを使い「同人サイト」(というかほぼ個人のつぶやきサイトとなってる…)を整備している。そこは、仲間が見つけられるように公開ではありたいが、目立つのはあまり好ましくない。そこで、万一、目立ってしまったとき、アクセスを一時お断りするような機構が欲しいと考えた。
+
+方法として思いついたのは、記事のカテゴリとして「休止中」や「ブックマーク拒否」というのを作り、そのカテゴリに属する場合は特別な処理をするというものである。
+
+「カテゴリに属する場合」の判定は、《Movable Type で「記事と同じカテゴリ内の最近の記事」を表示する》の記事で使った方法を用いれば良く、あとは一本道である。この記事の機構がすでに導入されているとする。
+
+まず、「休止中」と「ブックマーク拒否」という名前のカテゴリを作っておく。カテゴリページに記載する説明はそれぞれ次のようにした。
+
+  &lt;b&gt;休止中&lt;/b&gt;このカテゴリに属するページは、アクセス集中を緩和する等の理由で、一時的に個別では閲覧できないようにしています。
+  &lt;b&gt;ブックマーク拒否&lt;/b&gt;このカテゴリに属するページは、過度に目立つことにより管理不能に陥ることを避ける等の理由で、外部のブックマークコメント一覧を非表示にするよう設定しています。 
+    
+次にデザインの Individual Archives のテンプレートの最初に次のような変更を加えた。なお、カテゴリの ID ではなく Label を用いたのは、本サイトでは複数のブログを運営し、それぞれのブログでカテゴリの ID が変わる可能性があるため、Label でチェックしたほうが良いと判断したからである。
+
+&lt;!DOCTYPE html PUBLIC &quot;-//W3C//DTD XHTML 1.0 Transitional//EN&quot; &quot;<a href="http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd&amp;quot;&amp;gt;" class="ext-link">http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd&amp;quot;&amp;gt;</a>
+
+&lt;!--#set var=&quot;CATEGORY_IDS&quot; value=&quot;,&lt;MTEntryCategories&gt;&lt;$MTCategoryID$&gt;,&lt;/MTEntryCategories&gt;&quot; --&gt;
+&lt;!--#set var=&quot;CATEGORY_LABELS&quot; value=&quot;,&lt;MTEntryCategories&gt;&lt;$MTCategoryLabel$&gt;,&lt;/MTEntryCategories&gt;&quot; --&gt;
+&lt;!--#set var=&quot;CONTROLLED_CATEGORIES&quot; value=&quot;,休止中,ブックマーク拒否,&quot; --&gt;
+
+&lt;html xmlns=&quot;<a href="http://www.w3.org/1999/xhtml&amp;quot;&amp;gt;" class="ext-link">http://www.w3.org/1999/xhtml&amp;quot;&amp;gt;</a>
+&lt;head&gt;
+
+head タグを閉じる前に「ブックマーク拒否」用の処理をする。
+
+&lt;!--#if expr=&quot;$CATEGORY_LABELS = /,ブックマーク拒否,/&quot; --&gt;
+&lt;meta name=&quot;Hatena::Bookmark&quot; content=&quot;nosnippet,nocomment&quot; /&gt;
+&lt;meta name=&quot;Buzzurl&quot; content=&quot;nosnippet,nocomment&quot; /&gt;
+
+&lt;!--#endif --&gt;
+&lt;/head&gt;
+
+記事の本文の前で「休止中」用の処理をする。
+
+&lt;div class=&quot;entry-top&quot;&gt;&lt;/div&gt;
+&lt;div class=&quot;entry&quot;&gt;
+
+&lt;MTWeblogPostIfShow field=&quot;post_title&quot;&gt;
+&lt;h3&gt;&lt;a href=&quot;&lt;$MTEntryPermalink$&gt;&quot;&gt;&lt;$MTEntryTitle$&gt;&lt;/a&gt;&lt;/h3&gt;
+&lt;/MTWeblogPostIfShow&gt;
+
+&lt;!--#if expr=&quot;$CATEGORY_LABELS = /,休止中,/&quot; --&gt;
+&lt;div class=&quot;access-restriction-warning&quot; &gt;
+現在、アクセスの集中を緩和する等の理由で、一時的にこのページを閲覧できないようにしています。ご迷惑をおかけしてすみません。
+&lt;/div&gt;
+&lt;!--#else --&gt;
+
+&lt;div class=&quot;entry-body-top&quot;&gt;&lt;/div&gt;
+
+記事の終わるところで if 文を閉じる。(この場所を間違えないよう探すのが結構メンドクサい。)
+
+&lt;/MTEntryIfCommentsOpen&gt;
+&lt;/div&gt;
+&lt;/MTEntryIfAllowComments&gt;
+&lt;!--#endif --&gt;
+&lt;/div&gt;
+&lt;div class=&quot;entry-bottom&quot;&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;content-bottom&quot;&gt;&lt;/div&gt;
+&lt;/div&gt;
+
+次に「カテゴリ内の最近の記事」に関する Recent Lists のテンプレートで、「休止中」や「ブックマーク拒否」に関しては、最近の記事は表示しないようにする。なお、「TOP」に関して本サイトは特殊な処理をして、サイドバーでブログ全体の最近の記事を表示できるようにしている。
+
+&lt;MTCategories&gt;
+&lt;!--#if expr=&quot;$CATEGORY_IDS = /,&lt;$MTCategoryID$&gt;,/&quot; --&gt;
+&lt;!--#if expr=&quot;$CONTROLLED_CATEGORIES != /,&lt;$MTCategoryLabel$&gt;,/&quot; --&gt;
+&lt;MTBlogIfArchives&gt;
+&lt;h2&gt;「&lt;a href=&quot;&lt;$MTCategoryArchiveLink$&gt;&quot;&gt;&lt;$MTCategoryLabel$&gt;&lt;/a&gt;」カテゴリ内の最近の記事&lt;/h2&gt;
+&lt;MTEntries lastn=&quot;5&quot;&gt;
+&lt;div class=&quot;recent-lists-content&quot;&gt;
+&lt;div class=&quot;recent-lists-title&quot;&gt;&lt;$MTEntryDateModified format=&quot;%Y-%m-%d&quot;$&gt; &lt;a
+href=&quot;&lt;$MTEntryPermalink$&gt;&quot; title=&quot;概要：&lt;$MTEntryExcerpt remove_html='1' encode_html='1'$&gt;&quot;&gt;&lt;$MTEntryTitle$&gt;&lt;/a&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/MTEntries&gt;
+&lt;/MTBlogIfArchives&gt;
+&lt;!--#endif --&gt;
+&lt;!--#endif --&gt;
+&lt;/MTCategories&gt;
+&lt;!--#if expr=&quot;$CATEGORY_IDS = /,TOP,/&quot; --&gt;
+&lt;h2&gt;「&lt;a href=&quot;&lt;$MTBlogURL$&gt;&quot;&gt;&lt;$MTBlogName$&gt;&lt;/a&gt;」内の最近の記事&lt;/h2&gt;
+&lt;MTEntries lastn=&quot;5&quot;&gt;
+&lt;div class=&quot;recent-lists-content&quot;&gt;
+&lt;div class=&quot;recent-lists-title&quot;&gt;&lt;$MTEntryDateModified format=&quot;%Y-%m-%d&quot;$&gt; &lt;a
+href=&quot;&lt;$MTEntryPermalink$&gt;&quot; title=&quot;概要：&lt;$MTEntryExcerpt remove_html='1' encode_html='1'$&gt;&quot;&gt;&lt;$MTEntryTitle$&gt;&lt;/a&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/MTEntries&gt;
+&lt;!--#endif --&gt;
+
+変更は以上で終りである。あとは、何かがあったとき記事の編集画面で「休止中」「ブックマーク拒否」のカテゴリを追加で足せばよい。
+
+■参考
+  ●《SEOだけで満足できない人のためのmetaタグ情報まとめ （後編） : web memo.Ver.2》
+  ●《違法画像を掲載しているサイトへの「リンク」だけで「幇助犯」成立という解釈 - 弁理士 鯨田雅信の「ローマは一日にして成らず」》。この記事で言及されている流れへの対応という面も少しあるかもしれない。
+    
+更新：2010-05-06
+初公開：2010年05月06日 19:20:22
+最新版：2010年05月13日 22:28:19
+
+
+Comments:
+
+[E:drama] 更新：カテゴリページの説明文を記事にも例として書いておいた。
+投稿: JRF | 2010-05-07 14:33:17 (JST)
+
+[E:coldsweats02] 更新：変数名「CONTROLED_CATEGORIES」を「CONTOROLLED_CATEGORIES」に変更。もう何度目かになる、私が、ついやってしまうスペルミス。
+投稿: JRF | 2010-05-13 22:51:41 (JST)
+
+
+Links:
+
+Movable Type で「記事と同じカテゴリ内の最近の記事」を表示する: <a href="../../../articles/2006/02/software_10143002.html" class="int-link" title="Movable Type で「記事と同じカテゴリ内の最近の記事」を表示する。">http://jrf.cocolog-nifty.com/software/2006/02/post_16.html</a>
+SEOだけで満足できない人のためのmetaタグ情報まとめ （後編） : web memo.Ver.2: <a href="../../../articles/2010/05/hbm_01329.html" class="int-link" title="SEOだけで満足できない人のためのmetaタグ情報まとめ (後編) | WebとPCのメモ帳">http://128bit.blog41.fc2.com/blog-entry-184.html</a>
+違法画像を掲載しているサイトへの「リンク」だけで「幇助犯」成立という解釈 - 弁理士 鯨田雅信の「ローマは一日にして成らず」: <a href="../../../articles/2010/05/hbm_01330.html" class="int-link" title="違法画像を掲載しているサイトへの「リンク」だけで「幇助犯」成立という解釈 - 弁理士 鯨田雅信の「ローマは一日にして成らず」">http://d.hatena.ne.jp/mkuji/20100506/1273106912</a></pre>
+
+
+<section class="backrefs" data-pagefind-ignore>
+<h2>後方参照 (2 件)</h2>
+<ul>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2010/06/statuses_aboutme_127257.html">ひとこと</a> <span class="backref-date">2010年06月28日</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2006/04/column_10899930.html">テンプレート等ブログシステムの更新履歴</a> <span class="backref-date">2006年04月02日 21:42:30</span></li>
+</ul>
+</section>
+
+</article>
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2010/05.html">2010年05月</a> | <a href="../../../index/software.html">ソフトウェア Tips</a></nav>
+</body>
+</html>

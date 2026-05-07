@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>ひとこと - JRF Blog Archive</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2013/01.html">2013年01月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+<article data-pagefind-body>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[statuses] <span class="cocolog-id">cocolog:75391362</span></td></tr>
+<tr><th>セクション</th><td>JRF のひとこと</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2013/01.html">2013年01月23日</a></td></tr>
+<tr><th>元URL</th><td><a href="http://jrf.cocolog-nifty.com/statuses/2013/01/post-e8f7.html" class="ext-link"><span class="original-url">http://jrf.cocolog-nifty.com/statuses/2013/01/post-e8f7.html</span></a></td></tr>
+
+</table>
+</div>
+<h1>ひとこと</h1>
+<pre class="body">プチコン mkII の SPSET と CHRSET のキャラ番号の指定の仕方が違う！SPSET が変。ほとんどバグに近いと思うんだが、この仕様に従って大丈夫なのか？
+JRF 2013年1月23日
+
+《ActBarrier for プチコンmkII 製作過程》
+<a href="http://p6ers.net/kaw/2013/prog_making_actb_ptcm.htm" class="ext-link">http://p6ers.net/kaw/2013/prog_making_actb_ptcm.htm</a>
+
+＞どうやら、SPSETで指定するスプライトキャラ番号は、CHRSETで指定するキャラ番号の開始番号の1/4にするようだ。＜
+
+SPU7 の 16 番に 8x8 のキャラを CHRSET したら SPSET でのキャラ番号は、しかし 7 * 16 + 4 ではなく、7 * 64 + 16 でもなく、7 * 64 + 4 にする必要がある。スプライトは 16x16 キャラ単位だからというのがその理由らしい。
+
+JRF 2013年1月23日
+
+だから、私は誤解していたんだが、CHRSET のとき、スプライトの一つのバンク(例えば &quot;SPU7&quot;)にも、8x8 のキャラでは 256 個格納できる。
+
+JRF 2013年1月23日
+
+まぁ、mkII になるとき VSYNC の仕様変更があったのを、ファイルを読み込むときに書き換えるみたいな対応があったみたいだから、仕様がおかしくても従ってればいいのかもしれない。
+
+SPSET は16x16 単位で 8x8 の CHRSET も 256 個できるとわかれば、ややこしいが非論理的でもないから、バグは言い過ぎか。この仕様でもいいのかな…。
+
+JRF 2013年1月23日</pre>
+
+
+</article>
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2013/01.html">2013年01月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+</body>
+</html>

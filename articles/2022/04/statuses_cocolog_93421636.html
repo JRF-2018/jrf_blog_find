@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>ひとこと - JRF Blog Archive</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2022/04.html">2022年04月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+<article data-pagefind-body>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[statuses] <span class="cocolog-id">cocolog:93421636</span></td></tr>
+<tr><th>セクション</th><td>JRF のひとこと</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2022/04.html">2022年04月09日</a></td></tr>
+<tr><th>元URL</th><td><a href="http://jrf.cocolog-nifty.com/statuses/2022/04/post-8f6da2.html" class="ext-link"><span class="original-url">http://jrf.cocolog-nifty.com/statuses/2022/04/post-8f6da2.html</span></a></td></tr>
+
+</table>
+</div>
+<h1>ひとこと</h1>
+<pre class="body">橋本洋志＆牧野浩二『Python コンピュータシミュレーション入門 人文・自然・社会科学の数理モデル』と、南裕樹『Python による制御工学入門』に目を通した。ただ、これらは使わないと身に付かないだろう。どう使えば良いものか…。
+JRF 2022年4月9日
+
+(「グローバル共有メモ」で書いたことのコピペ。)
+
+JRF 2022年4月9日
+
+……。
+
+……。
+
+『Python コンピュータシミュレーション入門 人文・自然・社会科学の数理モデル』(橋本 洋志 ＆ 牧野 浩二 著, オーム社, 2021年4月)
+<a href="https://www.amazon.co.jp/dp/4274226980" class="ext-link">https://www.amazon.co.jp/dp/4274226980</a>
+<a href="https://7net.omni7.jp/detail/1107182423" class="ext-link">https://7net.omni7.jp/detail/1107182423</a>
+
+JRF 2022年4月9日
+
+○ 2022-04-05T22:18:25Z
+
+橋本洋志＆牧野浩二『Python コンピュータシミュレーション入門 人文・自然・社会科学の数理モデル』を読んだ…というか、目を通した。
+
+基本的には目を通しておいて、あとで使うときになったら辞書的に使う。…または、どういうものがあるか知っておいて、使うときはググって使う。…みたいなのが前提の本だろうと思う。
+
+JRF 2022年4月9日
+
+しかし、一部、「知ってることが前提」過ぎる項目があり難しかった。カルマンフィルタ・ARMA・ARIMA の部分が特にそうで、ググってはじめてその意味が知れた。この本だけでわかるのは天才だけじゃないかと思う。
+
+JRF 2022年4月9日
+
+それ以外にも難しいところはあるが、以前個別に知っていたことも多く、私はシミュレーションに関しては、基本は抑えていたのだな…という印象になった。MCMC は <a href="../../../articles/2020/05/statuses_cocolog_91888253.html" class="int-link cocolog-id" title="ひとこと">[cocolog:91888253]</a> で、強化学習は <a href="../../../articles/2020/01/statuses_cocolog_91609276.html" class="int-link cocolog-id" title="ひとこと">[cocolog:91609276]</a> などで、ウィーナー過程や SIR モデルは <a href="../../../articles/2020/04/statuses_cocolog_91824909.html" class="int-link cocolog-id" title="ひとこと">[cocolog:91824909]</a> で、マルコフ連鎖は <a href="../../../articles/2017/03/statuses_cocolog_87083159.html" class="int-link cocolog-id" title="ひとこと">[cocolog:87083159]</a> などで、線形計画法などは <a href="../../../articles/2019/10/statuses_cocolog_91372755.html" class="int-link cocolog-id" title="ひとこと">[cocolog:91372755]</a> で。フラクタルに関しては <a href="../../../articles/2015/07/statuses_cocolog_82954979.html" class="int-link cocolog-id" title="ひとこと">[cocolog:82954979]</a> などで目を通したことがあるが、今回のほうが簡潔でわかりやすかったかな。
+
+JRF 2022年4月9日
+
+ただ、「学んで」きた割にアウトプットにはそういうものを使っていない。そういうのをもっと活かせる何かができればいいんだけど…。
+
+JRF 2022年4月9日
+
+……。
+
+新型コロナで SIR モデルが注目されたとき、「コンタクトプロセス」みたいなものからシミュレーションする方法もあったはず…と思っていたが、それがこの本には書いてあった。グラフ理論を扱うところで p.217-p.220 ぐらい。
+
+JRF 2022年4月9日
+
+これを発展させる方向で、家族なら 0.8 ぐらいの結合で、満員電車に乗れば 0.05 ぐらいの結合で…みたいなのを生活者ごとに積み上げて、スケールフリーネットワークが自然に構築されるようにし、クラスタ係数などの違いから、逆に結合の数値を求めていく…みたいなこともできるのではないか。それで、どういう人がハブになりやすいかみたいなところから、ハブに対策するプランとかを立てるとかできたらカッコイイのに。
+
+JRF 2022年4月9日
+
+↓の記事からたどれるのがそういうモデルなのかな？ 読んで調べてないからわからないけど、ブログで目にしたので挙げておく。
+
+《局所的集団免疫 : 岩本康志のブログ》  
+<a href="http://iwmtyss.blog.jp/archives/1080327726.html" class="ext-link">http://iwmtyss.blog.jp/archives/1080327726.html</a>
+
+JRF 2022年4月9日
+
+……。
+
+……。
+
+『Python による制御工学入門』(南 裕樹 著, オーム社, 2019年)
+<a href="https://www.amazon.co.jp/dp/B07RWRDV1Z" class="ext-link">https://www.amazon.co.jp/dp/B07RWRDV1Z</a>
+<a href="https://7net.omni7.jp/detail/1106991575" class="ext-link">https://7net.omni7.jp/detail/1106991575</a>
+
+JRF 2022年4月9日
+
+○ 2022-04-09T03:14:29Z
+
+南裕樹『Python による制御工学入門』(オーム社, 2019年) に目を通した。
+
+経済の最適制御みたいな本を読もうとしていて、その予習というか、制御理論の復習のために読んだ。
+
+私は工学系出身なので、制御工学は一度習ったことがある。しかも、学科は制御の名のついたところだった。しかし、研究室はそういう名前なもののやってることはコンピュータに関することだけで、制御らしいことは何ひとつなく、当然、身にも付かず、逆に私は制御理論に対してコンプレックスを持つようになった。
+
+JRF 2022年4月9日
+
+今回の本は、今どきで計算はすべてコンピュータにやらせればいいというテイで書かれていて、証明もほとんどない。それが私には読みやすかった。
+
+しかし、ロボットを設計するわけでもない私には、イメージが掴みにくく、言うてることはわかっているつもりだが、頭に定着しない感じ。これが、経済の最適制御みたいな本を読む過程で、少しは定着してくれるものか…は今のところはわからない。(たぶん、ダメだろう。)
+
+JRF 2022年4月9日
+
+ブラックボックス…同定の難しいシステムをどう同定するか…みたいなことも考えたりするが、そういうのはまた別の話題なのだろうか。状態空間でロバスト制御の作り方とは、そうするんだ…とちょっと驚いた。
+
+JRF 2022年4月9日</pre>
+
+
+<section class="backrefs" data-pagefind-ignore>
+<h2>後方参照 (2 件)</h2>
+<ul>
+<li><span class="backref-label">[cocolog:93421636]参照</span> <a href="../../../articles/2022/04/statuses_cocolog_93455912.html">ひとこと</a> <span class="backref-date">2022年04月26日</span></li>
+<li><span class="backref-label">[cocolog:93421636]参照</span> <a href="../../../articles/2022/04/gsm_002095.html">共有メモ</a> <span class="backref-date">2022-04-25T17:04:49Z</span></li>
+</ul>
+</section>
+
+</article>
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2022/04.html">2022年04月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+</body>
+</html>

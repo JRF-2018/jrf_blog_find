@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>ひとこと - JRF Blog Archive</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2020/06.html">2020年06月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+<article data-pagefind-body>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[statuses] <span class="cocolog-id">cocolog:91995523</span></td></tr>
+<tr><th>セクション</th><td>JRF のひとこと</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2020/06.html">2020年06月22日</a></td></tr>
+<tr><th>元URL</th><td><a href="http://jrf.cocolog-nifty.com/statuses/2020/06/post-33e498.html" class="ext-link"><span class="original-url">http://jrf.cocolog-nifty.com/statuses/2020/06/post-33e498.html</span></a></td></tr>
+
+</table>
+</div>
+<h1>ひとこと</h1>
+<pre class="body">Isabelle 2020 の HOL を使った「ケネディと天使の問題を Isabelle で証明」という記事を書いた。Isabelle の Tips とともに…。
+JRF 2020年6月22日
+
+前に Isabelle を使ったのが 2015 年。そのときの Tips は <a href="../../../articles/2015/11/statuses_cocolog_83987061.html" class="int-link cocolog-id" title="ひとこと">[cocolog:83987061]</a> にある。
+
+それにプラスしていくつかの Tips。
+
+JRF 2020年6月22日
+
+……。
+
+特定の定理や定義を表示したいとき、THEN の結果を出力したいときは…
+
+&lt;pre&gt;
+thm trans [THEN sym]
+&lt;/pre&gt;
+
+…などとすれば良い。
+
+JRF 2020年6月22日
+
+……。
+
+jEdit の Plugins -&gt; Plugin Options の Isabelle の General の中の &quot;Completion Immediate&quot; の項目のチェックボタンをオフにした上で…。
+
+古い notation では、\&lt;forall&gt; は ALL、\&lt;exists&gt; は EX、\&lt;in&gt; は : (type に対しては ::)、\&lt;lambda&gt; は %、\&lt;and&gt; は &amp;、\&lt;or&gt; は |。
+
+JRF 2020年6月22日
+
+\&lt;open&gt; \&lt;close&gt; は {* *} であったらしいのだが、そちらを使うと legacy だという警告が出る。
+
+JRF 2020年6月22日
+
+……。
+
+jEdit の Utilities -&gt; Global Options の中の Shortcuts に Choose keymap の項目があって、そこで Emacs を選んだ上で、まず、C-x C-s と C-s の設定をする。
+
+あと、C-e を prefix に持っているものをすべて削除で C-e が(同じじゃないが)使えるようになる。
+
+JRF 2020年6月22日
+
+……。
+
+……。
+
+Tips はここまでにして今回の記事について。記事は↓。
+
+《ケネディと天使の問題を Isabelle で証明 その１ うそつき天使問題 - JRF のソフトウェア Tips》  
+<a href="../../../articles/2020/06/software_91995459.html" class="int-link" title="ケネディと天使の問題を Isabelle で証明 その１ うそつき天使問題">http://jrf.cocolog-nifty.com/software/2020/06/post-ef863f.html</a>
+
+《ケネディと天使の問題を Isabelle で証明 その２ 気まぐれ天使問題 - JRF のソフトウェア Tips》  
+<a href="../../../articles/2020/06/software_91995468.html" class="int-link" title="ケネディと天使の問題を Isabelle で証明 その２ 気まぐれ天使問題">http://jrf.cocolog-nifty.com/software/2020/06/post-d9cd87.html</a>
+
+JRF 2020年6月22日
+
+《ケネディと天使の問題を Isabelle で証明 その３ 悪戦苦闘編 - JRF のソフトウェア Tips》  
+<a href="../../../articles/2020/06/software_91995474.html" class="int-link" title="ケネディと天使の問題を Isabelle で証明 その３ 悪戦苦闘編">http://jrf.cocolog-nifty.com/software/2020/06/post-33c483.html</a>
+
+JRF 2020年6月22日
+
+……。
+
+オブジェクト指向を PTS などの論理でどう表すかというのが、大学院時代の私のテーマとしてあった。その流れが今回につながっている。
+
+大きな前進とまではいかないが、一つの大事な例にはなったかな…というのが感想。
+
+JRF 2020年6月22日
+
+……。
+
+……。
+
+追記。
+
+ついでなので↓を Isabelle2020 に対応させておいた。
+
+《The Proofs about Alpha-equivalences in Isabelle》  
+<a href="../../../articles/2016/01/software_84330372.html" class="int-link" title="The Proofs about Alpha-equivalences in Isabelle">http://jrf.cocolog-nifty.com/software/2016/01/post.html</a>
+
+isabelle_TheLambda のバージョンは 0.0.3。
+
+JRF 2020年6月22日
+
+ZF のモジュールについて例えば Finite は ZF.Finite に書き換える必要があり、一部シンボルを書き換える必要があった (le → \&lt;le&gt;、lepoll → \&lt;lesssim&gt; だけだったと思う。)
+
+証明が止まったのは二ヶ所ほどで、あとはすんなりいけた。楽な作業だった。
+
+JRF 2020年6月22日
+
+……。
+
+……。
+
+追記。
+
+kennedy_problem 更新。バージョン 0.0.2。
+
+証明の最初、simp ではなく unfold を使うようにするなど微調整。
+
+JRF 2020年6月23日</pre>
+
+
+<section class="backrefs" data-pagefind-ignore>
+<h2>後方参照 (1 件)</h2>
+<ul>
+<li><span class="backref-label">[cocolog:91995523]参照</span> <a href="../../../articles/2020/06/software_91995459.html">ケネディと天使の問題を Isabelle で証明 その１ うそつき天使問題</a> <span class="backref-date">2020年06月22日 08:02:35</span></li>
+</ul>
+</section>
+
+</article>
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2020/06.html">2020年06月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+</body>
+</html>

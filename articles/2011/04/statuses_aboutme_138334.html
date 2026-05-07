@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>ひとこと - JRF Blog Archive</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2011/04.html">2011年04月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+<article data-pagefind-body>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[statuses] <span class="cocolog-id">aboutme:138334</span></td></tr>
+<tr><th>セクション</th><td>JRF のひとこと</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2011/04.html">2011年04月13日</a></td></tr>
+<tr><th>元URL</th><td><a href="http://jrf.cocolog-nifty.com/statuses/2011/04/aboutme138334.html" class="ext-link"><span class="original-url">http://jrf.cocolog-nifty.com/statuses/2011/04/aboutme138334.html</span></a></td></tr>
+
+</table>
+</div>
+<h1>ひとこと</h1>
+<pre class="body">Javascirpt の defined を判定するのに、if (name) って感じで使っていた(false は無視できるとする)が、if (window[&quot;name&quot;]) のほうが良いことを知る。
+JRF 2011年4月13日
+
+「ひとこと」をコピペしやすいよう clipboardData を使おうとしたのだが、Firefox が「セキュリティ」を理由に対応してない。
+
+clipboard が使えないなら、alert に表示しようというアイデアが浮かんだのだが、今度は IE6 が alert の表示をコピペできないことに気付く。
+
+で、しかたなく、clipboardData が使えるようならコピーし、そうでなければ alert に表示することにしたのだが、clipboardData が使えるかどうかを判定するところで↑の問題が出てきた。
+
+
+JRF 2011年4月13日
+
+s に  &lt;br /&gt;  を処理しながら、unescapeHTML した文字列が入っているとすると、
+
+  if (window['clipboardData']) {
+    clipboardData.setData(&quot;Text&quot;, s);
+  } else {
+    alert(s);
+  }
+
+などとした。
+
+JRF 2011年4月13日
+
+しかし、未だに Firefox はクリップボードを敵視してるのか。エディタを使っていると、つい変なデータがクリップボードに載ることがあるというリクツはわかるが、そのあたりはウィルス監視ソフトあたりにまかせたほうがいいんじゃないか？
+
+このままの状態を安穏と続けるなら、ブラウザ外のツール(非クラウド的な、P2P的な、クライアントプログラム)の利用を嫌い、すべてのプログラムがネットによって管理されねばならない社会を相も変わらず目指している(私にとっては邪悪な存在)と受けとられてもしかたない…とか思ってしまう。(^^;
+
+JRF 2011年4月13日
+
+(↓を参考にした。もっとちゃんと書くなら if ('undefined' != typeof window[&quot;name&quot;]) とするみたい。)
+
+《JavaScript でdefined関数》
+<a href="http://chaichan.web.infoseek.co.jp/qa4500/qa4638.htm" class="ext-link">http://chaichan.web.infoseek.co.jp/qa4500/qa4638.htm</a>
+
+JRF 2011年4月13日
+
+私はあくまで↓の流れには対抗しますよ。誰が何といおうとも、これまでアバウトミーやブログに書いてきたとおり、微力ながら。
+
+《コンテンツを「所有する」時代の終わり - スラッシュドット・ジャパン》
+<a href="http://slashdot.jp/it/article.pl?sid=11/04/13/0812252" class="ext-link">http://slashdot.jp/it/article.pl?sid=11/04/13/0812252</a>
+
+もちろん、DRM をまったく使わないのもナンセンスなのは、反原発がすべての原発をなくすという意味だというぐらいナンセンスだというのも、これまでどおり。
+
+JRF 2011年4月13日
+
+…でも、今回のことについては Firefox の「主張」に分があるかな？
+
+実際、自分の実装を使ってみると、IE のコピーをリンクするとクリップボードにコピーされる…という仕様は何か気持ち悪い。コピーというリンクを押したのに見た目には何も変わらず、「影」で何かの値が変更されているというのがいやらしい感じ…？
+
+JRF 2011年4月14日
+
+Firefox の安易にクリップボードを操作させず alert を表示させてというほうが直感的に思う。
+
+できれば、alert みたいなポップアップを表示して、そこのテキストをシャーレ(=ポップアップ)に載せたままコピーしたい場所に持っていき、シャーレからテキストをつまみ「ドロップ」してはじめてコピペされるのが最も直感的なように思う。
+
+ただ、じゃあ絵もシャーレに「ポップアップさせる」というのは「ポップアップ広告」のトラウマでこの先もできないだろう。
+
+HTML5のdraggableに期待といったところか…。でも、IE6 を未だにチェックに使う私がその機能を使う気になるのは何年先になるのやら。
+JRF 2011年4月14日
+
+この辺り、「オブジェクト間通信」はソフトウェア工学では広く一分野をなす研究分野だった。(私が大学にいたころは。)その GUI との絡みは、まさに工学の「華」。
+
+今も、いろいろな「理想」(の残滓)があるんじゃないかな…。
+
+JRF 2011年4月14日
+
+……。
+
+alert で表示するのはダメだ。文字数が(かなり)多くなると、「すべて選択」にしても途中で切られて全部コピーできないことが判明。
+
+しかたなく、textarea のオーバーレイを出すことにした。
+
+テキストをコピーさせやすくしたいだけなのに、なして、ここまで苦労する。orz
+
+JRF 2011年5月3日</pre>
+
+
+</article>
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2011/04.html">2011年04月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+</body>
+</html>

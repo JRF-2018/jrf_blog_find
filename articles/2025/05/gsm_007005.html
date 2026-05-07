@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>共有メモ - JRF Blog Archive</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2025/05.html">2025年05月</a> | <a href="../../../index/gsm.html">共有メモ</a></nav>
+<article data-pagefind-body>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[gsm] 2025-05-23T08:52:19Z</td></tr>
+<tr><th>セクション</th><td>グローバル共有メモ</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2025/05.html">2025-05-23T08:52:19Z</a></td></tr>
+<tr><th>元URL</th><td>(URLなし)</td></tr>
+
+</table>
+</div>
+<h1>共有メモ</h1>
+<pre class="body">jrf&gt; LLMを使ったロボット制御では、下部メカを制御するスパース行列を渡すために、画像生成AIのような拡散モデルみたいなのを使って、「どう学習すればいいかのプログラム」をプロンプトとしてスパース行列的なものを生成して渡す感じになるのだろうか…。
+
+ロボットの制御を LLM で行う場合。細部のメカにコマンドを送りその出力・異常出力をいくつかためて、LLM で処理し指示を出すということになるのだろう。細部のメカも LLM 的になるのだが、反射神経的な動きは、上部の LLM にいつも指示をもらうというのではなく、反射神経的な動きの学習済みデータを上部 LLM からもらう形か。このときスパース行列のようなものを渡さねばならないとなると上部 LLM は学習が大変なので、そうではなく、下部 LLM がどう学習すればいいかのプログラムを渡すことになるのかもしれない。ただし、その指示に従って学習するのは時間がかかり過ぎるので、画像生成 AI のような拡散モデルみたいなのを使って、「どう学習すればいいかのプログラム」からスパース行列的なものを生成する感じになるのだろう。</pre>
+
+
+</article>
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2025/05.html">2025年05月</a> | <a href="../../../index/gsm.html">共有メモ</a></nav>
+</body>
+</html>

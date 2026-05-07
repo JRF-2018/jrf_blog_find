@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>共有メモ - JRF Blog Archive</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2021/04.html">2021年04月</a> | <a href="../../../index/gsm.html">共有メモ</a></nav>
+<article data-pagefind-body>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[gsm] 2021-04-12T18:47:39Z</td></tr>
+<tr><th>セクション</th><td>グローバル共有メモ</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2021/04.html">2021-04-12T18:47:39Z</a></td></tr>
+<tr><th>元URL</th><td>(URLなし)</td></tr>
+
+</table>
+</div>
+<h1>共有メモ</h1>
+<pre class="body">jrf&gt; 経済シミュレーション。
+
+micro_economy_*.py では、基準価格が十分高くないと生産ができない企業が出てきた。
+
+それは、今回の方式でもそうだろう。ただし、今回の方式では価格…というか利益が基準価格とは別に設定されうるということだった。すると、生産ができない企業が出てきたとき、残りの企業でシャアをわけあうと、利益率の高い企業のみが生産することになる。そこで、利益の総和を最適化すると、基準価格が高くないほうが最適化がうまくいく…みたいになる危険性がある。それは基準価格のコントロールがうまく効かないということなのでよくない。
+
+よって、利益の総和でなく、企業の利益率の平均を最適化するとしたほうがいいのかもしれない。または、利益の最適化は行わず、企業の利益ができるだけ等しくなるようにするか…いや、それはないな。
+
+または、利益の計算において、基準価格によって参加できる企業の数に応じて利益が変わる。…市場に参加できない企業が増え、参加できる企業が少ないと利益もあまり上がらない…みたいな、利益計算の作り方をすれば、利益の総和の最適化をしても大丈夫かもしれない。優位性分の利益の計算において、商品一個ごとの利益ではなく、シェア分売り切ったときの全体の利益額が決まるようにすればよいのではないか。</pre>
+
+
+</article>
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2021/04.html">2021年04月</a> | <a href="../../../index/gsm.html">共有メモ</a></nav>
+</body>
+</html>

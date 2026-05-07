@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>ひとこと - JRF Blog Archive</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2017/12.html">2017年12月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+<article data-pagefind-body>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[statuses] <span class="cocolog-id">cocolog:88550595</span></td></tr>
+<tr><th>セクション</th><td>JRF のひとこと</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2017/12.html">2017年12月08日</a></td></tr>
+<tr><th>元URL</th><td><a href="http://jrf.cocolog-nifty.com/statuses/2017/12/firef.html" class="ext-link"><span class="original-url">http://jrf.cocolog-nifty.com/statuses/2017/12/firef.html</span></a></td></tr>
+
+</table>
+</div>
+<h1>ひとこと</h1>
+<pre class="body">Firefox のブラウザ拡張(アドオン)である PP Interrupter を作って公開した。詐欺的な自動ダイレクトを識別するために、逆に普段から健全な自動リダイレクトをブロックする習慣をつけるという逆転の発想のアドオン。
+JRF 2017年12月8日
+
+アドオンのページ:
+
+《PP Interrupter – Firefox 向けアドオン》
+<a href="https://addons.mozilla.org/firefox/addon/pp-interrupter/" class="ext-link">https://addons.mozilla.org/firefox/addon/pp-interrupter/</a>
+
+説明用ホームページ:
+
+《PP Interrupter》
+<a href="http://jrf.cocolog-nifty.com/archive/pp-interrupter/README_ja.html" class="ext-link">http://jrf.cocolog-nifty.com/archive/pp-interrupter/README_ja.html</a>
+
+JRF 2017年12月8日
+
+サポート用のブログ内ページ:
+
+《PP Interrupter: 健全なサイトをブロック!?》
+<a href="../../../articles/2017/12/software_88550402.html" class="int-link" title="PP Interrupter: 健全なサイトをブロック!?">http://jrf.cocolog-nifty.com/software/2017/12/post.html</a>
+
+JRF 2017年12月8日
+
+……。
+
+PP Authorizer というアドオンを作っているとき(<a href="../../../articles/2017/11/statuses_cocolog_88492515.html" class="int-link cocolog-id" title="ひとこと">[cocolog:88492515]</a>)に、発想が浮かんだ。PP Authorizer は Web サイトが認証の前にいったんストップすることを要求するが、現状ではそれに従うサイトはない。そこで、むりやりストップさせてはどうかと考えた。
+
+JRF 2017年12月8日
+
+本当にやりたいのは詐欺的な自動ダイレクトをブロックすることである。しかし、それは難しい。AdBlock とかは、情報を広範に共有してそれを行っているようだが、認証に関しては自動リダイレクトはある程度必要なものでブロックを本来必要とせず、情報共有に意味を見出せない。
+JRF 2017年12月8日
+
+しかし、ここで逆転の発想をする。詐欺的な自動ダイレクトを識別するために、逆に普段から健全な自動リダイレクトをブロックする習慣をつけるのだ。それを行うのが PP Interrupter ということになる。
+
+JRF 2017年12月8日
+
+ただ、PP Interrupter はリダイレクトをブロックしてクリックして続行を促す…だけの単機能のシンプルな汎用アドオンなので、上記以外の使い方もできるかもしれないことは注意を促しておく。
+
+JRF 2017年12月8日
+
+……。
+
+当初は、自動リダイレクトのみを対象とした webReqest の blocking は面倒だろうと MDN のマニュアルを読んでいたが、確かにリダイレクトを対象としたブロックは難しいが、タブでのページの遷移のみを対象とすることはそれほど難しくないとわかってきた。
+
+そこで、エイヤッとテストしてるつもりで作り上げてしまったのが本アドオンになる。webRequest の blocking で Promise (非同期プログラミング)が使えると聴いて、そのテストもかねて実装したら、実装できてしまった。
+
+JRF 2017年12月8日
+
+最初は、アドオンに含まれたファイルをページとしてバッと表示して、そのときの URL にパラメータを付けてそのパラメータによって、真のリダイレクト先を示そう…とかなんとか考えていたのだが、GET 以外に POST を扱わねばならなそうなのが難しく、上で書いたように Promise を使うと、ページを表示してしまったときに Promise の効果が切れてしまうようなので諦めた。
+
+かわりに notifications だけして、pageAction として実装した。
+
+JRF 2017年12月8日
+
+PP Authorizer とあわせて一つのアドオンとすることもできたが、ちょっと考えて、PP Interrupter のほうがずっと汎用的だから分けたほうがよかろうと思って、二つの「姉妹品」のアドオンとした。将来的に一つのアドオンに統合することはあるのかな…、まぁ、今の段階では難しくないけど、どうなんだろう？
+
+JRF 2017年12月8日
+
+……。
+
+PP Authorizer のときと同じく、とにかくできちゃったので、まず登録。審査(おそらく機械によるもののみ)もあっさり通って公開となった。PP Authorizer のバージョンアップを何度かしていたので手続きには慣れたもの。
+
+あとはヒイコラ言ってドキュメントを突貫で書き上げ、今、やっとひとことを書いているところ。
+
+JRF 2017年12月8日
+
+もちろん、多くの人に使ってもらいたいけど、PP Authorizer に比べて汎用とはいえニッチであることには変わらないから、それは難しいのかな…。orz
+
+JRF 2017年12月8日
+
+……。
+
+追記。更新。
+
+バージョン 0.4。
+
+内部的なとても小さな変更。まず、外部アプリからのブロックしない許可に関する修正。バージョン 0.3 から引き続き細かいバグを取った。
+
+JRF 2017年12月15日
+
+あと、Allowing Extensions から PP Authorizer を削除しても、Add from PP Authorizer ボタンで、リカバーできるようにした。これは実装すべきか迷ったんだけどね。ここについてはデフォルト値を回復できるようにしたほうがよかろう…と判断した。
+
+JRF 2017年12月15日
+
+……。
+
+追記。更新。
+
+バージョン 0.5。
+
+小さな変更。だが、ややクリティカルというか本質的なバグ。ブロック中に他への移動やタブの削除を行った場合のキャンセル処理をミスしていた。コピペによるミス。やや恥ずかしいミス。キャンセルできてなくても目立たないので、うまく動いていないことにこれまで気付かなかった。
+
+JRF 2017年12月16日
+
+最近更新が続いていて申し訳ないので、本当は 1 週間ほど更新しない予定だったが、しかたなくバージョンアップした。
+
+JRF 2017年12月16日
+
+……。
+
+追記。更新。
+
+バージョン 0.6。
+
+軽微な変更。関数名に統一性をもたせるなどソースの整理をした。
+
+次回、Google Chrome でも使えるようにすべきか、今、検討中。ある意味、古い規格に沿うことになるので、迷っている。
+
+JRF 2017年12月23日
+
+……。
+
+追記。更新。
+
+バージョン 0.7。
+
+Firefox for Android や Google Chrome に対応したりしようとして書き換え作業を行ったが、API や UI の違いにより結局、対応できなかった。それで、機能制限版の PP Interrupter Lite を作って、そちらで対応することにした。<a href="../../../articles/2017/12/statuses_cocolog_88646381.html" class="int-link cocolog-id" title="ひとこと">[cocolog:88646381]</a> にそちらの情報を載せている。
+
+JRF 2017年12月27日
+
+書き換え途中でミスに気付いて修正できたりしたのはメリットだが、書き換え自体が大きいので、別のミスが発生していると思われる。 それを今後取り除きたいが、アドオンを使用する機会がないのでミスに気付けるかどうか…。
+
+JRF 2017年12月27日
+
+Trackbacks:
+
+《cocolog:88646381》 from JRF のひとこと
+<a href="../../../articles/2017/12/statuses_cocolog_88646381.html" class="int-link" title="ひとこと">http://jrf.cocolog-nifty.com/statuses/2017/12/mozil.html</a>
+
+Mozilla Firefox と Google Chrome のブラウザ拡張(アドオン)である PP Interrupter Lite を作って公開した。前から作っている PP Interrupter (Original) (<a href="../../../articles/2017/12/statuses_cocolog_88550595.html" class="int-link cocolog-id" title="ひとこと">[cocolog:88550595]</a>)の機能制限版。 
+
+受信： 2017-12-29 18:12:42 (JST)
+
+《cocolog:88637062》 from JRF のひとこと
+<a href="../../../articles/2017/12/statuses_cocolog_88637062.html" class="int-link" title="ひとこと">http://jrf.cocolog-nifty.com/statuses/2017/12/andro.html</a>
+
+Android エミュレータを使うために Android Studio 3.0.1 をインストール。しかし、エミュレータを起動するまでにかなり手間どった。 
+
+受信： 2017-12-29 18:12:58 (JST)
+
+《cocolog:88492515》 from JRF のひとこと
+<a href="../../../articles/2017/11/statuses_cocolog_88492515.html" class="int-link" title="ひとこと">http://jrf.cocolog-nifty.com/statuses/2017/11/firef-2.html</a>
+
+Firefox のブラウザ拡張(アドオン)である PP Authorizer を作って公開した。匿名的ログインや匿名的支払いをサポートするためのアドオン。2,3 日で終った突貫工事で、完成度は高くないとは思うが…。... 
+
+受信： 2017-12-29 18:13:54 (JST)
+
+《cocolog:88703123》 from JRF のひとこと
+<a href="../../../articles/2018/01/statuses_cocolog_88703123.html" class="int-link" title="ひとこと">http://jrf.cocolog-nifty.com/statuses/2018/01/post-abfc.html</a>
+
+ブラウザ拡張(アドオン)として Tweet Sig を作って公開した。三文判程度の認証に使うことを想定している。 
+
+受信： 2018-03-30 21:39:36 (JST)</pre>
+
+
+<section class="backrefs" data-pagefind-ignore>
+<h2>後方参照 (5 件)</h2>
+<ul>
+<li><span class="backref-label">[cocolog:88550595]参照</span> <a href="../../../articles/2018/01/statuses_cocolog_88703123.html">ひとこと</a> <span class="backref-date">2018年01月06日</span></li>
+<li><span class="backref-label">[cocolog:88550595]参照</span> <a href="../../../articles/2017/12/statuses_cocolog_88646381.html">ひとこと</a> <span class="backref-date">2017年12月27日</span></li>
+<li><span class="backref-label">[cocolog:88550595]参照</span> <a href="../../../articles/2017/12/statuses_cocolog_88637062.html">ひとこと</a> <span class="backref-date">2017年12月25日</span></li>
+<li><span class="backref-label">[cocolog:88550595]参照</span> <a href="../../../articles/2017/12/software_88550402.html">PP Interrupter: 健全なサイトをブロック!?</a> <span class="backref-date">2017年12月08日 16:17:00</span></li>
+<li><span class="backref-label">[cocolog:88550595]参照</span> <a href="../../../articles/2017/11/statuses_cocolog_88492515.html">ひとこと</a> <span class="backref-date">2017年11月27日</span></li>
+</ul>
+</section>
+
+</article>
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2017/12.html">2017年12月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+</body>
+</html>

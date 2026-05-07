@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>ひとこと - JRF Blog Archive</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2012/02.html">2012年02月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+<article data-pagefind-body>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[statuses] <span class="cocolog-id">cocolog:71653595</span></td></tr>
+<tr><th>セクション</th><td>JRF のひとこと</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2012/02.html">2012年02月17日</a></td></tr>
+<tr><th>元URL</th><td><a href="http://jrf.cocolog-nifty.com/statuses/2012/02/post-0a06.html" class="ext-link"><span class="original-url">http://jrf.cocolog-nifty.com/statuses/2012/02/post-0a06.html</span></a></td></tr>
+
+</table>
+</div>
+<h1>ひとこと</h1>
+<pre class="body">ココログで「削除パスワード」が使えるようにするため、<a href="../../../articles/2012/01/statuses_cocolog_71400198.html" class="int-link cocolog-id" title="ひとこと">[cocolog:71400198]</a> でアイデアを出した暗号を使うシステムを実装した今になって、はてなブックマークの JSONP の API を使えばもっと簡単にできたことに気付く。
+JRF 2012年2月17日
+
+造った機構については↓。
+
+《ユーザーによるコメント「削除」をココログプロで実現する》
+<a href="../../../articles/2012/02/software_71637031.html" class="int-link" title="ユーザーによるコメント「削除」をココログプロで実現する">http://jrf.cocolog-nifty.com/software/2012/02/post-1.html</a>
+
+はてブの API は↓。
+
+《はてなブックマークエントリー情報取得API - Hatena Developer Center》
+<a href="http://developer.hatena.ne.jp/ja/documents/bookmark/apis/getinfo" class="ext-link">http://developer.hatena.ne.jp/ja/documents/bookmark/apis/getinfo</a>
+
+
+
+JRF 2012年2月17日
+
+つまり、［comment-owner 1234 hatena_id:jrf］ とかやっておいて、はてブの API でそのユーザーのセルクマ(セルフブックマーク)を見て、タグかブクマコメントにコメント ID の 1234 の削除指示(omit-comment:1234 とか)があれば、それを「削除」する。…などとすれば良い。
+
+これだと、削除権限の譲渡とかも簡単。それを暗号化でやろうと思ったら、公開鍵システムが要りそうなのに。
+
+JRF 2012年2月17日
+
+……。
+
+ただ、欠点もあって、一つには、ブログ管理人のログに残りにくいこと。「削除」のブクマしたかしなかったかが管理人のあずかり知らぬところとなりかねない。
+
+もう一つは、管理人が簡単に取り消しできないこと。「削除」を取り消すためのコントロールコメントを決めるみたいな話になりかねない。さっきのと相俟[あいま]って、管理人の責任逃れの余地を大きくする。
+
+逆に利点としては、暗号やハッシュを使わないで済む速度や、簡単さがある。ロードが増えるとも言えるが、すでにブクマ数を読み込んでる私のようなサイトだとそれほど大きなオーバーヘッドになるとは思わない。
+
+JRF 2012年2月18日</pre>
+
+
+<section class="backrefs" data-pagefind-ignore>
+<h2>後方参照 (1 件)</h2>
+<ul>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2012/01/statuses_cocolog_71400198.html">ひとこと</a> <span class="backref-date">2012年01月26日</span></li>
+</ul>
+</section>
+
+</article>
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2012/02.html">2012年02月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+</body>
+</html>

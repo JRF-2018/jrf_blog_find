@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>ひとこと - JRF Blog Archive</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2011/11.html">2011年11月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+<article data-pagefind-body>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[statuses] <span class="cocolog-id">cocolog:70722096</span></td></tr>
+<tr><th>セクション</th><td>JRF のひとこと</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2011/11.html">2011年11月29日</a></td></tr>
+<tr><th>元URL</th><td><a href="http://jrf.cocolog-nifty.com/statuses/2011/11/javas-2.html" class="ext-link"><span class="original-url">http://jrf.cocolog-nifty.com/statuses/2011/11/javas-2.html</span></a></td></tr>
+
+</table>
+</div>
+<h1>ひとこと</h1>
+<pre class="body">JavaScript の Canvas にもオリジン制限があることを知る。開発者向けにブラウザ起動時にそれを無視するオプションはあるようだが、サーバーオーナーやブロガーが回避する方法はなさそう。
+JRF 2011年11月29日
+
+例えば↓参照。
+
+《canvas の getImageDataが少しめんどくさい（特にローカルで動かす場合） - 地平線に行く》
+<a href="http://d.hatena.ne.jp/chiheisen/20100815/1281885412" class="ext-link">http://d.hatena.ne.jp/chiheisen/20100815/1281885412</a>
+
+JRF 2011年11月29日
+
+sitemap.xml とか robots.txt や .htaccess みたいな回避方法はできないものだろうか。
+
+JavaScript で XMLHttpRequest するときでも Same-Origin 制限、クロスドメイン制限があって、そちらは Access-Control-Allow-Origin みたい回避手段ができようとしている。(<a href="../../../articles/2011/05/statuses_aboutme_139035.html" class="int-link cocolog-id" title="ひとこと">[aboutme:139035]</a> <a href="../../../articles/2011/05/statuses_aboutme_139032.html" class="int-link cocolog-id" title="ひとこと">[aboutme:139032]</a> <a href="../../../articles/2011/05/statuses_aboutme_138896.html" class="int-link cocolog-id" title="ひとこと">[aboutme:138896]</a>)
+
+JRF 2011年11月29日
+
+
+でも、やっぱりこれも面倒すぎる。例えば JavaScript 内で、
+
+&lt;pre&gt;
+location.apply_access('local_dir/image01.jpg');
+&lt;/pre&gt;
+
+とかすると、location の local_dir/allow_access_origin.txt が読み込まれて、そこの内容によって、Same-Origin 制限が回避できるとかセキュリティ的にダメなんだろうか？
+
+この制限は HTML5 でローカルで起動するゲームを作るのを阻害するものとなっており、そこをブラウザ開発者が解決しないのは、クライアントサーバー主義の陰謀論を唱えたくなる。
+
+JRF 2011年11月29日
+
+P2P 主義でローカルで起動することを認めれば、そこに「財産」としてバックアップが残るが、それを認めなければ、サーバーにしか残らなくなる。大上段に構えすぎかもしれないが、これが 100 年ぐらいあとになると、それを「パブリックドメイン」なものだからと言って、誰かが囲い込みの中でしか使えなくしてしまうかもしれない。(<a href="../../../articles/2011/04/statuses_aboutme_138358.html" class="int-link cocolog-id" title="ひとこと">[aboutme:138358]</a>)
+
+JRF 2011年11月29日
+
+
+フリーであるがゆえにプログラマーになれた者としては、それをさせない不断の努力が求められそうなところだ。が、今はクライアントサーバー側が投資資金を握っているため、プログラマーはその生活費に対する義理立てをしなければいけなくなり、P2P 的にローカルで起動することができなくなっていることへの注意を知ってか知らずか、疎かにしている。
+
+……といった陰謀論にくみしたくなる。陰謀論的思考に陥いる者は、学術的基礎ができてないからという意見を読んだが、まぁ、その通りということなのだと思う。(^^;
+
+JRF 2011年11月29日
+
+《Same origin policy for JavaScript - MDN》
+<a href="https://developer.mozilla.org/En/Same_origin_policy_for_JavaScript" class="ext-link">https://developer.mozilla.org/En/Same_origin_policy_for_JavaScript</a>
+
+JRF 2011年11月29日
+
+……。
+
+あと、ココログのアップロード 1M 制限にもひっかかってイメージの品質を落とさざるを得なかった。ブログサイトでゲームを公開するのが無茶なのかなぁ…？
+
+JRF 2011年11月29日
+
+……。
+
+ついでだから、文句言っちゃうと、クレジットカードしか使えないサイトが多くて、銀行振込が使えないとかも頭くんだよな。まぁ、海外サイトだからってのもあるかもっれいないけど、民間が投資して「通貨」を独占しようとするのは、(<a href="../../../articles/2008/12/statuses_aboutme_90158.html" class="int-link cocolog-id" title="ひとこと">[aboutme:90158]</a> <a href="../../../articles/2011/02/statuses_aboutme_136774.html" class="int-link cocolog-id" title="ひとこと">[aboutme:136774]</a> とかで述べた不正競争・独占禁止法とかだけでなく、)日本とかだと日銀法かなんかにも抵触するんじゃないか。
+
+クレジットカードあたりも、クライアントサーバーで集約するという考え方の延長にあると思う。
+
+こういうのは昔の技術を前提に「それしかない」と貸し込んじゃったのが響いてるんじゃないかと邪推している。
+
+JRF 2011年11月29日
+
+参↓。
+
+《ICカードの迷信をバカにできるほど端末管理できてる？》
+<a href="../../../articles/2006/04/column_11076503.html" class="int-link" title="ICカードの迷信をバカにできるほど端末管理できてる？">http://jrf.cocolog-nifty.com/column/2006/04/post_8.html</a>
+
+keyword: 時間記録デバイス
+
+<a href="../../../articles/2011/05/statuses_aboutme_138968.html" class="int-link cocolog-id" title="ひとこと">[aboutme:138968]</a> では、OAuth を振込に使えないかみたいなことを↓を作りながら考えていた。
+
+《Statuses_Editor_Proxy.CGI - XMLRPC と OAuth を組み合わせた「ひとことサイト」ソリューション》
+<a href="../../../articles/2011/06/software_68520060.html" class="int-link" title="Statuses_Editor_Proxy.CGI - XMLRPC と OAuth を組み合わせた「ひとことサイト」ソリューション">http://jrf.cocolog-nifty.com/software/2011/06/post.html</a>
+
+JRF 2011年11月29日
+
+typo 「みたい回避手段」→「みたいな回避手段」。
+typo 「あるかもっれいないけど」→「あるかもしれないけど」。
+
+JRF 2011年11月29日
+
+Trackbacks:
+
+《cocolog:70725852》 from JRF のひとこと
+<a href="../../../articles/2011/11/statuses_cocolog_70725852.html" class="int-link" title="ひとこと">http://jrf.cocolog-nifty.com/statuses/2011/11/post-44ef.html</a>
+
+最近、ページを開くとまず広告を表示されるというサイトが「再び」現れるようになった。私は「広告はおおいに結構」というポリシーを持っているが、クリックせねば内容がわからないサイトは、ラッパーをかけたサイトの乗っ取りを疑う。そういう広告を許容するために私はブラウザに新しい機能が欲しい。... 
+
+受信： 2012-01-04 14:58:33 (JST)
+
+《cocolog:71745984》 from JRF のひとこと
+<a href="../../../articles/2012/02/statuses_cocolog_71745984.html" class="int-link" title="ひとこと">http://jrf.cocolog-nifty.com/statuses/2012/02/post-66d1.html</a>
+
+今の「簡素」なシステムが使い易いのは、昔の便利なシステムを知らないから…というのはかなりまずい状況のように思う。プログラマー人口減とかもあるだろうが、ネットの自由の減少が、若者がその青春を燃やすのにふさわしくない場所という認識を導いているのではないか？... 
+
+受信： 2012-03-29 18:27:13 (JST)</pre>
+
+
+<section class="backrefs" data-pagefind-ignore>
+<h2>後方参照 (9 件)</h2>
+<ul>
+<li><span class="backref-label">[cocolog:70722096]参照</span> <a href="../../../articles/2012/02/statuses_cocolog_71745984.html">ひとこと</a> <span class="backref-date">2012年02月25日</span></li>
+<li><span class="backref-label">[cocolog:70722096]参照</span> <a href="../../../articles/2011/11/statuses_cocolog_70725852.html">ひとこと</a> <span class="backref-date">2011年11月29日</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2011/05/statuses_aboutme_139035.html">ひとこと</a> <span class="backref-date">2011年05月31日</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2011/05/statuses_aboutme_139032.html">ひとこと</a> <span class="backref-date">2011年05月30日</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2011/05/statuses_aboutme_138968.html">ひとこと</a> <span class="backref-date">2011年05月25日</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2011/05/statuses_aboutme_138896.html">ひとこと</a> <span class="backref-date">2011年05月20日</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2011/04/statuses_aboutme_138358.html">ひとこと</a> <span class="backref-date">2011年04月15日</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2011/02/statuses_aboutme_136774.html">ひとこと</a> <span class="backref-date">2011年02月17日</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2008/12/statuses_aboutme_90158.html">ひとこと</a> <span class="backref-date">2008年12月17日</span></li>
+</ul>
+</section>
+
+</article>
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2011/11.html">2011年11月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+</body>
+</html>

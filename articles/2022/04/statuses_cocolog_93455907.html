@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>ひとこと - JRF Blog Archive</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2022/04.html">2022年04月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+<article data-pagefind-body>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[statuses] <span class="cocolog-id">cocolog:93455907</span></td></tr>
+<tr><th>セクション</th><td>JRF のひとこと</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2022/04.html">2022年04月26日</a></td></tr>
+<tr><th>元URL</th><td><a href="http://jrf.cocolog-nifty.com/statuses/2022/04/post-772e64.html" class="ext-link"><span class="original-url">http://jrf.cocolog-nifty.com/statuses/2022/04/post-772e64.html</span></a></td></tr>
+
+</table>
+</div>
+<h1>ひとこと</h1>
+<pre class="body">Python の SymPy で行列に関する証明をする方法。
+JRF 2022年4月26日
+
+SymPy は、行列の計算において、直接、行列変数みたいなものは扱えず、行列の各要素を指定したものしか使えないが、例えば…
+JRF 2022年4月26日
+
+&lt;pre&gt;
+from sympy import *
+a11, a12, a21, a22 = symbols(&quot;a11 a12 a21 a22&quot;)
+M = Matrix([[a11, a12], [a21, a22]])
+print(simplify(Eq(M * (M ** -1), eye(2))))
+&lt;/pre&gt;
+
+JRF 2022年4月26日
+
+…などとすれば、True が表示され、行列変数 M に関する式 M * (M ** -1) == I が証明できる。
+
+任意の n × m 行列について証明を一つ作ることはできなさそうだが、n, m が与えられたとき、それに対応する式の証明を作るようなプログラムを書くことができる場合はあるだろう。
+
+JRF 2022年4月26日
+
+ただ、上の例において、det(M) == 0 の場合を考慮していないように、「完璧な証明」が欲しい場合は、SymPy だけでは力不足だろう。
+
+JRF 2022年4月26日
+
+……。
+
+追記。
+
+修正 「直接、行列変数みたいなものは扱えず、行列の各要素を指定したものしか使えないが」→「行列の各要素を指定したものを使うとすれば」。
+
+調べ間違ってた。行列変数 MatrixSymbol というものは用意されている。いくつか行列変数を積み上げる BlockMatrix というものも用意されている。
+
+《Matrix Expressions — SymPy 1.10.1 documentation》  
+<a href="https://docs.sympy.org/latest/modules/matrices/expressions.html" class="ext-link">https://docs.sympy.org/latest/modules/matrices/expressions.html</a>
+
+JRF 2022年4月26日
+
+……。
+
+ところで、上の M は 4 行 4 列になった段階で、今の私のマシンだと M ** -1 の計算が時間がかかり過ぎるものとなって終らなかった。
+
+&lt;pre&gt;
+from sympy import *
+N = 4
+M = Matrix([[Symbol(&quot;a&quot; + str(i) + str(j)) for i in range(1, N + 1)]
+            for j in range(1, N + 1)])
+M ** -1
+&lt;/pre&gt;
+
+…などとすれば終らない。
+
+JRF 2022年4月26日
+
+上のようなことをするためには、
+
+&lt;pre&gt;
+N = 4
+M = MatrixSymbol(&quot;M&quot;, N, N)
+print(simplify(Eq(M * (M ** -1), Identity(N))))
+&lt;/pre&gt;
+
+…とすればいい。(この場合は N = Symbol('N') でも良い。)
+
+JRF 2022年4月26日
+
+ただし、(N = 4 として)
+
+&lt;pre&gt;
+print(simplify(Eq(M * (M ** -1), eye(N))))
+&lt;/pre&gt;
+
+…は True にはならない。Identity(N) と eye(N) はそのままでは同じにならないかららしい。
+
+JRF 2022年4月26日
+
+&lt;pre&gt;
+print(simplify(Eq((M * (M ** -1)).as_explicit(), eye(N))))
+&lt;/pre&gt;
+
+…または…
+
+&lt;pre&gt;
+print(simplify(M * (M ** -1)).equals(eye(N)))
+&lt;/pre&gt;
+
+…とすれば良い。
+
+JRF 2022年4月26日</pre>
+
+
+<section class="backrefs" data-pagefind-ignore>
+<h2>後方参照 (2 件)</h2>
+<ul>
+<li><span class="backref-label">[cocolog:93455907]参照</span> <a href="../../../articles/2022/04/statuses_cocolog_93455912.html">ひとこと</a> <span class="backref-date">2022年04月26日</span></li>
+<li><span class="backref-label">[cocolog:93455907]参照</span> <a href="../../../articles/2022/04/gsm_002095.html">共有メモ</a> <span class="backref-date">2022-04-25T17:04:49Z</span></li>
+</ul>
+</section>
+
+</article>
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2022/04.html">2022年04月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+</body>
+</html>

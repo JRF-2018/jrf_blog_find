@@ -1,0 +1,95 @@
+/* JRF Blog Archive */
+body { font-family:'Noto Sans JP','Hiragino Kaku Gothic ProN',Meiryo,sans-serif;
+  font-size:15px; line-height:1.7; max-width:920px; margin:0 auto;
+  padding:1em 1.5em; color:#222; background:#fafafa; }
+nav { margin:.4em 0 .8em; font-size:.9em; }
+nav a { margin-right:.8em; }
+h1 { font-size:1.3em; border-bottom:1px solid #ccc; padding-bottom:.3em; }
+h2 { font-size:1.1em; margin-top:1.5em; border-left:3px solid #888; padding-left:.5em; }
+
+/* meta テーブル */
+div.meta { margin-bottom:.8em; }
+table.meta-table { border-collapse:collapse; font-size:.85em; width:100%; }
+table.meta-table th { background:#eee; padding:.2em .6em; text-align:left;
+  white-space:nowrap; border:1px solid #ccc; width:5em; vertical-align:top; }
+table.meta-table td { padding:.2em .6em; border:1px solid #ccc; word-break:break-all; }
+
+/* 本文 */
+pre.body { background:#fff; border:1px solid #ddd; padding:1em;
+  white-space:pre-wrap; word-break:break-all; line-height:1.8; margin:0; }
+
+/* Trackback 折りたたみ */
+details.trackbacks { margin-top:.5em; font-size:.9em; }
+details.trackbacks summary { cursor:pointer; color:#666; padding:.2em; }
+details.trackbacks pre { background:#f8f8f8; border:1px dashed #bbb;
+  padding:.5em 1em; white-space:pre-wrap; word-break:break-all; }
+
+/* 後方参照 */
+section.backrefs { margin-top:1.2em; padding:.6em 1em;
+  background:#f0f4ff; border:1px solid #c0d0ee; border-radius:4px; }
+section.backrefs h2 { margin-top:.3em; font-size:1em; border-left:3px solid #88a; }
+section.backrefs ul { list-style:none; padding:0; margin:.3em 0 0; }
+section.backrefs li { padding:.25em 0; border-bottom:1px solid #d8e4f4; font-size:.9em; }
+section.backrefs li:last-child { border-bottom:none; }
+.backref-label { font-size:.78em; color:#446; background:#dde;
+  padding:.1em .35em; border-radius:3px; margin-right:.4em; white-space:nowrap; }
+.backref-date  { font-size:.78em; color:#888; margin-left:.4em; }
+
+/* ID / URL */
+span.cocolog-id { font-family:monospace; background:#eef; padding:.1em .4em;
+  border-radius:3px; font-size:.9em; }
+span.original-url { word-break:break-all; }
+
+/* 画像 */
+img.thumb { max-width:300px; max-height:300px; vertical-align:middle; border:1px solid #ccc; }
+
+/* 月別インデックス */
+ul.month-index { list-style:none; padding:0; }
+ul.month-index li { border-bottom:1px solid #eee; padding:.25em 0; }
+li.year-header { font-weight:bold; margin-top:.8em; color:#555; }
+li.year-header a { color:#555; }
+
+/* トップ月別 */
+ul.top-index { list-style:none; padding:0; }
+ul.top-index li { display:inline-block; margin:.2em .4em; }
+
+/* タイプリンク */
+p.type-links { margin:.5em 0; line-height:2; }
+
+/* タイプ別インデックス: 月折りたたみ */
+details.month-block { margin:.3em 0; }
+details.month-block > summary { cursor:pointer; font-weight:bold;
+  padding:.25em .5em; background:#f0f0f0; border-radius:3px; list-style:none; }
+details.month-block > summary::-webkit-details-marker { display:none; }
+details.month-block > summary::before { content:"▶ "; font-size:.8em; }
+details.month-block[open] > summary::before { content:"▼ "; }
+details.month-block > summary:hover { background:#e0e8ff; }
+details.month-block > summary a { color:#333; }
+
+/* タグ一覧 */
+ul.tag-cloud { list-style:none; padding:0; }
+ul.tag-cloud > li { display:inline-block; margin:.2em .3em; vertical-align:middle; }
+ul.tag-cloud details > summary { cursor:pointer; }
+ul.tag-cloud details > summary::-webkit-details-marker { display:none; }
+.tag-xl > details > summary { font-size:1.3em; font-weight:bold; }
+.tag-lg > details > summary { font-size:1.1em; }
+.tag-md > details > summary { font-size:1.0em; }
+.tag-sm > details > summary { font-size:.85em; color:#666; }
+ul.tag-cloud details ul { list-style:none; padding:.3em 0 .3em 1em; margin:.2em 0 0;
+  background:#f8f8ff; border:1px solid #ddf; border-radius:3px; min-width:220px;
+  position:absolute; z-index:10; box-shadow:2px 2px 6px rgba(0,0,0,.15); }
+ul.tag-cloud > li { position:relative; }
+
+a { color:#0066cc; } a:visited { color:#6600cc; }
+/* 内部リンク（アーカイブ内の記事へのリンク）*/
+a.int-link         { color:#007744; font-weight:500; }
+a.int-link:visited { color:#005533; }
+a.int-link:hover   { color:#00aa55; text-decoration:underline; }
+a.int-link.cocolog-id { background:#e8f5ee; padding:.05em .3em; border-radius:3px; }
+/* gsm >>タイムスタンプ参照 */
+a.int-link.gsm-tsref   { background:#e8f0ff; padding:.05em .3em; border-radius:3px; }
+span.gsm-tsref         { background:#f4f4f4; padding:.05em .3em; border-radius:3px; color:#888; }
+/* 外部リンク */
+a.ext-link         { color:#0066cc; }
+a.ext-link:visited { color:#6600cc; }
+.bottom { margin-top:2em; border-top:1px solid #ccc; padding-top:.5em; font-size:.9em; }

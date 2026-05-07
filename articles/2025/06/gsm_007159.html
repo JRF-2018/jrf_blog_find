@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>共有メモ - JRF Blog Archive</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2025/06.html">2025年06月</a> | <a href="../../../index/gsm.html">共有メモ</a></nav>
+<article data-pagefind-body>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[gsm] 2025-06-14T15:26:34Z</td></tr>
+<tr><th>セクション</th><td>グローバル共有メモ</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2025/06.html">2025-06-14T15:26:34Z</a></td></tr>
+<tr><th>元URL</th><td>(URLなし)</td></tr>
+
+</table>
+</div>
+<h1>共有メモ</h1>
+<pre class="body">jrf&gt; (承前)
+
+あ、そうか。(X) マークがあるなら、current_code がなくても次何をやるべきかわかるのか。だから、markdown だけで十分という判断があるのだろう。
+
+むしろ、通常の全体を一回でするとき用の current_code のみを用意しておき、逐次実行の際は、current_code はコメントアウトして markdown で表現するのが正しいのかもしれない。
+
+……。
+
+いや、current_code はそのままに、markdown の記述を優先して、AI が実行するのがいいのだろう。
+
+&lt;pre&gt;
+pal.do(d_md(&quot;&quot;&quot;\
+  主目的: サーバーを立てる。
+
+  * (X) データを持ってくる。
+  * ( ) サーバーを立てる。
+  * ( ) テストを行う。
+
+  留意事項: ライブラリやアプリが足りない場合はいったん終了する。
+&quot;&quot;&quot;), current_code = d_py(&quot;&quot;&quot;\
+&lt;/pre&gt;
+&lt;pre&gt;
+  pal.do(&quot;データを持ってくる。&quot;, current_code=&quot;retrieve_data()&quot;)
+  pal.do(&quot;サーバーを立てる。&quot;, current_code=&quot;run_server()&quot;)
+  pal.do(&quot;テストを行う。&quot;, current_code=&quot;run_test()&quot;)
+  pal.do(&quot;完了報告を行う。&quot;)
+&quot;&quot;&quot;))
+&lt;/pre&gt;
+
+…みたいにしておいて、current_code はそのままでは実行せず、AI がその中身を解釈して、 markdown の order に照らして適切な部分のみ実行するのがよいのだと思う。すると関数に分けやすかったりしてよいのだと思う。</pre>
+
+
+</article>
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2025/06.html">2025年06月</a> | <a href="../../../index/gsm.html">共有メモ</a></nav>
+</body>
+</html>

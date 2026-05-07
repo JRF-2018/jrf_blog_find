@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>共有メモ - JRF Blog Archive</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2021/09.html">2021年09月</a> | <a href="../../../index/gsm.html">共有メモ</a></nav>
+<article data-pagefind-body>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[gsm] 2021-09-06T21:21:00Z</td></tr>
+<tr><th>セクション</th><td>グローバル共有メモ</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2021/09.html">2021-09-06T21:21:00Z</a></td></tr>
+<tr><th>元URL</th><td>(URLなし)</td></tr>
+
+</table>
+</div>
+<h1>共有メモ</h1>
+<pre class="body">jrf&gt; [仏教の最適化プログラムの続き。]
+
+(承前)
+
+……。
+
+ちょっと前に、狂信時に僧の数を増やすべきだという考えをしたが、それは無意味なものであるべきだともしていた。まずは僧の数を増やしたもののみやってみる。(mpr は many priests の略。)
+
+run_simbdp3.sh fanampr 10 -L -t 360 --nation-education-power-threshold=0.925 --faith-realization-power-threshold=0.925 --priests-rate-max=0.0125 --priests-rate=0.00666666666666667 --priests-rate-min=0.004
+
+次に無意味であることを表すために --priests-standard-rate のほうもいっしょに動かすこととする。(mprs は much priests standard の略。)
+
+run_simbdp3.sh fanamprmprs 10 -L -t 360 --nation-education-power-threshold=0.925 --faith-realization-power-threshold=0.925 --priests-rate-max=0.0125 --priests-rate=0.00666666666666667 --priests-rate-min=0.004 --priests-standard-rate-max=0.0125 --priests-standard-rate=0.00666666666666667 --priests-standard-rate-min=0.004
+
+python plot_logs.py normal fana fanampr fanamprmprs -p Education -o fig-20210907_01.png
+python plot_logs.py normal fana fanampr fanamprmprs -p AccDeath -o fig-20210907_02.png
+python plot_logs.py normal fana fanampr fanamprmprs -p Population -o fig-20210907_03.png
+python plot_logs.py normal fana fanampr fanamprmprs -p AccAbortion -o fig-20210907_04.png
+
+Education は fanampr が高くなるのは予定通り。そのおかげで fanaampr は fana や fanamprmprs より AccDeath も良くなるか…と思っていたが、必ずしもそうなっていない。教育の効果は大したことない…となってしまった。Population を見ると、fanampr は最後のほうで下がっていて、どうも大きな戦争がたまたま起こったらしいということではないかと推察する。AccDeath と逆の動きを大きくしがちな AccAbortion も fanampr が fana と大差なく、最後は fanamprmprs と同じになるのは、くじ運が悪かった以外どうにも説明がつかない。</pre>
+
+
+</article>
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2021/09.html">2021年09月</a> | <a href="../../../index/gsm.html">共有メモ</a></nav>
+</body>
+</html>

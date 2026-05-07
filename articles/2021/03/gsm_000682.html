@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>共有メモ - JRF Blog Archive</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2021/03.html">2021年03月</a> | <a href="../../../index/gsm.html">共有メモ</a></nav>
+<article data-pagefind-body>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[gsm] 2021-03-05T09:58:10Z</td></tr>
+<tr><th>セクション</th><td>グローバル共有メモ</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2021/03.html">2021-03-05T09:58:10Z</a></td></tr>
+<tr><th>元URL</th><td>(URLなし)</td></tr>
+
+</table>
+</div>
+<h1>共有メモ</h1>
+<pre class="body">jrf&gt; [仏教の最適化プログラムの続き。]
+
+↓、「結婚」を実装した (バージョン 0.0.9)。実行にそれなりに時間がかかるので、バグ取りがたいへんだった。当然、バグは取り切れていないことが予想される。
+
+《simbd/test_of_matching_2.py at master - JRF-2018/simbd》  
+<a href="https://github.com/JRF-2018/simbd/blob/master/test_of_matching_2.py" class="ext-link">https://github.com/JRF-2018/simbd/blob/master/test_of_matching_2.py</a>
+
+やってみて、人口の増減がうまいぐあいにいかない。妊娠がらみのパラメータをいじってみても、うまくいかない。とにかく、初期の老人人口が多過ぎて、人が死に過ぎるのが問題のようだ。でも、たまたま老人人口が多いことはありうるはずだし、それに対応できないというのがもどかしい。
+
+ただ、長く回していると(-t 1200ぐらい)、最初は老人の死に過ぎで人口減だった社会が、一世代たつと人口増に転じるのは確認できた。
+
+これでヨシとすべきなのか。
+
+ただ、見てると欲しい子供の数が大きく影響していると見えないのも問題があるように思う。妊娠待機(pregnancy_wait)を欲しい子供の数に連動させてみてはどうだろう…とか考えるが、反応が遅くなるだけの気がするし…。結婚の割合や不倫の割合を増やすのも妊娠には本質的変化があるように見えない。
+
+次は、養子のシステムか。それを入れると、欲しい子供の数に影響があることで、人口増にほんの少し転じにくくなるはずだが、それでどうなるか…。</pre>
+
+
+</article>
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2021/03.html">2021年03月</a> | <a href="../../../index/gsm.html">共有メモ</a></nav>
+</body>
+</html>

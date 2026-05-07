@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>共有メモ - JRF Blog Archive</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2021/01.html">2021年01月</a> | <a href="../../../index/gsm.html">共有メモ</a></nav>
+<article data-pagefind-body>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[gsm] 2021-01-16T22:32:24Z</td></tr>
+<tr><th>セクション</th><td>グローバル共有メモ</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2021/01.html">2021-01-16T22:32:24Z</a></td></tr>
+<tr><th>元URL</th><td>(URLなし)</td></tr>
+
+</table>
+</div>
+<h1>共有メモ</h1>
+<pre class="body">jrf&gt; [仏教の最適化プログラムの続き。]
+
+これまでのところの経済を何期か通してやってみた(↓)が、ぜんぜんダメだ。
+
+《test_of_income_1.py - 主に商業財産から決まる収入のテスト経済シミュレーション。》  
+<a href="https://gist.github.com/JRF-2018/39ed54ff14cb3c79c21f42f7254fa7bc" class="ext-link">https://gist.github.com/JRF-2018/39ed54ff14cb3c79c21f42f7254fa7bc</a>
+
+(なお、これを実行するには、その前に↓の generate_normal_levy_csv.py を実行しておく必要がある。)
+
+《test_normal_levy_3.py - 正規分布+マイナスのレヴィ分布の実験。「株式」「債券」「農地」「大バクチ」それぞれの分布の形を見てみる。》  
+<a href="https://gist.github.com/JRF-2018/50b29e2d95d067483c3e9465c9b510ad" class="ext-link">https://gist.github.com/JRF-2018/50b29e2d95d067483c3e9465c9b510ad</a>
+
+どこがダメかというと、とにかく金が儲かり過ぎる感じで、基本、財産が 10 ぐらいが普通で、100 とかになると金持ちだ。…という経済を想定していたんだけど、上の test_of_income_1.py では、50 ステップ後、平均が 2500、最大が 18000 とかのメチャクチャな数字になる。
+
+「債券」だけにしたり「大バクチ」だけにしたり、むりやりθを増やしたり、いろいろ試してはみたんだけど、その傾向は変わらない。
+
+どうしても、その経済を矯めたいとなったら、どうにか税のようなものを課すという方向なんだろうけど、これもあまりうまくいかない。
+
+しかたなく、めちゃめちゃ強力な手段だが、財産が 300 を超えると、それ以上の部分はランダムに寄進されるか税で取られるかして、なくなる…とすれば、まぁまぁ、安定した経済にはなった。(それは test_of_income_1.py に --strong-donation オプションを付ければ試せる。)
+
+しかし、安定はしているものの、財産が 300 に近い金持ちだらけな経済となる。これはまったくリアリティがない。
+
+税の取り方を工夫するか、それとも経済を一から見なおすか、…が求められる。</pre>
+
+
+</article>
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2021/01.html">2021年01月</a> | <a href="../../../index/gsm.html">共有メモ</a></nav>
+</body>
+</html>

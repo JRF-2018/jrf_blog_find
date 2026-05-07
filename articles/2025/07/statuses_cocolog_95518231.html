@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>ひとこと - JRF Blog Archive</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2025/07.html">2025年07月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+<article data-pagefind-body>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[statuses] <span class="cocolog-id">cocolog:95518231</span></td></tr>
+<tr><th>セクション</th><td>JRF のひとこと</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2025/07.html">2025年07月01日</a></td></tr>
+<tr><th>元URL</th><td><a href="http://jrf.cocolog-nifty.com/statuses/2025/06/post-224f45.html" class="ext-link"><span class="original-url">http://jrf.cocolog-nifty.com/statuses/2025/06/post-224f45.html</span></a></td></tr>
+
+</table>
+</div>
+<h1>ひとこと</h1>
+<pre class="body">Gemini CLI が出て Claude Code に興味を持っていた私はさっそく Google Colab 上で触ってみることにした。Google Cloud Platform の課金も受け容れて。mcp-imagen-go のデバッグに苦労した。
+JRF 2025年7月1日
+
+Gemini CLI が出たので Claude Code に興味を持っていた私は早速触ってみることにした。ローカルに Node.js、npm を入れるのは、今後の管理が難しそうなので、Google Colab 上で触ろうということに。
+
+JRF 2025年7月1日
+
+Google Colab は、期間限定サービスを受けられるためのブラウザを通じた Google Login が使えず GEMINI_API_KEY を使うしかなく。それを使うために GCP (Google Cloud Platform) に課金をはじめた。ただ、今は、GCP の 300ドル分の無料トライアル期間中のため、実際にお金が使われていることはない。が、いずれ使われることになる。
+
+JRF 2025年7月1日
+
+やや苦労しながら、Gemini CLI (gemini-cli) を使えるようにはなった。ただ、mcp-imagen-go を使った実験をはじめたところハマってしまった。いろいろうまくいかない。それもなんとか制限された条件で画像が生成されるようになったのだが、問題は多く残されて、そこでギブアップ。
+
+JRF 2025年7月1日
+
+ただ、これでいろいろやったのが Google 様に評価されたのか Trial credit for GenAI App Builder といって1年有効の 1000ドル分のクレジット…奨学金みたいなものをもらえた。ありがたい。
+
+内部の技術に興味があったので、他の方がやっていたのをマネして、Gemini CLI の機能を Gemini CLI に解説させるようなこともやってみた。将来、拙作の jrf_pdb_agent_lib や simlest-pal が活かせないかと思って、プロンプト設計まわりを特に聞いたみた。
+
+JRF 2025年7月1日
+
+《Gemini CLI 解析レポート - GitHub Gist》  
+<a href="https://gist.github.com/JRF-2018/92a982b67bfa70c6f578b2f6adceecc5" class="ext-link">https://gist.github.com/JRF-2018/92a982b67bfa70c6f578b2f6adceecc5</a>
+
+以上なのであるが、様々な苦労をしながらそれを「グローバル共有メモ」または Twitter (X) に書いていたので、ここからはそれをコピペしておく。お目汚し失礼します。
+
+JRF 2025年7月1日
+
+……。
+
+……。
+
+○ 2025-06-25T16:55:51Z
+
+まず、Google Colab にターミナルが付いたね！ やったねたえちゃん。でも、ed は標準では入ってなかった orz。そしてそこで gemini-cli も一応使えた。ブラウザがないから Google Login ではだめなので、/root/.env に GEMINI_API_KEY を指定する方向で。
+
+ただ、ed がはいってないのは、apt install ed すればいいだけの話だが。
+
+JRF 2025年7月1日
+
+gemini-cli は npx <a href="https://github.com/google-gemini/gemini-cli" class="ext-link">https://github.com/google-gemini/gemini-cli</a> ではインストールというか、そのままそこで実行になりはした。「gemini cliについてwebで調べてください」は Gemini 2.5 Flash に変えたせいか、消費トークンが多すぎるらしくてうまくいかなかったがただの挨拶だけならなんとかうまくいった。でも、それを終了しても gemini コマンドをできなかったので、npm install -g @google/gemini-cli したら、なんかエラーでうまくいかなかった。
+
+JRF 2025年7月1日
+
+まだ本調子じゃない感じかな？ でも、使えはしたのでちょっと感動！
+
+参考:
+
+《Gemini CLI の使い方》  
+<a href="https://zenn.dev/mafukuda/articles/gemini-cli-usage" class="ext-link">https://zenn.dev/mafukuda/articles/gemini-cli-usage</a>
+
+《Gemini CLI の簡単チュートリアル》  
+<a href="https://zenn.dev/schroneko/articles/gemini-cli-tutorial" class="ext-link">https://zenn.dev/schroneko/articles/gemini-cli-tutorial</a>
+
+JRF 2025年7月1日
+
+…….
+
+○ 2025-06-25T18:23:08Z
+
+時間がたっただけで npm install -g @google/gemini-cli もうまくいった。
+
+ターミナルで apt install emacs したら、emacs 動いてるね。ちゃんとチェックしてないけど。
+
+これまで Firefox で試してたけど、Chrome でやったら、そのほうが表示がキレイだね。gemini-cli からブラウザは相変わらず使えないけど。この辺 Chrome 作ってる Google なんだからなんとかならないのかな…。
+
+JRF 2025年7月1日
+
+…….
+
+○ 2025-06-25T18:50:34Z
+
+ずっと以前、ブラウザがあれば何でもできるようになる…という方向があった。でもスマホの登場でなぁなぁになった。でも、それをもう一度追及できるんじゃないか？ Google Colab みたいなクラウド系サービスから、Chrome などの「ブラウザ」をユーザー側に開けるようになるようなプロトコルができれば。
+
+JRF 2025年7月1日
+
+…….
+
+○ 2025-06-25T18:54:16Z
+
+Gemini:&gt; クラウドサービスが直接ユーザーのローカルマシンにアクセスするのではなく、ブラウザというサンドボックスを介してプロトコルレベルで連携することで、セキュリティリスクをコントロールしやすくなる可能性があります
+
+jrf:&gt; サンドボックス化は AI がらみで強く求められていて時代にマッチしている気がします。 
+
+JRF 2025年7月1日
+
+…….
+
+○ 2025-06-25T19:11:39Z
+
+そんなに難しくないのかな？ gradio みたいにサーバーを起動して、そこへアクセスすると、ページの中にアドレスバーと「ブラウザ」がある感じ。なんかすでにありそうだな…。
+
+JRF 2025年7月1日
+
+…….
+
+○ 2025-06-25T21:56:24Z
+
+やっぱりダメだな。Google Colab 上の gemini-cli、ほとんど「リソースを食いつくした」みたいなエラーが出て、その後なぜか思考が続くんだけど、出力はない。無料では限界あるのかな…。
+
+JRF 2025年7月1日
+
+…….
+
+○ 2025-06-25T22:10:12Z
+
+その後、思考が続いているという様子からすると、1日のリソース制限に触れたというのではなく瞬間的なリソース制限なのではないか。Gemini 2.5 Flash なので応答が速すぎて、そういうことが想定外に起こっているのでは？ だから gemini-cli 側でウェイトを入れるとかしてくれないといけないように思う。 
+
+JRF 2025年7月1日
+
+…….
+
+○ 2025-06-25T22:25:05Z
+
+いや、リトライは自動的にやってくれてるみたいだから、単純に１日の制限に引っ掛かっているのかもしれない。orz
+
+JRF 2025年7月1日
+
+…….
+
+○ 2025-06-25T23:59:21Z
+
+Google AI Studio から Gemini API トークンをはじめて(無料で)手に入れたので、ちょっと思い立って昔やった熊剣迷路問題(<a href="../../../articles/2023/07/statuses_cocolog_94293132.html" class="int-link cocolog-id" title="ひとこと">[cocolog:94293132]</a>(2023年7月))を Gemini さんで初めて動かしてみた。動いたけど制限がしわくてゴールまでたどり着けそうにない orz。
+
+JRF 2025年7月1日
+
+…….
+
+○ 2025-06-26T04:27:31Z
+
+なるほど。Colab のターミナル。これまでも有料ユーザーは使えたのか。最近ずっと無料版だったから知らなかった(忘れてた)。無料版で使えるようになったのが新しいんだね。あと、npm とか勉強してないので知らなかったけど、npx はもとからインストールせずに実行…なんだね。
+
+JRF 2025年7月1日
+
+…….
+
+○ 2025-06-26T19:04:22Z
+
+Google Colab にデフォルトで gemini-cli が入ってるね。すでにインストールされてる。ターミナルで export GEMINI_API_KEY=... やってれば gemini コマンドが動く。が、Gemini が無料版だと制限があるからか、まともに動かない orz。
+
+JRF 2025年7月1日
+
+…….
+
+○ 2025-06-26T19:18:11Z
+
+うーん、GCP は使いたくないんだよな。以前、だいたいアングラの Bard API を使うしかなかったころ、GCP で類似のサービスがはじまるというので期待して問い合わせたら、全く何も返答がなかった…ということがあって、全く信頼できないサービスという印象がある。 法人相手のサービスで個人を相手にしてなかった…ということなのかもしれないが。
+
+JRF 2025年7月1日
+
+…….
+
+○ 2025-06-26T21:21:20Z
+
+《Google AI Studio / Gemini CLIに見る AIサービスの『課金障壁』という巧妙な罠：無料は危険、有料は困難という現代版厚黒学｜平岡憲人（ノーリー）》  
+<a href="https://note.com/norito_hiraoka/n/n014de9e6ff87" class="ext-link">https://note.com/norito_hiraoka/n/n014de9e6ff87</a>
+
+JRF 2025年7月1日
+
+…….
+
+○ 2025-06-27T05:16:31Z
+
+Colab 上で gemini-cli。腹をくくって課金したった。が、Exhausted とか Too Many Requests とかのエラーがまだ出る。どうもこれは向こうのエラーだったらしく↓を参考に最新の gemini-cli にしたらこのエラーは出なくなった。課金いらなかったんや…。orz
+
+JRF 2025年7月1日
+
+《gemini-2.5-pro is [API Error: got status: 429 Too Many Requests. · Issue #1502 · google-gemini/gemini-cli》  
+<a href="https://github.com/google-gemini/gemini-cli/issues/1502" class="ext-link">https://github.com/google-gemini/gemini-cli/issues/1502</a>
+
+JRF 2025年7月1日
+
+Colab で最新にするときはターミナルで npm install -g --force @google/gemini-cli@latest をすればよいようだ。
+
+ちなみに課金したので熊剣迷路問題(<a href="../../../articles/2023/07/statuses_cocolog_94293132.html" class="int-link cocolog-id" title="ひとこと">[cocolog:94293132]</a>(2023年7月))をやらせてみたら、若干迷ったが、100点でクリアできた(gemini-1.5-flash で)。すごいね！ AI の進歩を感じるね。
+
+JRF 2025年7月1日
+
+…….
+
+○ 2025-06-27T05:22:12Z
+
+あ、そうそう。あと Gemini Advanced と Gemini API の課金は別らしい。私は Gemini API の課金(GCP での課金)設定をした。
+
+JRF 2025年7月1日
+
+…….
+
+○ 2025-06-27T11:33:17Z
+
+ダメだ↓がうまくいかない。Colab 上の gemini-cli。go の 1.24.3 のインストールとか、export GOOGLE_APPLICATION_CREDENTIALS=/content/.config/application_default_credentials.json とかいろいろ解決したんだが、最後が Internal error。私にも Gemini さんにもどうしようもない。
+
+JRF 2025年7月1日
+
+《Gemini CLI 入門 (5) - MCP Servers for Google Cloud Genmedia APIs｜npaka》  
+<a href="https://note.com/npaka/n/n50cacd92648f" class="ext-link">https://note.com/npaka/n/n50cacd92648f</a>
+
+JRF 2025年7月1日
+
+…….
+
+○ 2025-06-27T16:22:51Z
+
+なぞだ。↓によってローカルにも生成できるのを知って試してみたら、プロンプトが「Create an image of a cat flying around space」なら通るのに「かわいい猫耳メイドの絵を描いてください。」だと gemini-2.5-flash だと無限ループっぽくなる。gemini-2.5-pro なら後者も通った！ やったー！
+
+でも、なんでバケットを指定したのが Internal error になるのかはまだわからない orz。
+
+JRF 2025年7月1日
+
+《Gemini CLI から Imagen を呼び出し！ MCPサーバー経由で画像生成 #GoogleCloud - Qiita》  
+<a href="https://qiita.com/te_yama/items/db572cad90a3ae221847" class="ext-link">https://qiita.com/te_yama/items/db572cad90a3ae221847</a>
+
+JRF 2025年7月1日
+
+…….
+
+…….
+
+○ 2025-06-27T17:10:54Z
+
+Colab 上 で gemini-cli。Imagen で絵を生成。ポイントを書いておくと、↓の手順通りなのだが、
+
+《Gemini CLI から Imagen を呼び出し！ MCPサーバー経由で画像生成 #GoogleCloud - Qiita》  
+<a href="https://qiita.com/te_yama/items/db572cad90a3ae221847" class="ext-link">https://qiita.com/te_yama/items/db572cad90a3ae221847</a>
+
+JRF 2025年7月1日
+
+GEMINI_API_KEY をまず設定する。gemini が起動して挨拶を返せるようになったら…。
+
+gcloud auth application-default login
+
+…する。Colab 上では --no-launch-browser が自動で指定されてる感じ。
+
+gcloud auth application-default set-quota-project $PROJECT_ID
+
+JRF 2025年7月1日
+
+export GOOGLE_APPLICATION_CREDENTIALS=/content/.config/application_default_credentials.json
+
+add-apt-repository -y ppa:longsleep/golang-backports
+
+apt install golang
+
+JRF 2025年7月1日
+
+export PATH=$PATH:/root/go/bin
+
+あとは↑の記事の手順通り。GCP で Imagen API の許可(Vertex AI の許可)とかはやっておくように。$PROJECT_ID は↑の記事のようにしても設定されないから、自分で設定してください。
+
+JRF 2025年7月1日
+
+…….
+
+…….
+
+○ 2025-06-27T17:35:40Z
+
+「Create an image of a cat flying around space」なら生成できるのに「Create an image of a dog flying around space」だと無限ループっぽい。謎だ orz。
+
+JRF 2025年7月1日
+
+…….
+
+○ 2025-06-28T10:00:18Z
+
+gemini-cli さわってほぼ徹夜して、そのこと考えて頭カッとしてなかなか寝れなかったけど、さっきやっと眠れた。いやぁ、このトシで徹夜はダメだね。体にこたえる。前、フジの会見遅くまでやってたりしたけど、あの人ら体力すごいよ。その点は尊敬する。
+
+JRF 2025年7月1日
+
+…….
+
+○ 2025-06-28T10:56:52Z
+
+あれ？ ダメだ。昨日の方法では Imagen が常に無限ループに入っている感じ。原因がわからない。昨日も無限ループっぽい挙動があったのだがたまたまかと思っていたら…。ちなみにそうなったらセルから !ps -ef して node /tools/node/bin/gemini の PID を !kill -9 PID するしかない感じだけど…。 
+
+JRF 2025年7月1日
+
+…….
+
+○ 2025-06-28T11:22:24Z
+
+GCP。300ドル分の無料トライアルとは別に Trial credit for GenAI App Builder といって1年有効の 1000ドル分のクレジットが付加された。メールとか何の説明もないのだが Gemini さんによるとそういうことがあるらしい。ありがたい！ これで実験しまくれる！ 気力・体力持つかな…。
+
+JRF 2025年7月1日
+
+…….
+
+○ 2025-06-28T18:42:17Z
+
+gemini-cli で GoogleCloudPlatform/vertex-ai-creative-studio の mcp-imagen-go を使った画像生成。無限ループになる(スタックする)件。Colab の問題かと思って、GCP の Cloud Shell でもやってみたらやっぱりスタックした。でも Issue にはない感じなんだよね。この症状…。
+
+…と思ったら、止まってるように見えただけで、Cloud Shell のほうでは生成されてた。指定しないとローカルにセーブはされてなかったけど。
+
+JRF 2025年7月1日
+
+…….
+
+○ 2025-06-28T18:50:32Z
+
+gemini-cli で GoogleCloudPlatform/vertex-ai-creative-studio の mcp-imagen-go を使った画像生成。無限ループになる(スタックする)件。Colab の問題のようだ。GCP の Cloud Shell で試してみたら、ちゃんと成功したから。Issue にも上がってなさそうな問題なんだよな…。
+
+JRF 2025年7月1日
+
+…….
+
+○ 2025-06-28T19:08:46Z
+
+あ、Colab の gemini-cli で Imagen。「Create &quot;an image of a cat flying around space&quot; and save it locally.」ならうまくいった！ 「Create an image of a cat flying around space」だとスタックするのに！ なにゆえ…。
+
+JRF 2025年7月1日
+
+…….
+
+○ 2025-06-28T22:04:20Z
+
+gemini-cli のプロンプト設計などについて gemini-cli (gemini-2.5-pro) にお願いしてレポートを作ってもらった。共有しておく。
+
+《Gemini CLI 解析レポート - GitHub Gist》  
+<a href="https://gist.github.com/JRF-2018/92a982b67bfa70c6f578b2f6adceecc5" class="ext-link">https://gist.github.com/JRF-2018/92a982b67bfa70c6f578b2f6adceecc5</a>
+
+JRF 2025年7月1日
+
+…….
+
+○ 2025-06-29T01:50:54Z
+
+バージョンアップ。前のバージョンは mcp のコードがないといわれていたが、それはおかしいので、再生成を試みた。今度は少しだけ説明してくれた。
+
+《Gemini CLI 解析レポート - GitHub Gist》  
+<a href="https://gist.github.com/JRF-2018/92a982b67bfa70c6f578b2f6adceecc5" class="ext-link">https://gist.github.com/JRF-2018/92a982b67bfa70c6f578b2f6adceecc5</a>
+
+JRF 2025年7月1日
+
+…….
+
+○ 2025-06-28T23:03:27Z
+
+gemini-cli のシステムプロンプトを読むと、基本的に React のプログラムを作るようになってるんだよね。私は React とかわからないんで、Python をメインにしてほしいのだが。もちろん、Python で…と言えば追従してはくれるのだろうけど。
+
+Python がメインでないとすると gemini-cli から ASI にいたる道はやや困難なのかも。 
+
+JRF 2025年7月1日
+
+…….
+
+○ 2025-06-29T05:04:48Z
+
+Colab の gemini-cli で Imagen。デバッグオプション(-d)付きで起動したところ、イメージの生成は成功していて、その後、(base64?)文字列で返そうとするところでスタックしている。ところが、gemini --model=gemini-2.5-pro -d -p &quot;Create an image of a cat flying around space&quot; ならばスタックしない。
+
+JRF 2025年7月1日
+
+どうも gemini の CUI が悪さをしているようだ。Gemini さんに相談すると、そういっている。ただし、スタックはしないが、画像はセーブもされない。文字列を受け取ってそのままのようだ。
+
+JRF 2025年7月1日
+
+…….
+
+○ 2025-06-29T06:25:54Z
+
+Colab の gemini-cli で Imagen。mcp-imagen-go の handler.go が telemetry に接続しようとして、gemini -p 起動でもだいたいスタックする感じがある。これは何だろう？ telemetry を使えとはどこにも指定していないのに。gemini-cli は telemetry を使うこと自体はできるようだが。試しているコマンドは↓。
+
+JRF 2025年7月1日
+
+gemini --model=gemini-2.5-pro -d -p &quot;Create 'an image of a cat flying around space' and get the output and decode it&quot;
+
+JRF 2025年7月1日
+
+…….
+
+○ 2025-06-29T18:51:38Z
+
+gemini-cli と mcp-imagen-go を使った実験。疲れたからもうしないが、得たものは何だろう？ gemini-cli と MCP で何ができるのだろう、私に？
+
+JRF 2025年7月1日
+
+……。
+
+……。
+
+追記。
+
+○ 2025-07-11T05:01:02Z
+
+Colab の gemini-cli で Imagen。やっと GENMEDIA_BUCKET に生成できた。足りないのは次のコマンドだった。
+
+JRF 2025年7月11日
+
+&lt;pre&gt;
+gcloud storage buckets add-iam-policy-binding gs://&lt;YOUR_BUCKET&gt; \
+   --member=&quot;serviceAccount:service-&lt;YOUR_VERTEX_AI_SERVICE_NUMBER&gt;@gcp-sa-aiplatform.iam.gserviceaccount.com&quot; \
+   --role=&quot;roles/storage.objectUser
+&lt;/pre&gt;
+
+JRF 2025年7月11日
+
+これでもし不十分なら以下をしていただきたい。
+
+&lt;pre&gt;
+gcloud projects add-iam-policy-binding &lt;YOUR_PROJECT_ID&gt; \
+  --member=&quot;serviceAccount:service-&lt;YOUR_VERTEX_AI_SERVICE_NUMBER&gt;@gcp-sa-aiplatform.iam.gserviceaccount.com&quot; \
+  --role=&quot;roles/storage.admin&quot;
+&lt;/pre&gt;
+
+JRF 2025年7月11日
+
+service-&lt;YOUR_VERTEX_AI_SERVICE_NUMBER&gt; は、GCP にストレージ(バケット)を作ったとき権限を見るとあるはずの Vertex AI サービス エージェント の ID。
+
+imagen をいじってるだけではこのエラーはわからなかった。500 Internal Error と表示されるだけだから。veo で生成しようとして、はじめて、ここにエラーの元があるのがわかった。orz
+
+本来なら、私のメールアドレスに権限があるだけで十分だと思うんだけど(そこには rules/storage.objectUser はすでに付与していた)、これが原因だったようだ。
+
+JRF 2025年7月11日</pre>
+
+
+<section class="backrefs" data-pagefind-ignore>
+<h2>後方参照 (1 件)</h2>
+<ul>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2025/06/gsm_007287.html">共有メモ</a> <span class="backref-date">2025-06-30T18:50:40Z</span></li>
+</ul>
+</section>
+
+</article>
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2025/07.html">2025年07月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+</body>
+</html>

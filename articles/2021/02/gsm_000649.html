@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>共有メモ - JRF Blog Archive</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2021/02.html">2021年02月</a> | <a href="../../../index/gsm.html">共有メモ</a></nav>
+<article data-pagefind-body>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[gsm] 2021-02-22T15:59:01Z</td></tr>
+<tr><th>セクション</th><td>グローバル共有メモ</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2021/02.html">2021-02-22T15:59:01Z</a></td></tr>
+<tr><th>元URL</th><td>(URLなし)</td></tr>
+
+</table>
+</div>
+<h1>共有メモ</h1>
+<pre class="body">jrf&gt; [仏教の最適化プログラムの続き。]
+
+プログラムの将来のモジュール化を考える。(test_of_matching_2.py に関しては複数ファイルに分けないが、将来の「新プロジェクト」では分けることを考える。)
+
+メンバ変数を定義する Person0 のクラスを作ったあと、不倫用関数を集めた Person である PersonAD、結婚用関数を集めた Person である PersonMA を別のファイルで作り、最後に class Person (PersonAD, PersonMA) などと多重継承を使って統合する。
+
+統合は最後になるので、プログラム中で Person を使いたい場合は、base モジュールの Person すなわち base.Person を使う。統合した class Person を base.Person に代入しておく。from base import Person とやったグローバル変数 Person に統合したものを代入するのはなぜかうまくいかないのでこうする。
+
+Person 以外のクラスや共通の関数は common モジュールに入れ from common import * で読み込む。ただし、Frozen や Serializable は base でも使うので base に入れる。base についても from base import * でいいが、別に import base しておいて base.Person を使うようにしないと上に書いたようにうまくいかないことがあり、詰む。
+
+ARGS も base に入れる。
+
+EconomyPlot も EconomyPlot0, EconomyPlotAD, EconomyPlotMA と作って最後に統合するが、これは main ルーチンでしか使わないので、base.EconomyPlot は用意しない。
+
+…このような方針を先取りして、test_of_matching_2.py (↓)のクラスなどの整理を行った (バージョン 0.0.2)。
+
+《test_of_matching_2.py - マッチングのシミュレーション》  
+<a href="https://gist.github.com/JRF-2018/6650bc84f238e40826251c400f45f328" class="ext-link">https://gist.github.com/JRF-2018/6650bc84f238e40826251c400f45f328</a></pre>
+
+
+</article>
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2021/02.html">2021年02月</a> | <a href="../../../index/gsm.html">共有メモ</a></nav>
+</body>
+</html>

@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>ひとこと - JRF Blog Archive</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2019/01.html">2019年01月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+<article data-pagefind-body>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[statuses] <span class="cocolog-id">cocolog:90592632</span></td></tr>
+<tr><th>セクション</th><td>JRF のひとこと</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2019/01.html">2019年01月26日</a></td></tr>
+<tr><th>元URL</th><td><a href="http://jrf.cocolog-nifty.com/statuses/2019/01/pytho.html" class="ext-link"><span class="original-url">http://jrf.cocolog-nifty.com/statuses/2019/01/pytho.html</span></a></td></tr>
+
+</table>
+</div>
+<h1>ひとこと</h1>
+<pre class="body">Python で機械学習をする練習をしている。その最初の「成果」として「競争的な学習」の実験をして、その結果をブログ記事にしてみた。
+JRF 2019年1月26日
+
+記事は↓。
+
+《機械学習の練習のため競争的な学習の実験をしてみた》
+<a href="../../../articles/2019/01/software_90592562.html" class="int-link" title="機械学習の練習のため競争的な学習の実験をしてみた">http://jrf.cocolog-nifty.com/software/2019/01/post.html</a>
+
+JRF 2019年1月26日
+
+その記事の最初にも書いたが、「競争的な学習」…その英語の &quot;Competitive Learning&quot; という言葉は機械学習で別の概念にすでに用いられているため、そう名乗るのはあまりよくないのだが、他に良い言い様を思いつかないので、便宜的に・個人的にそう呼んでいる。
+
+JRF 2019年1月26日
+
+『scikit-learnとTensorFlowによる実践機械学習』を読んだとき(<a href="../../../articles/2018/12/statuses_cocolog_90343301.html" class="int-link cocolog-id" title="ひとこと">[cocolog:90343301]</a>)、おもちゃの自動車の自動運転シミュレーションがしたいと述べたが、それを考えているうちに思い浮かんだのが、今回のアイデアになる。
+
+JRF 2019年1月26日
+
+ただし、おもちゃの自動車に関する考察は別の方向に向かっていて、今回のアイデアを活かせる感じではなくなっているのだけれども。
+
+JRF 2019年1月26日
+
+今回、公開した分の他に、競争をしない普通の学習や「負の学習」に関する実験もした。普通の学習はうまくいって、今回の分に活かされているが、「負の学習」はうまくいっていない。「負の学習」はどうも理屈から間違えていると考えるほうが良さそうだ。
+
+JRF 2019年1月26日
+
+予想として普通の学習に対する「負の学習」はうまくいかないだろう…と考えていたが、競争的学習では「負の学習」はある程度うまくいくと思っていた。でもその予想ははずれた。
+
+JRF 2019年1月26日
+
+競争的学習は、初期値をいじることでうまくいったが、これはほとんど偶然の発見による。上の記事に書いた backward を忘れるというバグを見つける過程で、初期値の変更を試しており、バグがなおったとき、それがたまたまそのとき設定していた batch_size や hidden_size と合わさって偶然、うまくいく例が生じたということがあった。
+
+JRF 2019年1月26日
+
+今回の競争的学習がうまくいっていない間は、少ない batch_size の実例から学ぶという方針がうまくいかないのではないか…という予想に傾いていたが、工夫さえすれば、そういう方針でもなんとかなりそうだというのが見えてきたように思う。幸運だった。
+
+JRF 2019年1月26日
+
+次は、おもちゃの自動車の自動運転シミュレーションが目標だが、その前に読みたい本がいろいろたまっているので、そちらを先にして、シミュレーションはかなり先の話になりそう。
+
+JRF 2019年1月26日
+
+……。
+
+追記。
+
+Google Search のサジェスチョンにより「Competitive Learning」を「競合学習」と訳すことを知ったので、その旨をカッコ書きでブログ記事に書き足しておいた。
+
+とはいえ、「競争的学習」そのものは日本語で使われていないものの、英語にすれば「Competitive Learning」なわけで、ネーミングに問題があることには変わりはない。
+
+JRF 2019年2月2日</pre>
+
+
+<section class="backrefs" data-pagefind-ignore>
+<h2>後方参照 (2 件)</h2>
+<ul>
+<li><span class="backref-label">[cocolog:90592632]参照</span> <a href="../../../articles/2019/05/statuses_cocolog_90996211.html">ひとこと</a> <span class="backref-date">2019年05月16日</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2018/12/statuses_cocolog_90343301.html">ひとこと</a> <span class="backref-date">2018年12月03日</span></li>
+</ul>
+</section>
+
+</article>
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2019/01.html">2019年01月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+</body>
+</html>

@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>ひとこと - JRF Blog Archive</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2009/05.html">2009年05月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+<article data-pagefind-body>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[statuses] <span class="cocolog-id">aboutme:100308</span></td></tr>
+<tr><th>セクション</th><td>JRF のひとこと</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2009/05.html">2009年05月06日</a></td></tr>
+<tr><th>元URL</th><td><a href="http://jrf.cocolog-nifty.com/statuses/2009/05/aboutme100308.html" class="ext-link"><span class="original-url">http://jrf.cocolog-nifty.com/statuses/2009/05/aboutme100308.html</span></a></td></tr>
+
+</table>
+</div>
+<h1>ひとこと</h1>
+<pre class="body">ブックマークレットのアイコンを動的に変えたりできないだろうか。現在のページに特定の文字列が含まれていれば、アイコンを変えるなどができたらいいのに。UI Conditional CSS とか Bookmarklet Greasemonkey とかいって。
+JRF 2009年5月6日
+
+Conditional CSS って [if IE] とか指定できるのが、もうあるみたいだけど、そういうのじゃなくて。
+
+Xxx というブックマークレットがあるとする。ドキュメントに、ここで OAuth や　PPログイン を使いますよう、というのを input hidden で埋め込んで置く。それを見つけて、ユーザーインターフェイス UI の icon を書き換えるというとき、次のように書く。
+JRF 2009年5月6日
+
+UI .document input[pplogin-embeding-indicator=&quot;Xxx&quot;] {
+UI .bookmarklet.#Xxx { icon: url(&quot;file:/yyy/Xxx.ico&quot;) }
+}
+
+input のクラス pplogin-embeding-indicator に Xxx を指定されていて、ブックマークレットは bookmarklet というクラスで Xxx と id 指定がされているとする。UI が特別なブラウザーのトップを指すセレクタとする。
+JRF 2009年5月6日
+
+そういうのが bookmark を登録するとき、「拡張」みたいなところをクリックすると、入力できるようにして欲しい。
+JRF 2009年5月6日
+
+欲しいのはハイライトだけだから、highlight-condition に CSS 3.0 のセレクタを指定できるとかいうだけで十分だけど。
+
+ただ、こういうことまでやりたければプラグインを使えということなんだろうな。
+JRF 2009年5月6日
+
+上の例、input.hidden を使うよりも meta や link を使ったほうがよかったかも。
+
+JRF 2009年5月7日
+
+あとブックマークレットにアイコンが使えないというのも不満が多いと思う。単純な javascript: のリンクではなく、下のような感じで
+
+bookmarklet:icon:{iconのURL}hint:{マウスオーバー時のヒント}highlight-condition:{上の説明のセレクタ}javascript:{元のブックマークレットスクリプト}
+
+とかいう文法を使えるように Mozilla あたりがやってくれないだろうか？
+JRF 2009年5月7日
+
+↓という記事はあった。
+FireFoxでBookmarkletのアイコンを変える | Life Hacks Lite
+<a href="http://www.lifehackslite.com/hacks/2007-07/48.html" class="ext-link">http://www.lifehackslite.com/hacks/2007-07/48.html</a>
+JRF 2009年5月7日
+
+cl.pocari.org - Firefox のブックマークのアイコンを好きなアイコンに変更する方法
+<a href="http://cl.pocari.org/2006-03-14-1.html" class="ext-link">http://cl.pocari.org/2006-03-14-1.html</a>
+JRF 2009年5月7日
+
+favicon（ブックマークアイコン）を変更する拡張機能 - 風待ち日記
+<a href="http://d.hatena.ne.jp/saito-kazuo/20060401/p1" class="ext-link">http://d.hatena.ne.jp/saito-kazuo/20060401/p1</a>
+JRF 2009年5月7日</pre>
+
+
+</article>
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2009/05.html">2009年05月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+</body>
+</html>

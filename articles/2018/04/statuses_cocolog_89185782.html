@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>ひとこと - JRF Blog Archive</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2018/04.html">2018年04月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+<article data-pagefind-body>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[statuses] <span class="cocolog-id">cocolog:89185782</span></td></tr>
+<tr><th>セクション</th><td>JRF のひとこと</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2018/04.html">2018年04月11日</a></td></tr>
+<tr><th>元URL</th><td><a href="http://jrf.cocolog-nifty.com/statuses/2018/04/post-3768.html" class="ext-link"><span class="original-url">http://jrf.cocolog-nifty.com/statuses/2018/04/post-3768.html</span></a></td></tr>
+
+</table>
+</div>
+<h1>ひとこと</h1>
+<pre class="body">組み合わせと順列の数え上げのアルゴリズムの Python のソースを Perl に書き換えた。効率的なアルゴリズムが日本語での紹介がググってもなかったので、一応、ブログ記事にしておいた。
+JRF 2018年4月11日
+
+typo 「効率的なアルゴリズムが」→「効率的なアルゴリズムの」。
+
+JRF 2018年4月11日
+
+記事は↓。
+
+《組み合わせと順列の数え上げのアルゴリズム》
+<a href="../../../articles/2018/04/software_89185653.html" class="int-link" title="組み合わせと順列の数え上げのアルゴリズム">http://jrf.cocolog-nifty.com/software/2018/04/post.html</a>
+
+JRF 2018年4月11日
+
+ELDE (参: <a href="../../../articles/2018/04/statuses_cocolog_89156596.html" class="int-link cocolog-id" title="ひとこと">[cocolog:89156596]</a>) を更新しようとしていて、組み合わせの数え上げが必要となった(と思う)ため、調べた。CPAN に C を使った高速なモジュールはあるのだが、インストールが必要なことを嫌ったのと、これぐらいなら Perl でも十分高速なものが書けるだろうという思いから、アルゴリズムをググったのだった。
+
+JRF 2018年4月11日
+
+意外に記事がなく、海外にやっと満足のいく記事を見つけた。でも、それは Python でソースが書かれていたので、それを Perl に書き直したというのが経緯。
+
+JRF 2018年4月11日
+
+「書き直すだけ」と言ったが、それでも元はイテレータを使った実装なので、少し違いがあり、なかなかバグが取れずに苦しんだりした。特に順列は理屈が私自身理解できておらず、ソースの書き換えでどこが間違っているかだけに集中して、なんとか乗り切った。一方の組み合わせのほうも、理解に順ってプログラミングしたが、なかなか答えが合わず、こちらもちゃんと動くまで、しばらくかかった。
+
+JRF 2018年4月11日
+
+私が書いた「苦労」については大したことなくその部分については、パブリックドメインでいいのだが、元の Python のソースをどう考えるか…。アイデアだけなら著作権がないはずなので、Perl に書き換えた時点でフリーだろうとは思うのだが…。翻訳に近いから微妙な面もありそうだが、数式や証明に近いし、元のサイトが Stack Overflow なので、大丈夫だろうと思いたい。
+
+JRF 2018年4月11日
+
+Trackbacks:
+
+《cocolog:89194943》 from JRF のひとこと
+<a href="../../../articles/2018/04/statuses_cocolog_89194943.html" class="int-link" title="ひとこと">http://jrf.cocolog-nifty.com/statuses/2018/04/elde.html</a>
+
+ELDE (Exhaustive Lock Dependency Emulator) において、「実実行」のみを数え上げる「修正」バージョンを作った。そして、それを「失敗作」だった「虚実行」を許すバージョンと突き合わせ、結果が正しいことを確かめた。怪我の功名。... 
+
+受信： 2018-06-29 14:35:47 (JST)</pre>
+
+
+<section class="backrefs" data-pagefind-ignore>
+<h2>後方参照 (3 件)</h2>
+<ul>
+<li><span class="backref-label">[cocolog:89185782]参照</span> <a href="../../../articles/2018/04/statuses_cocolog_89194943.html">ひとこと</a> <span class="backref-date">2018年04月13日</span></li>
+<li><span class="backref-label">[cocolog:89185782]参照</span> <a href="../../../articles/2018/04/software_89185653.html">組み合わせと順列の数え上げのアルゴリズム</a> <span class="backref-date">2018年04月11日 21:48:01</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2018/04/statuses_cocolog_89156596.html">ひとこと</a> <span class="backref-date">2018年04月06日</span></li>
+</ul>
+</section>
+
+</article>
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2018/04.html">2018年04月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+</body>
+</html>

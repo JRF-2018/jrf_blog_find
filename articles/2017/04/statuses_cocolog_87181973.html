@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>ひとこと - JRF Blog Archive</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2017/04.html">2017年04月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+<article data-pagefind-body>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[statuses] <span class="cocolog-id">cocolog:87181973</span></td></tr>
+<tr><th>セクション</th><td>JRF のひとこと</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2017/04.html">2017年04月08日</a></td></tr>
+<tr><th>元URL</th><td><a href="http://jrf.cocolog-nifty.com/statuses/2017/04/post-1eff.html" class="ext-link"><span class="original-url">http://jrf.cocolog-nifty.com/statuses/2017/04/post-1eff.html</span></a></td></tr>
+
+</table>
+</div>
+<h1>ひとこと</h1>
+<pre class="body">斎藤康毅『ゼロから作る Deep Learning』を読んだ。「深層学習」は、行列で高速に計算できること、層をモジュール化し学習に必要な勾配(gradient)を効率的に計算できることがキモのようだ。
+JRF 2017年4月8日
+
+『ゼロから作る Deep Learning - Python で学ぶディープラーニングの理論と実装』(斎藤 康毅 著, オライリー・ジャパン, 2016年)
+<a href="../../../articles/2019/01/hbm_01897.html" class="int-link" title="Amazon.co.jp: ゼロから作るDeep Learning ―Pythonで学ぶディープラーニングの理論と実装: 斎藤康毅: Books">https://www.amazon.co.jp/dp/4873117585</a>
+<a href="http://7net.omni7.jp/detail/1106704005" class="ext-link">http://7net.omni7.jp/detail/1106704005</a>
+
+話題の人工知能(AI)・ディープラーニングの本、Amazon などで評判のいい本。
+
+keyword: 人工知能
+
+JRF 2017年4月8日
+
+例で使われているもののソースは↓から。
+
+《GitHub - oreilly-japan/deep-learning-from-scratch: 「ゼロから作る Deep Learning」のリポジトリ》
+<a href="https://github.com/oreilly-japan/deep-learning-from-scratch" class="ext-link">https://github.com/oreilly-japan/deep-learning-from-scratch</a>
+
+JRF 2017年4月8日
+
+正誤表は↓から。
+
+《errata - oreilly-japan/deep-learning-from-scratch Wiki - GitHub》
+<a href="https://github.com/oreilly-japan/deep-learning-from-scratch/wiki/errata" class="ext-link">https://github.com/oreilly-japan/deep-learning-from-scratch/wiki/errata</a>
+
+JRF 2017年4月8日
+
+私は Python をいじったことがなかったのでそれは大黒学さんの↓の「Python 実習マニュアル」で学びつつ読んだ。
+
+《無料チュートリアル：プログラミング》
+<a href="http://tutorial.jp/prog/index.html" class="ext-link">http://tutorial.jp/prog/index.html</a>
+
+JRF 2017年4月8日
+
+……。
+
+Deep Learning は、学習の過程を層をいくつも Deep に重ねることでなされる。その層には forward と backward の使い方がそれぞれあって、forward でニューラルネットワークの点火が、backward で学習で用いられる勾配(gradient)の導出が行われる。forward が計算されたあと、backward を計算することで効率的に勾配が求められる。そして、それらが行列計算で基本できるところから、並列化などの効率化ができる。
+
+JRF 2017年4月8日
+
+ネットで誰かが「墾田永年私財法」に名前が似ていると言った「確率的勾配降下法(SGD)」は、勾配を用いて学習の最適化をする手法の一つで、もっとも基本的なものだった。
+
+JRF 2017年4月8日
+
+この本で取り上げる例は、簡単な文字画像認識のみで、言語処理や自動操作(自動運転)みたいなものは軽く紹介がある程度。説明はわかりやすいが、これだけで Deep Learning がわかったと言って良いものか不安はある。
+
+JRF 2017年4月8日
+
+……。
+
+基本、説明はわかりやすくソースもあるので、詰まりようがないのだが、一点、なかなかわらかなかったところがあった。それは、p.114 などの TwoLayerNet の numerical_gradient メソッドの実装。loss_W = lambda W: self.loss(x, t) などとしているが、これって引数の W をどこにも利用してないじゃん…ってところで詰まった。
+
+JRF 2017年4月8日
+
+最初、間違えているに違いないと思ったが、p.161 の勾配確認(gradient_check.py)をすると、ちゃんと合ってる。それでどうしてか虚心坦懐に考えてやっと、関数の numerical_gradient が引数の行列の数値を破壊的に書き換えているのを使っているのが理解できた。関数型などで局所性を高めるプログラミングに慣れた身には、あまりにも邪道な書き方に思うが、これが Python の流儀なのだろうか？
+
+JRF 2017年4月8日
+
+……。
+
+しかし、学んでみたところでこれを応用できるようなアプリケーションが書けるかと言われると難しい。言語処理や自動運転とかの話題は何をやっているのか全々わからないままなので、Deep Learning、恐るるに足らず…とは言えない。
+
+いい本なのだろうが、私には役に立たない感じかな…といったところ。私がもう少し若くて、マシンパワーを買えるだけの金があれば…いや、そういう感じでもないな。私はやはり関心領域が違うように思った。
+
+JRF 2017年4月8日
+
+<a href="../../../articles/2017/01/statuses_cocolog_86756868.html" class="int-link cocolog-id" title="ひとこと">[cocolog:86756868]</a>
+＞AI で人が働かなくても良くなるからベーシックインカム…みたいな議論も見るが、そもそも、ディープラーニングは、データウェアハウス、ビッグデータといったサーバ屋の煽り文句の一つで、3D や VR・AR が煽りのわりに消費者に響かないように、売り文句のわりには効果が普遍的でないもののように私は考えている。＜
+
+JRF 2017年4月8日
+
+…このような認識をあらためるまでには致らなかった。結局のところ、私はそのすごさを理解できてないということだと思う。
+
+JRF 2017年4月8日
+
+Trackbacks:
+
+《cocolog:90343301》 from JRF のひとこと
+<a href="../../../articles/2018/12/statuses_cocolog_90343301.html" class="int-link" title="ひとこと">http://jrf.cocolog-nifty.com/statuses/2018/12/pytho.html</a>
+
+Python を使った人工知能の本を2冊読んだ。例を試さず流し読んだだけだが、技術にどういうものがあるかを知るのが目的だったのでそれで良い。自動運転に関するアイデアがあって読んだのだが、それは強化学習の方策勾配法に近いものだと知る。... 
+
+受信： 2018-12-30 11:47:27 (JST)
+
+《cocolog:90214777》 from JRF のひとこと
+<a href="../../../articles/2018/11/statuses_cocolog_90214777.html" class="int-link" title="ひとこと">http://jrf.cocolog-nifty.com/statuses/2018/11/pytho.html</a>
+
+Python を使った最適化の本と人工知能(AI)の本を読んだが、身につかなかった。私が普段使うマシンでは例の実行にすごく時間がかかることもあって、例を確かめなかった。本気でやるなら GPU (グラボ) を買うべきか。... 
+
+受信： 2018-12-30 11:48:03 (JST)</pre>
+
+
+<section class="backrefs" data-pagefind-ignore>
+<h2>後方参照 (7 件)</h2>
+<ul>
+<li><span class="backref-label">[cocolog:87181973]参照</span> <a href="../../../articles/2025/11/statuses_cocolog_95713714.html">ひとこと</a> <span class="backref-date">2025年11月09日</span></li>
+<li><span class="backref-label">[cocolog:87181973]参照</span> <a href="../../../articles/2024/04/statuses_cocolog_94787819.html">ひとこと</a> <span class="backref-date">2024年04月12日</span></li>
+<li><span class="backref-label">[cocolog:87181973]参照</span> <a href="../../../articles/2023/02/statuses_cocolog_94018088.html">ひとこと</a> <span class="backref-date">2023年02月11日</span></li>
+<li><span class="backref-label">[cocolog:87181973]参照</span> <a href="../../../articles/2019/10/statuses_cocolog_91382428.html">ひとこと</a> <span class="backref-date">2019年10月12日</span></li>
+<li><span class="backref-label">[cocolog:87181973]参照</span> <a href="../../../articles/2018/12/statuses_cocolog_90343301.html">ひとこと</a> <span class="backref-date">2018年12月03日</span></li>
+<li><span class="backref-label">[cocolog:87181973]参照</span> <a href="../../../articles/2018/11/statuses_cocolog_90214777.html">ひとこと</a> <span class="backref-date">2018年11月05日</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2017/01/statuses_cocolog_86756868.html">ひとこと</a> <span class="backref-date">2017年01月25日</span></li>
+</ul>
+</section>
+
+</article>
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2017/04.html">2017年04月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+</body>
+</html>

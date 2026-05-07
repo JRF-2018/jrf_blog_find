@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>USB 機器などの「ハードウェアの安全な取り外し」をコマンドラインから呼ぶ - JRF Blog Archive</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2006/02.html">2006年02月</a> | <a href="../../../index/software.html">ソフトウェア Tips</a></nav>
+<article data-pagefind-body>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[software] <span class="cocolog-id">cocolog:9715999</span></td></tr>
+<tr><th>セクション</th><td>JRF のソフトウェア Tips</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2006/02.html">2006年02月01日 01:14:11</a></td></tr>
+<tr><th>元URL</th><td><a href="http://jrf.cocolog-nifty.com/software/2006/02/post.html" class="ext-link"><span class="original-url">http://jrf.cocolog-nifty.com/software/2006/02/post.html</span></a></td></tr>
+<tr><th>タグ</th><td>[Windows アプリ]</td></tr>
+</table>
+</div>
+<h1>USB 機器などの「ハードウェアの安全な取り外し」をコマンドラインから呼ぶ</h1>
+<pre class="body">なぜか私のメインマシンで EPSON の USB 機器(スキャナ、プリンタ)を使うと不具合が起きます。他の組み合わせはなんともないので、完全に相性の問題なのでしょう。
+
+その不具合ですが、認識はされ正常に動作しますが、ハードウェアの安全な取り外しにそれらの機器が出てきません。その後、コンピュータを再起動すると、「ハードウェアの安全な取り外し」アイコンがタスクバーから消えてしまいます。
+
+電源を切ってから、起動しなおすと直っていたりいなかったり……
+
+再現性がないので、さっぱり原因がつかめません。「ハードウェアの安全な取り外し」アイコンが消える現象自体は一般的な報告があるようで、起動時になんらかの処理に時間がかかると、シェルへのアイコンの登録が失敗することがあるそうです。
+
+UPnP を使わないようにすると直ることがあるそうで、確かに UPnP を切ると、こころなし不具合の再現頻度が減る気がしますが、まったくなくなるわけではありません。
+
+しかたないので、非常時のためにコマンドラインから「ハードウェアの安全な取り外し」を呼べる方法を調べました。次のようなコマンドです。
+
+rundll32.exe shell32.dll,Control_RunDLL hotplug.dll
+
+コマンドラインに alias で登録するなり、ショートカットの内容をこれにすれば、アイコンが消えても安心です。
+
+でも、理由がわからないので気持ち悪いままではありますが……
+
+更新：05/10/27,06/01/31
+初公開：2006年02月01日 01:14:11
+
+
+Comments:
+
+タスクバーの時計付近を右クリック → プロパティ → カスタマイズ で 【通知のカスタマイズ】ウィンドウが開きます
+――――――――――――――――――――――――――――――
+　名前　　　　　　　　　　　　　　 　｜　　　動作　　　　　　　　　　　　　　　　｜
+――――――――――――――――――――――――――――――
+現在の項目　　　　　　　　　　　　｜　 　　　　　　　　　　　　　　　　　　 　　｜
+――――――――――――――――――――――――――――――
+ハードウェアの安全な取り外し　｜　アクティブでないときに非表示　　　｜
+――――――――――――――――――――――――――――――
+動作の項目が 【常に非表示】 になっている可能性があります。
+匿名投稿 | 2011-11-03 10:20:16 (JST)
+
+[E:t-shirt] 上のコメントに補足(?)です。
+
+Windows 7 だと、↑のアイコンが出ていれば、それを左クリックをしたときに「デバイスとプリンターを開く」があり、それをクリックして現れるウィンドウだと、いろいろな操作ができます。また、スタートメニューの「プロパティ」で「デバイスとプリンター」を表示するようにしていれば、スタートメニューから、簡単にそのウィンドウに行くこともできます。Windows 7 の方は、お試しあれ。
+
+ともあれ、追加の情報、ありがとうございました。
+
+投稿: JRF | 2011-11-03 14:07:52 (JST)</pre>
+
+
+<section class="backrefs" data-pagefind-ignore>
+<h2>後方参照 (10 件)</h2>
+<ul>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2013/10/column_77781983.html">前期の翌日(2013-07-01)から昨日(2013-09-30)まで 92 日間のアクセス解析・近況など</a> <span class="backref-date">2013年10月01日 01:14:59</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2013/07/column_76937312.html">前期の翌日(2013-04-01)から昨日(2013-06-30)まで 91 日間のアクセス解析・近況など</a> <span class="backref-date">2013年07月01日 01:50:58</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2013/04/column_76057634.html">前期の翌日(2013-01-01)から昨日(2013-03-31)まで 90 日間のアクセス解析・近況など</a> <span class="backref-date">2013年04月01日 01:17:46</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2013/01/column_75158671.html">前期の翌日(2013-10-01)から昨日(2012-12-31)まで 92 日間のアクセス解析・近況など</a> <span class="backref-date">2013年01月01日 01:17:42</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2012/10/column_74229152.html">前期の翌日(2012-07-01)から昨日(2012-09-30)まで 92 日間のアクセス解析・近況など</a> <span class="backref-date">2012年10月01日 03:24:01</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2012/01/column_71096713.html">前期の翌日(2011-10-01)から昨日(2011-12-31)まで 92 日間のアクセス解析・近況など</a> <span class="backref-date">2012年01月01日 00:55:42</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2011/10/column_70010999.html">前期の翌日(2011-07-01)から昨日(2011-09-30)まで 92 日間のアクセス解析・近況など</a> <span class="backref-date">2011年10月01日 01:32:02</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2011/04/column_67685733.html">前期の翌日(2011-01-01)から昨日(2011-03-31)まで 90 日間のアクセス解析・近況など</a> <span class="backref-date">2011年04月01日 00:45:38</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2010/10/column_65238931.html">前期の翌日(2010-07-01)から昨日(2010-09-30)まで 92 日間のアクセス解析・近況など</a> <span class="backref-date">2010年10月01日 00:50:45</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2010/01/column_61407069.html">前期の翌日(2009-10-01)から昨日(2009-12-31)まで 92 日間のアクセス解析など</a> <span class="backref-date">2010年01月01日 00:59:49</span></li>
+</ul>
+</section>
+
+</article>
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2006/02.html">2006年02月</a> | <a href="../../../index/software.html">ソフトウェア Tips</a></nav>
+</body>
+</html>

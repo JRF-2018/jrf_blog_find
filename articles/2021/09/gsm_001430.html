@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>共有メモ - JRF Blog Archive</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2021/09.html">2021年09月</a> | <a href="../../../index/gsm.html">共有メモ</a></nav>
+<article data-pagefind-body>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[gsm] 2021-09-06T21:19:37Z</td></tr>
+<tr><th>セクション</th><td>グローバル共有メモ</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2021/09.html">2021-09-06T21:19:37Z</a></td></tr>
+<tr><th>元URL</th><td>(URLなし)</td></tr>
+
+</table>
+</div>
+<h1>共有メモ</h1>
+<pre class="body">jrf&gt; [仏教の最適化プログラムの続き。]
+
+さて狂信に関する実験である。
+
+normal のログを求めるところからやり直し、normal に上書きする。--change-random-seed ははじめから付けておくことにする。
+
+python simbdp3.py -d -t 1200 -S --save-period=12 --no-view --invasion-mag=5.0 --change-random-seed
+cd stats_simbdp3/
+cp -p ../simbdp3.pickle .
+run_simbdp3.sh normal 10 -L -t 360
+
+一応、前のログとの違いを確認しておく。
+
+python plot_logs.py normal2 normal -p AccDeath -o fig-20210906_01.png
+python plot_logs.py normal2 normal -p AccAbortion -o fig-20210906_02.png
+python plot_logs.py normal2 normal -p Education -o fig-20210906_03.png
+python plot_logs.py normal2 normal -p NewKarma -o fig-20210906_04.png
+
+AccDeath も AccAbortion も normal のほうが改善している。一方、Education は normal のほうが 0.5 付近に張り付いているが、試行ごとの変化は大きそうだ。NewKarma は初期の normal2 と normal に違いが大きく、その後ほんの少し寄せていってる感じか。
+
+なお、今回から、fig-*.png は↓で見られるようにしてある。
+
+《グラフ集: 2021-09-06 から - Issue #2 - JRF-2018/simbd》  
+<a href="https://github.com/JRF-2018/simbd/issues/2" class="ext-link">https://github.com/JRF-2018/simbd/issues/2</a>
+
+……。
+
+狂信を試す。(fana は fanaticism の略。)
+
+run_simbdp3.sh fana 10 -L -t 360 --nation-education-power-threshold=0.925 --faith-realization-power-threshold=0.925
+
+python plot_logs.py normal fana -p AccDeath -o fig-20210906_05.png
+python plot_logs.py normal fana -p AccAbortion -o fig-20210906_06.png
+python plot_logs.py normal fana -p AccTemple -o fig-20210906_07.png
+
+予想通り、AccDeath は fana のほうが悪く、AccAbortion は fana のほうが良く。AccTemple は fana のほうが多い。これまでここまではっきり予想通りとなることは少なかったので、逆に心配になるぐらい。
+
+(続く)</pre>
+
+
+</article>
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2021/09.html">2021年09月</a> | <a href="../../../index/gsm.html">共有メモ</a></nav>
+</body>
+</html>

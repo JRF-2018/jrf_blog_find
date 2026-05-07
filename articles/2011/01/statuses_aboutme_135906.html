@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>ひとこと - JRF Blog Archive</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2011/01.html">2011年01月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+<article data-pagefind-body>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[statuses] <span class="cocolog-id">aboutme:135906</span></td></tr>
+<tr><th>セクション</th><td>JRF のひとこと</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2011/01.html">2011年01月22日</a></td></tr>
+<tr><th>元URL</th><td><a href="http://jrf.cocolog-nifty.com/statuses/2011/01/aboutme135906.html" class="ext-link"><span class="original-url">http://jrf.cocolog-nifty.com/statuses/2011/01/aboutme135906.html</span></a></td></tr>
+
+</table>
+</div>
+<h1>ひとこと</h1>
+<pre class="body">「我」はもとは、「鋸[のこぎり]」の象形文字で、抽象的意味として一人称の意味を持つのは、当時の音を拾ったからだそうだが、しかし、それは、つまり歯車、または、それを回すものを意味していたのではないか？「非」はすきこすもの、「不」は「ならず」ではなく「なりかかる」ではないか？
+JRF 2011年1月22日
+
+白川 静『漢字百話』 (中公文庫BIBLO, 1978年/2002年)
+<a href="http://www.amazon.co.jp/dp/4122040965" class="ext-link">http://www.amazon.co.jp/dp/4122040965</a>
+
+…の読みはじめ。
+
+本には、「我」はむしろ犠牲祭祀との関係で、「首」をとってきたといった方向が示唆されているけれども。
+
+私は現代に生きるからか、むしろ、そこに機械的自己としての「歯車」またはそれをうけるものを読み込むほうがふさわしいように思う。
+
+当時、「歯車」に相当するしかけがあったかはわからないが。
+
+JRF 2011年1月22日
+
+私の漢字に関する興味は、漢字コード。日本のプログラマにとって、プログラムの日本語化が大きなトッピックで、誰しも文字コードに通暁するのが基本スキルと見られていたことの名残りが、ぎぎぎりまだある世代としての関心がある。(例えば↓の記事。)
+
+《アセンブラで JIS から SJIS に変換するとき DAA が使える？》
+<a href="../../../articles/2010/05/software_63479911.html" class="int-link" title="アセンブラで JIS から SJIS に変換するとき DAA が使える？">http://jrf.cocolog-nifty.com/software/2010/05/post-3.html</a>
+
+
+JRF 2011年1月22日
+
+Unicode で影が薄くなったけど、ISO 2022 の拡張や、その仕様にかなり厳格にのっとった実装を模索することもあった。
+
+仕様等を参考にするのに「中二病」っぽく言葉遣いが厳格でないのが気になって、自分なりの言葉の定義とかも書いたりした。
+
+特に発表する機会もなさそうなので、それらをここに書いていこう。
+
+JRF 2011年1月22日
+
+- 字番 (character code)
+
+数字で表した文字の番号。
+
+
+- 字番集合 (character code set)
+
+字番の集合。
+
+
+- 字列仕様 (character string encoding)
+
+コンピュータ内での字番の並べ方。
+
+
+- 字列 (character string)
+
+特定の仕様によって並べられた字番の列。
+
+
+- 字面[じづら] (character face)
+
+位相幾何学的文字の像。字番が違えば字面は違うと仮定して処理。逆は偽。概念的な文字の姿。
+
+
+JRF 2011年1月22日
+
+- 定字面変換表[ていじめんへんかんひょう] (character code mapping)
+
+同じ字面を保ったまま字番を変換するための変換表。字面固定字番変換表。
+
+
+- 字影 (character picture)
+
+ユーザーが実際に見る文字の姿。現実的な文字の姿。つぶれていなければ一つの字影の表示には対応する字号(後述)と字面が一つずつあり、一つしかない。姿とは二値画像のこと。
+
+
+- 字影表 (font)
+
+字番から字影への関数。
+
+
+- 字号 (character size)
+
+字影の抽象的な大きさ。
+
+
+JRF 2011年1月22日
+
+- 字影表群 (font group)
+
+同じ位相的特徴をもった字影表の集合。ただし、字番の想定する字面は等しい。
+
+
+- 書体 (style)
+
+特殊な字影表群で、字号の違うだけの字影表の集合。字面と字影の中間的概念。通常、一つの書体には同じ字面、同じ字号を持った字影は一つしか含まれない。ある字影表のＸ倍角字号の字影表の集合。
+
+
+- 字列素 (elemental string)
+
+特定の意味においてそれ以上わけることのできない字列。
+
+
+- 字列素変換表 (transliteration map)
+
+字列素の変換表。
+
+
+- 言語 (language)
+
+字面の列の仕様。
+
+
+JRF 2011年1月22日
+
+- 文 (sentence)
+
+特定の言語における字面の列。
+
+
+- 単語 (word)
+
+特定の意味においてそれ以上わけることのできない文。
+
+
+なお、字列仕様や言語にはその仕様に属する列はすべて上位仕様にも属すといった部分仕様(subset)という概念がある。
+
+たとえば time 構造体の定義は一つの字列仕様で、それに対応する字面の列の仕様は特定の言語(jp)の部分仕様(time_jp) になる。
+
+JRF 2011年1月22日
+
+……。
+
+私なりの青春の「定義集」ってやつなのかな。
+
+JRF 2011年1月22日
+
+Trackbacks:
+
+《aboutme:136530》 from JRF のひとこと
+<a href="../../../articles/2011/02/statuses_aboutme_136530.html" class="int-link" title="ひとこと">http://jrf.cocolog-nifty.com/statuses/2011/02/aboutme136530.html</a>
+
+「日本で 47 番目に有名な県」より「日本で 46 番目に有名な県」のほうが毒があっておもしろい。快傑ズバットじゃないが「～で二番目」や、テレビCMの調査「90%の人が選んだ」というときの残り 10% が気になる類い。「余り」の罠。... 
+
+受信： 2012-01-05 06:21:20 (JST)</pre>
+
+
+</article>
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2011/01.html">2011年01月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+</body>
+</html>
