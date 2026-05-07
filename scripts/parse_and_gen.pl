@@ -503,6 +503,9 @@ sub html_article {
 <body>
 <nav><a href="${root}index.html">TOP</a>$month_link$type_link</nav>
 <article data-pagefind-body data-pagefind-meta="種別:${\ h(label_for_type($type))}">
+${\ ($art->{year} && $art->{month}
+    ? sprintf('<div data-pagefind-meta="投稿月:%04d年%02d月" style="display:none"></div>', $art->{year}, $art->{month})
+    : '')}
 <div class="meta">
 <table class="meta-table">
 <tr><th>種別</th><td>[$type]${\ ($id_cell ? " $id_cell" : '')}</td></tr>
