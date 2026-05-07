@@ -32,6 +32,8 @@ pre.body { background:#fff; border:1px solid #ddd; padding:1em;
 /* Trackback */
 pre.trackbacks { background:#f8f8f8; border:1px dashed #bbb; margin-top:.5em;
   padding:.5em 1em; white-space:pre-wrap; word-break:break-all; font-size:.9em; }
+pre.links { background:#f0f8ff; border:1px solid #b8d4ee; margin-top:.3em;
+  padding:.5em 1em; white-space:pre-wrap; word-break:break-all; font-size:.9em; }
 /* 後方参照 */
 section.backrefs { margin-top:1.2em; padding:.6em 1em;
   background:#f0f4ff; border:1px solid #c0d0ee; border-radius:4px; }
