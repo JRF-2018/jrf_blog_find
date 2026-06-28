@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>TinyLoRA を発展させると W exp(k_1 A_1) の形で書ける。… - JRF ブログ退避所</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2026/04.html">2026年04月</a> | <a href="../../../index/gsm.html">共有メモ</a></nav>
+<article data-pagefind-body data-pagefind-meta="種別:共有メモ">
+<div data-pagefind-meta="投稿月:2026年04月" style="display:none"></div>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[gsm] 2026-04-18T16:46:48Z</td></tr>
+<tr><th>セクション</th><td>グローバル共有メモ</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2026/04.html">2026-04-18T16:46:48Z</a></td></tr>
+<tr><th>元URL</th><td>(URLなし)</td></tr>
+
+</table>
+</div>
+<h1>TinyLoRA を発展させると W exp(k_1 A_1) の形で書ける。…</h1>
+<pre class="body">jrf&gt; TinyLoRA を発展させると W exp(k_1 A_1)  の形で書ける。
+
+これは W exp(k_1 A_1) exp(k_2 A_2) のように拡張できる。
+
+ここで A_i はランダム行列でもよいので、逆に「基底」を共有して、各重み W ごとに係数 k_i だけを学習するという方向が考えられる。さらに A_i 自体も、k_i より遅いスケールで学習する（メタ的に更新する）こともできる。
+
+これは LoRA とは異なる「乗法的な変換」の軸になっている。
+
+したがって
+
+W_{eff} = W_0 exp(sum_i k_i A_i) + B_t C_t
+
+のように、LoRA（加法）と組み合わせることができる。
+
+実験すると、
+
+・LoRA的なデータでは LoRA が効く
+・指数型の構造がある場合はこちらが効く
+・混合の場合はハイブリッドが最も良い
+
+という結果になった。
+
+直感的には「ax + b」の非線形版（乗法 + 加法）になっており、少ないパラメータで広い変形を表現できる可能性がある。
+
+ChatGPTとの議論とコードで検証した：
+会話URL: <a href="https://chatgpt.com/share/69e3afc7-3e0c-83e8-94f6-f26100c77992" class="ext-link">https://chatgpt.com/share/69e3afc7-3e0c-83e8-94f6-f26100c77992</a>
+Colab URL: <a href="https://colab.research.google.com/drive/1Ql1ncYjvm9aYsy_b15qSLq-yc_UtJFp9" class="ext-link">https://colab.research.google.com/drive/1Ql1ncYjvm9aYsy_b15qSLq-yc_UtJFp9</a></pre>
+
+
+
+</article>
+<nav class="prevnext" data-pagefind-ignore><span class="prev-art">← <a href="../../../articles/2026/04/gsm_008854.html">何を作ればいいのだろう。私にできることはほぼない。どうすれば社会が私の生き方を認…</a> <span class="pn-date">2026-04-18T02:47:45Z</span></span><span class="next-art"><a href="../../../articles/2026/04/gsm_008856.html">「シミュレーション仏教」の枠組みでやったシミュレーション(https://git…</a> <span class="pn-date">2026-04-18T17:14:07Z</span> →</span></nav>
+
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2026/04.html">2026年04月</a> | <a href="../../../index/gsm.html">共有メモ</a></nav>
+</body>
+</html>

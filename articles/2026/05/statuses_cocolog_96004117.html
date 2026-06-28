@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>IME「風」系の Emacs 入力メソッドであるところの… - JRF ブログ退避所</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2026/05.html">2026年05月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+<article data-pagefind-body data-pagefind-meta="種別:ひとこと">
+<div data-pagefind-meta="投稿月:2026年05月" style="display:none"></div>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[statuses] <span class="cocolog-id">cocolog:96004117</span></td></tr>
+<tr><th>セクション</th><td>JRF のひとこと</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2026/05.html">2026年05月25日</a></td></tr>
+<tr><th>元URL</th><td><a href="http://jrf.cocolog-nifty.com/statuses/2026/05/post-42f9e2.html" class="ext-link"><span class="original-url">http://jrf.cocolog-nifty.com/statuses/2026/05/post-42f9e2.html</span></a></td></tr>
+
+</table>
+</div>
+<h1>IME「風」系の Emacs 入力メソッドであるところの…</h1>
+<pre class="body">IME「風」系の Emacs 入力メソッドであるところの quail-naggy.el を更新し、Dockerfile で動態保存された単漢字変換を手軽(?)に体験できるようにした。また、単漢字辞書も更新し(同人的)に jrf_tankanji-2026 として公開した。
+JRF 2026年5月25日
+
+quail-naggy については↓をご覧ください。
+
+《quail-naggy.el: 単漢字変換 Input Method for Emacs. - JRF のソフトウェア Tips》  
+<a href="../../../articles/2015/10/software_83641133.html" class="int-link" title="quail-naggy.el: 単漢字変換 Input Method for Emacs.">http://jrf.cocolog-nifty.com/software/2015/10/post.html</a>
+
+JRF 2026年5月25日
+
+リポジトリは↓です。
+
+《JRF-2018/quail-naggy: 単漢字変換 Input Method for Emacs》  
+<a href="https://github.com/JRF-2018/quail-naggy" class="ext-link">https://github.com/JRF-2018/quail-naggy</a>
+
+JRF 2026年5月25日
+
+新しい単漢字辞書については↓に tankanji-2026.txt としてあります(文字コードが euc-jisx0213 です)。
+
+《JRF-2018/jrf_tankanji-2026: JRF が(同人的に)作成した単漢字辞書》  
+<a href="https://github.com/JRF-2018/jrf_tankanji-2026" class="ext-link">https://github.com/JRF-2018/jrf_tankanji-2026</a>
+
+JRF 2026年5月25日
+
+……。
+
+まず quail-naggy の変更のウリは、Dockerfile で単漢字変換の動態保存を試みた点。
+
+GitHub の README.md には次のように書いている。
+
+JRF 2026年5月25日
+
+＞＞
+## `Dockerfile` の使い方
+
+まず使ってみたいという方のために、Dockerfile をご用意しました。
+
+Linux (私は WSL2 を使っています)で docker がインストールされてるとします。
+
+&lt;pre&gt;
+git clone <a href="https://github.com/JRF-2018/quail-naggy" class="ext-link">https://github.com/JRF-2018/quail-naggy</a>
+cd quail-naggy
+docker build -t jrf/quail-naggy-emacs .
+&lt;/pre&gt;
+
+JRF 2026年5月25日
+
+…を実行したあと、もしIME「風」の権利をお持ちなどその辞書を使いたい場合は…、
+
+&lt;pre&gt;
+docker run -it --rm \
+    -e MODE=kaze \
+    -e DISPLAY=$DISPLAY \
+    -v /tmp/.X11-unix:/tmp/.X11-unix \
+    -v &quot;${PWD}:/app/work&quot; \
+    jrf/quail-naggy-emacs
+&lt;/pre&gt;
+
+JRF 2026年5月25日
+
+そうでない場合は…
+
+&lt;pre&gt;
+docker run -it --rm \
+    -e MODE=default \
+    -e DISPLAY=$DISPLAY \
+    -v /tmp/.X11-unix:/tmp/.X11-unix \
+    -v &quot;${PWD}:/app/work&quot; \
+    jrf/quail-naggy-emacs
+&lt;/pre&gt;
+
+JRF 2026年5月25日
+
+…とすれば Emacs が起動するはずです。最初の画面で `q` を押して文字を入力できるようにしてください。
+
+JRF 2026年5月25日
+
+ここで `C-\` で変換文字列入力モードに入り、aka:myoujou などと入力してスペースを押すと変換がはじまり候補ウィンドウが表示されます。「明」は単漢字 aka の読みを持ち、単語 myoujou の一部と重なるため、ハイライトが付いて表示されます。キーボードのその位置を押すと確定です。無変換キーでひらがな変換、変換キーでカタカナ変換、TABキーで全角変換です。
+
+フォント等は詰めてませんし、元の開発が Windows なのですが、それと同じ動きにはできてません。あくまで参考程度の動作とご了承ください。
+＜＜
+
+JRF 2026年5月25日
+
+……。
+
+そして jrf_tankanji-2026 は、いろいろ迷った末の公開。いろいろな著作物を「自動処理」して、この辞書を作ったため、本当に私に著作権があって、公開してよいのかで迷った。GitHub の README.md から抜粋する。
+
+JRF 2026年5月25日
+
+＞＞
+今回の辞書の特徴は、これまでの風辞書や2012年の辞書と違い、漢字の出てくるキーボードの場所は同じだが、ページは読みごとに違うことを認めるようにした点です。風よりも多くの文字を扱うため、これまではどうしてもページの後ろのほうに表示される文字が多かったのですが、それをこの変更で、前のほうに表示できるようにしました。邪道という批判は甘んじて受けます。
+
+JRF 2026年5月25日
+
+(…)
+
+## 配布条件
+
+このアーカイブは同人的に配布されています。特殊な配布条件があります。2012年当時は以下のような文言で配布していました。
+
+《まさかの単漢字入力。日本語 IME『風』 - JRF の勝手に PR》  
+<a href="../../../articles/2012/04/pr_72491103.html" class="int-link" title="まさか!の単漢字入力。IME『風』">http://jrf.cocolog-nifty.com/pr/2012/04/post-4.html</a>  
+
+JRF 2026年5月25日
+
+＞スクリプトの最初を読めばわかるように、ネットでフリーに手に入るものを中心に辞書作成作業を行っているが、『風』の辞書も参考にした部分がある。よって、『風』のライセンスを持っていない方はご遠慮いただきたい。そういった特殊な条件による同人的配布で、ダウンロード数を私が確認できるサイトに置いてある。＜
+
+しかし、2026年現在、考えを変えました。
+
+JRF 2026年5月25日
+
+ダウンロード数が確認できないところでも配布を認めることにしました。動態保存のためにやむなく、単漢字辞書が必要な場合に使えるようにこの辞書の「著者」である私がそういう置き方を認めることにしました。IME「風」の更新が長らく止まっている以上、単漢字変換がどこかで使えることのほうが大事かと思ったのです。私自身は「風」を持ってない方が単漢字変換を使いたいというのを支援したいので、そういう方がダウンロードするのも許可したいです。上の条件は後からでも「風」がシェアウェアとしてまだ正式に買えることを前提としていましたが、今ではそれも明らかではありません。
+
+JRF 2026年5月25日
+
+ただ、このような条件に問題がある場合は私に何らかの方法でご連絡ください。
+
+私自身に著作権があるとすれば、できればパブリックドメインであることを望みますが、それだと使いにくいという場合は、MIT License で…といったところです。
+＜＜
+
+JRF 2026年5月25日
+
+……。
+
+……。
+
+追記。
+
+更新: jrf_tankanji-2026。バージョン 0.0.2。
+
+  * バージョン 0.0.1 は Perl の keys などのランダム性により、extract-tankanji.pl を実行するごとに生成物が変わっていた。まずそれを修正。
+
+  * 読みごとの漢字の頻度を「風」辞書よりも Cannna 辞書から先に取るようにした。一方、「風」辞書にある読みと漢字については優先して場所を割り当てるようにした。「風」と同じ場所ではもちろんない。単純な読みと漢字の優先というのを実現するにはそれ以外思い付かなかった。
+
+JRF 2026年5月26日
+
+* ただ、少し「ハイパーパラメータ」(というかアルゴリズム)を変えると、結果が大きく変わる。ユーザーが覚えることが前提の辞書だから、基本的にはいじらないほうがよいのだが、今回は大目に見てほしい。バージョン 0.0.1 はあまりにもあんまりだったからだ。もしかすると、もうしばらくこれが続くかもしれない。2026年5月中には固めたい。
+JRF 2026年5月26日
+
+……。
+
+追記。
+
+更新: jrf_tankanji-2026。バージョン 0.0.3。
+
+  * 「風」辞書の読みを完全に取り込んだ。著作権的にかなりあやういが、実用的な単漢字変換にするためには、しかたがない。昔はそういうことをしなくても十分に読みを拾っていたはずなのだが、なぜかできなくなっていた。SKK-JISYO.L が変わったのだろうか？ 他の資料を私は使っていたのだろうか？ わからない。やはり、「風」が買えるようになったら、「風」を使わなくても、この辞書を使うなら「風」は買って欲しい。
+
+JRF 2026年5月26日
+
+……。
+
+追記。
+
+更新: jrf_tankanji-2026。バージョン 0.0.4。
+
+  * 「風」辞書から読みを「コピー」するときの特殊文字の扱いを少し変更。「」の扱いなどで迷った。辞書には載せたが quail-naggy の現バージョンでは 「 や 」 は参照されない。代わりに [ や ] が参照される。
+
+JRF 2026年5月27日
+
+* やはり本格的な・実用的な単漢字辞書は、「風」辞書の努力以上のものはないのだと思う。私自身は tankanji*.txt よりも「風」辞書を使っている。足りない文字は、SKK-JISYO.* に頼ったり、ネットで検索したりすれば良いのだから。tankanji*.txt はキーボード位置を部首であいまいにまとめているが、それが実用してわかりやすいのかどうかはわからない。
+
+  * Gemini さんに分かち書きのルーチンを書いてもらって採用。その他、頻度関連の情報をバグ取り＆改善する。かなりバグがあったのでまだないか心配。
+
+JRF 2026年5月27日
+
+……。
+
+追記。
+
+更新: jrf_tankanji-2026。バージョン 0.0.5。
+
+  * 頻度評価を微妙に調整。いくつか納得できないものを許し、よりシンプルに。
+
+  * すでに実装していたが使ってなかった @JOYO_PREF を使うようにした。常用漢字(小学校のもの)のみ、部首に関係なくキーボードの真ん中に位置するのを認めるようにした。部首の位置を覚えるのにはマイナスだが、使いやすくはなる。ただ、逆に常用漢字が必ず真ん中に来るわけでもないのは、どうなのだろう？
+
+JRF 2026年5月28日
+
+* 常用漢字表は 2010年に改訂される前のものを使っている。改訂後のものも試してみたのだが、数が多くなったためか、それとも偶然か、結果が良くなかったので採用しなかった。
+
+  * 気になったのは、ギリシャ文字について、日本語で読むとき、デフォルトは文字コード的に大文字が先に来るのに、一部は小文字が先になること。これは頻度辞書がそうなっているからで、統一性はないがそのままにした。例えば あるふぁ なら α が前に来て欲しいが、おめが なら Ω のほうを良く使うのは自然だと思ったから。
+
+JRF 2026年5月28日
+
+* Gemini さんの分かち書きルーチンに裸の keys があって、出力結果が毎回微妙にまた変わるようになっていたのを修正。
+
+JRF 2026年5月28日
+
+……。
+
+追記。
+
+更新: jrf_tankanji-2026。バージョン 0.1.0。
+
+  * プログラムに変更はない。ドキュメントやコメントに少し手を入れた。
+
+  * おそらくこれで2026年版は固定されるだろう。そう信じたい。
+
+JRF 2026年5月31日</pre>
+
+
+
+<section class="backrefs" data-pagefind-ignore>
+<h2>後方参照 (1 件)</h2>
+<ul>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2026/05/gsm_009028.html" class="int-link">《IME「風」系の Emacs 入力メソッドであるところの…</a> <span class="backref-date">2026-05-24T16:21:29Z</span></li>
+</ul>
+</section>
+
+</article>
+<nav class="prevnext" data-pagefind-ignore><span class="prev-art">← <a href="../../../articles/2026/05/statuses_cocolog_95998234.html">信用拡張が持続するのは、借入が将来所得を生み、その所得増加が利払い・元本返済を吸…</a> <span class="pn-date">2026年05月20日</span></span><span class="next-art"><a href="../../../articles/2026/05/statuses_cocolog_96010288.html">易双六PTCのおまけで作った「テストの迷宮」を ChatGPT…</a> <span class="pn-date">2026年05月29日</span> →</span></nav>
+
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2026/05.html">2026年05月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+</body>
+</html>

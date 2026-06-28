@@ -17,7 +17,7 @@
 <tr><th>セクション</th><td>JRF のソフトウェア Tips</td></tr>
 <tr><th>日時</th><td><a href="../../../index/2015/10.html">2015年10月16日 20:05:48</a></td></tr>
 <tr><th>元URL</th><td><a href="http://jrf.cocolog-nifty.com/software/2015/10/post.html" class="ext-link"><span class="original-url">http://jrf.cocolog-nifty.com/software/2015/10/post.html</span></a></td></tr>
-<tr><th>タグ</th><td><a href="../../../index/tag/tag_0004.html" class="tag-link">[Emacs/Meadow]</a></td></tr>
+<tr><th>タグ</th><td><a href="../../../index/tag/tag_0004.html" class="tag-link">[Emacs/Meadow]</a> <a href="../../../index/tag/tag_0012.html" class="tag-link">[Perl]</a> <a href="../../../index/tag/tag_0008.html" class="tag-link">[JRF 作成ソフトウェア]</a></td></tr>
 </table>
 </div>
 <h1>quail-naggy.el: 単漢字変換 Input Method for Emacs.</h1>
@@ -39,7 +39,7 @@ quail-naggy.el 自体は、Emacs に付属している quail/japanese.el と kkc
 
   ●naggy-backend.pl で使用する Perl モジュールのインストール。
   ●Emacs-Lisp ディレクトリ上へのファイルの展開。
-  ●SKK-JISYO.L や tankanji.txt や emoji-skk-dic.txt などの変換用辞書の入手＆インデックス・データベースファイルの作成。
+  ●SKK-JISYO.L や tankanji-2026.txt や emoji-skk-dic.txt などの変換用辞書の入手＆インデックス・データベースファイルの作成。
   ●naggy-backend.pl の設定。
   ●.emacs の設定。
     
@@ -65,13 +65,11 @@ naggy-backend.pl ではデフォルトでインストールされていない Pe
     
 Unix 環境であれば /usr/share/emacs/site-lisp にこのアーカイブを展開した quail-naggy/ ディレクトリを置けばいい。ドキュメントなどもそのままコピーしておいたほうがいいだろう。
 
-  ●SKK-JISYO.L や tankanji.txt などの変換用辞書の入手＆インデックス・データベースファイルの作成。
+  ●SKK-JISYO.L や tankanji-2026.txt などの変換用辞書の入手＆インデックス・データベースファイルの作成。
     
-単漢字変換辞書は、例えば↓から持って来れる。が、『風』の所有者にできれば限定しておきたい。
+単漢字変換辞書は、例えば↓から tankanji-2026.txt が持って来れる。
 
-  《まさか!の単漢字入力。IME『風』 [ JRF の勝手に PR ]》
-  
-  《jrf_tankanji-20120505.zip》
+  《GitHub - JRF-2018/jrf_tankanji-2026: JRF が(同人的に)作成した単漢字辞書》  
   
 『風』の所有者ならば、もしかすると、『風』の辞書をテキストに変換して使ってよいと考えるかもしれない。一応 dic2txt.pl というそのためのスクリプトを用意したが、詳しくはそのソースを読んで欲しい。
 
@@ -85,14 +83,14 @@ quail-naggy.el では、変換時の候補のしぼりこみに SKK 用の単語
 
   《GitHub - JRF-2018/naggy-emoji-skk-dic》
   
-手に入れた tankanji.txt と SKK-JISYO.L と emoji-skk-dic.txt と emoji-skk-dic.txt.sdb.pag と emoji-skk-dic.txt.sdb.dir を先にファイルをインストールした quiail-naggy/ に置く。ここで、辞書のロードに時間をくわないように、インデックス・データベースファイルを作っておく必要がある。
+手に入れた tankanji-2026.txt と SKK-JISYO.L と emoji-skk-dic.txt と emoji-skk-dic.txt.sdb.pag と emoji-skk-dic.txt.sdb.dir を先にファイルをインストールした quiail-naggy/ に置く。ここで、辞書のロードに時間をくわないように、インデックス・データベースファイルを作っておく必要がある。
 
 # perl make_skk_dic_db.pl -e SKK-JISYO.L
-# perl make_tankanji_dic_db.pl -e tankanji.txt
+# perl make_tankanji_dic_db.pl -e tankanji-2026.txt
 
-…とする。オプションの -e は euc-jisx0213 を使うという意味で、tankanji.txt が sjis の場合は -s を指定すれば良い。-u とすれば、utf8 になる。
+…とする。オプションの -e は euc-jisx0213 を使うという意味で、「風」辞書を使う場合など単漢字辞書 が sjis の場合は -s を指定すれば良い。-u とすれば、utf8 になる。
 
-これで、SKK-JISYO.L.sdb.pag , SKK-JISYO.L.sdb.dir , tankanji.txt.sdb.pag , tankanji.txt.sdb.dir ができるはずである。
+これで、SKK-JISYO.L.sdb.pag , SKK-JISYO.L.sdb.dir , tankanji-2026.txt.sdb.pag , tankanji-2026.txt.sdb.dir ができるはずである。
 
 ファイルをインストールしたときに付いてきた bushu-skk-dic.txt も SKK 辞書で部首変換に使う。「＠き」などとして木へんの部首の単漢字が引ける。これもインデックス・データベースファイルを作る必要がある。
 
@@ -106,12 +104,12 @@ naggy-backend.pl はそれが起動したディレクトリからデータを読
 
 load-init-file default-init.nginit
 
-set-tankanji-dic tankanji.txt -e
+set-tankanji-dic tankanji-2026.txt -e
 add-skk-dic SKK-JISYO.L -e
 add-skk-dic bushu-skk-dic.txt -e
 add-skk-dic emoji-skk-dic.txt -u
 
-ここでも -e は文字コードに euc-jisx0213 を指定するためのオプションで、-u は utf-8、この二番目の引き数の位置になければならない。tankanji.txt が sjis であれば、-s を指定する。
+ここでも -e は文字コードに euc-jisx0213 を指定するためのオプションで、-u は utf-8、この二番目の引き数の位置になければならない。もし「風」辞書を使う場合など単漢字辞書が sjis であれば、-s を指定する。
 
 naggy-backend.pl では、付属の alpha-hwkana.trl と simple_hebrew.trl を読み込んで使用する。それらは特に設定の必要はない。
 
@@ -166,7 +164,7 @@ Akka:bakeru といったように大文字(か @)ではじめた場合、また�
   
 操作方法の続き。
 
-スペースを押して変換する際に Abraam#greek などと # のあとに方式を指定した変換ができる。この場合、スペースを押すと仮想鍵盤も表示されることなくΑβρααμ と変換される。上で単語変換を :akka:bakeruなとしたが同様のことが akka:bakeru#j でできる。
+スペースを押して変換する際に Abraam#greek などと # のあとに方式を指定した変換ができる。この場合、スペースを押すと仮想鍵盤も表示されることなく Αβρααμ と変換される。上で単語変換を :akka:bakeruなとしたが同様のことが akka:bakeru#j でできる。
 
 指定できる方式には、今のところ 16進数 Unicode 変換の #u、ギリシャ語の #greek、ヘブライ語の #hebrew、アラビア語の #arabic、Latin-1 の #latin、ロシア語の #russian を一応用意している。各言語の知識を私はそれほど持っていないので、暫定的なものと考えていただきたい。詳しい変換テーブルは、酷な要求かもしれないが、trl ディレクトリに入っているファイルを読んで欲しい。
 
@@ -188,6 +186,49 @@ load-init-file site-init.nginit
 
 あまりないことだと思うが、単語変換をデフォルトにした上で、単漢字変換辞書が使いたいときは、:aka:akeru のように最初を : ではじめた入力または aka:akeru: のように最後を : にした入力をすればよい。
 
+■S-SPC による alt-convert 拡張 (新機能: 2026-05-19)
+  
+最初にシフトキーを押して「Nihon」と入力して変換するのも「nohon:」と入力して変換するのも同じ感じになるのであるが、「風」系の哲学として、入力したあとのキーで選びたいということがある。だから、「nihon」の後 S-SPC で nihon: SPC と入力したのと同じように変換したほうが便利だということで2026年5月にデフォルトをそう変えた。
+
+その替わりに、これまでの S-SPC に割り当たっていた、入力中にどうしてもスペースを入れたいというときのキーは、C-SPC に移動した。
+
+ただ、もし、ラテン語圏などで S-SPC をこれまで頻繁に使っている人がいると、それは迷惑だろう。その場合は以下のように設定するとよい。
+
+(setq quail-naggy-shift-space-alt-convert-p nil)
+
+■ Dockerfile の使い方 (新機能: 2026-05-23)
+
+まず使ってみたいという方のために、Dockerfile を用意した。
+
+Linux (私は WSL2 を使っている)で docker がインストールされてるとする。
+
+cd quail-naggy
+docker build -t jrf/quail-naggy-emacs .
+
+…を実行したあと、もしIME「風」の権利をお持ちなどその辞書を使いたい場合は…、
+
+docker run -it --rm \
+    -e MODE=kaze \
+    -e DISPLAY=$DISPLAY \
+    -v /tmp/.X11-unix:/tmp/.X11-unix \
+    -v &quot;${PWD}:/app/work&quot; \
+    jrf/quail-naggy-emacs
+    
+そうでない場合は…
+
+docker run -it --rm \
+    -e MODE=default \
+    -e DISPLAY=$DISPLAY \
+    -v /tmp/.X11-unix:/tmp/.X11-unix \
+    -v &quot;${PWD}:/app/work&quot; \
+    jrf/quail-naggy-emacs
+    
+…とすれば Emacs が起動するはず。Emacs が起動したら、最初の画面で `q` を押して文字を入力できるようにしておく。
+
+ここで `C-\` で変換文字列入力モードに入り、aka:myoujou などと入力してスペースを押すと変換がはじまり候補ウィンドウが表示される。「明」は単漢字 aka の読みを持ち、単語 myoujou の一部と重なるため、ハイライトが付いて表示される。キーボードのその位置を押すと確定。無変換キーでひらがな変換、変換キーでカタカナ変換、TABキーで全角変換である。
+
+フォント等は詰めてないし、元の開発が Windows なのだが、それと同じ動きにはできていない。あくまで参考程度の動作とご了承いただきたい。
+
 ■わかっている不具合
   
 『風』は、入力が終ったあととかは、制御キーでバックスペースなどが自由にできる。しかし、quail-naggy.el では、元の quail モードの制限らしく、それができないことがある。確定後に制御キーが使える場合もあり、動作が一定しない。原因は掴めていないが、quail モードの制限と思うので、詳しく調査していない。がまんして使っていただきたい。(注: 2017-04-29 に一部のバグを取ったので改善しているかもしれない。)
@@ -206,7 +247,7 @@ X Window と DIFE.exe については詳しくは↓に書いた。
 
   《Windows 10（…の…）Emacs で quail-naggy.el を使うには、DIFE.exe がほぼ必須のようだ。 - JRF のひとこと》
   
-Windows 64bit版の emacs 26.1 ではしかたなく、私は、Microsoft IME の設定をいじって対応している。具体的には、Windows 10 のタスクバーの「あ」と書いてるところを右クリックして「プロパティ」を選び、そこで「詳細設定」を選ぶと、「Microsft IME の詳細設定」のウィンドウが開く。そこで、「全般」→「編集操作」→「キー設定」→「変更」で、「変換」キーの最初のところを「-」(何もしない)にし、必要なら「SHIFT+変換」キーを「再変換」に割り当てる。…当然、他のソフトも影響するが、メインの日本語入力が私は Emacs なので、しかたなくそうしている。
+Windows 64bit版の emacs 26.1 ではしかたなく、私は、Microsoft IME の設定をいじって対応している。具体的には、Windows 10 のタスクバーの「あ」と書いてるところを右クリックして「プロパティ」を選び、そこで「詳細設定」を選ぶと、「Microsft IME の詳細設定」のウィンドウが開く。そこで、「全般」 →「編集操作」→「キー設定」→「変更」で、「変換」キーの最初のところを「-」(何もしない)にし、必要なら「SHIFT+変換」キーを「再変換」に割り当てる。…当然、他のソフトも影響するが、メインの日本語入力が私は Emacs なので、しかたなくそうしている。
 
 Windows 10 version 2004 からはさらに IME がバージョンアップしたため、上の方法ではうまくいかなくなっている。Windows の設定で Microsoft IME の設定を開いたあと「全般」→「以前のバージョンの Microsoft IME を使う」をオンにした上で、上のように「プロパティ」「詳細設定」…とやっていく必要があるようだ。
 
@@ -245,9 +286,9 @@ GitHub にも登録してあるが、更新は、ここの更新のあと1日か
   ●《GitHub - JRF-2018/quail-naggy》。
   ●《GitHub - JRF-2018/naggy-emoji-skk-dic》。
     
-更新：2015-10-16,2015-10-23,2017-04-29,2017-05-23,2018-12-22,2018-12-28,2020-01-23,2020-12-01,2021-02-01,2021-12-24
+更新：2015-10-16,2015-10-23,2017-04-29,2017-05-23,2018-12-22,2018-12-28,2020-01-23,2020-12-01,2021-02-01,2021-12-24,2026-05-19,2026-05-23,2026-05-25
 初公開：2015年10月16日 20:05:52
-最新版：2021年12月24日 17:15:29
+最新版：2026年05月25日 00:35:08
 
 
 Comments:
@@ -504,13 +545,48 @@ quail-naggy-insert-space を C-SPC に移動する必要があり、それはラ
 			      [?\C- ] &amp;#39;quail-naggy-insert-space)))))
 &lt;/pre&gt;
 
-投稿: JRF | 2025-06-24 10:25:38 (JST)</pre>
+投稿: JRF | 2025-06-24 10:25:38 (JST)
+
+更新: quail-naggy-20260519.zip。バージョン 0.19。
+
+quail-naggy-20260519.zip に相当するものは↓からどうぞ。
+
+<a href="https://github.com/JRF-2018/quail-naggy/releases/tag/v0.19" class="ext-link">https://github.com/JRF-2018/quail-naggy/releases/tag/v0.19</a>
+
+直上のコメントで示した S-SPC を押すと : を末尾に入れて変換したのと同じになる…というのを取り込み、標準仕様とした。詳しくは上の記事の追記分を読んでいただきたい。
+
+投稿: JRF | 2026-05-19 21:25:01 (JST)
+
+更新: quail-naggy のレポジトリのみ更新し、Dockerfile を足した。Dockerの使える方は、README.md に書かれたコマンドで手軽に試用することができます。
+
+《JRF-2018/quail-naggy: 単漢字変換 Input Method for Emacs - GitHub》  
+<a href="https://github.com/JRF-2018/quail-naggy" class="ext-link">https://github.com/JRF-2018/quail-naggy</a>
+投稿: JRF | 2026-05-23 12:11:35 (JST)
+
+更新: quail-naggy-20260523.zip。バージョン 0.20。
+
+quail-naggy-20260523.zip に相当するものは↓からどうぞ。
+
+<a href="https://github.com/JRF-2018/quail-naggy/releases/tag/v0.20" class="ext-link">https://github.com/JRF-2018/quail-naggy/releases/tag/v0.20</a>
+
+linux (WSL2) では naggy-vk-use-parent-frame を t に設定することでまともに &amp;#39;auto なフレーム配置が可能に。しかし、複数フレームには対応してないためデフォルトにはしなかった。ただ Dockerfile などから起動させる emacs についてはそれで動かすことにした。逆に &amp;#39;top にすると、raise-frame がウィンドウマネージャーの制限のためうまく機能しないことがあるため苦肉の策としてそうした。
+
+投稿: JRF | 2026-05-23 18:02:47 (JST)
+
+更新: quail-naggy-20260525.zip。バージョン 0.21。
+
+quail-naggy-20260525.zip に相当するものは↓からどうぞ。
+
+<a href="https://github.com/JRF-2018/quail-naggy/releases/tag/v0.21" class="ext-link">https://github.com/JRF-2018/quail-naggy/releases/tag/v0.21</a>
+
+jrf_tankanji-2026 の公開に伴い、Dockerfile などではそれを使うようにした。ドキュメントも改めた。
+
+投稿: JRF | 2026-05-25 00:46:33 (JST)</pre>
 
 <pre class="links">Links:
 
 日本語 IME 『風』: <a href="http://togasi.my.coocan.jp/" class="ext-link">http://togasi.my.coocan.jp/</a>
-まさか!の単漢字入力。IME『風』 [ JRF の勝手に PR ]: <a href="../../../articles/2012/04/pr_72491103.html" class="int-link" title="まさか!の単漢字入力。IME『風』">http://jrf.cocolog-nifty.com/pr/2012/04/post-4.html</a>
-jrf_tankanji-20120505.zip: <a href="https://www.sugarsync.com/pf/D252372_79_7170323252" class="ext-link">https://www.sugarsync.com/pf/D252372_79_7170323252</a>
+GitHub - JRF-2018/jrf_tankanji-2026: JRF が(同人的に)作成した単漢字辞書: <a href="https://github.com/JRF-2018/jrf_tankanji-2026" class="ext-link">https://github.com/JRF-2018/jrf_tankanji-2026</a>
 SKK辞書 - SKK辞書Wiki: <a href="http://openlab.ring.gr.jp/skk/wiki/wiki.cgi?page=SKK%BC%AD%BD%F1" class="ext-link">http://openlab.ring.gr.jp/skk/wiki/wiki.cgi?page=SKK%BC%AD%BD%F1</a> <span class="hbm-ref">(<a href="../../../articles/2015/10/hbm_01835.html" class="int-link" title="SKK辞書 - FreeStyleWiki">hbm</a>)</span>
 naggy-emoji-skk-dic.zip: <a href="https://www.sugarsync.com/pf/D252372_79_67056605331" class="ext-link">https://www.sugarsync.com/pf/D252372_79_67056605331</a>
 GitHub - JRF-2018/naggy-emoji-skk-dic: <a href="https://github.com/JRF-2018/naggy-emoji-skk-dic" class="ext-link">https://github.com/JRF-2018/naggy-emoji-skk-dic</a>
@@ -536,8 +612,10 @@ quail-naggy-20171113.zip: <a href="http://jrf.cocolog-nifty.com/archive/naggy/qu
 </pre>
 
 <section class="backrefs" data-pagefind-ignore>
-<h2>後方参照 (14 件)</h2>
+<h2>後方参照 (16 件)</h2>
 <ul>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2026/05/statuses_cocolog_96004117.html" class="int-link">IME「風」系の Emacs 入力メソッドであるところの…</a> <span class="backref-date">2026年05月25日</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2026/05/gsm_008997.html" class="int-link">更新: quail-naggy-20260519.zip。バージョン…</a> <span class="backref-date">2026-05-19T12:29:26Z</span></li>
 <li><span class="backref-label">URL参照</span> <a href="../../../articles/2025/06/gsm_007234.html" class="int-link">quail-naggy について Tips を↓のコメント欄に書いておいた。…</a> <span class="backref-date">2025-06-23T19:11:52Z</span></li>
 <li><span class="backref-label">URL参照</span> <a href="../../../articles/2021/12/statuses_cocolog_93207725.html" class="int-link">quail-naggy.el と jrf_semaphore.pl…</a> <span class="backref-date">2021年12月24日</span></li>
 <li><span class="backref-label">URL参照</span> <a href="../../../articles/2021/02/statuses_cocolog_92526779.html" class="int-link">Windows 10 Version 2004 から、IME…</a> <span class="backref-date">2021年02月01日</span></li>

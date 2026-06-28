@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>自分用ブログ投稿システム Mapaex を現代化した。メイン Claude… - JRF ブログ退避所</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2026/05.html">2026年05月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+<article data-pagefind-body data-pagefind-meta="種別:ひとこと">
+<div data-pagefind-meta="投稿月:2026年05月" style="display:none"></div>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[statuses] <span class="cocolog-id">cocolog:95977282</span></td></tr>
+<tr><th>セクション</th><td>JRF のひとこと</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2026/05.html">2026年05月05日</a></td></tr>
+<tr><th>元URL</th><td><a href="http://jrf.cocolog-nifty.com/statuses/2026/05/post-899c12.html" class="ext-link"><span class="original-url">http://jrf.cocolog-nifty.com/statuses/2026/05/post-899c12.html</span></a></td></tr>
+
+</table>
+</div>
+<h1>自分用ブログ投稿システム Mapaex を現代化した。メイン Claude…</h1>
+<pre class="body">自分用ブログ投稿システム Mapaex を現代化した。メイン Claude さん・サブ Gemini さんの作業で。今月のみ Claude さんに課金(はじめての課金)約3500円したのだが、元は取れた感じ。
+JRF 2026年5月5日
+
+私は、今はたまにしか使ってないのだが、「メインブログ」は、MovableType 類似システムで Emacs から perl のスクリプトを呼んで投稿している。元は他の人(N.Yamamoto さん)のスクリプト mapae を改造して作ったもの。2006年ぐらいに自分用にかなり手を入れて改造して、そこからほんの少しだけアップデートしながら使ってきた。
+
+文字コードが utf8 が標準に決まっていく過程だったのでメインに euc-jp を使っていてそれを変えたいというのが一番の動機だった。
+
+JRF 2026年5月5日
+
+……。
+
+最近、えいやっとばかりに Claude さんにはじめて課金した。約3500円。Gemini さんや ChatGPT さんは一番安いプランに課金していて、Grok さんは Twitter (X) に課金しているが、Claude さんだけ完全無課金で使っていて申し訳なかったのだが、ついに「今月のみ」のつもりで課金したのだった.
+
+JRF 2026年5月5日
+
+せっかく課金したので、使ってやろう…と思って思いついたのが今回のプロジェクト。Gemini さんのススメにより、Claude Projects という仕組みを使ってプログラムを修正してもらっていった。
+
+JRF 2026年5月5日
+
+普通は Claude Projects を使いつつ、Claude Code を回すのがセオリーのようだが、私のローカル PC は、Cygwin がメインで Perl も Cygwin。しかし、Python は Anaconda でもう古くなってるとかいう最悪な環境。また、あまりローカルマシンを汚したくない。…という思いがあって、ローカルで Claude Code は回さずに、Claude さんの Web 版でアーティファクトにソースを一々提示してもらって、それをエディタにコピーして…というのを繰り返して作ることにした。
+
+JRF 2026年5月5日
+
+メインは Claude Sonnet 4.6 さん。ときどき…彼に解決できなかったり、一時的な利用制限が来たりしたときは Gemini 3.1 Pro さんに手伝ってもらった。
+
+文字コードの処理がメインでとても複雑なのに、プロジェクトを完遂できた。やはり、今の AI さん達はスゴイ！
+
+JRF 2026年5月5日
+
+……。
+
+今回の目標は…。
+
+  * 内部処理の文字コードを euc-jp から utf-8 にすること。
+
+  * XMLRPC::Lite (SOAP::Lite) というインストールが主に重いモジュールの使用をやめること。
+
+  * TeX を latex→dvips→gs→ImageMagick という複雑な工程をやめ、MathJax を使うようにすること。
+
+…をお願いした。
+
+JRF 2026年5月5日
+
+……。
+
+まず、いろいろなファイルの文字コード変換を先に済ましておいて、テスト用に MovableType 類似システムとして、mock_server.pl みたいなのも作ってもらった。そこから順次、Perl モジュールを更新してもらっていった。
+
+はまったのは、文字コードに関して同じようなバグ。
+
+JRF 2026年5月5日
+
+Claude:＞今回のバグを振り返ると、Encode::decode の破壊的仕様は今回のプロジェクトで繰り返し踏んでいます。convert_postinfo.pl でも同じ問題が出ました。Phase 3 で mapaex.pl を書き換える際は、decode を呼ぶ箇所では必ずコピーを渡すか、あるいは Encode::decode の代わりに Encode::decode_utf8($s) のようにコピーを作る関数を使うルールを徹底したほうがよさそうです。＜
+
+文字コードがらみはやはり難しいらしく、「できた」とされた後からいろいろ修正が必要だったが、ついに完成できた。…らしい。
+
+JRF 2026年5月5日
+
+……。
+
+ただ、上にも書いたように「今はたまにしか使ってない」ので、テストがこの先、早く十分にできそうにない。すると Claude さんの「今月のみ」という契約は切れるわけで、その後が心配だが…まぁ、しかたないか。
+
+とにかく、現時点で、課金の元はとったように思う。
+
+JRF 2026年5月5日</pre>
+
+
+
+<section class="backrefs" data-pagefind-ignore>
+<h2>後方参照 (3 件)</h2>
+<ul>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2026/05/statuses_cocolog_95993074.html" class="int-link">Nintendo DSi の プチコンmkII…</a> <span class="backref-date">2026年05月16日</span></li>
+<li><span class="backref-label">[cocolog:95977282]参照</span> <a href="../../../articles/2026/05/statuses_cocolog_95980553.html" class="int-link">検索用に《JRF ブログ退避所》を Claude Sonnet 4.6…</a> <span class="backref-date">2026年05月07日</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2026/05/gsm_008939.html" class="int-link">《自分用ブログ投稿システム Mapaex を現代化した。メイン Claude…</a> <span class="backref-date">2026-05-05T05:30:31Z</span></li>
+</ul>
+</section>
+
+</article>
+<nav class="prevnext" data-pagefind-ignore><span class="prev-art">← <a href="../../../articles/2026/05/statuses_cocolog_95975389.html">オギ・オーガス＆サイ・ガダム『性欲の科学 -…</a> <span class="pn-date">2026年05月04日</span></span><span class="next-art"><a href="../../../articles/2026/05/statuses_cocolog_95980553.html">検索用に《JRF ブログ退避所》を Claude Sonnet 4.6…</a> <span class="pn-date">2026年05月07日</span> →</span></nav>
+
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2026/05.html">2026年05月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+</body>
+</html>

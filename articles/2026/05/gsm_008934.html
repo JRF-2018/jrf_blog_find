@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>株式的富が在庫と釣り合わないといけないのはいいとして、その富がどう消費につながる… - JRF ブログ退避所</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2026/05.html">2026年05月</a> | <a href="../../../index/gsm.html">共有メモ</a></nav>
+<article data-pagefind-body data-pagefind-meta="種別:共有メモ">
+<div data-pagefind-meta="投稿月:2026年05月" style="display:none"></div>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[gsm] 2026-05-03T23:05:16Z</td></tr>
+<tr><th>セクション</th><td>グローバル共有メモ</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2026/05.html">2026-05-03T23:05:16Z</a></td></tr>
+<tr><th>元URL</th><td>(URLなし)</td></tr>
+
+</table>
+</div>
+<h1>株式的富が在庫と釣り合わないといけないのはいいとして、その富がどう消費につながる…</h1>
+<pre class="body">jrf&gt; 株式的富が在庫と釣り合わないといけないのはいいとして、その富がどう消費につながるのかが今日、気になった。富の資産効果…は何か違和感がある。
+
+<a href="../../../articles/2026/01/statuses_cocolog_95801369.html" class="int-link cocolog-id" title="ひとこと">[cocolog:95801369]</a>(2026年1月)
+《「必需品と贅沢品のマクロ経済シミュレーション」を作った。必需品と贅沢品の二財からなるマクロ経済で、株式・債券がある中、文化レベル・技術レベル・公共事業・金利による変化をシミュレーションする。 - JRF のひとこと》
+<a href="../../../articles/2026/01/statuses_cocolog_95801369.html" class="int-link" title="ひとこと">http://jrf.cocolog-nifty.com/statuses/2026/01/post-df487e.html</a>
+＞＞選択の余地がある場合、何が有利なのか、それは株式市場の論理とつながります。私は＞債権では社会の富は増えない。株式のみ社会の富を増やせる。＜(<a href="../../../articles/2013/02/statuses_cocolog_75599118.html" class="int-link cocolog-id" title="ひとこと">[cocolog:75599118]</a>)…と考えていて、一方、マルクス経済学の剰余価値に関する議論で、在庫(研究費も含む)の増加が別に社会の富を増やすという議論が出てきて、この、株価の増価と在庫の増加が、(銀行の信用創造や債券価格の調整などが間にはさまった上で、) 安定した関係にあることが、安定した経済成長が可能になる条件ではないかと考えたことがありました。
+
+この株式に必要な永続企業の前提が、選択の余地のあるところでは、その選択の両方に成り立つことになるため、そこに株式の富がより多く生じるようになると考えます。これが文化が需要を増やす根本原因なのでしょう。
+＜＜
+
+まず、富が資本財になることで、生産性を上げる…供給を増やすという効果はある。でも、これは在庫が増える効果としてすでに言及済みとも言える。これが所得 Y を増やす効果でもあるかもしれない。
+
+しかし、需要面での支えについてはここで言及はない。おそらく富があることがその貸し出し等を通じて需要を増やす効果がある。これが裏面から見て Y を増やす効果なのだろう。つまり、「資産効果」となるのかもしれないが。
+
+Claude さんに以前作ってもらった《信用創造ダイナミクス v3》においては、キャッシュフローが Y になっておりすでにそのような効果は折り込み済みとも言えるが、Y を需要面・供給面から別に考えるようにはなっていないような気がする。
+
+《信用創造ダイナミクス v3》  
+<a href="http://jrockford.s1010.xrea.com/misc/credit_simulation_202602/credit_simulation_v3.html" class="ext-link">http://jrockford.s1010.xrea.com/misc/credit_simulation_202602/credit_simulation_v3.html</a>
+
+その辺のところをどう考えるか Claude さんにうかがったところ、需要面は法定準備率 ρ_eff または貯蓄率 s で考慮できていて、供給面は資本蓄積(在庫) K から株式的富 E にそして E → C_flow → 所得 Y ですでに考慮されていた…ということのようだ。
+
+ただ、s_eff を考えたほうがいい…対称性が上がるということで、それを加えてアップデートしていただいたのが↓になる。ここではさらにバグ取りとして、K → E にするところで、E が大きくなり過ぎないようにαを導入して調整してもらっている(そのため v4 を飛ばして v5 になっている)。
+
+《信用創造ダイナミクス v5》
+<a href="http://jrockford.s1010.xrea.com/misc/credit_simulation_202602/credit_simulation_v5.html" class="ext-link">http://jrockford.s1010.xrea.com/misc/credit_simulation_202602/credit_simulation_v5.html</a>
+
+《信用創造ダイナミクス v5 分析レポート》  
+<a href="http://jrockford.s1010.xrea.com/misc/credit_simulation_202602/simulation_v5_analysis.md" class="ext-link">http://jrockford.s1010.xrea.com/misc/credit_simulation_202602/simulation_v5_analysis.md</a>
+
+E と K の関係が変化するとき物価か何かが変化すると考えたものだった。それは α の変化と読み取れる。α が変化するときどうなるか？ αの変化とは何か？ Claude さんはαを資本弾力性と名付けたが…。</pre>
+
+
+
+</article>
+<nav class="prevnext" data-pagefind-ignore><span class="prev-art">← <a href="../../../articles/2026/05/gsm_008933.html">なんとなく暑いんだが、扇風機をつけると寒い。微妙な暑さ。</a> <span class="pn-date">2026-05-03T21:45:00Z</span></span><span class="next-art"><a href="../../../articles/2026/05/gsm_008935.html">(承前) Claude:＞＞ α…</a> <span class="pn-date">2026-05-03T23:05:29Z</span> →</span></nav>
+
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2026/05.html">2026年05月</a> | <a href="../../../index/gsm.html">共有メモ</a></nav>
+</body>
+</html>

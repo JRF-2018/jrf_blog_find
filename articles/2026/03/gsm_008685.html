@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>TinyLoRA の式は W' = W + U Σ (Σ_{i=1}^{u}… - JRF ブログ退避所</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2026/03.html">2026年03月</a> | <a href="../../../index/gsm.html">共有メモ</a></nav>
+<article data-pagefind-body data-pagefind-meta="種別:共有メモ">
+<div data-pagefind-meta="投稿月:2026年03月" style="display:none"></div>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[gsm] 2026-03-25T10:29:41Z</td></tr>
+<tr><th>セクション</th><td>グローバル共有メモ</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2026/03.html">2026-03-25T10:29:41Z</a></td></tr>
+<tr><th>元URL</th><td>(URLなし)</td></tr>
+
+</table>
+</div>
+<h1>TinyLoRA の式は W' = W + U Σ (Σ_{i=1}^{u}…</h1>
+<pre class="body">jrf&gt; TinyLoRA の式は W' = W + U Σ (Σ_{i=1}^{u} v_i P_i) V^⊤ だが、これは W' = W (I + v1 P1 + v2 P2 +…) という式で行ってもだいたい遜色なくできる。つまり単純な「積」である。I P1 P2 … を正規直交化すれば、訓練が早くなるようだ。
+
+これはモデルをとても単純にする。TinyLoRA を「低ランク更新」から「低次元群作用」に再定式化している…と言える。
+
+ChatGPT さんによるとスタッキングを可能とする方向として W' = W exp(v1 A1 + v2 A2 + ...) という方向がおもしろそうだと示された。
+
+実は、TinyLoRA について以前、調べたのだが、実験失敗だけが結果報告になっていて、何も有用な結果として残ってなかったのが気にかかっていて、その議論で、意味がありそうなもののみ、再度 ChatGPT さんにお願いして実験してもらったのだった。そして以上がその結論になる。
+
+ChatGPT さんとの会話は↓になる。
+
+<a href="https://chatgpt.com/share/69c3b83b-f118-8322-a439-203f184d03b6" class="ext-link">https://chatgpt.com/share/69c3b83b-f118-8322-a439-203f184d03b6</a></pre>
+
+
+
+</article>
+<nav class="prevnext" data-pagefind-ignore><span class="prev-art">← <a href="../../../articles/2026/03/gsm_008684.html">ええっ！ Sora 提供終了なの！…</a> <span class="pn-date">2026-03-25T02:51:28Z</span></span><span class="next-art"><a href="../../../articles/2026/03/gsm_008686.html">何を省エネすべきか。Sora終了で答えは示されたようなものか。AIの使い方をもう…</a> <span class="pn-date">2026-03-25T12:02:11Z</span> →</span></nav>
+
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2026/03.html">2026年03月</a> | <a href="../../../index/gsm.html">共有メモ</a></nav>
+</body>
+</html>

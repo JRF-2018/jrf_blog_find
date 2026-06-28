@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>検索用に《JRF ブログ退避所》を Claude Sonnet 4.6… - JRF ブログ退避所</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2026/05.html">2026年05月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+<article data-pagefind-body data-pagefind-meta="種別:ひとこと">
+<div data-pagefind-meta="投稿月:2026年05月" style="display:none"></div>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[statuses] <span class="cocolog-id">cocolog:95980553</span></td></tr>
+<tr><th>セクション</th><td>JRF のひとこと</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2026/05.html">2026年05月07日</a></td></tr>
+<tr><th>元URL</th><td><a href="http://jrf.cocolog-nifty.com/statuses/2026/05/post-e4f601.html" class="ext-link"><span class="original-url">http://jrf.cocolog-nifty.com/statuses/2026/05/post-e4f601.html</span></a></td></tr>
+
+</table>
+</div>
+<h1>検索用に《JRF ブログ退避所》を Claude Sonnet 4.6…</h1>
+<pre class="body">検索用に《JRF ブログ退避所》を Claude Sonnet 4.6 さんに作ってもらった。以前から、バックアップ用のアーカイブ zip は作っていたものの、ネットで見られるバックアップ先が欲しかったのだった。
+JRF 2026年5月7日
+
+成果物は↓。
+
+《JRF ブログ退避所》  
+<a href="https://jrf-2018.github.io/jrf_blog_find/index.html" class="ext-link">https://jrf-2018.github.io/jrf_blog_find/index.html</a>
+
+GitHub のリポジトリは↓。
+
+《JRF-2018/jrf_blog_find: JRF のブログ退避先。検索用。 - GitHub》  
+<a href="https://github.com/JRF-2018/jrf_blog_find" class="ext-link">https://github.com/JRF-2018/jrf_blog_find</a>
+
+JRF 2026年5月7日
+
+……。
+
+今月は Claude さんに課金(はじめての課金)約3500円をして、先に、自分用ブログ投稿システム Mapaex を現代化してもらった(<a href="../../../articles/2026/05/statuses_cocolog_95977282.html" class="int-link cocolog-id" title="ひとこと">[cocolog:95977282]</a>(2026年5月))。
+
+他に何かやってもらうことはないかと考えて、ひとつは私は「風」系 IME (quail-naggy.el) を使っているのでスペルチェッカが欲しいと思っていたので、それを Gemini さんに相談したところ、Gemini Gems で校正役を作ればいい…という話になって、まず、そういう Gems (はじめての Gem)を構成したところ、実用できそうなものができた。
+
+JRF 2026年5月7日
+
+次に「ジルパのVR紀行」のルビ付けの自動化を考えたのだが、これは逆にルビを付けないものの指定が必要で、それなら今のルビを付けるものの指定と大して変わらないな…ということで、これは今のままで良いとなった。
+
+JRF 2026年5月7日
+
+そして、さらにもうひとつ思いついたのが、ネットで見られるブログのバックアップを作ることだった。そういうので検索とかできないもんですかね…と Gemini さんに聞いたところ Pagefind という高速な JavaScript ツールがあるとのこと。でも、そんな巨大なシステムできないなぁ…と Gemini さんに相談していると、以前からあるアーカイブの full_dump.txt を元にすれば、まずまずのシステムができそう…という段取りがついた。そこで Claude Projects に登録して Claude Sonnet 4.6 さんに作ってもらったのが今回のシステムになる。
+
+JRF 2026年5月7日
+
+……。
+
+## 大目的
+
+私のブログの退避先（静的アーカイブサイト）を構築したいです。以下の要件で GitHub Actions (YAML) を作成してください。主要言語は Perl で作っていただけると後日の私がわかりやすいでしょう。
+
+JRF 2026年5月7日
+
+## 要件
+
+  * データ取得: 私のブログ(複数)をログに取り、その複数のブログを一つのテキストファイルにダンプしたものが <a href="http://jrockford.s1010.xrea.com/jrf_cocolog_backup/jrf_cocolog_public.zip" class="ext-link">http://jrockford.s1010.xrea.com/jrf_cocolog_backup/jrf_cocolog_public.zip</a> に full_dump.txt として入っています。今後この zip ファイルを「上の zip」として言及します。
+
+JRF 2026年5月7日
+
+* 記事分割: full_dump.txt をパースし、記事ごとに独立した HTML ファイルを作成する (articles/YYYY/MM/DD_ID.html のような階層) 。また月ごとのインデックスページも作成します。
+
+  * 検索機能: Pagefind を実行してインデックスを生成します。(Pagefind というツールに特にこだわりはないです。)
+
+JRF 2026年5月7日
+
+* 自動化: これらを毎期ボタン一つ（workflow_dispatch）で実行し、GitHub Pages にデプロイする GitHub Actions を作成します。
+  
+  * 私が文字列で検索できること、cocolog id (cocolog:〜 または aboutme:〜 という形式です)で検索できることを重視します。特に元の記事への URL が検索できることを重視します。ですから表示にはこだわらず、各ページはテキストベタ書き (pre で囲う？) でいいです。URL はクリックできるようにするぐらいはしていただけるとうれしいです。
+
+JRF 2026年5月7日
+
+* \<a href="http://jrf.cocolog-nifty.com/.../XXX.png\">[タイトル]</a> みたいなものは、上の zip の images/ に入っていれば、そのイメージを表示したいです。そのとき XXX が thumbnail-YYYY.png という形式で YYYY.png みたいなのが images/ にあれば、それはそのイメージをクリックしたときに表示されるようにしたいです。
+
+JRF 2026年5月7日
+
+* ちなみに上の zip は三ヶ月ごとに更新されます。元のメインブログサイトは <a href="http://jrf.cocolog-nifty.com/" class="ext-link">http://jrf.cocolog-nifty.com/</a> 下です。ここにさらに はてなブックマークと「グローバル共有メモ」(<a href="http://jrockford.s1010.xrea.com/demo/shared_memo.cgi?cmd=log" class="ext-link">http://jrockford.s1010.xrea.com/demo/shared_memo.cgi?cmd=log</a> のログがあります。
+
+  * Claude Code は使えません。アーチファクトにコードを示してもらって実行するという形式で作っていきます。
+
+JRF 2026年5月7日
+
+* こちらのローカルテスト環境は Cygwin (の Perl)です。Perl スクリプトを full_dump.txt に適用するぐらいならできます。Pagefind はインストールされていません。テストはできれば Google Colab のターミナルなどでできるとありがたいです。もちろん、Actions (YAML) のためのリポジトリ構造を作っていただければ、それを GitHub にアップロードするぐらいはできます。
+
+JRF 2026年5月7日
+
+* GitHub のリポジトリは jrf_blog_find にします。(<a href="https://github.com/JRF-2018/jrf_blog_find" class="ext-link">https://github.com/JRF-2018/jrf_blog_find</a> に置きます。)
+
+JRF 2026年5月7日
+
+……。
+
+GitHub Pages にデプロイできてからは、それを見ながら何度も(10回ぐらい？)、細々と改善して欲しい点を指定していった。
+
+そこで指定した実装の要点は↓にまとまっている。
+
+《jrf_blog_find/PURPOSE.md - JRF-2018 - GitHub》  
+<a href="https://github.com/JRF-2018/jrf_blog_find/blob/master/PURPOSE.md" class="ext-link">https://github.com/JRF-2018/jrf_blog_find/blob/master/PURPOSE.md</a>
+
+JRF 2026年5月7日
+
+……。
+
+検索がかなりうまく機能しているので、元のブログでも検索はそちらにリンクするようにした。Google さんはもう私のところの記事とかあまり拾ってくれないしね。まぁ、アーカイブを作るのが三ヶ月ごとだから、最新の記事は検索できないのだけど。
+
+JRF 2026年5月7日</pre>
+
+
+
+<section class="backrefs" data-pagefind-ignore>
+<h2>後方参照 (2 件)</h2>
+<ul>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2026/05/statuses_cocolog_95993074.html" class="int-link">Nintendo DSi の プチコンmkII…</a> <span class="backref-date">2026年05月16日</span></li>
+<li><span class="backref-label">URL参照</span> <a href="../../../articles/2026/05/gsm_008946.html" class="int-link">《検索用に《JRF ブログ退避所》を Claude Sonnet 4.6…</a> <span class="backref-date">2026-05-07T08:23:59Z</span></li>
+</ul>
+</section>
+
+</article>
+<nav class="prevnext" data-pagefind-ignore><span class="prev-art">← <a href="../../../articles/2026/05/statuses_cocolog_95977282.html">自分用ブログ投稿システム Mapaex を現代化した。メイン Claude…</a> <span class="pn-date">2026年05月05日</span></span><span class="next-art"><a href="../../../articles/2026/05/statuses_cocolog_95986291.html">池田信夫さんなどが正規雇用の流動化…優秀な人の転職を唱えるのだが、必要なのは上が…</a> <span class="pn-date">2026年05月11日</span> →</span></nav>
+
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2026/05.html">2026年05月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+</body>
+</html>

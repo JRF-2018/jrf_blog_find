@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>学習時に「体」も最適化すれば感覚器は2つ1セットが最適という話をキッカケに過去の… - JRF ブログ退避所</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2026/06.html">2026年06月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+<article data-pagefind-body data-pagefind-meta="種別:ひとこと">
+<div data-pagefind-meta="投稿月:2026年06月" style="display:none"></div>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[statuses] <span class="cocolog-id">cocolog:96033647</span></td></tr>
+<tr><th>セクション</th><td>JRF のひとこと</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2026/06.html">2026年06月16日</a></td></tr>
+<tr><th>元URL</th><td><a href="http://jrf.cocolog-nifty.com/statuses/2026/06/post-3f1ccc.html" class="ext-link"><span class="original-url">http://jrf.cocolog-nifty.com/statuses/2026/06/post-3f1ccc.html</span></a></td></tr>
+
+</table>
+</div>
+<h1>学習時に「体」も最適化すれば感覚器は2つ1セットが最適という話をキッカケに過去の…</h1>
+<pre class="body">学習時に「体」も最適化すれば感覚器は2つ1セットが最適という話をキッカケに過去のAI・ロボットがらみのアイデアを振り返ったが、結局、CAMP の区画を高速な専用ハードウェアにするのを CAMPFIRE と名付けるぐらいしか思い浮かばなかった。
+JRF 2026年6月16日
+
+今回の考察のキッカケは「AI時代の羅針盤」さんのビデオだった。
+
+○ 2026-06-15T15:51:19Z
+
+＞ああ、センサーは多いほど性能が上がると思うのが普通だろう。ところが最適化された体では、センサーが2個の時点で性能がほぼ頭打ちになる＜。「体」の前提に違いがあるが、目や耳や鼻の孔が二個1セットであることの理由はここにあるのだろうか…？
+
+JRF 2026年6月16日
+
+《AI時代の羅針盤 (compass for the AI era):X:2026-06-15》  
+<a href="https://x.com/compassinai/status/2066456645593706784" class="ext-link">https://x.com/compassinai/status/2066456645593706784</a>
+＞【AIの「脳」だけでなく、「体」も賢くなる時代へ】 
+
+動物の鋭い感覚は、脳だけでなくヒゲや耳など「体」の構造が物理的に情報を処理することで実現しています。
+
+しかし従来のロボットは計算をAIに任せきりで、体は単なる頑丈な入れ物でした。 ジョージア工科大学とMITの研究チームは、この常識を覆す「感知知能」を提案。
+
+JRF 2026年6月16日
+
+特殊な構造を持つメタマテリアルを活用し、AI自身が「自分の脳が最も理解しやすい信号」を物理的に生み出せるよう、自らの体の形状を最適化する画期的なアプローチを発表しました。 
+
+AIが自らの体を”進化”させたとき、ロボットの感知能力はどこまで研ぎ澄まされるのか？ 
+
+(…)
+
+Sensing Intelligence as a Trainable Metamaterial Property（2605.23967）【論文解説シリーズ】
+<a href="https://www.youtube.com/watch?v=5CR25-bmC-s" class="ext-link">https://www.youtube.com/watch?v=5CR25-bmC-s</a>
+
+JRF 2026年6月16日
+
+Kyungmi Na, Yifei Li, Xinyi Yang, Bolei Deng
+<a href="https://arxiv.org/abs/2605.23967" class="ext-link">https://arxiv.org/abs/2605.23967</a>
+＜
+
+JRF 2026年6月16日
+
+……。
+
+このビデオを受けて考えた。ロボットがなかなか発展してないように見えるが、そこに何か貢献できないか。いろいろ過去のアイデアを思い出す…。
+
+JRF 2026年6月16日
+
+……。
+
+RLRMDiffusion で LoRA 的なものを構成するというのは、時間軸操作なんだよね。完全なモデルと即時的な反応を LoRA でつなぐみたいな発想になる。その異時学習をどう構築するかという話になる。
+
+これを CAMP 的な発想で捉えると、検索で、LoRA 的なものを取り出し、検索語句として何を検索すべきかが学習されるようになる。これだと何がうまくいかないのか。
+
+JRF 2026年6月16日
+
+LoRA 的な指示を出すとき、本当に出したいのは、「周りに注意しながら歩け」みたいな抽象的な指示から、「あれ(特定の画像)を避けて歩け」みたいな指示まで、多岐にわたる。ところが、こういうのを解釈できるとすると、動き自体の幅は小さいのにものすごい次元のニューラルネットを必要としてしまう。
+
+JRF 2026年6月16日
+
+ここで気付くのは、この画像も文章も入力させたいというのは CAMP の発想と似ていることなんだよね。ここで話が先の「体」の学習につながるんだけど、CAMP につなぐ「幾何」を学習することができるなら、CAMP ができてさえいれば、先のロボットへの指示みたいなのも、学習されうるんじゃないか…と思う。ただ、その「幾何」を学習するというのがどういうことなのかが、まだ判然としないけど…。
+
+JRF 2026年6月16日
+
+<a href="../../../articles/2026/02/statuses_cocolog_95870568.html" class="int-link cocolog-id" title="ひとこと">[cocolog:95870568]</a>(2026年2月)  
+《適応型マルチモーダル区画知覚… CAMP (Compartmentalized Adaptive Multimodal Perception) のアイデア。ツール的メモリ機能とその検索を学習的・適応的に進化させることが、エージェントの次の中心的発展につながるのではないか？ - JRF のひとこと》  
+<a href="../../../articles/2026/02/statuses_cocolog_95870568.html" class="int-link" title="ひとこと">http://jrf.cocolog-nifty.com/statuses/2026/02/post-16df96.html</a>
+
+JRF 2026年6月16日
+
+<a href="../../../articles/2025/05/statuses_cocolog_95459644.html" class="int-link cocolog-id" title="ひとこと">[cocolog:95459644]</a>(2025年5月)
+《AIコンセプト妄想。RLRMDiffusion … Reinforcement Learning Result Model Diffusion。LLM を使ったロボット制御で下部メカの「どう学習すればいいかのプログラム」をプロンプトとして制御のための行列的なものを生成する…。 - JRF のひとこと》
+<a href="../../../articles/2025/05/statuses_cocolog_95459644.html" class="int-link" title="ひとこと">http://jrf.cocolog-nifty.com/statuses/2025/05/post-05b95f.html</a>
+
+JRF 2026年6月16日
+
+……。
+
+<a href="../../../articles/2026/01/statuses_cocolog_95822546.html" class="int-link cocolog-id" title="ひとこと">[cocolog:95822546]</a>(2026年1月)
+《MemoryBanditWorkflow (参: <a href="../../../articles/2025/09/statuses_cocolog_95619779.html" class="int-link cocolog-id" title="ひとこと">[cocolog:95619779]</a>(2025年9月)) を Claude Code などの SKILL.md などを利用して実現するにはどうすればいいか。試みに Claude さん自身に聞いてみた。 - JRF のひとこと》
+<a href="../../../articles/2026/01/statuses_cocolog_95822546.html" class="int-link" title="ひとこと">http://jrf.cocolog-nifty.com/statuses/2026/01/post-b86e58.html</a>
+
+JRF 2026年6月16日
+
+＞そこでひらめいたのが、サブツールという考え方である。ツールとしては subtool_do だけがコンテクストに載っていて、どういうサブツールが使えるかは subtool_show で、まるで SKILL.md を読むように後から適宜知る必要がある…とすればいいのではないかと考えた。無限の拡張性をもたせた上での「オンデマンド学習」というわけである。＜
+
+JRF 2026年6月16日
+
+基本的には、何がなされるべきかその指示は subtool_do を構築することによってなされるのだろう。CAMP のメモリ内ではなくそのメモリ外にニューラルネットを構築しながら。重要なことはこのとき CAMP 内のメモリのスキル(仕様)も学習されてよいということ。メモリ外ネットの詳細は隠されていても、学習信号は CAMP に届いてよい。
+
+また、CAMP の高速な区画処理のみを取り出して、そこが運動のニューラルネットと協調して学習されてもよいとも思う。
+
+このあたりが私が「幾何」で表したかったことだと思う。
+
+JRF 2026年6月16日
+
+↓で構造的学習を考えたが、何かタスク分担による構造的学習のようなものを組み合わせる「学習」も「幾何」なのだと思う。
+
+JRF 2026年6月16日
+
+<a href="../../../articles/2025/10/statuses_cocolog_95666408.html" class="int-link cocolog-id" title="ひとこと">[cocolog:95666408]</a>(2025年10月)
+＞＞
+jrf:&gt; しかしこうやって考えていくと、2nd AGI に向けての「学習」はアイデアとして機能を提案しそれを実装していく…そのような主に AI さん達による営みになっているようですね(Gemini さんはこれを「構造的学習」と呼びました)。
+＜＜
+
+JRF 2026年6月16日
+
+<a href="../../../articles/2025/10/statuses_cocolog_95690194.html" class="int-link cocolog-id" title="ひとこと">[cocolog:95690194]</a>(2025年10月)
+＞「ニューラルネットを構造的学習で代替する二重振り子実験」を行ったあと、私は気づいた。制御の中心は「偽装 LLM」にあるのだが、たとえ劣化 PID 制御であっても AI さんが設計した「偽装 LLM」でうまく動くなら、それはその AI さんこそが「偽装 LLM」の実装を通じて「構造的学習」を行ったことになるということを。 ＜
+
+JRF 2026年6月16日
+
+<a href="../../../articles/2025/10/statuses_cocolog_95690194.html" class="int-link cocolog-id" title="ひとこと">[cocolog:95690194]</a>(2025年10月)
+＞＞
+jrf:&gt; ニューラルネットをタスク分担で代替できないか。もう少し考えてみました。ニューラルネットを直にタスク分担に変換できないか考えます。
+
+JRF 2026年6月16日
+
+タスク分担の場合、何とはなしに待ち、何とはなしに出す、そういう部分が大事だということでした。ただ、その間に待った後入力されたものを出力に直す層があります。この層がニューラルネットの重み行列の層に相当するのではないか…と。入力と出力の次元は変わっていいわけです。そして層の中では重み行列が他を参照するように共有メモリなどを通じて参照しあうのでしょう。そして待機と発出も次元が違っていい。複数発出されたものが一つの待機を、または複数の待機を同時に発火させていいわけです。この待機と発出は、活性化関数に相当する部分でないか。同時発火の数を減らす(例えば1にする)と1出力の活性化関数的になる…
+
+JRF 2026年6月16日
+
+と考えました。いかがでしょう？ ニューラルネットが直にタスク構造に変換できるかもしれないという主張です。効率は悪そうですが。
+
+JRF 2026年6月16日
+
+Gemini:&gt; あなたの主張は、以下の結論に要約されます。
+
+「標準的なニューラルネットワークは、タスク構造（モジュールと論理的ゲート）の非常に密で、全結合的で、連続的な（アナログな）特殊なケースである。」
+
+ネットワークのノード（タスク）が、出力を行う前に「十分な入力が揃うのを待つ」という機能は、リカレントネットワークやアテンション機構など、時間軸または情報軸でのフィルタリングを本質的に内包しています。
+
+ただし、NNから変換すると、効率的な学習（勾配降下法）はできなくなります。
+＜＜
+
+JRF 2026年6月16日
+
+私が言いたかった「幾何」とは、「ネットワーク構造やタスク依存関係のトポロジー」になるのかな…。
+
+JRF 2026年6月16日
+
+……。
+
+CAMP 用の区画処理ハードウェアというのが、畳み込み(convolution)の高機能版として機能しうる。それが「構造的学習」にどう機能するか…というのが、結局のところ、今回の新しい知見なのかもしれない。他はちょっと思い付かなかった orz。
+
+CAMP の区画は、検索のほかに、複数の区画にまたがってどういう検索「語句」(映像なども含む)を使えばよいかの提案の機能もあることが想定されている。それと区画を書き換える機能…は「学習」的になるのだろう。そういう高速ハードウェアが、今のLLMからすれば低機能でも、実現できれば、できることはあるんじゃないかな…という気はする。
+
+JRF 2026年6月16日
+
+……。
+
+今回の専用ハードウェアのアイデアの名前は CAMPFIRE とでもしておこう。
+
+ただ、この辺の(今回の一連の CAMP・RLRMDiffusion…などの)アイデアは本物でない気もする。以前 xxLLM (JSON を出力する xLLM に対し、JSON を出力するプログラムを出力する LLM) を考えたのだが、AI さん達が発展して普通にメタプログラムが可能になってその必要性がなくなった。そういうことが起きそうな予感が今回もある。
+
+<span class="keyword-ref">keyword: <a href="../../../search.html?q=xxLLM" class="keyword-link">xxLLM</a></span>
+
+JRF 2026年6月16日
+
+……。
+
+今回も AI さん達の意見をいろいろ伺ったのだが、私、ポンコツで新しいアイデアをほぼ拾い上げることができなかった。情けない。orz
+
+JRF 2026年6月16日</pre>
+
+
+
+</article>
+<nav class="prevnext" data-pagefind-ignore><span class="prev-art">← <a href="../../../articles/2026/06/statuses_cocolog_96030641.html">AI共産主義というか、AIを前提とした国債・借金の踏み倒しのシナリオは可能なのか…</a> <span class="pn-date">2026年06月14日</span></span><span class="next-art"><a href="../../../articles/2026/06/statuses_cocolog_96039884.html">劉慈欣『三体』三部作を読んだ。スケールがとてつもなく大きなSF。統合失調症時の「…</a> <span class="pn-date">2026年06月21日</span> →</span></nav>
+
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2026/06.html">2026年06月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+</body>
+</html>
