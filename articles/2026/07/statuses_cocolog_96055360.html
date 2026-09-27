@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>斎藤康毅『ゼロから作るDeep Learning 6 -… - JRF ブログ退避所</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2026/07.html">2026年07月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+<article data-pagefind-body data-pagefind-meta="種別:ひとこと">
+<div data-pagefind-meta="投稿月:2026年07月" style="display:none"></div>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[statuses] <span class="cocolog-id">cocolog:96055360</span></td></tr>
+<tr><th>セクション</th><td>JRF のひとこと</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2026/07.html">2026年07月03日</a></td></tr>
+<tr><th>元URL</th><td><a href="http://jrf.cocolog-nifty.com/statuses/2026/07/post-3f91b3.html" class="ext-link"><span class="original-url">http://jrf.cocolog-nifty.com/statuses/2026/07/post-3f91b3.html</span></a></td></tr>
+
+</table>
+</div>
+<h1>斎藤康毅『ゼロから作るDeep Learning 6 -…</h1>
+<pre class="body">斎藤康毅『ゼロから作るDeep Learning 6 - LLM編』を読んだ。GPT2 レベルの LLM を実装していくのがこの本。GPT2 レベルの xxLLM 作成のあたりを付けてみようと思ったが、その規模感に作る自信を失った。
+JRF 2026年7月3日
+
+『ゼロから作るDeep Learning 6 - LLM編』(斎藤 康毅 著, オライリー・ジャパン, 2026年6月)
+<a href="https://www.amazon.co.jp/dp/4814401612" class="ext-link">https://www.amazon.co.jp/dp/4814401612</a>
+<a href="https://7net.omni7.jp/detail/1107710741" class="ext-link">https://7net.omni7.jp/detail/1107710741</a>
+
+サンプルコードは↓
+
+《GitHub - oreilly-japan/deep-learning-from-scratch-6》  
+<a href="https://github.com/oreilly-japan/deep-learning-from-scratch-6" class="ext-link">https://github.com/oreilly-japan/deep-learning-from-scratch-6</a>
+
+JRF 2026年7月3日
+
+私は『ゼロから作る Deep Learning』のシリーズの 1巻を <a href="../../../articles/2017/04/statuses_cocolog_87181973.html" class="int-link cocolog-id" title="ひとこと">[cocolog:87181973]</a>(2017年4月) で、2巻を <a href="../../../articles/2018/11/statuses_cocolog_90214777.html" class="int-link cocolog-id" title="ひとこと">[cocolog:90214777]</a>(2018年11月) で、5巻を <a href="../../../articles/2024/04/statuses_cocolog_94787819.html" class="int-link cocolog-id" title="ひとこと">[cocolog:94787819]</a>(2024年4月) で読んでいた。3 と 4 はまだ買っていない。3 と 4 を読んでいなくても 6 は問題なく読めた。基本的には 6 を読むには以前の本の知識はいらないそうである。ただ、Python の知識はもちろん必要。
+
+JRF 2026年7月3日
+
+……。
+
+GPT2 レベルの LLM を実装していくのがこの本。最初に Python コードを生成する CodeBot を作る。SFT で質問応答できるようにし、強化学習で簡単な足し算が合うようにする…という流れ。
+
+次にお話を生成する StoryBot を作る。主に高速化の工夫をし、強化学習では、RLHF の考え方を紹介しながら、報酬モデルの作成を短絡した DPO を説明する。
+
+さらに Web から広くデータを集めた巨大なデータセットから、WebBot を作ろうとする。しかし、これはヒントのみ…というかトピックの紹介のみになる。
+
+JRF 2026年7月3日
+
+……。
+
+私は xxLLM (JSON を出力する xLLM に対し、JSON を出力するプログラムを出力する LLM) を GPT2 レベルで実装できないか…とあたりを付けながら読んだ。JSON の生成は特別な DSL (Domain Specific Language) の仕様を作って記述する予定なのだが、それは Gemma とかで生成できないかと考えている。
+
+<span class="keyword-ref">keyword: <a href="../../../search.html?q=xxLLM" class="keyword-link">xxLLM</a></span>
+
+JRF 2026年7月3日
+
+しかし、もっとも小さい CodeBot 作成において、その 6MB の codebot/tiny_codes.txt をのぞいてみて驚いた。文がとんでもなく多いのである。6MB のサイズ感でこれなのか…と。これを無料とは言え Gemma の LLM で変換していくのは、かなり無理があるのではないのか…とたじろいでいる。
+
+JRF 2026年7月3日
+
+……。
+
+codebot/tiny_codes.txt はほとんどがプログラムまたは説明付きのプログラムで会話なんてほとんどないのに、SFT で会話を訓練するとうまくいくらしいのが、ちょっと信じられない。これは、会話に反応しているわけでなく、単にコピペ的に SFT された内容を繰り返しているだけなのかもしれないが…。
+
+JRF 2026年7月3日
+
+……。
+
+p.164 にある ch03/09_grpo.py で、all_prompts と all_responses から get_batch でバッチを作っているのに、アドバンテージに関しては all_advantages のまま使っているところで混乱した。
+
+JRF 2026年7月3日
+
+Gemini さんに聞いたところ判明したのは、p.159-160 の get_batch をちゃんと読むと、そこではバッチを数個取り出すという処理はしておらず、all_prompts と all_responses と数は変わらないということだ。だったら、get_batch じゃなく fix_batch みたいにしてくれてたらよかったのに！…まぁ、これはその後の章で同名でちゃんとバッチを作ってるみたいだから、しかたないのかもしれないけど。
+
+JRF 2026年7月3日
+
+……。
+
+RLHF とか DPO などの強化学習については不思議に思っていることがあった。ある特定の生成列を覚えさせるなら、そればっかり覚えるようになるんじゃないだろうか？ また、正例・負例で生成したものが決まっているなら、たまたまそれが乱数的に生成されるのが重ならない限り、学習できないのではないか…と。
+
+前者については、温度が高い中でやるから、モデルの「性格」レベルのところに作用して、コピペ的効果が薄いのかな…という印象。
+
+JRF 2026年7月3日
+
+Gemini:＞強化学習（RLHF/DPO）では、特定の「正解の文字列」そのものを丸暗記させるのではなく、モデル全体の「出力の傾向（ポリシー）」をじんわりと傾ける操作をしています。これを支える決定的な仕組みが「KLダイバージェンス（KL散乱）ペナルティ」です。＜
+
+JRF 2026年7月3日
+
+後者については、生成がすべての単語に対する確率としていったん求められているので、そこから拾えば常に生成列の報酬が求まるということに気付けた。
+
+Gemini:＞「完全に正解の文が出るのを待つ」のではなく、「出力された文の、どの単語の確率を『上げれば』 or 『下げれば』、全体としてマシな出力になったか」という確率の重みの引っ張り合いを、常に全単語の選択肢に対して同時に行っている。
+
+だからこそ、たまたま出た偶然の1回を待つ必要はなく、どんなに打率が低くても「出力されたすべての試行」から効率よく、常に学習を進めることができるわけです。
+＜
+
+JRF 2026年7月3日
+
+……。
+
+高速化やメモリなどの効率化はモデルを大規模にしようとしたら必ず必要で、LLM はスケーリング則こそ本質だから、大規模化のそういう工夫こそが本丸…というのはわかるのだが、やはり私はモデルの設計…トポロジーを見直せないか…と考えてしまう。その意味では一番参考になったのは最初の CodeBot (その Attention や Transformer)の説明だった。
+
+JRF 2026年7月3日
+
+……。
+
+xxLLM については作る自信が消えているが、アイデアはできているので、アイデアの公開だけのためにも、いちおう(簡単な)実験はしてみようと思う。
+
+JRF 2026年7月3日</pre>
+
+
+
+<section class="backrefs" data-pagefind-ignore>
+<h2>後方参照 (1 件)</h2>
+<ul>
+<li><span class="backref-label">[cocolog:96055360]参照</span> <a href="../../../articles/2026/07/gsm_009233.html" class="int-link">[cocolog:96055360](2026年7月)…</a> <span class="backref-date">2026-07-02T20:35:23Z</span></li>
+</ul>
+</section>
+
+</article>
+<nav class="prevnext" data-pagefind-ignore><span class="prev-art">← <a href="../../../articles/2026/07/statuses_cocolog_96054774.html">ヨーロッパの熱波は、風力発電の影響のような気がする。風車の設定を変えることで、「…</a> <span class="pn-date">2026年07月02日</span></span><span class="next-art"><a href="../../../articles/2026/07/statuses_cocolog_96060660.html">シャドウバンやアカウント停止などにコンサルタントが入ってくる話。やはり民間収賄罪…</a> <span class="pn-date">2026年07月07日</span> →</span></nav>
+
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2026/07.html">2026年07月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+</body>
+</html>

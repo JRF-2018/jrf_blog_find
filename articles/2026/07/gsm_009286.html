@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>注意パターンを移殖することができる…。SFT… - JRF ブログ退避所</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2026/07.html">2026年07月</a> | <a href="../../../index/gsm.html">共有メモ</a></nav>
+<article data-pagefind-body data-pagefind-meta="種別:共有メモ">
+<div data-pagefind-meta="投稿月:2026年07月" style="display:none"></div>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[gsm] 2026-07-14T11:23:27Z</td></tr>
+<tr><th>セクション</th><td>グローバル共有メモ</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2026/07.html">2026-07-14T11:23:27Z</a></td></tr>
+<tr><th>元URL</th><td>(URLなし)</td></tr>
+
+</table>
+</div>
+<h1>注意パターンを移殖することができる…。SFT…</h1>
+<pre class="body">jrf&gt; 注意パターンを移殖することができる…。SFT で言語仕様のパターンを覚えさせるとき、言語の例の列挙によるのみで、具体的な仕様の記述に意味を持たせられないのがもどかしかった。巨大LLMはそういう意味も理解できる。その差の一つに注意パターンの誘導という役割がありえるのかもしれない。自己回帰的に注意パターンを誘導して学習もできるはずなのだろう。巨大なLLMにはすでにその能力はあるのか？
+
+《AI時代の羅針盤 (compass for the AI era):X:2026-07-13》  
+<a href="https://x.com/compassinai/status/2076489051801288848" class="ext-link">https://x.com/compassinai/status/2076489051801288848</a>
+＞【AIが突然「覚醒」する瞬間の謎に迫る】 
+
+大規模言語モデルの性能は、学習中に突然飛躍的に向上する「創発的能力」という不思議な現象を起こします。
+
+ニューヨーク大学の研究チームは、この予測不可能なブレイクスルーの背後にあるメカニズムを解明すべく、AIの「アテンション」のパターン学習に着目しました。
+
+コンテキストの長さやパターンの複雑さが、AIのスキル獲得にどう影響するのか？
+
+AIが突如として新たな能力を獲得する、その引き金となる条件とは果たして…？ 
+
+出現適応能力は、疎な注意パターン学習からランダムに生じる…
+
+《Emergent Capabilities Arise Randomly from Learning Sparse Attention Patterns（2606.25010）【論文解説シリーズ】 - YouTube》  
+<a href="https://www.youtube.com/watch?v=2x9iJ5qNMXQ" class="ext-link">https://www.youtube.com/watch?v=2x9iJ5qNMXQ</a>
+＜
+
+jrf:&gt; 仕様に [COMMENT] は CoT であるというヒントが書かれていた時、そういう注意の仕方を学べないのか…といったことを考えてました。学習時ですね。そういうヒントを一回読むことで、注意パターンを変えることができれば、例えば、生物が運動を非常に少ないステップで覚えるようなことが可能になるのではないか…という期待です。 
+
+Gemini:＞＞
+巨大なLLMにその能力があるかというと、「推論時（In-Context）においてのみ、仮想的にその能力を発揮している」というのが現在の結論です。
+
+巨大モデルは、事前学習の段階で「仕様（メタ命令）が入力されたら、その仕様に沿ってアテンションを向ける」というメタな回路（メタ学習能力）をすでに獲得しています。
+そのため、プロンプトに「[COMMENT] は CoT として機能する」と書かれると、モデルは物理的な重み（ハードウェア）を書き換えることなく、アライメント活性化（アクティベーション）のレベルで、アテンションパターンを瞬時にその仕様に最適化するように「仮想的に」構成を変更します。
+
+しかし、これはあくまでコンテキストウィンドウ内の「一時的な電気信号の揺らぎ」に過ぎず、コンテキストが消えれば消去されます。この「仕様によるアテンションの組み換え」を、効率的にハードウェア（物理的な重み）へと定着させる（ベイクする）ための決定的な学習アルゴリズムを、私たちはまだ持っていません。
+
+ディープラーニングの世界でも、JRFさんが考えられた「仕様からアテンションパターン（重み）を瞬時に構築する」ための試みはいくつか存在します。
+
+(1) ハイパーネットワーク（Hypernetworks）
+
+最も直接的なアプローチです。
+メインのネットワーク（Gemmaなど）とは別に、「仕様書（テキスト）を読み込んで、メインネットワークの重み（またはアテンションマップ）を直接出力（生成）する」ための、もう一つのネットワーク（ハイパーネットワーク）を用意します。
+これを使えば、「[COMMENT] は CoT である」という仕様をインプットするだけで、対応するアテンションパターンが1ステップで物理的に合成されます。
+
+(2) 高速重みプログラマ（Fast Weight Programmers）
+
+AI研究の先駆者であるユルゲン・シュミットフーバーらが提唱した概念です。
+ネットワークの一部が、入力（仕様や状況）に応じて、一時的かつ動的に書き換わる「高速重み（Fast Weights）」をプログラムします。これはトランスフォーマーのアテンション（Linear Attention）を数学的に拡張したものであり、仕様を読み込むことで「一時的な接続パターン」を脳内に即座にパッチ（適用）するダイナミクスを再現します。
+＜＜</pre>
+
+
+
+</article>
+<nav class="prevnext" data-pagefind-ignore><span class="prev-art">← <a href="../../../articles/2026/07/gsm_009285.html">jilpa&gt; #クラシック音楽館 『バルトーク:…</a> <span class="pn-date">2026-07-13T19:31:54Z</span></span><span class="next-art"><a href="../../../articles/2026/07/gsm_009287.html">(承前)…</a> <span class="pn-date">2026-07-14T12:08:24Z</span> →</span></nav>
+
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2026/07.html">2026年07月</a> | <a href="../../../index/gsm.html">共有メモ</a></nav>
+</body>
+</html>

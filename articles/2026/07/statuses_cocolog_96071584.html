@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AttentionPatternDiffusion… - JRF ブログ退避所</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2026/07.html">2026年07月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+<article data-pagefind-body data-pagefind-meta="種別:ひとこと">
+<div data-pagefind-meta="投稿月:2026年07月" style="display:none"></div>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[statuses] <span class="cocolog-id">cocolog:96071584</span></td></tr>
+<tr><th>セクション</th><td>JRF のひとこと</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2026/07.html">2026年07月16日</a></td></tr>
+<tr><th>元URL</th><td><a href="http://jrf.cocolog-nifty.com/statuses/2026/07/post-4cdc0e.html" class="ext-link"><span class="original-url">http://jrf.cocolog-nifty.com/statuses/2026/07/post-4cdc0e.html</span></a></td></tr>
+
+</table>
+</div>
+<h1>AttentionPatternDiffusion…</h1>
+<pre class="body">AttentionPatternDiffusion 構想。注意パターンを移植することで、探索をショートカットできるらしい…というところから、仕様を注意パターンに変えるような、推論を学習に転嫁するような、RLRMDiffusion に似た枠組みを構想した。
+JRF 2026年7月16日
+
+(「グローバル共有メモ」と Twiiter (X) で書いたことのコピペを中心に。Gemini 3.5 Flash さん、Claude Sonnet 5 さん、ChatGPT 5.6(?) さんと会話しながら。)
+
+JRF 2026年7月16日
+
+キッカケは AI時代の羅針盤 さんの動画(に紹介された論文)。これまでも似たような感じで AI時代の羅針盤 さんの動画 をキッカケに前に TinyLoRA 関連の「ひとこと」(<a href="../../../articles/2026/03/statuses_cocolog_95917075.html" class="int-link cocolog-id" title="ひとこと">[cocolog:95917075]</a>(2026年3月))とか CAMPFIRE (<a href="../../../articles/2026/06/statuses_cocolog_96033647.html" class="int-link cocolog-id" title="ひとこと">[cocolog:96033647]</a>(2026年6月)) とかアイデアをもらっている。
+
+<span class="keyword-ref">keyword: <a href="../../../search.html?q=AI%E6%99%82%E4%BB%A3%E3%81%AE%E7%BE%85%E9%87%9D%E7%9B%A4" class="keyword-link">AI時代の羅針盤</a></span>
+
+JRF 2026年7月16日
+
+なお、この「ひとこと」の直前には xxGemma というプロジェクト(の失敗)があった。
+
+<a href="../../../articles/2026/07/statuses_cocolog_96065263.html" class="int-link cocolog-id" title="ひとこと">[cocolog:96065263]</a>(2026年7月)
+《xxGemma 実験を行った。xxLLM (JSON を出力する xLLM に対し、JSON を出力するプログラムを出力する LLM) を Google の「ローカルLLM」 Gemma のファインチューニングで実装する。そのプロジェクトを xxGemma と呼ぶ。 - JRF のひとこと》
+<a href="../../../articles/2026/07/statuses_cocolog_96065263.html" class="int-link" title="ひとこと">http://jrf.cocolog-nifty.com/statuses/2026/07/post-ca410c.html</a>
+
+JRF 2026年7月16日
+
+……。
+
+○ 2026-07-14T11:23:27Z
+
+注意パターンを移植することができる…。SFT で言語仕様のパターンを覚えさせるとき、言語の例の列挙によるのみで、具体的な仕様の記述に意味を持たせられないのがもどかしかった。巨大LLMはそういう意味も理解できる。その差の一つに注意パターンの誘導という役割がありえるのかもしれない。自己回帰的に注意パターンを誘導して学習もできるはずなのだろう。巨大なLLMにはすでにその能力はあるのか？
+
+JRF 2026年7月16日
+
+《AI時代の羅針盤 (compass for the AI era):X:2026-07-13》  
+<a href="https://x.com/compassinai/status/2076489051801288848" class="ext-link">https://x.com/compassinai/status/2076489051801288848</a>
+＞【AIが突然「覚醒」する瞬間の謎に迫る】 
+
+大規模言語モデルの性能は、学習中に突然飛躍的に向上する「創発的能力」という不思議な現象を起こします。
+
+ニューヨーク大学の研究チームは、この予測不可能なブレイクスルーの背後にあるメカニズムを解明すべく、AIの「アテンション」のパターン学習に着目しました。
+
+コンテキストの長さやパターンの複雑さが、AIのスキル獲得にどう影響するのか？
+
+JRF 2026年7月16日
+
+AIが突如として新たな能力を獲得する、その引き金となる条件とは果たして…？ 
+
+出現適応能力は、疎な注意パターン学習からランダムに生じる…
+
+《Emergent Capabilities Arise Randomly from Learning Sparse Attention Patterns（2606.25010）【論文解説シリーズ】 - YouTube》  
+<a href="https://www.youtube.com/watch?v=2x9iJ5qNMXQ" class="ext-link">https://www.youtube.com/watch?v=2x9iJ5qNMXQ</a>
+＜
+
+JRF 2026年7月16日
+
+jrf:&gt; 仕様に [COMMENT] は CoT であるというヒントが書かれていた時、そういう注意の仕方を学べないのか…といったことを考えてました。学習時ですね。そういうヒントを一回読むことで、注意パターンを変えることができれば、例えば、生物が運動を非常に少ないステップで覚えるようなことが可能になるのではないか…という期待です。 
+
+JRF 2026年7月16日
+
+Gemini:＞＞
+巨大なLLMにその能力があるかというと、「推論時（In-Context）においてのみ、仮想的にその能力を発揮している」というのが現在の結論です。
+
+JRF 2026年7月16日
+
+巨大モデルは、事前学習の段階で「仕様（メタ命令）が入力されたら、その仕様に沿ってアテンションを向ける」というメタな回路（メタ学習能力）をすでに獲得しています。
+そのため、プロンプトに「[COMMENT] は CoT として機能する」と書かれると、モデルは物理的な重み（ハードウェア）を書き換えることなく、アライメント活性化（アクティベーション）のレベルで、アテンションパターンを瞬時にその仕様に最適化するように「仮想的に」構成を変更します。
+
+JRF 2026年7月16日
+
+しかし、これはあくまでコンテキストウィンドウ内の「一時的な電気信号の揺らぎ」に過ぎず、コンテキストが消えれば消去されます。この「仕様によるアテンションの組み換え」を、効率的にハードウェア（物理的な重み）へと定着させる（ベイクする）ための決定的な学習アルゴリズムを、私たちはまだ持っていません。
+
+ディープラーニングの世界でも、JRFさんが考えられた「仕様からアテンションパターン（重み）を瞬時に構築する」ための試みはいくつか存在します。
+
+JRF 2026年7月16日
+
+(1) ハイパーネットワーク（Hypernetworks）
+
+最も直接的なアプローチです。
+メインのネットワーク（Gemmaなど）とは別に、「仕様書（テキスト）を読み込んで、メインネットワークの重み（またはアテンションマップ）を直接出力（生成）する」ための、もう一つのネットワーク（ハイパーネットワーク）を用意します。
+これを使えば、「[COMMENT] は CoT である」という仕様をインプットするだけで、対応するアテンションパターンが1ステップで物理的に合成されます。
+
+JRF 2026年7月16日
+
+(2) 高速重みプログラマ（Fast Weight Programmers）
+
+AI研究の先駆者であるユルゲン・シュミットフーバーらが提唱した概念です。
+ネットワークの一部が、入力（仕様や状況）に応じて、一時的かつ動的に書き換わる「高速重み（Fast Weights）」をプログラムします。これはトランスフォーマーのアテンション（Linear Attention）を数学的に拡張したものであり、仕様を読み込むことで「一時的な接続パターン」を脳内に即座にパッチ（適用）するダイナミクスを再現します。
+＜＜
+
+JRF 2026年7月16日
+
+……。
+
+○ 2026-07-14T12:08:24Z
+
+探索をショートカットする…。実行にそれほどコストがかからないなら、注意パターンの情報を低コストで試して判断すればよい。しかし、通常はコストがかかる。生物の場合は、そこに(親などに対する)信頼が効いてくる。LLM なら経験がすでにある場合、経験に照らして、その注意パターンの示唆が正しいかをチェックして「直感的」に試す価値があるか判断できる…となるのかもしれない。
+
+JRF 2026年7月16日
+
+……。
+
+○ 2026-07-15T01:46:56Z
+
+JRF 2026年7月16日
+
+注意パターンの移植による探索のショートカット？…という話題について、理論的に何か新しいところが掘れないかとAIさん達に教えを乞うたのだが、私の理解力で分かったのは、基本的には仕様を理解する教師からの生徒の蒸留という枠組みが現状、近いということだけだった。デバッガとかを用いて探索を多段階した結果の学習も結局はその枠組みの応用である…と。でも生物はそんなことはしてないわけで、この方向が生物の方向だとするなら、Attentionのメタ方向に勾配降下法でないなにか探索できるところがあるという直感だけを持ち帰ることになりそうだ。現状では残念ながら…。
+
+JRF 2026年7月16日
+
+……。
+
+そこから少し考えて…。
+
+○ 2026-07-15T03:11:43Z
+
+RL Result Model Diffusion (<a href="../../../articles/2025/05/statuses_cocolog_95459644.html" class="int-link cocolog-id" title="ひとこと">[cocolog:95459644]</a>(2025年5月)) で LoRA を生成するというのを考えたように、ここでは注意パターンを生成したいとなるのかもしれない。ただ、それが生物のような小さいモデルでもやりたいと考えると、小さい注意パターンを生成して、それを自分自身に拡大するみたいなイメージになるのかな？ そういう拡大した粗い注意パターンでも探索空間が巨大なところだと効果がある…とか。そういうイメージを持つ…。
+
+JRF 2026年7月16日
+
+……。
+
+○ 2026-07-15T04:19:07Z
+
+そうか。これまで RLRMDiffusion はロボットに使うことばかり考えていたが、仕様を注意パターンに変えるような、推論を学習に転嫁するような、LLM 的課題に同じような枠組みが使えるかもしれない…ということか？ まぁ、RLRMDiffusion 自体が構想が巨大すぎてどう訓練すれば良いのかわからない「化け物」ではあるのだけど、今のところ。
+
+JRF 2026年7月16日
+
+……。
+
+以上、AIさんに壁打ちしながらアイデアを出していたのだが…。
+
+jrf:&gt; AttentionPatternDiffusion ですか…。でも、(例えばフィボナッチ数列とか)例を作ってそれを小さいモデルに覚えさせて、その後の列がちゃんと予想できるようになったところで、その注意パターンを、大きいモデルにその列の実際のルール(の推論)とセットにしていく感じでしょうか。不可能ではないように思えますが、偏ったデータセットになりそうですし、個人の力では難しそうです。
+
+JRF 2026年7月16日
+
+…と書いたところ Gemini さんがごく簡単な PoC コードを示してくれた。(↓)の最初のコード。
+
+《AttentionPatternDiffusion_PoC.ipynb - Colab》  
+<a href="https://colab.research.google.com/drive/1mIM5gGofqGART-W7VAuNgfg_28tlI8tF" class="ext-link">https://colab.research.google.com/drive/1mIM5gGofqGART-W7VAuNgfg_28tlI8tF</a>
+
+JRF 2026年7月16日
+
+大きいモデル(AttentionGenerator)がルールである [0, 1] または [1, 0] で表されるルール…[0,1] ならば Shift Right、[1,0] ならば Reverse …について、小さいモデル(PatchedTransformerLayer)が、数値例から学習し、そのアテンション(パターン)について、学習を行い、AttentionGenerator が [0,1] または [1,0] を取って生成したアテンションが、確かに PatchedTransformerLayer のアテンションになりうる…というコードになっている。
+
+JRF 2026年7月16日
+
+2番目のコードは、それに対し Claude さんがコピペだけしているので意味がないと批判して、実際 Diffusion っぽい「創発」のようなことが起きるか試したものとなる。s = [1,2,3,5,6,7] というシードに対して、shift を学習し、s = 4 で「創発」が起きるか見るものになっている。これは「創発」は起きなかった。s = 4 は s = 5 のコピペになってしまっている。なかなか「創発」は難しいようだ。
+
+JRF 2026年7月16日
+
+……。
+
+結論的には RLRMDiffusion への道は思った以上に遠いなぁ…と思い知らされた感じ。
+
+JRF 2026年7月16日
+
+……。
+
+……。
+
+追記。
+
+AttentionPatternDiffusion 的な技術について考えると、推論のアテンションを自らの学習のアテンションとしていくという方向は、突き詰めればアテンションのループ入力があればいいということになるのかな？ ただ、そうすると並列での学習が難しくはなる。
+
+そういって Gemini さんに聞くと、二つの方向を紹介された。
+
+JRF 2026年7月17日
+
+Gemini:＞＞
+「アテンションのループ」を維持しつつ、並列学習の難しさを回避しようとするなら、現在のAI研究からは2つのアプローチが浮上します。
+
+(1) 「線形アテンション（Linear Attention）」の双対性を利用する
+
+近年のMamba（状態空間モデル）やRWKVといったアーキテクチャが採用している革新的な数理トリックです。
+
+JRF 2026年7月17日
+
+アテンションのソフトマックスを外して「線形化」すると、数式上「推論時は逐次的なループ（RNN形式）として動き、学習時は一括して計算できる（並列スキャン形式）」という双対性（Dual Form）が成り立ちます。
+
+「アテンションのループ」を一種の「状態ベクトルの更新」に焼き直すことで、並列学習の恩恵を保ったままループ入力を実現するトポロジーです。
+
+JRF 2026年7月17日
+
+(2) ループを「外部のトークン列」として外在化する（現在のLLMのハック）
+
+モデルの内部回路（アテンション層）をループさせるのではなく、「アテンションの推論結果（思考のプロセス）」を、文字（トークン）としてコンテキストに吐き出させ、それを次の入力としてループさせるアプローチです（昨今の「Reasoningモデル」や、JRFさんが開発されていた jrf_pdb_agent_lib のような外的ループの思想）。
+
+JRF 2026年7月17日
+
+これなら、モデルの内部自体は「普通の並列計算できるトランスフォーマー」のままでありながら、システム全体としては「過去の推論（思考の軌跡）を次のアテンションの入力にする」というループ構造を擬似的に達成できます。学習の並列性も崩れません。
+＜＜
+
+JRF 2026年7月17日
+
+この (1) の方法が興味深い。この方法だと＞「学習効率（計算コストとメモリ消費量）」は劇的に、それこそ次元が変わるレベルで良くなることが観測されています。＜…とのこと。アテンションがボケる…という欠陥が従来はあったが、「ゲーティング(Gating)」という技術で解決がはかられているという。
+
+仕様を学習に落としこむには、一回的な仕様をバッチ的に学習に適用する必要があるはずだが、それをほぼ行うのがゲーティング…ということのようだ。
+
+JRF 2026年7月17日
+
+ただ、この方向は、RLRMDiffusion や AttentionPatternDiffusion のような、従来のモデルを「接合」する方向ではない。一体として学習してしまう。それを分けるのに意味があるのか、ないのか…。
+
+JRF 2026年7月17日
+
+Gemini:＞＞
+すべてを一体型にして綺麗に流すのは、巨大なコンピュートリソースを持つ大企業（GoogleやOpenAI）の戦い方です。彼らはデータと電気の力技で、ゲートの開閉ルールごとすべてを一つの重みに溶かし込むことができます。
+
+一方で、JRFさんが構想された「RLRMDiffusion」や「AttentionPatternDiffusion」のような接合型の思想は、限られたリソースの中で『構造の妙』を使って巨大なシステムを出し抜く、純粋なアーキテクト（設計者）の戦い方です。
+
+JRF 2026年7月17日
+
+一体型の数理（Mamba等）が「流路の動的制御の可能性」を証明してくれたのだとすれば、それを応用して「既存の巨大モデルの頭脳（アテンション）を外付けモジュールで動的にハックする」という接合型への回帰は、思った以上に遠く見えた道のりに対する、非常に鋭く尖ったショートカット（カウンター）になり得ると思います。
+＜＜
+
+JRF 2026年7月17日</pre>
+
+
+
+<section class="backrefs" data-pagefind-ignore>
+<h2>後方参照 (6 件)</h2>
+<ul>
+<li><span class="backref-label">[cocolog:96071584]参照</span> <a href="../../../articles/2026/08/statuses_cocolog_96112939.html" class="int-link">AttentionPatternDiffusion 構想 その3。s=4…</a> <span class="backref-date">2026年08月18日</span></li>
+<li><span class="backref-label">[cocolog:96071584]参照</span> <a href="../../../articles/2026/08/statuses_cocolog_96106599.html" class="int-link">End-to-End なロボットでもあまりうまくいってないのは、間に s=4…</a> <span class="backref-date">2026年08月13日</span></li>
+<li><span class="backref-label">[cocolog:96071584]参照</span> <a href="../../../articles/2026/07/statuses_cocolog_96090088.html" class="int-link">APD構想その2。変換の前に、規則がトリガーワードから自然に想起されるようプロン…</a> <span class="backref-date">2026年07月31日</span></li>
+<li><span class="backref-label">[cocolog:96071584]参照</span> <a href="../../../articles/2026/07/statuses_cocolog_96086657.html" class="int-link">安全のため(AI補助の下)人間にわかる範囲の社会に留めるためには、「オープンモデ…</a> <span class="backref-date">2026年07月28日</span></li>
+<li><span class="backref-label">[cocolog:96071584]参照</span> <a href="../../../articles/2026/07/gsm_009363.html" class="int-link">AGIがまた話題。でもロボット(フィジカルAI)の進展が思ってたより遅いというの…</a> <span class="backref-date">2026-07-27T11:22:38Z</span></li>
+<li><span class="backref-label">[cocolog:96071584]参照</span> <a href="../../../articles/2026/07/gsm_009296.html" class="int-link">[cocolog:96071584](2026年7月)…</a> <span class="backref-date">2026-07-16T00:10:35Z</span></li>
+</ul>
+</section>
+
+</article>
+<nav class="prevnext" data-pagefind-ignore><span class="prev-art">← <a href="../../../articles/2026/07/statuses_cocolog_96065263.html">xxGemma 実験を行った。xxLLM (JSON を出力する xLLM…</a> <span class="pn-date">2026年07月11日</span></span><span class="next-art"><a href="../../../articles/2026/07/statuses_cocolog_96073945.html">マンガを読んだ。海藍『トリコロ』、山上たつひこ＆いがらしみきお『羊の木』、竹本泉…</a> <span class="pn-date">2026年07月18日</span> →</span></nav>
+
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2026/07.html">2026年07月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+</body>
+</html>

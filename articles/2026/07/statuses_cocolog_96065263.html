@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>xxGemma 実験を行った。xxLLM (JSON を出力する xLLM… - JRF ブログ退避所</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2026/07.html">2026年07月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+<article data-pagefind-body data-pagefind-meta="種別:ひとこと">
+<div data-pagefind-meta="投稿月:2026年07月" style="display:none"></div>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[statuses] <span class="cocolog-id">cocolog:96065263</span></td></tr>
+<tr><th>セクション</th><td>JRF のひとこと</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2026/07.html">2026年07月11日</a></td></tr>
+<tr><th>元URL</th><td><a href="http://jrf.cocolog-nifty.com/statuses/2026/07/post-ca410c.html" class="ext-link"><span class="original-url">http://jrf.cocolog-nifty.com/statuses/2026/07/post-ca410c.html</span></a></td></tr>
+
+</table>
+</div>
+<h1>xxGemma 実験を行った。xxLLM (JSON を出力する xLLM…</h1>
+<pre class="body">xxGemma 実験を行った。xxLLM (JSON を出力する xLLM に対し、JSON を出力するプログラムを出力する LLM) を Google の「ローカルLLM」 Gemma のファインチューニングで実装する。そのプロジェクトを xxGemma と呼ぶ。
+JRF 2026年7月11日
+
+成果物は↓。
+
+《JRF-2018/xxgemma: xxLLM for Gemma. - GitHub》  
+<a href="https://github.com/JRF-2018/xxgemma" class="ext-link">https://github.com/JRF-2018/xxgemma</a>
+
+↑にも置いてあるが、手っ取り早く実験したい方には↓に今回のメインの IPYNB がある。
+
+JRF 2026年7月11日
+
+《xxgemma_sft.ipynb - xxGemma プロジェクト: Unsloth を使って Gemma を xxLLM になるよう SFT する - Colab》  
+<a href="https://colab.research.google.com/drive/1GCUJO3i4vdLllBzPjxU52CGoymUHwNpM" class="ext-link">https://colab.research.google.com/drive/1GCUJO3i4vdLllBzPjxU52CGoymUHwNpM</a>
+
+JRF 2026年7月11日
+
+## 概要
+
+xxLLM (JSON を出力する xLLM に対し、JSON を出力するプログラムを出力する LLM) を Gemma のファインチューニングで実装する。そのプロジェクトを xxGemma と呼ぶ。この IPYNB は Unsloth を使ってそのファインチューニングを行うためのものである。
+
+ただし、今回の実装は、相対的に能力の低い小さい Gemma による実装で、実用的な実装とは言えず、PoC (Proof of Concept) 的な実装に留まっている。もちろん、将来的には小さく速い LLM で xxLLM が十分に機能してほしいというのはあるのだが。
+
+JRF 2026年7月11日
+
+## DSL (Domain Specific Language) の簡単な仕様
+
+今回使うデータセットは私が定義した DSL 仕様をもとに、Gemini 3.5 Flashさんに列挙してもらったシチュエーションを ChatGPT 5.5(?) さんに DSL プログラムにしてもらったもの。
+
+例えば、次のような DSL プログラムを出力するように訓練する。
+
+JRF 2026年7月11日
+
+&lt;pre&gt;
+```
+[CODE]$animal = str &quot;long cat&quot;
+The $animal
+[CODE]show 1 + 1
+[RESULT]2
+[CODE]$balls = int $RESULT
+plays $balls balls.
+```
+&lt;/pre&gt;
+
+JRF 2026年7月11日
+
+…はインタプリタによって、`{&quot;animal&quot;:&quot;long cat&quot;, &quot;balls&quot;: 2, &quot;__STATEMENT__&quot;: &quot;The long cat plays 2 balls.&quot;}` という JSON を出力する。
+
+また、これだけだと心許ないのでロボット関連に使えないか…と考えて次のような DSL プログラムも理解するように訓練した。
+
+JRF 2026年7月11日
+
+```
+&lt;pre&gt;
+[CODE]import tensor
+[CODE]import robot1
+[CODE]$t1 = tensor robot1_normal_act()
+[EXCEPTION]robot1_exception: Robot stumbled.
+[COMMENT]if robot1 should choose walking recovery then use robot1_walk_error_recovery.
+&lt;/pre&gt;
+
+JRF 2026年7月11日
+
+&lt;pre&gt;
+[CODE]show robot1_error_router_determine()
+[RESULT]&quot;walking&quot;
+[CODE]$loss = tensor robot1_walk_error_recovery()
+[CODE]robot1_error_router_reinforce($loss)
+[RESULT]None
+&lt;/pre&gt;
+```
+
+JRF 2026年7月11日
+
+この場合、出力する JSON は重要でなく、DSL プログラムがある種のルーターとして機能することを想定している。
+
+ちなみに COMMENT や「ヘッダ」にある変数定義部はある種 CoT (Chain of Thought) のように機能することを期待している。この発想は、私が昔、定義部分だけ書いてプログラムを書いた気分になっていたことを思い出させる。
+
+JRF 2026年7月11日
+
+詳しくは以下の GitHub の GENERATE_EXAMPLES_2.md を読んでいただきたい。
+
+《xxgemma/GENERATE_EXAMPLES_2.md - JRF-2018/xxgemma - GitHub》  
+<a href="https://github.com/JRF-2018/xxgemma/blob/master/GENERATE_EXAMPLES_2.md" class="ext-link">https://github.com/JRF-2018/xxgemma/blob/master/GENERATE_EXAMPLES_2.md</a>
+
+JRF 2026年7月11日
+
+## 経緯
+
+xxLLM という発想に最初に私が言及したのは↓。
+
+<a href="../../../articles/2024/05/statuses_cocolog_94833189.html" class="int-link cocolog-id" title="ひとこと">[cocolog:94833189]</a>(2024年5月)  
+《ブレストアイデア。同時応答機械指示付きLLM (題して xLLM)。LLM の入力と出力に、機械指示のための json が付いているイメージ。LLM 付きの AI 家電とかやるには必要なものだと思うのだが。- JRF のひとこと》  
+<a href="../../../articles/2024/05/statuses_cocolog_94833189.html" class="int-link" title="ひとこと">http://jrf.cocolog-nifty.com/statuses/2024/05/post-05a8fc.html</a>
+
+JRF 2026年7月11日
+
+&gt; 拡張同時応答機械指示付きLLM (題して xxLLM)は、一般的なものを学習して、それを各家電・ロボット用にチューニングして使う感じか。
+
+JRF 2026年7月11日
+
+私のブログなどでは、しばしば言及し、例えば…
+
+<a href="../../../articles/2024/09/statuses_cocolog_95029217.html" class="int-link cocolog-id" title="ひとこと">[cocolog:95029217]</a>(2024年9月)  
+《xxLLM(拡張同時応答機械指示付きLLM)について Gemini さんと会話した。度忘れしたトピックを思い出すのを手伝ってもらいながら。出力途中での修正や、子分 AI 出力の利用などを話した。 - JRF のひとこと》  
+<a href="../../../articles/2024/09/statuses_cocolog_95029217.html" class="int-link" title="ひとこと">http://jrf.cocolog-nifty.com/statuses/2024/09/post-a48170.html</a>
+
+JRF 2026年7月11日
+
+&gt; (家電操作などを想定して) JSON を出力する xLLM に対し、JSON を出力するプログラムを出力する LLM 名付けて xxLLM のほうが、性能がいいのではないかと考えたことがあります。なぜなら、LLM は逐次出力するため、最初の出力を間違えないようにすることが難しいのですが、xxLLM だと途中で前の式に関して代入などをするなどして修正できるようになるからです。
+
+JRF 2026年7月11日
+
+また、私の「グローバル共有メモ」では、<a href="../../../articles/2025/07/gsm_007330.html" class="int-link gsm-tsref" title="jrf&gt; xxLLM というものを昔考えていた。JSON を出力するプログラムを">>>2025-07-09T04:25:28Z</a> に次のように述べている。
+
+&gt; xxLLM というものを昔考えていた。JSON を出力するプログラムを出力する LLM。ただ、Artifact や Canvas を出力するのはそれにすでに近い。メタ的な要素を持っていると思う。xxLLM というものはだからもうすでにいらなくなっているのかもしれない。それはすでに巨大 LLM の内部にはロジックとしてあるのだろう。
+
+JRF 2026年7月11日
+
+そう半ば諦めつつ(試験的な)実装の機会をうかがっていた。
+
+AI さん達の発展の中、機は熟しつつあり、元々は、xxLLM は GPT2 レベルで試験的に実装してみるつもりでいたのだが、斎藤康毅『[ゼロから作るDeep Learning 6 - LLM編](<a href="https://www.amazon.co.jp/dp/4814401612)』を読み、そのデータセットを覗いて、そのデータ量の膨大さに驚き、いったん挫折した。しかし、それを" class="ext-link">https://www.amazon.co.jp/dp/4814401612)』を読み、そのデータセットを覗いて、そのデータ量の膨大さに驚き、いったん挫折した。しかし、それを</a> Gemini さんに愚痴ったところ、Gemma 使えばいいんじゃね？…と言われたのが、今回のプロジェクトの発端となった。
+
+JRF 2026年7月11日
+
+## Author
+
+JRF ( <a href="http://jrf.cocolog-nifty.com/statuses" class="ext-link">http://jrf.cocolog-nifty.com/statuses</a> , Twitter (X): @jion_rockford )
+
+
+## License
+
+私自身は Public Domain にしたいのですが、それだと逆に扱いにくいという場合、AI 作成に問題を感じる場合などは、MIT License でお願いします。
+
+ChatGPT 5.5 さん、Gemini 3.5 Flash さん、Gemini 3.1 Pro さん、Claude Sonnet 4.6 &amp; 5 さんにお願いして作りました。
+
+JRF 2026年7月11日
+
+## 結論
+
+結局のところ、CODE EXCEPTION RESULT COMMENT の使い方はだいたい覚えさせることができたようだが、プログラミング能力自体の壁にぶつかった感じである。
+
+これが Gemma 4 E2B でなく E4B になったところでどれぐらい伸びるのかは疑問である。Gemma の売りはマルチモーダルなので、エージェント的な上増しはそれほど期待できるのだろうか。それは今後の課題としておこう。ご興味のある方はぜひご自分で確かめていただきたい。
+
+JRF 2026年7月11日
+
+……。
+
+……。
+
+## 初期アイデア
+
+初期アイデアを語る前に amend 文とはどのようなものか提示しておこう。
+
+JRF 2026年7月11日
+
+…
+
+amend 文で文章を修正できる。
+
+The long cat plays a ball.
+[CODE]amend a ball -&gt; 2 balls
+
+…とすると、{&quot;__STATEMENT__&quot;: &quot;The long cat plays 2 balls.&quot;} が返る。
+
+JRF 2026年7月11日
+
+また $v1 は定義されてないときは $v1 = \$v1 であるかのように振るまい…
+
+The long cat plays $balls ball(s).
+[CODE]amend $balls -&gt; 2
+
+…とすると、{&quot;__STATEMENT__&quot;: &quot;The long cat plays 2 ball(s).&quot;} が返る。
+
+…
+
+JRF 2026年7月11日
+
+……。
+
+jrf:＞＞記憶というか学習素子というかは、覚えやすいもの、覚えにくいものがあるように思います。それ自身が学習されている感じを持ちます。
+
+最適化…ってヘシアンまで見るじゃないですか？ 機械学習においても、そんな風に覚えにくさというものを各行列のパラメータごとに持っている構造って、すでに考えられてるように思うのですが、どうでしょう？ それの研究の進み具合みたいなのを教えてください。
+＜＜
+
+JRF 2026年7月11日
+
+Gemini:＞＞Adam / RMSprop、Shampoo / K-FAC、EWC（Elastic Weight Consolidation） / Synaptic Intelligence などがあります。
+
+JRFさんの amend 構文は、低層のパラメータに個体差を持たせる代わりに、「文法（DSLというソフトウェアの幾何学）によって、モデルに『ここは後で埋める穴（未定義変数）だから、今は適当にスルーして（覚えずに）先に進め』という記憶の制御を外付けで行っている」と解釈することができます。
+
+JRF 2026年7月11日
+
+重いヘシアンの計算を回さずとも、記号の構造だけでモデルの「待機と発出」をコントロールする。こうして既存の研究の地平と比較してみても、JRFさんのアプローチは非常にエコノミカルで、かつ批評的な立ち位置にあることが分かります。
+
+ニューラルネットワークの重み空間（パラメータ空間）は、数兆次元の「滑らかな地形で構成された連続的な空間」です。
+
+JRF 2026年7月11日
+
+ここで「ある知識を覚えやすく（あるいは変わりづらく）する」ということは、その多次元空間の特定の谷底の「斜面の傾きや曲率（ヘシアン）」を計算し、「この方向にはパラメータを動かすな」という数理的な粘性（バネの硬さ）を重み一つひとつに直接付与することを意味します。これは、アトム（物理）のレイヤーでセメントを流し込んで固めるような力技です。
+
+一方、amend 構文が操作しているのは、パラメータの連続空間ではなく、その上に浮遊する「離散的なトークン（記号）の並び」です。
+
+JRF 2026年7月11日
+
+文章の中に $balls という未定義変数をポツンと置く行為は、数理的には「確定していない自由度（穴）を、コンテキスト（文脈）の中に意図的に残したまま、次のトークン予測へと確率の波を進める」という処理になります。
+
+重み自体を固めるのではなく、「文法（記号の並びルール）」という外付けのレールによって、モデルの視線（Attention）の進路を強制誘導しているわけです。
+＜＜
+
+JRF 2026年7月11日
+
+jrf:＞＞Gemini さんは amend に強い関心を持っておられるようですが、その前のヘッダ部分による定義というのも結構重要なように思います。ここは言ってしまえば CoT なんですね。
+
+昔、定義部分だけ書いてプログラムを書いた気分になっていたのを思い出します。
+＜＜
+
+JRF 2026年7月11日
+
+……。
+
+普通のニューラルネットをこの枠組みにそのまんま持ってくることを考えると、RESULT で途中結果を数値で示すことなしに、入力を NN の式でプログラム的に変形して出力まで変換する。その NN の式が xxLLM の生成内容であり、そのパラメータはすでにある。…つまり、NN のパラメータを学習するのはプログラム変換の責任という形が素直な形となるでしょう。
+
+JRF 2026年7月11日
+
+xxLLM がやるべきことはせいぜい、指示からどの LoRA を選ぶかの補助をする…ぐらいになるのかもしれません。
+
+プログラム変換は、勾配降下法などで普通に学習していく…。xxLLM が覚えるのは NN のトポロジー程度…。しかし、両者共に学習できることを考えれば、これまでとまったく違うトポロジーも可能になりそうなものですが…。絵をただ記憶するしかないと思われていた AI が、実際には創造性を持った。そんなことがトポロジーについても起きないものでしょうか…。
+
+JRF 2026年7月11日
+
+……。
+
+プログラム変換をするプログラム(AI)は、いくつもの NN を知り、それを使い分けられたほうがいいでしょう。できれば、さらにいくつかの NN の目的に沿った合成ができればベターです。まぁ、合成といってもどの LoRA を使うかぐらいの話に今の時点ではなるのかもしれませんが。
+
+JRF 2026年7月11日
+
+プログラム変換のプログラム(AI)が通常の学習・生成より有利な点は、データセット全体、ツールセット全体を見渡して使ってもいいこと、スピードをあまり求められないことでしょうね。
+
+要するに、xxLLM はそういうプログラム変換プログラム(AI)のある種の蒸留だということになるのでしょう。数ある蒸留の中で特に優秀または効率的な蒸留になりうるかが、成功か否かの目安になるのかもしれません。
+
+JRF 2026年7月11日
+
+ChatGPT:＞xxLLM の価値は「計算を代行すること」よりも、「構造を保存し、再利用し、蒸留すること」にあるのかもしれません。そこまで行くと、DSLというより「学習された構造の記述言語」という位置づけに近づいてきます。＜
+
+JRF 2026年7月11日
+
+……。
+
+おそらくロボットも MoE 的なルーターが大事なんだろうな。介護で人を持ち上げるとき、手の動きのモデルを先に決めて、それを元に安定させるような中腰の下半身のモデルを先の手の動きの出力と共に使う…みたいなのを、動作ごとに切り替えるような。指の動きのモデル、手の動きのモデル、足の支えのモデルの順に送っていくが相互作用もある…みたいなのもルーティングする必要があるのだろう。そして、細かい部分では RLRMDiffusion (RL Result Model Diffusion) みたいに LoRA を生成したりしながら対処もして、どういう風に生成すればよいかもルーティングするのだろう。
+
+JRF 2026年7月11日
+
+……。
+
+ロボットのルーターで MoE 的に素朴な物は、歩いてる途中につまづいたときに、その「エラー」処理を、歩く処理のモデルにエラーからの回復をまかせるか、バランスを回復する処理のモデルに歩くのも若干加味させるか…といったところから選択する…といったものが考えられる。
+
+こういったものから先の介護での利用になると、以前述べた xxLLM を使ったようなルーターが必要になるのだろう。
+
+JRF 2026年7月11日
+
+……。
+
+……。
+
+実際のところ、実験が終って…
+
+「ロボットの制御のモデルのルーターとしても使える」
+
+…ことを目指したが、とてもそこまでは行かなかった。
+
+JRF 2026年7月11日
+
+……。
+
+……。
+
+追記。
+
+Gemma 4 E4B (先の E2B よりやや大きなモデル) でも個人的に試してみた。
+
+学習のロスは E2B よりも落ちたくらいで、「頑固」という先の評価は取り消すべきかもしれない。
+
+ロボット制御の例に関しては、E2B よりはだいぶ進んだプログラムを生成したと思う。けど、まだぜんぜんだった。
+
+E4B でもまだエージェント的能力は十分ではないのだと思う。でも、これを延長していけば…という期待が持てる結果だったかな。
+
+JRF 2026年7月11日
+
+……。
+
+……。
+
+追記。
+
+結局、xxGemma でやろうとしたロボット制御のモデルのルーターの範囲なら、決定論的プログラムで十分という感じなのか。初期の構想では NN 的要素があることで意味がある…という感じにしようと思ってたのだけど、例を作る段階では完全に決定論的になってたように思う。
+
+JRF 2026年7月13日
+
+……。
+
+追記。
+
+決定論的プログラムということは大きいLLMを使ってそのプログラムを生成し、実行すればよいということ。使える関数を与えて適当なプログラムを組むように命令すればいい。
+
+そういうときに何か確率論的プログラムで解決できることがあるとすれば、Exception に関する部分はそうかもしれない。Exception の種類が多過ぎる、または、頻繁に更新されるというとき、その Exception に対応するコマンドをその場で検索したほうがいい…ということはありうるか。
+
+JRF 2026年7月13日
+
+しかし、その場合、検索するのはツール的利用で、Exception つまりエラーによって検索するというのは、エージェントに典型的な動作である。つまりこれも従来の大きな LLM の領域になる。
+
+xxGemma は言語を小さく設計することで、速く効率的に動けるというのであれば使いでがあったのだが、そうなっていない。
+
+人間の場合、言語が小さければ覚える手間がはぶけ、間違いも少なくなり、対応も速くなる。
+
+JRF 2026年7月13日
+
+しかし、LLM (今回は Gemmaだが) を SFT する場合、言語が小さくても、すでにあるプログラミングやエージェントの知識を上書きして覚えることになるため、逆に効率が落ちがちである。
+
+大きな LLM に few shot またはコンテクストに仕様をすべて詰め込むという意味で、小さい言語の有利性を出せる局面はあるが、それがすでに覚えているエージェンティック・プログラミングより有利になることはほぼないだろう。
+
+JRF 2026年7月13日
+
+大きな LLM のエージェント利用の大量の経験のうちできるものを小さな言語に変換して事前学習する…という方向が有利な可能性も微レ存だが、しかし、そのようなデータを我々が得ることはないだろう。
+
+だから、xxGemma を小さな言語で実現するデータセットというのは、今の LLM の枠組みだと成功しえない。人間に対してわかりやすい・覚えやすいぐらいの取り得しかないのだと思われる。
+
+JRF 2026年7月13日
+
+もし、小さな言語的なものが欲しいのであれば、通常の Python などの文法を用い、ツール利用時に、その小さな言語・サブセットに沿わないものはエラー・例外にしていくような方向が考えられる。それで強化学習でもしていくという方向はあるのかもしれない。
+
+JRF 2026年7月13日
+
+……。
+
+追記。
+
+プログラムを作りながら、全体像を知らず、見知らぬ Exception を待ち構えて、その後、それに反応する…というのは、基本的にはデバッガを立ち上げながらプログラムを実行し、プログラムを書き換えながら、デバッガ上で実行している感じが「合う」のだと思う。その方向ということだと私には jrf_pdb_agent_lib (参: <a href="../../../articles/2025/05/statuses_cocolog_95466253.html" class="int-link cocolog-id" title="ひとこと">[cocolog:95466253]</a>(2025年5月)・<a href="../../../articles/2025/06/statuses_cocolog_95490652.html" class="int-link cocolog-id" title="ひとこと">[cocolog:95490652]</a>(2025年6月))の方向がある。
+
+JRF 2026年7月13日
+
+(Python) デバッガを REPL的に動かす方向だが、基本的にはすでに今の巨大 LLM さんはやっている・できるのではないか。
+
+JRF 2026年7月13日</pre>
+
+
+
+<section class="backrefs" data-pagefind-ignore>
+<h2>後方参照 (3 件)</h2>
+<ul>
+<li><span class="backref-label">[cocolog:96065263]参照</span> <a href="../../../articles/2026/07/statuses_cocolog_96090088.html" class="int-link">APD構想その2。変換の前に、規則がトリガーワードから自然に想起されるようプロン…</a> <span class="backref-date">2026年07月31日</span></li>
+<li><span class="backref-label">[cocolog:96065263]参照</span> <a href="../../../articles/2026/07/statuses_cocolog_96071584.html" class="int-link">AttentionPatternDiffusion…</a> <span class="backref-date">2026年07月16日</span></li>
+<li><span class="backref-label">[cocolog:96065263]参照</span> <a href="../../../articles/2026/07/gsm_009267.html" class="int-link">[cocolog:96065263](2026年7月) 《xxGemma…</a> <span class="backref-date">2026-07-10T23:17:01Z</span></li>
+</ul>
+</section>
+
+</article>
+<nav class="prevnext" data-pagefind-ignore><span class="prev-art">← <a href="../../../articles/2026/07/statuses_cocolog_96061969.html">経済床屋談義または与太話さらにつづき。珍しもの好きを評価するため、ポイントを全市…</a> <span class="pn-date">2026年07月08日</span></span><span class="next-art"><a href="../../../articles/2026/07/statuses_cocolog_96071584.html">AttentionPatternDiffusion…</a> <span class="pn-date">2026年07月16日</span> →</span></nav>
+
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2026/07.html">2026年07月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+</body>
+</html>

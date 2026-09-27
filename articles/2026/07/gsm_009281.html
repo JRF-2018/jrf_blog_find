@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>決定論的プログラムということは大きいLLMを使ってそのプログラムを生成し、実行す… - JRF ブログ退避所</title>
+<link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2026/07.html">2026年07月</a> | <a href="../../../index/gsm.html">共有メモ</a></nav>
+<article data-pagefind-body data-pagefind-meta="種別:共有メモ">
+<div data-pagefind-meta="投稿月:2026年07月" style="display:none"></div>
+<div class="meta">
+<table class="meta-table">
+<tr><th>種別</th><td>[gsm] 2026-07-12T21:40:30Z</td></tr>
+<tr><th>セクション</th><td>グローバル共有メモ</td></tr>
+<tr><th>日時</th><td><a href="../../../index/2026/07.html">2026-07-12T21:40:30Z</a></td></tr>
+<tr><th>元URL</th><td>(URLなし)</td></tr>
+
+</table>
+</div>
+<h1>決定論的プログラムということは大きいLLMを使ってそのプログラムを生成し、実行す…</h1>
+<pre class="body">jrf&gt; 決定論的プログラムということは大きいLLMを使ってそのプログラムを生成し、実行すればよいということ。使える関数を与えて適当なプログラムを組むように命令すればいい。
+
+そういうときに何か確率論的プログラムで解決できることがあるとすれば、Exception に関する部分はそうかもしれない。Exception の種類が多過ぎる、または、頻繁に更新されるというとき、その Exception に対応するコマンドをその場で検索したほうがいい…ということはありうるか。
+
+しかし、その場合、検索するのはツール的利用で、Exception つまりエラーによって検索するというのは、エージェントに典型的な動作である。つまりこれも従来の大きな LLM の領域になる。
+
+xxGemma は言語を小さく設計することで、速く効率的に動けるというのであれば使いでがあったのだが、そうなっていない。
+
+人間の場合、言語が小さければ覚える手間がはぶけ、間違いも少なくなり、対応も速くなる。
+
+しかし、LLM (今回は Gemmaだが) を SFT する場合、言語が小さくても、すでにあるプログラミングやエージェントの知識を上書きして覚えることになるため、逆に効率が落ちがちである。
+
+大きな LLM に few shot またはコンテクストに仕様をすべて詰め込むという意味で、小さい言語の有利性を出せる局面はあるが、それがすでに覚えているエージェンティック・プログラミングより有利になることはほぼないだろう。
+
+大きな LLM のエージェント利用の大量の経験のうちできるものを小さな言語に変換して事前学習する…という方向が有利な可能性も微レ存だが、しかし、そのようなデータを我々が得ることはないだろう。
+
+だから、xxGemma を小さな言語で実現するデータセットというのは、今の LLM の枠組みだと成功しえない。人間に対してわかりやすい・覚えやすいぐらいの取り得しかないのだと思われる。
+
+もし、小さな言語的なものが欲しいのであれば、通常の Python などの文法を用い、ツール利用時に、その小さな言語・サブセットに沿わないものはエラー・例外にしていくような方向が考えられる。それで強化学習でもしていくという方向はあるのかもしれない。</pre>
+
+
+
+</article>
+<nav class="prevnext" data-pagefind-ignore><span class="prev-art">← <a href="../../../articles/2026/07/gsm_009280.html">囲碁NHK杯…</a> <span class="pn-date">2026-07-12T19:57:32Z</span></span><span class="next-art"><a href="../../../articles/2026/07/gsm_009282.html">プログラムを作りながら、全体像を知らず、見知らぬ Exception…</a> <span class="pn-date">2026-07-13T00:23:00Z</span> →</span></nav>
+
+<nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2026/07.html">2026年07月</a> | <a href="../../../index/gsm.html">共有メモ</a></nav>
+</body>
+</html>
