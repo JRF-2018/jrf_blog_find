@@ -21,6 +21,7 @@
 </table>
 </div>
 <h1>Python の SymPy で代入 subs が途中で止まったときなどは…</h1>
+<div class="art-tools" data-pagefind-ignore><button type="button" id="btn-copy">原文をコピー</button><span class="tools-msg" id="tools-msg"></span></div>
 <pre class="body">Python の SymPy で代入 subs が途中で止まったときなどは doit() すればいい。
 JRF 2022年4月26日
 
@@ -63,5 +64,7 @@ JRF 2022年4月26日</pre>
 <nav class="prevnext" data-pagefind-ignore><span class="prev-art">← <a href="../../../articles/2022/04/statuses_cocolog_93455912.html">村田安雄『動的経済システムの最適制御』に目を通した。リカッチ方程式とかシュタッケ…</a> <span class="pn-date">2022年04月26日</span></span><span class="next-art"><a href="../../../articles/2022/05/statuses_cocolog_93478513.html">はるき悦巳『じゃりン子チエ』を 51巻から…</a> <span class="pn-date">2022年05月07日</span> →</span></nav>
 
 <nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2022/04.html">2022年04月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+<script type="application/json" id="raw-text">"[statuses] [cocolog:93456816]\nhttp://jrf.cocolog-nifty.com/statuses/2022/04/post-ad8cff.html\n\nPython の SymPy で代入 subs が途中で止まったときなどは doit() すればいい。\nJRF 2022年4月26日\n\n例えば対称行列 M を扱いたいとき、M.T に M を「逆代入」して rewrite したい。これを subs({M.T: M}) で行うこと自体は成功するのだが…\n\nfrom sympy import *\nx = MatrixSymbol(\"x\", 3, 1)\nM = MatrixSymbol(\"M\", 3, 3)\n(x.T * M * x).diff(x).subs({M.T: M}).simplify()\n\n…は、現状(バージョン 1.8)では…、\n\nM*x + M*x\n\n…にしかならない。これを次のようにすると simplify がうまくいく。\n\nJRF 2022年4月26日\n\n(x.T * M * x).diff(x).subs({M.T: M}).doit()\n\n…は…、\n\n2*M*x\n\n…にちゃんとなる。\n\nJRF 2022年4月26日\n\n……。\n\nちなみに subs ではなく replace や xreplace を使う方がこの目的には合ってるかもしれない…。replace の場合は次のようにする。\n\n(x.T * M * x).diff(x).replace(M.T, M).doit()\n\nJRF 2022年4月26日"</script>
+<script src="../../../article.js"></script>
 </body>
 </html>

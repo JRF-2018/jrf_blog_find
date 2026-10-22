@@ -21,6 +21,7 @@
 </table>
 </div>
 <h1>[cocolog:95570542](2025年8月) で作った↓について。…</h1>
+<div class="art-tools" data-pagefind-ignore><button type="button" id="btn-copy">原文をコピー</button><span class="tools-msg" id="tools-msg"></span></div>
 <pre class="body">jrf&gt; <a href="../../../articles/2025/08/statuses_cocolog_95570542.html" class="int-link cocolog-id" title="ひとこと">[cocolog:95570542]</a>(2025年8月) で作った↓について。
 
 《JRF-2018/infection_simulation_202508: 仮想合成人口個票の簡易な実装を用いた感染症シミュレーション (2025年8月版)》  
@@ -53,5 +54,7 @@ Gemini さんによるとそれは「クラスター対策」としてすでに�
 <nav class="prevnext" data-pagefind-ignore><span class="prev-art">← <a href="../../../articles/2025/08/gsm_007527.html">ただこのようなツールを使ったメモリ機能は「本物」じゃない気もする。AI…</a> <span class="pn-date">2025-08-16T08:27:00Z</span></span><span class="next-art"><a href="../../../articles/2025/08/gsm_007529.html">そば食ったあと、Twitter (X)…</a> <span class="pn-date">2025-08-17T03:33:06Z</span> →</span></nav>
 
 <nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2025/08.html">2025年08月</a> | <a href="../../../index/gsm.html">共有メモ</a></nav>
+<script type="application/json" id="raw-text">"[gsm]\n○ 2025-08-16T22:03:03Z SlwDMOP0U0\n\njrf\u003e [cocolog:95570542](2025年8月) で作った↓について。\n\n《JRF-2018/infection_simulation_202508: 仮想合成人口個票の簡易な実装を用いた感染症シミュレーション (2025年8月版)》  \n https://github.com/JRF-2018/infection_simulation_202508\n\n＞組織は組織人数(実構成員)と組織内感染度と全体感染度のパラメータを持つ。\n\n例えば、学校はクラスが最大30人とし、高い組織内感染度を持つ。また、全校に対する全体感染度を持つ。全校といっても全人口と接触するわけではないが、それは単純化して全人口と接触するとモデル化する。\n＜\n\n…としたわけだが、ある組織内部をさらに(組織内)全体感染度的なものと小組織(コンパートメント)内感染度に分けることも考えることができるだろう。\n\nコンパートメントに分ける意義は、コンパートメントは接触するコンパートメントにも感染を広げない…ということである。ただし、全体感染度に寄与する方向からの感染の広がりはあるのだが。\n\nすると、コンパートメントを非常に小さく分けると、ほとんど感染が広がらないとモデル化できることになるのか？ それはおかしいだろう。それは元の大組織内感染度の数値と合わなくなる。\n\nこの場合、(組織内)全体感染度をかなり上げる必要があるということだ。つまり、秘書などがコンパートメントをめぐることで、(組織内)全体感染度を上げると考えるしかない…ということになる。\n\nそれを避けるには、社長室のような重要なコンパートメントとは別に、タコ部屋のような多人数からなるコンパートメントを作り、そこでのコンパートメント内感染度が高いとしなければ、つじつまが合わない…となるだろう。\n\n逆に言えば、タコ部屋のような場所の感染度を下げることができれば、大組織内感染度は下がらなければおかしい。\n\nこれはおそらく全国という組織にも適用できて、組織内感染度の高い組織を集中して、感染度を下げることが有効だという結論になるのだろう。\n\nGemini さんによるとそれは「クラスター対策」としてすでに実現されている考え方と言えそうだという。"</script>
+<script src="../../../article.js"></script>
 </body>
 </html>

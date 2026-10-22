@@ -21,6 +21,7 @@
 </table>
 </div>
 <h1>JavaScirpt 内でも password…</h1>
+<div class="art-tools" data-pagefind-ignore><button type="button" id="btn-copy">原文をコピー</button><span class="tools-msg" id="tools-msg"></span></div>
 <pre class="body">JavaScirpt 内でも password とかは参照できないようにするべきでは？File (Reader) API がなければ、ファイルの操作は JavaScript からは難しかったんで、それで代替できたかもしれないけど、すでに暗号化したのを入力させるのもなんかね…。
 JRF 2014年2月24日
 
@@ -85,5 +86,7 @@ JRF 2014年2月24日</pre>
 <nav class="prevnext" data-pagefind-ignore><span class="prev-art">← <a href="../../../articles/2014/02/statuses_cocolog_78972266.html">ファミコン(NES)で BG を VBlank…</a> <span class="pn-date">2014年02月16日</span></span><span class="next-art"><a href="../../../articles/2014/02/statuses_cocolog_79037946.html">Firefox 系の Audio Data を使ってたのを Web Audio…</a> <span class="pn-date">2014年02月25日</span> →</span></nav>
 
 <nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2014/02.html">2014年02月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+<script type="application/json" id="raw-text">"[statuses] [cocolog:79036705]\nhttp://jrf.cocolog-nifty.com/statuses/2014/02/javas.html\n\nJavaScirpt 内でも password とかは参照できないようにするべきでは？File (Reader) API がなければ、ファイルの操作は JavaScript からは難しかったんで、それで代替できたかもしれないけど、すでに暗号化したのを入力させるのもなんかね…。\nJRF 2014年2月24日\n\n欲しいのは、form は、そのままサーバーに送るしかない…といった感じ…または、送るフォームのフォーマットは、ヘッダに指定していて、ブラウザが GET した段階で指定があるものしかいじれず、そのフォーマットにしたがってサーバーに送るしかない… Ajax でも。って感じ。\n\nJRF 2014年2月24日\n\n以前 simple_market_0.pl (↓)を作ったとき、オブジェクトのコピーを作ってそれをいじらせ、いじらせたコピーの情報のみをピックアップして使ってカプセル化…みたいなことをやったんだけど、そういうのができないか？ …つまり、JSActions 内(とか Greasemonkey)でも、dom 操作の前に全 dom をコピーしてしまって、password とかの textContent とかを削り、コピー後のやつは、そのまま動くんじゃなく、あとから必要なものだけを元の dom に代入しなおす感じかな？\n\nJRF 2014年2月24日\n\n《外作用的簡易経済シミュレーションのアイデアと Perl による実装》\nhttp://jrf.cocolog-nifty.com/society/2011/01/post.html\n\nJRF 2014年2月24日\n\nもちろん、それだと速度的に遅くなりすぎるから、Firefox の大元でそういうのに相当する機能を提供して、それを Overlay 系のスクリプトエンジンが使う…って感じにできれば一番いいんだろうけど。(でも、確かこの辺、Firefox のバージョンアップで Greasemonkey まわりがメチャメチャになったりしたこととかあったから、何か対策はすでにあるにはあるんだろうけど…。)\n\nJRF 2014年2月24日\n\n[cocolog:78739712] とかで JSActions で私がいじったセレクションに関する部分は、実はそういう拡張が来ることを想定して、password とかのセレクションは最初から見ないようにしてあった。\n\n《JSActions - + HideAway Firefox +》\nhttp://hideaway.cc/FirefoxOLD/wiki.cgi?page=JSActions\n\n《Greasemonkey - Greasespot》\nhttp://www.greasespot.net/\n\nJRF 2014年2月24日\n\nパスワードが簡単になり過ぎないようなチェックぐらいサーバーに渡す前にしたいというニーズはわかるんだけど、でも、それは新しく設定するときだけなんだから、スタートアップ企業みたいに最初にユーザー数を稼ぎたいけどサーバーが用意できないという状況以外なら、いちいちその部分もサーバーに問い合わせてチェックしたほうがいいんじゃないかな？\n\nJRF 2014年2月24日\n\n……。\n\n昔のブラウザに対応するのは、サーバーレベルでは、そのブラウザが対応しているか JavaScript でチェックしてから、もうちょっと新しいバージョン使えと警告するなりなんなりすればいい。\n\n拡張入れさせるとか…。\n\nあ、それだったら、逆転の発想で上のような機構を Greasemonkey とかで実現すればいいのかな？つまり、ここがパスワードフォルダーというクラス指定された span 要素があると、サーバー管理者がユーザーにインストールさせた拡張(Greasemonkey スクリプト)が、そこにパスワードウィジェットをプレースする…と。\n\nJRF 2014年2月24日\n\nすると、Greasemonkey の内容は、クライアント側の JavaScript からは見れないから、上の目的は達成できたようなもの…。サーバーへの送信も実は Greasemonkey 側がやってる…と。\n\n…でも、「インストール」が必要なんだよね。No_Ad_URL ([cocolog:76692463])みたいにそういうフレームワーク作っちゃうべきなのかな…。またそんな(セキュリティ的)穴堀りまで私がやっちゃうのか…？\n\nJRF 2014年2月24日"</script>
+<script src="../../../article.js"></script>
 </body>
 </html>

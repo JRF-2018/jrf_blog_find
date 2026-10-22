@@ -21,26 +21,27 @@
 </table>
 </div>
 <h1>Firefox 17 で Greasemonkey…</h1>
+<div class="art-tools" data-pagefind-ignore><button type="button" id="btn-copy">原文をコピー</button><span class="tools-msg" id="tools-msg"></span></div>
 <pre class="body">Firefox 17 で Greasemonkey のユーザースクリプトが動かなくなった。@grant 文を疑ったが、原因はそこではなく、E4X が廃止されたことにあった。
 JRF 2012年12月7日
 
 E4X の除去は、
 
-&lt;pre&gt;
+<span class="src-pre">&lt;pre&gt;
 val m1 = &lt;member&gt;
   &lt;name&gt;{name}&lt;/name&gt;
   &lt;id&gt;{id}&lt;/id&gt;
   &lt;/member&gt;;
-&lt;/pre&gt;
+&lt;/pre&gt;</span>
 
 とかいうときは、
 
-&lt;pre&gt;
+<span class="src-pre">&lt;pre&gt;
 val m1 = '&lt;member&gt;'
   + '&lt;name&gt;' + escapeHTML(name) + '&lt;/name&gt;'
   + '&lt;id&gt;' + escapeHTML(id) + '&lt;/id&gt;
   + '&lt;/member&gt;';
-&lt;/pre&gt;
+&lt;/pre&gt;</span>
 
 とかする必要がある。
 
@@ -52,14 +53,14 @@ JRF 2012年12月7日
 
 escapeHTML、escapeXML に相当するものは、すでにだいたい使っていると思うが、↓みたいな関数。
 
-&lt;pre&gt;
+<span class="src-pre">&lt;pre&gt;
 function escapeHTML(s) {
   return s.toString().replace(/\&amp;/g, &quot;&amp;amp;&quot;)
     .replace(/\&quot;/g, &quot;&amp;quot;&quot;)
     .replace(/&lt;/g, &quot;&amp;lt;&quot;)
     .replace(/&gt;/g, &quot;&amp;gt;&quot;);
 }
-&lt;/pre&gt;
+&lt;/pre&gt;</span>
 
 なお、escapeHTML 内の s.toString() がない実装だと、ちょっとエラーが出るので注意。
 
@@ -117,5 +118,7 @@ JRF 2012年12月7日</pre>
 <nav class="prevnext" data-pagefind-ignore><span class="prev-art">← <a href="../../../articles/2012/12/statuses_cocolog_74918572.html">「お前が生きてる『今日』は、昨日死んだ奴が死ぬほど生きたかった『明日』なんだ。」…</a> <span class="pn-date">2012年12月07日</span></span><span class="next-art"><a href="../../../articles/2012/12/statuses_cocolog_74928048.html">D. カーネギー著『人を動かす』『道は開ける』をとうとう読んだ。</a> <span class="pn-date">2012年12月08日</span> →</span></nav>
 
 <nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2012/12.html">2012年12月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+<script type="application/json" id="raw-text">"[statuses] [cocolog:74918848]\nhttp://jrf.cocolog-nifty.com/statuses/2012/12/firef.html\n\nFirefox 17 で Greasemonkey のユーザースクリプトが動かなくなった。@grant 文を疑ったが、原因はそこではなく、E4X が廃止されたことにあった。\nJRF 2012年12月7日\n\nE4X の除去は、\n\n\u003cpre\u003e\nval m1 = \u003cmember\u003e\n  \u003cname\u003e{name}\u003c/name\u003e\n  \u003cid\u003e{id}\u003c/id\u003e\n  \u003c/member\u003e;\n\u003c/pre\u003e\n\nとかいうときは、\n\n\u003cpre\u003e\nval m1 = '\u003cmember\u003e'\n  + '\u003cname\u003e' + escapeHTML(name) + '\u003c/name\u003e'\n  + '\u003cid\u003e' + escapeHTML(id) + '\u003c/id\u003e\n  + '\u003c/member\u003e';\n\u003c/pre\u003e\n\nとかする必要がある。\n\nJRF 2012年12月7日\n\nいちいちクォートするのではなく \\ とかで改行を活かすのを好む方もいるかもしれないが、escapeHTML みたいなのがいるのが大事なところ。\n\nJRF 2012年12月7日\n\nescapeHTML、escapeXML に相当するものは、すでにだいたい使っていると思うが、↓みたいな関数。\n\n\u003cpre\u003e\nfunction escapeHTML(s) {\n  return s.toString().replace(/\\\u0026/g, \"\u0026amp;\")\n    .replace(/\\\"/g, \"\u0026quot;\")\n    .replace(/\u003c/g, \"\u0026lt;\")\n    .replace(/\u003e/g, \"\u0026gt;\");\n}\n\u003c/pre\u003e\n\nなお、escapeHTML 内の s.toString() がない実装だと、ちょっとエラーが出るので注意。\n\nJRF 2012年12月7日\n\n……。\n\n《Firefox 17でE4Xが無効に | Yuji Noizumi's blog》\nhttp://yuji.noizumi.org/blog/2012/11/23/firefox-17%E3%81%A7e4x%E3%81%8C%E7%84%A1%E5%8A%B9%E3%81%AB/\n\n《E4X | MDN》\nhttps://developer.mozilla.org/ja/docs/E4X\n\n今だと about:config で有効にできるが、Firefox 18 では完全除去されるらしい。\n\nJRF 2012年12月7日\n\n……。\n\nしかし、こんな文法が変わるような変更が許されるのか？E4X はそれほど Flexible でもないんで、E4X で書いたのを後からさらにいじるとか、私もやってたけど、そういうのって単純な書き換えだけで済まないこともあると思うんだけど…。\n\nJRF 2012年12月7日\n\nレガシーコードがダメになって、それをチマチマ書き直さないといけないとか、どんだけ人月かけさせるの？使ってる人に前もって警告画面でも表示していれば、ある程度時間使って準備もできるけど、例えば私なんか、これで、書こうと思った「ひとこと」を書けなくなったわけで、そういうリアルタイムな要求で損害が出てても知らんぷりで通ずるのか？\n\nデフォルトから外すとしても、about:config じゃなくて、スクリプトのプラグマとかで E4X を有効にできる方法とか残すのが、普通のやり方じゃないか？\n\nJRF 2012年12月7日\n\n今は、JavaScript がメジャー言語となって、他の言語を JavaScript へのコンパイラとして実装するみたいな話もよく聞く。だったら、例えば、特定のアドオンでコンパイラを用意し、プラグマによってはそこでコンパイルされた JavaScript を実行するとかいう機構を実装する道もあるだろう。そういうのがあれば、E4X が使える JavaScript を E4X が使えない JavaScript に変換するという「コンパイラ」を指定すれば、「対応終り」とできる方法もありえたはず。\n\nJRF 2012年12月7日\n\nこれを知って私はちょっと正直かなり怒っちゃって、他の人から電話応対に粗相を来たしちゃったぐらいで、今冷静になろうとしてるところなんだけど、やっぱり「技術者の劣化」([aboutme:120990]とか)はここまで来たか…ぐらいのことは言ってしまわないと気がおさまらない！\n\n(まぁ、本当の昔かたぎのオープンソースな技術者なら文句があるなら自分でなんとかしろってところなんだろうね。結局のところ私がダメなんであって、他人のせいにしちゃいけないな。orz)\n\nJRF 2012年12月7日\n\ntypo 「'\u003c/id\u003e」→「'\u003c/id\u003e'」。\n\nJRF 2012年12月7日"</script>
+<script src="../../../article.js"></script>
 </body>
 </html>

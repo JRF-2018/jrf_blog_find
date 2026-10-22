@@ -21,18 +21,19 @@
 </table>
 </div>
 <h1>Python の SymPy で行列に関する証明をする方法。</h1>
+<div class="art-tools" data-pagefind-ignore><button type="button" id="btn-copy">原文をコピー</button><span class="tools-msg" id="tools-msg"></span></div>
 <pre class="body">Python の SymPy で行列に関する証明をする方法。
 JRF 2022年4月26日
 
 SymPy は、行列の計算において、直接、行列変数みたいなものは扱えず、行列の各要素を指定したものしか使えないが、例えば…
 JRF 2022年4月26日
 
-&lt;pre&gt;
+<span class="src-pre">&lt;pre&gt;
 from sympy import *
 a11, a12, a21, a22 = symbols(&quot;a11 a12 a21 a22&quot;)
 M = Matrix([[a11, a12], [a21, a22]])
 print(simplify(Eq(M * (M ** -1), eye(2))))
-&lt;/pre&gt;
+&lt;/pre&gt;</span>
 
 JRF 2022年4月26日
 
@@ -63,13 +64,13 @@ JRF 2022年4月26日
 
 ところで、上の M は 4 行 4 列になった段階で、今の私のマシンだと M ** -1 の計算が時間がかかり過ぎるものとなって終らなかった。
 
-&lt;pre&gt;
+<span class="src-pre">&lt;pre&gt;
 from sympy import *
 N = 4
 M = Matrix([[Symbol(&quot;a&quot; + str(i) + str(j)) for i in range(1, N + 1)]
             for j in range(1, N + 1)])
 M ** -1
-&lt;/pre&gt;
+&lt;/pre&gt;</span>
 
 …などとすれば終らない。
 
@@ -77,11 +78,11 @@ JRF 2022年4月26日
 
 上のようなことをするためには、
 
-&lt;pre&gt;
+<span class="src-pre">&lt;pre&gt;
 N = 4
 M = MatrixSymbol(&quot;M&quot;, N, N)
 print(simplify(Eq(M * (M ** -1), Identity(N))))
-&lt;/pre&gt;
+&lt;/pre&gt;</span>
 
 …とすればいい。(この場合は N = Symbol('N') でも良い。)
 
@@ -89,23 +90,23 @@ JRF 2022年4月26日
 
 ただし、(N = 4 として)
 
-&lt;pre&gt;
+<span class="src-pre">&lt;pre&gt;
 print(simplify(Eq(M * (M ** -1), eye(N))))
-&lt;/pre&gt;
+&lt;/pre&gt;</span>
 
 …は True にはならない。Identity(N) と eye(N) はそのままでは同じにならないかららしい。
 
 JRF 2022年4月26日
 
-&lt;pre&gt;
+<span class="src-pre">&lt;pre&gt;
 print(simplify(Eq((M * (M ** -1)).as_explicit(), eye(N))))
-&lt;/pre&gt;
+&lt;/pre&gt;</span>
 
 …または…
 
-&lt;pre&gt;
+<span class="src-pre">&lt;pre&gt;
 print(simplify(M * (M ** -1)).equals(eye(N)))
-&lt;/pre&gt;
+&lt;/pre&gt;</span>
 
 …とすれば良い。
 
@@ -125,5 +126,7 @@ JRF 2022年4月26日</pre>
 <nav class="prevnext" data-pagefind-ignore><span class="prev-art">← <a href="../../../articles/2022/04/statuses_cocolog_93445378.html">『ビギナーズクラシックス中国の古典』の『史記』と『春秋左氏伝』を読んだ。読む分に…</a> <span class="pn-date">2022年04月20日</span></span><span class="next-art"><a href="../../../articles/2022/04/statuses_cocolog_93455912.html">村田安雄『動的経済システムの最適制御』に目を通した。リカッチ方程式とかシュタッケ…</a> <span class="pn-date">2022年04月26日</span> →</span></nav>
 
 <nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2022/04.html">2022年04月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+<script type="application/json" id="raw-text">"[statuses] [cocolog:93455907]\nhttp://jrf.cocolog-nifty.com/statuses/2022/04/post-772e64.html\n\nPython の SymPy で行列に関する証明をする方法。\nJRF 2022年4月26日\n\nSymPy は、行列の計算において、直接、行列変数みたいなものは扱えず、行列の各要素を指定したものしか使えないが、例えば…\nJRF 2022年4月26日\n\n\u003cpre\u003e\nfrom sympy import *\na11, a12, a21, a22 = symbols(\"a11 a12 a21 a22\")\nM = Matrix([[a11, a12], [a21, a22]])\nprint(simplify(Eq(M * (M ** -1), eye(2))))\n\u003c/pre\u003e\n\nJRF 2022年4月26日\n\n…などとすれば、True が表示され、行列変数 M に関する式 M * (M ** -1) == I が証明できる。\n\n任意の n × m 行列について証明を一つ作ることはできなさそうだが、n, m が与えられたとき、それに対応する式の証明を作るようなプログラムを書くことができる場合はあるだろう。\n\nJRF 2022年4月26日\n\nただ、上の例において、det(M) == 0 の場合を考慮していないように、「完璧な証明」が欲しい場合は、SymPy だけでは力不足だろう。\n\nJRF 2022年4月26日\n\n……。\n\n追記。\n\n修正 「直接、行列変数みたいなものは扱えず、行列の各要素を指定したものしか使えないが」→「行列の各要素を指定したものを使うとすれば」。\n\n調べ間違ってた。行列変数 MatrixSymbol というものは用意されている。いくつか行列変数を積み上げる BlockMatrix というものも用意されている。\n\n《Matrix Expressions — SymPy 1.10.1 documentation》  \nhttps://docs.sympy.org/latest/modules/matrices/expressions.html\n\nJRF 2022年4月26日\n\n……。\n\nところで、上の M は 4 行 4 列になった段階で、今の私のマシンだと M ** -1 の計算が時間がかかり過ぎるものとなって終らなかった。\n\n\u003cpre\u003e\nfrom sympy import *\nN = 4\nM = Matrix([[Symbol(\"a\" + str(i) + str(j)) for i in range(1, N + 1)]\n            for j in range(1, N + 1)])\nM ** -1\n\u003c/pre\u003e\n\n…などとすれば終らない。\n\nJRF 2022年4月26日\n\n上のようなことをするためには、\n\n\u003cpre\u003e\nN = 4\nM = MatrixSymbol(\"M\", N, N)\nprint(simplify(Eq(M * (M ** -1), Identity(N))))\n\u003c/pre\u003e\n\n…とすればいい。(この場合は N = Symbol('N') でも良い。)\n\nJRF 2022年4月26日\n\nただし、(N = 4 として)\n\n\u003cpre\u003e\nprint(simplify(Eq(M * (M ** -1), eye(N))))\n\u003c/pre\u003e\n\n…は True にはならない。Identity(N) と eye(N) はそのままでは同じにならないかららしい。\n\nJRF 2022年4月26日\n\n\u003cpre\u003e\nprint(simplify(Eq((M * (M ** -1)).as_explicit(), eye(N))))\n\u003c/pre\u003e\n\n…または…\n\n\u003cpre\u003e\nprint(simplify(M * (M ** -1)).equals(eye(N)))\n\u003c/pre\u003e\n\n…とすれば良い。\n\nJRF 2022年4月26日"</script>
+<script src="../../../article.js"></script>
 </body>
 </html>

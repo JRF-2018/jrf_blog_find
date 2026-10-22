@@ -21,6 +21,7 @@
 </table>
 </div>
 <h1>Python。別のモジュールのグローバル変数は基本代入できないのだね。…</h1>
+<div class="art-tools" data-pagefind-ignore><button type="button" id="btn-copy">原文をコピー</button><span class="tools-msg" id="tools-msg"></span></div>
 <pre class="body">jrf&gt; Python。別のモジュールのグローバル変数は基本代入できないのだね。
 
 t1.py のモジュールで Q というグローバル変数が定義されてると思いねい。
@@ -48,5 +49,7 @@ if __name__ == '__main__':
 <nav class="prevnext" data-pagefind-ignore><span class="prev-art">← <a href="../../../articles/2021/02/gsm_000638.html">[仏教の最適化プログラムの続き。]…</a> <span class="pn-date">2021-02-20T08:27:33Z</span></span><span class="next-art"><a href="../../../articles/2021/02/gsm_000640.html">ベンチャーでの起業こそあるべき姿だと信じ、また煽り、新卒での採用に参加しなかった…</a> <span class="pn-date">2021-02-21T04:04:39Z</span> →</span></nav>
 
 <nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2021/02.html">2021年02月</a> | <a href="../../../index/gsm.html">共有メモ</a></nav>
+<script type="application/json" id="raw-text">"[gsm]\n○ 2021-02-20T12:54:35Z kj5U0cuAld\n\njrf\u003e Python。別のモジュールのグローバル変数は基本代入できないのだね。\n\nt1.py のモジュールで Q というグローバル変数が定義されてると思いねい。\n\nimport t1\nfrom t1 import Q\n\nif __name__ == '__main__':\n    global Q\n    t1.Q = 1\n    Q = 2\n    print(t1.Q, Q)\n\nとすると\n\n1 2\n\nと表示される。t1 側で print(Q) すると、t1.Q の値が表示される。だからグローバル変数を使いたいときは、from t1 import Q とするよりは t1.Q で常に参照したほうがいいみたい。\n\nただ、Q に直接の代入をしない(Q のメンバにしか代入しない… Q.a = 1 とか)なら、from t1 import Q でもいいみたい。"</script>
+<script src="../../../article.js"></script>
 </body>
 </html>

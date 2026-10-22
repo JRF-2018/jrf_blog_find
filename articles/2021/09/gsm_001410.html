@@ -21,6 +21,7 @@
 </table>
 </div>
 <h1>[仏教の最適化プログラムの続き。]…</h1>
+<div class="art-tools" data-pagefind-ignore><button type="button" id="btn-copy">原文をコピー</button><span class="tools-msg" id="tools-msg"></span></div>
 <pre class="body">jrf&gt; [仏教の最適化プログラムの続き。]
 
 悔いが大きくなり過ぎてもいけないというのが当初の話だった。悔いは「自分の集団を害する」…ただし、「害する」といっても「限定された不利益を確実に受け容れることでしかない」ということだった。
@@ -41,5 +42,7 @@
 <nav class="prevnext" data-pagefind-ignore><span class="prev-art">← <a href="../../../articles/2021/09/gsm_001409.html">菅首相やめるのか。著作権法で前のどこの(米国の?)利益でも代表しているのかという…</a> <span class="pn-date">2021-09-03T03:05:27Z</span></span><span class="next-art"><a href="../../../articles/2021/09/gsm_001411.html">[仏教の最適化プログラムの続き。] 以前、「赤ん坊の education…</a> <span class="pn-date">2021-09-03T10:52:37Z</span> →</span></nav>
 
 <nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2021/09.html">2021年09月</a> | <a href="../../../index/gsm.html">共有メモ</a></nav>
+<script type="application/json" id="raw-text">"[gsm]\n○ 2021-09-03T03:56:56Z mB/8hZwBJe\n\njrf\u003e [仏教の最適化プログラムの続き。]\n\n悔いが大きくなり過ぎてもいけないというのが当初の話だった。悔いは「自分の集団を害する」…ただし、「害する」といっても「限定された不利益を確実に受け容れることでしかない」ということだった。\n\nそれは今のシステムにおいては寺院を作るところに現れているか…。ただ、それは支配層だけだな。個人においては僧になる…という部分に現れてると考えるべきなのだろうか？\n\n僧になるのは、今は死者から僧への相続量の多寡だけ見ているが、狂信分…ARGS.nation_education_power_threshold も見るべきか…。ARGS.nation_education_power_threshold  を上げるときは、僧の数に関わる ARGS.priests_rate なども上げるべきということか…。そして、ARGS.priests_rate が上がれば教育が良くなるべきだと思うが、今は、ARGS.priests_rate という変数が動いても ARGS.education_goal は動かないことになってるから、ARGS.education_goal も動かさないとダメということになりそう。\n\nそれともこのあたり改修すべきなのか？\n\n…一部改修した。ARGS.priests_rate の他に ARGS.priests_standard_rate という非常に似たものを作った。実際の僧の増減は ARGS.priests_rate を使うが、僧の数(割合)を判定に用いるときは、ARGS.priests_standard_rate を使うようにした。これにより ARGS.priests_rate を上げれば ARGS.education_goal を動かさなくても、単純に教育がよくなるはず。ややこしいが、やむを得まい。\n\nこれにより mwar2fpr のログが影響を受けるので再度 run_simbdp3.sh を実行する必要がある。私のところでは再実行後のグラフは前と大差がない感じだった。災害の被害は mwar2fpr のほうが mwar2 よりむしろ少なくてそこは予想とは違ったが。"</script>
+<script src="../../../article.js"></script>
 </body>
 </html>

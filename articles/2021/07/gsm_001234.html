@@ -21,6 +21,7 @@
 </table>
 </div>
 <h1>[仏教の最適化プログラムの続き。] 病気または怪我(ケガ)。…</h1>
+<div class="art-tools" data-pagefind-ignore><button type="button" id="btn-copy">原文をコピー</button><span class="tools-msg" id="tools-msg"></span></div>
 <pre class="body">jrf&gt; [仏教の最適化プログラムの続き。]
 
 病気または怪我(ケガ)。
@@ -37,5 +38,7 @@ p.injured が 1 になると、a60_death_rate と同じだけ死亡率が上が�
 <nav class="prevnext" data-pagefind-ignore><span class="prev-art">← <a href="../../../articles/2021/07/gsm_001233.html">アニソン。あと、アニメ『オッドタクシー』の ED…</a> <span class="pn-date">2021-07-21T11:32:05Z</span></span><span class="next-art"><a href="../../../articles/2021/07/gsm_001235.html">日本経済。…</a> <span class="pn-date">2021-07-22T09:36:40Z</span> →</span></nav>
 
 <nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2021/07.html">2021年07月</a> | <a href="../../../index/gsm.html">共有メモ</a></nav>
+<script type="application/json" id="raw-text">"[gsm]\n○ 2021-07-22T05:11:46Z d2FlZKA2BB\n\njrf\u003e [仏教の最適化プログラムの続き。]\n\n病気または怪我(ケガ)。\n\n障害ができるようなケガは、p.injured で、一時的なケガは p.tmp_injured で表現し、災害などの際にケガをする者として選ばれると、p.injured は最大 0.5 ずつ、p.tmp_injured は最大 0.5 ずつ上がっていく。p.injured と p.tmp_injured は、p.tmp_labor を計算するとき p.labor から減算される。p.tmp_injured は一ヶ月ごとに 0.1 ずつ下がっていく。…とする。\n\np.injured が 1 になると、a60_death_rate と同じだけ死亡率が上がるとする。0 は当然上昇なし。高齢者の場合は、高齢者死亡率と p.injured による死亡率の大きいほうを threshold として取ることにする。\n\n当初は p.tmp_injured は考えないでおこうと思ったが、入れておいたほうが今後のために良いか、そのほうがリアルか…と思い、いちおう入れておくことにした。p.tmp_injured を入れるなら、災害などの際にケガをさせるとき、もしかすると今よりかなり多めに(一時的な)ケガをするようにして、そのうち何人かは障害が残らないようにする…としたほうが、自然だったかもしれないが、とりあえず、そうしてない。必ず障害が残るように(残る者だけケガをしたと選ばれるように)なっている。"</script>
+<script src="../../../article.js"></script>
 </body>
 </html>

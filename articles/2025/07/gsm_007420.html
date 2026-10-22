@@ -21,6 +21,7 @@
 </table>
 </div>
 <h1>対話。 jrf:&gt;…</h1>
+<div class="art-tools" data-pagefind-ignore><button type="button" id="btn-copy">原文をコピー</button><span class="tools-msg" id="tools-msg"></span></div>
 <pre class="body">jrf&gt; 対話。
 
 jrf:&gt; AIエージェントのプロンプトエンジニアリング・コンテクストエンジニアリングの一種ということになるかもしれませんが、LLM に与えるときのキャッシュというのがそうなのかもしれませんが、途中までの入力を何段階かでキャッシュするのができて、それが安くなればな…と思います。
@@ -43,5 +44,7 @@ Claude:&gt; Anthropic Claude API では「Prompt Caching」という機能を提
 <nav class="prevnext" data-pagefind-ignore><span class="prev-art">← <a href="../../../articles/2025/07/gsm_007419.html">jilpa&gt; #VRChat で @Virtual_Market_ 2025…</a> <span class="pn-date">2025-07-26T01:29:52Z</span></span><span class="next-art"><a href="../../../articles/2025/07/gsm_007421.html">今日の昼食は、餃子の王将。麻婆豆腐とちょっとの餃子。ご飯に合う。おいしかった！</a> <span class="pn-date">2025-07-27T04:34:28Z</span> →</span></nav>
 
 <nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2025/07.html">2025年07月</a> | <a href="../../../index/gsm.html">共有メモ</a></nav>
+<script type="application/json" id="raw-text">"[gsm]\n○ 2025-07-26T04:03:22Z w8+tyLVmwb\n\njrf\u003e 対話。\n\njrf:\u003e AIエージェントのプロンプトエンジニアリング・コンテクストエンジニアリングの一種ということになるかもしれませんが、LLM に与えるときのキャッシュというのがそうなのかもしれませんが、途中までの入力を何段階かでキャッシュするのができて、それが安くなればな…と思います。\n\n[P1, P2, P3, P4] みたいな断層のあるプロンプトで、P4 はよく変更されるが、P3 は P4 に比べるとあまり変更されない。同様に P2 P1 は順に変更されにくくなるというとき、P1 までのキャッシュ、P2 までのキャッシュ、P3 までのキャッシュ…みたいなのがあって、それぞれが安いとかあれば、いいような気がします。\n\nそんな機能はすでにありますか？ ないなら、できる可能性は？\n\nGemini:\u003e あなたのアイデアは、LLMのコストと効率性を大幅に改善する潜在力を持っており、技術的にも実現可能だと考えられます。将来的には、より高度なキャッシュ管理や、プロンプトの階層的再利用を可能にする機能が、LLMの主要APIに組み込まれていく可能性は高いでしょう。\n\nClaude:\u003e Anthropic Claude API では「Prompt Caching」という機能を提供しており、まさにあなたが描いているような使い方ができます：\n\n  * プロンプトの特定の部分（システムプロンプト、長いコンテキスト、ツール定義など）をキャッシュ可能\n  * キャッシュされた部分は入力トークン料金が大幅に割引（通常の1/10程度）\n  * 複数のキャッシュポイントを設定することで、変更頻度に応じた最適化が可能"</script>
+<script src="../../../article.js"></script>
 </body>
 </html>

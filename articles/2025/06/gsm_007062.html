@@ -21,6 +21,7 @@
 </table>
 </div>
 <h1>jrf_pdb_agent_lib の事例集。途中で .py…</h1>
+<div class="art-tools" data-pagefind-ignore><button type="button" id="btn-copy">原文をコピー</button><span class="tools-msg" id="tools-msg"></span></div>
 <pre class="body">jrf&gt; jrf_pdb_agent_lib の事例集。途中で .py ファイルを書き換える。
 
 test_3.py が次のようであるとする。
@@ -59,5 +60,7 @@ pal.reload_module(&quot;test_4&quot;); pal.EXEC = &quot;test_4.sub1()&quot;
 <nav class="prevnext" data-pagefind-ignore><span class="prev-art">← <a href="../../../articles/2025/06/gsm_007061.html">靖国問題について Gemini さんとの議論。 jrf:&gt;…</a> <span class="pn-date">2025-06-01T10:11:45Z</span></span><span class="next-art"><a href="../../../articles/2025/06/gsm_007063.html">Claude さんにも Chamley-Judd…</a> <span class="pn-date">2025-06-01T14:53:17Z</span> →</span></nav>
 
 <nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2025/06.html">2025年06月</a> | <a href="../../../index/gsm.html">共有メモ</a></nav>
+<script type="application/json" id="raw-text">"[gsm]\n○ 2025-06-01T12:23:06Z QGJOTiMJWp\n\njrf\u003e jrf_pdb_agent_lib の事例集。途中で .py ファイルを書き換える。\n\ntest_3.py が次のようであるとする。\n\nimport jrf_pdb_agent_lib as pal\nimport test_4\n\ndef main():\n    pal.do(\"test1\",\n           current_code=\"test_4.sub1()\")\n\nif __name__ == \"__main__\":\n    main()\n\ntest_4.py が次のようであるとする。\n\nimport jrf_pdb_agent_lib as pal\n\ndef sub1():\n    pal.consult_human(\"ここをいじって\")\n    pal.do(\"test2\")\n\nこのとき、test_3.py を実行すると、まず pal.do test1 でデバッガに入るのだが、そこでは c する。今度は pal.consult_human(\"ここをいじって\") でデバッガに入るのだが、ここで対話的にファイルを書き換えたあと…。\n\nglobal EXCEPTION; EXCEPTION = LoopRequestException(\"reload\")\n\n…して、c することで、一旦 pal.do test1 内に戻る。そして、u して…\n\npal.reload_module(\"test_4\"); pal.EXEC = \"test_4.sub1()\"\n\n…を実行し、c すると、書き換えた sub1 に行くことができる。こういう consult_human リクエストにはこういう流れになるのだと思う。"</script>
+<script src="../../../article.js"></script>
 </body>
 </html>

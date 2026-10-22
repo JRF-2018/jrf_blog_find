@@ -21,6 +21,7 @@
 </table>
 </div>
 <h1>pdb_agent_lib がそのライブラリの名前だとして…。 import…</h1>
+<div class="art-tools" data-pagefind-ignore><button type="button" id="btn-copy">原文をコピー</button><span class="tools-msg" id="tools-msg"></span></div>
 <pre class="body">jrf&gt; pdb_agent_lib がそのライブラリの名前だとして…。
 
 import pdb_agent_lib as pal
@@ -47,5 +48,7 @@ pal.do はブレイクするだけでなく、復帰されたとき exec する�
 <nav class="prevnext" data-pagefind-ignore><span class="prev-art">← <a href="../../../articles/2025/05/gsm_007025.html">AI…</a> <span class="pn-date">2025-05-27T13:29:11Z</span></span><span class="next-art"><a href="../../../articles/2025/05/gsm_007027.html">(承前) 将来的には短縮名を pal ではなく ai…</a> <span class="pn-date">2025-05-27T20:51:46Z</span> →</span></nav>
 
 <nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2025/05.html">2025年05月</a> | <a href="../../../index/gsm.html">共有メモ</a></nav>
+<script type="application/json" id="raw-text">"[gsm]\n○ 2025-05-27T19:13:22Z vRmfoWZ7yX\n\njrf\u003e pdb_agent_lib がそのライブラリの名前だとして…。\n\nimport pdb_agent_lib as pal\n\npal.login(\"ランダム文字列\")\n\n...\n\nr = pal.do(\"ここで d から画像生成\")\n\n...\n\n…みたいに書くと、\n\npal.do はそこでブレイクしてデバッガに入って AI に処理が移り、AI は d を参照する。\n\npal.do はブレイクするだけでなく、復帰されたとき exec するように(pal.EXEC が null でないとき?)指定されていると、文をそのコンテクストで exec する。これによって、db の中で実行して db の中に入ってしまうみたいな現象をある程度防げるだろう。その後、pal.RESULT が設定されていれば、それを r に返すみたいなことをするのだろう。\n\n…みたいな感じにすればいいのかな？"</script>
+<script src="../../../article.js"></script>
 </body>
 </html>

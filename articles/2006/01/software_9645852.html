@@ -21,6 +21,7 @@
 </table>
 </div>
 <h1>玄人志向 RD70-A64C を NTSC で起動する</h1>
+<div class="art-tools" data-pagefind-ignore><button type="button" id="btn-copy">原文をコピー</button><span class="tools-msg" id="tools-msg"></span></div>
 <pre class="body">昔使っていた Linux &amp; Windows 2000 のデュアルブートマシンをセカンドマシンとして使っている。
 
 少し前まで、KVM (ディスプレイ切替器とか PC 切替器ともいう)を使っていたのだが、別モニタで見たいということで、ビデオ出力付きの安いビデオカードを買った。上記の「玄人志向 RD70-A64C」である。
@@ -54,5 +55,7 @@
 <nav class="prevnext" data-pagefind-ignore><span class="next-art"><a href="../../../articles/2006/02/software_9715999.html">USB 機器などの「ハードウェアの安全な取り外し」をコマンドラインから呼ぶ</a> <span class="pn-date">2006年02月01日 01:14:11</span> →</span></nav>
 
 <nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2006/01.html">2006年01月</a> | <a href="../../../index/software.html">ソフトウェア Tips</a></nav>
+<script type="application/json" id="raw-text">"[software] [cocolog:9645852]\n《玄人志向 RD70-A64C を NTSC で起動する》\nhttp://jrf.cocolog-nifty.com/software/2006/01/post.html\n2006年1月28日 21:59:23 [ハード]\n\n昔使っていた Linux \u0026 Windows 2000 のデュアルブートマシンをセカンドマシンとして使っている。\n\n少し前まで、KVM (ディスプレイ切替器とか PC 切替器ともいう)を使っていたのだが、別モニタで見たいということで、ビデオ出力付きの安いビデオカードを買った。上記の「玄人志向 RD70-A64C」である。\n\nさて、買ったあと知ったのだが、この製品、ビデオ出力が標準では PAL 形式で NTSC にする方法が Windows で設定するしかないようなのだ。普通、この手の商品はジャンパスィッチで起動時のビデオ設定を変更できるものだと思うが、それがない。\n\nどうしたものか。\n\n調べたところ、この製品の OEM 先の商品名は、PowerColor 7000 というシリーズの一つのようである。ここの FAQ を調べていると、NTSC にする方法がないかと聞いている人がいて、その解答として、 http://www.techpowerup.com/ というサイトに bios があるという情報があった。\n\nところが、このサイトには PowerColor 7000 の 32M の bios はあるが、64M の bios はない。案の上、このサイトの Winflash で書き換えようとすると ID が違うよといわれてしまった。\n\nでも、おそらく PowerColor 7000 の 32 M とそう大差はないはずなので、このサイトの NTSC と PAL 版(original ではない)の bios をダウンロードしてバイナリエディタ Stirling で比較すると、2 バイトだけ違う。\n\n違う 1 バイトのうち最後のものはチェックサム(?) を合わせているだけだろうから、問題となるのは残り 1 バイトである。実際、RD70-A64C から吸い出したものも同じようなアドレスに同じようなデータがある。どうもここを書き換えれば良さそうだ。\n\n結果、アドレス 0xB52C の 4E 02 という並びを 4E 01 にし、チェックサム (?)を 1 「増やす」必要があるため、害のなさそうな適当な文字列(私は日付け)を 1 増やした。\n\n以上で、bios に書き込んだ。安いグラフィックボードだからこそフンギリも付く。……成功！！\n\nただ、Linux (debian) の場合、コンソールについては表示されるが、さすがに XFree86 については表示されないようである。\n\nちなみに、上のサイトでは NTSC のほかに NTSC/J の bios もダウンロードできるが、NTSC/J の値にした場合、テレビには何も表示されなくなってしまった。これは私のデュアルヘッドのメインマシンでも、起動時には何も表示されないので、NTSC/J というのは、メーカー側がなぜか、そのように作っているのかもしれない。\n\n更新：06/01/16,06/01/28\n初公開：2006年01月28日 21:56:48"</script>
+<script src="../../../article.js"></script>
 </body>
 </html>

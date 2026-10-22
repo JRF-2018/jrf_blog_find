@@ -21,6 +21,7 @@
 </table>
 </div>
 <h1>Python で重み付き(weighted)な random.sample…</h1>
+<div class="art-tools" data-pagefind-ignore><button type="button" id="btn-copy">原文をコピー</button><span class="tools-msg" id="tools-msg"></span></div>
 <pre class="body">Python で重み付き(weighted)な random.sample が欲しい。np.random.choice がエラーを吐くほど巨大な数で使えるような。
 JRF 2021年2月18日
 
@@ -32,11 +33,11 @@ JRF 2021年2月18日
 
 JRF 2021年2月18日
 
-&lt;pre&gt;
+<span class="src-pre">&lt;pre&gt;
     l1 = list(range(100000))
     l1 = np.array(l1)
     l2 = np.random.choice(l1, 1000, p=l1/np.sum(l1), replace=False)
-&lt;/pre&gt;
+&lt;/pre&gt;</span>
 
 JRF 2021年2月18日
 
@@ -45,11 +46,11 @@ JRF 2021年2月18日
 
 JRF 2021年2月18日
 
-&lt;pre&gt;
+<span class="src-pre">&lt;pre&gt;
     l1 = list(range(100000))
     l1 = np.array(l1).astype(np.longdouble)
     l2 = np.random.choice(l1, 1000, p=l1/np.sum(l1), replace=False)
-&lt;/pre&gt;
+&lt;/pre&gt;</span>
 
 JRF 2021年2月18日
 
@@ -59,11 +60,11 @@ JRF 2021年2月18日
 
 JRF 2021年2月18日
 
-&lt;pre&gt;
+<span class="src-pre">&lt;pre&gt;
     l1 = list(range(100000))
     l2 = np.random.choice(l1, 1000, p=np.array(l1).astype(np.longdouble)
                           /np.sum(l1).astype(np.longdouble), replace=False)
-&lt;/pre&gt;
+&lt;/pre&gt;</span>
 
 JRF 2021年2月18日
 
@@ -73,13 +74,13 @@ JRF 2021年2月18日
 
 JRF 2021年2月18日
 
-&lt;pre&gt;
+<span class="src-pre">&lt;pre&gt;
 def alt_np_random_choice(a, size=None, replace=True, p=None):
     assert replace is False
     p2 = p * np.random.uniform(size=len(p))
     l = sorted(list(zip(a, p2)), key=lambda x: x[1], reverse=True)[0:size]
     return [x for x, q in l]
-&lt;/pre&gt;
+&lt;/pre&gt;</span>
 
 JRF 2021年2月18日
 
@@ -91,13 +92,13 @@ JRF 2021年2月18日
 
 JRF 2021年2月18日
 
-&lt;pre&gt;
+<span class="src-pre">&lt;pre&gt;
 def alt2_np_random_choice(a, size=None, replace=True, p=None):
     assert replace is False
     p2 = p + ((np.max(p) - np.min(p)) / 2) * np.random.normal(size=len(p))
     l = sorted(list(zip(a, p2)), key=lambda x: x[1], reverse=True)[0:size]
     return [x for x, q in l]
-&lt;/pre&gt;
+&lt;/pre&gt;</span>
 
 JRF 2021年2月18日
 
@@ -120,5 +121,7 @@ JRF 2021年2月18日</pre>
 <nav class="prevnext" data-pagefind-ignore><span class="prev-art">← <a href="../../../articles/2021/02/statuses_cocolog_92559252.html">アンプ YAMAHA A-S501 と CDプレイヤー YAMAHA…</a> <span class="pn-date">2021年02月15日</span></span><span class="next-art"><a href="../../../articles/2021/03/statuses_cocolog_92605934.html">「歴史戦」は私のガラではないが…、慰安婦像は東アジア以外の外国に設置される場合、…</a> <span class="pn-date">2021年03月09日</span> →</span></nav>
 
 <nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2021/02.html">2021年02月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+<script type="application/json" id="raw-text">"[statuses] [cocolog:92565478]\nhttp://jrf.cocolog-nifty.com/statuses/2021/02/post-b7b5ba.html\n\nPython で重み付き(weighted)な random.sample が欲しい。np.random.choice がエラーを吐くほど巨大な数で使えるような。\nJRF 2021年2月18日\n\n配列から重なりなく要素を複数選ぶには random.sample を使うが、重み付きの場合は、np.random.choice を replace=False で呼び出すのがセオリー。\n\nしかし、配列がとても巨大な場合、重みの和が 1 でないというエラーが出やすい。\n\n例えば…\n\nJRF 2021年2月18日\n\n\u003cpre\u003e\n    l1 = list(range(100000))\n    l1 = np.array(l1)\n    l2 = np.random.choice(l1, 1000, p=l1/np.sum(l1), replace=False)\n\u003c/pre\u003e\n\nJRF 2021年2月18日\n\n…などとすると ValueError: probabilities do not sum to 1 という例外が発生する。\nこれを解決する方法の一つは、型を np.longdouble にするというもの。\n\nJRF 2021年2月18日\n\n\u003cpre\u003e\n    l1 = list(range(100000))\n    l1 = np.array(l1).astype(np.longdouble)\n    l2 = np.random.choice(l1, 1000, p=l1/np.sum(l1), replace=False)\n\u003c/pre\u003e\n\nJRF 2021年2月18日\n\n…ならば通る。この np.longdouble は Linux 系では 'float128' だが、Windows 系では 'float96' らしく、'float128' とか 'float96' が使えるからと言ってそれを指定する(例えば astype('float128')) と、処理系によっては使えないプログラムになるので、上のように np.longdouble を使うのがセオリーらしい。\n\nただ、np.longdouble が気持ち悪い場合…例えば、\n\nJRF 2021年2月18日\n\n\u003cpre\u003e\n    l1 = list(range(100000))\n    l2 = np.random.choice(l1, 1000, p=np.array(l1).astype(np.longdouble)\n                          /np.sum(l1).astype(np.longdouble), replace=False)\n\u003c/pre\u003e\n\nJRF 2021年2月18日\n\n…みたいに少し変えるだけで、再び ValueError: probabilities do not sum to 1 が出てしまう。\n\nこういうのがいやだという場合、アイデアとしては np.random.choice の代わりに次のような関数を使うことが考えられる。\n\nJRF 2021年2月18日\n\n\u003cpre\u003e\ndef alt_np_random_choice(a, size=None, replace=True, p=None):\n    assert replace is False\n    p2 = p * np.random.uniform(size=len(p))\n    l = sorted(list(zip(a, p2)), key=lambda x: x[1], reverse=True)[0:size]\n    return [x for x, q in l]\n\u003c/pre\u003e\n\nJRF 2021年2月18日\n\n「重み」がかっちりとした分布を表すのではなく、なんとなく大きい小さいだけというアバウトな場合に使うことができるかもしれない。\n\nただ、私の目的では、これは p の「スコア」が大きいものがやたら選ばれるという結果になり都合が悪かった。\n\nそこで、上の関数の p2 のところをいろいろ工夫した「経験的な結果」だが、たまたま私の目的では、次のような関数が、都合のよい結果をもたらした。\n\nJRF 2021年2月18日\n\n\u003cpre\u003e\ndef alt2_np_random_choice(a, size=None, replace=True, p=None):\n    assert replace is False\n    p2 = p + ((np.max(p) - np.min(p)) / 2) * np.random.normal(size=len(p))\n    l = sorted(list(zip(a, p2)), key=lambda x: x[1], reverse=True)[0:size]\n    return [x for x, q in l]\n\u003c/pre\u003e\n\nJRF 2021年2月18日\n\nただ、いちいち sorted しているのが遅い気がする。実際 timeit で測ると np.random.choice に比べ30倍以上遅い。\n\nだから、np.longdouble が気持ち悪い場合のみ使うことになるだろう。\n\nJRF 2021年2月18日"</script>
+<script src="../../../article.js"></script>
 </body>
 </html>

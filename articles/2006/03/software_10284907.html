@@ -21,6 +21,7 @@
 </table>
 </div>
 <h1>DDwin.js をダブルクリックで呼べるようにする</h1>
+<div class="art-tools" data-pagefind-ignore><button type="button" id="btn-copy">原文をコピー</button><span class="tools-msg" id="tools-msg"></span></div>
 <pre class="body">Firefox の拡張に DictionaryTip があります。ダブルクリックすると goo 辞書などを引いてミニウィンドウを出してくれるものです。同じようなことを《DDwin.js》を用いてやるには、JSActions のスタートアップスクリプトを可能にして、そのスクリプト内で、イベントリスナーにダブルクリックに対して DDwin.js を呼ぶよう登録するだけです。
 
   0.すでに firefox_jsa/selection/DDwin.js があるとします。
@@ -69,5 +70,7 @@ DDwin-by-Dblclick.js: <a href="http://jrf.cocolog-nifty.com/archive/DDwin-by-Dbl
 <nav class="prevnext" data-pagefind-ignore><span class="prev-art">← <a href="../../../articles/2006/02/software_10234210.html">DDwin を Firefox や Meadow から使うとき latin-1 のアクセント記号を抜くようにした。</a> <span class="pn-date">2006年02月27日 00:37:52</span></span><span class="next-art"><a href="../../../articles/2006/03/software_10293851.html">ココログプロで Google サイトマップインデックスを作る</a> <span class="pn-date">2006年03月02日 03:12:23</span> →</span></nav>
 
 <nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2006/03.html">2006年03月</a> | <a href="../../../index/software.html">ソフトウェア Tips</a></nav>
+<script type="application/json" id="raw-text">"[software] [cocolog:10284907]\n《DDwin.js をダブルクリックで呼べるようにする》\nhttp://jrf.cocolog-nifty.com/software/2006/03/post.html\n2006年3月1日 19:46:57 [Firefox]\n\nFirefox の拡張に DictionaryTip があります。ダブルクリックすると goo 辞書などを引いてミニウィンドウを出してくれるものです。同じようなことを《DDwin.js》を用いてやるには、JSActions のスタートアップスクリプトを可能にして、そのスクリプト内で、イベントリスナーにダブルクリックに対して DDwin.js を呼ぶよう登録するだけです。\n\n  0.すでに firefox_jsa/selection/DDwin.js があるとします。\n  1.JSActions の設定で Enable Startup Script のチェックボックスを on にします。\n  2.firefox_jsa/startup というフォルダを作ります。\n  3.そこに次のような DDwin-by-Dblclick.js を置きます。\n    \n以上でできるようになるはずです。\n\n// DDwin をダブルクリックで起動。\n// firefox_jsa/selection/DDwin.js を呼ぶ。\n\nif (document \u0026\u0026 \"addEventListener\" in document) {\n      document\n          .addEventListener(\"dblclick\", function (e) {\n              if (/* e.ctrlKey \u0026\u0026 */ e.button == 0) {\n                  var scrList = JsActions.getScriptList(\"selection\");\n                  for (var i in scrList) {\n                      var scr = scrList[i];\n                      if (scr.path.match(/DDwin.*\\.js$/i)) {\n                          JsActions.execScript(scr.path, scr.uri, e);\n                          e.stopPropagation();\n                          break;\n                      }\n                  }\n              }\n          }, true);\n}\n\nselection/DDwin.js がなく、Button/70_NL_DDwin.js のみがある場合は、もちろん、selection/DDwin.js を置くか、上の JsActions.getScriptList(\"selection\") を JsActions.getScriptList(\"Button\") に換えれば OK です。\n\n更新：06/03/01\n初公開：2006年03月01日 19:47:02\n最新版：2006年03月04日 07:49:55\n\n\nLinks:\n\nDictionaryTip: http://bushwhacker.seesaa.net/article/12469028.html\ngoo 辞書: http://dictionary.goo.ne.jp/index.html\nDDwin.js: http://jrf.cocolog-nifty.com/archive/ddwin-js.html\nJSActions: http://openhideaway.net/Firefox/\nDDwin-by-Dblclick.js: http://jrf.cocolog-nifty.com/archive/DDwin-by-Dblclick.js"</script>
+<script src="../../../article.js"></script>
 </body>
 </html>

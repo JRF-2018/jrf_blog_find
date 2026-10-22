@@ -21,6 +21,7 @@
 </table>
 </div>
 <h1>JavaScript の Canvas…</h1>
+<div class="art-tools" data-pagefind-ignore><button type="button" id="btn-copy">原文をコピー</button><span class="tools-msg" id="tools-msg"></span></div>
 <pre class="body">JavaScript の Canvas にもオリジン制限があることを知る。開発者向けにブラウザ起動時にそれを無視するオプションはあるようだが、サーバーオーナーやブロガーが回避する方法はなさそう。
 JRF 2011年11月29日
 
@@ -40,9 +41,9 @@ JRF 2011年11月29日
 
 でも、やっぱりこれも面倒すぎる。例えば JavaScript 内で、
 
-&lt;pre&gt;
+<span class="src-pre">&lt;pre&gt;
 location.apply_access('local_dir/image01.jpg');
-&lt;/pre&gt;
+&lt;/pre&gt;</span>
 
 とかすると、location の local_dir/allow_access_origin.txt が読み込まれて、そこの内容によって、Same-Origin 制限が回避できるとかセキュリティ的にダメなんだろうか？
 
@@ -138,5 +139,7 @@ Trackbacks:
 <nav class="prevnext" data-pagefind-ignore><span class="prev-art">← <a href="../../../articles/2011/11/statuses_cocolog_70690388.html">「歴史的録音」を二つ聴く。一つはスメタナ四重奏団の『モーツァルト：弦楽四重奏曲…</a> <span class="pn-date">2011年11月26日</span></span><span class="next-art"><a href="../../../articles/2011/11/statuses_cocolog_70725852.html">最近、ページを開くとまず広告を表示されるというサイトが「再び」現れるようになった…</a> <span class="pn-date">2011年11月29日</span> →</span></nav>
 
 <nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2011/11.html">2011年11月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+<script type="application/json" id="raw-text">"[statuses] [cocolog:70722096]\nhttp://jrf.cocolog-nifty.com/statuses/2011/11/javas-2.html\n\nJavaScript の Canvas にもオリジン制限があることを知る。開発者向けにブラウザ起動時にそれを無視するオプションはあるようだが、サーバーオーナーやブロガーが回避する方法はなさそう。\nJRF 2011年11月29日\n\n例えば↓参照。\n\n《canvas の getImageDataが少しめんどくさい（特にローカルで動かす場合） - 地平線に行く》\nhttp://d.hatena.ne.jp/chiheisen/20100815/1281885412\n\nJRF 2011年11月29日\n\nsitemap.xml とか robots.txt や .htaccess みたいな回避方法はできないものだろうか。\n\nJavaScript で XMLHttpRequest するときでも Same-Origin 制限、クロスドメイン制限があって、そちらは Access-Control-Allow-Origin みたい回避手段ができようとしている。([aboutme:139035] [aboutme:139032] [aboutme:138896])\n\nJRF 2011年11月29日\n\n\nでも、やっぱりこれも面倒すぎる。例えば JavaScript 内で、\n\n\u003cpre\u003e\nlocation.apply_access('local_dir/image01.jpg');\n\u003c/pre\u003e\n\nとかすると、location の local_dir/allow_access_origin.txt が読み込まれて、そこの内容によって、Same-Origin 制限が回避できるとかセキュリティ的にダメなんだろうか？\n\nこの制限は HTML5 でローカルで起動するゲームを作るのを阻害するものとなっており、そこをブラウザ開発者が解決しないのは、クライアントサーバー主義の陰謀論を唱えたくなる。\n\nJRF 2011年11月29日\n\nP2P 主義でローカルで起動することを認めれば、そこに「財産」としてバックアップが残るが、それを認めなければ、サーバーにしか残らなくなる。大上段に構えすぎかもしれないが、これが 100 年ぐらいあとになると、それを「パブリックドメイン」なものだからと言って、誰かが囲い込みの中でしか使えなくしてしまうかもしれない。([aboutme:138358])\n\nJRF 2011年11月29日\n\n\nフリーであるがゆえにプログラマーになれた者としては、それをさせない不断の努力が求められそうなところだ。が、今はクライアントサーバー側が投資資金を握っているため、プログラマーはその生活費に対する義理立てをしなければいけなくなり、P2P 的にローカルで起動することができなくなっていることへの注意を知ってか知らずか、疎かにしている。\n\n……といった陰謀論にくみしたくなる。陰謀論的思考に陥いる者は、学術的基礎ができてないからという意見を読んだが、まぁ、その通りということなのだと思う。(^^;\n\nJRF 2011年11月29日\n\n《Same origin policy for JavaScript - MDN》\nhttps://developer.mozilla.org/En/Same_origin_policy_for_JavaScript\n\nJRF 2011年11月29日\n\n……。\n\nあと、ココログのアップロード 1M 制限にもひっかかってイメージの品質を落とさざるを得なかった。ブログサイトでゲームを公開するのが無茶なのかなぁ…？\n\nJRF 2011年11月29日\n\n……。\n\nついでだから、文句言っちゃうと、クレジットカードしか使えないサイトが多くて、銀行振込が使えないとかも頭くんだよな。まぁ、海外サイトだからってのもあるかもっれいないけど、民間が投資して「通貨」を独占しようとするのは、([aboutme:90158] [aboutme:136774] とかで述べた不正競争・独占禁止法とかだけでなく、)日本とかだと日銀法かなんかにも抵触するんじゃないか。\n\nクレジットカードあたりも、クライアントサーバーで集約するという考え方の延長にあると思う。\n\nこういうのは昔の技術を前提に「それしかない」と貸し込んじゃったのが響いてるんじゃないかと邪推している。\n\nJRF 2011年11月29日\n\n参↓。\n\n《ICカードの迷信をバカにできるほど端末管理できてる？》\nhttp://jrf.cocolog-nifty.com/column/2006/04/post_8.html\n\nkeyword: 時間記録デバイス\n\n[aboutme:138968] では、OAuth を振込に使えないかみたいなことを↓を作りながら考えていた。\n\n《Statuses_Editor_Proxy.CGI - XMLRPC と OAuth を組み合わせた「ひとことサイト」ソリューション》\nhttp://jrf.cocolog-nifty.com/software/2011/06/post.html\n\nJRF 2011年11月29日\n\ntypo 「みたい回避手段」→「みたいな回避手段」。\ntypo 「あるかもっれいないけど」→「あるかもしれないけど」。\n\nJRF 2011年11月29日\n\nTrackbacks:\n\n《cocolog:70725852》 from JRF のひとこと\nhttp://jrf.cocolog-nifty.com/statuses/2011/11/post-44ef.html\n\n最近、ページを開くとまず広告を表示されるというサイトが「再び」現れるようになった。私は「広告はおおいに結構」というポリシーを持っているが、クリックせねば内容がわからないサイトは、ラッパーをかけたサイトの乗っ取りを疑う。そういう広告を許容するために私はブラウザに新しい機能が欲しい。... \n\n受信： 2012-01-04 14:58:33 (JST)\n\n《cocolog:71745984》 from JRF のひとこと\nhttp://jrf.cocolog-nifty.com/statuses/2012/02/post-66d1.html\n\n今の「簡素」なシステムが使い易いのは、昔の便利なシステムを知らないから…というのはかなりまずい状況のように思う。プログラマー人口減とかもあるだろうが、ネットの自由の減少が、若者がその青春を燃やすのにふさわしくない場所という認識を導いているのではないか？... \n\n受信： 2012-03-29 18:27:13 (JST)"</script>
+<script src="../../../article.js"></script>
 </body>
 </html>

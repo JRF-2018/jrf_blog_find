@@ -21,6 +21,7 @@
 </table>
 </div>
 <h1>(承前) workflow…</h1>
+<div class="art-tools" data-pagefind-ignore><button type="button" id="btn-copy">原文をコピー</button><span class="tools-msg" id="tools-msg"></span></div>
 <pre class="body">jrf&gt; (承前)
 
 workflow に条件分岐やループを認める方向。なぜ「フレームワーク内部」でそれをやるのがいいかというと AI さん達がそのワークフローを参照して参考にできるから…なんだよね。うーん、今ある workflow 機能は bandit workflow ということにして、それとは別に RagAgent でやった _execute と main_loop (または resume) を取り出したような execution workflow というのを定義できるようにして、それを show_execution_workflow というツールで見れるようにする…という方向はあるのかな？
@@ -35,5 +36,7 @@ workflow に条件分岐やループを認める方向。なぜ「フレーム�
 <nav class="prevnext" data-pagefind-ignore><span class="prev-art">← <a href="../../../articles/2025/09/gsm_007698.html">MemoryBanditWorkflow…</a> <span class="pn-date">2025-09-23T18:20:43Z</span></span><span class="next-art"><a href="../../../articles/2025/09/gsm_007700.html">今日の昼食は、豚屋とん一 で…</a> <span class="pn-date">2025-09-24T08:56:15Z</span> →</span></nav>
 
 <nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2025/09.html">2025年09月</a> | <a href="../../../index/gsm.html">共有メモ</a></nav>
+<script type="application/json" id="raw-text">"[gsm]\n○ 2025-09-23T20:02:01Z +9I9//6bPe\n\njrf\u003e (承前)\n\nworkflow に条件分岐やループを認める方向。なぜ「フレームワーク内部」でそれをやるのがいいかというと AI さん達がそのワークフローを参照して参考にできるから…なんだよね。うーん、今ある workflow 機能は bandit workflow ということにして、それとは別に RagAgent でやった _execute と main_loop (または resume) を取り出したような execution workflow というのを定義できるようにして、それを show_execution_workflow というツールで見れるようにする…という方向はあるのかな？\n\nなんか、bandit workflow の外にさらにメタな execution workflow を設定するという話で、だんだんメタな方向に拡張する…となって、それなら、普通にコンピュータ言語でいいじゃん、今実行する Python コードを AI さん達に見せようよ…という話になっていきそうにも思うのだけど。\n\nとりあえずなら、show_execution(_workflow) は、仕様を文章で記述でもいいのかもしれない。とにかく用意するのを推奨するという方向はあるのかも。"</script>
+<script src="../../../article.js"></script>
 </body>
 </html>

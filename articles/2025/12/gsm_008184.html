@@ -21,6 +21,7 @@
 </table>
 </div>
 <h1>「パーコレーション・ノイズ: スパース化と Dropout ならぬ…</h1>
+<div class="art-tools" data-pagefind-ignore><button type="button" id="btn-copy">原文をコピー</button><span class="tools-msg" id="tools-msg"></span></div>
 <pre class="body">jrf&gt; 「パーコレーション・ノイズ: スパース化と Dropout ならぬ Drop-in を組み合わせる実験 その2」を行った。Magnitude Pruning により30%のスパース化が達成できたのには驚いた。
 
 《humanoid_nested_attention_dt_10_2.ipynb - Colab》  
@@ -46,5 +47,7 @@ DecisionTransformer 系のモデルを使って二足歩行の模倣学習を行
 <nav class="prevnext" data-pagefind-ignore><span class="prev-art">← <a href="../../../articles/2025/12/gsm_008183.html">驚いた。Magnitude…</a> <span class="pn-date">2025-12-26T09:35:47Z</span></span><span class="next-art"><a href="../../../articles/2025/12/gsm_008185.html">(承前) ……。 その2 に向けてのアイデア(1) DWPN。 この状況を…</a> <span class="pn-date">2025-12-26T12:43:40Z</span> →</span></nav>
 
 <nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2025/12.html">2025年12月</a> | <a href="../../../index/gsm.html">共有メモ</a></nav>
+<script type="application/json" id="raw-text">"[gsm]\n○ 2025-12-26T12:43:14Z MAdVEVbt3n\n\njrf\u003e 「パーコレーション・ノイズ: スパース化と Dropout ならぬ Drop-in を組み合わせる実験 その2」を行った。Magnitude Pruning により30%のスパース化が達成できたのには驚いた。\n\n《humanoid_nested_attention_dt_10_2.ipynb - Colab》  \nhttps://colab.research.google.com/drive/1CZy4thKEWN7ExGvD7Q8AVN4t1sa06s6b#scrollTo=qPjZMvYxeSJ2\n\n……。\n\n概要。\n\nDecisionTransformer 系のモデルを使って二足歩行の模倣学習を行う実験で、スパース化を試みる。その際、Gemini さん提案の DynamicWeightedPercNoise (DWPN) と Magnitude Pruning を組み合わせ、ほぼ動作に支障なく 30% のスパース化を実現した。\n\n……。\n\nその1の実験。\n\n普通に考えれば、Drop-in は Dropout と同様の汎化性能が出ておかしくないはずである。しかし単純に Drop-in を作っても動作がうまくいかなかった。理由は詳しくわからないが、Drop-in では、本来の重みと相関が残っていることが、むしろ汎化に悪影響があると考えて、その相関がないようなノイズを注入することにしてみたところ、まずまずうまくいくようになった。それが PercNoise (パーコレーション・ノイズ)という仕組みである。つまりそれは、Dropout で開いた穴(ゼロ)に正規分布ノイズを足したものである。パーコレーションで必要なのは、スパース化でゼロになったところでの摂動のみだろうから、その変更は許容できると私は考えたのである。\n\nしかし、このようにして動作をうまくいくようにしてから、L1正則化を発動させるために L1_REG_LAMBDA をかなり高くしても、スパース化は1%を超えることはなかった。最初からの学習をしても、またはある程度学習させてからの追加学習でも、まったくスパース化は起きなかった。"</script>
+<script src="../../../article.js"></script>
 </body>
 </html>

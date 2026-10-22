@@ -21,6 +21,7 @@
 </table>
 </div>
 <h1>メタ論理: 演驛と帰納</h1>
+<div class="art-tools" data-pagefind-ignore><button type="button" id="btn-copy">原文をコピー</button><span class="tools-msg" id="tools-msg"></span></div>
 <pre class="body">「演驛」とは論理的に命題を導くことである。
 
 「帰納法」は演驛の一つである。しかし、帰納法を学ぶことで、人は帰納のなんたるかを知る。それが「帰納」である。
@@ -71,5 +72,7 @@ An Introduction to Mathematical Logic and Type Theory: To Truth through Proof: <
 <nav class="prevnext" data-pagefind-ignore><span class="prev-art">← <a href="../../../articles/2006/01/column_9680626.html">「ごくろうさまでした」は逆尊敬語？</a> <span class="pn-date">2006年01月30日 12:50:51</span></span><span class="next-art"><a href="../../../articles/2006/01/column_9704842.html">S.I.C. 匠魂 vol.4 キカイダー＋サイドマシーン＆ビジンダー</a> <span class="pn-date">2006年01月31日 17:38:50</span> →</span></nav>
 
 <nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2006/01.html">2006年01月</a> | <a href="../../../index/column.html">雑記</a></nav>
+<script type="application/json" id="raw-text">"[column] [cocolog:9682181]\n《メタ論理: 演驛と帰納》\nhttp://jrf.cocolog-nifty.com/column/2006/01/post_10.html\n2006年1月31日 15:46:30 [論理学][ストーリー]\n\n「演驛」とは論理的に命題を導くことである。\n\n「帰納法」は演驛の一つである。しかし、帰納法を学ぶことで、人は帰納のなんたるかを知る。それが「帰納」である。\n\n我々は英語を習うときに日本語を使う。これをやや専問的には英語を対象言語として日本語というメタ言語上で扱うという。ここで「上位」ぐらいの意味で「メタ」という言葉を使っているが、英語よりも日本語が高級であると言えないように、対象言語がメタ言語に劣るということはない。\n\nまた、モンゴル語の「馬」にはいろいろな表現があるが、日本語に相当する単語がなくても長い表現を使えば日本語でだいたいの意味が説明できるように、対象言語のほうがメタ言語よりも表現力があってもメタ言語として機能できることもある。\n\n記号論理を教えるときも日本語のような自然言語を使うが、ある時期、記号論理をコンピュータに教えようという話になった。最初は、人が解くようにプログラミングをしていたわけだが、そのうち、特定の論理ではなく、論理体系そのものを論じたり、論理体系に汎用なシステムを作りましょうという話になってきた。\n\nLogical Frameworks とか Generic Theorem Prover などと呼ばれるプロジェクトである。\n\nそうとはいえ、せっかく、汎用な論理体系を扱っているっていっても、そのシステムそのものに矛盾があるならどうしようもない。そこで、そのシステムをできるだけ、フォーマルに記述しようという努力がなされ、その中の一つとして論理を論理で記述しちゃいましょう。すなわち「メタ論理」を作りましょうという話があった。\n\n実はその「メタ論理」を使うと、我々が演驛として行なっていた対象論理上の証明(forward proof)も、帰納として行なっていた対象論理上の証明(backward proof)も、メタ論理上の演驛として記述できる。\n\nメタ論理として使うのはある種機能の制限された「高階論理」である。論理学入門で習う一階述語論理では、変数は、関数や述語の引数になるが、関数や述語の部分は変数として扱えない。それを扱えるようにしたのが「高階論理」だ。\n\n高階論理は当然のごとく、一階述語論理を含み、高い表現力があるため、論理体系を高階論理で包括的に扱えることは知られていた。\n\nしかし、その高階論理を制限的に使うことで、対象論理の操作を見通し良く示せることがわかったのである。\n\n我々は高階論理だけでも、対象論理だけでもつかみにくい対象論理の姿を「メタ論理」という概念を通して帰納的に知るようになったのである。\n\n\u003cb\u003e参考文献\u003c/b\u003e\n\n  証明支援システム(Proof Assistant)でメタ論理を導入した Isabelle http://www.cl.cam.ac.uk/Research/HVG/Isabelle/\n  \n  高階論理については Higher-Order Logic や Higher-Order Calculus、 Type Theory などで検索してみてください。新判があるようですが、私が持ってるのは、 “An Introduction to Mathematical Logic and Type Theory: To Truth through Proof” (Peter B. Andrews, Academic Press 1986)\n  \n更新：06/01/13,06/01/30\n初公開：2006年01月30日 15:17:18\n\n\nLinks:\n\nAn Introduction to Mathematical Logic and Type Theory: To Truth through Proof: http://www.amazon.com/gp/product/0120585367/"</script>
+<script src="../../../article.js"></script>
 </body>
 </html>

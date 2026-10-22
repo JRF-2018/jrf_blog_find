@@ -21,6 +21,7 @@
 </table>
 </div>
 <h1>native2ascii.pl をいちおう作ってみた</h1>
+<div class="art-tools" data-pagefind-ignore><button type="button" id="btn-copy">原文をコピー</button><span class="tools-msg" id="tools-msg"></span></div>
 <pre class="body">Firefox の .xpi をいじろうとすると、locale の部分で .properties の拡張子を持ったファイルを JAVA で使える形式にしないとダメなんだそうだ。そのためのコマンドとして native2ascii というものが JDK に入っているらしい。
 
 ただ、それだけのために JDK を入れるのもバカらしいので、Perl のスクリプトを書いてみた。native2ascii.pl がそのファイル。
@@ -69,5 +70,7 @@ Javaにおける文字／文字列の扱い方: <a href="http://www.javaworld.jp
 <nav class="prevnext" data-pagefind-ignore><span class="prev-art">← <a href="../../../articles/2006/02/software_10196074.html">DDwin.js: Firefox から電子辞書 DDwin (または EBWin) を起動する</a> <span class="pn-date">2006年02月25日 14:22:08</span></span><span class="next-art"><a href="../../../articles/2006/02/software_10215170.html">Windows のコマンドライン cmd.exe 用のエスケープってどうやるの？</a> <span class="pn-date">2006年02月26日 05:47:03</span> →</span></nav>
 
 <nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2006/02.html">2006年02月</a> | <a href="../../../index/software.html">ソフトウェア Tips</a></nav>
+<script type="application/json" id="raw-text">"[software] [cocolog:10215138]\n《native2ascii.pl をいちおう作ってみた》\nhttp://jrf.cocolog-nifty.com/software/2006/02/post_18.html\n2006年2月26日 05:31:33 [Perl][Windows アプリ][JRF 作成ソフトウェア]\n\nFirefox の .xpi をいじろうとすると、locale の部分で .properties の拡張子を持ったファイルを JAVA で使える形式にしないとダメなんだそうだ。そのためのコマンドとして native2ascii というものが JDK に入っているらしい。\n\nただ、それだけのために JDK を入れるのもバカらしいので、Perl のスクリプトを書いてみた。native2ascii.pl がそのファイル。\n\nものすごいテキトー。フィルタらしく一行づつ処理せず、ファイル全部をいったん読んで、一気に処理してる。--encoding=japanese と指定すると自動判別するんだけど、guess_encoding も最初の n バイトとかじゃなくて、全部わたして guess させてる。\n\nまぁ、自分が使えりゃそれでいいし、ダメだったら JDK をすなおにインストールすればいいし。\n\n■更新\n  \n  \u003cb\u003e2006-02-28\u003c/b\u003eSurrogate Pair に対応。\n    《Javaにおける文字／文字列の扱い方》を参考に \\uuXXXX に対応。\n  \u003cb\u003e2006-02-26\u003c/b\u003e公開。\n    \n更新：06/02/26,06/02/28\n初公開：2006年02月26日 05:31:34\n最新版：2006年02月28日 03:47:16\n\n\nTrackbacks:\n\n《[firefox] Firefox 拡張のパッケージング手順 (2) 落ち穂拾い編（ぉぃ》 from Mi manca qualche giovedi`?\nhttp://d.hatena.ne.jp/n_shuyo/20070330/firefox\n\n id:n_shuyo:20070216:firefox にて「片手落ちのような気がして仕方がない」とFirefox拡張開発におけるパッケージングの手順をまとめようと試みていたのだが。 Mash up Award で もけもけ遊んでいるうちに、Software Design 2007/4 月号 に特集「Firefox拡張機能開発チュート... \n\n受信： 2007-03-30 13:43:46 (JST)\n\n\nComments:\n\n更新： native2ascii.pl version 0.03: Perl 5.10 では Getopt::Long に pod2usage が入ってないようなので、use Pod::Usage するようにしただけです。\n\nちなみに昔からこれに書いてる \\u でなく大文字の \\U についてはなんちゃってで書いてるだけで、使わないほうがいいです。\n投稿: JRF | 2009-09-08 17:24:42 (JST)\n\n\nLinks:\n\nnative2ascii: http://java.sun.com/j2se/1.5.0/ja/docs/ja/tooldocs/windows/native2ascii.html\nJDK: http://java.sun.com/j2se/1.5.0/ja/download.html\nnative2ascii.pl: http://jrf.cocolog-nifty.com/archive/native2ascii.pl\nJavaにおける文字／文字列の扱い方: http://www.javaworld.jp/beginners/-/10422.html"</script>
+<script src="../../../article.js"></script>
 </body>
 </html>

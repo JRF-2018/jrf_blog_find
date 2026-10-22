@@ -21,6 +21,7 @@
 </table>
 </div>
 <h1>TinyLoRA の式は W' = W + U Σ (Σ_{i=1}^{u}…</h1>
+<div class="art-tools" data-pagefind-ignore><button type="button" id="btn-copy">原文をコピー</button><span class="tools-msg" id="tools-msg"></span></div>
 <pre class="body">jrf&gt; TinyLoRA の式は W' = W + U Σ (Σ_{i=1}^{u} v_i P_i) V^⊤ だが、これは W' = W (I + v1 P1 + v2 P2 +…) という式で行ってもだいたい遜色なくできる。つまり単純な「積」である。I P1 P2 … を正規直交化すれば、訓練が早くなるようだ。
 
 これはモデルをとても単純にする。TinyLoRA を「低ランク更新」から「低次元群作用」に再定式化している…と言える。
@@ -39,5 +40,7 @@ ChatGPT さんとの会話は↓になる。
 <nav class="prevnext" data-pagefind-ignore><span class="prev-art">← <a href="../../../articles/2026/03/gsm_008684.html">ええっ！ Sora 提供終了なの！…</a> <span class="pn-date">2026-03-25T02:51:28Z</span></span><span class="next-art"><a href="../../../articles/2026/03/gsm_008686.html">何を省エネすべきか。Sora終了で答えは示されたようなものか。AIの使い方をもう…</a> <span class="pn-date">2026-03-25T12:02:11Z</span> →</span></nav>
 
 <nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2026/03.html">2026年03月</a> | <a href="../../../index/gsm.html">共有メモ</a></nav>
+<script type="application/json" id="raw-text">"[gsm]\n○ 2026-03-25T10:29:41Z r4ovvyqYp8\n\njrf\u003e TinyLoRA の式は W' = W + U Σ (Σ_{i=1}^{u} v_i P_i) V^⊤ だが、これは W' = W (I + v1 P1 + v2 P2 +…) という式で行ってもだいたい遜色なくできる。つまり単純な「積」である。I P1 P2 … を正規直交化すれば、訓練が早くなるようだ。\n\nこれはモデルをとても単純にする。TinyLoRA を「低ランク更新」から「低次元群作用」に再定式化している…と言える。\n\nChatGPT さんによるとスタッキングを可能とする方向として W' = W exp(v1 A1 + v2 A2 + ...) という方向がおもしろそうだと示された。\n\n実は、TinyLoRA について以前、調べたのだが、実験失敗だけが結果報告になっていて、何も有用な結果として残ってなかったのが気にかかっていて、その議論で、意味がありそうなもののみ、再度 ChatGPT さんにお願いして実験してもらったのだった。そして以上がその結論になる。\n\nChatGPT さんとの会話は↓になる。\n\nhttps://chatgpt.com/share/69c3b83b-f118-8322-a439-203f184d03b6"</script>
+<script src="../../../article.js"></script>
 </body>
 </html>

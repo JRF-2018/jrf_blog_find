@@ -21,6 +21,7 @@
 </table>
 </div>
 <h1>XMLHttpRequest を同期モード(async を…</h1>
+<div class="art-tools" data-pagefind-ignore><button type="button" id="btn-copy">原文をコピー</button><span class="tools-msg" id="tools-msg"></span></div>
 <pre class="body">XMLHttpRequest を同期モード(async を false)で呼ぶと挙動がおかしい。コールバックが呼ばれない！
 JRF 2011年4月13日
 
@@ -44,5 +45,7 @@ JRF 2011年4月13日</pre>
 <nav class="prevnext" data-pagefind-ignore><span class="prev-art">← <a href="../../../articles/2011/04/statuses_aboutme_138334.html">Javascirpt の defined を判定するのに、if (name)…</a> <span class="pn-date">2011年04月13日</span></span><span class="next-art"><a href="../../../articles/2011/04/statuses_aboutme_138336.html">しっかり寝ているつもりだが、慣れないプログラミングの連続で、最近ストレスがたまっ…</a> <span class="pn-date">2011年04月13日</span> →</span></nav>
 
 <nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2011/04.html">2011年04月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+<script type="application/json" id="raw-text">"[statuses] [aboutme:138335]\nhttp://jrf.cocolog-nifty.com/statuses/2011/04/aboutme138335.html\n\nXMLHttpRequest を同期モード(async を false)で呼ぶと挙動がおかしい。コールバックが呼ばれない！\nJRF 2011年4月13日\n\n↓を参考にしているのだが、requestFile を async を false にして呼ぶと、IE だと「コールバック」の on_loaded が呼ばれるのに、Firefox だと呼ばれなかった。\n\n\n《Ajaxはじめの一歩　XMLHttpRequest - [Javascript] All About》\nhttp://allabout.co.jp/gm/gc/24097/\n\nJRF 2011年4月13日\n\n解決方法としては、そういうものだと諦めて、コールバックを使わずに書けばいい。同期モードにしてるんでそれで書けるはず。\n\n(↑だと requestFile が httpoj を return するように換え、それを res として使えばいい。)\n\nJRF 2011年4月13日"</script>
+<script src="../../../article.js"></script>
 </body>
 </html>

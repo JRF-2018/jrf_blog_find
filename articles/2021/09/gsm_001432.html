@@ -21,6 +21,7 @@
 </table>
 </div>
 <h1>[仏教の最適化プログラムの続き。] fanampr…</h1>
+<div class="art-tools" data-pagefind-ignore><button type="button" id="btn-copy">原文をコピー</button><span class="tools-msg" id="tools-msg"></span></div>
 <pre class="body">jrf&gt; [仏教の最適化プログラムの続き。]
 
 fanampr は本当にくじ運が悪かっただけななのか？ 確かめるためそれだけもう一度実験してみた。
@@ -52,5 +53,7 @@ python plot_logs.py normal fana fanampr fanamprmprs fanampr2 -p Power -o fig-202
 <nav class="prevnext" data-pagefind-ignore><span class="prev-art">← <a href="../../../articles/2021/09/gsm_001431.html">[仏教の最適化プログラムの続き。] (承前) ……。…</a> <span class="pn-date">2021-09-06T21:21:00Z</span></span><span class="next-art"><a href="../../../articles/2021/09/gsm_001433.html">音楽鑑賞。 リヒター指揮 ミュンヘン・バッハ管弦楽団『バッハ:…</a> <span class="pn-date">2021-09-08T13:28:16Z</span> →</span></nav>
 
 <nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2021/09.html">2021年09月</a> | <a href="../../../index/gsm.html">共有メモ</a></nav>
+<script type="application/json" id="raw-text">"[gsm]\n○ 2021-09-08T03:45:19Z N2aeEZyEk9\n\njrf\u003e [仏教の最適化プログラムの続き。]\n\nfanampr は本当にくじ運が悪かっただけななのか？ 確かめるためそれだけもう一度実験してみた。\n\nrun_simbdp3.sh fanampr2 10 -L -t 360 --nation-education-power-threshold=0.925 --faith-realization-power-threshold=0.925 --priests-rate-max=0.0125 --priests-rate=0.00666666666666667 --priests-rate-min=0.004\n\npython plot_logs.py fanampr fanampr2 -p AccDeath -o fig-20210908_01.png\npython plot_logs.py normal fana fanampr fanamprmprs fanampr2 -p Education -o fig-20210908_02.png\npython plot_logs.py normal fana fanampr fanamprmprs fanampr2 -p AccDeath -o fig-20210908_03.png\npython plot_logs.py normal fana fanampr fanamprmprs fanampr2 -p Population -o fig-20210908_04.png\npython plot_logs.py normal fana fanampr fanamprmprs fanampr2 -p AccAbortion -o fig-20210908_05.png\n\n《グラフ集: 2021-09-06 から - Issue #2 - JRF-2018/simbd》  \nhttps://github.com/JRF-2018/simbd/issues/2\n\nfanampr(2) は、fana より AccDeath では下に、AccAbortion では上に来て欲しいのだが、そうなってない。Education は予定通り fanampr(2) が上に来ているがその差は 0.54 - 0.50 = 0.04 程度で、Education の効果はほとんどないということになるようだ。\n\n……。\n\n国力を見てみると…、\n\npython plot_logs.py normal fana fanampr fanamprmprs fanampr2 -p Power -o fig-20210908_06.png\n\n…確かに fanampr(2) のほうが高く、差はあるのだが、その差が少な過ぎて効いてない…ということなのだろうか？ 長期で見ればまた違いがあるのだろうか？"</script>
+<script src="../../../article.js"></script>
 </body>
 </html>

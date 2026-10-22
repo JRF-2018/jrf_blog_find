@@ -21,6 +21,7 @@
 </table>
 </div>
 <h1>Firefox 32.0.1…</h1>
+<div class="art-tools" data-pagefind-ignore><button type="button" id="btn-copy">原文をコピー</button><span class="tools-msg" id="tools-msg"></span></div>
 <pre class="body">Firefox 32.0.1 になってから私がこの「ひとこと」を書くのに使っている Greasemonkey スクリプトがほとんど使えなくなった。開発コンソールで見ると Permission denied が連発している。
 JRF 2014年9月16日
 
@@ -86,5 +87,7 @@ Trackbacks:
 <nav class="prevnext" data-pagefind-ignore><span class="prev-art">← <a href="../../../articles/2014/09/statuses_cocolog_80628810.html">「ありがとう」と言われたら「どういたしまして」と返すのが常識。でも、「ありがとう…</a> <span class="pn-date">2014年09月15日</span></span><span class="next-art"><a href="../../../articles/2014/09/statuses_cocolog_80654771.html">山本七平『私の中の日本軍』を読んだ。朝日新聞での「吉田証言」が慰安婦問題と原発震…</a> <span class="pn-date">2014年09月18日</span> →</span></nav>
 
 <nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2014/09.html">2014年09月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+<script type="application/json" id="raw-text">"[statuses] [cocolog:80639852]\nhttp://jrf.cocolog-nifty.com/statuses/2014/09/firef.html\n\nFirefox 32.0.1 になってから私がこの「ひとこと」を書くのに使っている Greasemonkey スクリプトがほとんど使えなくなった。開発コンソールで見ると Permission denied が連発している。\nJRF 2014年9月16日\n\nただ、奇跡的に動く手順があるのでその手順で今は書いてる。\n\n直すのは、一応、次のバージョンを待ってからにしようと思う。今は読書を優先したい。\n\nJRF 2014年9月16日\n\nリリースノートには、それらしい記述はないようだが…。\n\n《Firefox 32.0.1 リリースノート》\nhttp://www.mozilla.jp/firefox/32.0.1/releasenotes/\n\nJRF 2014年9月16日\n\n……。\n\n32.0.2 になっても直ってなかったので対応した。statuses_editor.user.js のみの更新で、その他はチェックしてない。(あと dump_blog.pl 関連も前に少しいじったのが入ってるかな？)\n\nJRF 2014年9月20日\n\n《aboutme2cocolog: アバウトミーの「ひとこと」をココログプロへ移転するツール》\nhttp://jrf.cocolog-nifty.com/software/2011/04/post.html\n\n《ブログのバックアップ＆「ひとこと」のクロスリファレンス》\nhttp://jrf.cocolog-nifty.com/software/2012/01/post.html\n\nJRF 2014年9月20日\n\n……。\n\nどうもおかしい。バグがある感じだ。上の aboutme2cocolog-20140920.shar は使わないほうがいいかもしれない。再現性がまだなく、理屈が推測できないので、バグ取りは時間がかかりそう。\n\nJRF 2014年9月22日\n\n……。\n\nたぶん修正できたので一応公開しておいた。\n\nコールバック関数で Greasemonkey の関数を呼び出すのがダメになったので、dispatchEvent で change イヴェントを変化のときに出して、それを listen して Greasemonkey 側で対応するという形にしたのだが、そのとき、前は、イヴェントをブロック単位で検出してたら、エディタで文をいじったときの change イヴェントも拾っていたのに気付いた。だから、input type=\"hidden\" の value を作って、そこに addEventListener するようにした。少しはマシになったはず。\nJRF 2014年9月23日\n\nTrackbacks:\n\n《cocolog:80717742》 from JRF のひとこと\nhttp://jrf.cocolog-nifty.com/statuses/2014/09/post-714d.html\n\n近況。本を乱読…というか、つい最近まで山本七平氏の著作を続けて読んでいて、やっと違う著者の本、あの、ゲーテの『ヴィルヘルム・マイスターの修業時代』を読みはじめた。 \n\n受信： 2014-09-28 14:07:19 (JST)"</script>
+<script src="../../../article.js"></script>
 </body>
 </html>

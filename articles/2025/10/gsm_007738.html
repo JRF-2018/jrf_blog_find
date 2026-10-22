@@ -21,6 +21,7 @@
 </table>
 </div>
 <h1>(承前) ……。 他にこの本には時代的制約があったのかな…とも思った。私の…</h1>
+<div class="art-tools" data-pagefind-ignore><button type="button" id="btn-copy">原文をコピー</button><span class="tools-msg" id="tools-msg"></span></div>
 <pre class="body">jrf&gt; (承前)
 
 ……。
@@ -53,5 +54,7 @@
 <nav class="prevnext" data-pagefind-ignore><span class="prev-art">← <a href="../../../articles/2025/10/gsm_007737.html">太田…</a> <span class="pn-date">2025-10-01T13:52:27Z</span></span><span class="next-art"><a href="../../../articles/2025/10/gsm_007739.html">《太田…</a> <span class="pn-date">2025-10-01T13:58:51Z</span> →</span></nav>
 
 <nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2025/10.html">2025年10月</a> | <a href="../../../index/gsm.html">共有メモ</a></nav>
+<script type="application/json" id="raw-text">"[gsm]\n○ 2025-10-01T13:52:44Z ynqKHyrkOP\n\njrf\u003e (承前)\n\n……。\n\n他にこの本には時代的制約があったのかな…とも思った。私の MemoryBanditWorkflow では豊富なツールを用意して、特殊なツールを使うのを検知して状態遷移させる。subwork_done か subwork_not_done かのどちらかをサブワークの最後に呼ぶようにさせてそれで条件分岐をさせたりもしている。全体チェックのときもそういう感じなので、ステートを多く分ける必要がない。\n\nまた、Structured Output をまるで知らないかのように、それが必要なときは私は、ツールに Structured な引数を渡して呼び出すことをさせている。それで状態遷移が必要なら、そのツールを呼んだことを app.stream から検知してそこで止めて状態遷移みたいなことをする。\n\nそこからすると LangGraph のステートで一々止まっているのはかなり冗長に感じた。ツール実行がいろいろ難しすぎる。その辺、かつては、ツールの登録数が制限されていたり、ツールの利用が安定的でなかったころのなごりが、今回の本にはかなりあるように読んだ。\n\n……。\n\nサブタスクに分けるのは、並列で実行させるには必要なことだが、LLM にそれをやらせるのは安定的でないように思った。\n\n私も RAG エージェントでは、1章づつ処理させるよう指示するようにした。それは MemoryBanditWorkflow 的 Brain が、記憶処理をループのはじめに行うようにしたため、粒度を小さくしたほうが、Brain 的処理が多くなると考えたからである。\n\nより汎用には、小さなサブワークが完了したと AI が判断したら subwork_done を呼ぶように指示して、そこでループさせ、Brain 的処理を挟み、最後は mainwork_done を呼ばせて終了する…だけのプログラムを書けばいいのかな…と思うが、それで、いろいろなタスクが動くのかは自信がない。\n\n……。\n\nこのように、私がやったことを振り返るのによかった他、この本には、どういうライブラリが使えるかでも参考になった。例えば、Elasticsearch のオープン版を docker で使ったりというのは、Colab での制限もある中、試してなかったことで、それが一般には割と手軽にできそうだとわかっただけでも収穫であった。\n\n一方、エージェントの評価という最後の章のほうの情報は期待していたものとは違った。評価によって、エージェントのファインチューニングや学習などをどう行うかに関心があったのだが、そういうものとは違い、あくまで人間による評価の話題が中心だった。\n\nとはいえ、不満と言えばそれぐらいで、この本は買ってよかったと思う。"</script>
+<script src="../../../article.js"></script>
 </body>
 </html>

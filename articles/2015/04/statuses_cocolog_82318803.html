@@ -21,6 +21,7 @@
 </table>
 </div>
 <h1>昨晩の夢の中で考えてた。y の x 乗根というとき y…</h1>
+<div class="art-tools" data-pagefind-ignore><button type="button" id="btn-copy">原文をコピー</button><span class="tools-msg" id="tools-msg"></span></div>
 <pre class="body">昨晩の夢の中で考えてた。y の x 乗根というとき y は必ず存在するんだろうか？
 JRF 2015年4月26日
 
@@ -79,5 +80,7 @@ JRF 2015年4月26日</pre>
 <nav class="prevnext" data-pagefind-ignore><span class="prev-art">← <a href="../../../articles/2015/04/statuses_cocolog_82307168.html">マキシン・サリバン『サムシング・トゥ・リメンバー』の CD がお気に入り。</a> <span class="pn-date">2015年04月24日</span></span><span class="next-art"><a href="../../../articles/2015/04/statuses_cocolog_82346841.html">エリアーデ著『世界宗教史…</a> <span class="pn-date">2015年04月30日</span> →</span></nav>
 
 <nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2015/04.html">2015年04月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+<script type="application/json" id="raw-text">"[statuses] [cocolog:82318803]\nhttp://jrf.cocolog-nifty.com/statuses/2015/04/post-e15a.html\n\n昨晩の夢の中で考えてた。y の x 乗根というとき y は必ず存在するんだろうか？\nJRF 2015年4月26日\n\ny の x 乗を Pow(y, x) で表すと、y の x 乗根は Pow(y, 1/x) と表せる。\n\nJRF 2015年4月26日\n\ny = g(z) という形のとき、常に Pow(g(z), 1/x) というものが考えられるのか？と疑問に思うようになった。\n\nPow(Pow(y, 1/x), x) = y ではあるが、例えば x = 2 のとき、y がマイナスなら虚数が途中出てくる。でも、コンピュータが虚数も「理解」するなら、問題はないとも言える。\n\nJRF 2015年4月26日\n\nもっと一般に書くと y の x 乗根を求めるというのは、solve_x(Pow(x, 3) = y) というコマンドを実行していると考えられる。\n\nさらに一般化して f(solve_x(f(x) = y)) = y が言えるかを問いたい。\n\nJRF 2015年4月26日\n\nそもそも solve_x(f(x) = y) が、不完全性定理的に解けない…無限ループになることが solve の形によって不可避ということもあろう。でも、今回はそういうのは置いといて…。\n\nJRF 2015年4月26日\n\nsolve_x(f(x) = g(z)) = G(z) と置いて、G(z) が「極限を取る手続き」としか得られないとすると、f と G が共振みたいなのを起こして、f(G(z)) が発散または振動してしまう場合もありうるんじゃないか。そういうときはどう考えたらいいんだろう？\n\n複数解のうち並列に求めたどれかで合えばいいのか、それぞれ定義域で分けないとだめなのか？G(z) が確率的・モンテカルロ法的なアルゴリズムで y が確率的にあるポイントを指せばいいとかもできるんだろうか？\n\nJRF 2015年4月26日\n\nまた、コンピュータが「虚数」みたいな Imaginary なものを内部で勝手に定義してしまって、f(solve_x(f(x) = y)) = y は特定の f に関して成り立つと答えを返したとしても、それは人がコントロールできていると言えるのか？\n\nJRF 2015年4月26日\n\nそもそもの疑問に戻って、f(x) = Pow(x, u) の段階で solve_x(Pow(x, u), g(z)) がおかしな挙動をすることもあるのではないか？\n\nJRF 2015年4月26日\n\n……。\n\nつまるところ、要は逆関数に関する問題なわけで、この辺、すでにどっかに「解答」は転がってるんだろうな…。\n\nJRF 2015年4月26日\n\n……。\n\n(このひとことには関係ないが、時事として、ネパールで大地震が起きた。)\n\n《CNN.co.jp : ネパール地震　死傷者６５００人超、さらに増加の恐れも》\nhttp://www.cnn.co.jp/world/35063736.html\n\nJRF 2015年4月26日"</script>
+<script src="../../../article.js"></script>
 </body>
 </html>

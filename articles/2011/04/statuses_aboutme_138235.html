@@ -21,6 +21,7 @@
 </table>
 </div>
 <h1>(Greasemonkey の) addEventListener に…</h1>
+<div class="art-tools" data-pagefind-ignore><button type="button" id="btn-copy">原文をコピー</button><span class="tools-msg" id="tools-msg"></span></div>
 <pre class="body">(Greasemonkey の) addEventListener に prototype 内で this.func みたいなのを第二引数として渡すと、this が引き継がれないというのにハマった。
 JRF 2011年4月6日
 
@@ -59,5 +60,7 @@ JRF 2011年4月6日</pre>
 <nav class="prevnext" data-pagefind-ignore><span class="prev-art">← <a href="../../../articles/2011/04/statuses_aboutme_138232.html">IE の Javascript の正規表現で /.../m…</a> <span class="pn-date">2011年04月06日</span></span><span class="next-art"><a href="../../../articles/2011/04/statuses_aboutme_138245.html">窒素を入れるのは爆発があったときにいろいろな塵をまきこんで有機物が生成される可能…</a> <span class="pn-date">2011年04月07日</span> →</span></nav>
 
 <nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2011/04.html">2011年04月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+<script type="application/json" id="raw-text">"[statuses] [aboutme:138235]\nhttp://jrf.cocolog-nifty.com/statuses/2011/04/aboutme138235.html\n\n(Greasemonkey の) addEventListener に prototype 内で this.func みたいなのを第二引数として渡すと、this が引き継がれないというのにハマった。\nJRF 2011年4月6日\n\n↓の bind 関数によって解決。\n\n《[greasemonkey]関連エントリーのツリーをたどれるグレモン》\nhttp://anond.hatelabo.jp/20080722013742\n\n＞\nfunction bind(f,o) {return function() {return f.apply(o, arguments)}}\n＜\n\n使うときは、↓みたいな感じ。\n\n＞\nthis.open.addEventListener(\"click\", bind(this.openAct, this), false);\n＜\n\nいろいろなコールバックについても同様にする必要がある。\n\nJRF 2011年4月6日\n\nおそらく初歩的なことなんだと思う。ググってもなかなか見つからなかった。\n\nアバウトミーのひとことのような UI を目指し、↓を参考に Greasemonkey を使って XMLRPC で投稿というのを試している。Javascript の経験がほとんどないので、いろいろ壁にぶちあたりながらやっている。\n\n《GreasemonkeyからXMLRPCプロトコルでブログに投稿する | Web scratch》\nhttp://efcl.info/2009/1103/res1416/\n\n\nJRF 2011年4月6日"</script>
+<script src="../../../article.js"></script>
 </body>
 </html>

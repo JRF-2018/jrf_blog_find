@@ -21,6 +21,7 @@
 </table>
 </div>
 <h1>Windows の Python で signal.signal を使って…</h1>
+<div class="art-tools" data-pagefind-ignore><button type="button" id="btn-copy">原文をコピー</button><span class="tools-msg" id="tools-msg"></span></div>
 <pre class="body">jrf&gt; Windows の Python で signal.signal を使って Ctrl-C (SIGINT) でデバッガに入るような処理を書こうと思ったのだがうまくいかない。
 
 forrtl: error (200): program aborting due to control-C event
@@ -51,5 +52,7 @@ from scipy.stats import zscore
 <nav class="prevnext" data-pagefind-ignore><span class="prev-art">← <a href="../../../articles/2021/07/gsm_001189.html">[仏教の最適化プログラムの続き。]…</a> <span class="pn-date">2021-07-09T11:43:09Z</span></span><span class="next-art"><a href="../../../articles/2021/07/gsm_001191.html">母が明石家さんまさんや長嶋一茂さんをテレビで見ながら笑っている。ああやってなんで…</a> <span class="pn-date">2021-07-10T21:47:55Z</span> →</span></nav>
 
 <nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2021/07.html">2021年07月</a> | <a href="../../../index/gsm.html">共有メモ</a></nav>
+<script type="application/json" id="raw-text">"[gsm]\n○ 2021-07-10T03:47:16Z fzzpi/qlI0\n\njrf\u003e Windows の Python で signal.signal を使って Ctrl-C (SIGINT) でデバッガに入るような処理を書こうと思ったのだがうまくいかない。\n\nforrtl: error (200): program aborting due to control-C event\nImage              PC                Routine            Line        Source\n\nlibifcoremd.dll    00007FFFAD7D3B58  Unknown               Unknown  Unknown\nKERNELBASE.dll     00007FFFF71FB933  Unknown               Unknown  Unknown\nKERNEL32.DLL       00007FFFF7537034  Unknown               Unknown  Unknown\nntdll.dll          00007FFFF9422651  Unknown               Unknown  Unknown\nQObject::~QObject: Timers cannot be stopped from another thread\n\n…みたいなエラーが出てて、ググると、Python 2.7系と scipy などにあるエラーらしい。\n\n《Ctrl-C crashes Python after importing scipy.stats - Stack Overflow》  \nhttps://stackoverflow.com/questions/15457786/ctrl-c-crashes-python-after-importing-scipy-stats\n\n↑によって、\n\nimport os\nos.environ['FOR_DISABLE_CONSOLE_CTRL_HANDLER'] = '1'\nfrom scipy.stats import zscore\n\n…となどとすることで解決した。scipy モジュールなどを読み込む前に os.environ[...] = '1' が必要なのがミソらしい。"</script>
+<script src="../../../article.js"></script>
 </body>
 </html>

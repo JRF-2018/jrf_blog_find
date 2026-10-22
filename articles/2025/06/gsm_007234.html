@@ -21,6 +21,7 @@
 </table>
 </div>
 <h1>quail-naggy について Tips を↓のコメント欄に書いておいた。…</h1>
+<div class="art-tools" data-pagefind-ignore><button type="button" id="btn-copy">原文をコピー</button><span class="tools-msg" id="tools-msg"></span></div>
 <pre class="body">jrf&gt; quail-naggy について Tips を↓のコメント欄に書いておいた。
 
 《quail-naggy.el: 単漢字変換 Input Method for Emacs. [ JRF のソフトウェア Tips ]》  
@@ -33,7 +34,7 @@ GitHub のほうの quail-naggy (↓)には fix_skk_jisyo_l.pl というスク�
 
 これは、「nihon:」を変換したときに「ニホン」が最初の候補に来るなどするのが、とてもムカついたので作った、SKK-JISYO.L からカタカナへの変換などを除去するツールになる。これでできたものを make_skk_dic_db.pl にかけたあと、site-init.nginit を例えば次のようにして使えばいい。
 
-&lt;pre&gt;
+<span class="src-pre">&lt;pre&gt;
 load-init-file default-init.nginit
 set-tankanji-dic Wind2.txt -s
 #set-tankanji-dic tankanji.txt -e
@@ -41,13 +42,13 @@ set-tankanji-dic Wind2.txt -s
 add-skk-dic SKK-JISYO.fixed.L -e
 add-skk-dic bushu-skk-dic.txt -e
 add-skk-dic emoji-skk-dic.txt -u
-&lt;/pre&gt;
+&lt;/pre&gt;</span>
 
 ただし、あまりチェックしていないので、完璧に「いい感じ」ではないかもしれない。
 
 あと、ちょっとした Tips。最初にシフトキーを押して「Nihon」と入力して変換するのも「nohon:」と入力して変換するのも同じ感じになるのであるが、「風」系の哲学として、入力したあとのキーで選びたいということがある。だから、「nihon」の後 S-SPC で nihon: SPC と入力したのと同じように変換したい。…という場合は次のようにすればいい。
 
-&lt;pre&gt;
+<span class="src-pre">&lt;pre&gt;
 (require 'quail-naggy)
 
 (defun quail-naggy-alt-convert ()
@@ -68,7 +69,7 @@ add-skk-dic emoji-skk-dic.txt -u
 			      [?\S- ] 'quail-naggy-alt-convert)
 		  (define-key (quail-conversion-keymap)
 			      [?\C- ] 'quail-naggy-insert-space)))))
-&lt;/pre&gt;
+&lt;/pre&gt;</span>
 
 quail-naggy-insert-space を C-SPC に移動する必要があり、それはラテン語圏などでもし S-SPC をこれまで頻繁に使っている人がいると、それは迷惑だろうから、標準では取り込まなかった。でも漢字圏の人はこのキーバインドのほうが圧倒的に楽になると思う。
 ＜</pre>
@@ -79,5 +80,7 @@ quail-naggy-insert-space を C-SPC に移動する必要があり、それはラ
 <nav class="prevnext" data-pagefind-ignore><span class="prev-art">← <a href="../../../articles/2025/06/gsm_007233.html">ダメだ。読書メモに取り掛かれない。動け→自分。</a> <span class="pn-date">2025-06-23T16:08:45Z</span></span><span class="next-art"><a href="../../../articles/2025/06/gsm_007235.html">(承前) 先の Tips…</a> <span class="pn-date">2025-06-24T01:26:32Z</span> →</span></nav>
 
 <nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2025/06.html">2025年06月</a> | <a href="../../../index/gsm.html">共有メモ</a></nav>
+<script type="application/json" id="raw-text">"[gsm]\n○ 2025-06-23T19:11:52Z a8RUYEvSHz\n\njrf\u003e quail-naggy について Tips を↓のコメント欄に書いておいた。\n\n《quail-naggy.el: 単漢字変換 Input Method for Emacs. [ JRF のソフトウェア Tips ]》  \nhttp://jrf.cocolog-nifty.com/software/2015/10/post.html\n＞ここに書いて読む人がいるだろうか？\n\nGitHub のほうの quail-naggy (↓)には fix_skk_jisyo_l.pl というスクリプトを足しておいた。\n\nhttps://github.com/JRF-2018/quail-naggy\n\nこれは、「nihon:」を変換したときに「ニホン」が最初の候補に来るなどするのが、とてもムカついたので作った、SKK-JISYO.L からカタカナへの変換などを除去するツールになる。これでできたものを make_skk_dic_db.pl にかけたあと、site-init.nginit を例えば次のようにして使えばいい。\n\n\u003cpre\u003e\nload-init-file default-init.nginit\nset-tankanji-dic Wind2.txt -s\n#set-tankanji-dic tankanji.txt -e\n#add-skk-dic SKK-JISYO.L -e\nadd-skk-dic SKK-JISYO.fixed.L -e\nadd-skk-dic bushu-skk-dic.txt -e\nadd-skk-dic emoji-skk-dic.txt -u\n\u003c/pre\u003e\n\nただし、あまりチェックしていないので、完璧に「いい感じ」ではないかもしれない。\n\nあと、ちょっとした Tips。最初にシフトキーを押して「Nihon」と入力して変換するのも「nohon:」と入力して変換するのも同じ感じになるのであるが、「風」系の哲学として、入力したあとのキーで選びたいということがある。だから、「nihon」の後 S-SPC で nihon: SPC と入力したのと同じように変換したい。…という場合は次のようにすればいい。\n\n\u003cpre\u003e\n(require 'quail-naggy)\n\n(defun quail-naggy-alt-convert ()\n  (interactive)\n  (setq quail-current-key\n\t(concat quail-current-key \":\"))\n  (or (catch 'quail-tag\n\t(quail-update-translation (quail-translate-key))\n\tt)\n      (setq quail-translating nil))\n  (quail-naggy-convert))\n\n(add-hook 'input-method-activate-hook\n\t  (lambda ()\n\t    (if (string= (quail-name) \"japanese-naggy\")\n\t\t(progn\n\t\t  (define-key (quail-conversion-keymap)\n\t\t\t      [?\\S- ] 'quail-naggy-alt-convert)\n\t\t  (define-key (quail-conversion-keymap)\n\t\t\t      [?\\C- ] 'quail-naggy-insert-space)))))\n\u003c/pre\u003e\n\nquail-naggy-insert-space を C-SPC に移動する必要があり、それはラテン語圏などでもし S-SPC をこれまで頻繁に使っている人がいると、それは迷惑だろうから、標準では取り込まなかった。でも漢字圏の人はこのキーバインドのほうが圧倒的に楽になると思う。\n＜"</script>
+<script src="../../../article.js"></script>
 </body>
 </html>

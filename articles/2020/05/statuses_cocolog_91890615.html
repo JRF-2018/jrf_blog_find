@@ -21,6 +21,7 @@
 </table>
 </div>
 <h1>「志村けん問題」を JAGS…</h1>
+<div class="art-tools" data-pagefind-ignore><button type="button" id="btn-copy">原文をコピー</button><span class="tools-msg" id="tools-msg"></span></div>
 <pre class="body">「志村けん問題」を JAGS で解く…という記事を書いた。超有名人が感染したことがわかったら、感染者数はわかる以前より多いと見積もっても正しいか…という問題。「正しい」というのが私の結論で、JAGS によるシミュレーションをその証拠とする。
 JRF 2020年5月9日
 
@@ -75,21 +76,21 @@ JRF 2020年5月9日
 
 JRF 2020年5月9日
 
-&lt;pre&gt;
+<span class="src-pre">&lt;pre&gt;
 &gt; densplot(post.list[,&quot;n.pos.sk&quot;], ylim=c(0,0.02))
  plot(yhist, xlab = xlab, ylab = ylab, ylim = ylim.par, main = main.par,  でエラー: 
    オブジェクト 'ylim.par' がありません
-&lt;/pre&gt;
+&lt;/pre&gt;</span>
 
 JRF 2020年5月9日
 
 英語だと…、
 
-&lt;pre&gt;
+<span class="src-pre">&lt;pre&gt;
 &gt; densplot(post.list[,&quot;n.pos.sk&quot;], ylim=c(0,0.02))
 Error in plot(yhist, xlab = xlab, ylab = ylab, ylim = ylim.par, main = main.par,  : 
   object 'ylim.par' not found
-&lt;/pre&gt;
+&lt;/pre&gt;</span>
 
 JRF 2020年5月9日
 
@@ -116,5 +117,7 @@ JRF 2020年5月9日</pre>
 <nav class="prevnext" data-pagefind-ignore><span class="prev-art">← <a href="../../../articles/2020/05/statuses_cocolog_91888253.html">John K. Kruschke 『ベイズ統計モデリング - R, JAGS,…</a> <span class="pn-date">2020年05月08日</span></span><span class="next-art"><a href="../../../articles/2020/05/statuses_cocolog_91901130.html">COVID-19…</a> <span class="pn-date">2020年05月13日</span> →</span></nav>
 
 <nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2020/05.html">2020年05月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+<script type="application/json" id="raw-text">"[statuses] [cocolog:91890615]\nhttp://jrf.cocolog-nifty.com/statuses/2020/05/post-2d4490.html\n\n「志村けん問題」を JAGS で解く…という記事を書いた。超有名人が感染したことがわかったら、感染者数はわかる以前より多いと見積もっても正しいか…という問題。「正しい」というのが私の結論で、JAGS によるシミュレーションをその証拠とする。\nJRF 2020年5月9日\n\n記事は↓。\n\n《「志村けん問題」を JAGS で解く その１ 結論編》\nhttp://jrf.cocolog-nifty.com/software/2020/05/post-918b0f.html\n\n《「志村けん問題」を JAGS で解く その２ 試行錯誤編\nhttp://jrf.cocolog-nifty.com/software/2020/05/post-e84089.html\n\nJRF 2020年5月9日\n\n……。\n\n[cocolog:91824909] で書いたように新型コロナウィルス(COVID-19 )関連の記事(↓)を読んで、JAGS に興味を持った。\n\n《COVID-19 日本国内の潜在的な陽性者数を推定する試み - StatModeling Memorandum》\nhttp://statmodeling.hatenablog.com/entry/covid19-estimate-total-number-of-positives-in-japan\n\nJRF 2020年5月9日\n\nJAGS で「志村けん問題」を解いてみたらカッコイイとか思った。「志村けん問題」にアタリを付けながら、その前に、まず JAGS でモンティ・ホール問題を解いたりした([cocolog:91836101])。\n\n[cocolog:91888253] で書いたように Kruschke 『ベイズ統計モデリング - R, JAGS, Stan によるチュートリアル 原著第2版』を読んで JAGS の勉強をしながら、この「志村けん問題」に取り組んだ。この本を読むのにとにかく時間がかかった。\n\nJRF 2020年5月9日\n\n……。\n\n「その２」の結論で書いたように、JAGS は確率に関する Prolog みたいなものという認識で、それがおもしろいと思っていた。しかし、そのような使い方だと ESS が小さくなり、実質的に評価ができないことがわかった。\n\nJRF 2020年5月9日\n\n不等式を使う場合だけでなく、sk_problem24.jag のような不等式のトリックを使わないようなものでも、ESSがとても小さくなるのは意外だった。その「苦労」の結果、Prolog みたいに使うのは間違いだと結論せざるを得ない。\n\n(そもそも Prolog 自体、万能推論機でないので、逆にそこが似てるのかもしれないが。)\n\nJRF 2020年5月9日\n\n……。\n\n……。\n\nR の coda パッケージにバグを発見。\n\ncoda.samples から得られる mcmc.list …ここでは sk_problem01.jag を実行して post.list という名前を付けたとする。\n\nJRF 2020年5月9日\n\nそれについて plot(post.list[,\"n.pos.sk\"], trace=FALSE) とすると、内部では densplot というものが呼ばれる。重ねて plot するため、densplot に ylim を渡そうとするとエラーが出る。\n\nJRF 2020年5月9日\n\n\u003cpre\u003e\n\u003e densplot(post.list[,\"n.pos.sk\"], ylim=c(0,0.02))\n plot(yhist, xlab = xlab, ylab = ylab, ylim = ylim.par, main = main.par,  でエラー: \n   オブジェクト 'ylim.par' がありません\n\u003c/pre\u003e\n\nJRF 2020年5月9日\n\n英語だと…、\n\n\u003cpre\u003e\n\u003e densplot(post.list[,\"n.pos.sk\"], ylim=c(0,0.02))\nError in plot(yhist, xlab = xlab, ylab = ylab, ylim = ylim.par, main = main.par,  : \n  object 'ylim.par' not found\n\u003c/pre\u003e\n\nJRF 2020年5月9日\n\n《coda/output.R at master - cran/coda》  \nhttps://github.com/cran/coda/blob/master/R/output.R\n\nJRF 2020年5月9日\n\nで、解決法だが、グラフを重ねたければ ggplot2 を使えばいいということだと思う。そのほうがキレイだし。私はそうした。\n\nJRF 2020年5月9日"</script>
+<script src="../../../article.js"></script>
 </body>
 </html>

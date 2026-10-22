@@ -21,6 +21,7 @@
 </table>
 </div>
 <h1>ココログや Movable Type のシステムと奮戦中</h1>
+<div class="art-tools" data-pagefind-ignore><button type="button" id="btn-copy">原文をコピー</button><span class="tools-msg" id="tools-msg"></span></div>
 <pre class="body">MTEntries では sort_by と last_n を同時に使うことができず、 MTArchiveList では offset を使うことができないようだ。
 
 また、XML-RPC で更新情報として TIMESTAMP を書き込んだとき、月をまたぐと、(週別の)個別アーカイブの位置が変わるため、Permalink が変更されてしまうようだ。
@@ -68,5 +69,7 @@ Comments:
 <nav class="prevnext" data-pagefind-ignore><span class="prev-art">← <a href="../../../articles/2006/02/column_10083960.html">97 年皇位継承制度の水面下の研究会ができたそうです。私が関心を持ったのは 99 年でした。</a> <span class="pn-date">2006年02月19日 03:04:56</span></span><span class="next-art"><a href="../../../articles/2006/02/column_10179035.html">重要な更新情報: 初公開日が書き換わっていました</a> <span class="pn-date">2006年02月24日 01:58:08</span> →</span></nav>
 
 <nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2006/02.html">2006年02月</a> | <a href="../../../index/column.html">雑記</a></nav>
+<script type="application/json" id="raw-text">"[column] [cocolog:10178472]\n《ココログや Movable Type のシステムと奮戦中》\nhttp://jrf.cocolog-nifty.com/column/2006/02/post_33.html\n2006年2月24日 01:29:18 [ウェブログ・ココログ関連][近況]\n\nMTEntries では sort_by と last_n を同時に使うことができず、 MTArchiveList では offset を使うことができないようだ。\n\nまた、XML-RPC で更新情報として TIMESTAMP を書き込んだとき、月をまたぐと、(週別の)個別アーカイブの位置が変わるため、Permalink が変更されてしまうようだ。\n\nやろうとしてることは、まず、しかたないので XML-RPC では TIMESTAMP の更新をせず、その代わりに記事を default のソートではなく、 sort_by=\"modified_on\" にして、さらにそこから最新の 5 個ぐらいとって《記事の属するカテゴリ内の最近の記事》を表示しようということである。\n\nこれは、sort_by と last_n を同時に使えないことからできないようだ。\n\nさらに、こちら(日)とこちら(US)を参考に Google サイトマップを導入しようとしているが、ページの changefreq を今週分のアーカイブのみ daily としたい。\n\nこれは MTArchiveList で offset が使えないため素直にはできない。とりあえず、今週分のみ重複させてマップを作ったが、Google はどう判断するんだろう……。\n\nまた、各サブブログで別々にサイトマップを作ったあと SSI で Sitemap Index を作ろうとしているが、.xml は SSI されないようなので .html にした。(さらに .xml は .inc と同じようにファイルとして表示されない。)これまたGoogle はどう判断するのだろう……。\n\nとりあえず、ココログではできないと思っていた MovableType の MTEntryModifiedDate が、TypePad 系では MTEntryDateModified でできることがわかっただけでも収穫としておこう。\n\n更新：06/02/24\n初公開：2006年02月24日 01:29:18\n最新版：2006年02月24日 01:29:18\n\n\nTrackbacks:\n\n《ココログプロで Google サイトマップインデックスを作る》 from JRF のソフトウェア Tips\nhttp://jrf.cocolog-nifty.com/software/2006/03/post_1.html\n\n なかなか Google がクロールしてくれないので、Google Sitemapの機能を試してみる。Google Sitemap には Atom 0.3 でも良いから当初はそうしていたのだが、2 週間ほどたっても音沙汰なしだったので Google Sitemap 専用の XML フォーマットを使うことにした。 すでに下記参考のようにいくつかのサイトで Movable Type や Type Pa... \n\n受信： 2006-03-02 03:12:34 (JST)\n\n\nComments:\n\n拡張子が .html でも問題ありませんでした。「SITEMAP インデックス」と評価され、ステータスは OK になっています。\n投稿: JRF | 2006-02-24 17:32:28 (JST)\n\n\nLinks:\n\n記事の属するカテゴリ内の最近の記事: http://jrf.cocolog-nifty.com/software/2006/02/post_16.html\nこちら(日): http://watcher.moe-nifty.com/memo/2005/06/typepad__google_e8c2.html\nこちら(US): http://www.sjl.us/main/2006/02/google_sitemaps.html"</script>
+<script src="../../../article.js"></script>
 </body>
 </html>

@@ -21,6 +21,7 @@
 </table>
 </div>
 <h1>XREA にアカウントを取った。ココログに HTML…</h1>
+<div class="art-tools" data-pagefind-ignore><button type="button" id="btn-copy">原文をコピー</button><span class="tools-msg" id="tools-msg"></span></div>
 <pre class="body">XREA にアカウントを取った。ココログに HTML アプリなどを直接アップロードできなくなったため。
 JRF 2020年5月14日
 
@@ -69,9 +70,9 @@ XREA で BASIC 認証を使った CGI を使おうとして、はじめは 500 I
 
 JRF 2020年5月14日
 
-&lt;pre&gt;
+<span class="src-pre">&lt;pre&gt;
 AuthUserFile /virtual/jrockford/public_html/［ディレクトリ名］/.htpasswd
-&lt;/pre&gt;
+&lt;/pre&gt;</span>
 
 …みたいにする必要があったというだけ。もちろん、パーミッションの問題(700 にする)とかもあるんだけど、それをしてなおできなかったので、焦ったのだった。
 
@@ -125,5 +126,7 @@ JRF 2020年5月15日</pre>
 <nav class="prevnext" data-pagefind-ignore><span class="prev-art">← <a href="../../../articles/2020/05/statuses_cocolog_91901130.html">COVID-19…</a> <span class="pn-date">2020年05月13日</span></span><span class="next-art"><a href="../../../articles/2020/05/statuses_cocolog_91914050.html">「グローバル共有メモ」こと shared_memo.cgi…</a> <span class="pn-date">2020年05月18日</span> →</span></nav>
 
 <nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2020/05.html">2020年05月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+<script type="application/json" id="raw-text">"[statuses] [cocolog:91904342]\nhttp://jrf.cocolog-nifty.com/statuses/2020/05/post-5d5e92.html\n\nXREA にアカウントを取った。ココログに HTML アプリなどを直接アップロードできなくなったため。\nJRF 2020年5月14日\n\nココログの全面リニューアルで、ファイルマネージャーから自由なアップロードができなくなった。メールでココログと交渉していたが、どうも自由なアップロードの復活はなさそう。\n\nJRF 2020年5月14日\n\nそこで、プライベートなブログを一つつぶし、JavaScript や CSS の置き場となるブログ(テンプレート)を作った。いちおう場所は↓以下になるが、このトップページからは何も辿れなくなっている。\n\n《JRF's Library》  \nhttp://jrf.cocolog-nifty.com/mylib/\n\nJRF 2020年5月14日\n\nこのブログで使う JavaScript 等は、そこのテンプレート機能を使えば良いのだが、ディレクトリの要素をたくさん使う HTML アプリに関してはブログテンプレートだけでは対応するのが難しい。そこで、XREA のアカウントを取って、そこに置くことにした。\n\n《JRF's XREA》  \nhttp://jrockford.s1010.xrea.com/index.html\n\nJRF 2020年5月14日\n\n今のところ「易双六」と「JRF Flag Semaphore」が置いてある。無料版で広告が入るのはしかたがない。\n\nJRF 2020年5月14日\n\n本当は XREA の前に XFree を選んだのだが、XFree は ID の更新が 3 ヶ月ごとに必要らしく、できれば、私が死んでからも遺しておいて欲しいという欲には合わなかったため、すぐに XFree の退会手続きをとった。まぁ、XREA も geocities みたいに私が死ぬ前にダメになるかもしれないけど…希望はあるから…。\n\nJRF 2020年5月14日\n\nXREA は、ID を取るのにスマホ認証が必要で、スマホを自分のものとしては持っていない私は、それがイヤだったのだが、しかたなく母のスマホで認証した。\n\nJRF 2020年5月14日\n\n……\n\nXREA は cgi が使える。BASIC 認証も使える。…ということで前から欲しかった Web 版の簡易メモを作ってみた。\n\n《JRF-2018/memo_cgi: The simplest memo.cgi》  \nhttps://github.com/JRF-2018/memo_cgi\n\nJRF 2020年5月14日\n\nXREA で BASIC 認証を使った CGI を使おうとして、はじめは 500 Internal Server Error が出てなかなかその理由がわからず手間どった。\n\n結局、その理由は、.htaccess に書く .htpasswd のパスが、public_html を含む必要があるのにそうしてなかったことだった。\n\nJRF 2020年5月14日\n\n\u003cpre\u003e\nAuthUserFile /virtual/jrockford/public_html/［ディレクトリ名］/.htpasswd\n\u003c/pre\u003e\n\n…みたいにする必要があったというだけ。もちろん、パーミッションの問題(700 にする)とかもあるんだけど、それをしてなおできなかったので、焦ったのだった。\n\nJRF 2020年5月14日\n\n……。\n\n追記。\n\nmemo.cgi で、複数人が同時に書き込もうとしたら面倒だな…というのが気になって、上下、二のペーンに分け、書き換えられてないほうは、Read される dual_memo.cgi を作った。チャットにも使えるかもしれない。\n\n場所は、上の GitHub の memo.cgi と同じところに置いておいた。\n\nJRF 2020年5月15日\n\n……。\n\n↓に dual_memo.cgi のデモを用意した。本来は、Basic 認証のあるところで使うことを想定しているが、ここではまったくそういうのをしていないので、お手柔らかに。\n\n《Dual Memo》  \nhttp://jrockford.s1010.xrea.com/demo/dual_memo.cgi\n\nJRF 2020年5月15日\n\n……。\n\n追記。\n\ndual_memo.cgi だと二人しか安心して使えないなぁ…ということで、三人以上ということだと結局、掲示板システムが必要か…と思い、簡易 BBS まで作ってしまった。simple_bbs.cgi がそれで、ソースは上の memo_cgi の GitHub に置いておいた。今回も Dual Memo と同じく Basic 認証があるのが本来は前提なのだが、あくまでデモということで、↓にデモを置いておいた。\n\nJRF 2020年5月15日\n\n《Simple BBS》  \nhttp://jrockford.s1010.xrea.com/demo/simple_bbs.cgi\n\nJRF 2020年5月15日"</script>
+<script src="../../../article.js"></script>
 </body>
 </html>

@@ -21,6 +21,7 @@
 </table>
 </div>
 <h1>MemoryBanditWorkflow について、気になってること。…</h1>
+<div class="art-tools" data-pagefind-ignore><button type="button" id="btn-copy">原文をコピー</button><span class="tools-msg" id="tools-msg"></span></div>
 <pre class="body">jrf&gt; MemoryBanditWorkflow について、気になってること。
 
 ツールおよび app.stream の仕様だともしかすると、stream に上がってくる前に複数のツールが呼ばれる可能性がある。
@@ -35,5 +36,7 @@
 <nav class="prevnext" data-pagefind-ignore><span class="prev-art">← <a href="../../../articles/2025/09/gsm_007723.html">囲碁NHK杯…</a> <span class="pn-date">2025-09-29T10:58:06Z</span></span><span class="next-art"><a href="../../../articles/2025/09/gsm_007725.html">「LLM…</a> <span class="pn-date">2025-09-29T13:42:33Z</span> →</span></nav>
 
 <nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2025/09.html">2025年09月</a> | <a href="../../../index/gsm.html">共有メモ</a></nav>
+<script type="application/json" id="raw-text">"[gsm]\n○ 2025-09-29T11:57:44Z jQbSogMZ9M\n\njrf\u003e MemoryBanditWorkflow について、気になってること。\n\nツールおよび app.stream の仕様だともしかすると、stream に上がってくる前に複数のツールが呼ばれる可能性がある。\n\nすると、stream に上がってくる前に command が二回実行されたり、workflow が二回実行されたりということがありうる。この排他制御をやる必要があったように思う。\n\n本来は、stream の入れ子などにも対応するために stream の側で leak=False とか rigid_streaming=True とか設定して、そういうことも防止してくれればいいのだけど。"</script>
+<script src="../../../article.js"></script>
 </body>
 </html>

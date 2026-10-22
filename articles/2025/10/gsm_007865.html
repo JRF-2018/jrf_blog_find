@@ -21,6 +21,7 @@
 </table>
 </div>
 <h1>「ニューラルネットを構造的学習で代替する二足歩行実験」を行った。前回はコンセプト…</h1>
+<div class="art-tools" data-pagefind-ignore><button type="button" id="btn-copy">原文をコピー</button><span class="tools-msg" id="tools-msg"></span></div>
 <pre class="body">jrf&gt; 「ニューラルネットを構造的学習で代替する二足歩行実験」を行った。前回はコンセプト的な失敗だったが、今回はまったく歩行ができず、まったくの失敗だった。
 
 《llm_bipedal_walker_structural_learning.ipynb - GitHub Gist》  
@@ -54,5 +55,7 @@ Gemini さんは次々に偽装 LLM を作って構造的学習を試してく�
 <nav class="prevnext" data-pagefind-ignore><span class="prev-art">← <a href="../../../articles/2025/10/gsm_007864.html">(承前) ……。 結論としては…。 Gemini さんは LLM…</a> <span class="pn-date">2025-10-23T12:07:58Z</span></span><span class="next-art"><a href="../../../articles/2025/10/gsm_007866.html">先の実験の反省点の一つに、ニューラルネットが創発を担っているというだけでなく、複…</a> <span class="pn-date">2025-10-24T13:55:28Z</span> →</span></nav>
 
 <nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2025/10.html">2025年10月</a> | <a href="../../../index/gsm.html">共有メモ</a></nav>
+<script type="application/json" id="raw-text">"[gsm]\n○ 2025-10-24T10:00:31Z fOM9GRosVu\n\njrf\u003e 「ニューラルネットを構造的学習で代替する二足歩行実験」を行った。前回はコンセプト的な失敗だったが、今回はまったく歩行ができず、まったくの失敗だった。\n\n《llm_bipedal_walker_structural_learning.ipynb - GitHub Gist》  \nhttps://gist.github.com/JRF-2018/8068e4464db9747c2989c34f6edf3506\n\n……。\n\n経緯。\n\n「ニューラルネットを構造的学習で代替する二重振り子実験」を行ったあと、私は気づいた。制御の中心は「偽装 LLM」にあるのだが、たとえ劣化 PID 制御であっても AI さんが設計した「偽装 LLM」でうまく動くなら、それはその AI さんこそが「偽装 LLM」の実装を通じて「構造的学習」を行ったことになるということを。 \n\nそこで劣化 PID 制御では解けない問題である「二足歩行」の問題を対象にすることで、そのような「構造的学習」がうまくいくのか実際にみてみよう…となった。それが今回の `llm_bipedal_walker_structural_learning.ipynb` になる。\n\n……。\n\n結論。\n\nGemini さんは次々に偽装 LLM を作って構造的学習を試してくれた。最終的には LLM_API_PSEUDO_CORE6 という強化学習を使ったバージョンも作ってくれた。\n\nしかし、「歩行」はまったく創発しなかった。実行ログを見ると、Step 1000 まで耐えていることもあるので、少しはうまくいっているのかと思ったのだが、そのビデオを見るとたいてい片膝立ちで固定されている。それが報酬ハック的に優れていると判断されるようだ。\n\n実験はまったくの失敗である。\n\n「構造的学習」を人間(私)と AI さんが協調して行う…というそういう試みはできた。でも、ただそれだけである。\n\n今後の課題としては、そもそもの私のアイデアは警告構造だと限らないし、ましては警告を微分要素的に使うことでもない。そのタスク構造こそが創発を導くとしていたのだったが、そういう要素はこの実験にはなかった。そこはまだいろいろ試す余地があると思う。しかし、「歩行」を実現するのに、そのようなタスク構造を生成する「偽装LLM」はもっととんでもなく複雑でなければならないだろう。それを AI さんが作ってくれないかと期待したわけだが、そこまでは現状では無理のようだ。もっと私がそういうプログラムのアイデアを煮詰めるべきなのかもしれない。"</script>
+<script src="../../../article.js"></script>
 </body>
 </html>

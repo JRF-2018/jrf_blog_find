@@ -21,6 +21,7 @@
 </table>
 </div>
 <h1>(承前) どうも Grok さんに調べてもらうと、LangChain の…</h1>
+<div class="art-tools" data-pagefind-ignore><button type="button" id="btn-copy">原文をコピー</button><span class="tools-msg" id="tools-msg"></span></div>
 <pre class="body">jrf&gt; (承前)
 
 どうも Grok さんに調べてもらうと、LangChain の Skills では指示またはコードが読めるだけで、その実行はほぼシェルや Python が自由に使えることが前提となっているようだ。それではハーネスとして意味がない。するとコンテクスト汚染を防ぐための skill_do などは独自に実装するしかないようだ。
@@ -35,5 +36,7 @@
 <nav class="prevnext" data-pagefind-ignore><span class="prev-art">← <a href="../../../articles/2026/01/gsm_008383.html">LangChain に私が欲しいのは skill tree または tool…</a> <span class="pn-date">2026-01-29T12:35:15Z</span></span><span class="next-art"><a href="../../../articles/2026/01/gsm_008385.html">(承前) そうか！ 単純な話だ。SKILL.md に…</a> <span class="pn-date">2026-01-29T17:34:57Z</span> →</span></nav>
 
 <nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2026/01.html">2026年01月</a> | <a href="../../../index/gsm.html">共有メモ</a></nav>
+<script type="application/json" id="raw-text">"[gsm]\n○ 2026-01-29T17:06:52Z jqGIsliL30\n\njrf\u003e (承前)\n\nどうも Grok さんに調べてもらうと、LangChain の Skills では指示またはコードが読めるだけで、その実行はほぼシェルや Python が自由に使えることが前提となっているようだ。それではハーネスとして意味がない。するとコンテクスト汚染を防ぐための skill_do などは独自に実装するしかないようだ。\n\n要は、例えば bandit_schedule というオブジェクト(クラス)に定義された tool を SKILLS という TypeDict に登録する方法は「ない」ようだ。実質的には。これをしようとすれば、単に、bandit_schedule_skills というのをドキュメントとして提供して、create_agent に渡すツールには bandit_schedule そのものも含めるしかないが、これでは bandit_schedule をツールに登録しないことでコンテクスト汚染を減らし、Skills に逃がすという目的が果たせなくなっている。これではダメだ。\n\nしかし、skill_do のようなそれを可能とするような枠組みを作って、果たして、LLM さん達がそれを理解して使ってくれるだろうか…。"</script>
+<script src="../../../article.js"></script>
 </body>
 </html>

@@ -21,6 +21,7 @@
 </table>
 </div>
 <h1>[仏教の最適化プログラムの続き。]…</h1>
+<div class="art-tools" data-pagefind-ignore><button type="button" id="btn-copy">原文をコピー</button><span class="tools-msg" id="tools-msg"></span></div>
 <pre class="body">jrf&gt; [仏教の最適化プログラムの続き。]
 
 「焼けぼっくいに火がついた」的なものはやろう。
@@ -63,5 +64,7 @@ l2 = [0.1 + math.log(1 + x.end - x.begin) \
 <nav class="prevnext" data-pagefind-ignore><span class="prev-art">← <a href="../../../articles/2021/03/gsm_000677.html">価値観の話の続き。…</a> <span class="pn-date">2021-03-03T12:59:00Z</span></span><span class="next-art"><a href="../../../articles/2021/03/gsm_000679.html">自分で産んで自分で育てるというのは、上流階級だと逆にできずらかったことで、現代(…</a> <span class="pn-date">2021-03-03T16:09:23Z</span> →</span></nav>
 
 <nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2021/03.html">2021年03月</a> | <a href="../../../index/gsm.html">共有メモ</a></nav>
+<script type="application/json" id="raw-text">"[gsm]\n○ 2021-03-03T15:21:49Z dw512dNzSq\n\njrf\u003e [仏教の最適化プログラムの続き。]\n\n「焼けぼっくいに火がついた」的なものはやろう。\n\nそれで気がついたのだが、以前または今の不倫相手とたまたま新しく不倫すると選ばれたときの処理を書いてなかった。\n\n前は、不倫の期間はひきつがない…としていたが、前の不倫の半分の期間を引き継ぐことにしよう。少し、データに整合性というか正直さがなくなるが…。\n\n……。\n\n…と思ったが、「焼けぼっくいに火がついた」以外の場合の新しい不倫の重なりについて、すべての新しい不倫にてついて過去の不倫を調べるのは時間を食い過ぎると思う。だから、「焼けぼっくいに火がついた」以外の新しい不倫については、過去の子供の情報は引き継がないし、不倫期間も引きつがないこととする。\n\n「焼けぼっくいに火がついた」場合も、過去の子供の情報は引き継がないこととする。必要なときは、必要なときに過去の子供との関係を全部さらうということで。ただし、不倫の期間は、前の不倫の半分の期間を引き継ぐことにしよう。\n\n……。\n\n「焼けぼっくいに火がつく」のは、不倫または結婚している場合は 10年で 10%、そうでない場合は、1年で 10% とする。\n\nさらに火がつく相手が、結婚か不倫している場合、火がつく確率は 50% とする。50% と高いのは、火がつくと選ばれること自体がまれな「幸運」なので。\n\n火がつくと決まったあと、どの関係が再燃するかは、昔の init_favor とその関係の存続期間を加味して決まることにする。rellist が関係のリストとして、\n\nl2 = [0.1 + math.log(1 + x.end - x.begin) \\\n      * np_clip(x.init_favor, 0, 10) for x in rellist]\n\nを元に決める。\n\n今の favor ではなく、昔の favor を使うのは、そのほうが速いから。まぁ、昔の思い出で火がつくあたりは少しリアリティもあるかもしれない。\n\n……。\n\n↓、「結婚」はまだだが、「焼けぼっくいに火がつく」は実装した (バージョン 0.0.8)。\n\n《simbd/test_of_matching_2.py at master - JRF-2018/simbd》  \nhttps://github.com/JRF-2018/simbd/blob/master/test_of_matching_2.py"</script>
+<script src="../../../article.js"></script>
 </body>
 </html>

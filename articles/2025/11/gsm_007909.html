@@ -21,6 +21,7 @@
 </table>
 </div>
 <h1>「「多層目的＝アテンション」を確かめる二足歩行の実験…</h1>
+<div class="art-tools" data-pagefind-ignore><button type="button" id="btn-copy">原文をコピー</button><span class="tools-msg" id="tools-msg"></span></div>
 <pre class="body">jrf&gt; 「「多層目的＝アテンション」を確かめる二足歩行の実験 その2＆3」を行った。その2では「走る」が創発したのはうれしい。その3はちょっとした確認。
 
 その2は↓。
@@ -69,5 +70,7 @@
 <nav class="prevnext" data-pagefind-ignore><span class="prev-art">← <a href="../../../articles/2025/11/gsm_007908.html">ローソン『おいものクイニーアマン』がおいしいね！…</a> <span class="pn-date">2025-11-04T06:36:11Z</span></span><span class="next-art"><a href="../../../articles/2025/11/gsm_007910.html">ふぅ、根詰めて実験したので、少し疲労感…。明日からしばらくは読書に戻るかな…。そ…</a> <span class="pn-date">2025-11-04T18:24:07Z</span> →</span></nav>
 
 <nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2025/11.html">2025年11月</a> | <a href="../../../index/gsm.html">共有メモ</a></nav>
+<script type="application/json" id="raw-text">"[gsm]\n○ 2025-11-04T17:35:49Z m2ddlk/EO0\n\njrf\u003e 「「多層目的＝アテンション」を確かめる二足歩行の実験 その2＆3」を行った。その2では「走る」が創発したのはうれしい。その3はちょっとした確認。\n\nその2は↓。\n\n《humanoid_nested_attention_dt_2.ipynb - Colab》  \nhttps://colab.research.google.com/drive/1HWZ19RmFD_PHy1H38i1VoPLpC_fSYXyG\n\nその3は↓。\n\n《humanoid_nested_attention_dt_3.ipynb - Colab》  \nhttps://colab.research.google.com/drive/19G3Jvm6DYAJC_aLeAygI5MnP0Eq6Ft-T\n\n……。\n\nその2 で何が変わったか。\n\n前回、その1では、SkipPromptDT() というクラスを実装してもらった。それにより、「前進」が創発した。ただ、きれいに歩く姿になってはおらず、とにかく前進するというだけの軌跡になっていた。\n\nそこでとにかくちゃんと歩く姿を見てみたいと思い、データセットを medium-v0 から expert-v0 に変えたところ、今度は学習が失敗し、早期に転倒するようになってしまった。これはおかしい。\n\nそこで、まず、上で挙げた古い IPYNB のモデルのままの MaskedCausalAttention を使った実装を試したところ、今度は expert-v0 で学習が成功し、ちゃんと「歩く」というより「走る」という姿を確認できた。これにより、私の前の SkipPromptDT は基本的には失敗していたことが判明した。\n\nそれを Gemini さんに相談したところ、MaskedCausalAttention のアイデアを取り入れたモデルを作ってくれた。CausalSkipPromptDT の誕生である。これにより、私のモデルでも「走る」が創発するようになった。それが今回の humanoid_nested_attention_dt_2.ipynb である。\n\nなお、MaskedCausalAttention と通常の Transformer との違いは、前者は学習時に未来の情報を用いないように規制しているところに特徴がある。私はそれを層に重ねるとき、アテンションが多層目的であれば、目的をクエリできることが大事なので、上の層でも同じ仕組みが必要なことになかなか納得できなかったが、Gemini 三と議論して、特徴量が過去のすべてを参照しなければならないというのはマレであると気づき、とりあえず納得した。\n\n……。\n\nその3 で何が変わるか。\n\nところが、その2では prompt_id=1 も prompt_id=2 と変わらない結果になってしまった。これは expert-v0 データセットが全体としてよすぎるために差が出ないのだろうというのが Gemini さんの解釈。\n\nそこで simple-v0 データセットを使って prompt_id=1 と prompt_id=2 が違う動作を確かに学習していることを示したのが humanoid_nested_attention_dt_3.ipynb になる。\n\n……。\n\n今後の課題。\n\n確かに prompt_id の制御は効いている。しかし、本来なら、まったく違う動作について prompt_id を割り当てて、それで動作が切り替わるか確認すべきである。しかし現状の Minari のデータセットでは、そのような実験は難しそうである。データセットを変えるなどして、そのような確認を今後したい。\n\nあと、個人的には、工場でのロボットの動作に興味を持っている。ねじ回しなどのデータセットがあるらしく、それは今回と違い、視覚情報も大事となる。そういうものの学習にもトライしたい。"</script>
+<script src="../../../article.js"></script>
 </body>
 </html>

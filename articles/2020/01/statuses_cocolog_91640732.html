@@ -21,20 +21,21 @@
 </table>
 </div>
 <h1>TensorFlow 2.0…</h1>
+<div class="art-tools" data-pagefind-ignore><button type="button" id="btn-copy">原文をコピー</button><span class="tools-msg" id="tools-msg"></span></div>
 <pre class="body">TensorFlow 2.0 を使っているとどんどん遅くなり、どうもメモリ消費が激しくメモリ不足が生じているようだ。ググると、tf.keras の model.predict() がメモリリークを起こしているらしい。
 JRF 2020年1月28日
 
 解決法としては…、
 
-&lt;pre&gt;
+<span class="src-pre">&lt;pre&gt;
     outputs = model.predict(inputs)
-&lt;/pre&gt;
+&lt;/pre&gt;</span>
 
 …などのかわりに…
 
-&lt;pre&gt;
+<span class="src-pre">&lt;pre&gt;
     outputs = model(inputs).numpy()
-&lt;/pre&gt;
+&lt;/pre&gt;</span>
 
 …を使えば良いようだ。
 
@@ -77,5 +78,7 @@ JRF 2020年1月28日</pre>
 <nav class="prevnext" data-pagefind-ignore><span class="prev-art">← <a href="../../../articles/2020/01/statuses_cocolog_91629517.html">quail-naggy.el と jrf_semaphore.pl…</a> <span class="pn-date">2020年01月23日</span></span><span class="next-art"><a href="../../../articles/2020/02/statuses_cocolog_91662496.html">以前述べた第一マシン・第二マシン・第三マシンによる学習のアイデア。まず実験してみ…</a> <span class="pn-date">2020年02月07日</span> →</span></nav>
 
 <nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2020/01.html">2020年01月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+<script type="application/json" id="raw-text">"[statuses] [cocolog:91640732]\nhttp://jrf.cocolog-nifty.com/statuses/2020/01/post-fb4a8b.html\n\nTensorFlow 2.0 を使っているとどんどん遅くなり、どうもメモリ消費が激しくメモリ不足が生じているようだ。ググると、tf.keras の model.predict() がメモリリークを起こしているらしい。\nJRF 2020年1月28日\n\n解決法としては…、\n\n\u003cpre\u003e\n    outputs = model.predict(inputs)\n\u003c/pre\u003e\n\n…などのかわりに…\n\n\u003cpre\u003e\n    outputs = model(inputs).numpy()\n\u003c/pre\u003e\n\n…を使えば良いようだ。\n\nJRF 2020年1月28日\n\nなお、あまりそういうことはしないが、同じく Keras の model.fit() も、複数回使っているとメモリリークするようなことも書いてあった。\n\nTensorFlow 2.1 でも直っているかどうかは微妙なところのようだ。↓など英語では複数のページに情報があるが、日本語では見つからなかったので「ひとこと」した。\n\nJRF 2020年1月28日\n\n《Repeatedly calling model.predict(...) results in memory leak · Issue #13118 · keras-team/keras · GitHub》\nhttps://github.com/keras-team/keras/issues/13118\n\nJRF 2020年1月28日\n\nちなみに私の環境は、Windows 10 で conda=4.8.1 python=3.7.6。tensorflow=2.0.0 で gpu は入っていない。が、そういうのに関係なく TensorFlow 2.0 では起こっているようだ。\n\nJRF 2020年1月28日\n\n……。\n\n私はこれまで TensorFlow 1.x 系で勉強・実験してきて、昨日、はじめて TensorFlow 2 系を使いはじめたところだった。\n\nJRF 2020年1月28日\n\nだから、実行しているうちにメモリ使用量がすごく増えるのは、私のコードの問題かと疑い、@tf.function に渡す引数を tf.constant してからにしたり、いろいろ試したりしたのだった。あと、終了時の仮想メモリの解放がうまくいってないように見えたことから、python や matplotlib の gc 関連のバグかとも疑った。\n\nJRF 2020年1月28日\n\nTensorFlow 2.0 は 1.x に比べメモリを食うという情報もあったので、いくらなんでもここまで違うのはおかしいと思いながらも、しかたないのかとも思ったりした。\n\n日本語でググったりしてもなかなか解決策が見つからなかったが、[google: tensorflow 2.0 memory leak] でやっと原因がわかったのだった。\n\nJRF 2020年1月28日"</script>
+<script src="../../../article.js"></script>
 </body>
 </html>

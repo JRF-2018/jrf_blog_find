@@ -21,6 +21,7 @@
 </table>
 </div>
 <h1>「JAGS でモンティ・ホール問題を解く」という記事を書いた。R…</h1>
+<div class="art-tools" data-pagefind-ignore><button type="button" id="btn-copy">原文をコピー</button><span class="tools-msg" id="tools-msg"></span></div>
 <pre class="body">「JAGS でモンティ・ホール問題を解く」という記事を書いた。R 言語とベイズ統計モデリングの JAGS の練習として。まだ、JAGS の勉強をしようとしてぜんぜんしていない段階なので、これでいいのか自信がないが…。
 JRF 2020年4月18日
 
@@ -100,5 +101,7 @@ JRF 2020年4月18日</pre>
 <nav class="prevnext" data-pagefind-ignore><span class="prev-art">← <a href="../../../articles/2020/04/statuses_cocolog_91824909.html">新型コロナウィルス(COVID-19)関連のレポートの「追実験」を R や…</a> <span class="pn-date">2020年04月13日</span></span><span class="next-art"><a href="../../../articles/2020/05/statuses_cocolog_91869586.html">ピエール・フルニエ(vc)『バロック・チェロ協奏曲集』を聴く。働き生活をたてるこ…</a> <span class="pn-date">2020年05月01日</span> →</span></nav>
 
 <nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2020/04.html">2020年04月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+<script type="application/json" id="raw-text">"[statuses] [cocolog:91836101]\nhttp://jrf.cocolog-nifty.com/statuses/2020/04/post-6fbd1e.html\n\n「JAGS でモンティ・ホール問題を解く」という記事を書いた。R 言語とベイズ統計モデリングの JAGS の練習として。まだ、JAGS の勉強をしようとしてぜんぜんしていない段階なので、これでいいのか自信がないが…。\nJRF 2020年4月18日\n\n記事は↓。\n\n《JAGS でモンティ・ホール問題を解く》  \nhttp://jrf.cocolog-nifty.com/software/2020/04/post-7e9b97.html\n\nJRF 2020年4月18日\n\n……。\n\n新型コロナウィルスに関するシミュレーションの「追実験」をしていると [cocolog:91824909] に書いた。\n\n特に、↓の JAGS の記事を見て、こんなソフトがあるのかと驚いた。\n\n《COVID-19 日本国内の潜在的な陽性者数を推定する試み - StatModeling Memorandum》\nhttp://statmodeling.hatenablog.com/entry/covid19-estimate-total-number-of-positives-in-japan\n\nJRF 2020年4月18日\n\n私の関心のある確率分野で、Prolog みたいな推論ができる…と関心を持った。そして目標として「志村けん問題」(↓)を扱いたいと思った。\n\n《志村けんのパラドックス - アスペ日記》\nhttps://takeda25.hatenablog.jp/entry/2020/03/28/083257\n\nJRF 2020年4月18日\n\nその前に練習としていいものはないかと考えたところ、前に記事も書いた(↓)モンティ・ホール問題がいいのではないか、と思いついた。\n\n《モンティ・ホール問題または三囚人問題の拡張とその確率操作シミュレーション》  \nhttp://jrf.cocolog-nifty.com/software/2016/08/post.html\n\nJRF 2020年4月18日\n\nあとは一番上の記事に書いてあるとおりで、はじめてなので苦労しながら結果を出した。\n\nJRF 2020年4月18日\n\n……。\n\n実は「志村けん問題」についても、ある程度、結果は出ている。\n\n100人の村で、5人に1人の有名人が感染症にかかったら、そうでない場合よりも感染が広がっているか…という問題で、広がっていると言って間違いではない…という結果は得ている。\n\nJRF 2020年4月18日\n\nしかし、その信頼度などをどう測ればよいかが、私にはわかっておらず、JAGS やベイズ統計モデリングについてもう少し勉強してから、記事にするつもり。\n\nモンティ・ホール問題も勉強してからにしようかとも思ったが、ここのところ記事を書いてなかったし、あかんところがあったら、あとで修正すればいいかという軽い気持ちで、先に公開してしまった。\n\nJRF 2020年4月18日\n\n……。\n\n一点、JAGS を用いるときの注意点。\n\nrjags で、jags.model するとき、\n\nNode inconsistent with parents\n\n…というエラーは初期値の設定をミスっているものと考えてよさそうだ。初期値に inconsistency があるということで、たいてい初期値をさらに詳しく与える必要があるときに出ていた。\n\nJRF 2020年4月18日"</script>
+<script src="../../../article.js"></script>
 </body>
 </html>

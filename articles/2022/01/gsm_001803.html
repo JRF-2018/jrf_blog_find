@@ -21,6 +21,7 @@
 </table>
 </div>
 <h1>《JRF のひとこと》で使っている jumpbytitle.html…</h1>
+<div class="art-tools" data-pagefind-ignore><button type="button" id="btn-copy">原文をコピー</button><span class="tools-msg" id="tools-msg"></span></div>
 <pre class="body">jrf&gt; 《JRF のひとこと》で使っている jumpbytitle.html が不具合で機能していないので、XREA に同等の機能を持つ CGI … id2url.cgi を作った。
 
 次の二つの生成されたページが、しばしば入れ替わる。
@@ -58,5 +59,7 @@
 <nav class="prevnext" data-pagefind-ignore><span class="prev-art">← <a href="../../../articles/2022/01/gsm_001802.html">経済シミュレーションの話。追記。(一連のメモは…</a> <span class="pn-date">2022-01-01T11:18:25Z</span></span><span class="next-art"><a href="../../../articles/2022/01/gsm_001804.html">(承前) jumpbydate.html…</a> <span class="pn-date">2022-01-02T14:51:47Z</span> →</span></nav>
 
 <nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2022/01.html">2022年01月</a> | <a href="../../../index/gsm.html">共有メモ</a></nav>
+<script type="application/json" id="raw-text">"[gsm]\n○ 2022-01-02T12:27:03Z zN4CyErdyF\n\njrf\u003e 《JRF のひとこと》で使っている jumpbytitle.html が不具合で機能していないので、XREA に同等の機能を持つ CGI … id2url.cgi を作った。\n\n次の二つの生成されたページが、しばしば入れ替わる。\n\nhttp://jrf.cocolog-nifty.com/statuses/jumpbytitle.html\nhttp://jrf.cocolog-nifty.com/statuses/jumpbydate.html\n\nこれは2019年3月のココログ全面リニューアル以来ずっと続いている不具合で、再現性がない。ときどきちゃんと機能したりする。\n\nアーカイブまわりが変わったので jumpbydate.html のほうがあやしいのだが、よく使われるであろう jumpbytitle.html のほうが影響が大きそうだから、jumpbytitle.html だけとりえず代替の機能を作ることにした。\n\nhttp://jrockford.s1010.xrea.com/cocolog_helper/id2url.cgi\n\n…がそれ。\n\nhttp://jrf.cocolog-nifty.com/statuses/jumpbytitle.html?q=aboutme:23346\n\n…の代わりに…\n\nhttp://jrockford.s1010.xrea.com/cocolog_helper/id2url.cgi?q=aboutme:23346\n\n…として使う。\n\nソースは↓にある。初期バージョンは 0.0.1。\n\nhttps://github.com/JRF-2018/cocolog_helper\n\n使い方はソースを読んでいただくしかない。まぁ、私の他に使う人なんていないだろうけど。\n\nなお、XREA は広告表示の義務があり、Redirect するだけの CGI はダメかもしれない…と思って、すぐ Redirect するのではなく、5 秒間待って転送するようにした。"</script>
+<script src="../../../article.js"></script>
 </body>
 </html>

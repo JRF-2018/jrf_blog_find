@@ -21,6 +21,7 @@
 </table>
 </div>
 <h1>FCGIに関する記事を読んで、プログラムを先に読み込でおくだけで高速化できるとい…</h1>
+<div class="art-tools" data-pagefind-ignore><button type="button" id="btn-copy">原文をコピー</button><span class="tools-msg" id="tools-msg"></span></div>
 <pre class="body">FCGIに関する記事を読んで、プログラムを先に読み込でおくだけで高速化できるというなら、普通のCGIをPOSTであらかじめ起動しておいて、STDINを読むところをブロックしておき、リクエストが来たらデータを流し込むという「キャッシュ」方法もありなんじゃないかと考えた。が…罠だな。
 JRF 2011年6月25日
 
@@ -61,5 +62,7 @@ JRF 2011年6月25日</pre>
 <nav class="prevnext" data-pagefind-ignore><span class="prev-art">← <a href="../../../articles/2011/06/statuses_aboutme_139313.html">『BEEP…</a> <span class="pn-date">2011年06月19日</span></span><span class="next-art"><a href="../../../articles/2011/06/statuses_aboutme_139418.html">ノリントン＆Ｎ響『ベートーヴェン：交響曲…</a> <span class="pn-date">2011年06月25日</span> →</span></nav>
 
 <nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2011/06.html">2011年06月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+<script type="application/json" id="raw-text">"[statuses] [aboutme:139417]\nhttp://jrf.cocolog-nifty.com/statuses/2011/06/aboutme139417.html\n\nFCGIに関する記事を読んで、プログラムを先に読み込でおくだけで高速化できるというなら、普通のCGIをPOSTであらかじめ起動しておいて、STDINを読むところをブロックしておき、リクエストが来たらデータを流し込むという「キャッシュ」方法もありなんじゃないかと考えた。が…罠だな。\nJRF 2011年6月25日\n\n$ENV は CGI 内では REMOTE_HOST を調べるときに使うぐらいだから、CGI 側で何とかできるだろうし、httpd 側で REMOTE_HOST 等の条件が同じときのみキャッシュすることもできよう。\n\nJRF 2011年6月25日\n\nそういうことがなされるなら、私の↓の場合、$DATE の取得方法を変えれば対応できるかなぁ…とか考えた。log では、プロセスIDを記録するよりも $DATE を統一したほうが読みやすいから(あと、時間取得は厳格さを必要とするプログラムがあるため、案外オーバーヘッドが大きいことがありうるから)起動時の時間をずっと使い回すということをしているが、STDIN を読み終ったあとに、$DATE を(再)取得するようにすればいいのかなぁ…とか考えた。\n\nJRF 2011年6月25日\n\n《Statuses_Editor_Proxy.CGI》\nhttp://jrf.cocolog-nifty.com/software/2011/06/post.html\n\n……。\n\nで、どのあたりに変更が必要か検討していて、はたと気づいた。もし、これが「高速化」につながるなら、「GET ではなく POST のほうが効率的だ」といった言説を聴いたことがあっておかしくない。しかし、そんな言説は私は聴いたことがない。…とすれば、これは「罠」なんじゃないか？\n\nJRF 2011年6月25日\n\nEmacs とかには読み込みを早くするためのバイトコンパイルとかあるけど、昔は、パースに時間がかかるのがオーバーヘッドと見なされることが多かった。しかし、最近の CPU ではこのあたりの処理は驚くほど早く、もしかすると言語側で対応してなくてもキャッシュが働いたりすることがあるのではないか？ソースそのものに関するキャッシュじゃなくても正規表現とかだとキャッシュは効きやすい。\n\n私の↑の CGI はでかいからキャッシュには載せにくいかもしれないけど、それは単にスケールの問題で、ものすごーくこの CGI が使われるならキャッシュは自然に効いてくるのかもしれない。\n\nJRF 2011年6月25日\n\nそこのオーバーヘッドがほぼないとすると、わざわざ STDIN をブロックするのは処理の手間を増やすだけになる。さらに、STDIN をブロックするということは、それの監視を許したり、プロセスの切り換わりによりキャッシュが捨てられる可能性が大きくなったりする…といったことにつながり、効率的ではなくなるのかもしれない。むしろ、STDIN をそのまま GET に変換しても問題ないという特徴を維持することのほうが大切なのかもしれない。\n\nJRF 2011年6月25日\n\n今の CGI の書き方において、POST と GET に差がないというのは事実だとしても、サーバー設定の「間違いの犯しやすさ」という点において POST にはオーバーヘッドが大きいということが事実となっているのかもしれない。そしてうまいチューニング方法もありうるということだろう。\n\nJRF 2011年6月25日"</script>
+<script src="../../../article.js"></script>
 </body>
 </html>

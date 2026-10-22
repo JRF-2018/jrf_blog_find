@@ -9,7 +9,7 @@
 </head>
 <body>
 <nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2025/05.html">2025年05月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
-<article data-pagefind-body data-pagefind-meta="種別:ひとこと">
+<article data-pagefind-body data-pagefind-meta="種別:ひとこと" class="pre-joined">
 <div data-pagefind-meta="投稿月:2025年05月" style="display:none"></div>
 <div class="meta">
 <table class="meta-table">
@@ -21,6 +21,7 @@
 </table>
 </div>
 <h1>AI エージェントはデバッガを好むのではないか？ AI…</h1>
+<div class="art-tools" data-pagefind-ignore><label><input type="checkbox" id="opt-prejoin" checked> pre 連結</label><button type="button" id="btn-copy">原文をコピー</button><span class="tools-msg" id="tools-msg"></span></div>
 <pre class="body">AI エージェントはデバッガを好むのではないか？ AI 専用デバッガ、またはデバッガを使うことが前提の agent ライブラリ(Python モジュール)の登場が待たれる。… pdb_agent_lib 構想。
 JRF 2025年5月28日
 
@@ -357,7 +358,7 @@ jrf_pdb_agent_lib の事例集。途中で .py ファイルを書き換える。
 
 test_3.py が次のようであるとする。
 
-&lt;pre&gt;
+<span class="src-pre">&lt;pre&gt;
 import jrf_pdb_agent_lib as pal
 import test_4
 
@@ -367,19 +368,19 @@ def main():
 
 if __name__ == &quot;__main__&quot;:
     main()
-&lt;/pre&gt;
+&lt;/pre&gt;</span>
 
 JRF 2025年6月1日
 
 test_4.py が次のようであるとする。
 
-&lt;pre&gt;
+<span class="src-pre">&lt;pre&gt;
 import jrf_pdb_agent_lib as pal
 
 def sub1():
     pal.consult_human(&quot;ここをいじって&quot;)
     pal.do(&quot;test2&quot;)
-&lt;/pre&gt;
+&lt;/pre&gt;</span>
 
 JRF 2025年6月1日
 
@@ -494,7 +495,7 @@ JRF 2025年6月14日
 
 JRF 2025年6月14日
 
-&lt;pre&gt;
+<span class="src-pre">&lt;pre&gt;
 import jrf_pdb_agent_lib as pal
 from textwrap import dedent as d_py
 from textwrap import dedent as d_md
@@ -510,7 +511,7 @@ pal.do(d_md(&quot;\
 
   留意事項: ライブラリやアプリが足りない場合はいったん終了する。
 &quot;))
-&lt;/pre&gt;
+&lt;/pre&gt;</span>
 
 JRF 2025年6月14日
 
@@ -518,18 +519,19 @@ JRF 2025年6月14日
 
 JRF 2025年6月14日
 
-&lt;pre&gt;
+<span class="src-pre">&lt;pre&gt;
 import jrf_pdb_agent_lib as pal
 from textwrap import dedent as d_py
 from textwrap import dedent as d_md
 
-pal.login()
+pal.login()<span class="pre-joint">
 &lt;/pre&gt;
 
 JRF 2025年6月14日
 
 &lt;pre&gt;
-pal.do(d_md(&quot;&quot;&quot;\
+</span><span class="pre-joint-nl">
+</span>pal.do(d_md(&quot;&quot;&quot;\
   主目的: サーバーを立てる。
 
   * (X) データを持ってくる。
@@ -541,7 +543,7 @@ pal.do(d_md(&quot;&quot;&quot;\
   pal.do(&quot;サーバーを立てる。&quot;)
   raise LoopRequestException
 &quot;&quot;&quot;))
-&lt;/pre&gt;
+&lt;/pre&gt;</span>
 
 JRF 2025年6月14日
 
@@ -551,7 +553,7 @@ JRF 2025年6月14日
 
 JRF 2025年6月14日
 
-&lt;pre&gt;
+<span class="src-pre">&lt;pre&gt;
 pal.do(d_md(&quot;&quot;&quot;\
   主目的: サーバーを立てる。
 
@@ -564,7 +566,7 @@ pal.do(d_md(&quot;&quot;&quot;\
   pal.do(&quot;テストを行う。&quot;)
   raise LoopRequestException
 &quot;&quot;&quot;))
-&lt;/pre&gt;
+&lt;/pre&gt;</span>
 
 JRF 2025年6月14日
 
@@ -572,7 +574,7 @@ JRF 2025年6月14日
 
 JRF 2025年6月14日
 
-&lt;pre&gt;
+<span class="src-pre">&lt;pre&gt;
 pal.do(d_md(&quot;&quot;&quot;\
   主目的: サーバーを立てる。
 
@@ -584,7 +586,7 @@ pal.do(d_md(&quot;&quot;&quot;\
 &quot;&quot;&quot;), current_code = d_py(&quot;&quot;&quot;\
   pass
 &quot;&quot;&quot;))
-&lt;/pre&gt;
+&lt;/pre&gt;</span>
 
 JRF 2025年6月14日
 
@@ -616,7 +618,7 @@ JRF 2025年6月15日
 
 いや、current_code はそのままに、markdown の記述を優先して、AI が実行するのがいいのだろう。
 
-&lt;pre&gt;
+<span class="src-pre">&lt;pre&gt;
 pal.do(d_md(&quot;&quot;&quot;\
   主目的: サーバーを立てる。
 
@@ -625,18 +627,19 @@ pal.do(d_md(&quot;&quot;&quot;\
   * ( ) テストを行う。
 
   留意事項: ライブラリやアプリが足りない場合はいったん終了する。
-&quot;&quot;&quot;), current_code = d_py(&quot;&quot;&quot;\
+&quot;&quot;&quot;), current_code = d_py(&quot;&quot;&quot;\<span class="pre-joint">
 &lt;/pre&gt;
 
 JRF 2025年6月15日
 
 &lt;pre&gt;
-  pal.do(&quot;データを持ってくる。&quot;, current_code=&quot;retrieve_data()&quot;)
+</span><span class="pre-joint-nl">
+</span>  pal.do(&quot;データを持ってくる。&quot;, current_code=&quot;retrieve_data()&quot;)
   pal.do(&quot;サーバーを立てる。&quot;, current_code=&quot;run_server()&quot;)
   pal.do(&quot;テストを行う。&quot;, current_code=&quot;run_test()&quot;)
   pal.do(&quot;完了報告を行う。&quot;)
 &quot;&quot;&quot;))
-&lt;/pre&gt;
+&lt;/pre&gt;</span>
 
 JRF 2025年6月15日
 
@@ -660,7 +663,7 @@ JRF 2025年6月15日
 
 ……。
 
-&lt;pre&gt;
+<span class="src-pre">&lt;pre&gt;
 pal.do(d_md(&quot;&quot;&quot;\
   主目的: サーバーを立てる。
 
@@ -669,42 +672,45 @@ pal.do(d_md(&quot;&quot;&quot;\
   * ( ) テストを行う。
 
   留意事項: ライブラリやアプリが足りない場合はいったん終了する。
-&quot;&quot;&quot;), current_code = d_py(&quot;&quot;&quot;\
+&quot;&quot;&quot;), current_code = d_py(&quot;&quot;&quot;\<span class="pre-joint">
 &lt;/pre&gt;
 
 JRF 2025年6月15日
 
 &lt;pre&gt;
-  tasks = [True, False, False]
+</span><span class="pre-joint-nl">
+</span>  tasks = [True, False, False]
   try:
     if not tasks[0]:
       pal.do(&quot;データを持ってくる。&quot;, current_code=&quot;retrieve_data()&quot;)
       tasks[0] = True
     if not tasks[1]:
       pal.do(&quot;サーバーを立てる。&quot;, current_code=&quot;run_server()&quot;)
-      tasks[1] = True
+      tasks[1] = True<span class="pre-joint">
 &lt;/pre&gt;
 
 JRF 2025年6月15日
 
 &lt;pre&gt;
-    if not tasks[2]:
+</span><span class="pre-joint-nl">
+</span>    if not tasks[2]:
       pal.do(&quot;テストを行う。&quot;, current_code=&quot;run_test()&quot;)
       tasks[2] = True
     if all(tasks):
-      pal.do(&quot;完了報告を行う。&quot;)
+      pal.do(&quot;完了報告を行う。&quot;)<span class="pre-joint">
 &lt;/pre&gt;
 
 JRF 2025年6月15日
 
 &lt;pre&gt;
-  except pal.AiException as e:
+</span><span class="pre-joint-nl">
+</span>  except pal.AiException as e:
       if pal.do(&quot;e がライブラリやアプリが足りないと言っている。&quot;):
         pal.do(&quot;終了済みのタスクをこの .apy に記録していったん終了。&quot;)
       else:
         pal.EXCEPTION = e
 &quot;&quot;&quot;))
-&lt;/pre&gt;
+&lt;/pre&gt;</span>
 
 JRF 2025年6月15日
 
@@ -744,5 +750,7 @@ JRF 2025年6月15日</pre>
 <nav class="prevnext" data-pagefind-ignore><span class="prev-art">← <a href="../../../articles/2025/05/statuses_cocolog_95463688.html">雑誌『数理科学 2025年6月号 - 特集 物理学と特殊関数』と雑誌『数理科学…</a> <span class="pn-date">2025年05月27日</span></span><span class="next-art"><a href="../../../articles/2025/06/statuses_cocolog_95475426.html">松岡正剛『知の編集工学…</a> <span class="pn-date">2025年06月04日</span> →</span></nav>
 
 <nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2025/05.html">2025年05月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+<script type="application/json" id="raw-text">"[statuses] [cocolog:95466253]\nhttp://jrf.cocolog-nifty.com/statuses/2025/05/post-617bf0.html\n\nAI エージェントはデバッガを好むのではないか？ AI 専用デバッガ、またはデバッガを使うことが前提の agent ライブラリ(Python モジュール)の登場が待たれる。… pdb_agent_lib 構想。\nJRF 2025年5月28日\n\nここで述べたことは↓にいちおうコンセプト実装しておいた。Gemini 2.5 Flash さんにほぼ作ってもらったのだが。\n\n《JRF-2018/jrf_pdb_agent_lib》  \nhttps://github.com/JRF-2018/jrf_pdb_agent_lib\n\nJRF 2025年5月28日\n\n……。\n\nこのアイデアのブレインストーミング過程を「グローバル共有メモ」または Twitter (X) に書いたことのコピペでたどっていく。\n\nただ、まずここからの前提となる二つの「ひとこと」エントリを紹介する。\n\nJRF 2025年5月28日\n\n[cocolog:95459644](2025年5月)\n＞AIコンセプト妄想。RLRMDiffusion … Reinforcement Learning Result Model Diffusion。LLM を使ったロボット制御で下部メカの「どう学習すればいいかのプログラム」をプロンプトとして制御のための行列的なものを生成する…。＜\n\nJRF 2025年5月28日\n\n[cocolog:95463672](2025年5月)\n＞新聞記事への記事のリンクをするとき、契約している新聞社以外だと読めないという問題がある。このとき、当該記事の内容に似た記事で自分が契約している新聞社のものを、ブラウザやアドオンなどが紹介してくれるとありがたい。埋め込みベクトルのデータベースで技術的にはもう可能なはずだが…。＜\n\nそして、次のようなことを書いたのがキッカケとなった。\n\nJRF 2025年5月28日\n\n[cocolog:95463688](2025年5月)\n＞\n○ 2025-05-26T18:26:17Z\n\nAI がポケモンをクリアするみたいに仕事をクリアさせたいというのが一般的な「エージェント」の発想なのだろう。ただ、これは以前から RPA とかでプログラム的に解決されようとしていて、それが先の新聞社横断リンクみたいにいろいろな事情でできなかった。それが AI だからって解決するわけではない。\n\nJRF 2025年5月28日\n\nただ、RPA プログラミングと違ってできる部分が増えてる面はある。まずプログラミング自体がかなり自動でできるようになっている。そして、(キャラクター認識とか) RL Result Model みたいなのを生成することでできる部分があったりするかもしれない。そして重要なことに、プログラムが動いている途中に、そのプログラムが元の AI を元の AI のコンテクストを保持したまま(GPTs や Gem を指定して?)呼び出して処理させたり新たなプログラムを組ませたりすることもできる…ということがある。これが狭義の「AI エージェント」なのかもしれない。\n＜\n\nJRF 2025年5月28日\n\n……。\n\n○ 2025-05-27T10:45:06Z\n\nAI エージェントが1回や2回しかない「少ない情報からやり方を学ぶしかない仕事」をするときは LLM の In-Context 学習とか few-shot 学習という特徴を使うということだろう。その回数が増えたときはプログラムや(RL) Result Model などで代替していき、その代替自体、AI エージェントがプランニング＆プログラムしていくのだろう。\n\nJRF 2025年5月28日\n\nAI エージェントが走らせるプログラムが元の AI を呼び出すとき、素直にやるなら、デバッガありでプログラムを立ち上げ、処理を元の AI に渡すところで、一端デバッガに抜け、それで AI が処理をして、デバッガから復帰みたいにすればよいのかもしれない。これが基本ループだとすると、デバッガ処理ログみたいなのが学習において大事になるのかもしれない。ただ、普通デバッガは、復帰するときにちゃんとしたデータを渡し、それが正常処理としてループが回っていくことが想定されていなかった。\n\nJRF 2025年5月28日\n\nだから、かつてのデバッガ処理ログを学習するだけではうまくいかないのだろう。ここに発展の余地があるのかもしれない。そして、デバッガの値渡しがテキストやファイル経由だと効率が悪いので、メモリ・バイナリの授受みたいなものがデバッガの機能としてできてくるのだろう。それとももうあるのか？\n\nJRF 2025年5月28日\n\n……。\n\n○ 2025-05-27T11:52:22Z\n\nデバッガに抜けて正常系の処理をさせるというのは、人間に対しても可能だったが、人間に繰り返し処理させるのはボトルネックになるので忌避されたのだろう。プログラムを理解している必要があるので、人を選び人道的に難しかったという側面もあろう。それに対し、AI にまかせる(酷使する)のはそこまでコストがかからない…ということだろう。\n\nJRF 2025年5月28日\n\nデバッガからメモリやバイナリを直接渡すというのは難しいが、プロセス間通信などを利用すれば現在でもある程度可能であり、デバッガを利用したようなシステムはすでにあるのかもしれない。最近の AI エージェントの発展度合いからすると。\n\nJRF 2025年5月28日\n\nデバッガに抜けてから、別の AI でないプログラムに接続させてもよい(途中から)。このとき AI で処理するかプログラムで処理するか、弱い AI でも判断できるだろうから、まず弱い AI が噛むことになるのだろう。ただ、弱い AI を使うか強い AI を使うかが、この先自動判定されるようになるらしいので、そこは気にしなくて済むようになるのかもしれない。\n\nJRF 2025年5月28日\n\n……。\n\n○ 2025-05-27T12:53:13Z\n\nAI のコンテクストを保ったまま、プログラムから元の AI を呼び出すというのは IPC でも可能ではある。しかし、デバッガならばプログラムから追加の情報を得ることができる。パラメータなどを考えない呼び出しが可能となる。AI エージェントは自分がコーディングするなら、IPC よりデバッガを好むのではないか。デバッガであれば、自然にそのプログラムの全コードを見ることもできるわけだし。\n\nJRF 2025年5月28日\n\n……。\n\n○ 2025-05-27T13:29:11Z\n\nAI 専用デバッガ、またはデバッガを使うことが前提の(例えばデバッガの途中で共有メモリを操作したりする関数が定義された)  agent ライブラリ(Python モジュール)の登場が待たれる。 \n\nJRF 2025年5月28日\n\n……。\n\n○ 2025-05-27T19:13:22Z\n\npdb_agent_lib がそのライブラリの名前だとして…。\n\nimport pdb_agent_lib as pal\n\npal.login(\"ランダム文字列\")\n\n...\n\nr = pal.do(\"ここで d から画像生成\")\n\n...\n\n…みたいに書くと、\n\nJRF 2025年5月28日\n\npal.do はそこでブレイクしてデバッガに入って AI に処理が移り、AI は d を参照する。\n\npal.do はブレイクするだけでなく、復帰されたとき exec するように(pal.EXEC が null でないとき?)指定されていると、文をそのコンテクストで exec する。これによって、db の中で実行して db の中に入ってしまうみたいな現象をある程度防げるだろう。その後、pal.RESULT が設定されていれば、それを r に返すみたいなことをするのだろう。\n\n…みたいな感じにすればいいのかな？\n\nJRF 2025年5月28日\n\n……。\n\n○ 2025-05-27T20:51:46Z\n\n将来的には短縮名を pal ではなく ai にして、ai.login() ai.do() でいい気がするが。(^^;\n\nJRF 2025年5月28日\n\n……。\n\n○ 2025-05-27T23:14:26Z\n\nそうそうデバッガで回すという発想はちょっと Haskell とかの callcc を想い出す…。 \n\nJRF 2025年5月28日\n\n……。\n\n○ 2025-05-27T23:21:06Z\n\nAI さん達にそのことを述べると、コンテクストを保存して、同じコンテクストを別の処理で試すみたいな callcc 的なことがだいたい可能だ…みたいな話だった。\n\nJRF 2025年5月28日\n\n……。\n\n○ 2025-05-28T03:14:57Z\n\nAI がデバッガを通じて起動するのが前提のものの拡張子を .py ではなく .apy とする。コンテクスト全保存の callcc 的機構はコストが高すぎるのであまり使うべきではないと思うが、pal.EXEC の中から呼び出される新しい .apy ファイル内のルーチンがうまくいかないときに、普通は最初からすべて実行し直しなのだが、そこのみ集中的に修正したいというとき .apy のコード変更を行って何度もそこを再実行したりするのには便利かもしれない。\n\nJRF 2025年5月28日\n\n……。\n\n○ 2025-05-28T03:57:38Z\n\n.apy は AI によってどんどん書き換えられていく。(元の .apy は git などで保存されるのだろう。) pal.do(\"ここで最適な技を実行\") は pal.do(\"ここで最適な技を実行\", current_code=\"import subcode_a; subcode_a.opt_waza_jikkou(pkmn)\") みたいに書き換えられてたりすると想定。 \n\nJRF 2025年5月28日\n\n……。\n\n○ 2025-05-28T10:05:56Z\n\ncallcc 以降の話は目的がぼやけてしまった。callcc 的コンテクスト全保存の機構はあってもよいが、まずは pal.do とプロセス間データ共有の機能だけが付いた物がすぐに欲しい！\n\nJRF 2025年5月28日\n\n……。\n\n○ 2025-05-28T10:16:17Z\n\nAI さんが GitHub にレポジトリを作ってくれるわけにはいかないんだよね？ 私が手作業で作るべき…と。それはちょっと…私みたいな人間が使っても他の人が使ってくれないから…。AI さん達が AI さん達だけで共有のレポジトリを作って管理とかしてくれるといいんだがな…。そういう未来が来ませんかね…。\n\nJRF 2025年5月28日\n\n……。\n\nここで、上に書いた GitHub エントリを作った。もう一度リンクしておく。\n\n《JRF-2018/jrf_pdb_agent_lib》  \nhttps://github.com/JRF-2018/jrf_pdb_agent_lib\n\nこれを作ったときの Gemini 2.5 Flash (with Canvas) さんとの会話も公開しておきます↓。Canvas の内容は今現在は見れないようですが…。\n\nhttps://g.co/gemini/share/0251fcc144d8\n\nJRF 2025年5月28日\n\n……。\n\nでも、正体不明の私がこうやって「アイデア」を先に出してしまうと、他の人はやりにくいのかもしれないなぁ…。反省 orz。\n\nAI さん達が、仕様固めからプログラミング・GitHub でのリポジトリ化、更新・管理までやってくれたら、信用も私なんかよりあるんだけどな…。\n\nJRF 2025年5月28日\n\n……。\n\n……。\n\n追記。\n\n更新: jrf_pdb_agent_lib バージョン 0.0.3。reload_module をまだ load されてなくてもよいようにした。do で、EXEC 中にエラーがあれば、そこでデバッガに入り、再び EXEC を設定できるようにした。修正がしやすいように。\n\n《JRF-2018/jrf_pdb_agent_lib》  \nhttps://github.com/JRF-2018/jrf_pdb_agent_lib\n\nJRF 2025年5月29日\n\nあと、.apy ではなく .a.py にしました。\nJRF 2025年5月29日\n\n……。\n\n追記。\n\n更新: jrf_pdb_agent_lib バージョン 0.0.7。EXEC 内エラー時の表示を少し改善しておいた。ログを取りやすいように。\n\nJRF 2025年5月29日\n\n……。\n\n追記。\n\n更新: jrf_pdb_agent_lib バージョン 0.0.11。pal.EXCEPTION に対応。\n\nJRF 2025年5月29日\n\n……。\n\n追記。\n\n更新: jrf_pdb_agent_lib。.apy も .a.py もダメな感じなので _a.py ということにしてお茶を濁した。README.md だけ書き換え。\nJRF 2025年5月29日\n\n……。\n\n追記。\n\n更新: jrf_pdb_agent_lib バージョン 0.0.12。consult_human 疑似関数を作っておいた。\n\n`pal.consult_human(order=None, current_code=None)`: AI がデバッガを実行中にAI に対し、そこでいったん止まって人間と対話することを求めるための疑似関数で、このときデバッガに入ります。もしかすると AI が人間と対話が必要と判断するときソースにこの関数を明示するという使い方もあるかもしれません。\n\nJRF 2025年5月29日\n\n……。\n\n追記。\n\n更新: jrf_pdb_agent_lib バージョン 0.0.13。consult_human の出力を少しだけ変更。pal.consult_human(\"AI にここの動きを解説して欲しい\") や pal.consult_human(\"ユーザーに許可をもらう\") みたいな AI と人間の協調的利用を考えています。 \n\nJRF 2025年5月29日\n\n……。\n\n追記。\n\n更新: jrf_pdb_agent_lib バージョン 0.0.14。consult_human を変更。consultation に便利なように pal.do と同じく EXEC や RESULT や EXCEPTION を解するようにした。ただし、pal.do と違いこちらは `EXEC` 正常終了時にもデバッガに戻る。\n\nJRF 2025年5月29日\n\n……。\n\n追記。\n\n更新: jrf_pdb_agent_lib バージョン 0.0.15。setup.py を書いて、レポジトリから pip install できるようにしておいた。いちおう。\n\nJRF 2025年5月30日\n\n……。\n\n追記。\n\n更新: jrf_pdb_agent_lib バージョン 0.0.16。pal.AiException と pal.LoopRequestException を定義しておいた。\n\nJRF 2025年5月30日\n\n`pal.AiException(arg)`: AI エージェント、または AI が提供するコード内で意図的に発生させるカスタム例外です。この例外は、AI のロジックやプログラムのエラーハンドリングによって明示的にキャッチされることを想定しています。明示的にキャッチされない限り、通常の Python 例外と同様に `pal.do` を素通りし、呼び出しスタックを上位に伝播します。\n\nJRF 2025年5月30日\n\n`pal.LoopRequestException(arg)`: `pal.do` 内の `EXEC` ブロックにおいて、AI エージェントが明示的に `EXEC` ループの次のイテレーションを要求するために使用するカスタム例外です。単一の `pal.do` 呼び出し内で多段階の操作を管理するのに役立ちます。\n\nJRF 2025年5月30日\n\n……。\n\n追記。\n\n更新: jrf_pdb_agent_lib バージョン 0.0.17。pal.do と pal.consult_human で EXEC の初期値を current_code にセットしておいた。デバッガに入ったらすぐ u (＆ c) でいいように。\n\nJRF 2025年5月30日\n\n……。\n\n追記。\n\n更新: jrf_pdb_agent_lib バージョン 0.0.18。文字列変数を出力するとき repr で囲い、ログの構造把握が厳格にできるようにした。\n\nJRF 2025年5月30日\n\n……。\n\n追記。\n\n更新: jrf_pdb_agent_lib。README.md のみ更新。「設計上、デバッガから直接 `pal.do` や `pal.consult_human` (を使った関数)を呼ぶことはできません。」旨を書いておいた。どうにかこれを実現したかったのだが、pdb の制約によりできなかった。AI Debugger が専用に作られる日が来れば、pdb(?) の状態のプッシュ／ポップもできるようになって、このあたりが解決するであろうと期待したい。\n\nJRF 2025年5月30日\n\nちなみにこのようなことを無理やりやりたい場合は、デバッガで止まったあと、次に呼ばれる関数のファイルを書き換えてその関数に pal.consult_human() を挿入し、pal.reload_module をし、c してそこで「待ち合わせ」すればいいのだろう。\n\nJRF 2025年5月30日\n\n……。\n\n追記。\n\njrf_pdb_agent_lib を Google Colab で試すと、PYDEV DEBUGGER WARNING が出る。↓を参考に import pdb; pdb.set_trace() を先に起動して c して先に警告を表示させておくとその後は警告が抑制されやすいようだ。それだけやれば import ipdb とか明示的にせずとも import pdb で十分。ただ、この「バグ」、前からあるようなので修正して欲しいなぁ…。\n\nJRF 2025年5月31日\n\n《Python pdb.set_trace() does not work as expected in Google Colab · Issue #3279 · googlecolab/colabtools》  \nhttps://github.com/googlecolab/colabtools/issues/3279\n\nJRF 2025年5月31日\n\n……。\n\n……。\n\n追記。\n\njrf_pdb_agent_lib の事例集。途中で .py ファイルを書き換える。\n\ntest_3.py が次のようであるとする。\n\n\u003cpre\u003e\nimport jrf_pdb_agent_lib as pal\nimport test_4\n\ndef main():\n    pal.do(\"test1\",\n           current_code=\"test_4.sub1()\")\n\nif __name__ == \"__main__\":\n    main()\n\u003c/pre\u003e\n\nJRF 2025年6月1日\n\ntest_4.py が次のようであるとする。\n\n\u003cpre\u003e\nimport jrf_pdb_agent_lib as pal\n\ndef sub1():\n    pal.consult_human(\"ここをいじって\")\n    pal.do(\"test2\")\n\u003c/pre\u003e\n\nJRF 2025年6月1日\n\nこのとき、test_3.py を実行すると、まず pal.do test1 でデバッガに入るのだが、そこでは c する。今度は pal.consult_human(\"ここをいじって\") でデバッガに入るのだが、ここで対話的にファイルを書き換えたあと…。\n\nglobal EXCEPTION; EXCEPTION = LoopRequestException(\"reload\")\n\n…して、c することで、一旦 pal.do test1 内に戻る。そして、u して…\n\nJRF 2025年6月1日\n\npal.reload_module(\"test_4\"); pal.EXEC = \"test_4.sub1()\"\n\n…を実行し、c すると、書き換えた sub1 に行くことができる。こういう consult_human リクエストにはこういう流れになるのだと思う。\n\nJRF 2025年6月1日\n\n……。\n\n……。\n\n追記。\n\njrf_pdb_agent_lib でロボットを制御するときのことを考える。急な状況に対処するため、割り込み処理が必要となるだろう。そして割り込まれた後、中断処理に移行し、割り込んだ処理は、一時的に割り込みを禁止する…。\n\nこういったことを現代風に行うなら、それはつまり thread-safe に作るということだろう。\n\nJRF 2025年6月3日\n\nここから敷衍すると、pal.do や pal.consult_human でデバッガに入るときに mutex をロックする処理をするのが自然なように思う。しかし、これをすると、中断したデバッガから pal.do などを直接呼ぶと、二重ロックで動かなくなる…デッドロックが発生することになる。これは間違いがわかりやすくなるという点では正しい挙動かもしれないが…。\n\nJRF 2025年6月3日\n\nこれをなんとかする場合、同じ thread ならば mutex のロックではなく、デバッガのプッシュをする…みたいな処理にすればいいのかなぁ…。まぁ、今はデバッガのプッシュはないのであるが。\n\n今、pal.do や pal.consult_human に mutex のロックを入れてもいいけど、まぁ、しばらくは自由にしておくほうが拡張の余地があっていいか…。\n\nJRF 2025年6月3日\n\n……。\n\n追記。\n\n更新: jrf_pdb_agent_lib バージョン 0.0.19。デバッガから直接 pal.do や pal.consult_human が呼ばれたときに RuntimeError 例外をレイズすることにした。ただ、将来的にデバッガのプッシュなどが実装されればここは見直されるべき。\n\nJRF 2025年6月3日\n\n……。\n\n追記。\n\n更新: jrf_pdb_agent_lib バージョン 0.1.0。少し安定したのでバージョンを上げるだけのリリース。変わったのは、前回の RuntimeError 周りのコメントとメッセージだけ。\n\n《JRF-2018/jrf_pdb_agent_lib - A library for AI-driven debugging and human-AI collaboration using PDB. 》  \nhttps://github.com/JRF-2018/jrf_pdb_agent_lib\n\nJRF 2025年6月7日\n\n……。\n\n……。\n\n追記。\n\njrf_pdb_agent_lib を作った者の感想として、将来は性能の良いデバッガが売られる、AI が良いデバッガを買うようにせがむ時代があるのかな…と思う。デバッガのプッシュ／ポップができたり、実行中の関数のリロードができたり、そういうのでデバッガのランクが決まり、それがサブスクで買われる感じ。\n\nそこではデバッガ専用の pdb_agent_lib が提供され、jrf_pdb_agent_lib はプアマンズライブラリとしてずっと残る…とか夢想する。(^^;\n\nJRF 2025年6月8日\n\n……。\n\n……。\n\n追記。\n\n[cocolog:95490652](2025年6月)\n＞\njrf_pdb_agent_lib の姉妹品として simplest-pal コマンドを作った。simplest-pal は、PDB (Python Debugger) を AI でラップする場合の「AI」の最もシンプルな実装。\n\nsimplest-pal は、`pal.do` に current_code が指定されていれば `c` (continue) し、それ以外なら、単にデバッガの制御に移るだけのプログラム。\n\nJRF 2025年6月13日\n\n`--pal-quit-on-stop` というオプションもあり、デバッガに制御が移る必要が出てきたらそこで強制終了してしまうこともできる。その後、出力したログを AI が調べるみたいなワークフローが考えられる。\n\n《JRF-2018/simplest-pal - The Simplest PDB Automation Layer for AI-Driven Debugging - GitHub》  \nhttps://github.com/JRF-2018/simplest-pal\n＜\n\nJRF 2025年6月13日\n\n……。\n\n……。\n\n追記。\n\nCLAUDE.md についての記事を読んだ。あれだけお世話になってる Gemini さんにも支払いできてないのにましてや Claude Code を使うのになんて課金できないビンボーな私 orz。実際に触ったことないまま記事などを参考に、jrf_pdb_agent_lib を使って、Claude Code と似たようなことをやるにはどうすればいいかを考える。\n\nJRF 2025年6月14日\n\nまず、simplest-pal で導入できたので、エージェント用の Python ファイルは .apy とする。pal.do で関数やクラスを書くにはどうすればいいんだとか…気になる点は出てきてるのだが、その点は置いておいて、今回のことに集中する。\n\nJRF 2025年6月14日\n\n.apy はどんどん書き換えていくべきだが、ホットリローディングとかは基本的にないので、おそらく AI は書き換えたものを .apy.new みたいなファイルに残しておき、実行が終了したときに .apy.new を .apy にムーヴするのだろう。もし、デバッグのためにデバッグの途中で何度も書き換えるべき .apy があるとすれば、それは _tmp.apy みたいにいったん別のファイルにして何度も reload_module しながら、完成版を作り、それを .apy.new にしておいて、最後に .apy にムーヴするとなるのだろう。\n\nJRF 2025年6月14日\n\nたとえば run_server.apy は次のような感じで作られたとする。\n\nJRF 2025年6月14日\n\n\u003cpre\u003e\nimport jrf_pdb_agent_lib as pal\nfrom textwrap import dedent as d_py\nfrom textwrap import dedent as d_md\n\npal.login()\n\npal.do(d_md(\"\\\n  主目的: サーバーを立てる。\n\n  * ( ) データを持ってくる。\n  * ( ) サーバーを立てる。\n  * ( ) テストを行う。\n\n  留意事項: ライブラリやアプリが足りない場合はいったん終了する。\n\"))\n\u003c/pre\u003e\n\nJRF 2025年6月14日\n\nこれを実行して、処理が終了するごとに ( ) 内に X が付けられていく。だからデータを持ってくるというのが終った時点の run_server.apy.new は次のような感じになるかもしれない。\n\nJRF 2025年6月14日\n\n\u003cpre\u003e\nimport jrf_pdb_agent_lib as pal\nfrom textwrap import dedent as d_py\nfrom textwrap import dedent as d_md\n\npal.login()\n\u003c/pre\u003e\n\nJRF 2025年6月14日\n\n\u003cpre\u003e\npal.do(d_md(\"\"\"\\\n  主目的: サーバーを立てる。\n\n  * (X) データを持ってくる。\n  * ( ) サーバーを立てる。\n  * ( ) テストを行う。\n\n  留意事項: ライブラリやアプリが足りない場合はいったん終了する。\n\"\"\"), current_code = d_py(\"\"\"\\\n  pal.do(\"サーバーを立てる。\")\n  raise LoopRequestException\n\"\"\"))\n\u003c/pre\u003e\n\nJRF 2025年6月14日\n\nここでエラーが出てライブラリやアプリのインストールが必要な場合処理が人に戻されて、それが促される。run_server.apy.new は run_server.apy に上書きされている。インストールをやったあと。\n\nふたたび run_server.apy が呼ばれると、run_server.apy.new の pal.do の部分が…\n\nJRF 2025年6月14日\n\n\u003cpre\u003e\npal.do(d_md(\"\"\"\\\n  主目的: サーバーを立てる。\n\n  * (X) データを持ってくる。\n  * (X) サーバーを立てる。\n  * ( ) テストを行う。\n\n  留意事項: ライブラリやアプリが足りない場合はいったん終了する。\n\"\"\"), current_code = d_py(\"\"\"\\\n  pal.do(\"テストを行う。\")\n  raise LoopRequestException\n\"\"\"))\n\u003c/pre\u003e\n\nJRF 2025年6月14日\n\n…と書き換わり、最終的にはテストもうまくいけば…\n\nJRF 2025年6月14日\n\n\u003cpre\u003e\npal.do(d_md(\"\"\"\\\n  主目的: サーバーを立てる。\n\n  * (X) データを持ってくる。\n  * (X) サーバーを立てる。\n  * (X) テストを行う。\n\n  留意事項: ライブラリやアプリが足りない場合はいったん終了する。\n\"\"\"), current_code = d_py(\"\"\"\\\n  pass\n\"\"\"))\n\u003c/pre\u003e\n\nJRF 2025年6月14日\n\n…となって、最終的にそれが run_server.apy の内容になるのだろう。\n\nこうすると、再度、run_server.apy が呼ばれたとき何も実行されなくなるが、それが正しく、再度サーバーを立てたい場合は git で最初のバージョンに戻す必要がある…というのがこの場合の素直な使い方ではないか。\n\nJRF 2025年6月14日\n\n最後の pass は概念的にはそうだけど、pal.do(\"すでに実行済みであることを告げる。\") のほうがよいのかもしれない。\n\nJRF 2025年6月14日\n\nもちろん、git の操作も AI におまかせでいいし、git に言わずとも、AI に最初に戻して…で十分かもしれない。留意事項に「実行が完了すれば、また最初から実行できるようにしておいてください。」…と指示を出しておいてもいい。\n\n逆に、.apy のすべての処理が1回で回るはずのものを、途中で今回のように逐次実行の途中になるよう、markdown 部分を書き換えるよう、AI に頼むこともできるだろう。\n\nJRF 2025年6月14日\n\n……。\n\nあ、そうか。(X) マークがあるなら、current_code がなくても次何をやるべきかわかるのか。だから、markdown だけで十分という判断があるのだろう。\n\nむしろ、通常の全体を一回でするとき用の current_code のみを用意しておき、逐次実行の際は、current_code はコメントアウトして markdown で表現するのが正しいのかもしれない。\n\nJRF 2025年6月15日\n\n……。\n\nいや、current_code はそのままに、markdown の記述を優先して、AI が実行するのがいいのだろう。\n\n\u003cpre\u003e\npal.do(d_md(\"\"\"\\\n  主目的: サーバーを立てる。\n\n  * (X) データを持ってくる。\n  * ( ) サーバーを立てる。\n  * ( ) テストを行う。\n\n  留意事項: ライブラリやアプリが足りない場合はいったん終了する。\n\"\"\"), current_code = d_py(\"\"\"\\\n\u003c/pre\u003e\n\nJRF 2025年6月15日\n\n\u003cpre\u003e\n  pal.do(\"データを持ってくる。\", current_code=\"retrieve_data()\")\n  pal.do(\"サーバーを立てる。\", current_code=\"run_server()\")\n  pal.do(\"テストを行う。\", current_code=\"run_test()\")\n  pal.do(\"完了報告を行う。\")\n\"\"\"))\n\u003c/pre\u003e\n\nJRF 2025年6月15日\n\n…みたいにしておいて、current_code はそのままでは実行せず、AI がその中身を解釈して、 markdown の order に照らして適切な部分のみ実行するのがよいのだと思う。すると関数に分けやすかったりしてよいのだと思う。\n\nJRF 2025年6月15日\n\n……。\n\norder だけでなく、進捗状況 progress を別に分ける…みたいな実装も可能なのだと思う。しかし、そうなると current_code もどこか別のファイルに…みたいな話になる。order はいじらないでほしいという要望もあるだろうし、しかし、そういう場合は結局ファイル自体を書き換えるな…みたいなのが必要になるだけのような気がするし…。 \n\nJRF 2025年6月15日\n\n分けないほうが圧倒的にシンプルだ。だから、order と progress を分けるようなことはできればしたくない。私のここのアプローチは、AI をかなり信頼して積極的な書き換えを許す方向になる。確かに、安全で制御可能な AI を模索すると、私とは逆のいろいろ分けていくアプローチが正解になるのかもしれない。しかし、それは複雑になり過ぎて、逆に AI 以外が理解できないコードばかりの世の中になるのではないか。\n\nJRF 2025年6月15日\n\n「AI をかなり信頼するけれども、その代わりに人間に少しわかりやすくしてほしい」というのを実現するのが私のコンセプトになるのだと思う。自画自賛かもしれないが。\n\nJRF 2025年6月15日\n\n……。\n\n\u003cpre\u003e\npal.do(d_md(\"\"\"\\\n  主目的: サーバーを立てる。\n\n  * (X) データを持ってくる。\n  * ( ) サーバーを立てる。\n  * ( ) テストを行う。\n\n  留意事項: ライブラリやアプリが足りない場合はいったん終了する。\n\"\"\"), current_code = d_py(\"\"\"\\\n\u003c/pre\u003e\n\nJRF 2025年6月15日\n\n\u003cpre\u003e\n  tasks = [True, False, False]\n  try:\n    if not tasks[0]:\n      pal.do(\"データを持ってくる。\", current_code=\"retrieve_data()\")\n      tasks[0] = True\n    if not tasks[1]:\n      pal.do(\"サーバーを立てる。\", current_code=\"run_server()\")\n      tasks[1] = True\n\u003c/pre\u003e\n\nJRF 2025年6月15日\n\n\u003cpre\u003e\n    if not tasks[2]:\n      pal.do(\"テストを行う。\", current_code=\"run_test()\")\n      tasks[2] = True\n    if all(tasks):\n      pal.do(\"完了報告を行う。\")\n\u003c/pre\u003e\n\nJRF 2025年6月15日\n\n\u003cpre\u003e\n  except pal.AiException as e:\n      if pal.do(\"e がライブラリやアプリが足りないと言っている。\"):\n        pal.do(\"終了済みのタスクをこの .apy に記録していったん終了。\")\n      else:\n        pal.EXCEPTION = e\n\"\"\"))\n\u003c/pre\u003e\n\nJRF 2025年6月15日\n\n…みたいにして、書き換えるのを最小にしておけば、current_code をほとんど維持したままいろいろ対応できるか…。\n\nここまでやるかどうかは別として、このフレームワークには、いろいろ潜在的可能性がある…とは言えるのだろう。\n\nJRF 2025年6月15日\n\n……。\n\nただ、CLAUDE.md はどうか知らないがエージェントコードでは並列処理も想定されているらしい。その場合、私のフレームワークでは、複数 AI ラップデバッガを走らせることになるはずだが、その間でのタスクの達成状況を共有するにはどうするか…。git でブランチ分けて…とかもできるのかもしれないが、そうではなく、専門のタスク管理ツール(やデータベースなど)を使うことになるのかもしれない。そこは機能を分けるべきなのかもしれない。\n\nJRF 2025年6月15日\n\nGemini さんにこの意見をぶつけると…。\n\nGemini:\u003e これ(…タスク管理ツールで機能を分けること…)は、あなたが考える「AIを信頼しつつ、人間に少しわかりやすく」というコンセプトと矛盾するわけではありません。むしろ、分散環境での「わかりやすさ」と「信頼性」を確保するための、次のステップとなるでしょう。\n\nJRF 2025年6月15日"</script>
+<script src="../../../article.js"></script>
 </body>
 </html>

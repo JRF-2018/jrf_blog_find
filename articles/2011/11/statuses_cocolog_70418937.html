@@ -21,6 +21,7 @@
 </table>
 </div>
 <h1>JavaScript で form がまったく反応しなくなり、form…</h1>
+<div class="art-tools" data-pagefind-ignore><button type="button" id="btn-copy">原文をコピー</button><span class="tools-msg" id="tools-msg"></span></div>
 <pre class="body">JavaScript で form がまったく反応しなくなり、form の下に別のイベントを取る controller をしこんであったので、event の addEventListener あたりのバブリングとかプロパゲーションとかいったあたりを疑った。
 JRF 2011年11月3日
 
@@ -36,5 +37,7 @@ JRF 2011年11月3日</pre>
 <nav class="prevnext" data-pagefind-ignore><span class="prev-art">← <a href="../../../articles/2011/11/statuses_cocolog_70392503.html">まいったな。要するに、一つ前の「ひとこと」は私がプログラミングをまたはじめたこと…</a> <span class="pn-date">2011年11月01日</span></span><span class="next-art"><a href="../../../articles/2011/11/statuses_cocolog_70441616.html">Xbox 360 のジェスチャー操作用カメラというべき Kinect…</a> <span class="pn-date">2011年11月05日</span> →</span></nav>
 
 <nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2011/11.html">2011年11月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+<script type="application/json" id="raw-text">"[statuses] [cocolog:70418937]\nhttp://jrf.cocolog-nifty.com/statuses/2011/11/javas.html\n\nJavaScript で form がまったく反応しなくなり、form の下に別のイベントを取る controller をしこんであったので、event の addEventListener あたりのバブリングとかプロパゲーションとかいったあたりを疑った。\nJRF 2011年11月3日\n\nが、結果は、CSS でフォームのコンテナである div を position: absolute し忘れていたのを修正したら、直った。なして？\n\n…absolute で固定した他の DOM 要素がおおっていると、その下の relative な要素にイベントが伝わらないとかあるのか？z-Index は form のほうが上だったんだが…。body からの relative 位置で描かれたことで、appendChild した form の div の親の bounding box から、ちょうど form 部分が外れるようになり、そこがその親の子のイベントとして拾われなくなったってこと？\n\nJRF 2011年11月3日"</script>
+<script src="../../../article.js"></script>
 </body>
 </html>

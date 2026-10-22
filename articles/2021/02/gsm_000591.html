@@ -21,6 +21,7 @@
 </table>
 </div>
 <h1>[仏教の最適化プログラムの続き。] 不倫関係のアルゴリズムについて。…</h1>
+<div class="art-tools" data-pagefind-ignore><button type="button" id="btn-copy">原文をコピー</button><span class="tools-msg" id="tools-msg"></span></div>
 <pre class="body">jrf&gt; [仏教の最適化プログラムの続き。]
 
 不倫関係のアルゴリズムについて。
@@ -48,5 +49,7 @@
 <nav class="prevnext" data-pagefind-ignore><span class="prev-art">← <a href="../../../articles/2021/02/gsm_000590.html">あたり前の話だが、numpy ってオーバーヘッドがすごいんだな。…</a> <span class="pn-date">2021-02-05T09:18:51Z</span></span><span class="next-art"><a href="../../../articles/2021/02/gsm_000592.html">知恵が試される状況では、死がかかる。…</a> <span class="pn-date">2021-02-06T02:29:54Z</span> →</span></nav>
 
 <nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2021/02.html">2021年02月</a> | <a href="../../../index/gsm.html">共有メモ</a></nav>
+<script type="application/json" id="raw-text">"[gsm]\n○ 2021-02-05T10:22:55Z o8zTTVEsq0\n\njrf\u003e [仏教の最適化プログラムの続き。]\n\n不倫関係のアルゴリズムについて。\n\n一応、実装してみた。↓ (バージョン 0.0.1)。\n\n《test_of_matchin_1.py - 不倫のマッチングのシミュレーション》  \nhttps://gist.github.com/JRF-2018/2792da451992dae3e918c72a66ab67b0\n\n不倫誘度については、前書いたとおり、不倫好意度(adultery_favor)についてもできるだけ前に書いてた通りに実装した。\n\nただ、前は、不倫好意度に元づくマッチングについて、魅力(ほぼイコール不倫誘度)についてソートして、大きいものから順番に不倫好意度が高い者とマッチングしていく…みたいに考えていた(その高速版も考えていた)が、それはやめた。\n\n結局、男女のすべての組み合わせについて不倫好意度を計算しないといけなくなるのだろうから、それなら、最初から不倫好意度を全部の組み合わせについて計算してしまってから、男女の好意度の和が高いものから順にマッチングを成立させればいい…という単純なアルゴリズムにした。\n\n結構、時間はかかる。np.exp を math.exp に置き換えるなどちょっとした高速化もしたが、それでも時間がかかっている。\n\nまぁ、機械学習に比べればかかる時間はたいしたことないが…。\n\nあと、デバッグはあまりできてない。何をどう確かめればいいのかが、いまいちよくわからず…といったところ。"</script>
+<script src="../../../article.js"></script>
 </body>
 </html>

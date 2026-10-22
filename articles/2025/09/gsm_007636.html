@@ -21,6 +21,7 @@
 </table>
 </div>
 <h1>(承前) このようなことを「フルスペック」でやるとしたら workflow…</h1>
+<div class="art-tools" data-pagefind-ignore><button type="button" id="btn-copy">原文をコピー</button><span class="tools-msg" id="tools-msg"></span></div>
 <pre class="body">jrf&gt; (承前)
 
 このようなことを「フルスペック」でやるとしたら workflow を定義できるようにするべきなんだろうな。
@@ -45,5 +46,7 @@ workflow_do もできる…と。入れ子的実行。
 <nav class="prevnext" data-pagefind-ignore><span class="prev-art">← <a href="../../../articles/2025/09/gsm_007635.html">imagine_keywords の話つづき。…</a> <span class="pn-date">2025-09-10T12:35:23Z</span></span><span class="next-art"><a href="../../../articles/2025/09/gsm_007637.html">(承前) そうか！ 今の bandit_list が…</a> <span class="pn-date">2025-09-10T17:34:45Z</span> →</span></nav>
 
 <nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2025/09.html">2025年09月</a> | <a href="../../../index/gsm.html">共有メモ</a></nav>
+<script type="application/json" id="raw-text">"[gsm]\n○ 2025-09-10T14:31:50Z RZiW2xzF4W\n\njrf\u003e (承前)\n\nこのようなことを「フルスペック」でやるとしたら workflow を定義できるようにするべきなんだろうな。\n\nworkflow_new や workflow_update をツールとして用意して、bandit_schedule_workflow で workflow を予約できるようにする。\n\nそれぞれの workflow はバンディットに登録するような ツール + aux_prompt の列を並べたものになる…。\n\n先の例だが、memory_read + \"memory:3333 を読むように\" と subwork_done と \"memory:3333 の指示が終ったらこのツールを実行するように\" という列が workflow として workflow:2222 に登録されて、bandit_schedule_workflow \"workflow:2222\" される…と。\n\nsubwork_done を複数含むような列も登録できる…と。\n\nworkflow_do もできる…と。入れ子的実行。\n\nこれは言わば列＝chain を登録させるわけだが、LangChain → LangGraph の流れを考えると、グラフを登録したいという欲求も出てくるんだろうな。\n\nそこまでやるか？…という気はするし、AI にそこまでのことをやらせる必要もないかもしれないが、人間は、そういう複雑な workflow を登録しておきたい…というのはあるのかもしれない。私のシステム(の類似物)を複雑な RAG に適用したいなどとする場合。"</script>
+<script src="../../../article.js"></script>
 </body>
 </html>

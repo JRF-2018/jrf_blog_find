@@ -21,6 +21,7 @@
 </table>
 </div>
 <h1>IE の Javascript の正規表現で /.../m…</h1>
+<div class="art-tools" data-pagefind-ignore><button type="button" id="btn-copy">原文をコピー</button><span class="tools-msg" id="tools-msg"></span></div>
 <pre class="body">IE の Javascript の正規表現で /.../m のマルチライン(複数行)処理がうまくいってないように見え、\r\n の問題かとも迷ったが、結局、IE ではソースで &lt;br /&gt; と書かれているところが、内部で &lt;BR&gt; と大文字に書き換わっていることが原因だった。
 JRF 2011年4月6日
 
@@ -42,5 +43,7 @@ JRF 2011年4月6日</pre>
 <nav class="prevnext" data-pagefind-ignore><span class="prev-art">← <a href="../../../articles/2011/04/statuses_aboutme_138230.html">「選択と集中」は経営者の心構えの話で、選択したところしか見れないというよりは見な…</a> <span class="pn-date">2011年04月06日</span></span><span class="next-art"><a href="../../../articles/2011/04/statuses_aboutme_138235.html">(Greasemonkey の) addEventListener に…</a> <span class="pn-date">2011年04月06日</span> →</span></nav>
 
 <nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2011/04.html">2011年04月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+<script type="application/json" id="raw-text">"[statuses] [aboutme:138232]\nhttp://jrf.cocolog-nifty.com/statuses/2011/04/aboutme138232.html\n\nIE の Javascript の正規表現で /.../m のマルチライン(複数行)処理がうまくいってないように見え、\\r\\n の問題かとも迷ったが、結局、IE ではソースで \u003cbr /\u003e と書かれているところが、内部で \u003cBR\u003e と大文字に書き換わっていることが原因だった。\nJRF 2011年4月6日\n\nアバウトミーのページをローカルに保存し、コメント等からアンカーを取り除いて、HTML はタグは \u003cbr /\u003e しかないようなものをまず作り、それを記事としてココログに登録、その後記事をブラウザで表示するときに、javascript でもう一度アンカー等を付けてやるというコードを書いている。\n\nJavascript で \u003cbr /\u003e を \\n に書き換えて処理しているのだが、最初、エラーになる部分でその処理を忘れていたのがケチの付きはじめ。\n\nJRF 2011年4月6日\n\nで、いろいろやって、innerText が IE にあって Firefox になく、Firefox には textCont しかないという問題とかもクリアにしながら、どうも IE ではマルチラインが使えないという結論になりかかっていた。\n\nでも、注意して alert で innerHTML を表示させたのを見比べると \u003cBR\u003e が大文字になってる！…というのでやっと上の問題に気づいた。\n\nJRF 2011年4月6日"</script>
+<script src="../../../article.js"></script>
 </body>
 </html>

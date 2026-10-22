@@ -21,6 +21,7 @@
 </table>
 </div>
 <h1>[仏教の最適化プログラムの続き。]…</h1>
+<div class="art-tools" data-pagefind-ignore><button type="button" id="btn-copy">原文をコピー</button><span class="tools-msg" id="tools-msg"></span></div>
 <pre class="body">jrf&gt; [仏教の最適化プログラムの続き。]
 
 過去のアイデアログを読み直し、いくつか未実装のものを実装した。simbdp3.py のみいじる。
@@ -61,5 +62,7 @@ hating_unknown の存在を忘れていて、犯罪などに hating_unknown が�
 <nav class="prevnext" data-pagefind-ignore><span class="prev-art">← <a href="../../../articles/2021/09/gsm_001451.html">囲碁NHK杯…</a> <span class="pn-date">2021-09-12T23:46:20Z</span></span><span class="next-art"><a href="../../../articles/2021/09/gsm_001453.html">[仏教の最適化プログラムの続き。]…</a> <span class="pn-date">2021-09-13T17:47:11Z</span> →</span></nav>
 
 <nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2021/09.html">2021年09月</a> | <a href="../../../index/gsm.html">共有メモ</a></nav>
+<script type="application/json" id="raw-text">"[gsm]\n○ 2021-09-13T17:46:51Z jZYfPSlUbC\n\njrf\u003e [仏教の最適化プログラムの続き。]\n\n過去のアイデアログを読み直し、いくつか未実装のものを実装した。simbdp3.py のみいじる。\n\nまずは大きなところで hating まわり。\n\nhating_unknown の存在を忘れていて、犯罪などに hating_unknown が反映されていなかったのを修正した。そして、hating_unknown の上がり方を 0.1 * hate ではなく、カルマと同じ、p.hating_unknown = max([p.hating_unknown, new_hate]) + 0.1 * min([p.hating_unknown, new_hate]) という形にした。\n\n次に、強姦の際、妊娠したら hating_unknown が 0.5 たまることにした。0.5 では少ないと思われる向きもあるかもしれないが、強姦は今のところ戦時強姦で、政治への hating は前からたまるようにしていたこともあり、抑えめにした。\n\nさらに、重犯罪の被害者になる際のなりやすさに、hating の相手方の hated を参照するようにした。その判定の前に、憎まれの最大値 tmp_max_hated というのを求めておき、それを参照している。\n\nなお、強く恨まれてるより数多く恨まれてるほうが被害者になりやすいかもしれないが、数を問題にすると面倒なので tmp_max_hated で十分とし、数多くというのは merchant_hated である程度代替しうると考えた。\n\nあとついでに、重犯罪は、男性のほうが力がある分、女性より 1.2 倍、罪を犯しやすくしておいた。\n\nさらについでに、重犯罪の被害者になりやすさについて、もっとランダムに誰しもが選ばれやすくしておいた。\n\n……。\n\nアイデアログに次のように書いていた。\n\n＞古代では特に父親は実子と思っているが、養子であることがあるというのを表すために使う。これにより時限爆弾的に恨みが発生することに対応したい。＜\n\n…しかし、時限爆弾的にいつ起こるかわからないものだと、重ねて恨みが発生しないように起きたときを記録しておかねばならないだろう。それは処理が重くなり過ぎるように思う。\n\nそこで、扶養されていたが子供でなかったとき、結婚時または成人時にそれぞれ 0.15 ぐらい産みの親(生きてる場合)への hating が発生するとした。\n\n……。\n\n＞特定の誰かへの恨みは減りにくいが、hating_unknown は日々の生活の中、(教育があれば)減りやすいとしよう。＜…と書いた。\n\n結局、soothe されるとき、hating_unknown も個人に対するのの 1.5 倍の確率で soothe されるとしたが、複数人への hating であることを考慮し、減り方を 0.5 をかけるのではなく 0.75 をかけるようにした。"</script>
+<script src="../../../article.js"></script>
 </body>
 </html>

@@ -21,6 +21,7 @@
 </table>
 </div>
 <h1>LangChain で熊剣迷路問題 Ver.…</h1>
+<div class="art-tools" data-pagefind-ignore><button type="button" id="btn-copy">原文をコピー</button><span class="tools-msg" id="tools-msg"></span></div>
 <pre class="body">jrf&gt; LangChain で熊剣迷路問題 Ver. 0.0.4。行動予約を導入。Gemini 2.5 Pro さんに「先生お願します」することで、見事、ゴールできた。
 
 《langchain_maze_0.0.4.ipynb - GitHub Gist》  
@@ -50,5 +51,7 @@ Version 0.0.4 での違い。
 <nav class="prevnext" data-pagefind-ignore><span class="prev-art">← <a href="../../../articles/2025/07/gsm_007313.html">LangChain も LangGraph…</a> <span class="pn-date">2025-07-05T11:54:50Z</span></span><span class="next-art"><a href="../../../articles/2025/07/gsm_007315.html">《くまさん@元某Aモニターさん:X:2025-07-04》…</a> <span class="pn-date">2025-07-05T23:28:59Z</span> →</span></nav>
 
 <nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2025/07.html">2025年07月</a> | <a href="../../../index/gsm.html">共有メモ</a></nav>
+<script type="application/json" id="raw-text">"[gsm]\n○ 2025-07-05T22:33:34Z D/aAJc/Emq\n\njrf\u003e LangChain で熊剣迷路問題 Ver. 0.0.4。行動予約を導入。Gemini 2.5 Pro さんに「先生お願します」することで、見事、ゴールできた。\n\n《langchain_maze_0.0.4.ipynb - GitHub Gist》  \nhttps://gist.github.com/JRF-2018/6689ea04c1721b764cba1fac9467dabd\n\nVersion 0.0.4 での違い。\n\nやはり、tool は tool call で呼んで欲しい。そこで、行動はすぐに行動ではなく、「行動予約」として登録し、invoke のあとそれを実行するようにしました。このような方式ならば、「行動」が複数のツールであったり、引数を取るものであっても対応でき、将来性があるという判断です。\n\nただ、ただそれだけだと、やたら「行動予約」だけして max iterations に達するので、「行動予約」したあとその予約した行動を Final Answer するよう促してみたところ、max iterations に達することは少なくなりました(ないわけではないです)。\n\nただ、今度は、「行動予約」する前に「行動」を Final Answer することが増えて、ほぼ無限ループのように「行動予約」ツールを使わないことが出てきました。そういう状態が頻発しました。そこで、以前の bard_maze で有効だった「叱る」ことをやってみました。「行動予約」がなかったら、それを促すよう質問を繰り返すという方策です。\n\nただ、これでも「行動予約」をしないことが頻発します。そこで、意地になって、gemini-2.5-pro さんに「先生お願いします」することにしました。\n\nやはり pro さんは pro らしく、方針の立て方がうまく「行動予約」も怒られれば、そこで対応してきます。賢い。しかし、何でもないところで壁があると間違って判断して、行きつ戻りつをして最初は 90手かけてもゴールできませんでした。覚悟してクレジットを消費したのに orz。\n\nほぼ同じ条件でもう一度だけ pro さんにお願いしてみました。2トライ目です。すると、今度は見事に、ほぼ理想的な立ち回りでゴールまで到達しました。やったー！ こりゃ、AGI も近そうです (^^)。\n\n実は、pro さんの1トライ目がうまくいかなかったので、「次に可能な行動」を示したほうがいいかと思っていたのですが、それをせずにクリアできてよかったです。\n\nそうやって、またたまたまゴールできたので、それを公開しておくことにしました。"</script>
+<script src="../../../article.js"></script>
 </body>
 </html>

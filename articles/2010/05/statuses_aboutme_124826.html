@@ -21,6 +21,7 @@
 </table>
 </div>
 <h1>Cygwin の ImageMagick が、またエラーを出す。結局のところ…</h1>
+<div class="art-tools" data-pagefind-ignore><button type="button" id="btn-copy">原文をコピー</button><span class="tools-msg" id="tools-msg"></span></div>
 <pre class="body">Cygwin の ImageMagick が、またエラーを出す。結局のところ libgomp (setup で入れることができる)が必要であるらしい。
 JRF 2010年5月21日
 
@@ -42,5 +43,7 @@ JRF 2010年5月22日</pre>
 <nav class="prevnext" data-pagefind-ignore><span class="prev-art">← <a href="../../../articles/2010/05/statuses_aboutme_124817.html">Cygwin の inetd の調子がおかしい。1.7.? では、telnet…</a> <span class="pn-date">2010年05月21日</span></span><span class="next-art"><a href="../../../articles/2010/05/statuses_aboutme_124869.html">ゲ！Vector からのダウンロードが何の警告もなく失敗してる！…。</a> <span class="pn-date">2010年05月22日</span> →</span></nav>
 
 <nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2010/05.html">2010年05月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+<script type="application/json" id="raw-text">"[statuses] [aboutme:124826]\nhttp://jrf.cocolog-nifty.com/statuses/2010/05/aboutme124826.html\n\nCygwin の ImageMagick が、またエラーを出す。結局のところ libgomp (setup で入れることができる)が必要であるらしい。\nJRF 2010年5月21日\n\n↓というエラーを吐く。\n\n/usr/bin/convert.exe: error while loading shared libraries: ?: cannot open shared object file: No such file or directorory\n\n↓にズバリな症状＆解決策が載っていた。\n《ImageMagick shared libraries missing?》\nhttp://omgili.com/mailinglist/cygwin/cygwin/com/82hbn49nvnfsfgmailcom.html\nJRF 2010年5月21日\n\n…というか、他のエラーの様子も見ると、そろそろ gcc4 を入れろってことらしい。\nJRF 2010年5月22日"</script>
+<script src="../../../article.js"></script>
 </body>
 </html>

@@ -9,7 +9,7 @@
 </head>
 <body>
 <nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2025/06.html">2025年06月</a> | <a href="../../../index/gsm.html">共有メモ</a></nav>
-<article data-pagefind-body data-pagefind-meta="種別:共有メモ">
+<article data-pagefind-body data-pagefind-meta="種別:共有メモ" class="pre-joined">
 <div data-pagefind-meta="投稿月:2025年06月" style="display:none"></div>
 <div class="meta">
 <table class="meta-table">
@@ -21,6 +21,7 @@
 </table>
 </div>
 <h1>(承前) あ、そうか。(X) マークがあるなら、current_code…</h1>
+<div class="art-tools" data-pagefind-ignore><label><input type="checkbox" id="opt-prejoin" checked> pre 連結</label><button type="button" id="btn-copy">原文をコピー</button><span class="tools-msg" id="tools-msg"></span></div>
 <pre class="body">jrf&gt; (承前)
 
 あ、そうか。(X) マークがあるなら、current_code がなくても次何をやるべきかわかるのか。だから、markdown だけで十分という判断があるのだろう。
@@ -31,7 +32,7 @@
 
 いや、current_code はそのままに、markdown の記述を優先して、AI が実行するのがいいのだろう。
 
-&lt;pre&gt;
+<span class="src-pre">&lt;pre&gt;
 pal.do(d_md(&quot;&quot;&quot;\
   主目的: サーバーを立てる。
 
@@ -40,15 +41,16 @@ pal.do(d_md(&quot;&quot;&quot;\
   * ( ) テストを行う。
 
   留意事項: ライブラリやアプリが足りない場合はいったん終了する。
-&quot;&quot;&quot;), current_code = d_py(&quot;&quot;&quot;\
+&quot;&quot;&quot;), current_code = d_py(&quot;&quot;&quot;\<span class="pre-joint">
 &lt;/pre&gt;
 &lt;pre&gt;
-  pal.do(&quot;データを持ってくる。&quot;, current_code=&quot;retrieve_data()&quot;)
+</span><span class="pre-joint-nl">
+</span>  pal.do(&quot;データを持ってくる。&quot;, current_code=&quot;retrieve_data()&quot;)
   pal.do(&quot;サーバーを立てる。&quot;, current_code=&quot;run_server()&quot;)
   pal.do(&quot;テストを行う。&quot;, current_code=&quot;run_test()&quot;)
   pal.do(&quot;完了報告を行う。&quot;)
 &quot;&quot;&quot;))
-&lt;/pre&gt;
+&lt;/pre&gt;</span>
 
 …みたいにしておいて、current_code はそのままでは実行せず、AI がその中身を解釈して、 markdown の order に照らして適切な部分のみ実行するのがよいのだと思う。すると関数に分けやすかったりしてよいのだと思う。</pre>
 
@@ -58,5 +60,7 @@ pal.do(d_md(&quot;&quot;&quot;\
 <nav class="prevnext" data-pagefind-ignore><span class="prev-art">← <a href="../../../articles/2025/06/gsm_007158.html">(承前) もちろん、git の操作も AI におまかせでいいし、git…</a> <span class="pn-date">2025-06-14T14:22:11Z</span></span><span class="next-art"><a href="../../../articles/2025/06/gsm_007160.html">(承前) order だけでなく、進捗状況 progress…</a> <span class="pn-date">2025-06-14T15:28:03Z</span> →</span></nav>
 
 <nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2025/06.html">2025年06月</a> | <a href="../../../index/gsm.html">共有メモ</a></nav>
+<script type="application/json" id="raw-text">"[gsm]\n○ 2025-06-14T15:26:34Z JiY+CauRpF\n\njrf\u003e (承前)\n\nあ、そうか。(X) マークがあるなら、current_code がなくても次何をやるべきかわかるのか。だから、markdown だけで十分という判断があるのだろう。\n\nむしろ、通常の全体を一回でするとき用の current_code のみを用意しておき、逐次実行の際は、current_code はコメントアウトして markdown で表現するのが正しいのかもしれない。\n\n……。\n\nいや、current_code はそのままに、markdown の記述を優先して、AI が実行するのがいいのだろう。\n\n\u003cpre\u003e\npal.do(d_md(\"\"\"\\\n  主目的: サーバーを立てる。\n\n  * (X) データを持ってくる。\n  * ( ) サーバーを立てる。\n  * ( ) テストを行う。\n\n  留意事項: ライブラリやアプリが足りない場合はいったん終了する。\n\"\"\"), current_code = d_py(\"\"\"\\\n\u003c/pre\u003e\n\u003cpre\u003e\n  pal.do(\"データを持ってくる。\", current_code=\"retrieve_data()\")\n  pal.do(\"サーバーを立てる。\", current_code=\"run_server()\")\n  pal.do(\"テストを行う。\", current_code=\"run_test()\")\n  pal.do(\"完了報告を行う。\")\n\"\"\"))\n\u003c/pre\u003e\n\n…みたいにしておいて、current_code はそのままでは実行せず、AI がその中身を解釈して、 markdown の order に照らして適切な部分のみ実行するのがよいのだと思う。すると関数に分けやすかったりしてよいのだと思う。"</script>
+<script src="../../../article.js"></script>
 </body>
 </html>

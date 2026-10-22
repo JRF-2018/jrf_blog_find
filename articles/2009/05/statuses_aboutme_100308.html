@@ -21,6 +21,7 @@
 </table>
 </div>
 <h1>ブックマークレットのアイコンを動的に変えたりできないだろうか。現在のページに特定…</h1>
+<div class="art-tools" data-pagefind-ignore><button type="button" id="btn-copy">原文をコピー</button><span class="tools-msg" id="tools-msg"></span></div>
 <pre class="body">ブックマークレットのアイコンを動的に変えたりできないだろうか。現在のページに特定の文字列が含まれていれば、アイコンを変えるなどができたらいいのに。UI Conditional CSS とか Bookmarklet Greasemonkey とかいって。
 JRF 2009年5月6日
 
@@ -74,5 +75,7 @@ JRF 2009年5月7日</pre>
 <nav class="prevnext" data-pagefind-ignore><span class="prev-art">← <a href="../../../articles/2009/05/statuses_aboutme_100253.html">アニメのOP…</a> <span class="pn-date">2009年05月05日</span></span><span class="next-art"><a href="../../../articles/2009/05/statuses_aboutme_100375.html">ゆうパックのダンボール、昔のものに戻してくれないかな。もう何年か昔だけど。つづら…</a> <span class="pn-date">2009年05月07日</span> →</span></nav>
 
 <nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2009/05.html">2009年05月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+<script type="application/json" id="raw-text">"[statuses] [aboutme:100308]\nhttp://jrf.cocolog-nifty.com/statuses/2009/05/aboutme100308.html\n\nブックマークレットのアイコンを動的に変えたりできないだろうか。現在のページに特定の文字列が含まれていれば、アイコンを変えるなどができたらいいのに。UI Conditional CSS とか Bookmarklet Greasemonkey とかいって。\nJRF 2009年5月6日\n\nConditional CSS って [if IE] とか指定できるのが、もうあるみたいだけど、そういうのじゃなくて。\n\nXxx というブックマークレットがあるとする。ドキュメントに、ここで OAuth や　PPログイン を使いますよう、というのを input hidden で埋め込んで置く。それを見つけて、ユーザーインターフェイス UI の icon を書き換えるというとき、次のように書く。\nJRF 2009年5月6日\n\nUI .document input[pplogin-embeding-indicator=\"Xxx\"] {\nUI .bookmarklet.#Xxx { icon: url(\"file:/yyy/Xxx.ico\") }\n}\n\ninput のクラス pplogin-embeding-indicator に Xxx を指定されていて、ブックマークレットは bookmarklet というクラスで Xxx と id 指定がされているとする。UI が特別なブラウザーのトップを指すセレクタとする。\nJRF 2009年5月6日\n\nそういうのが bookmark を登録するとき、「拡張」みたいなところをクリックすると、入力できるようにして欲しい。\nJRF 2009年5月6日\n\n欲しいのはハイライトだけだから、highlight-condition に CSS 3.0 のセレクタを指定できるとかいうだけで十分だけど。\n\nただ、こういうことまでやりたければプラグインを使えということなんだろうな。\nJRF 2009年5月6日\n\n上の例、input.hidden を使うよりも meta や link を使ったほうがよかったかも。\n\nJRF 2009年5月7日\n\nあとブックマークレットにアイコンが使えないというのも不満が多いと思う。単純な javascript: のリンクではなく、下のような感じで\n\nbookmarklet:icon:{iconのURL}hint:{マウスオーバー時のヒント}highlight-condition:{上の説明のセレクタ}javascript:{元のブックマークレットスクリプト}\n\nとかいう文法を使えるように Mozilla あたりがやってくれないだろうか？\nJRF 2009年5月7日\n\n↓という記事はあった。\nFireFoxでBookmarkletのアイコンを変える | Life Hacks Lite\nhttp://www.lifehackslite.com/hacks/2007-07/48.html\nJRF 2009年5月7日\n\ncl.pocari.org - Firefox のブックマークのアイコンを好きなアイコンに変更する方法\nhttp://cl.pocari.org/2006-03-14-1.html\nJRF 2009年5月7日\n\nfavicon（ブックマークアイコン）を変更する拡張機能 - 風待ち日記\nhttp://d.hatena.ne.jp/saito-kazuo/20060401/p1\nJRF 2009年5月7日"</script>
+<script src="../../../article.js"></script>
 </body>
 </html>

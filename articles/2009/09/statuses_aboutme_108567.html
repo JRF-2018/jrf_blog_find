@@ -21,6 +21,7 @@
 </table>
 </div>
 <h1>ヘブライ語は語末形だけなので、最後に語末を表す記号を常に挿入するようにすれば、ま…</h1>
+<div class="art-tools" data-pagefind-ignore><button type="button" id="btn-copy">原文をコピー</button><span class="tools-msg" id="tools-msg"></span></div>
 <pre class="body">ヘブライ語は語末形だけなので、最後に語末を表す記号を常に挿入するようにすれば、まぁ、基本的には最長一致の transliteration table (逐字訳テーブル)で対応できる。アラビア語は最初と最後に挿入して 3pass ぐらいすればなんとかなるのか？
 JRF 2009年9月5日
 
@@ -104,5 +105,7 @@ Trackbacks:
 <nav class="prevnext" data-pagefind-ignore><span class="prev-art">← <a href="../../../articles/2009/09/statuses_aboutme_108506.html">Perl の include…</a> <span class="pn-date">2009年09月04日</span></span><span class="next-art"><a href="../../../articles/2009/09/statuses_aboutme_108639.html">Perl。sub f {$LOG .= sprintf(@_);}…</a> <span class="pn-date">2009年09月07日</span> →</span></nav>
 
 <nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2009/09.html">2009年09月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+<script type="application/json" id="raw-text">"[statuses] [aboutme:108567]\nhttp://jrf.cocolog-nifty.com/statuses/2009/09/aboutme108567.html\n\nヘブライ語は語末形だけなので、最後に語末を表す記号を常に挿入するようにすれば、まぁ、基本的には最長一致の transliteration table (逐字訳テーブル)で対応できる。アラビア語は最初と最後に挿入して 3pass ぐらいすればなんとかなるのか？\nJRF 2009年9月5日\n\n語中形もいろいろあるし、テーブルだけだと面倒そうだが…。\n\n母音記号がやっかいなんだよな。ヘブライ語も母音記号のことを考えると最後に挿入するだけじゃうまくいかない。\n\nとはいえ bi-direction (右から左に書いたりする)に emacs とかが対応してないんで、ほとんど無駄な作業なんだよな。\n\nでも xterm で、左右は逆でも nonspace に母音記号まで表示できるのにはちょっと感動。あと notepad.exe はすごい。\nJRF 2009年9月5日\n\n途中、変化がなくなるまで、同じテーブルをループして適用する…というのを認めたら母音があってもできそうだ。\n\n例として、アラビア語で alef を A、theh を th、lam を l で表すと、女性形の 3 は thalAatha と表せる。これを transliterate してみる。\nJRF 2009年9月7日\n\nthalAatha\n\nStep 0. 前に ^^、後ろに $ をつける。\n\n^^thalAatha$\n\nStep 1. 次にくる文字を語頭形にする文字にしるしをつける。すなわち A を A^^ に変換する。\n\n^^thalA^^atha$\n\n\nJRF 2009年9月7日\n\nStep 2. 母音記号の前にある ^^ をその後ろに、母音記号の後ろにある $ をその前に、すなわち ^^a を a^^ に、a$ を $a に変換する。(これは変換ができなくなるまで繰り返す。)\n\n^^thalAa^^th$a\n\nStep 3. ^^x$ なら独立形に ^^x なら語頭形に x$ なら語末形に、それ以外なら語中形に変換する。\n\n…として終了。\n\nJRF 2009年9月7日\n\n実は lA はアラビア語では合字で表すが、これは変換中は一つの文字として扱う。l の後ろにスクーンを表す e とかを入れて leAa とかも許すとテーブルを書くのが「さらに」やっかいになる。\n\n実は今テーブルを試しに書いてるんだけど、ここまで簡単だとわかってもやっぱり面倒くさい。\n\nJRF 2009年9月7日\n\nシャッダとかがあるし、いろいろ記号が入りうるから繰り返したほうが拡張性が高いけど、普通は修飾記号が重なっても 2 つぐらいなので、その組み合わせすべてをベタ書きしてしまったほうがいいのかもしれない…。ユーザーが書くかもしれないテーブルに、繰り返しを一般に認めるなんて実装はちょっと危険だから。\nJRF 2009年9月7日\n\nUnicode の Arabic Presentation Forms-B はレガシー対応で、実は notepad でも表示できないようだ。\n\nところで、そのレガシーの論理だと、母音は TATWEEL が書けるところだとその上に書き、そうでないと、単独で書くというのが流儀と解釈するのが良さそうだ。するとオリジナルの TATWEEL - を -- に変換すると同時に後ろが TATWEEL となりうるものは th を th- などと変換しておき、最後に -a などを TATWEEL に載せたものとして変換し、-- は TATWEEL に変換し、残りの一つの - は空文字列に変換すれば良さそうだ。\nJRF 2009年9月8日\n\nそして、語末形につく母音 $-a は $a に変換する。つまり thalAatha は変換後の文字の区切りにスペースを入れると\n\n^^th -a lA a ^^th$ a\n\nとなる。\nJRF 2009年9月8日\n\nTrackbacks:\n\n《cocolog:79931287》 from JRF のひとこと\nhttp://jrf.cocolog-nifty.com/statuses/2014/06/post-4687.html\n\n電子書籍まわりの著作権について、また少し考えつつ、角川 歴彦 著の本を読んだ。 \n\n受信： 2014-06-28 17:28:47 (JST)"</script>
+<script src="../../../article.js"></script>
 </body>
 </html>

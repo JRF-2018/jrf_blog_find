@@ -21,6 +21,7 @@
 </table>
 </div>
 <h1>Windows 10 で IME…</h1>
+<div class="art-tools" data-pagefind-ignore><button type="button" id="btn-copy">原文をコピー</button><span class="tools-msg" id="tools-msg"></span></div>
 <pre class="body">Windows 10 で IME なしの日本語キーボードを追加する方法がどうやらなくなっているらしい。そのため、Emacs で quail-naggy.el を使うには、DIFE.exe がほぼ必須のようだ。
 JRF 2017年5月8日
 
@@ -117,12 +118,12 @@ JRF 2017年5月8日
 
 このフォントにすると、quail-naggy.el の以下の設定は 25.2 ではいらなくなった。(24.5 ではこのフォントでも必要だった。)
 
-&lt;pre&gt;
+<span class="src-pre">&lt;pre&gt;
 (if (&gt;= (string-to-number emacs-version) 24.5)
     (progn 
       (setq naggy-vk-split-window-length 7)
       (setq naggy-vk-frame-length 7)))
-&lt;/pre&gt;
+&lt;/pre&gt;</span>
 
 JRF 2017年5月8日
 
@@ -144,9 +145,9 @@ JRF 2017年5月8日
 
 MS Windows では DIFE.exe を使うのに対し、X Window の場合は、~/.Xresources に次のような設定をすればいいらしい。
 
-&lt;pre&gt;
+<span class="src-pre">&lt;pre&gt;
 Emacs.useXIM: off
-&lt;/pre&gt;
+&lt;/pre&gt;</span>
 
 JRF 2017年5月17日
 
@@ -159,21 +160,21 @@ JRF 2017年5月17日
 
 ただし、他によると
 
-&lt;pre&gt;
+<span class="src-pre">&lt;pre&gt;
 Emacs*useXIM: false
-&lt;/pre&gt;
+&lt;/pre&gt;</span>
 
 と書くべきだが、どうもそれが読み込まれない環境があるらしく、
 
-&lt;pre&gt;
+<span class="src-pre">&lt;pre&gt;
 Emacs24*useXIM: false
-&lt;/pre&gt;
+&lt;/pre&gt;</span>
 
 と書いたり、emacs を起動するとき、
 
-&lt;pre&gt;
+<span class="src-pre">&lt;pre&gt;
 $ XMODIFIERS=@im=none emacs
-&lt;/pre&gt;
+&lt;/pre&gt;</span>
 
 …とすればいいみたい。
 
@@ -278,5 +279,7 @@ quail-naggy.el をアップデートした。バージョン 0.09。ほんの少
 <nav class="prevnext" data-pagefind-ignore><span class="prev-art">← <a href="../../../articles/2017/05/statuses_cocolog_87348220.html">何もしない日が続いている。まずい。父が調子を崩して介護が少し必要になったため、私…</a> <span class="pn-date">2017年05月06日</span></span><span class="next-art"><a href="../../../articles/2017/05/statuses_cocolog_87373315.html">サン＝テグジュペリ著 堀口大學…</a> <span class="pn-date">2017年05月10日</span> →</span></nav>
 
 <nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2017/05.html">2017年05月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+<script type="application/json" id="raw-text">"[statuses] [cocolog:87357678]\nhttp://jrf.cocolog-nifty.com/statuses/2017/05/windo.html\n\nWindows 10 で IME なしの日本語キーボードを追加する方法がどうやらなくなっているらしい。そのため、Emacs で quail-naggy.el を使うには、DIFE.exe がほぼ必須のようだ。\nJRF 2017年5月8日\n\nWindows 用の Emacs (例えばバージョン 25.2) で IME を用いず、leim (quail や skk) を使いたいとき、Emacs の中途半端な IME や TSF の実装が邪魔になる。特に私の作っている quail-naggy.el では、カタカナ確定の「変換」キーがらみでおかしな動作をしてしまう。この悩みは gnupack や NTEmacs では解決できない。\n\nJRF 2017年5月8日\n\nWindows 7 では↓の引用のような対策が取れた。\n\n《quail-naggy.el: 単漢字変換 Input Method for Emacs》\nhttp://jrf.cocolog-nifty.com/software/2015/10/post.html\n\nJRF 2017年5月8日\n\n＞gnupack の Emacs で、Windows の日本語 IME を『風』ではなく、 Windows 標準の Microsoft IME を使っていると、「変換」キーでカタカナ変換をしたあと、変換モードに入ってしまう。これを避けるには、私が標準的でないと思っている、S-tab でカタカナ変換しないといけない。\n\nJRF 2017年5月8日\n\n(…)\n\nこれを避けるもう一つの方法は、IME のツールバーを右クリックで出てくる設定において、追加として日本語キーボードに(Microsoft IME でなく)単なる「日本語」と書かれたものも選択しておき、shift+control などで選んで、その Microsoft IME でない、日本語キーボードを使うというものである。\n＜\n\nJRF 2017年5月8日\n\nところが、Windows10 だと、［スタート］→［時刻と言語］→［地域と言語］→［日本語 の オプション］ で、［キーボードの追加］をしようとして選択肢を見ても IME なしの日本語キーボードがない。英語キーボードとかだと、キーの位置が変わってしまい、そもそも「漢字」キーが使えなくなる。\n\nJRF 2017年5月8日\n\n……。\n\nそこで、必要になってくるのが、Emacs での IME の起動を外から強制的に OFF にする DIFE.exe (Disable IME for Emacs)。\n\n↓で私はまず知ったが、\n\n《GNU emacs で Windows のIMEを無効にする ハードなソフトの話/ウェブリブログ》\nhttp://hardsoft.at.webry.info/201203/article_2.html\n\nJRF 2017年5月8日\n\n結局、↓から取得する。\n\n《Disable Ime For Emacs》\nhttps://www.emacswiki.org/emacs/DisableImeForEmacs\n\nそこの Emacs 23 用と書かれている DIFE-DisableIMEforEmacs-r1-bin.zip を取って来れば良い。Emacs 25.2 でも使えた。\n\nJRF 2017年5月8日\n\nそこのページに書いてるように Emacs を起動させるときに、DIFE.exe も起動するようにすれば良いのだが、Emacs を終了したあとも DIFE は常駐したままになる。ところが、Emacs を再起動したときは、DIFE は二重起動が抑制される上に、再起動した Emacs はフックされないらしく Disable IME が有効にならない。よって、Emacs を再起動するときは、DIFE もタスクバーのアイコンから終了するようにしないといけないようだ。\n\nJRF 2017年5月8日\n\nなお、DIFE.exe のインストーラはなく、runemacs.exe のあるディレクトリにでも EmacsHooker.dll とともにインストールすればいいのだが、Windows 10 そのままだと、実行しようとしても MFC71.dll と MSVCR71.dll がないと言われて実行できない。今、検索すると、MSVCR71.dll のほうは簡単に見つかるが、MFC71.dll のほうは簡単に見つからない。\n\nJRF 2017年5月8日\n\nMFC71.dll は「Microsoft .NET Framework Version 1.1 再頒布可能パッケージ」で入れれば良いという情報があるが、Windows 10 ではそれを使ってもうまくいかないようだった。結局、ライセンスの都合からか、そうとははっきり書いていない↓を使うのが便利だった。\n\n《VC++ .NET ランタイムインストーラーの詳細情報 : Vector ソフトを探す！》\nhttp://www.vector.co.jp/soft/win95/util/se353331.html\n\nJRF 2017年5月8日\n\n(なお、これには MFC70.dll もついてくるようだ。)\n\nJRF 2017年5月8日\n\n……。\n\n…と、この段階で、(ActivePerl か Cygwin Perl と Unicode::Japanese をインストールして、適宜設定していれば) quail-naggy.el はいちおう使えるようになるはずだ。ただし、フォントの関係で、候補表示がどうしてもズレてしまう。\n\nJRF 2017年5月8日\n\nこれをまともにするにはフォントを別のにするしかない。\n\n↓を参考にして…\n\n《Windows の Emacs で Myrica フォント(等幅)を使う - Qiita》\nhttp://qiita.com/ybiquitous/items/5b319a62e9260b65bab0\n＞↓の設定を追加。\n\n(add-to-list 'default-frame-alist '(font . \"Myrica M\"))\n＜\n\nJRF 2017年5月8日\n\n↓のフォントをインストール。フォントのインストールはエクスプローラで ttc ファイルを右クリックしたメニューの中にあるインストールを選べば良い。\n\n《プログラミングフォント Myrica / Estable | Myrica （ミリカ）は、フリーなプログラミング用 TrueType フォントです。》\nhttps://myrica.estable.jp/\n\nJRF 2017年5月8日\n\nこのフォントにすると、quail-naggy.el の以下の設定は 25.2 ではいらなくなった。(24.5 ではこのフォントでも必要だった。)\n\n\u003cpre\u003e\n(if (\u003e= (string-to-number emacs-version) 24.5)\n    (progn \n      (setq naggy-vk-split-window-length 7)\n      (setq naggy-vk-frame-length 7)))\n\u003c/pre\u003e\n\nJRF 2017年5月8日\n\n……。\n\nWindows 10 は後方互換性もあって広く使われているようだが、私には今一つな要素が多い。父の Windows 7 から Windows 10 に「強制的に」アップデートされたマシンを譲り受けて使っているのだが、バルーンティップが表示されなかったり、DDwin がうまくインストールできなかったり問題が多い。問題といかなくても、IME なしの日本語キーボードがなかったり、スタートメニューに項目の追加が難しくなっていたりして不満点も多い。\n\nJRF 2017年5月8日\n\nMicrosoft は本当にこの OS で利を得ているのだろうか？ ちゃんとユーザーの意見はブロックされずに届いているのだろうか？ なぜ、この OS に関する訴訟のニュースを聞くことがないのか、私は不思議に思う。(私がニュースを得ているスラドにマイクロソフトが出資してるから？)\n\nJRF 2017年5月8日\n\n……。\n\n……。\n\n追記。\n\nMS Windows では DIFE.exe を使うのに対し、X Window の場合は、~/.Xresources に次のような設定をすればいいらしい。\n\n\u003cpre\u003e\nEmacs.useXIM: off\n\u003c/pre\u003e\n\nJRF 2017年5月17日\n\nこれは↓に書かれた方法。\n\n《Input Methods - EmacsWiki》\nhttps://www.emacswiki.org/emacs/InputMethods\n\nJRF 2017年5月17日\n\nただし、他によると\n\n\u003cpre\u003e\nEmacs*useXIM: false\n\u003c/pre\u003e\n\nと書くべきだが、どうもそれが読み込まれない環境があるらしく、\n\n\u003cpre\u003e\nEmacs24*useXIM: false\n\u003c/pre\u003e\n\nと書いたり、emacs を起動するとき、\n\n\u003cpre\u003e\n$ XMODIFIERS=@im=none emacs\n\u003c/pre\u003e\n\n…とすればいいみたい。\n\nJRF 2017年5月17日\n\nでも、この辺り、MS Windows でも X Window でも問題になってるみたいだから、.emacs から設定できるようにしてくれたらいいのに…と思う。\n\nJRF 2017年5月17日\n\n……。\n\n……。\n\n追記。\n\n等幅の Myrica フォントを使うと、その全角・半角が、Emacs で全角か半角かを調べる char-width の結果と異なるため、例えば quail-naggy.el の候補ウィンドウで表示がズレてしまう。\n\nJRF 2017年7月7日\n\n↓を使うと罫線などはちゃんと表示されるようになる。\n\n《GitHub - hamano/locale-eaw: East Asian Ambiguous Width問題と絵文字の横幅問題の修正ロケール》\nhttps://github.com/hamano/locale-eaw\n＞\n(require 'eaw)\n(eaw-fullwidth)\n＜\n\nJRF 2017年7月7日\n\nが、アクセント付きアルファベットについては、これでも直らない。これらについては、Myrica フォントが全角にしてしまうのが行儀よくない気もする。\n\nいや、JIS X 0213 にはアクセント付きアルファベットがあり、それは全角で表示してほしい向きもあるかもしれない。そうだとすると eaw.el がそれらに(一部しか)対応してないほうが問題なのか…。\n\nあちらを立てればこちらが立たず…という感じ。\n\nJRF 2017年7月7日\n\n……。\n\n……。\n\n追記。\n\nWindows 10 のアップデートのせいなのか、ウィルス駆除ソフトのせいなのか、判然としないが、DIFE.exe が emacs26.1 で動かなくなっていた。\n\nしかたなく、私は、Microsoft IME の設定をいじって対応することにした。問題になるのは「変換」キーだけのようなので、そのキー入力を無効化してしまう。\n\nJRF 2018年12月22日\n\n具体的には、Windows 10 のタスクバーの「あ」と書いてるところを右クリックして「プロパティ」を選び、そこで「詳細設定」を選ぶと、「Microsft IME の詳細設定」のウィンドウが開く。そこで、「全般」→「編集操作」→「キー設定」→「変更」で、「変換」キーの最初のところを「-」(何もしない)にすればよい。\n\n必要なら「SHIFT+変換」キーを「再変換」に割り当てる(元々「変換」キーに割り当たっていた機能)。\n\nJRF 2018年12月22日\n\n当然、他のソフトも影響するが、メインの日本語入力が私は Emacs なので、しかたなくそうしている。\nJRF 2018年12月22日\n\n……。\n\n追記。\n\nDIFE.exe が emacs26.1 で動かないと書いたが、それは私が 64bit 版 Emacs をインストールしたからだった。DIFE のページによると、64bit 版では DIFE.exe が動かないのは仕様のようだ。\n\n今後、32bit 版の扱いがどうなるか不安だ。せっかく GNU ftp の emacs を使っているのに、他からしか 32bit 版が手に入らないのなら意義が損われる。まぁ、そういう未来には DIFE ももしかするとバージョンアップされて 64bit 版に対応することがあるかもしれない。\n\nJRF 2018年12月28日\n\nどう転ぶかわからないが、先に書いた「変換」キーを「-」にするという方法なら今後も通じるだろう。…と思いたい。\n\nJRF 2018年12月28日\n\nTrackbacks:\n\n《cocolog:87451120》 from JRF のひとこと\nhttp://jrf.cocolog-nifty.com/statuses/2017/05/quail.html\n\nquail-naggy.el と jrf_semaphore.pl をほんの少しアップデートした。バグ修正のみ。 \n\n受信： 2017-06-28 19:14:22 (JST)\n\n《cocolog:87731566》 from JRF のひとこと\nhttp://jrf.cocolog-nifty.com/statuses/2017/07/quail.html\n\nquail-naggy.el をアップデートした。バージョン 0.09。ほんの少しのバグ取りと、罫線がらみのほとんど意味のない変更。 \n\n受信： 2017-09-30 06:56:45 (JST)"</script>
+<script src="../../../article.js"></script>
 </body>
 </html>

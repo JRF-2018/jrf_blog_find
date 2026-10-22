@@ -21,6 +21,7 @@
 </table>
 </div>
 <h1>(FANBOX EPUB 化の暫定的な技術的覚え書き つづき)…</h1>
+<div class="art-tools" data-pagefind-ignore><button type="button" id="btn-copy">原文をコピー</button><span class="tools-msg" id="tools-msg"></span></div>
 <pre class="body">jrf&gt; (FANBOX EPUB 化の暫定的な技術的覚え書き つづき)
 
 さて、変換のアウトラインを書き出していこう。変換のスクリプトは私は Perl で書いた。
@@ -75,5 +76,7 @@ YouTube は先に書いたようにクラスが特定できるため、まだ易
 <nav class="prevnext" data-pagefind-ignore><span class="prev-art">← <a href="../../../articles/2023/02/gsm_003361.html">FANBOX EPUB 化の暫定的な技術的覚え書き FANBOX の EPUB…</a> <span class="pn-date">2023-02-09T13:31:05Z</span></span><span class="next-art"><a href="../../../articles/2023/02/gsm_003363.html">hachetten&gt;EPub化への技術情報をご提示くださり、大変ありがとうござい…</a> <span class="pn-date">2023-02-09T23:23:01Z</span> →</span></nav>
 
 <nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2023/02.html">2023年02月</a> | <a href="../../../index/gsm.html">共有メモ</a></nav>
+<script type="application/json" id="raw-text">"[gsm]\n○ 2023-02-09T13:31:46Z YqZbg9TyJ1\n\njrf\u003e (FANBOX EPUB 化の暫定的な技術的覚え書き つづき)\n\nさて、変換のアウトラインを書き出していこう。変換のスクリプトは私は Perl で書いた。\n\nまず、HTML::Parser で読み込んで {tag =\u003e 'a', attr =\u003e {class=\u003e'...', href=\u003e'...'}, content =\u003e [...]} などという木構造を作っていく。この点、普通は HTML::DOM モジュールなどを使うものだと思うが、私は HTML::DOM をインストールしておらず、このごにおよんでインストールしてない重そうなモジュールは使いたくなかったので、独自の木構造を用いた。\n\nその後、iframe の内容を木構造内に開いていく。Save Page WE は iframe の構造を srcdoc という中に HTML エンコードして保存してくれている。(iframe 内に直接保存されてないことに注意！) それを iframe 内に展開する。\n\niframe 内や トップの head、画像が、style の中に --savepage-url-数値 という CSS 変数で定義されているのでそれをファイルにセーブしておき、そこを参照している部分を、ファイルからの参照に置き換える。img タグに直接 data 形式で保存されているものもあるので、それもファイルに保存しておき、ファイルを参照するようにする。\n\niframe やトップの head を削り article 部分のみを取り出しておく。\n\ntco などの短縮 URL を開いておく。\n\n記事のタイトル部分を整形する。\n\npublic-DraftStyleDefault-block というクラスの div を p に置き換える。\n\nh2 の中の p を消す。\n\nfigure をそれぞれの方式に従って処理する。この処理は後述する。\n\ndiv の中に p が一つだけあるようなものを p だけにする。\n\n\u003cp\u003e\u003cbr/\u003e\u003c/p\u003e を \u003cp\u003e\u0026#160;\u003c/p\u003e にする。これは好みの問題かも。\n\n\u003carticle\u003e\u003cdiv\u003e\u003cp\u003e...\u003c/div\u003e\u003c/article\u003e などとなっているのを、\u003carticle\u003e\u003cp\u003e...\u003c/article\u003e という形にする。\n\n以上で変換したものをまとめていく。\n\n……というのが流れになる。\n\n問題は figure をいろいろな方式に従って処理する部分である。\n\n実は FANBOX の HTML のクラス名などは多くの場合、sc-2c960h-0 kYbcOI …といった(おそらく)ランダムな文字列であることが多い。そのためクラス名などから判断して構造を特定するのが難しい。iframe 内も例外的に YouTube のものなどはクラス名が人が読めるものになっているが、そのほうが珍しい形になる。\n\nいきおい、div の並列の数や img タグまでの深さの数などから、方式を特定することになる。正直、かなりダーティなコードとなる。\n\nfigure タグの中 iframe タグの外で、iframely-twitter iframely-youtube などというクラス名が使われることがあり、そこから figure の方式がなんであるか大まかに特定できることがあるが、必ずそうではない。\n\n画像を表示するだけの部分もやはり iframely-... というクラス名では判断できず、div の数などから判断して変換する。\n\nHMV や FANBOX への(埋め込み)リンクもそれぞれ違う形式で、それぞれ独自に変換ルーチンを書く必要がある。\n\nYouTube は先に書いたようにクラスが特定できるため、まだ易しく変換できる。\n\n問題は Twitter の埋め込み。Twitter は、その表記のされ方によって、中身がかなり変わり、しかもクラス名がランダムなため、方式の特定がしずらい。これを div の構造や img のあるなしなどから、適当に判断して整形することになる。この辺は Best Effort で、十分やったというところで諦めるしかなかった。"</script>
+<script src="../../../article.js"></script>
 </body>
 </html>

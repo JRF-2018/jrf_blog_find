@@ -21,6 +21,7 @@
 </table>
 </div>
 <h1>私のいう AttentionPatternDiffusion…</h1>
+<div class="art-tools" data-pagefind-ignore><button type="button" id="btn-copy">原文をコピー</button><span class="tools-msg" id="tools-msg"></span></div>
 <pre class="body">jrf&gt; 私のいう AttentionPatternDiffusion は既存の「context distillation」に少し似ているようだ。
 
 Gemini:＞Context Distillation は、LLM（大規模言語モデル）の分野で使われるモデル軽量化・最適化手法の一つです。
@@ -45,5 +46,7 @@ Gemini:＞親が子を「完全に模倣・計算できる」というのは、A
 <nav class="prevnext" data-pagefind-ignore><span class="prev-art">← <a href="../../../articles/2026/08/gsm_009387.html">囲碁NHK杯…</a> <span class="pn-date">2026-08-01T09:54:39Z</span></span><span class="next-art"><a href="../../../articles/2026/08/gsm_009389.html">今日の夕食は、サーモンのお刺身と刺身こんにゃく。さっぱりして胃に優しい。おいしか…</a> <span class="pn-date">2026-08-02T09:43:14Z</span> →</span></nav>
 
 <nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2026/08.html">2026年08月</a> | <a href="../../../index/gsm.html">共有メモ</a></nav>
+<script type="application/json" id="raw-text">"[gsm]\n○ 2026-08-01T22:24:45Z 6BEcQV26F5\n\njrf\u003e 私のいう AttentionPatternDiffusion は既存の「context distillation」に少し似ているようだ。\n\nGemini:＞Context Distillation は、LLM（大規模言語モデル）の分野で使われるモデル軽量化・最適化手法の一つです。\n\n一言で言えば、「長いコンテキスト（指示・前提条件・思考プロセスなど）を与えたときにモデルが発揮する『挙動』や『出力傾向』を、コンテキストなしのモデル（重みパラメータ）に焼き込む（蒸留する）技術」です。\n\nContext Distillation は「推論時の文脈処理を学習に転嫁してショートカットする」実用的な技術であり、AttentionPatternDiffusion はそれをさらに一歩進めて「推論時の探索によって形成される内部のアテンション構造そのものを拡散モデルで生成・移植し、探索をショートカットする」という理論的・構造的なアプローチです。\n＜\n\njrf:\u003e Context Distillation の場合は、親が子よりも完全に優れている…つまり、親は子が出すべき解答まで出せるということだと思います。\n\nそれに対し AttentionPatternDiffusion などは、親となる LLM が子の NN を十分には知らない…ということが前提になっている。Context Distillation はたまたま子の NN の出力を親が完全に知っている AttentionPatternDiffusion の特殊例になるのではないかという気がします。\n\nGemini:＞親が子を「完全に模倣・計算できる」というのは、AI全体のアーキテクチャ（特に高位の記号/概念処理を行うLLMと、低位の身体/物理制御を行うNNが結合したハイブリッド系）から見れば、むしろ極めて限定された特殊な状態です。\n\n親が子の詳細を知らない（あるいは計算コストの観点から知りたくない）状況で、いかに高位の知性から低位の実行系へ「探索の知恵（注意の向け方）」だけを移転・拡散サンプリングするか——という課題設定は、ロボティクスや異種モダリティ結合における本質的な解法になっていると感じます。\n＜"</script>
+<script src="../../../article.js"></script>
 </body>
 </html>

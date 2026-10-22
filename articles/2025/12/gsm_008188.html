@@ -21,6 +21,7 @@
 </table>
 </div>
 <h1>(承前) ……。 結論と今後の課題。…</h1>
+<div class="art-tools" data-pagefind-ignore><button type="button" id="btn-copy">原文をコピー</button><span class="tools-msg" id="tools-msg"></span></div>
 <pre class="body">jrf&gt; (承前)
 
 ……。
@@ -71,5 +72,7 @@ B ≈ C: ChatGPT説が正しい（強い正則化と同等）
 <nav class="prevnext" data-pagefind-ignore><span class="prev-art">← <a href="../../../articles/2025/12/gsm_008187.html">(承前) Gemini の説明する今回の勝利の方程式はこうである。…</a> <span class="pn-date">2025-12-26T12:44:22Z</span></span><span class="next-art"><a href="../../../articles/2025/12/gsm_008189.html">速報: Gemini さん提案の DWPN (Dynamic Weighted…</a> <span class="pn-date">2025-12-27T00:45:53Z</span> →</span></nav>
 
 <nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2025/12.html">2025年12月</a> | <a href="../../../index/gsm.html">共有メモ</a></nav>
+<script type="application/json" id="raw-text">"[gsm]\n○ 2025-12-26T12:44:44Z cVKUWR3tZ5\n\njrf\u003e (承前)\n\n……。\n\n結論と今後の課題。\n\nスパース化がここまでうまくいくとは驚きである。ただそれは DWPN (Dynamic Weighted Percolation Noise) よりも、Magnitude Pruning の効果なのだろう。パーコレーション的な現象は今回も観測できなかったとするべきだ。\n\nGemini さんは、「しかし、DWPNが「真に必要な重み」と「ノイズに埋もれた贅肉」を鮮明に分断し、Pruningの効果を最大化させるための決定的な役割を果たした事実は見逃せない。」…とするのだが。\n\nちなみに ChatGPT さんはソースまで見せたところ「DWPN は現状だと、理論的には面白いが、実験的には “強い正則化付き Dropout” に近い」という評価に留まる。\n\nさらに Claude さんは、次のような対照実験がないと Gemini さんの意見は通らないという。\n\n\u003cblockquote\u003e\n\n科学的に厳密な評価のため、以下の実験が必要:\n\n```python\n# A群: Magnitude Pruning のみ（ベースライン）\n通常訓練 → Magnitude Pruning(30%) → Fine-tuning\n\n# B群: DWPN + Magnitude Pruning（あなたの手法）\nDWPN訓練 → Magnitude Pruning(30%) → Fine-tuning\n\n# C群: L2正則化 + Magnitude Pruning（ChatGPT仮説）\nL2(1e-6)訓練 → Magnitude Pruning(30%) → Fine-tuning\n\n# 測定項目\n1. Pruning直後の性能低下度\n2. Fine-tuning後の最終性能\n3. 収束速度（エポック数）\n4. 重み分布の二極化度（bimodality coefficient）\n\n# 予想される結果\nB \u003e A: DWPNに真の効果あり\nB ≈ C: ChatGPT説が正しい（強い正則化と同等）\n```\n\u003c/blockquote\u003e\n\nただ、スパース化という目的についてはうまくいく道筋はあるとわかった。今後はこれを受けて、さらに LoRA のスパース化に進む方向はあるかもしれない。\n\nまたは、スパース化については一段落として、ビデオ→OpenPose→リターゲティング(の強化学習)で本当の「歩行」を学習するような実験を行いたい…という方向に行くのもいいかもしれない。"</script>
+<script src="../../../article.js"></script>
 </body>
 </html>

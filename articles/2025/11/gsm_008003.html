@@ -21,6 +21,7 @@
 </table>
 </div>
 <h1>「「多層目的＝アテンション」を確かめる二足歩行の実験…</h1>
+<div class="art-tools" data-pagefind-ignore><button type="button" id="btn-copy">原文をコピー</button><span class="tools-msg" id="tools-msg"></span></div>
 <pre class="body">jrf&gt; 「「多層目的＝アテンション」を確かめる二足歩行の実験 その5」を行った。Latent Skill Prompt (LSP) の導入により学習された上層目的を取り出せないかと試みた。しかし、実験は概ね失敗だった。
 
 《humanoid_nested_attention_dt_5.ipynb - Colab》  
@@ -62,5 +63,7 @@ Gemini さんによると…
 <nav class="prevnext" data-pagefind-ignore><span class="prev-art">← <a href="../../../articles/2025/11/gsm_008002.html">今日の昼食は「餃子の王将」で、マーボードーフとギョーザを食ってきた。うまい！…</a> <span class="pn-date">2025-11-19T05:44:55Z</span></span><span class="next-art"><a href="../../../articles/2025/11/gsm_008004.html">(承前) ……。 今後の課題。 Gemini…</a> <span class="pn-date">2025-11-19T15:29:04Z</span> →</span></nav>
 
 <nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2025/11.html">2025年11月</a> | <a href="../../../index/gsm.html">共有メモ</a></nav>
+<script type="application/json" id="raw-text">"[gsm]\n○ 2025-11-19T15:28:40Z MdfzcgJg6u\n\njrf\u003e 「「多層目的＝アテンション」を確かめる二足歩行の実験 その5」を行った。Latent Skill Prompt (LSP) の導入により学習された上層目的を取り出せないかと試みた。しかし、実験は概ね失敗だった。\n\n《humanoid_nested_attention_dt_5.ipynb - Colab》  \nhttps://colab.research.google.com/drive/1ESMR2-DvIfNILZddRSKlYSCyXvb2TA2t\n\n……。\n\n今回のその5で何が変わったか。\n\n今回の一連の実験のような模倣学習でとにかくいろいろな動作を覚える。その上で、強化学習で望ましい行動を学んでいくという方向があると思う。いずれその方向も追及したい。\n\nしかし、その前に、模倣学習だけでも汎用な下層目的…例えば「バランスを取る」など…がすでに学ばれていることをその4で見たのだった。ならば、上層目的の「良い歩行」ももしかするとすでに学ばれているのかもしれない。プロンプトや RTG などとは違う基準の目的として。\n\nすると、それを取り出せるなら強化学習を経ずに模倣学習だけで例えば「良い歩行」が創発したとできるかもしれない。\n\nそれを取り出す方法がないかと Gemini さんに聞いたところ提案されたのが、潜在変数を設定する Latent Skill Prompt (LSP) という仕組みだった。その5はそれを試す実験になる。\n\nソースを見ていただきながら解説すると、latent_skill_prompts は整数 0 から 7 (0 は「未使用」用に予約されている)の lsp_idx ごとに設定されたテンソルである。これが prompt_id に相当するベクトルと合わさって、combined_prompt_embed となり、その4までのプロンプトに相当するものとして扱われる。\n\n学習時には lsp_idx は(1から7の)ランダムに設定される。なぜこれで良いのか理解に苦しんだが、Gemini さんの説明を私が理解したところによるとこうである。\n\nprompt_id の指示と lsp_idx を同時に指定されているわけだが、通常は lsp_idx はノイズでしかない。当初は lsp_idx は無視され prompt_id だけに注意が向けられるようになる。しかし、prompt_id よりもより細かい動作目的がある場合のみ、徐々にそれが特定の lsp_idx に「偶然」割り当てられるようになる。そうなった lsp_idx がたまたま学習対象である動作に合致するとき、lsp_idx の無視をやめ prompt_id よりも lsp_idx に注意が向けられるようになり、ロスが有利になっていく。それによって prompt_id に必ずしも表されていない潜在的な目的が LSP に自然に学習される。…とのことだった。\n\nlsp_idx に対する latent_skill_prompt テンソルが、何を学習しているかも私は疑問に思った。テンソルは固定でもいいのではないか、木構造とか直交系とかで固定すれば、あとはアテンション機構がイイ具合に学んでくれるのではないかと考えた。\n\nしかし、Gemini さんによると、木構造にするとしてもどこで枝をのばすかを決めさせたほうが学習効率がよく、latent_skill_prompts はテンソルにして「符号化」されていくほうがよいのだ。…とのことだった。\n\n実装上の注意点がもう一つ。それは、その4で「バグ」として、モデルの forward に RTG (Reward to Go) がまったく使われていなかったのが見つかったのだが、実はそのほうがロスの減りがよいこともわかった。RTG を使わないほうが、今回のデータセットだけかもしれないが、汎化がうまくいくようだ。だから当初 RTG を使ってなかなかうまくいかずに悩んでいたのを、その「バグ」をむしろ復活させることで学習を安定化させることに成功したのだった。\n\nそして実験結果だが、学習は安定したものの LSP による「符号化」には失敗したとせざるを得ない。lsp_idx の違いによる動作の違いといったものは確認できなかった。\n\nGemini さんによると…\n\n\u003e LSP のコンセプト（多様なスタイルの抽出）は、RTG デカップリングによる DT の性能向上という決定的な成果を生み出したものの、Walk/Stand Up の単純なタスク設定では、PID/RTG の強力な優位性により、LSP 自体が明確な特徴を持つスキルの創発には至らなかったと結論づけられます。"</script>
+<script src="../../../article.js"></script>
 </body>
 </html>

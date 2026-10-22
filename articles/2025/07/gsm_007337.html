@@ -21,21 +21,22 @@
 </table>
 </div>
 <h1>Colab の gemini-cli で Imagen。やっと…</h1>
+<div class="art-tools" data-pagefind-ignore><button type="button" id="btn-copy">原文をコピー</button><span class="tools-msg" id="tools-msg"></span></div>
 <pre class="body">jrf&gt; Colab の gemini-cli で Imagen。やっと GENMEDIA_BUCKET に生成できた。足りないのは次のコマンドだった。
 
-&lt;pre&gt;
+<span class="src-pre">&lt;pre&gt;
 gcloud storage buckets add-iam-policy-binding gs://&lt;YOUR_BUCKET&gt; \
    --member=&quot;serviceAccount:service-&lt;YOUR_VERTEX_AI_SERVICE_NUMBER&gt;@gcp-sa-aiplatform.iam.gserviceaccount.com&quot; \
    --role=&quot;roles/storage.objectUser
-&lt;/pre&gt;
+&lt;/pre&gt;</span>
 
 これでもし不十分なら以下をしていただきたい。
 
-&lt;pre&gt;
+<span class="src-pre">&lt;pre&gt;
 gcloud projects add-iam-policy-binding &lt;YOUR_PROJECT_ID&gt; \
   --member=&quot;serviceAccount:service-&lt;YOUR_VERTEX_AI_SERVICE_NUMBER&gt;@gcp-sa-aiplatform.iam.gserviceaccount.com&quot; \
   --role=&quot;roles/storage.admin&quot;
-&lt;/pre&gt;
+&lt;/pre&gt;</span>
 
 service-&lt;YOUR_VERTEX_AI_SERVICE_NUMBER&gt; は、GCP にストレージ(バケット)を作ったとき権限を見るとあるはずの Vertex AI サービス エージェント の ID。
 
@@ -49,5 +50,7 @@ imagen をいじってるだけではこのエラーはわからなかった。5
 <nav class="prevnext" data-pagefind-ignore><span class="prev-art">← <a href="../../../articles/2025/07/gsm_007336.html">GCP…</a> <span class="pn-date">2025-07-10T19:26:13Z</span></span><span class="next-art"><a href="../../../articles/2025/07/gsm_007338.html">何の役にも立たないことをやってるなぁ、私。自己満足。まぁ、自分は満足しているから…</a> <span class="pn-date">2025-07-11T06:12:12Z</span> →</span></nav>
 
 <nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2025/07.html">2025年07月</a> | <a href="../../../index/gsm.html">共有メモ</a></nav>
+<script type="application/json" id="raw-text">"[gsm]\n○ 2025-07-11T05:01:02Z ZWv5SO6PWC\n\njrf\u003e Colab の gemini-cli で Imagen。やっと GENMEDIA_BUCKET に生成できた。足りないのは次のコマンドだった。\n\n\u003cpre\u003e\ngcloud storage buckets add-iam-policy-binding gs://\u003cYOUR_BUCKET\u003e \\\n   --member=\"serviceAccount:service-\u003cYOUR_VERTEX_AI_SERVICE_NUMBER\u003e@gcp-sa-aiplatform.iam.gserviceaccount.com\" \\\n   --role=\"roles/storage.objectUser\n\u003c/pre\u003e\n\nこれでもし不十分なら以下をしていただきたい。\n\n\u003cpre\u003e\ngcloud projects add-iam-policy-binding \u003cYOUR_PROJECT_ID\u003e \\\n  --member=\"serviceAccount:service-\u003cYOUR_VERTEX_AI_SERVICE_NUMBER\u003e@gcp-sa-aiplatform.iam.gserviceaccount.com\" \\\n  --role=\"roles/storage.admin\"\n\u003c/pre\u003e\n\nservice-\u003cYOUR_VERTEX_AI_SERVICE_NUMBER\u003e は、GCP にストレージ(バケット)を作ったとき権限を見るとあるはずの Vertex AI サービス エージェント の ID。\n\nimagen をいじってるだけではこのエラーはわからなかった。500 Internal Error と表示されるだけだから。veo で生成しようとして、はじめて、ここにエラーの元があるのがわかった。orz\n\n本来なら、私のメールアドレスに権限があるだけで十分だと思うんだけど(そこには rules/storage.objectUser はすでに付与していた)、これが原因だったようだ。"</script>
+<script src="../../../article.js"></script>
 </body>
 </html>

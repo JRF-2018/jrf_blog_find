@@ -21,6 +21,7 @@
 </table>
 </div>
 <h1>組み合わせと順列の数え上げのアルゴリズムの Python のソースを Perl…</h1>
+<div class="art-tools" data-pagefind-ignore><button type="button" id="btn-copy">原文をコピー</button><span class="tools-msg" id="tools-msg"></span></div>
 <pre class="body">組み合わせと順列の数え上げのアルゴリズムの Python のソースを Perl に書き換えた。効率的なアルゴリズムが日本語での紹介がググってもなかったので、一応、ブログ記事にしておいた。
 JRF 2018年4月11日
 
@@ -75,5 +76,7 @@ ELDE (Exhaustive Lock Dependency Emulator) において、「実実行」のみ�
 <nav class="prevnext" data-pagefind-ignore><span class="prev-art">← <a href="../../../articles/2018/04/statuses_cocolog_89156596.html">ショック。ELDE (Exhaustive Lock Dependency…</a> <span class="pn-date">2018年04月06日</span></span><span class="next-art"><a href="../../../articles/2018/04/statuses_cocolog_89194943.html">ELDE (Exhaustive Lock Dependency…</a> <span class="pn-date">2018年04月13日</span> →</span></nav>
 
 <nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2018/04.html">2018年04月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+<script type="application/json" id="raw-text">"[statuses] [cocolog:89185782]\nhttp://jrf.cocolog-nifty.com/statuses/2018/04/post-3768.html\n\n組み合わせと順列の数え上げのアルゴリズムの Python のソースを Perl に書き換えた。効率的なアルゴリズムが日本語での紹介がググってもなかったので、一応、ブログ記事にしておいた。\nJRF 2018年4月11日\n\ntypo 「効率的なアルゴリズムが」→「効率的なアルゴリズムの」。\n\nJRF 2018年4月11日\n\n記事は↓。\n\n《組み合わせと順列の数え上げのアルゴリズム》\nhttp://jrf.cocolog-nifty.com/software/2018/04/post.html\n\nJRF 2018年4月11日\n\nELDE (参: [cocolog:89156596]) を更新しようとしていて、組み合わせの数え上げが必要となった(と思う)ため、調べた。CPAN に C を使った高速なモジュールはあるのだが、インストールが必要なことを嫌ったのと、これぐらいなら Perl でも十分高速なものが書けるだろうという思いから、アルゴリズムをググったのだった。\n\nJRF 2018年4月11日\n\n意外に記事がなく、海外にやっと満足のいく記事を見つけた。でも、それは Python でソースが書かれていたので、それを Perl に書き直したというのが経緯。\n\nJRF 2018年4月11日\n\n「書き直すだけ」と言ったが、それでも元はイテレータを使った実装なので、少し違いがあり、なかなかバグが取れずに苦しんだりした。特に順列は理屈が私自身理解できておらず、ソースの書き換えでどこが間違っているかだけに集中して、なんとか乗り切った。一方の組み合わせのほうも、理解に順ってプログラミングしたが、なかなか答えが合わず、こちらもちゃんと動くまで、しばらくかかった。\n\nJRF 2018年4月11日\n\n私が書いた「苦労」については大したことなくその部分については、パブリックドメインでいいのだが、元の Python のソースをどう考えるか…。アイデアだけなら著作権がないはずなので、Perl に書き換えた時点でフリーだろうとは思うのだが…。翻訳に近いから微妙な面もありそうだが、数式や証明に近いし、元のサイトが Stack Overflow なので、大丈夫だろうと思いたい。\n\nJRF 2018年4月11日\n\nTrackbacks:\n\n《cocolog:89194943》 from JRF のひとこと\nhttp://jrf.cocolog-nifty.com/statuses/2018/04/elde.html\n\nELDE (Exhaustive Lock Dependency Emulator) において、「実実行」のみを数え上げる「修正」バージョンを作った。そして、それを「失敗作」だった「虚実行」を許すバージョンと突き合わせ、結果が正しいことを確かめた。怪我の功名。... \n\n受信： 2018-06-29 14:35:47 (JST)"</script>
+<script src="../../../article.js"></script>
 </body>
 </html>

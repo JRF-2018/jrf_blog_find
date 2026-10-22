@@ -21,6 +21,7 @@
 </table>
 </div>
 <h1>JavaScript で IE だけ Set Cookie…</h1>
+<div class="art-tools" data-pagefind-ignore><button type="button" id="btn-copy">原文をコピー</button><span class="tools-msg" id="tools-msg"></span></div>
 <pre class="body">JavaScript で IE だけ Set Cookie がうまくいかないことに悩まされていたが、やっと解決した。path にファイル名が含まれているのが原因で、最後の &quot;/&quot; 以降を落とすとうまくいった。
 JRF 2011年11月19日
 
@@ -40,12 +41,12 @@ JRF 2011年11月19日
 
 だから、例えば、
 
-&lt;pre&gt;
+<span class="src-pre">&lt;pre&gt;
   var path =location.pathname;
   if (path.lastIndexOf(&quot;/&quot;) &gt; 0) {
     path = path.substring(0, path.lastIndexOf(&quot;/&quot;) + 1);
   }
-&lt;/pre&gt;
+&lt;/pre&gt;</span>
 
 …などとしてから path を文字列に足す必要がある。
 
@@ -64,5 +65,7 @@ JRF 2011年11月19日</pre>
 <nav class="prevnext" data-pagefind-ignore><span class="prev-art">← <a href="../../../articles/2011/11/statuses_cocolog_70574622.html">うーん、ゲームのページ・記事が Google の検索に上がってこない。SEO…</a> <span class="pn-date">2011年11月16日</span></span><span class="next-art"><a href="../../../articles/2011/11/statuses_cocolog_70607158.html">近くのコンビニのミンチカツ(メンチカツ)がおいしい…というか懐かしい感じ。昔、最…</a> <span class="pn-date">2011年11月19日</span> →</span></nav>
 
 <nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2011/11.html">2011年11月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+<script type="application/json" id="raw-text">"[statuses] [cocolog:70605927]\nhttp://jrf.cocolog-nifty.com/statuses/2011/11/javas-1.html\n\nJavaScript で IE だけ Set Cookie がうまくいかないことに悩まされていたが、やっと解決した。path にファイル名が含まれているのが原因で、最後の \"/\" 以降を落とすとうまくいった。\nJRF 2011年11月19日\n\nFirefox 8 や Google Chrome 15 ならうまくいくのに、InternetExplorer 9 でだけ、Cookie がセットされなかった。プライバシーオプションの設定等を疑ったのだが、そこには、Cookie は受諾して、拒否したものはないとある。\n\nそこで、expires を疑った。Date の toGMTString の日付書式がブラウザごとに違うからである。ところが、これを toUTCString にしてもうまくいかない。\n\nJRF 2011年11月19日\n\nしかたないので、document.cookie にいろいろな例を直接代入して、その後 alert(document.cookie) ですぐに表示させてみた。\n\nすると、path=/ だとうまくいくのに、path に location.pathname をほうりこむとおかしくなっているのに気づいた。\n\n確かにどこかで、path にページを指定してもそのディレクトリ単位でしか効かないと読んだが、効かないどころか設定もできないことになっていた。\n\nJRF 2011年11月19日\n\nだから、例えば、\n\n\u003cpre\u003e\n  var path =location.pathname;\n  if (path.lastIndexOf(\"/\") \u003e 0) {\n    path = path.substring(0, path.lastIndexOf(\"/\") + 1);\n  }\n\u003c/pre\u003e\n\n…などとしてから path を文字列に足す必要がある。\n\nJRF 2011年11月19日\n\n[google:JavaScript Cookie IE error] とかでも見つからないが、原因がわかったあと調べると、いくつか言及がある。\n\n《Javascriptのdocument.cookieのpath》\nhttp://www.synck.com/contents/technote/technote_1230518860.html\n\nJRF 2011年11月19日"</script>
+<script src="../../../article.js"></script>
 </body>
 </html>

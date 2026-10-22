@@ -21,12 +21,13 @@
 </table>
 </div>
 <h1>Python 少しアップデートしたら matplotlib が font…</h1>
+<div class="art-tools" data-pagefind-ignore><button type="button" id="btn-copy">原文をコピー</button><span class="tools-msg" id="tools-msg"></span></div>
 <pre class="body">Python 少しアップデートしたら matplotlib が font cache まわりで Permission denied を吐くようになった。やめてくれよぉ…。
 JRF 2021年10月13日
 
-&lt;pre&gt;
+<span class="src-pre">&lt;pre&gt;
 PermissionError: [Errno 13] Permission denied: 'C:\\home\\[USERNAME]\\.matplotlib\\fontlist-v330.json'
-&lt;/pre&gt;
+&lt;/pre&gt;</span>
 
 JRF 2021年10月13日
 
@@ -111,5 +112,7 @@ JRF 2021年10月14日</pre>
 <nav class="prevnext" data-pagefind-ignore><span class="prev-art">← <a href="../../../articles/2021/10/statuses_cocolog_93063079.html">河崎一郎『素顔の日本』を読んだ。忌憚ない海外向けの日本文化論で、今でも通じる話も…</a> <span class="pn-date">2021年10月12日</span></span><span class="next-art"><a href="../../../articles/2021/10/statuses_cocolog_93069969.html">ゲームを遺産として残しても、物理的な「レア物」以外、100年ぐらいは大きな価値が…</a> <span class="pn-date">2021年10月16日</span> →</span></nav>
 
 <nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2021/10.html">2021年10月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+<script type="application/json" id="raw-text">"[statuses] [cocolog:93064720]\nhttp://jrf.cocolog-nifty.com/statuses/2021/10/post-ccf3d3.html\n\nPython 少しアップデートしたら matplotlib が font cache まわりで Permission denied を吐くようになった。やめてくれよぉ…。\nJRF 2021年10月13日\n\n\u003cpre\u003e\nPermissionError: [Errno 13] Permission denied: 'C:\\\\home\\\\[USERNAME]\\\\.matplotlib\\\\fontlist-v330.json'\n\u003c/pre\u003e\n\nJRF 2021年10月13日\n\nPython 3.7.11 で matplotlib 3.4.2 での問題。うまくいっていた前は Python 3.7.7 で matplotlib 3.1.3 だった。\n\nJRF 2021年10月13日\n\nconda install matplotlib=3.1.3 matplotlib-base=3.1.3\n\nJRF 2021年10月13日\n\n…としても、結局、~/.matplotlib/fontlist-v310.json を消してやりなおすと同様のエラーが出た。すると matplotlib のエラーではないのだろう。\n\nJRF 2021年10月13日\n\nとりあえず、\n\nconda install matplotlib matplotlib-base\n\n…にして元に戻してから、fontlist-v330.json のパーミッションが 070 だったのを以前の fontlist-v310.jon と同じ 774 にして動いてはいるが、この先が心配なところ。\n\nJRF 2021年10月13日\n\nおそらく matplotlib のエラーではなく、Python 本体のエラーなのだろう。または、ググっても出ないあたり、私の特殊な Cygwin 環境とのからみで出ているエラーかもしれない。\n\n報告すべきか…。でも、原因が特定できないし…。なにより英語が…。\n\nJRF 2021年10月13日\n\n……。\n\nちなみに python を 3.7.11 から python 3.7.7 に下げてみてもダメだった。Python 本体というより、ライブラリのどれかがおかしいのだろう。\n\nJRF 2021年10月13日\n\n……。\n\nOS は Windows 10。conda は 4.10.3。anaconda は custom になってる。Cygwin の bash \u0026 mintty から Windows の Anaconda の Python を使っている。\n\nちなみに Python 3.8 系で試そうと conda install python=3.8 をしたら、conflict がどうとかで時間がかかり過ぎて実質インストールできなかった。\n\nJRF 2021年10月13日\n\n……。\n\n……。\n\nあっ、解決した。\n\n結局のところは、一度、fontlist-v330.json だけでなく ~/.matplotlib のディレクトリを全部削除し、~/.matplotlib のディレクトリを再度作らせれば良かった。\n\nしかし、なぜそうなのかがわからない。\n\nJRF 2021年10月14日\n\n試しに、json.dump でファイルを書くだけのプログラムを作っていろいろ試したところ、他のディレクトリだとパーミッションが正しいのに、~/.matplotlib に書いたときだけなぜかパーミッションが 070 になってしまうということになっていた。\n\nそこで試しに ~/.matplotlib を削除してみたらどうなるか…と試してみたらうまくいった…という感じ。ただ、前の ~/.matplotlib のディレクトリの何が悪かったかは未だにというか、もうわからない。\n\nJRF 2021年10月14日\n\nなんとなく Windows 10 のアップデートがらみで、以前の Python が作った「不正」なディレクトリ・パーミッションに関しエラーが出ているのではないか？\n\nJRF 2021年10月14日\n\n……。\n\n結局、Anaconda を anaconda-clean を利用してアンインストールしてから再インストールした。.conda なども .matplotlib と同じ症状があったため。env 等が変わるがしかたがない。\n\nJRF 2021年10月14日"</script>
+<script src="../../../article.js"></script>
 </body>
 </html>

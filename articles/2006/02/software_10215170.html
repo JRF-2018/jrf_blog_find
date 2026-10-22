@@ -21,6 +21,7 @@
 </table>
 </div>
 <h1>Windows のコマンドライン cmd.exe 用のエスケープってどうやるの？</h1>
+<div class="art-tools" data-pagefind-ignore><button type="button" id="btn-copy">原文をコピー</button><span class="tools-msg" id="tools-msg"></span></div>
 <pre class="body">ActivePerl からパイプを使って GnuPG を起動しようとしたが、 perlipc に載ってる方法ではダメみたい。pipe の fileno で取ったファイルディスクリプタもうまく渡せないみたいだし。
 
 それで次のようなことをしようとしたんだけど、pipe のコマンドの引数をリストでは渡せないっていわれる。
@@ -61,5 +62,7 @@ CMD.EXE TIPs: <a href="http://it-is-it.net/CMD/?FrontPage" class="ext-link">http
 <nav class="prevnext" data-pagefind-ignore><span class="prev-art">← <a href="../../../articles/2006/02/software_10215138.html">native2ascii.pl をいちおう作ってみた</a> <span class="pn-date">2006年02月26日 05:31:33</span></span><span class="next-art"><a href="../../../articles/2006/02/software_10234210.html">DDwin を Firefox や Meadow から使うとき latin-1 のアクセント記号を抜くようにした。</a> <span class="pn-date">2006年02月27日 00:37:52</span> →</span></nav>
 
 <nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2006/02.html">2006年02月</a> | <a href="../../../index/software.html">ソフトウェア Tips</a></nav>
+<script type="application/json" id="raw-text">"[software] [cocolog:10215170]\n《Windows のコマンドライン cmd.exe 用のエスケープってどうやるの？》\nhttp://jrf.cocolog-nifty.com/software/2006/02/post_19.html\n2006年2月26日 05:47:03 [Perl][Windows アプリ]\n\nActivePerl からパイプを使って GnuPG を起動しようとしたが、 perlipc に載ってる方法ではダメみたい。pipe の fileno で取ったファイルディスクリプタもうまく渡せないみたいだし。\n\nそれで次のようなことをしようとしたんだけど、pipe のコマンドの引数をリストでは渡せないっていわれる。\n\nopen(GPG, '-|', $GPG, '--list-keys') or die;\n\nしょうがないので、コマンドラインを連結しましょうということになったのだが、Windows の cmd.exe の構文がわからない。\n\nググってみると《CMD.EXE TIPs》という Wiki に構文が書いてあった。そこの文章を参考にいろいろ試してみたけど、次みたいのでいいのかな？\n\nsub quote_for_command {\n    my $r = \"\";\n    while (@_) {\n      my $arg = shift;\n      $arg =~ s/\\%/^\\%/gs;\n      $arg =~ s/\"/\"\"\"/gs;\n      $r .= \" \" if $r ne \"\";\n      $r .= \"\\\"$arg\\\"\";\n    }\n    return $r;\n}\n\nでもこういうのは需要あるはずだから探せば見つかりそうなものなのに、 Perl でやってるのを、ちょっと見つけられなかった。\n\n更新：06/02/26\n初公開：2006年02月26日 05:47:05\n最新版：2006年03月11日 03:58:07\n\n\nLinks:\n\nActivePerl: http://www.activestate.com/Products/ActivePerl/\nGnuPG: http://www.gnupg.org/\nperlipc: http://search.cpan.org/dist/perl/pod/perlipc.pod\nCMD.EXE TIPs: http://it-is-it.net/CMD/?FrontPage"</script>
+<script src="../../../article.js"></script>
 </body>
 </html>

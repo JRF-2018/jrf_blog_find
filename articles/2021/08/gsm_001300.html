@@ -21,6 +21,7 @@
 </table>
 </div>
 <h1>[仏教の最適化プログラムの続き。]…</h1>
+<div class="art-tools" data-pagefind-ignore><button type="button" id="btn-copy">原文をコピー</button><span class="tools-msg" id="tools-msg"></span></div>
 <pre class="body">jrf&gt; [仏教の最適化プログラムの続き。]
 
 結婚などにより支配層の能力値が変わるべきだといった旨のことを以前書いたが、それを実現するために Dominator.adder というオブジェクト変数を作った。これをセットするときに、能力値の調整をランダムに行う。
@@ -64,5 +65,7 @@ Person.supporting と Person.supported あたりをかなり変えた、。カ�
 <nav class="prevnext" data-pagefind-ignore><span class="prev-art">← <a href="../../../articles/2021/08/gsm_001299.html">[仏教の最適化プログラムの続き。]…</a> <span class="pn-date">2021-08-06T05:14:34Z</span></span><span class="next-art"><a href="../../../articles/2021/08/gsm_001301.html">河村たかし 名古屋市長がオリンピック選手の金メダルを勝手にかじった問題。…</a> <span class="pn-date">2021-08-07T03:54:02Z</span> →</span></nav>
 
 <nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2021/08.html">2021年08月</a> | <a href="../../../index/gsm.html">共有メモ</a></nav>
+<script type="application/json" id="raw-text">"[gsm]\n○ 2021-08-06T17:53:19Z rJ6WI9oJBO\n\njrf\u003e [仏教の最適化プログラムの続き。]\n\n結婚などにより支配層の能力値が変わるべきだといった旨のことを以前書いたが、それを実現するために Dominator.adder というオブジェクト変数を作った。これをセットするときに、能力値の調整をランダムに行う。\n\n妊娠し結婚していれば -1、妊娠し結婚していなければ -2、妊娠せず結婚していれば +1、妊娠せず結婚していなければ 0 の修正を受ける。+1 ごとに各能力値について 0 から 0.1 の範囲の一様乱数の値をプラスされる。\n\n……。\n\ninitialize_nation …国の初期化を変えた。前は、支配層を作ってから、国民を作っていたが、今は、国民を作ってから、そこからランダムに支配層を決めるようにしている。\n\n……。\n\nPerson.supporting と Person.supported あたりをかなり変えた、。カプセル化して、できるだけ Person.add_supporting()、 Person.remove_supported() を使うようにした。\n\nバグに悩まされたが、わかってみれば、更新途中で Person.supporting が変わることでバグが生じているのにひっかかっていた。\n\nこの変更により、どの場面をとっても扶養されている者が扶養しているような関係がなくなり扶養の木構造が生じなくなった。(make_support_consistent が check_support_consistent に変わった。)\n\nついでに、前は結婚時必ず男性が女性を扶養する形になっていたが、今は女性が支配層で男性より上の地位にある場合は、女性が男性を扶養する形になるようにした。\n\n……。\n\n地震と水害の発生確率を 1/2 にした。これでもまだ多そうだが…。\n\n……。\n\nあと、エラーから回復しやすいように乱数の種をセーブするようにしたのだが、ロードしても同じ乱数が必ずしも発生してない様子。何かがおかしいのだと思うがわからない。\n\n……。\n\n以上の変更をした simbdp2.py を公開しておく。(バージョン 0.0.4)\n\n《simbd/simbdp2.py at master - JRF-2018/simbd》  \nhttps://github.com/JRF-2018/simbd/blob/master/simbdp2.py\n\nなお、test_of_matching_2.py と simbdp1.py の簡単なバグも取った。こちらも add_supporting や remove_supported を使うように変えようか迷っている。動きはするものの仕様にあわないというバグがあるようだというのはわかっているので、そうしたほうが良さそうであるが、逆に変なバグを混入しないか心配なので、とりあえずそこまでいじるのは次回以降としておく。"</script>
+<script src="../../../article.js"></script>
 </body>
 </html>

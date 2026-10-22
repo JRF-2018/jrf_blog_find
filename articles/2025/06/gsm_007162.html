@@ -9,7 +9,7 @@
 </head>
 <body>
 <nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2025/06.html">2025年06月</a> | <a href="../../../index/gsm.html">共有メモ</a></nav>
-<article data-pagefind-body data-pagefind-meta="種別:共有メモ">
+<article data-pagefind-body data-pagefind-meta="種別:共有メモ" class="pre-joined">
 <div data-pagefind-meta="投稿月:2025年06月" style="display:none"></div>
 <div class="meta">
 <table class="meta-table">
@@ -21,9 +21,10 @@
 </table>
 </div>
 <h1>(承前: jrf_pdb_agent_lib の話の続き。) &lt;pre&gt;…</h1>
+<div class="art-tools" data-pagefind-ignore><label><input type="checkbox" id="opt-prejoin" checked> pre 連結</label><button type="button" id="btn-copy">原文をコピー</button><span class="tools-msg" id="tools-msg"></span></div>
 <pre class="body">jrf&gt; (承前: jrf_pdb_agent_lib の話の続き。)
 
-&lt;pre&gt;
+<span class="src-pre">&lt;pre&gt;
 pal.do(d_md(&quot;&quot;&quot;\
   主目的: サーバーを立てる。
 
@@ -32,10 +33,11 @@ pal.do(d_md(&quot;&quot;&quot;\
   * ( ) テストを行う。
 
   留意事項: ライブラリやアプリが足りない場合はいったん終了する。
-&quot;&quot;&quot;), current_code = d_py(&quot;&quot;&quot;\
+&quot;&quot;&quot;), current_code = d_py(&quot;&quot;&quot;\<span class="pre-joint">
 &lt;/pre&gt;
 &lt;pre&gt;
-  tasks = [True, False, False]
+</span><span class="pre-joint-nl">
+</span>  tasks = [True, False, False]
   try:
     if not tasks[0]:
       pal.do(&quot;データを持ってくる。&quot;, current_code=&quot;retrieve_data()&quot;)
@@ -54,7 +56,7 @@ pal.do(d_md(&quot;&quot;&quot;\
       else:
         pal.EXCEPTION = e
 &quot;&quot;&quot;))
-&lt;/pre&gt;
+&lt;/pre&gt;</span>
 
 …みたいにして、書き換えるのを最小にしておけば、current_code をほとんど維持したままいろいろ対応できるか…。
 
@@ -66,5 +68,7 @@ pal.do(d_md(&quot;&quot;&quot;\
 <nav class="prevnext" data-pagefind-ignore><span class="prev-art">← <a href="../../../articles/2025/06/gsm_007161.html">RLRMDiffusion。やるとしたら、フルにモデルを生成するのではなく、制御…</a> <span class="pn-date">2025-06-14T17:14:05Z</span></span><span class="next-art"><a href="../../../articles/2025/06/gsm_007163.html">(承前) ただ、CLAUDE.md…</a> <span class="pn-date">2025-06-14T22:13:45Z</span> →</span></nav>
 
 <nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2025/06.html">2025年06月</a> | <a href="../../../index/gsm.html">共有メモ</a></nav>
+<script type="application/json" id="raw-text">"[gsm]\n○ 2025-06-14T22:12:15Z YN8xdJ6F2i\n\njrf\u003e (承前: jrf_pdb_agent_lib の話の続き。)\n\n\u003cpre\u003e\npal.do(d_md(\"\"\"\\\n  主目的: サーバーを立てる。\n\n  * (X) データを持ってくる。\n  * ( ) サーバーを立てる。\n  * ( ) テストを行う。\n\n  留意事項: ライブラリやアプリが足りない場合はいったん終了する。\n\"\"\"), current_code = d_py(\"\"\"\\\n\u003c/pre\u003e\n\u003cpre\u003e\n  tasks = [True, False, False]\n  try:\n    if not tasks[0]:\n      pal.do(\"データを持ってくる。\", current_code=\"retrieve_data()\")\n      tasks[0] = True\n    if not tasks[1]:\n      pal.do(\"サーバーを立てる。\", current_code=\"run_server()\")\n      tasks[1] = True\n    if not tasks[2]:\n      pal.do(\"テストを行う。\", current_code=\"run_test()\")\n      tasks[2] = True\n    if all(tasks):\n      pal.do(\"完了報告を行う。\")\n  except pal.AiException as e:\n      if pal.do(\"e がライブラリやアプリが足りないと言っている。\"):\n        pal.do(\"終了済みのタスクをこの .apy に記録していったん終了。\")\n      else:\n        pal.EXCEPTION = e\n\"\"\"))\n\u003c/pre\u003e\n\n…みたいにして、書き換えるのを最小にしておけば、current_code をほとんど維持したままいろいろ対応できるか…。\n\nここまでやるかどうかは別として、このフレームワークには、いろいろ潜在的可能性がある…とは言えるのだろう。"</script>
+<script src="../../../article.js"></script>
 </body>
 </html>

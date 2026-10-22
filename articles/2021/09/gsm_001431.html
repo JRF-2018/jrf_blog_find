@@ -21,6 +21,7 @@
 </table>
 </div>
 <h1>[仏教の最適化プログラムの続き。] (承前) ……。…</h1>
+<div class="art-tools" data-pagefind-ignore><button type="button" id="btn-copy">原文をコピー</button><span class="tools-msg" id="tools-msg"></span></div>
 <pre class="body">jrf&gt; [仏教の最適化プログラムの続き。]
 
 (承前)
@@ -48,5 +49,7 @@ Education は fanampr が高くなるのは予定通り。そのおかげで fan
 <nav class="prevnext" data-pagefind-ignore><span class="prev-art">← <a href="../../../articles/2021/09/gsm_001430.html">[仏教の最適化プログラムの続き。] さて狂信に関する実験である。 normal…</a> <span class="pn-date">2021-09-06T21:19:37Z</span></span><span class="next-art"><a href="../../../articles/2021/09/gsm_001432.html">[仏教の最適化プログラムの続き。] fanampr…</a> <span class="pn-date">2021-09-08T03:45:19Z</span> →</span></nav>
 
 <nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2021/09.html">2021年09月</a> | <a href="../../../index/gsm.html">共有メモ</a></nav>
+<script type="application/json" id="raw-text">"[gsm]\n○ 2021-09-06T21:21:00Z ejpA/EdF2I\n\njrf\u003e [仏教の最適化プログラムの続き。]\n\n(承前)\n\n……。\n\nちょっと前に、狂信時に僧の数を増やすべきだという考えをしたが、それは無意味なものであるべきだともしていた。まずは僧の数を増やしたもののみやってみる。(mpr は many priests の略。)\n\nrun_simbdp3.sh fanampr 10 -L -t 360 --nation-education-power-threshold=0.925 --faith-realization-power-threshold=0.925 --priests-rate-max=0.0125 --priests-rate=0.00666666666666667 --priests-rate-min=0.004\n\n次に無意味であることを表すために --priests-standard-rate のほうもいっしょに動かすこととする。(mprs は much priests standard の略。)\n\nrun_simbdp3.sh fanamprmprs 10 -L -t 360 --nation-education-power-threshold=0.925 --faith-realization-power-threshold=0.925 --priests-rate-max=0.0125 --priests-rate=0.00666666666666667 --priests-rate-min=0.004 --priests-standard-rate-max=0.0125 --priests-standard-rate=0.00666666666666667 --priests-standard-rate-min=0.004\n\npython plot_logs.py normal fana fanampr fanamprmprs -p Education -o fig-20210907_01.png\npython plot_logs.py normal fana fanampr fanamprmprs -p AccDeath -o fig-20210907_02.png\npython plot_logs.py normal fana fanampr fanamprmprs -p Population -o fig-20210907_03.png\npython plot_logs.py normal fana fanampr fanamprmprs -p AccAbortion -o fig-20210907_04.png\n\nEducation は fanampr が高くなるのは予定通り。そのおかげで fanaampr は fana や fanamprmprs より AccDeath も良くなるか…と思っていたが、必ずしもそうなっていない。教育の効果は大したことない…となってしまった。Population を見ると、fanampr は最後のほうで下がっていて、どうも大きな戦争がたまたま起こったらしいということではないかと推察する。AccDeath と逆の動きを大きくしがちな AccAbortion も fanampr が fana と大差なく、最後は fanamprmprs と同じになるのは、くじ運が悪かった以外どうにも説明がつかない。"</script>
+<script src="../../../article.js"></script>
 </body>
 </html>

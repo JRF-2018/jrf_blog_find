@@ -21,6 +21,7 @@
 </table>
 </div>
 <h1>Firefox の JavaScript の Date の…</h1>
+<div class="art-tools" data-pagefind-ignore><button type="button" id="btn-copy">原文をコピー</button><span class="tools-msg" id="tools-msg"></span></div>
 <pre class="body">Firefox の JavaScript の Date の toLocaleString や toLocaleDateString の挙動が変わった。
 JRF 2014年7月1日
 
@@ -63,5 +64,7 @@ JRF 2014年7月1日</pre>
 <nav class="prevnext" data-pagefind-ignore><span class="prev-art">← <a href="../../../articles/2014/06/statuses_cocolog_80024150.html">図書館には、一般に読む席と同じところに置いてある開架図書のほかに、普段はしまって…</a> <span class="pn-date">2014年06月28日</span></span><span class="next-art"><a href="../../../articles/2014/07/statuses_cocolog_80060225.html">『気まぐれコンセプト クロニクル』を読んだ。</a> <span class="pn-date">2014年07月02日</span> →</span></nav>
 
 <nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2014/07.html">2014年07月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+<script type="application/json" id="raw-text">"[statuses] [cocolog:80048087]\nhttp://jrf.cocolog-nifty.com/statuses/2014/07/firef.html\n\nFirefox の JavaScript の Date の toLocaleString や toLocaleDateString の挙動が変わった。\nJRF 2014年7月1日\n\nおそらく４月下旬リリースの Firefox 29 からの仕様変更だと思う。集計作業してて今ごろやっと気付いた。このメソッドはブラウザによって動作が違うとのことだったけど、Greasemonkey で使ってるから、まぁ、いいかと思って使ってた。\n\n《Firefox 29 for developers - Mozilla | MDN》\nhttps://developer.mozilla.org/ja/docs/Mozilla/Firefox/Releases/29\n\nJRF 2014年7月1日\n\n(new Date).toLocaleDateString() とすると、それまでは「2014年7月1日」とかいう値が返ってきてたのに、今は「2014/7/1」とかいう値になっている。\n\n↓を参考に toLocaleDateString(\"ja-JP\") とかしても元のようにはならない。\n\n《ECMA-402 Internationalization API - hogehoge @teramako》\nhttp://d.hatena.ne.jp/teramako/20130521/p1\n\nJRF 2014年7月1日\n\nどうしても元の値が欲しいなら、「var d = new Date; var s = d.getFullYear() + \"年\" + (d.getMonth() + 1) + \"月\" + d.getDate() + \"日\";」とかを使ってやれば問題ないはず。\n\n新しい toLocaleDateString() を使って \"/\" で split して結合ってのは、また仕様が元に戻ったりするのが怖い…。\n\n[google:2038年問題]とかあるから、それに向けて日付担当にそろそろ仕事を覚えさせようとしているのか？…というのは気が早過ぎか。\n\nJRF 2014年7月1日\n\n……。\n\n私が作ったもので関連としては↓。これはでも年月日表示なのが前提。変えるのは簡単(rewrite_gengou 関数をちょっと変えるだけ)だけど、日付ってほんといろいろフォーマットがあるからね…、まぁ、私がやる必要性は感じないな…。\n\n《gengou.js：日付を後付けで元号表示にする》\nhttp://jrf.cocolog-nifty.com/software/2014/02/post.html\n\nJRF 2014年7月1日"</script>
+<script src="../../../article.js"></script>
 </body>
 </html>

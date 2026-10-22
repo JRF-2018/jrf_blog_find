@@ -21,6 +21,7 @@
 </table>
 </div>
 <h1>あれっ？Cygwin の ImageMagick がウンともスンともいいやがらねぇ</h1>
+<div class="art-tools" data-pagefind-ignore><button type="button" id="btn-copy">原文をコピー</button><span class="tools-msg" id="tools-msg"></span></div>
 <pre class="body">7月1日にフィギュア写真をアップしているけど、このときサムネイルを作るのに、ImageMagick の convert と identify を使っているので、その日までは少なくとも使えていた。
 
 それが今日フィギュア写真をアップロードしようとすると、サムネイルができねぇ！
@@ -79,5 +80,7 @@ ImageMagick: <a href="http://www.imagemagick.org/" class="ext-link">http://www.i
 <nav class="prevnext" data-pagefind-ignore><span class="prev-art">← <a href="../../../articles/2006/09/column_13916392.html">バンダイ ソフビ 変身忍者 嵐 ＆ X 星人 2005</a> <span class="pn-date">2006年09月04日 18:57:03</span></span><span class="next-art"><a href="../../../articles/2006/09/column_13967226.html">コンピュータ定理証明における弁証法 − 私が作りたいシステム</a> <span class="pn-date">2006年09月07日 17:29:34</span> →</span></nav>
 
 <nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2006/09.html">2006年09月</a> | <a href="../../../index/column.html">雑記</a></nav>
+<script type="application/json" id="raw-text">"[column] [cocolog:13916493]\n《あれっ？Cygwin の ImageMagick がウンともスンともいいやがらねぇ》\nhttp://jrf.cocolog-nifty.com/column/2006/09/post_1.html\n2006年9月4日 19:04:53 [近況][情報工学・コンピュータ科学]\n\n7月1日にフィギュア写真をアップしているけど、このときサムネイルを作るのに、ImageMagick の convert と identify を使っているので、その日までは少なくとも使えていた。\n\nそれが今日フィギュア写真をアップロードしようとすると、サムネイルができねぇ！\n\nこいつはてぇへんだってんで、調べてみると、\n\n$ convert --help\n\n      (無反応)\n$ identify --help\n\n      (無反応)\n      \nコアも吐いてないし、いったいどうなってんだ。バージョンを新しいのに変えてみたら、jpeg が使えないっていうし、これまで、www.imagemagick.org の cygwin 用バイナリリリース(6.2.5)を使ってたんだけど、それを cygwin のパッケージに変えても症状は変わらない。\n\nとりあえず、cygwin 用ではない Windows 用のものだとうまく動作するんで、パスとかの変換して今は凌いでフィギュア写真投稿したんだけど、他のところでも identify と convert は使っているから、今後も改善されないとムチャクチャ困るんですけど。\n\n昔から PerlMagick の調子は悪かったんだけど、convert は動いてた。7月1日からって大した変化もしてないはず。\n\nCygwin と Meadow のパッケージのバージョンを上げたけど、そのときに何かおかしなことになったのかな？\n\nちなみに rebaseall すると /usr/bin/cygiconv2.dll の ReBase が失敗するけど、これが原因でもないと思うし。\n\n更新：2006-09-04\n初公開：2006年09月04日 19:04:56\n最新版：2006年09月04日 19:05:57\n\n\nComments:\n\n[E:bearing] 上はバージョンを上げていったら、いつの間にか直っていた。Cygwin の setup からもインストールできるようになったし。\n\nただ、2010-06-03 現在、↓のようなエラーを吐くことがある。\n\n\n/usr/bin/convert.exe: error while loading shared libraries: ?: cannot open shared object file: No such file or directorory\n\n\nこれは↓にズバリな症状＆解決策が載っていた。\n\n《ImageMagick shared libraries missing?》\nhttp://omgili.com/mailinglist/cygwin/cygwin/com/82hbn49nvnfsfgmailcom.html\n\nsetup.exe で入れることができる libgomp をインストールすれば良いようだ。\n\nただ、これは GCC4 で使うものでもあるらしく GCC4 を全体的に入れてしまったほうが良さそうだ。GCC4 がないと、Perl 5.10.1 で、CPAN 等からインストールしようとすると、-fstack-protecter に関するエラーが出ることもある。\n\n投稿: JRF | 2010-06-03 18:27:34 (JST)\n\n\nLinks:\n\nImageMagick: http://www.imagemagick.org/"</script>
+<script src="../../../article.js"></script>
 </body>
 </html>

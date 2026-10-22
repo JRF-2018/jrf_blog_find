@@ -21,6 +21,7 @@
 </table>
 </div>
 <h1>[仏教の最適化プログラムの続き。] 以前、「赤ん坊の education…</h1>
+<div class="art-tools" data-pagefind-ignore><button type="button" id="btn-copy">原文をコピー</button><span class="tools-msg" id="tools-msg"></span></div>
 <pre class="body">jrf&gt; [仏教の最適化プログラムの続き。]
 
 以前、「赤ん坊の education は、両親の中間の値を持って産まれてくる(父親が不明な場合は父親分はランダム値)」…と書いたが、まだそうなっていなかった。
@@ -67,5 +68,7 @@ python plot_logs.py normal2 ledu ltom ledultom -p NewKarma
 <nav class="prevnext" data-pagefind-ignore><span class="prev-art">← <a href="../../../articles/2021/09/gsm_001410.html">[仏教の最適化プログラムの続き。]…</a> <span class="pn-date">2021-09-03T03:56:56Z</span></span><span class="next-art"><a href="../../../articles/2021/09/gsm_001412.html">[仏教の最適化プログラムの続き。] mwar2 と mwar2fpr の…</a> <span class="pn-date">2021-09-03T11:03:12Z</span> →</span></nav>
 
 <nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2021/09.html">2021年09月</a> | <a href="../../../index/gsm.html">共有メモ</a></nav>
+<script type="application/json" id="raw-text">"[gsm]\n○ 2021-09-03T10:52:37Z IKXqleZX6Z\n\njrf\u003e [仏教の最適化プログラムの続き。]\n\n以前、「赤ん坊の education は、両親の中間の値を持って産まれてくる(父親が不明な場合は父親分はランダム値)」…と書いたが、まだそうなっていなかった。\n\nsimbdp3.py のみそのように修正。simbdp2.py 以前は修正しなかった。\n\nさて、その上で「来世がないのがよい」と「思考と思念を深めるのがよい」の関係を見るために、墓の数を減らしたものと教育(の目標値)を下げたものについてシミュレーションを回してみる。\n\n本来は、赤ん坊の education を変えたので、最初からやり直す必要があるが、時間がかかるのでそれはまた次の機会として、normal2 などを作った前の simbdp3.pickle をそのまま使って実験することにする。教育の目標値のパラメータを 0.15 ずつ下げたものを試す。(ledu は little education または low education の略。)\n\nrun_simbdp3.sh ledu 10 -L -t 360 --change-random-seed --education-goal=0.35 --education-goal-max=0.5 --education-goal-min=0.20\n\n次に墓が少ないものを試す。墓が前は 25000 だったのを 10000 にして試す。(ltom は little tombs の略。)\n\nrun_simbdp3.sh ltom 10 -L -t 360 --change-random-seed --tombs-population=10000\n\nそして、両方を下げたものを試す。\n\nrun_simbdp3.sh ledultom 10 -L -t 360 --change-random-seed --education-goal=0.35 --education-goal-max=0.5 --education-goal-min=0.20 --tombs-population=10000\n\n解釈としては、方向が逆で、ledultom の状態から「思考と思念を深めるのがよい」を重視して --tombs-population を上げて ledu の状態になってカルマが増え、そこから、思考のみを深めて normal2 の状態にしてどれだけカルマが下がるかを見たい。…といった感じになる。normal2 の状態から、逆に --tombs-population を下げて、どれだけカルマが下がるか、ledu とどちらを取るべきか…ということも見たい。\n\nログが取れたあと…\n\npython plot_logs.py normal2 ledu ltom ledultom -p AccKarma\n\n…または…\n\npython plot_logs.py normal2 ledu ltom ledultom -p NewKarma\n\n…としてみる。\n\nすると、確かに ledu は normal2 よりカルマが悪く、normal2 は ltom よりカルマが悪いとなっている。問題は ledultom で、これは normal2 の下、ltom の間に来ているが、ledu と normal2 の差に比べて、ledultom と ltom の差が小さいのが気になる。\n\nこれはなぜだろう？ -p Education をして調べるとちゃんと ledu ledultom は教育が同程度に下がっており、そこに問題はないようだった。…ということで ledultom と ltom の差が小さい理由はわからない。それは今後の課題としておいておくとしよう。\n\nこの結果だけだと ltom にするのがとにかく良いとなってしまう。そこで重犯罪の重さは ltom のほうが重いはずだったというのを見るために、-p AccVKarma を表示してみる。…しかし、これはほとんど差がない。もっと世代を重ね、墓の数を巨大にしないと差が出ないのかもしれない。\n\nすると、ltom が一番良いということでいいのだろうか？ ただ、ltom は「思念を深めるのがよい」の軽視だから、ARGS.prophecy_effect を小さくするのと一緒になりやすいということだった。ARGS.prophecy_effect を小さくするのを lpe とすると、ltomlpe と normal2 を比べて総合的にどうかを問うということになるのか。"</script>
+<script src="../../../article.js"></script>
 </body>
 </html>

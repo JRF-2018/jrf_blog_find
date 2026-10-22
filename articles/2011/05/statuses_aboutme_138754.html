@@ -9,7 +9,7 @@
 </head>
 <body>
 <nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2011/05.html">2011年05月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
-<article data-pagefind-body data-pagefind-meta="種別:ひとこと">
+<article data-pagefind-body data-pagefind-meta="種別:ひとこと" class="pre-joined">
 <div data-pagefind-meta="投稿月:2011年05月" style="display:none"></div>
 <div class="meta">
 <table class="meta-table">
@@ -21,6 +21,7 @@
 </table>
 </div>
 <h1>EPSON Endeavor NP15 をネットで購入。Firefox,…</h1>
+<div class="art-tools" data-pagefind-ignore><label><input type="checkbox" id="opt-prejoin" checked> pre 連結</label><button type="button" id="btn-copy">原文をコピー</button><span class="tools-msg" id="tools-msg"></span></div>
 <pre class="body">EPSON Endeavor NP15 をネットで購入。Firefox, Emacs, Cygwin, TeX をインストールしている。Firefox は 4.0.1 を、Emacs は 23.3 だが、IME に対応した gnupack 6.0.1 版を使う。
 JRF 2011年5月12日
 
@@ -165,23 +166,24 @@ JRF 2011年5月12日
 
 でも、この方法だと、普通の C-x k ならある、バッファー名の確認画面がないので余計な enter を押してしまう。だから、意味がないんだけど、バッファーを閉じるかどうか聞くようにして使うことにした(↓)。
 
-&lt;pre&gt;
+<span class="src-pre">&lt;pre&gt;
 (defun server-edit-with-dummy-input (arg)
   (interactive &quot;P&quot;)
   (read-string &quot;Next edit after:&quot; (buffer-name))
-  (server-edit arg))
+  (server-edit arg))<span class="pre-joint">
 &lt;/pre&gt;
 
 JRF 2011年5月12日
 
 &lt;pre&gt;
-(add-hook 'server-switch-hook
+</span><span class="pre-joint-nl">
+</span>(add-hook 'server-switch-hook
             (lambda ()
               (when (current-local-map)
                 (use-local-map (copy-keymap (current-local-map))))
 	      (when server-buffer-clients
 		(local-set-key (kbd &quot;C-x k&quot;) 'server-edit-with-dummy-input)))) 
-&lt;/pre&gt;
+&lt;/pre&gt;</span>
 
 JRF 2011年5月12日
 
@@ -229,11 +231,11 @@ JRF 2011年5月12日
 
 うーん、cygwin の ptetex がおかしいなぁ。↓みたいなエラーが出る。tetex は入れてないからか？
 
-&lt;pre&gt;
+<span class="src-pre">&lt;pre&gt;
 Package: Unknown package
 	ptetex-common.sh exit code 1
 	ptetex-tipa.sh exit code 1
-&lt;/pre&gt;
+&lt;/pre&gt;</span>
 
 でも、もう疲れたから、調査は明日だな。
 
@@ -346,29 +348,30 @@ JRF 2011年5月13日
 
 ↓のように設定。
 
-&lt;pre&gt;
+<span class="src-pre">&lt;pre&gt;
 (setq ispell-program-name &quot;c:/cygwin/bin/aspell.exe&quot;)
-(setq ispell-extra-args '(&quot;--lang=en&quot;))
+(setq ispell-extra-args '(&quot;--lang=en&quot;))<span class="pre-joint">
 &lt;/pre&gt;
 
 
 JRF 2011年5月13日
 
 &lt;pre&gt;
-(eval-after-load &quot;ispell&quot;
+</span><span class="pre-joint-nl">
+</span>(eval-after-load &quot;ispell&quot;
   '(setq ispell-skip-region-alist (cons '(&quot;[^\000-\377]&quot;)
 					ispell-skip-region-alist)))
 (global-set-key &quot;\e#&quot; 'ispell-word)
-&lt;/pre&gt;
+&lt;/pre&gt;</span>
 
 でも、ispell-skip-region-alist は日本語をスキップするものらしいが、うまくいってないように見える。
 Ispell and its process have defferent character map …とエラーが表示される。
 
 JRF 2011年5月13日
 
-&lt;pre&gt;
+<span class="src-pre">&lt;pre&gt;
 (setq ispell-encoding8-command &quot;--encoding=UTF-8&quot;)
-&lt;/pre&gt;
+&lt;/pre&gt;</span>
 
 …というのを試してみたが変わらない。
 
@@ -447,10 +450,10 @@ JRF 2011年5月14日
 
 なんでそうなるのかわからないが、とりあえず、↓としたら解決した。
 
-&lt;pre&gt;
+<span class="src-pre">&lt;pre&gt;
 (global-set-key [S-mouse-3] 'browse-url-at-mouse)
 (setq kmacro-call-mouse-event nil)
-&lt;/pre&gt;
+&lt;/pre&gt;</span>
 
 JRF 2011年5月14日
 
@@ -473,24 +476,25 @@ JRF 2011年5月14日
 
 JRF 2011年5月14日
 
-&lt;pre&gt;
+<span class="src-pre">&lt;pre&gt;
 (defun my-w32-symlinks-parse-cygwin ()
   (when (and (not (search-forward &quot;\n&quot; nil t))
 	     (looking-at &quot;^!&lt;symlink&gt;\377\376\\(.+\\)\0\0$&quot;))
     (let* ((buf (current-buffer))
 	   (s (match-string-no-properties 1))
-	   (file (decode-coding-string s 'utf-16-le)))
+	   (file (decode-coding-string s 'utf-16-le)))<span class="pre-joint">
 &lt;/pre&gt;
 JRF 2011年5月14日
 
 &lt;pre&gt;
-      (when (file-exists-p file)
+</span><span class="pre-joint-nl">
+</span>      (when (file-exists-p file)
 	(find-file file)
 	(kill-buffer buf)))))
 
 (add-hook 'find-file-hook
 	  'my-w32-symlinks-parse-cygwin)
-&lt;/pre&gt;
+&lt;/pre&gt;</span>
 
 (300字制限で途中で分け pre タグ等が間に入ってます。)
 
@@ -623,9 +627,9 @@ Emacs 関連。
 
 Windows の日本語ファイル名を扱うには次が必要。
 
-&lt;pre&gt;
+<span class="src-pre">&lt;pre&gt;
 (setq file-name-coding-system 'sjis-dos)
-&lt;/pre&gt;
+&lt;/pre&gt;</span>
 
 JRF 2011年5月16日
 
@@ -633,7 +637,7 @@ Wikipedia 等は URL に () を入れることがあるようで、最近の URL
 
 JRF 2011年5月16日
 
-&lt;pre&gt;
+<span class="src-pre">&lt;pre&gt;
 (defadvice browse-url-url-at-point
   (after remove-last-parenthesis-browse-url-url-at-point activate)
   (let ((url ad-return-value))
@@ -642,7 +646,7 @@ JRF 2011年5月16日
 		   (not (string-match &quot;(&quot; url)))
 	      (substring url 0 -1)
 	    url))))
-&lt;/pre&gt;
+&lt;/pre&gt;</span>
 
 JRF 2011年5月16日
 
@@ -663,7 +667,7 @@ JRF 2011年5月16日
 
 今のところ(ユーザー)環境変数は↓。だいたい Emacs がらみ。
 
-&lt;pre&gt;
+<span class="src-pre">&lt;pre&gt;
 ALTERNATE_EDITOR	%emacs_dir%/bin/runemacs.exe
 emacs_dir		c:/emacs-23.3-20110402
 HOME			c:/home/XXXX			(ひみつ)
@@ -671,7 +675,7 @@ LANG			ja_JP.UTF-8
 Temp			c:\Temp
 TMP			c:\Temp
 TZ			JST-9
-&lt;/pre&gt;
+&lt;/pre&gt;</span>
 
 あと、Visual Studio が INCLUDE と LIB を設定してる。Temp は好みだと思う。ただ、パーミッションの設定に注意する必要がある。
 
@@ -799,9 +803,9 @@ JRF 2011年5月23日
 
 でも、cygwin にはほぼ同様の働きをする cygstart.exe があるので、これを替わりに .emacs で指定してやればよい。
 
-&lt;pre&gt;
+<span class="src-pre">&lt;pre&gt;
 (setq mew-w32-exec &quot;c:/cygwin/bin/cygstart.exe&quot;)
-&lt;/pre&gt;
+&lt;/pre&gt;</span>
 
 JRF 2011年5月23日
 
@@ -832,41 +836,44 @@ Emacs と Cygwin のからみで↓。
 
 JRF 2011年5月27日
 
-&lt;pre&gt;
+<span class="src-pre">&lt;pre&gt;
 (setq explicit-shell-file-name &quot;bash&quot;)
 (setq explicit-bash-args '(&quot;--login&quot; &quot;-i&quot;))
 (setenv &quot;BASH_ENV&quot; &quot;~/.bash_profile&quot;)
 (setq shell-file-name &quot;bash&quot;)
 (setq shell-command-switch &quot;-c&quot;)
-(setq null-device &quot;/dev/null&quot;)
+(setq null-device &quot;/dev/null&quot;)<span class="pre-joint">
 &lt;/pre&gt;
 JRF 2011年5月27日
 
 &lt;pre&gt;
-(defun shell-quote-argument (argument)
+</span><span class="pre-joint-nl">
+</span>(defun shell-quote-argument (argument)
   (if (equal argument &quot;&quot;)
       &quot;''&quot;
     (replace-regexp-in-string &quot;\n&quot; &quot;'\n'&quot;
-      (replace-regexp-in-string &quot;[^-0-9a-zA-Z_./\n]&quot; &quot;\\\\\\&amp;&quot; argument))))
+      (replace-regexp-in-string &quot;[^-0-9a-zA-Z_./\n]&quot; &quot;\\\\\\&amp;&quot; argument))))<span class="pre-joint">
 &lt;/pre&gt;
 JRF 2011年5月27日
 
 &lt;pre&gt;
-;;; coding-system の設定
+</span><span class="pre-joint-nl">
+</span>;;; coding-system の設定
 (add-hook 'shell-mode-hook
           (lambda ()
-           (set-buffer-process-coding-system 'utf-8-unix 'utf-8-unix)))
+           (set-buffer-process-coding-system 'utf-8-unix 'utf-8-unix)))<span class="pre-joint">
 &lt;/pre&gt;
 
 JRF 2011年5月27日
 
 &lt;pre&gt;
-;;; ^M をとる
+</span><span class="pre-joint-nl">
+</span>;;; ^M をとる
 (add-hook 'comint-output-filter-functions 'shell-strip-ctrl-m nil t)
 
 ;;; shell-modeでの補完 (for drive letter)
 (setq shell-file-name-chars &quot;~/A-Za-z0-9_^$!#%&amp;{}@'`.,;()-&quot;)
-&lt;/pre&gt;
+&lt;/pre&gt;</span>
 
 JRF 2011年5月27日
 
@@ -874,9 +881,9 @@ JRF 2011年5月27日
 
 isearch に日本語が使えないのをなんとかしたくて、 .emacs に↓を設定。少し操作感が変わるが、いたしかたない。
 
-&lt;pre&gt;
+<span class="src-pre">&lt;pre&gt;
 (setq search-exit-option 'edit) ; [return] で終了。
-&lt;/pre&gt;
+&lt;/pre&gt;</span>
 
 あと、grep で日本語が使えないのも何とかしたいが…ざっと debug-on-entry で見たところ、これも defadvice する必要がありそう…。はぁ。isearch が使えるようになったから、対策はもうちょっとあとだな。(jgrep は前から perl で簡単なのを作ってあるので、コマンドラインのエンコードの問題。)
 
@@ -889,9 +896,9 @@ JRF 2011年6月4日
 
 ↑のようにすると、isearch の \C-g の感覚が違うので、↓も設定した。
 
-&lt;pre&gt;
+<span class="src-pre">&lt;pre&gt;
 (define-key isearch-mode-map &quot;\C-g&quot; 'isearch-cancel)
-&lt;/pre&gt;
+&lt;/pre&gt;</span>
 
 JRF 2011年6月5日
 
@@ -991,5 +998,7 @@ JSActions を使って「テキストリンク」をタブで開くための Ope
 <nav class="prevnext" data-pagefind-ignore><span class="prev-art">← <a href="../../../articles/2011/05/statuses_aboutme_138721.html">JavaScript…</a> <span class="pn-date">2011年05月11日</span></span><span class="next-art"><a href="../../../articles/2011/05/statuses_aboutme_138832.html">世の中には「まずい質問」もあって、例えば、「生まれ変わったら何になりたい？」は、…</a> <span class="pn-date">2011年05月14日</span> →</span></nav>
 
 <nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2011/05.html">2011年05月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+<script type="application/json" id="raw-text">"[statuses] [aboutme:138754]\nhttp://jrf.cocolog-nifty.com/statuses/2011/05/aboutme138754.html\n\nEPSON Endeavor NP15 をネットで購入。Firefox, Emacs, Cygwin, TeX をインストールしている。Firefox は 4.0.1 を、Emacs は 23.3 だが、IME に対応した gnupack 6.0.1 版を使う。\nJRF 2011年5月12日\n\n消費電力が少ないパソコンということで選んだ。\n\n今のメインマシンは 2005年6月 に購入したもので、そろそろ新しいのが欲しかった。すでにディスプレイもあり、ノートにはなじめなさそうなので、次に買うのもデスクトップしかない。\n\n書いちゃうのを迷っていたのだが、私のような他の人間には必要なことなので書いちゃうが、本当は SEGA Saturn エミュレータが動くとされる Core 2 Duo 以上の CPU を持ったマシンを狙っていたが、こんなご時勢なので、省電力デスクトップにトライしてみることにした。\n\nJRF 2011年5月12日\n\n最初に挙げたもののインストールをとりあえずの目標に作業している。もちろん、Saturn エミュレータも初代プレステエミュレータもインストールしてみるが、その点は期待しないで欲しい。\n\nJRF 2011年5月12日\n\nスペックは、\n\nCPU：Atom D525 (1.8GHz)\nメモリ：2G\nHDD:：250G (SATA)\n\nグラフィックはオンチップで、このあたりマイナス評価だったのだが、HDMI 他デジタル映像出力はない。有線 LAN はあるが、無線 LAN はない。PS/2 端子はなく USB ポートは前 2 つ後 4 つ。前にマイク入力とヘッドフォン出力、後にライン出力(いずれもアナログピン)。\n\n《Endeavor NP15｜Epson Direct Shop》\nhttp://shop.epson.jp/pc/np15/\n\nJRF 2011年5月12日\n\nOS は Windows 7 で、シングルクリックではなく、ダブルクリックでコマンド起動する設定できた。XP から移る私にはありがたい。\n\nウィルス監視ソフトをデフォルトのものから買ったものへ切り換え、ネットへの接続までは順調にすすむ。IE を起動すると、Bing を使わない「いいえ」のところに推奨マークが付いている。親切なのかなんなのか。だったら入れとくなよ…と言いたくなる。\n\nまず、拡張子を見せるような設定などをしようとしたが、Explorer のオプションの指定方法が最初わからなかった。左上のウィンドウメニュー的なものから指定する流儀らしい。\n\nJRF 2011年5月12日\n\nスタートメニューの履歴の上によく使うプログラムを登録するのは、ドラッグドロップではダメ。「すべてのプログラム」のところにリンクを登録したあと、右クリックメニューで「スタートメニューに表示」をする必要がある。\n\nこれとは他にスタートメニューのプロパティには設定すべき項目があり、「ファイル名を指定して実行」を表示したり、「既定のプログラム」を消したり、履歴の表示件数が増えるようアイコンを小さくしたりといったことをした。\n\nなお、ユーザーを示すアイコンの変更は、アイコンをクリックしたところから別の設定として行う。\n\nJRF 2011年5月12日\n\nIME は私は特殊なものを使っているが、その Windows 7 へのインストールはすでにノウハウを確立してあった。\n\n《日本語IME「風」をVistaにインストールするとき、解除キーを登録するところで失敗する [ JRF のソフトウェア Tips ]》\nhttp://jrf.cocolog-nifty.com/software/2010/05/post-1.html\n\nJRF 2011年5月12日\n\nFirefox は Ez Sidebar など piro 氏(↓)が作ったものでまだ 4.0.1 に対応していないものがあるので、その代替を選んでインストール。All-in-One-Sidebar を入れて見るが、アドオンやエラーコンソールまでサイドバーに入れちゃうのにはまいった。設定でそこは外す。\n\n《outsider reflex》\nhttp://piro.sakura.ne.jp/\n\nJRF 2011年5月12日\n\nFirefox にとりあえず入れたアオドン。\n\nAll-in-One-Gesture\nAll-in-One-Sidebar\nDownloadHelper\nDownThemAll!\nFirebug\nFireemacs\nGreasemonkey\nHTML Ruby\nIE View Lite\nJS Actions Button\nJSActions\nLaunchy\nPDF Download\nSage\nStylish\nTab Mix Plus\nViewInFirefox\nテキストリンク\nはてなツールバー\n\nJRF 2011年5月12日\n\nこれまで、Nightly Tester Tools や DOM nspector、EditCSS を入れていたのだが、その替わりといってはなんだが Firebug を入れてみた。\n\nJSActions と Greasemonkey があるから、Lauchy と Stylish は、もういらないかな…とは思ったがいちおうオマジナイ的に入れておいた。\n\nAmazon の何でも欲しいものリストアドオンも入れる予定だが、マシンの移行が終って NP15 で買い物をするようになってからだろう。\n\nJRF 2011年5月12日\n\nあと、甥が来たときのために Firefox だけ起動できないようにするための Firefox Lock というのを使っていたのだが、無くなっていた。\n\n作者が出会い系に関わっているような雰囲気を出してたから…何かあったのかな？わからない。憶測はいけないな。\n\n\nJRF 2011年5月12日\n\nダウンロードのディレクトリは Firefox はバックアップがしやすいよう、いつも同じ場所にしていたが、Windows 7 には「ダウンロード」というリンクがお気に入れにあり、いろいろ混乱した末、そのリンクを他のマシンでも使ってる同じ場所に繋ぎなおした。\n\nJRF 2011年5月12日\n\n修正 「コマンド起動する設定できた。」→「コマンド実行する設定で来た。」。\n\nところで、NP15 には DVD-R ドライブが付いていない。確かに音楽関連をリップしたり焼いたりというののほかはドライブを使うことはほとんどない。他のマシンからネットワークで DVD ドライブを使えば十分かぁ…とか考えていたが、試しにゲームをインストールしようとしたら、いきなりコケた。シリアルがあるやつだから、ネットからダウンロードできるかと思ったが、ない。\n\nまぁ、外付 DVD-R はそろそろ買っといていいかと思ってたので、それは別にいい。そのあたりのことは、また、買ってから報告したい。\n\nJRF 2011年5月12日\n\nemacs for windows のバイナリは、emacs のおおもとのサイトから手に入る。日本語が使えるという話もチラチラ見ていたので試しに入れてみると、「アート」の「ー」などが変に表示されるし、IME が働かない。IME に関しては予想していたが、「ー」すら表示できないのは驚くしかない。\n\n多国籍開発での平等を考えるとそうなるのか…と憤る面もあるが、むしろ私はこの国の↓の方向性を疑いたくなる。\n\nJRF 2011年5月12日\n\n[aboutme:138358]\n＞「Public Domain」とすることを好むのは(…)一切「無保証」「無責任」をうたうライセンス(GPL も BSD も)は、信義誠実則により「契約」が無効とされうる文脈がある(…という…)妄想が私にはある。＜\n\nJRF 2011年5月12日\n\nただ、IME まわりに関しては NTEmacs (昔の「にてまっくす」？)あたりでは解決されているらしく、↓の emacs-23.3 をインストールすると、上の問題がなくなっていた。\n\n《gnupack Users Guide》\nhttp://gnupack.sourceforge.jp/docs/current/UsersGuide.html\n\nただ、Meadow に比べるとフォント指定の柔難さとかはなくなってそうで、それなのに gnupack-version とか変数を作って自分の特殊性に関して条件分けすることに備えてなく(少なくともドキュメントはなく)、お上品なものではないようだ。\n\nJRF 2011年5月12日\n\nemacs 関連はどれもサイトが古くなってる感じだが、とりあえず emacs-w3m を外すが navi2ch、yatex、mew は入れるなどして、なんとか .emacs が正常に読み終わるところまで持っていく。\n\nJRF 2011年5月12日\n\nemacs は gnusclientw ではなく emacsclientw を使うようになっている。で、基本は (gnuserv-start) から (server-start) にするぐらいの変化なのだが、ただ、ファイルを閉じるとき C-x k ではダメで C-x # を押さないといけない。\n\nこれがイヤで、あるだろうと探すと↓に C-x k で C-x # の替わりをする方法が紹介されていた。(C-x # で検索し二つ目。)\n\n《EmacsWiki: Emacs Client》\nhttp://www.emacswiki.org/emacs/EmacsClient\n\nJRF 2011年5月12日\n\nでも、この方法だと、普通の C-x k ならある、バッファー名の確認画面がないので余計な enter を押してしまう。だから、意味がないんだけど、バッファーを閉じるかどうか聞くようにして使うことにした(↓)。\n\n\u003cpre\u003e\n(defun server-edit-with-dummy-input (arg)\n  (interactive \"P\")\n  (read-string \"Next edit after:\" (buffer-name))\n  (server-edit arg))\n\u003c/pre\u003e\n\nJRF 2011年5月12日\n\n\u003cpre\u003e\n(add-hook 'server-switch-hook\n            (lambda ()\n              (when (current-local-map)\n                (use-local-map (copy-keymap (current-local-map))))\n\t      (when server-buffer-clients\n\t\t(local-set-key (kbd \"C-x k\") 'server-edit-with-dummy-input)))) \n\u003c/pre\u003e\n\nJRF 2011年5月12日\n\nTeX のディストリビューションがおかしい。角藤版のアーカイブが tar.xz というめずらしい形にしているとかは、今、昔の雰囲気を伝えるといったテイで好印象を持つが、やっぱり不便だ。\n\nそれでかどうか知らないが、Windows 用 TeX 「インストーラ」がまったく働かず「失敗」する。\n\n《TeXインストーラ 3》\nhttp://www.math.sci.hokudai.ac.jp/~abenori/soft/abtexinst.html\n\nJRF 2011年5月12日\n\nしかも、Cygwin でのインストールもおかしい。↓のままではうまくいかない。(setup -X しても。)\n\n《Cygwin で 日本語 TeX --- ptetex を簡単インストール》\nhttp://ptetexwin.sourceforge.jp/\n\nで、ちょっと試してみると、どうやら setup.exe の最初のコネクションを選ぶところで、Direct Connection だと失敗するが、Use Internet Explorer Proxy Setting を使うとうまくいく。\n\nウィルス監視ソフト(ファイアウォール)あたりの問題なのかもしれない。\n\nJRF 2011年5月12日\n\nただ、それ以外の部分の Cygwin に関しては、かなりすんなりインストールできた。ターミナルは、cygterm ではなく ck を使っていたが、今後は標準でついてくる mintty を使うことになりそうだ。ちゃんと utf-8 が表示され、IME もまともに動く。\n\nまだ、コマンド類をいろいろ確かめたわけじゃないんで、本当にうまくインストールできてるかはわからないけど。\n\nJRF 2011年5月12日\n\nあと、emacsclientw を Explorer で「送る」に設定するため SendTo をいじろうとしたら、私はホームユーザーで管理も個人なのに、書けないとかヌカしやがる。\n\nで、調べると［ユーザ名］/SendTo みたいなのがあるのに、本当の場所は↓になっててそこにリンクをおく必要があるようだ。\n\nC:\\Users\\［ユーザー名］\\AppData\\Roaming\\Microsoft\\Windows\\SendTo\n\nJRF 2011年5月12日\n\ntypo 「リンクがお気に入れにあり」→「リンクがお気に入りにあり」。\n\nkeyword: ネットトップ\n\nJRF 2011年5月12日\n\n……。\n\nうーん、cygwin の ptetex がおかしいなぁ。↓みたいなエラーが出る。tetex は入れてないからか？\n\n\u003cpre\u003e\nPackage: Unknown package\n\tptetex-common.sh exit code 1\n\tptetex-tipa.sh exit code 1\n\u003c/pre\u003e\n\nでも、もう疲れたから、調査は明日だな。\n\nJRF 2011年5月13日\n\n……。\n\n上の解決は置いて おく。\n\n今日は、Windows 7 の UAC がらみで不便があったので直した。Program Files に持ってきたもの(今回の例は DDwin)が UAC にひっかかって単体では動きはするんだけど、他のプログラム(Emacs)から呼ばれるとうまく動かない。\n\nで、ddwin.exe のパーミッションをなんとかすればいいのかといろいろいじっていたが思うようにいかない。\n\nJRF 2011年5月13日\n\nでも、落ち着いて考えれば「変更」のパーミッションが必要なのは exe ではなく、exe が使うファイルである。…ということにやっと気づいて、ddwin.exe の置いてあるディレクトリのデータファイルをユーザーでも変更できるようにしてやることで、emacs から ddwin.exe を呼べるようになった。\n\nで、ちょっと焦ったのは、できるようになってるはずなのに「グループ指定」のところで失敗していた。\n\nこれは、↓の ddwin.el で default-process-encoding-system をちゃんと設定してやることで解決した。\n\nJRF 2011年5月13日\n\n《ddwin.el: Meadow から DDwin を使う》\nhttp://jrf.cocolog-nifty.com/software/2006/02/post_14.html\n\nさて、問題は↑の記事を送ることだ。\n\n私は perl と emacs を使って記事の投稿ができる \"mapae\" を個人的に拡張したものを使っている。そのため両者がちゃんと動かなければ記事の更新ができない。\n\nJRF 2011年5月13日\n\nまず、CPAN を使えるようにしないといけない。perl -MCPAN -e shell をすると、対話的に設定をすることになる。\n\ncygwin であらかじめいろいろ入れておいたが applypatch がないと言われる。ただ、これは無視して大丈夫なようだった。\n\n最後、めんどうになって Enter をずっと押していると、CPAN サイトを指定してくれと繰り返すようになるので、Web で探して日本のサイトを二つほど登録する。\n\n\nJRF 2011年5月13日\n\nそしてやっと設定が終って、i /XMLRPC::Lite/ とすると、curl がロードできないとかいう謎のエラーが出る。curl がおかしい？と疑ったが、コマンドラインで使えばちゃんと動いている。まさか、こんなところでも UAC か？…と思って、/usr/lib/perl5/5.10/CPAN/Config.pm を見る。\n\nなんと、CPAN サイトの指定のところで私は変なキーを押してしまっていたらしく、エスケープシーケンスがサイト文字列の前に入ってしまっていた。\n\nそこをちゃんとしたら、すんなり XMLRPC::Lite (SOAP::Lite) はインストールされてしまった。\n\nJRF 2011年5月13日\n\n調子に乗って以前 [aboutme:136135] で失敗した Math::GSL も入れて見ようとする。\n\nが、大失敗。\n\nまず、vxs.dll に関してエラーが出て、これは rebaseall を必要とする有名なものらしい。\n\n《CygwinでCPANのremapエラーが解けない人へ》\nhttp://d.hatena.ne.jp/hornistyf/20100923/1285236557\n\n《visible true : Cygwinで FixImage…》\nhttp://blog.livedoor.jp/sylc/archives/1560053.html\n\nJRF 2011年5月13日\n\nversion でも  Data::Dumper でも dll に関して出る。そもそも、dll を作るときにたいてい「エラー 1」とか必ず出すのに test はちゃんと徹るのが気持ち悪い。\n\nData:::Dumper とかはちゃんとインストールはされているんだが…。\n\nJRF 2011年5月13日\n\nで、それらの対策をして見ても結局、Math::GSL は [aboutme:136135]  と同じエラーでインストールできなかった。\n\nまぁ、いいさ。\n\nJRF 2011年5月13日\n\nで、mapae に戻ろう。それで、mapae-get-recent-titles とかもちゃんと動くようになった。\n\nそれに安心して記事も投稿する。あれ？私の拡張した部分の文字コード変換ルーチンが、japanese-iso-8bit というコードがないという。… euc-jp のこと emacs-23 ではこういうんだね。Encode がまだその名前に対応してないので、とりあえず、その名前であれば euc-jp に変えるコードを挿入する。\n\nおそるおそる投稿…おおっ、正常終了！\n\n…しかし、サイトの表示を見るとみごとな文字化け。\n\nJRF 2011年5月13日\n\n自分のコードをまず疑いながら、perl は UTF-8 フラグ関連でよくこういう文字化けをすることは何度か経験していたので、そのあたり調べると…ズバリの対策があった。\n\n《ymir_lin - mapae の導入》\nhttp://my.opera.com/ymirlin/blog/2010/10/20/mapae-on-emacs\n\nただし、私のバージョンの mapae は 'utf-8' ではなく 'utf8' と記述してあったので $to eq 'utf-8' の部分は $to =~ /utf-?8/i にしておいた。\n\nJRF 2011年5月13日\n\n……。\n\nこうして記事も投稿できたが、次は文字入力に関する部分。\n\n昔から M-# で ispell を動かし、M-\" で電子辞書(昔は diclookup、今は ddwin.el)を動かしていたが、ddwin.el は上の変更だけで良かったが、ispell は M-# ですでに動かなくなってる。\n\nJRF 2011年5月13日\n\nispell は Meadow の頃は上の TeX の角藤版を使っていたが、ダウンロードできないのも何かの縁だろうってことで、cygwin に付いてくる aspell を使うことにした。\n\n最初、プログラムに cygwin の aspell を指定すると LANG が ja_JP なってるからダメだという。↓を読みオプションを指定して実行すると、--lang=en を指定してもなぜか辞書がない Error: No word lists can be found for the language \"en\" というエラーがでる。\n\nJRF 2011年5月13日\n\nなかなか原因が掴めなかったが、結局、cygwin の aspell-en という別になってるパッケージを入れ忘れてたことが判明した。orz\n\n↓のように設定。\n\n\u003cpre\u003e\n(setq ispell-program-name \"c:/cygwin/bin/aspell.exe\")\n(setq ispell-extra-args '(\"--lang=en\"))\n\u003c/pre\u003e\n\n\nJRF 2011年5月13日\n\n\u003cpre\u003e\n(eval-after-load \"ispell\"\n  '(setq ispell-skip-region-alist (cons '(\"[^\\000-\\377]\")\n\t\t\t\t\tispell-skip-region-alist)))\n(global-set-key \"\\e#\" 'ispell-word)\n\u003c/pre\u003e\n\nでも、ispell-skip-region-alist は日本語をスキップするものらしいが、うまくいってないように見える。\nIspell and its process have defferent character map …とエラーが表示される。\n\nJRF 2011年5月13日\n\n\u003cpre\u003e\n(setq ispell-encoding8-command \"--encoding=UTF-8\")\n\u003c/pre\u003e\n\n…というのを試してみたが変わらない。\n\nJRF 2011年5月13日\n\n/etc/postinstall/ptetex-common.sh のエラー。一つ一つ実行すると最後の fmtutil-sys --all のところでこけてて、そのメッセージは↓の最後のものと同じ。\n\n《動作報告/133 - ptetex Wiki》\nhttp://tutimura.ath.cx/ptetex/?%C6%B0%BA%EE%CA%F3%B9%F0%2F133\n＞`pdfetex -ini  -jobname=latex -progname=latex -translate-file=cp227.tcx *latex.ini' possibly failed.＜\n\nとか。\n\nJRF 2011年5月13日\n\nBabel 関連らしい。でも、platex とかはちゃんと動いてるらしく、↓のドキュメントを入れて(sjis でも utf-8 でも euc でもなく jis で保存して)platex を動かし、dvi を dvipdfmx に食わせて cygstart test.pdf とかすると、Adobe Reader がちゃんと表示してくれた。\n\n《とにかくLaTeXで文書を作ってみよう》\nhttp://www.core.kochi-tech.ac.jp/m_inoue/texclub/textutrial/try.html\n\nJRF 2011年5月13日\n\n…ということで、cygwin 版があれば Windows インスーラ版はとりあえずいらないかな。eps や PSTricks 周りで欲しくなることもあるかもしれないけど、もうずいぶん TeX を使ってないんで、私に関してはここまでやっとけば十分だろう。\n\n続きは明日。\n\nJRF 2011年5月13日\n\n……。\n\nFirefox のアドオン。Firefox Lock の替わりを見つけた。正規のアドオンサイトにはないのが気にかかるが、機能的には私にとって必要十分なもの。\n\n《ProfilePassword》\nhttps://nic-nac-project.org/~kaosmos/profilepassword-en.html\n\nJRF 2011年5月14日\n\n……。\n\n私はテキストを書くとき、できるだけバージョン管理システム cvs で旧バージョンの履歴を残すようにしている。\n\nで、昔は、複数のマシンで、例えば、家のデスクトップと外のノートパソコンで、編集したものを統合することも考え、cvs をサーバーで管理するよう inetd を用いて pserver サービスを cygwin でも使えるようにしていた。\n\n\nJRF 2011年5月14日\n\nが、Windows 7 になって UAC が厳しくなったからか、inetd みたいな基本的なものがインストールできない。ウェブを漁[あさ]ると、cygwin の inetd はセキュリティ的に問題があるから、xinetd を使え…とか書いている。\n\nでも、私に関して考えれば、結局まともに使っている cygwin のサーバーは inetd の cvs pserver だけだったので、cvs さえ何とかすればいいや…となった。\n\nJRF 2011年5月14日\n\nで、複数のマシンでの編集というのも、私はニートというか引きこもりなこともあり、結局必要とした実績がない。pserver も結局、home のディレクトリを参照しているようなものだった。\n\nだから、ダーティートリックだが、これまで pserver を使って cvs checkout したものをすべて CVS/Root を書き換えて、ローカルディレクトリから checkout したことにしてしまった。\n\nJRF 2011年5月14日\n\nMeadow では表示がおかしくなっていたが、Emacs 23から cvs を使うのは普通にできた。\n\n(ちょっと、バックアップファイルの作り方が前と違う感じだが、その辺は今は、まぁ、いいかな。)\n\nJRF 2011年5月14日\n\n……。\n\nemacs の設定に関していくつか。\n\nMeadow を使っていた関係から、「半角／全角 漢字」キーにあたる [kanji] に toggle-input-method を割り当てていたが、Emacs 23 の gnupack 版は toggle-input-method とかの lisp は介さずに IME の起動をフックしているらしく、runemacs -q して確かめると、[kanji] は ignore していたのでそれを設定に取り込んだ。\n\nJRF 2011年5月14日\n\n私は [S-mouse-3] で browse-url-at-mouse を登録して適当なスクリプトを介して firefox で見るように設定していた。\n\nしかし、[S-mouse-3] にちゃんと .emacs で設定しているのに、なぜか、kmacro.el の設定が上書きされてしまうという現象にみまわれた。\n\nなんでそうなるのかわからないが、とりあえず、↓としたら解決した。\n\n\u003cpre\u003e\n(global-set-key [S-mouse-3] 'browse-url-at-mouse)\n(setq kmacro-call-mouse-event nil)\n\u003c/pre\u003e\n\nJRF 2011年5月14日\n\n症状としては、[S-mouse-3] をすると「No kbd macro has been defined」が表示される。起動してすぐだと browse-url-at-mouse が呼ばれることもあるが、emacsclientw から読み込んだファイルだと、このエラーが出た。\n\nJRF 2011年5月14日\n\nMeadow もそうだったが、Emacs-23 も windows や cygwin のシンボリックリンクを扱ってくれない。\n\nMeadow のころは w32-symlinks.el があったが、これが Emacs-23 では機能しないようだ。↓のパッチをあててもダメだった。\n\n《NTEmacsでw32-symlinksを使えるようにする - ヒルズで働くholidays-lの技ログ》\nhttp://d.hatena.ne.jp/holidays-l/20101226/p1\n\nJRF 2011年5月14日\n\nで、w32-symlinks.el を読んで、Emacs-23 が cygwin の symlink を表示するのを見ていると、単純に、find-file したときに symlink ならば、向こうを開くという hook が書けそうだったので書いてみた。\n\n↓で cygwin のシンボリックリンクはとりあえず辿ってくれるようになった。(でも、なんでそうなのかを理解してやってるわけではないので、致命的欠陥があるかもしれないので、これに関しては特に留意して使ってください。)\n\nJRF 2011年5月14日\n\n\u003cpre\u003e\n(defun my-w32-symlinks-parse-cygwin ()\n  (when (and (not (search-forward \"\\n\" nil t))\n\t     (looking-at \"^!\u003csymlink\u003e\\377\\376\\\\(.+\\\\)\\0\\0$\"))\n    (let* ((buf (current-buffer))\n\t   (s (match-string-no-properties 1))\n\t   (file (decode-coding-string s 'utf-16-le)))\n\u003c/pre\u003e\nJRF 2011年5月14日\n\n\u003cpre\u003e\n      (when (file-exists-p file)\n\t(find-file file)\n\t(kill-buffer buf)))))\n\n(add-hook 'find-file-hook\n\t  'my-w32-symlinks-parse-cygwin)\n\u003c/pre\u003e\n\n(300字制限で途中で分け pre タグ等が間に入ってます。)\n\nJRF 2011年5月15日\n\n……。\n\nその…テキストを書くとき CVS の pserver を使うことに関してコラム的に。\n\nどこかのプロバイダがネットで pserver を使えるようにしました…と言ってすぐ使うようになるかというとそうはいかない。\n\nドキュメントは、それなりにプライバシーがあったり働いてる人なら企業秘密とかあるわけで、それを管理者が見る可能性を排除しないような外部のサーバーで管理するのは、ためらわざるを得ない。\n\nJRF 2011年5月16日\n\n本来なら、↓で書いたようなプライバシープロバイダみたいなのを銀行系が運営して、そこに pserver を置いてセキュアに通信できれば…といったところ。\n\n《保証付き匿名ログインと即時銀行振込を可能にして！ ― プライバシープロバイダ API （仮称）》\nhttp://jrf.cocolog-nifty.com/column/2006/12/post_1.html\n\nで、そのプロバイダは公文書系が得意…という「ビジネスモデル」。できないのかなぁ？(^^;\n\nJRF 2011年5月16日\n\nhttp://jrf.aboutme.jp/user_statuses/show/138437\n＞はてなダイアリーはガンバって数式を使えるようにしているから、どこかが公文書系を作りやすいシステムにしていれば…とか思う。そういうベンチャーを建てるのは、もう遅いのかもしれないけど。＜\n\nJRF 2011年5月16日\n\nssh ごしに CVS を使うという方法はあるのか。\n\n《【Proton.jp】 セキュアシェル ssh》\nhttp://www.proton.jp/main/apps/ssh.html\n\nJRF 2011年5月16日\n\n……。\n\nゲームマシンエミュレタを少し試してみた。SSF も ePSXe も遅い。SSF は動きはまともだが、のろいし、音楽もおかしくなるし…で、動作はするがゲームとしてはできない。ePSXe は前のマシンでは快適に動いてたのでショック、GPU がないのがつらいか。PS1 エミュはもうちょっと軽いものがあるらしいが…。\n\n「プラグイン」の充実している同人3Dポリゴンエロゲ(ひみつ…ってモロバレ？)はちゃんと動いた。\n\n動画は、MPC-HC でも WMP でも、たまたま持ってる BD 品質の MP4 だと処理がごそごそ落ちた。ただ、前のマシンより確実にマトモに再生できる MP4 が増えてる。\n\nJRF 2011年5月16日\n\n……。\n\nHamana がホームページからはダウンロードできないね…。Vector には少し古いのが残ってるけど。絵のビューワーはこれをずっと使っている。いちおう前にダウンロードしたやつが残ってるから、それを使うことにしたけど。\n\n《Hamana - graphic viewer》\nhttp://miyano.s53.xrea.com/\n\nHamana と MPC-HC (と emacsclientw)は上で書いた「送る」(SendTo)に設定。\n\nJRF 2011年5月16日\n\n……。\n\nNP15 用に買った周辺機器が届く。\n\n外付 DVD は普通に認識。先日、ネットでつないだドライブからインストールしようとしてできなかった囲碁ゲームもインストールできた。\n\nマウス・キーボードも買った。これまでは古いマシン等から予備として取っておいたマウス・キーボードを使っていたが、予備が他にもある PS/2 のものと違って、これらを常時使うと USB の予備はなくなることになってしまう。こういった基本デバイスに関しては予備をどうしても置いておきたいと思ったので、NP15 用のものをあらためて買った。\n\nJRF 2011年5月16日\n\nというか、他の周辺機器をあさってて欲しくなった。(^^)\n\n小さめの 89 キーのキーボードと、5ボタンの Microsoft マウス を買った。\n\n以前、キーボード等の PC 切換器を買って使ったことがあるが、結局、二段に並べて使ったほうが便利だとわかったので、並べやすいように小さいキーボードにした。\n\n3D 系のツールやゲームで、Ctrl や Shift + マウスという操作を片手でしたいという欲求があったので、5ボタンマウスにした。\n\nなお、Microsoft マウスの設定、デフォルトでは中ボタンが「中ボタン」でないので焦った。\n\nJRF 2011年5月16日\n\nNP15 から USB 記録機器を抜くとき、ぶんぶん揺れるのが怖い。NP15 に USB ハブは必須だろう。ハブでメディアの抜き差しをすれば揺らさずにすむ。そいう目的だから、Amazon でみると他よりケーブルが長めの PLANEX のを選んだ。(でも、ケーブルはもうちょっと長いほうがいいかな。)\n\n《Amazon.co.jp： PLANEX USB2.0/1.1 4ポート USBハブ バスパワー(USBケーブルA to miniB 30cm) PL-UH401》\nhttp://www.amazon.co.jp/dp/B001JL2QNS\n\nJRF 2011年5月16日\n\nもちろん、NP15 にパラレルポートはついてない。ずっと昔から使ってるプリンタを差すために USB に変換するケーブルも買った。\n\n《USB to パラレルプリンタケーブル》\nhttp://www2.elecom.co.jp/cable/usb/uc-p/gt/\n\n古過ぎるからだろうが一発認識とはいかなかったが、プリンタの追加→Windows Update で、そのプリンタのドライバがでてきて、インストール完了。\n\nただ…ちょっとおかしい。ハブを経由しているからか、USB にささったま再起動させると、誤認識が起きる。その後、USB を一端抜いて差し直せば認識されるけど。\n\nJRF 2011年5月16日\n\n……。\n\nソフトのインストールは思ったより、すんなりいく。Visual C++ 2003 は一個警告がでる以外は、まともにインストールできた。\n\nただ、Windows 7 は、フォルダをあっちからこっちにやるだけで「パーミッション・デナイド」が起きるので注意を要した。まぁ、家で使だけなので、パーミッションのかけかたはかなりテキトーだが。ただし、cygwin の chown, chmod は、Windows 7 の UAC よりも相当弱いらしく、chmod だけではアクセスできないことが多くてまいった。\n\nJRF 2011年5月16日\n\n……。\n\nFirefox のアドオン。\n\ntitle 属性を tooltip で表示したいので、Popup ALT Attribute も入れた。\n\nJRF 2011年5月16日\n\nそして、私のひとことサイトなどで、すごーく長いページとかだと、右クリックメニューがなかなか表示されないという状態が、3.6.17 のころからあり、4.0.1 ではとうとう表示もされないという状態になったのだが、4.0.1 はどれが重い処理をしているかを述べてくれ、その問題となってるアドオンが「テキストリンク」だと判明。それを無効化することで、右クリックメニューはわりとまともになった。\n\n《XUL Apps \u003e Text Link - outsider reflex》\nhttp://piro.sakura.ne.jp/xul/textlink/index.html\n\nJRF 2011年5月16日\n\nただし、この機能がないのも困るので、とりあえず 簡単な JSActions 用スクリプトを書いた。↓を JSActions の selection ディレクトリに置けばいい。\n\nhttp://jrf.cocolog-nifty.com/archive/javascript/Open_Text_Links.js\n\nJRF 2011年5月16日\n\n……。\n\nEmacs 関連。\n\nWindows の日本語ファイル名を扱うには次が必要。\n\n\u003cpre\u003e\n(setq file-name-coding-system 'sjis-dos)\n\u003c/pre\u003e\n\nJRF 2011年5月16日\n\nWikipedia 等は URL に () を入れることがあるようで、最近の URL 切り出しは () も含むようす。でも、emacs からリンクを辿って firefox に表示するときは、最後の ) は無視したほうが便利だ。…ということで、URL 切り出しをちょっとハックしといた。\n\nJRF 2011年5月16日\n\n\u003cpre\u003e\n(defadvice browse-url-url-at-point\n  (after remove-last-parenthesis-browse-url-url-at-point activate)\n  (let ((url ad-return-value))\n    (setq ad-return-value\n\t  (if (and (string-match \")$\" url)\n\t\t   (not (string-match \"(\" url)))\n\t      (substring url 0 -1)\n\t    url))))\n\u003c/pre\u003e\n\nJRF 2011年5月16日\n\nこれを書いちゃうのは自分ちのセキュリティをおろそかにすることだけど、まぁ、書いちゃうか。\n\n私はファイルの暗号化には ccrypt を使っている。で、それを Emacs で使うための .el は↓にある。(大変わかりにくいが、Emacs Support のところに書いてる jka-compr-ccrypte.l は古く、News のところにリンクされている ps-ccrypt.el を使う。)\n\n《Peter Selinger: ccrypt》\nhttp://ccrypt.sourceforge.net/\n\nJRF 2011年5月16日\n\nで、Meadow のころは、開いたあと、SJIS でも認識してくれたのだが、今回はダメらしい。が、UTF-8 なら大丈夫なようなので、ファイルを UTF-8 化して暗号をかけなおした。\n\nJRF 2011年5月16日\n\n……。\n\n今のところ(ユーザー)環境変数は↓。だいたい Emacs がらみ。\n\n\u003cpre\u003e\nALTERNATE_EDITOR\t%emacs_dir%/bin/runemacs.exe\nemacs_dir\t\tc:/emacs-23.3-20110402\nHOME\t\t\tc:/home/XXXX\t\t\t(ひみつ)\nLANG\t\t\tja_JP.UTF-8\nTemp\t\t\tc:\\Temp\nTMP\t\t\tc:\\Temp\nTZ\t\t\tJST-9\n\u003c/pre\u003e\n\nあと、Visual Studio が INCLUDE と LIB を設定してる。Temp は好みだと思う。ただ、パーミッションの設定に注意する必要がある。\n\nJRF 2011年5月16日\n\ntypo 「家で使だけなので」→「家で使うだけなので」。\n\nJRF 2011年5月16日\n\n……。\n\nプリンタ。やっぱりハブ経由がいけなかった。\n\nで、ハブ経由をやめたあと、USB のケーブルはすぐに認識されたが、プリンタは一度削除して、もう一度、USB 仮想ポート「2」にインストールしなおす必要があった。\n\nJRF 2011年5月17日\n\nあと、周辺機器の不満を挙げると、USB メモリかな。\n\n8G の USB メモリが 1000 円だったので買ったのだけど、「スライド式」ってのか、USB 端子を押し出すタイプのやつ。これは失敗だった。\n\n第一に、スライドさせないでしまっているときに、端子は隠れるだけでカバーが下りてくるなどといった高級なシカケはない。だから、USB メモリにコーヒーぶっかけた「実績」のある私には、扱えないシロモノのたぐい。\n\nさらに、USB ハブの端子が使いはじめだから固い。差そうとするとスライドが引っこんじゃう。まぁ、こっちの辺は長く使っていきゃあ慣れると思う。\n\nJRF 2011年5月17日\n\nついでに、もう一個コラム的な不満。\n\nソフトのインストールとかしてると、ライセンスというか、憲法が平等をうたう以上([aboutme:127257])、法的には相手方の主張ぐらいに見るべきものだとは思うが、チラチラながめてるとすごいこと書いてるね。\n\nいやぁ、これを読んで PC を使えるような「まともな人間」なんているのか？インストールを命じてやらせるような人間はいいよ。下の者の錯誤ってあたりに落ち着かせるワザもあるだろうから。\n\nでも、そういうことしてると、実際インストールする IT 関係者の立場を弱くしていくだけだ、…ってことがわかんないのかね。\n\nJRF 2011年5月17日\n\n…まぁ、消費者たるわたくしと同じく労働者の皆様もわかってて抵抗できんのでしょうが。\n\n上でプライバシープロバイダは銀行系がいいってなこと書いたけど、弁護士系でもいいよ。\n\n銀行系がセキュア技術提供して弁護士系がSNSをする感じかな。\n\n…って、そういや弁護士系が借金の CM をよくやるようになったね。あの辺、もっと「まともな仕事」になれないのかな。\n\nなれないんだろうなぁ…「ライセンス」読んで卑屈になるだけの私のような消費者達の国じゃあ。\n\nJRF 2011年5月17日\n\n修正 「弁護士系がSNS」→「弁護士系が小さいSNS」。\n\n…というか、弁護士の個人事務所と組んだプライベートバンクみたいなのができればいいんだけど、でも、それじゃあ安価にはできないか。いや、寺の檀家制度みたいなのはあったわけだし…。\n\nたまたま関連記事を見た。\n\n《高木浩光＠自宅の日記 - 富士通総研が研究員のコラムを削除、国民ID・共通番号制度を巡る現況》\nhttp://takagi-hiromitsu.jp/diary/20110515.html#p01\n\nJRF 2011年5月18日\n\n……。\n\n(上の Open_Text_Links.js を少しバージョンアップ。リンク文字列が一つもないとき警告を出すのと、\"http://\" がなくても \"/\" で区切られてる文字列(Google 検索のとき表示されるやつとか)をリンクとみなすようにした。)\n\nJRF 2011年5月18日\n\n……。\n\n基本的なことを書き忘れてた。\n\n起動は早いです。前の XP に比べればだんぜん。\n\n音もだんぜん小さい。深夜には音に気づくけど、昼は音はしてないぐらいの感じ。\n\nディスプレイは前からある24型液晶のやつに、前のマシンをデジタルで、NP15 をアナログでつなぎ、切り換えながら使ってます。アナログですが、1920x1080 でキレイに映ってます。\n\n触れば熱はそれなりにありますが、持てないほどじゃない。\n\n前のマシンではあぶなっかしくて使わなかったスリープモードもしっかりしてる感じ。(自動でスリープになるのはオフにしてるけど。)\n\nJRF 2011年5月18日\n\n……。\n\nEmacs の navi2ch の設定でちょっと苦しむ。一つは izonmoji-mode が使えなくなったことで、これははずすことで解決。一瞬、またパーミッションがらみのエラーかと思った。\n\nもう一点、これは結果的にとても大事だとわかったのだが、最初は↓で使う convert のエラーとして現れた。\n\n《Navi2ch でインラインに画像を表示する (Referer もつける).》\nhttp://jrf.cocolog-nifty.com/software/2006/03/post_2.html\n\nJRF 2011年5月18日\n\nまず Emacs が cygwin のパスを理解しないため、/tmp のパスにあるファイルが読めなくなっていた。これは cygmout を使わなくなったのでしかたない。elisp 側で \"c:/cygwin\" を前に付けることで態応した。\n\nそれでも、navi2ch.makethumb が画像を生成しない。スクリプトの動きを log に吐きながら調べると、PATH はあってるのに which convert すると /cygdrive/c/Windows/system32/convert が返ってくる。\n\nJRF 2011年5月18日\n\nかなり不思議な現象だが、やっと原因がわかったのには、PATH にカレントディレクトリ \".\" が含まれており、スクリプトがなんと \"c:/Windows/system32\" で実行されていることがわかった。\n\nでも、default-directory を調べると、ちゃんと %HOME% を指してたりする。もう一度よく見ると、バッファローカルにはそうなってるだけで、グローバルには nil になっていた。\n\nJRF 2011年5月18日\n\nということで、runemacs を起動するためのリンクのプロパティで作業フォルダを %HOME% にすることで解決した。\n\nこれはインストール時にぜひやっておくべきことだった。\n\nJRF 2011年5月18日\n\ntypo 「態応」→「対応」。\n\nJRF 2011年5月18日\n\n……。\n\nmew が emacs-w3m を使わなくなったため、HTML メールを読めなくなった。ブラウザで読むのは極力避けたいが、ないと困るときがあるかもしれない。\n\nmew は HTML メールだと、その旨を表示して、C-c C-e で fiber.exe を実行すると出る。fiber.exe は拡張子に合わせてドキュメントを開くためのものと言える。\n\nしかし、fiber.exe は meadow に付いてくるものらしく、Windows 7 に入ってるようなものではないらしい。Emacs 23 には入っていない。\n\nJRF 2011年5月23日\n\nでも、cygwin にはほぼ同様の働きをする cygstart.exe があるので、これを替わりに .emacs で指定してやればよい。\n\n\u003cpre\u003e\n(setq mew-w32-exec \"c:/cygwin/bin/cygstart.exe\")\n\u003c/pre\u003e\n\nJRF 2011年5月23日\n\n……。\n\nActivePerl の perl-Tk は X11 を使わずに GUI が書けた。だったら、cygwin の perl でもできそうなもの…と調べたら、perl-Tk の cygwin 用の README にはデフォルトだと、X11 を使わず w32 を使ってメイクすると書いてある。\n\nしかし、cygwin のパッケージとして出回っている perl-Tk は X を使うものになってしまっている。\n\nJRF 2011年5月23日\n\n……。\n\n上の rebaseall で FixImage なんちゃらのエラーが出るもの、エラーに出た dll を cygcheck -f すると、すべて mingw64 のものだった。(あと perl が作った dll は書き込めないというエラーが出るが、chmod +w するとエラーが出なくなる。)\n\nmingw64 はもしかするといるかな…と思って入れていたものだったので uninstall した。これで rebaseall の FixImage なんちゃらのエラーは出なくなった。\n\nJRF 2011年5月23日\n\n……。\n\nEmacs と Cygwin のからみで↓。\n\n[aboutme:138992]\n＞何かが NUL を残してる…。ディレクトリに NUL というファイル名の 0 バイトのファイルが勝手にできてる…。＜\n\n私の Emacs の shell まわりの設定はいろいろやってるけど↓みたいな感じ。\n\nJRF 2011年5月27日\n\n\u003cpre\u003e\n(setq explicit-shell-file-name \"bash\")\n(setq explicit-bash-args '(\"--login\" \"-i\"))\n(setenv \"BASH_ENV\" \"~/.bash_profile\")\n(setq shell-file-name \"bash\")\n(setq shell-command-switch \"-c\")\n(setq null-device \"/dev/null\")\n\u003c/pre\u003e\nJRF 2011年5月27日\n\n\u003cpre\u003e\n(defun shell-quote-argument (argument)\n  (if (equal argument \"\")\n      \"''\"\n    (replace-regexp-in-string \"\\n\" \"'\\n'\"\n      (replace-regexp-in-string \"[^-0-9a-zA-Z_./\\n]\" \"\\\\\\\\\\\\\u0026\" argument))))\n\u003c/pre\u003e\nJRF 2011年5月27日\n\n\u003cpre\u003e\n;;; coding-system の設定\n(add-hook 'shell-mode-hook\n          (lambda ()\n           (set-buffer-process-coding-system 'utf-8-unix 'utf-8-unix)))\n\u003c/pre\u003e\n\nJRF 2011年5月27日\n\n\u003cpre\u003e\n;;; ^M をとる\n(add-hook 'comint-output-filter-functions 'shell-strip-ctrl-m nil t)\n\n;;; shell-modeでの補完 (for drive letter)\n(setq shell-file-name-chars \"~/A-Za-z0-9_^$!#%\u0026{}@'`.,;()-\")\n\u003c/pre\u003e\n\nJRF 2011年5月27日\n\n……。\n\nisearch に日本語が使えないのをなんとかしたくて、 .emacs に↓を設定。少し操作感が変わるが、いたしかたない。\n\n\u003cpre\u003e\n(setq search-exit-option 'edit) ; [return] で終了。\n\u003c/pre\u003e\n\nあと、grep で日本語が使えないのも何とかしたいが…ざっと debug-on-entry で見たところ、これも defadvice する必要がありそう…。はぁ。isearch が使えるようになったから、対策はもうちょっとあとだな。(jgrep は前から perl で簡単なのを作ってあるので、コマンドラインのエンコードの問題。)\n\nJRF 2011年6月4日\n\ntypo 「エミュレタ」→「エミュレータ」。\ntypo 「cygmout」→「cygmount」。\n\nJRF 2011年6月4日\n\n↑のようにすると、isearch の \\C-g の感覚が違うので、↓も設定した。\n\n\u003cpre\u003e\n(define-key isearch-mode-map \"\\C-g\" 'isearch-cancel)\n\u003c/pre\u003e\n\nJRF 2011年6月5日\n\n……。\n\nヘッドフォンでクラシックの MP3 を聴いているが、ときどき処理落ちみたいなのが発生している。何だろう MP3 の問題なのかマシンの問題なのか、WMP の設定の問題なのか…。\n\n……。\n\nキーボードが小さくなったせいなのだろうか。不思議な typo がある。e と i を間違えてるらしいやつとか。キーが押し込めてないというはまだわかるけど。\n\nJRF 2011年7月4日\n\n……。\n\nエプソンのサポートからメールがあった。BIOS の更新があったらしい。\n\n《[021103]NP15 BIOSアップデートプログラム》\nhttp://faq.epsondirect.co.jp/faq/dl/app/servlet/qadoc?021103\n\n新しいバージョンは AM8-0012-EP2 。ちょっと面倒くさいというか、README.TXT をしっかり読んでないととまどいそうな感じだが、そこに書かれている通りにやれば更新できた。CPU ファン関連の修正らしい。\n\n(ところで直上の MP3 の問題はなんとなくブラウザが重すぎるのが原因な気もする…。)\n\nJRF 2011年8月4日\n\n……。\n\nエミュレータについて、私がゲームを(再び)やろうと実機を持ち ROM を持ってる範囲のみで試した。\n\nサターンの SSF がまともに動かないのは上に書いたとおり。\n\n初代プレイステーションのエミュレータに関しては、グラボもサウンドカードもないわけで、スピードの問題がどうしてもある。上で試してダメだったのが ePSXe。他もプラグイン方式なのはダメなものがほとんどで、psxjin もダメだった。\n\nただ、pcsxrr と pSX はわりとまともに動いた。\n\nあと、ゲームボーイアドバンスやスーパーファミコンのエミュレータも試したが、こちらはまともに動いた。\n\nJRF 2012年1月20日\n\nTrackbacks:\n\n《cocolog:70648516》 from JRF のひとこと\nhttp://jrf.cocolog-nifty.com/statuses/2011/11/inksc.html\n\nInkscape のバッチ処理で変なエラーが出る。出たり出なかったりするのが気持ち悪い。調べると既知のバグで、以前([aboutme:138754])ひっかかった rebaseall のバグだった。Inkscape を入れてからまた必要になってたらしい。... \n\n受信： 2012-01-04 14:59:20 (JST)\n\n《aboutme:138992》 from JRF のひとこと\nhttp://jrf.cocolog-nifty.com/statuses/2011/05/aboutme138992.html\n\n何かが NUL を残してる…。ディレクトリに NUL というファイル名の 0 バイトのファイルが勝手にできてる…。要は、DOS 系の「デバイス」名が Windows 7 で挙動が違うとかなのか？Emacs か Cygwin あたりの悪さなんだろうか…？... \n\n受信： 2012-01-04 18:59:17 (JST)\n\n《aboutme:137553》 from JRF のひとこと\nhttp://jrf.cocolog-nifty.com/statuses/2011/03/aboutme137553.html\n\n三陸沖大地震。各地の津波、工場炎上の映像が流れる。テレビの地上波はローカル局も、BS の無料放送もすべて特番。ネットニュースの対応が私には遅く見えるのは、被害が全国的なわりにフィルタがスパム排除的に扱いを小さくしてしまうからか。私のところは幸い異常なし、小雨が降ったりやんだり。... \n\n受信： 2012-01-05 00:32:42 (JST)\n\n《cocolog:78739712》 from JRF のひとこと\nhttp://jrf.cocolog-nifty.com/statuses/2014/01/jsact.html\n\nJSActions を使って「テキストリンク」をタブで開くための Open_Text_Links.js をアップデート。 \n\n受信： 2014-03-30 23:37:29 (JST)\n\n《cocolog:90528156》 from JRF のひとこと\nhttp://jrf.cocolog-nifty.com/statuses/2019/01/post-fbfe.html\n\nパソコンのキーボードを買い換えた。2台のパソコンでキーボードを使うようになって、まず1台のパソコンのキーボードのものをコンパクトなものに買い換えた。すると、もう1台との微妙な差異が気になって、もう1台のほうも新しいものの色違いに買い換えた。... \n\n受信： 2019-03-18 03:37:22 (JST)"</script>
+<script src="../../../article.js"></script>
 </body>
 </html>

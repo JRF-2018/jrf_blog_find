@@ -21,10 +21,11 @@
 </table>
 </div>
 <h1>Python Tips: PDB で property で break。</h1>
+<div class="art-tools" data-pagefind-ignore><button type="button" id="btn-copy">原文をコピー</button><span class="tools-msg" id="tools-msg"></span></div>
 <pre class="body">Python Tips: PDB で property で break。
 JRF 2022年5月17日
 
-&lt;pre&gt;
+<span class="src-pre">&lt;pre&gt;
 class A:
     @property
     def bar(self):
@@ -32,15 +33,15 @@ class A:
 a = A()
 import pdb; pdb.set_trace()
 a.bar
-&lt;/pre&gt;
+&lt;/pre&gt;</span>
 
 …として、a.bar に breakpoint を設定したい場合、
 
 JRF 2022年5月17日
 
-&lt;pre&gt;
+<span class="src-pre">&lt;pre&gt;
 (Pdb) b A.bar.fget
-&lt;/pre&gt;
+&lt;/pre&gt;</span>
 
 …とすればよい。
 
@@ -48,10 +49,10 @@ JRF 2022年5月17日
 
 こうしないと次のようなエラーが出る。
 
-&lt;pre&gt;
+<span class="src-pre">&lt;pre&gt;
 (Pdb) b a.bar
 *** The specified object 'a.bar' is not a function or was not found along sys.path.
-&lt;/pre&gt;
+&lt;/pre&gt;</span>
 
 JRF 2022年5月17日</pre>
 
@@ -61,5 +62,7 @@ JRF 2022年5月17日</pre>
 <nav class="prevnext" data-pagefind-ignore><span class="prev-art">← <a href="../../../articles/2022/05/statuses_cocolog_93495591.html">村田安雄『動的経済システムの最適制御』の検算＆シミュレーションを少し行った。今の…</a> <span class="pn-date">2022年05月15日</span></span><span class="next-art"><a href="../../../articles/2022/05/statuses_cocolog_93518069.html">「ストリーム」録画禁止…著作権第30条私的複製の「権利」を契約でオーバーライドし…</a> <span class="pn-date">2022年05月27日</span> →</span></nav>
 
 <nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2022/05.html">2022年05月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+<script type="application/json" id="raw-text">"[statuses] [cocolog:93498093]\nhttp://jrf.cocolog-nifty.com/statuses/2022/05/post-75ae48.html\n\nPython Tips: PDB で property で break。\nJRF 2022年5月17日\n\n\u003cpre\u003e\nclass A:\n    @property\n    def bar(self):\n        return \"OK\"\na = A()\nimport pdb; pdb.set_trace()\na.bar\n\u003c/pre\u003e\n\n…として、a.bar に breakpoint を設定したい場合、\n\nJRF 2022年5月17日\n\n\u003cpre\u003e\n(Pdb) b A.bar.fget\n\u003c/pre\u003e\n\n…とすればよい。\n\nJRF 2022年5月17日\n\nこうしないと次のようなエラーが出る。\n\n\u003cpre\u003e\n(Pdb) b a.bar\n*** The specified object 'a.bar' is not a function or was not found along sys.path.\n\u003c/pre\u003e\n\nJRF 2022年5月17日"</script>
+<script src="../../../article.js"></script>
 </body>
 </html>

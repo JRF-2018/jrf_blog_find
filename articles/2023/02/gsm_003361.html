@@ -21,6 +21,7 @@
 </table>
 </div>
 <h1>FANBOX EPUB 化の暫定的な技術的覚え書き FANBOX の EPUB…</h1>
+<div class="art-tools" data-pagefind-ignore><button type="button" id="btn-copy">原文をコピー</button><span class="tools-msg" id="tools-msg"></span></div>
 <pre class="body">jrf&gt; FANBOX EPUB 化の暫定的な技術的覚え書き
 
 FANBOX の EPUB 化にあたり、最大の問題点は、FANBOX のページは JavaScript による動的生成を多様しており、Perl から get しても、ブラウザのページで保存したりしても、中身のないデータしか得られないという点である。これを補うため、Firefox のアドオンの Save Page WE というアドオンで保存する。
@@ -37,5 +38,7 @@ EPUB への流れとしては、Save Page WE でセーブ → 変換スクリプ
 <nav class="prevnext" data-pagefind-ignore><span class="prev-art">← <a href="../../../articles/2023/02/gsm_003360.html">LGBT…</a> <span class="pn-date">2023-02-09T10:40:19Z</span></span><span class="next-art"><a href="../../../articles/2023/02/gsm_003362.html">(FANBOX EPUB 化の暫定的な技術的覚え書き つづき)…</a> <span class="pn-date">2023-02-09T13:31:46Z</span> →</span></nav>
 
 <nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2023/02.html">2023年02月</a> | <a href="../../../index/gsm.html">共有メモ</a></nav>
+<script type="application/json" id="raw-text">"[gsm]\n○ 2023-02-09T13:31:05Z yrhA07g0sg\n\njrf\u003e FANBOX EPUB 化の暫定的な技術的覚え書き\n\nFANBOX の EPUB 化にあたり、最大の問題点は、FANBOX のページは JavaScript による動的生成を多様しており、Perl から get しても、ブラウザのページで保存したりしても、中身のないデータしか得られないという点である。これを補うため、Firefox のアドオンの Save Page WE というアドオンで保存する。\n\nただし、Save Page WE はページがまるごと保存できるのがウリだが、決して特定の仕様に沿ったセーブをなすわけではない。そのため、Save Page WE で保存したものから変換作業を行っていくが、その作業は Save Page WE のバージョンアップと共に変更を強いられることとなろう。\n\n次の大きな問題点として、EPUB は HTML のかなり小さいサブセットであるため、情報をかなり削っていかなければ、うまく表示できないという点がある。Save Page WE の特殊な CSS の使い方等を補う必要がある。\n\nEPUB への流れとしては、Save Page WE でセーブ → 変換スクリプトで変換 → Sigil で EPUB にする。…という流れ。Sigil のメタデータの入力や CSS の作成などにもノウハウはないでもないが、これについてはできた EPUB を見てもらったほうが早いのでここでは説明しない。変換についてのみここでは書いていく。"</script>
+<script src="../../../article.js"></script>
 </body>
 </html>

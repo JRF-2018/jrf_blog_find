@@ -21,6 +21,7 @@
 </table>
 </div>
 <h1>LangChain…</h1>
+<div class="art-tools" data-pagefind-ignore><button type="button" id="btn-copy">原文をコピー</button><span class="tools-msg" id="tools-msg"></span></div>
 <pre class="body">jrf&gt; LangChain を使って熊剣迷路問題(<a href="../../../articles/2023/07/statuses_cocolog_94293132.html" class="int-link cocolog-id" title="ひとこと">[cocolog:94293132]</a>(2023年7月))を解かせてみたのだが、うまくいかなかった。
 
 まず、ハマったのが、create_gemini_functions_agent がないということ。あるという情報とないという情報があって、錯綜していた。create_openai_functions_agent は確実にある。
@@ -52,5 +53,7 @@
 <nav class="prevnext" data-pagefind-ignore><span class="prev-art">← <a href="../../../articles/2025/07/gsm_007305.html">プログラムしようかと思ったが、なんかダルいのでちょっと寝よう、または、休もう。簡…</a> <span class="pn-date">2025-07-03T21:18:06Z</span></span><span class="next-art"><a href="../../../articles/2025/07/gsm_007307.html">速報。LangChain…</a> <span class="pn-date">2025-07-04T09:02:32Z</span> →</span></nav>
 
 <nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2025/07.html">2025年07月</a> | <a href="../../../index/gsm.html">共有メモ</a></nav>
+<script type="application/json" id="raw-text">"[gsm]\n○ 2025-07-04T07:07:27Z yMmJhDPRkj\n\njrf\u003e LangChain を使って熊剣迷路問題([cocolog:94293132](2023年7月))を解かせてみたのだが、うまくいかなかった。\n\nまず、ハマったのが、create_gemini_functions_agent がないということ。あるという情報とないという情報があって、錯綜していた。create_openai_functions_agent は確実にある。\n\n結局これは、create_tool_calling_agent を使えということらしい。\n\nところが、create_tool_calling_agent にも問題がある。llm = GoogleGenerativeAI() の llm では使えなくて、llm = ChatVertexAI() の llm なら使えるという罠があった。(あとで Gemini さんに聞くと llm = GoogleGenerativeAI() じゃなくて llm = ChatGoogleGenerativeAI() なら使えるとのこと。使えた orz。)\n\nさらにどうも、ツールコールでない質疑などが間に挟まると、 Message's content is expected to be a dict, got \u003cclass 'int'\u003e! …というエラーが出るときがあって、一度それが出ると、その後も同じエラーが invoke のごとに発生してしまう。\n\nこれは、チャット履歴におかしなデータが混入しているのが問題であるらしく、agent_executor.memory.clear() みたいなことをすれば、その後は invoke が有効になった。\n\nで、そういうエラーに(ある程度手動で)対応できるようになって、迷路を解かせるのだが、これが全然うまくいかない。地図が読めない。テキストの地図の読み取りが下手なのだろう。\n\n方針と計画を AI がセットできるようにしたのだが、これが全然うまく方針を立てられない。\n\n結局、剣を取るところまでは進んだが、その後、熊を倒しにいくところまではいけなかった。剣を取ったところでチラと見えるゴールにどうしても向かおうとして、いつまでも迂回ができない様子だった。\n\nあれぇ、これじゃ AGI なんか無理だぞ…という感じ。もしかすると私のプロンプトやコンテクスト設計がマズイのかもしれないが…。\n\n(まだ迷路も解けてない段階では公開しても無意味なような気がするので迷ったのだが、一応他の人の参考になるかもしれないので公開しておく。)\n\n《langchain_maze_vertexai_0.0.1.ipynb - GitHub Gist》  \nhttps://gist.github.com/JRF-2018/be6a8cb85227aeccd048346d29fdc803"</script>
+<script src="../../../article.js"></script>
 </body>
 </html>

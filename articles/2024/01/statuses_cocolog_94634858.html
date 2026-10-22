@@ -21,6 +21,7 @@
 </table>
 </div>
 <h1>自分のマシンで、画像生成 AI の Stable Diffusion…</h1>
+<div class="art-tools" data-pagefind-ignore><button type="button" id="btn-copy">原文をコピー</button><span class="tools-msg" id="tools-msg"></span></div>
 <pre class="body">自分のマシンで、画像生成 AI の Stable Diffusion (WebUI) を動かせた！ やったぁ。
 JRF 2024年1月20日
 
@@ -65,5 +66,7 @@ JRF 2024年1月20日</pre>
 <nav class="prevnext" data-pagefind-ignore><span class="prev-art">← <a href="../../../articles/2024/01/statuses_cocolog_94634212.html">新しい PC 買っちった。Core i7 14700、GeForce RTX…</a> <span class="pn-date">2024年01月20日</span></span><span class="next-art"><a href="../../../articles/2024/02/statuses_cocolog_94669337.html">PC ゲーム(Steam)『theHunter: Call of the…</a> <span class="pn-date">2024年02月04日</span> →</span></nav>
 
 <nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2024/01.html">2024年01月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+<script type="application/json" id="raw-text">"[statuses] [cocolog:94634858]\nhttp://jrf.cocolog-nifty.com/statuses/2024/01/post-b3c883.html\n\n自分のマシンで、画像生成 AI の Stable Diffusion (WebUI) を動かせた！ やったぁ。\nJRF 2024年1月20日\n\n以前は Google Colab で生成していた(参: [cocolog:94145743] など)。\n\nJRF 2024年1月20日\n\nちょっとはまったのが、\n\nwebui-user.bat\n\n…が Cygwin で Permission Denied になったこと。\n\nls -l すると実行フラグ(x) がついてるのに、実行できないので、bat と ACL の関係、/etc/fstab 関連を疑ったが、結局\n\nJRF 2024年1月20日\n\nchmod a+x webui-user.bat\n\n…にすると動いた。\n\nJRF 2024年1月20日\n\nあと、Anaconda で動かしているが、python 3.12.1 では torch がなくてダメと言われたので、python=3.10.6 で動かすことにした。\n\nシンボリックリンクは Windows のシンボリックリンクを使うことで、別のドライブにある昔のモデルデータなども利用できた。\n\nまだ、試してるうちに問題が出てくるかもしれないけど、とりあえず、うれしい！\n\nJRF 2024年1月20日"</script>
+<script src="../../../article.js"></script>
 </body>
 </html>

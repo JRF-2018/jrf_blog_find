@@ -21,6 +21,7 @@
 </table>
 </div>
 <h1>Javascript の parseInt…</h1>
+<div class="art-tools" data-pagefind-ignore><button type="button" id="btn-copy">原文をコピー</button><span class="tools-msg" id="tools-msg"></span></div>
 <pre class="body">Javascript の parseInt の「バグ」にはまる。parseInt(&quot;08&quot;)  は &quot;0&quot; が最初についているのでオクテット(8進数)に解釈されるというもの。parseInt(&quot;08&quot;, 10) ならちゃんと 8 になる。
 JRF 2011年4月11日
 
@@ -38,5 +39,7 @@ JRF 2011年4月11日</pre>
 <nav class="prevnext" data-pagefind-ignore><span class="prev-art">← <a href="../../../articles/2011/04/statuses_aboutme_138283.html">レーピン(vn)『ストラヴィンスキー：ディヴェルティメント』。猥雑だがスマート。…</a> <span class="pn-date">2011年04月09日</span></span><span class="next-art"><a href="../../../articles/2011/04/statuses_aboutme_138309.html">Javascript のソース内で XML…</a> <span class="pn-date">2011年04月12日</span> →</span></nav>
 
 <nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2011/04.html">2011年04月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+<script type="application/json" id="raw-text">"[statuses] [aboutme:138307]\nhttp://jrf.cocolog-nifty.com/statuses/2011/04/aboutme138307.html\n\nJavascript の parseInt の「バグ」にはまる。parseInt(\"08\")  は \"0\" が最初についているのでオクテット(8進数)に解釈されるというもの。parseInt(\"08\", 10) ならちゃんと 8 になる。\nJRF 2011年4月11日\n\nまぁ、16進数 0x... を解釈してくれるのは、確かに便利で、私も昔そういう実装をしたことがあったように覚えいている。\n\nだから気づけた面があると思う。そう考えると、今のプログラマが 8 進数の問題ってどれほど気付けるだろう？\n\n私はオクテットは 0o777 とかで入力させようとしたこともあった。でも 0o は o が 0 と形が似ているのでこれもちょっとアレなんだよね。\n\nJRF 2011年4月11日"</script>
+<script src="../../../article.js"></script>
 </body>
 </html>

@@ -21,6 +21,7 @@
 </table>
 </div>
 <h1>Isabelle 2020 の HOL を使った「ケネディと天使の問題を…</h1>
+<div class="art-tools" data-pagefind-ignore><button type="button" id="btn-copy">原文をコピー</button><span class="tools-msg" id="tools-msg"></span></div>
 <pre class="body">Isabelle 2020 の HOL を使った「ケネディと天使の問題を Isabelle で証明」という記事を書いた。Isabelle の Tips とともに…。
 JRF 2020年6月22日
 
@@ -34,9 +35,9 @@ JRF 2020年6月22日
 
 特定の定理や定義を表示したいとき、THEN の結果を出力したいときは…
 
-&lt;pre&gt;
+<span class="src-pre">&lt;pre&gt;
 thm trans [THEN sym]
-&lt;/pre&gt;
+&lt;/pre&gt;</span>
 
 …などとすれば良い。
 
@@ -135,5 +136,7 @@ JRF 2020年6月23日</pre>
 <nav class="prevnext" data-pagefind-ignore><span class="prev-art">← <a href="../../../articles/2020/06/statuses_cocolog_91980310.html">BLM運動。文革やバーミヤン石仏破壊に比す意見が私の周りでは目立ち、「ポリコレフ…</a> <span class="pn-date">2020年06月15日</span></span><span class="next-art"><a href="../../../articles/2020/07/statuses_cocolog_92017073.html">2020年4月期・春アニメ。今期も地上波・BSで様々なアニメを観た。COVID-…</a> <span class="pn-date">2020年07月01日</span> →</span></nav>
 
 <nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2020/06.html">2020年06月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+<script type="application/json" id="raw-text">"[statuses] [cocolog:91995523]\nhttp://jrf.cocolog-nifty.com/statuses/2020/06/post-33e498.html\n\nIsabelle 2020 の HOL を使った「ケネディと天使の問題を Isabelle で証明」という記事を書いた。Isabelle の Tips とともに…。\nJRF 2020年6月22日\n\n前に Isabelle を使ったのが 2015 年。そのときの Tips は [cocolog:83987061] にある。\n\nそれにプラスしていくつかの Tips。\n\nJRF 2020年6月22日\n\n……。\n\n特定の定理や定義を表示したいとき、THEN の結果を出力したいときは…\n\n\u003cpre\u003e\nthm trans [THEN sym]\n\u003c/pre\u003e\n\n…などとすれば良い。\n\nJRF 2020年6月22日\n\n……。\n\njEdit の Plugins -\u003e Plugin Options の Isabelle の General の中の \"Completion Immediate\" の項目のチェックボタンをオフにした上で…。\n\n古い notation では、\\\u003cforall\u003e は ALL、\\\u003cexists\u003e は EX、\\\u003cin\u003e は : (type に対しては ::)、\\\u003clambda\u003e は %、\\\u003cand\u003e は \u0026、\\\u003cor\u003e は |。\n\nJRF 2020年6月22日\n\n\\\u003copen\u003e \\\u003cclose\u003e は {* *} であったらしいのだが、そちらを使うと legacy だという警告が出る。\n\nJRF 2020年6月22日\n\n……。\n\njEdit の Utilities -\u003e Global Options の中の Shortcuts に Choose keymap の項目があって、そこで Emacs を選んだ上で、まず、C-x C-s と C-s の設定をする。\n\nあと、C-e を prefix に持っているものをすべて削除で C-e が(同じじゃないが)使えるようになる。\n\nJRF 2020年6月22日\n\n……。\n\n……。\n\nTips はここまでにして今回の記事について。記事は↓。\n\n《ケネディと天使の問題を Isabelle で証明 その１ うそつき天使問題 - JRF のソフトウェア Tips》  \nhttp://jrf.cocolog-nifty.com/software/2020/06/post-ef863f.html\n\n《ケネディと天使の問題を Isabelle で証明 その２ 気まぐれ天使問題 - JRF のソフトウェア Tips》  \nhttp://jrf.cocolog-nifty.com/software/2020/06/post-d9cd87.html\n\nJRF 2020年6月22日\n\n《ケネディと天使の問題を Isabelle で証明 その３ 悪戦苦闘編 - JRF のソフトウェア Tips》  \nhttp://jrf.cocolog-nifty.com/software/2020/06/post-33c483.html\n\nJRF 2020年6月22日\n\n……。\n\nオブジェクト指向を PTS などの論理でどう表すかというのが、大学院時代の私のテーマとしてあった。その流れが今回につながっている。\n\n大きな前進とまではいかないが、一つの大事な例にはなったかな…というのが感想。\n\nJRF 2020年6月22日\n\n……。\n\n……。\n\n追記。\n\nついでなので↓を Isabelle2020 に対応させておいた。\n\n《The Proofs about Alpha-equivalences in Isabelle》  \nhttp://jrf.cocolog-nifty.com/software/2016/01/post.html\n\nisabelle_TheLambda のバージョンは 0.0.3。\n\nJRF 2020年6月22日\n\nZF のモジュールについて例えば Finite は ZF.Finite に書き換える必要があり、一部シンボルを書き換える必要があった (le → \\\u003cle\u003e、lepoll → \\\u003clesssim\u003e だけだったと思う。)\n\n証明が止まったのは二ヶ所ほどで、あとはすんなりいけた。楽な作業だった。\n\nJRF 2020年6月22日\n\n……。\n\n……。\n\n追記。\n\nkennedy_problem 更新。バージョン 0.0.2。\n\n証明の最初、simp ではなく unfold を使うようにするなど微調整。\n\nJRF 2020年6月23日"</script>
+<script src="../../../article.js"></script>
 </body>
 </html>

@@ -21,6 +21,7 @@
 </table>
 </div>
 <h1>[仏教の最適化プログラムの続き。] BlockMeanAmplifier…</h1>
+<div class="art-tools" data-pagefind-ignore><button type="button" id="btn-copy">原文をコピー</button><span class="tools-msg" id="tools-msg"></span></div>
 <pre class="body">jrf&gt; [仏教の最適化プログラムの続き。]
 
 BlockMeanAmplifier というのも作った。重犯罪の判定用。
@@ -35,5 +36,7 @@ bma = BlockMeanAmplifier() として、リスト xs を与えるときは bma.up
 <nav class="prevnext" data-pagefind-ignore><span class="prev-art">← <a href="../../../articles/2021/09/gsm_001494.html">[仏教の最適化プログラムの続き。] simbpd3.py…</a> <span class="pn-date">2021-09-25T10:33:47Z</span></span><span class="next-art"><a href="../../../articles/2021/09/gsm_001496.html">アニソン。アニメ『迷宮ブラックカンパニー』ED…</a> <span class="pn-date">2021-09-25T19:22:26Z</span> →</span></nav>
 
 <nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2021/09.html">2021年09月</a> | <a href="../../../index/gsm.html">共有メモ</a></nav>
+<script type="application/json" id="raw-text">"[gsm]\n○ 2021-09-25T13:06:38Z kENeAWEcQe\n\njrf\u003e [仏教の最適化プログラムの続き。]\n\nBlockMeanAmplifier というのも作った。重犯罪の判定用。\n\nMeanAmplifier は時系列のスカラー値を取るのに対し、BlockMeanAmplifier は可変長のリストの時系列を取る。\n\nbma = BlockMeanAmplifier() として、リスト xs を与えるときは bma.update(xs) とする。過去これまでに従って現在の個々の値 x の増幅値を知りたいときは bma.test(x)  とする。なお、bma.test(x) を使ったあとの x すべてを記録したものを xs とすると、通常は bma.update(xs) とするべきだが、そのような x は自動的に記録されているため bma.update() だけで OK。"</script>
+<script src="../../../article.js"></script>
 </body>
 </html>

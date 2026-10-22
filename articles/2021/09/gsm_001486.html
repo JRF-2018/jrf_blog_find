@@ -21,6 +21,7 @@
 </table>
 </div>
 <h1>[仏教の最適化プログラムの続き。] lsth (less soothe)…</h1>
+<div class="art-tools" data-pagefind-ignore><button type="button" id="btn-copy">原文をコピー</button><span class="tools-msg" id="tools-msg"></span></div>
 <pre class="body">jrf&gt; [仏教の最適化プログラムの続き。]
 
 lsth (less soothe) を見るために再度ログを取り直す。normal については前のものに --no-frozen を付けたもの。
@@ -61,5 +62,7 @@ AccDeath の違いが出てないのはリクツ通り。AccKarma に差がま�
 <nav class="prevnext" data-pagefind-ignore><span class="prev-art">← <a href="../../../articles/2021/09/gsm_001485.html">(承前) 原発事故に関する「汚染水」問題も同じ。…</a> <span class="pn-date">2021-09-21T11:19:37Z</span></span><span class="next-art"><a href="../../../articles/2021/09/gsm_001487.html">ちょっとダルいな。もう少し寝るか。街に行ったあとだから、こんなものかな。まぁ、で…</a> <span class="pn-date">2021-09-22T21:33:26Z</span> →</span></nav>
 
 <nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2021/09.html">2021年09月</a> | <a href="../../../index/gsm.html">共有メモ</a></nav>
+<script type="application/json" id="raw-text">"[gsm]\n○ 2021-09-21T18:00:14Z JAvP7V7rIc\n\njrf\u003e [仏教の最適化プログラムの続き。]\n\nlsth (less soothe) を見るために再度ログを取り直す。normal については前のものに --no-frozen を付けたもの。\n\nlsth は次のようになる。\n\nrun_simbdp3.sh lsth 10 -L -t 360 --soothe-nation-threshold=0.6 --soothe-nation-threshold-min=0.5 --soothe-nation-threshold-max=0.7\n\nまずは前回の normal を pnormal とリネームし、それを今回の normal と比較してみる。\n\npython plot_logs.py normal pnormal -p AccDeath -o fig-20210922_01.png\npython plot_logs.py normal pnormal -p AccAbortion -o fig-20210922_02.png\npython plot_logs.py normal pnormal -p Education -o fig-20210922_03.png\npython plot_logs.py normal pnormal -p NewKarma -o fig-20210922_04.png\npython plot_logs.py normal pnormal -p Hating -o fig-20210922_05.png\npython plot_logs.py normal pnormal -p PoliticalHating -o fig-20210922_06.png\npython plot_logs.py normal pnormal -p Population -o fig-20210922_07.png\n\nAccDeath に違いが現れているのが良くわからない。Population を調べると最初のころに大きな違いがあるようなので、それが後々に影響したということだろうか。リクツで言えば違いが出そうなのは PoliticalHating で、それが normal では低く出て欲しいところなのだが、ほんの少しだけしかそうなっていない。\n\n次に lsth と normal を比較してみる。\n\npython plot_logs.py normal lsth -p AccDeath -o fig-20210922_08.png\npython plot_logs.py normal lsth -p AccKarma -o fig-20210922_09.png\npython plot_logs.py normal lsth -p Hating -o fig-20210922_10.png\npython plot_logs.py normal lsth -p VirtualHating -o fig-20210922_11.png\n\nAccDeath の違いが出てないのはリクツ通り。AccKarma に差がまったくないのはなぜだろう？ lsth は soothe が少なくなっていることから、Hating が上がり、継いで VirtualHating が上がるはずで、それにつれて AccKarma も上がるはずである。Hating も VirtualHating も上がっているが、VirtualHating の差は 0.005 程度と、差が少な過ぎるのが問題か。\n\nグラフは↓にも貼っておく。\n\n《グラフ集: 2021-09-22 から - Issue #4 - JRF-2018/simbd》  \nhttps://github.com/JRF-2018/simbd/issues/4"</script>
+<script src="../../../article.js"></script>
 </body>
 </html>

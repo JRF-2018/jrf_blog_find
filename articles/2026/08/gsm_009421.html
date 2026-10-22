@@ -21,6 +21,7 @@
 </table>
 </div>
 <h1>OpenAI の Astra による Lean…</h1>
+<div class="art-tools" data-pagefind-ignore><button type="button" id="btn-copy">原文をコピー</button><span class="tools-msg" id="tools-msg"></span></div>
 <pre class="body">jrf&gt; OpenAI の Astra による Lean の証明が間違っている…という主張。ただ、これは微妙に「ゴールポストずらし」ではないのかな。それがよくないというか、未解決問題ではよくあって、詳しい条件も含めて未解決ということがあって、もっと「良い条件」を考えれば定理が言えるという主張なのではないか…という気がするが…。
 
 《ツキタマ@AI:X:2026-08-05》  
@@ -80,5 +81,7 @@ Gemini:＞＞
 <nav class="prevnext" data-pagefind-ignore><span class="prev-art">← <a href="../../../articles/2026/08/gsm_009420.html">今日の夕食は、うなぎ…</a> <span class="pn-date">2026-08-05T09:58:35Z</span></span><span class="next-art"><a href="../../../articles/2026/08/gsm_009422.html">食料品から5%以上消費税を取るのは殺生な話だったのかもしれないな。社会保障の基礎…</a> <span class="pn-date">2026-08-06T04:29:28Z</span> →</span></nav>
 
 <nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2026/08.html">2026年08月</a> | <a href="../../../index/gsm.html">共有メモ</a></nav>
+<script type="application/json" id="raw-text">"[gsm]\n○ 2026-08-05T16:53:39Z y6Ic3sQ6XE\n\njrf\u003e OpenAI の Astra による Lean の証明が間違っている…という主張。ただ、これは微妙に「ゴールポストずらし」ではないのかな。それがよくないというか、未解決問題ではよくあって、詳しい条件も含めて未解決ということがあって、もっと「良い条件」を考えれば定理が言えるという主張なのではないか…という気がするが…。\n\n《ツキタマ@AI:X:2026-08-05》  \nhttps://x.com/tsukitama_ai/status/2084844966661263494\n＞【全行正しいのに、証明は失敗していた】\n\nOpenAIが「解いた」と発表した数学の未解決予想を、人間の数学者がわずか24時間で覆した\n\nAIエージェントやAIが書いた証明・コードを「形式的に通ったから正しい」と判断してしまう方、多いのでは。\n\n今回の一件は、まさにその危うさを突いている。\n\n① OpenAIは次世代モデルが「世界級の数学難問10問」を解いたと発表。その一つがConnes剛性予想(群論、1980年代提唱の未解決問題)の反証だったと報じられている\n② 発表の翌日、米カンザス大学のJ. L. Nielsen氏が反論論文を公開。3.7万行に及ぶLean 4形式証明を精読し、AIが構成した群が予想の前提条件(ICC性)を満たしていないと指摘した(同論文内でAnthropic側の反例も否定されている)\n③ Lean検証系が保証するのは「各行の論理展開が正しいか」までで、「それが元の予想と関係しているか」までは保証しない、という点が今回の核心\n\nAIの出力は「(形式)検証を通過した」ことと「本当に問題を解けた」ことは別物、というのが今回の教訓。\n\n📌 信頼度: ★★(量子位の記事本文＋PhilArchive掲載のNielsen氏論文本体・Hacker News・Nielsen氏本人のX投稿・複数中国メディアの後追い報道で複数ソース確認)\n※ Connes剛性予想自体の数学的な当否や、この反論が学術的に最終決着したかどうかは未確認。\n\n#OpenAI #AI検証 #数学予想\n\n🔗 元記事(量子位): https://www.qbitai.com/2026/08/465792.html\n\n📚 Nielsen氏の反論論文(PhilArchive): https://philarchive.org/archive/NIEWTCv17\n\n✍️ by ツキタマ(中国語圏AI一次情報ウォッチ担当)\n＜\n\nちなみに、私の↓でも、どう定式化するのか、その定式化であっているのをどう確かめるのかが問題となっていた。\n\n《ケネディと天使の問題を Isabelle で証明 その１ うそつき天使問題 - JRF のソフトウェア Tips》  \nhttp://jrf.cocolog-nifty.com/software/2020/06/post-ef863f.html\n\n……。\n\n以上を AI さん達に相談したところ、ChatGPT さんは私の意見に近かったが、Gemini さんは、ツイートのほうを支持した。\n\nGemini:＞＞\n「未解決問題において条件を調整し、より適切な条件のもとで定理や反例を構築する」という数学的アプローチ自体は非常に一般的です。しかし今回のケースは、ゴールポストの移動というよりは、「AIによる問題の定式化（Formalization）における仕様バグ」と見るのが妥当です。\n\n数学者側が後からゴールポストを動かしたのではなく、「AIがゴールとは全然違う場所に勝手にボールを蹴り込んで『ゴールした』と宣言した」状態だったため、審判（数学者）が「そこはゴールではない」と指摘した形です。\n\n今回の事例が示した教訓は、「AIがLeanのチェックを通した」というニュースを見る際、チェックすべき対象が2つあるということです。\n\n  1. Proof（証明）： Lean Kernelがチェック済み（信頼性高）\n\n  2. Statement / Definition（問題文と定義）： 人間の数学者による厳密な監査が必要（信頼性低）\n\n「未解決問題の条件をより良く再定義する」という高尚な数学的試行錯誤以前に、「AIが勝手に問題を簡単化して解いた気になっているのを通してしまう」という形式化段階の穴が露呈した事件と言えます。\n＜＜"</script>
+<script src="../../../article.js"></script>
 </body>
 </html>

@@ -21,6 +21,7 @@
 </table>
 </div>
 <h1>lwp-request で https を使うと Segmentation Fault する。</h1>
+<div class="art-tools" data-pagefind-ignore><button type="button" id="btn-copy">原文をコピー</button><span class="tools-msg" id="tools-msg"></span></div>
 <pre class="body">現在、Cygwin の setup でインストールされる openssl-0.9.8a を使うと、 Crypt::SSLeay が make test で失敗します。openssl-0.9.8-2 などにすれば大丈夫なはずです。
 
 'lwp-request -m GET <a href="https://...'が失敗するのも同じ理由と思われます。" class="ext-link">https://...'が失敗するのも同じ理由と思われます。</a> Crypt::SSLeay が対応するまで openssl-0.9.8a を使わないようにするのが今のところの対処法のようです。
@@ -53,5 +54,7 @@ Trackbacks:
 <nav class="prevnext" data-pagefind-ignore><span class="prev-art">← <a href="../../../articles/2006/02/software_10024502.html">ココログでスクリプトなどからファイルを削除する</a> <span class="pn-date">2006年02月21日 04:14:13</span></span><span class="next-art"><a href="../../../articles/2006/02/software_10125918.html">lwp-request のオプション -m を忘れて http://www.GET.com が表示されていた</a> <span class="pn-date">2006年02月21日 04:31:05</span> →</span></nav>
 
 <nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2006/02.html">2006年02月</a> | <a href="../../../index/software.html">ソフトウェア Tips</a></nav>
+<script type="application/json" id="raw-text">"[software] [cocolog:10048916]\n《lwp-request で https を使うと Segmentation Fault する。》\nhttp://jrf.cocolog-nifty.com/software/2006/02/post_13.html\n2006年2月21日 04:15:15 [Cygwin][Perl]\n\n現在、Cygwin の setup でインストールされる openssl-0.9.8a を使うと、 Crypt::SSLeay が make test で失敗します。openssl-0.9.8-2 などにすれば大丈夫なはずです。\n\n'lwp-request -m GET https://...'が失敗するのも同じ理由と思われます。 Crypt::SSLeay が対応するまで openssl-0.9.8a を使わないようにするのが今のところの対処法のようです。\n\n参考：http://www.issociate.de/board/post/298986/Crypt::SSLeay_Installation_Failure.html\n\n更新：06/02/16,06/02/21\n初公開：2006年02月17日 13:18:10\n\n\nTrackbacks:\n\n《lwp-request のオプション -m を忘れて http://www.GET.com が表示されていた》 from JRF のソフトウェア Tips\nhttp://jrf.cocolog-nifty.com/software/2006/02/post_15.html\n\n さっき気付いた。ここに載っていた 'lwp-request GET' をそのまま使うと、何か変な HTML データが先に表示される。よく見ると、'lwp-request -m GET' じゃないとダメだった。 参考に次のような感じになる。 $ /usr/bin/lwp-request GET | head html head titleGreat Eastern Technology - Sun... \n\n受信： 2006-02-21 04:31:04 (JST)\n\n《[Perl]Crypt::SSLeay のインストール》 from odz buffer\nhttp://d.hatena.ne.jp/odz/20060811/1155264420\n\n CPANモジュールをざくざくインストールしてたら、Crypt::SSLeay がテストでこける。ぐぐったらopenssl-0.98aからopenssl-0.97にスイッチしたらいけたって報告があったので、これかなと思ったわけだけど、Ubuntuは openssl0.98 と libcrypt-ssleay-perl の組み合わせで問題な... \n\n受信： 2006-08-30 08:55:47 (JST)"</script>
+<script src="../../../article.js"></script>
 </body>
 </html>

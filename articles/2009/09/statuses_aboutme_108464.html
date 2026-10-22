@@ -21,6 +21,7 @@
 </table>
 </div>
 <h1>おそらく今後も使わないけど、Isabelle2009 の cygwin…</h1>
+<div class="art-tools" data-pagefind-ignore><button type="button" id="btn-copy">原文をコピー</button><span class="tools-msg" id="tools-msg"></span></div>
 <pre class="body">おそらく今後も使わないけど、Isabelle2009 の cygwin 版をインストール。ProofGeneral の設定が難しい。Meadow だとシンボリックリンクの関係でうまくいかなかった。xemacs も何かおかしい。GNU Emacs 23 だとわりとうまくいった。
 JRF 2009年9月3日
 
@@ -88,5 +89,7 @@ Trackbacks:
 <nav class="prevnext" data-pagefind-ignore><span class="prev-art">← <a href="../../../articles/2009/08/statuses_aboutme_108306.html">投票は義務とすべきだと常々思っている。一票が無意味だ政治は変わらないと思って投票…</a> <span class="pn-date">2009年08月31日</span></span><span class="next-art"><a href="../../../articles/2009/09/statuses_aboutme_108465.html">PC…</a> <span class="pn-date">2009年09月03日</span> →</span></nav>
 
 <nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2009/09.html">2009年09月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+<script type="application/json" id="raw-text">"[statuses] [aboutme:108464]\nhttp://jrf.cocolog-nifty.com/statuses/2009/09/aboutme108464.html\n\nおそらく今後も使わないけど、Isabelle2009 の cygwin 版をインストール。ProofGeneral の設定が難しい。Meadow だとシンボリックリンクの関係でうまくいかなかった。xemacs も何かおかしい。GNU Emacs 23 だとわりとうまくいった。\nJRF 2009年9月3日\n\nxemac も GNU Emacs も cygwin の X から起動している。\n\n今入ってるバージョンは xemacs 21.4 (patch 22)、GNU Emacs 23.0.92.1。\n\nそれぞれの .emacs を編集するのに時間がとられた。ProofGeneral が起動して適度なフォントサイズで utf-8 ぐらいは使えるようにする…ということに絞って設定した。(なんと xemacs はデフォルトだと\n utf-8 を使えない。ググると (require 'un-define) とかしないといけないらしい。)\n\nJRF 2009年9月3日\n\nちょっと字を大きくするフォントの設定は xemacs が\n(custom-set-faces\n'(default ((t (:size \"14pt\" :family \"Courier\"))) t))\n\nGNU Emacs が\n(if window-system\n(set-default-font\n\"-*-fixed-medium-r-normal-*-16-*-*-*-*-*-fontset-standard\"))\nJRF 2009年9月3日\n\nProofGeneral は isatool じゃなくなって /usr/local/Isabelle/bin/isabelle を使う。よって次の設定があるといい。\n\n(if (file-directory-p \"/usr/local/ProofGeneral/generic\")\n    (progn\n      (load-file \"/usr/local/ProofGeneral/generic/proof-site.el\")\n      (setq isa-isatool-command \"/usr/local/Isabelle/bin/isabelle\")))\n\nJRF 2009年9月3日\n\n…しかし、thy ファイルも書き方がずいぶん変わった。Isar って何？私が使ってたころは Isabelle「2009」とか年数がつかず「無印」だった。(98 とかでもないよ。)ZF のドキュメントがデフォルトで消えてるらしいのもちょっとショック。まぁ、大学院を出ていらい実質使ってないから、それぐらいの変化は当然だろうけど。\n\n\nJRF 2009年9月3日\n\nあと emacs で color-mate は普通使わないようになったんですね。jka-compr-ccrypt が使えない(使うと  .gz が読めなくなる)のも地味に痛い。\nJRF 2009年9月3日\n\n使ってないから Isabelle の記事は書いてない。思い出を元に書いたのが↓か。\n\nメタ論理: 演驛と帰納 [ JRF の私見：雑記 ]\nhttp://jrf.cocolog-nifty.com/column/2006/01/post_10.html\nJRF 2009年9月4日\n\nTrackbacks:\n\n《cocolog:76238664》 from JRF のひとこと\nhttp://jrf.cocolog-nifty.com/statuses/2013/04/post-b278.html\n\n昔、使ってた定理証明支援システムをインストールしようとしてうまくいかない。 \n\n受信： 2013-06-30 00:01:21 (JST)"</script>
+<script src="../../../article.js"></script>
 </body>
 </html>

@@ -21,6 +21,7 @@
 </table>
 </div>
 <h1>ミニスーファミを hakchi2.30 と retroarch…</h1>
+<div class="art-tools" data-pagefind-ignore><button type="button" id="btn-copy">原文をコピー</button><span class="tools-msg" id="tools-msg"></span></div>
 <pre class="body">ミニスーファミを hakchi2.30 と retroarch で改造した上でファミコン・ディスクシステムのソフトを動かす方法。
 JRF 2018年7月10日
 
@@ -41,10 +42,10 @@ JRF 2018年7月10日
 
 2. 上のサイトのリンクから bios_template.zip を手に入れる。ない場合は作ればいい。基本は、bios_template.hmod\etc\libretro\system\ というディレクトリと下記の内容の bios_template.hmod\install というテキストからなる。
 
-&lt;pre&gt;
+<span class="src-pre">&lt;pre&gt;
 transfer_default
 return 1
-&lt;/pre&gt;
+&lt;/pre&gt;</span>
 
 (なお、改行コードは \x0a。pre タグはこのサイト用なので、いらない。)
 
@@ -54,10 +55,10 @@ JRF 2018年7月10日
 
 4. bios_template.hmod を FDS_bios.hmod に名前を変え、FDS_bios.hmod を hakchi2\user_mods\ 以下に置く。つまり、次のようなファイルがあるようにする。
 
-&lt;pre&gt;
+<span class="src-pre">&lt;pre&gt;
 hakchi2\user_mods\FDS_bios.hmod\etc\libretro\system\disksys.rom
 hakchi2\user_mods\FDS_bios.hmod\install
-&lt;/pre&gt;
+&lt;/pre&gt;</span>
 
 JRF 2018年7月10日
 
@@ -151,5 +152,7 @@ Trackbacks:
 <nav class="prevnext" data-pagefind-ignore><span class="prev-art">← <a href="../../../articles/2018/07/statuses_cocolog_89631025.html">母のためにミニスーファミを改造し、麻雀ゲームとスーパーマリオをできるようにした。…</a> <span class="pn-date">2018年07月10日</span></span><span class="next-art"><a href="../../../articles/2018/07/statuses_cocolog_89675814.html">レトロゲームの「経済」。ゲームプレイ(感想書きや画像引用も含む)はゲーム機本体は…</a> <span class="pn-date">2018年07月20日</span> →</span></nav>
 
 <nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2018/07.html">2018年07月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+<script type="application/json" id="raw-text">"[statuses] [cocolog:89631029]\nhttp://jrf.cocolog-nifty.com/statuses/2018/07/post-ae54.html\n\nミニスーファミを hakchi2.30 と retroarch で改造した上でファミコン・ディスクシステムのソフトを動かす方法。\nJRF 2018年7月10日\n\n私がミニスーファミの改造に「手を染めた」経緯は [cocolog:89631025] で書いた。\n\n今回は、ググってなかなか見つからなかったファミコン・ディスクシステムを retroarch 導入済みの hakchi2.30 で使う方法を書いておく。\n\nJRF 2018年7月10日\n\n英語では↓に書いている。\n\n《Correct setup to run FDS games? : miniSNESmods》\nhttps://www.reddit.com/r/miniSNESmods/comments/88s12v/correct_setup_to_run_fds_games/\n\nJRF 2018年7月10日\n\n1. まず、ファミコン・ディスクシステムの ROM を用意し、それを disksys.rom という名前にする。\n\n2. 上のサイトのリンクから bios_template.zip を手に入れる。ない場合は作ればいい。基本は、bios_template.hmod\\etc\\libretro\\system\\ というディレクトリと下記の内容の bios_template.hmod\\install というテキストからなる。\n\n\u003cpre\u003e\ntransfer_default\nreturn 1\n\u003c/pre\u003e\n\n(なお、改行コードは \\x0a。pre タグはこのサイト用なので、いらない。)\n\nJRF 2018年7月10日\n\n3. bios_template.hmod\\etc\\libretro\\system\\ 以下に disksys.rom を置く。\n\n4. bios_template.hmod を FDS_bios.hmod に名前を変え、FDS_bios.hmod を hakchi2\\user_mods\\ 以下に置く。つまり、次のようなファイルがあるようにする。\n\n\u003cpre\u003e\nhakchi2\\user_mods\\FDS_bios.hmod\\etc\\libretro\\system\\disksys.rom\nhakchi2\\user_mods\\FDS_bios.hmod\\install\n\u003c/pre\u003e\n\nJRF 2018年7月10日\n\n5. hakchi.exe で「モジュール」→「拡張モジュールのインストール」で FDS_bios を指定し、他に最低 retroarch も入れる。\n\nJRF 2018年7月10日\n\n……。\n\nファミコン・ディスクの形式は FDS。拡張子は小文字の fds でないといけない。zip されててもかまわないが。\n\nそして、ミニスーファミで、実際に遊ぶと、セーブはゲーム中はできてるみたいなのだが、リセットを押したあと、もう一度はじめようとすると消えてる。だから、どこでもセーブを使う必要がある。どこでもセーブは有効に機能するようだ。\n\nJRF 2018年7月10日\n\nそしてディスクの A面/B面 の入れ替えは、R→L→R (Rボタンのあと Lボタンのあと Rボタン)で行えばよいようだ。R ボタンでディスクを取り出し、L ボタンでディスクをひっくり返し、R ボタンでディスクを入れるという理屈らしい。(L ボタンだけでいいという記述も見たが、私のところではダメだった。)\n\nJRF 2018年7月10日\n\n……。\n\n著作権的なことは難しい。ディスクの所有権があるのが最低限だろう。それを吸い出す技術まで必要と主張するものが多いが、それが今や任天堂自身が存在感のあるレトロゲーム市場にとっていいことなのかどうなのか…。\n\n著作権に対する風当たりは強く、このような情報を書くだけで幇助犯になるオソレもある。しかし、[cocolog:89631025] で書いたように老いた母がとても喜んでくれているので、コミュニティに貢献するため、仁義を切るため、この「ひとこと」を書くことにした。\n\nJRF 2018年7月10日\n\nとはいえ、強情をはるつもりはない。著作権は基本的に親告罪、ちゃんとした権利者から消せと言われればこの「ひとこと」は消します。\n\nJRF 2018年7月10日\n\n……。\n\n……。\n\n追記。\n\ndiskrom.sys は、↓を参考にミニファミコンから吸い出した fds_bios.bin を diskrom.sys に名前を変更したものでも OK だった。\n\nJRF 2018年11月10日\n\n《【ミニファミコン】 内蔵ゲームのROMを吸い出す - なんか いろいろ》\nhttps://misukou.blog.fc2.com/blog-entry-3609.html\n\nJRF 2018年11月10日\n\nなお、ミニファミコンから吸い出せるディスクは qd 形式で、それを fds 形式に変換するには fdstool (↓)を使えばよい。コマンドラインを使うので、使い方はググるなりして欲しい。\n\n《rhester72/fdstool - GitHub》\nhttps://github.com/rhester72/fdstool/releases\n\nJRF 2018年11月10日\n\nとは言え、ミニファミコンと hakchi2.30 以降があれば、簡単にデュアルブート (Multiboot) (↓)ができるので、ミニスーファミから起動するミニファミコンの側に fds 形式のディスクを足せばよく、diskrom.sys をミニスーファミに足す必要はないのかもしれない。\n\n《Multiboot guide - ClusterM/hakchi2 Wiki - GitHub》\nhttps://github.com/ClusterM/hakchi2/wiki/Multiboot-guide\n\nJRF 2018年11月11日\n\n(ミニスーファミを改造したあと、Multiboot をするため、ミニファミコンから「カーネルをダンプ」したり、「復号化されたNAND-Bパーティションをダンプ」したりするときは、ディレクトリを新しくしたほうがよいと思う。つまり、hakchi2.*.zip をもう一回別の場所で展開して、そのフォルダをこれまでとは別の名前にし、まっさらの状態で hakchi.exe を起動してからしたほうが混乱がないと思う。)\nJRF 2018年11月11日\n\nTrackbacks:\n\n《cocolog:89675814》 from JRF のひとこと\nhttp://jrf.cocolog-nifty.com/statuses/2018/07/post-d0ed.html\n\nレトロゲームの「経済」。ゲームプレイ(感想書きや画像引用も含む)はゲーム機本体はいらず  ROM を持っているか借りていればいいとしたい。そして、本体持ちだと、広告ありの動画配信ができ、吸出しができる者は DRM をかけて貸出し管理ができる…とすればいいのではないか。... \n\n受信： 2018-09-28 18:53:12 (JST)\n\n《cocolog:89631025》 from JRF のひとこと\nhttp://jrf.cocolog-nifty.com/statuses/2018/07/post-312a.html\n\n母のためにミニスーファミを改造し、麻雀ゲームとスーパーマリオをできるようにした。グレーなことだが、母はとても喜んでいて私は感謝している。せめて仁義を切るため、ここに書いておく。... \n\n受信： 2018-09-28 18:53:38 (JST)"</script>
+<script src="../../../article.js"></script>
 </body>
 </html>

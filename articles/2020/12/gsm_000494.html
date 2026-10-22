@@ -21,6 +21,7 @@
 </table>
 </div>
 <h1>GitHub が↓みたいな警告を返してきた。 &gt;Deprecation…</h1>
+<div class="art-tools" data-pagefind-ignore><button type="button" id="btn-copy">原文をコピー</button><span class="tools-msg" id="tools-msg"></span></div>
 <pre class="body">jrf&gt; GitHub が↓みたいな警告を返してきた。
 
 &gt;Deprecation Notice 
@@ -57,5 +58,7 @@ PAT (personal access token) を設定すればいいというだけの話かな�
 <nav class="prevnext" data-pagefind-ignore><span class="prev-art">← <a href="../../../articles/2020/12/gsm_000493.html">GitHub が↓みたいな警告を返してきた。 &gt;Deprecation…</a> <span class="pn-date">2020-12-28T21:45:03Z</span></span><span class="next-art"><a href="../../../articles/2020/12/gsm_000495.html">GitHub が強制しようとしている PAT (personal access…</a> <span class="pn-date">2020-12-29T12:19:15Z</span> →</span></nav>
 
 <nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2020/12.html">2020年12月</a> | <a href="../../../index/gsm.html">共有メモ</a></nav>
+<script type="application/json" id="raw-text">"[gsm]\n○ 2020-12-28T22:14:08Z fIvIupH8qE\n\njrf\u003e GitHub が↓みたいな警告を返してきた。\n\n\u003eDeprecation Notice \n\nYou recently used a password to access the repository at JRF-2018/shared_memo with git using git/2.29.2.\n\nBasic authentication using a password to Git is deprecated and will soon no longer work. Visit https://github.blog/2020-12-15-token-authentication-requirements-for-git-operations/ for more information around suggested workarounds and removal dates.\n\u003c\n\nで、私は Cygwin の git を使っているのだが、なんか、Git Credential Manager Core または Git Credential Manager for Windows を使えば良いのではないかという感じなので、いろいろ試しながら、Git for Windows 2.30.0 もインストールしてみた。\n\nが、うまくいかない。↓に\n\n《git-credential manager for windows with cygwin · GitHub》  \nhttps://gist.github.com/kelbyers/6e845fd28b8bf55ef66b36025ca06c10\n＞you do not need to copy files anywhere, simply configuring `credential.helper` to `manager` works if the credential manager is installed＜\n\n…とかあるので、ファイルのコピーとかしなくて大丈夫かと思ったら全々大丈夫じゃない。git が 2.29 と 2.30 で違うからか？ わからない。\n\nとりあえず、Git for Windows をアンインストールしてもうしばらく様子を見ることにする。4月ぐらいになっても、ダメなら Cygwin の git ではなく Git for Windows を使わねばならないのかもしれない。\n\n……。\n\n追記。\n\nPAT (personal access token) を設定すればいいというだけの話かな？ これでいいなら Git Credential Manager とかはいらなそう。\n\n《Creating a personal access token - GitHub Docs》  \nhttps://docs.github.com/en/free-pro-team@latest/github/authenticating-to-github/creating-a-personal-access-token"</script>
+<script src="../../../article.js"></script>
 </body>
 </html>

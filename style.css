@@ -144,3 +144,20 @@ span.keyword-ref { display:inline-block; background:#fff8e8;
 a.keyword-link { color:#885500; font-weight:500; }
 a.keyword-link:hover { color:#cc7700; }
 .bottom { margin-top:2em; border-top:1px solid #ccc; padding-top:.5em; font-size:.9em; }
+/* 記事ツール（MathJax・pre 連結・原文コピー） */
+div.art-tools { display:flex; flex-wrap:wrap; align-items:center; gap:.3em 1.2em;
+  margin:.3em 0 .5em; font-size:.85em; color:#444; }
+div.art-tools label { cursor:pointer; user-select:none; white-space:nowrap; }
+div.art-tools input[type=checkbox] { vertical-align:middle; margin:0 .2em 0 0; }
+div.art-tools button { font:inherit; padding:.1em .8em; color:#333; background:#fff;
+  border:1px solid #aaa; border-radius:3px; cursor:pointer; }
+div.art-tools button:hover { background:#e0e8ff; border-color:#88a; }
+span.tools-msg { color:#007744; }
+span.tools-msg.error { color:#cc0000; }
+/* pre 連結: on のとき継ぎ目（</pre> 署名行 <pre>）を隠す */
+article.pre-joined span.pre-joint { display:none; }
+span.pre-joint-nl { display:none; }
+article.pre-joined span.pre-joint-nl { display:inline; }
+/* MathJax */
+pre.body mjx-container { white-space:normal; word-break:normal; }
+pre.body mjx-container[display="true"] { max-width:100%; overflow-x:auto; overflow-y:hidden; }

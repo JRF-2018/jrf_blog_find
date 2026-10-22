@@ -21,6 +21,7 @@
 </table>
 </div>
 <h1>Python…</h1>
+<div class="art-tools" data-pagefind-ignore><button type="button" id="btn-copy">原文をコピー</button><span class="tools-msg" id="tools-msg"></span></div>
 <pre class="body">Python による「ミクロ経済学の我流シミュレーション」の記事の「その２」を書いた。スコアを取るとき、利益を足し合わせるだけでなく、バランスを取るために分散を足すようにした。はっきり言ってやってることのレベル低くて申し訳ない…。
 JRF 2018年9月9日
 
@@ -55,9 +56,9 @@ JRF 2018年9月9日
 
 まず、λ について。
 
-&lt;pre&gt;
+<span class="src-pre">&lt;pre&gt;
   スコア１ = - mean([r_N, r_L, r_I]) + λ * variance([r_N, r_L, r_I])
-&lt;/pre&gt;
+&lt;/pre&gt;</span>
 
 JRF 2018年9月9日
 
@@ -75,13 +76,13 @@ JRF 2018年9月9日
 
 ちなみに softPlusE の定義は、
 
-&lt;pre&gt;
+<span class="src-pre">&lt;pre&gt;
 def softPlusE (M, m):
     if m / M &gt; 100:
         return m
     else:
         return math.log(math.e + math.exp(m / M)) * M
-&lt;/pre&gt;
+&lt;/pre&gt;</span>
 
 JRF 2018年9月9日
 
@@ -148,5 +149,7 @@ Python を使った最適化の本と人工知能(AI)の本を読んだが、身
 <nav class="prevnext" data-pagefind-ignore><span class="prev-art">← <a href="../../../articles/2018/09/statuses_cocolog_89912610.html">近況。台風一過。このところ、2月に死んだ父の知り合いが父に贈った本であるところの…</a> <span class="pn-date">2018年09月05日</span></span><span class="next-art"><a href="../../../articles/2018/09/statuses_cocolog_89941868.html">C.クライバー指揮ウィーン・フィル『シューベルト：交響曲…</a> <span class="pn-date">2018年09月11日</span> →</span></nav>
 
 <nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2018/09.html">2018年09月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+<script type="application/json" id="raw-text">"[statuses] [cocolog:89931312]\nhttp://jrf.cocolog-nifty.com/statuses/2018/09/pytho.html\n\nPython による「ミクロ経済学の我流シミュレーション」の記事の「その２」を書いた。スコアを取るとき、利益を足し合わせるだけでなく、バランスを取るために分散を足すようにした。はっきり言ってやってることのレベル低くて申し訳ない…。\nJRF 2018年9月9日\n\nミクロ経済学の我流シミュレーションの「その１」に関するひとことは [cocolog:89067097]。\n\nその１の記事は\n\n《ミクロ経済学の我流シミュレーション その１ 基礎経済モデル》\nhttp://jrf.cocolog-nifty.com/society/2018/03/post.html\n\nJRF 2018年9月9日\n\nその２の記事は\n\n《ミクロ経済学の我流シミュレーション その２ バランス戦略》\nhttp://jrf.cocolog-nifty.com/society/2018/09/post.html\n\nアーカイブは\n\n《micro_economy.zip》\nhttp://jrf.cocolog-nifty.com/archive/python/micro_economy.zip\n\nJRF 2018年9月9日\n\n……。\n\n詳しくは記事を読んでもらうとして、こちらではやろうとしてやらなかったことを延べたい。\n\nそれは、その２の記事の λ と μ について。\n\nJRF 2018年9月9日\n\nまず、λ について。\n\n\u003cpre\u003e\n  スコア１ = - mean([r_N, r_L, r_I]) + λ * variance([r_N, r_L, r_I])\n\u003c/pre\u003e\n\nJRF 2018年9月9日\n\nという式だが、分散を足すのに、math.sqrt をかけたほうがいいのか、そのまま足したほうがいいのかでまず迷ったが、そのまま足す形の関数が『Strategic Asset Allocation - Portfolio Choice for Long-Term Investers』([cocolog:86393544])でも紹介されているので、この形にした。その本では必ずしも、最適化のスコアとして用いていたわけではなかったが…。\n\nJRF 2018年9月9日\n\nで、λ の値は、最初、m = mean([r_N,r_L,R_I]) とすると、r_N = 3m/2, r_L = 3m/4, r_I = 3m/4 などとなるときに スコア１ = 0 とおいた値である 16/(3 * m) を λにすることを考えた(sympy で解を確認)。その r_N,r_L,r_I のところで偏微分すると具合も良かったから。\n\nJRF 2018年9月9日\n\nただ、r_* はマイナスになることもあるため、そのままでは使えない。そこで、大きい値の場合は、そのままだが、小さな値やマイナスだと丸める関数 softPlusE という関数を定義し、λ = 16 / (3 * softPlusE(0.01, mean([r_N, r_L, r_I]))) としてみた。\n\nJRF 2018年9月9日\n\nちなみに softPlusE の定義は、\n\n\u003cpre\u003e\ndef softPlusE (M, m):\n    if m / M \u003e 100:\n        return m\n    else:\n        return math.log(math.e + math.exp(m / M)) * M\n\u003c/pre\u003e\n\nJRF 2018年9月9日\n\nだいたいいい感じなのだが、でも、r_* の値はだいたい 1.0 から -1.0 までの間なので、そんなこった関数ではなく定数で十分なのではないかといういい気がしてきた。そこで λ をだいたい 100.0 に決めうちしてしまうと、そのほうがなぜかシステムもクラッシュを起こしにくくなった。そこで λ = 100.0 に決めた。\n\nJRF 2018年9月9日\n\n……。\n\nμ については、スコア１が小数点 1 位か2位以下の問題のようなので、だいたいそれぐらいになるようにということで、まずは (労働需要 - 労働供給) ** 2 / mean([労働需要,労働供給]) にしてみた。\n\nmicro_economy_3*.py はそれでよかったが、micro_economy_4*.py だと、ときどき、(労働需要 - 労働供給) の絶対値が 100 を超える場合が出てくる。おかしい…っていうんで、係数をかけて大きくしたりしてみたがやっぱりおかしい。\n\nJRF 2018年9月9日\n\nそれで、試しに固定してみようと μ * (労働需要 - 労働供給) ** 2  にして μ = 0.1 にすると micro_economy_4*.py では割とうまくいった。しかし、今度は micro_economy_3*.py に戻るとうまくいかない。\n\nμ = 0.01 にすると、micro_economy_3*.py でも micro_economy_4*.py でもそこそこよくなったので、そう決めうちすることにした。\n\nJRF 2018年9月9日\n\n……。\n\n…とまぁ、そんなところ。\n\n「その２」の記事に今後の課題として「過去実績とのバランスをとる」ことを書いたが、他に、新規参入を全分野で一期一社のみとする代わりに、時間要素を取り入れ、一期の時間幅を変動させることも考えたりしている。しかし、その場合、退出して企業数が 0 になる場合の強制参入について、これまでと違う論理が必要になり、どう攻めればいいのか思いついていない。\n\nJRF 2018年9月9日\n\n「その２」でも書いたが、もしかすると最適化はこんなテキトーな感じで使っていいものではないのかもしれない。そのあたり私は修行が足りな過ぎるな…と思う。そんな状態で記事を公開して、なんか恥ずかしく申し訳なく感じる…。\n\nJRF 2018年9月9日\n\nTrackbacks:\n\n《cocolog:90214777》 from JRF のひとこと\nhttp://jrf.cocolog-nifty.com/statuses/2018/11/pytho.html\n\nPython を使った最適化の本と人工知能(AI)の本を読んだが、身につかなかった。私が普段使うマシンでは例の実行にすごく時間がかかることもあって、例を確かめなかった。本気でやるなら GPU (グラボ) を買うべきか。... \n\n受信： 2018-12-30 11:48:08 (JST)\n\n《cocolog:90097610》 from JRF のひとこと\nhttp://jrf.cocolog-nifty.com/statuses/2018/10/post-5cc3.html\n\n小島寛之『エコロジストのための経済学』を読んだ。「活動家」を経済学に引き込むのが目的らしく、シンプルな論理を用いていてわかりやすかった。 \n\n受信： 2018-12-30 11:48:24 (JST)"</script>
+<script src="../../../article.js"></script>
 </body>
 </html>

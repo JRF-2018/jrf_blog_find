@@ -21,6 +21,7 @@
 </table>
 </div>
 <h1>[仏教の最適化プログラムの続き。]…</h1>
+<div class="art-tools" data-pagefind-ignore><button type="button" id="btn-copy">原文をコピー</button><span class="tools-msg" id="tools-msg"></span></div>
 <pre class="body">jrf&gt; [仏教の最適化プログラムの続き。]
 
 プログラムの将来のモジュール化を考える。(test_of_matching_2.py に関しては複数ファイルに分けないが、将来の「新プロジェクト」では分けることを考える。)
@@ -46,5 +47,7 @@ EconomyPlot も EconomyPlot0, EconomyPlotAD, EconomyPlotMA と作って最後に
 <nav class="prevnext" data-pagefind-ignore><span class="prev-art">← <a href="../../../articles/2021/02/gsm_000648.html">オーディオの設定。 低音が出ない。いや、出てるんだけど、BASS…</a> <span class="pn-date">2021-02-22T15:41:29Z</span></span><span class="next-art"><a href="../../../articles/2021/02/gsm_000650.html">右手の人差し指の爪が割れた。以前から亀裂が入っていたのだけど、そこからめくれるよ…</a> <span class="pn-date">2021-02-22T16:03:05Z</span> →</span></nav>
 
 <nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2021/02.html">2021年02月</a> | <a href="../../../index/gsm.html">共有メモ</a></nav>
+<script type="application/json" id="raw-text">"[gsm]\n○ 2021-02-22T15:59:01Z DOxLg5oCjo\n\njrf\u003e [仏教の最適化プログラムの続き。]\n\nプログラムの将来のモジュール化を考える。(test_of_matching_2.py に関しては複数ファイルに分けないが、将来の「新プロジェクト」では分けることを考える。)\n\nメンバ変数を定義する Person0 のクラスを作ったあと、不倫用関数を集めた Person である PersonAD、結婚用関数を集めた Person である PersonMA を別のファイルで作り、最後に class Person (PersonAD, PersonMA) などと多重継承を使って統合する。\n\n統合は最後になるので、プログラム中で Person を使いたい場合は、base モジュールの Person すなわち base.Person を使う。統合した class Person を base.Person に代入しておく。from base import Person とやったグローバル変数 Person に統合したものを代入するのはなぜかうまくいかないのでこうする。\n\nPerson 以外のクラスや共通の関数は common モジュールに入れ from common import * で読み込む。ただし、Frozen や Serializable は base でも使うので base に入れる。base についても from base import * でいいが、別に import base しておいて base.Person を使うようにしないと上に書いたようにうまくいかないことがあり、詰む。\n\nARGS も base に入れる。\n\nEconomyPlot も EconomyPlot0, EconomyPlotAD, EconomyPlotMA と作って最後に統合するが、これは main ルーチンでしか使わないので、base.EconomyPlot は用意しない。\n\n…このような方針を先取りして、test_of_matching_2.py (↓)のクラスなどの整理を行った (バージョン 0.0.2)。\n\n《test_of_matching_2.py - マッチングのシミュレーション》  \nhttps://gist.github.com/JRF-2018/6650bc84f238e40826251c400f45f328"</script>
+<script src="../../../article.js"></script>
 </body>
 </html>

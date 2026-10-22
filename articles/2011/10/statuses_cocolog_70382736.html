@@ -21,6 +21,7 @@
 </table>
 </div>
 <h1>Javascript の canvas の scale がおかしい。event…</h1>
+<div class="art-tools" data-pagefind-ignore><button type="button" id="btn-copy">原文をコピー</button><span class="tools-msg" id="tools-msg"></span></div>
 <pre class="body">Javascript の canvas の scale がおかしい。event の x 座標がどうにかこうに読み取ったと思ったら、context.scale(2,1) を指定しないと位置が合わない。横が半分になってるくさい。
 JRF 2011年10月31日
 
@@ -28,10 +29,10 @@ JRF 2011年10月31日
 
 だから、canvas.style.width = &quot;100px&quot;; canvas.style.height = &quot;100px&quot; とか指定したら *ダメ* で、
 
-&lt;pre&gt;
+<span class="src-pre">&lt;pre&gt;
 canvas.width = 100;
 canvas.height = 100;
-&lt;/pre&gt;
+&lt;/pre&gt;</span>
 
 と指定しないといけなかった。
 
@@ -75,5 +76,7 @@ JRF 2011年10月31日</pre>
 <nav class="prevnext" data-pagefind-ignore><span class="prev-art">← <a href="../../../articles/2011/10/statuses_cocolog_70355798.html">マクドナルドの KBQ バーガー、おいしかった。包装紙にハングルが記載され、K…</a> <span class="pn-date">2011年10月29日</span></span><span class="next-art"><a href="../../../articles/2011/11/statuses_cocolog_70392503.html">まいったな。要するに、一つ前の「ひとこと」は私がプログラミングをまたはじめたこと…</a> <span class="pn-date">2011年11月01日</span> →</span></nav>
 
 <nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2011/10.html">2011年10月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+<script type="application/json" id="raw-text">"[statuses] [cocolog:70382736]\nhttp://jrf.cocolog-nifty.com/statuses/2011/10/javas.html\n\nJavascript の canvas の scale がおかしい。event の x 座標がどうにかこうに読み取ったと思ったら、context.scale(2,1) を指定しないと位置が合わない。横が半分になってるくさい。\nJRF 2011年10月31日\n\nググると、＞CanvasのサイズをCSSで指定したらおかしく＜なるらしい。\n\nだから、canvas.style.width = \"100px\"; canvas.style.height = \"100px\" とか指定したら *ダメ* で、\n\n\u003cpre\u003e\ncanvas.width = 100;\ncanvas.height = 100;\n\u003c/pre\u003e\n\nと指定しないといけなかった。\n\n《[HTML5] Canvasに描写 ? 簡単なPixel3D ? Sakef Blog》\nhttp://sakef.jp/blog/2010/11/html5_canvas_pixel3d/\n\nJRF 2011年10月31日\n\nついでに、イベントで、offsetX が DOM にはないと知ってショックを受けた。Firefox で canvas の mouseover や click を addEventListener して、offsetX を調べると、undefined が返ってくる。\n\nググると、offsetX, offsetY は Firefox にはなく、替わりに layerX, layerY があるとのこと、しかも IE9 では offsetX は addEventListener のコールバックで渡される event にはなく、window.event オブジェクトにはあるとかあるらしい。\n\nJRF 2011年10月31日\n\n《本の虫: DOM level 3のマウスイベントにおけるカーソル位置の詳細》\nhttp://cpplover.blogspot.com/2009/06/dom-level-3.html\n\nJRF 2011年10月31日\n\nこれ、最初は IMG と MAP と AREA を使ってやろうかとも思ったのだが、どうもうまくいかないので、addEventListener を使ってさらに原始的にやることにした。\n\n《Modifying AREA Elements on the Fly : Area - HTML - JavaScript DHTML》\nhttp://www.java2s.com/Code/JavaScript/HTML/ModifyingAREAElementsontheFly.htm\n\nJRF 2011年10月31日\n\n他のところでは、Canvas で UI みたいなことしたいなら、SVG を使ったらいいじゃんって書いてたんだけど、SVG は資料が少なく、特別に覚えること多そうなんでちょっとやなんだよね。だったら、Flash でいいじゃんみたいな。\n\n《Does (HTML5) Canvas have the equivalent of an image map? - Stack Overflow》\nhttp://stackoverflow.com/questions/2932141/does-html5-canvas-have-the-equivalent-of-an-image-map\n\nJRF 2011年10月31日\n\nちなみに、addEventListener で mouseover 使うときは mouseout の処理もしないとダメ。メンドクサイ。\n\nJRF 2011年10月31日"</script>
+<script src="../../../article.js"></script>
 </body>
 </html>

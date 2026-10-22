@@ -21,6 +21,7 @@
 </table>
 </div>
 <h1>(承前) 先の [P1,P2,P3,P4] の例で P3 と P4…</h1>
+<div class="art-tools" data-pagefind-ignore><button type="button" id="btn-copy">原文をコピー</button><span class="tools-msg" id="tools-msg"></span></div>
 <pre class="body">jrf&gt; (承前)
 
 先の [P1,P2,P3,P4] の例で P3 と P4 がモジュール的だとする。このとき [P1,P2,P4,P3] に置き換えたり [P1,P2,P3,P4] を [P1,P2,P4] にするようなことが追加負担があまりないように、LLM を訓練したり、先のキャッシュをニューラルネット的に修正する手法を使ったりしてできるのかもしれない。そういう道はあるのかもしれない。
@@ -44,5 +45,7 @@ ChatGPT:＞ あります。しかも “外部ツールだけ” に寄らず、
 <nav class="prevnext" data-pagefind-ignore><span class="prev-art">← <a href="../../../articles/2025/08/gsm_007531.html">先に「ただ私のようなツールを使ったメモリ機能は「本物」じゃない気もする。AI…</a> <span class="pn-date">2025-08-17T13:45:07Z</span></span><span class="next-art"><a href="../../../articles/2025/08/gsm_007533.html">(承前) Claude…</a> <span class="pn-date">2025-08-17T15:38:56Z</span> →</span></nav>
 
 <nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2025/08.html">2025年08月</a> | <a href="../../../index/gsm.html">共有メモ</a></nav>
+<script type="application/json" id="raw-text">"[gsm]\n○ 2025-08-17T13:45:41Z Y5X/O2ZjvJ\n\njrf\u003e (承前)\n\n先の [P1,P2,P3,P4] の例で P3 と P4 がモジュール的だとする。このとき [P1,P2,P4,P3] に置き換えたり [P1,P2,P3,P4] を [P1,P2,P4] にするようなことが追加負担があまりないように、LLM を訓練したり、先のキャッシュをニューラルネット的に修正する手法を使ったりしてできるのかもしれない。そういう道はあるのかもしれない。\n\nそう ChatGPT さんに述べたところ….\n\nChatGPT:＞ あります。しかも “外部ツールだけ” に寄らず、訓練／キャッシュ操作／プロンプト設計を組み合わせると、P3・P4の入替えや省略を“ほぼタダ”に近づける道筋が見えます。要点だけ箇条書きでまとめます。\n\n(…)\n\n短いSFT（順序/省略データ拡張）＋ 相対位置のKV再ベース ＋ モジュールPrefix/Adapter ＋ 階層キャッシュのスケジューリングを組み合わせれば、P3・P4を入替え・省略しても破綻しない“モジュール型プロンプト”が実用域に入ります。\n\n内部キャッシュを“ニューラルに修正”する部分は、RoPE位相の再ベースや圧縮KVの学習がその役割を担い、メゾ的な記憶運用にちょうどハマります。\n＜\n\n…とのこと。"</script>
+<script src="../../../article.js"></script>
 </body>
 </html>

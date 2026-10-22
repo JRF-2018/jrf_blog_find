@@ -21,16 +21,17 @@
 </table>
 </div>
 <h1>Inkscape…</h1>
+<div class="art-tools" data-pagefind-ignore><button type="button" id="btn-copy">原文をコピー</button><span class="tools-msg" id="tools-msg"></span></div>
 <pre class="body">Inkscape のバッチ処理で変なエラーが出る。出たり出なかったりするのが気持ち悪い。調べると既知のバグで、以前(<a href="../../../articles/2011/05/statuses_aboutme_138754.html" class="int-link cocolog-id" title="ひとこと">[aboutme:138754]</a>)ひっかかった rebaseall のバグだった。Inkscape を入れてからまた必要になってたらしい。
 JRF 2011年11月23日
 
 エラーとしては↓のあとにスタックトレースが表示される。
 
-&lt;pre&gt;
+<span class="src-pre">&lt;pre&gt;
 
  [main] perl 5604 C:\cygwin\bin\perl.exe: *** fatal error - unable to remap \\?\C:\cygwin\lib\perl5\vendor_perl\5.10\i686-cygwin\auto\Image\Magick\Magick.dll to same address as parent
 
-&lt;/pre&gt;
+&lt;/pre&gt;</span>
 
 Inkscape で特殊なのは、-z のバッチモードのはずなのに、X11系の libXaw.dll などがないとかいうエラーも出ていたこと。
 
@@ -47,9 +48,9 @@ JRF 2011年11月23日
 
 あと、異常終了はしないんだけど、警告として Inkscape が↓と言う。
 
-&lt;pre&gt;
+<span class="src-pre">&lt;pre&gt;
 RegistryTool: Could not set the value 'C:\Program Files\Inkscape\inkscape.exe'
-&lt;/pre&gt;
+&lt;/pre&gt;</span>
 
 JRF 2011年11月23日
 
@@ -73,5 +74,7 @@ JRF 2011年11月23日</pre>
 <nav class="prevnext" data-pagefind-ignore><span class="prev-art">← <a href="../../../articles/2011/11/statuses_cocolog_70643596.html">例えばこちらから発行する ID…</a> <span class="pn-date">2011年11月22日</span></span><span class="next-art"><a href="../../../articles/2011/11/statuses_cocolog_70690388.html">「歴史的録音」を二つ聴く。一つはスメタナ四重奏団の『モーツァルト：弦楽四重奏曲…</a> <span class="pn-date">2011年11月26日</span> →</span></nav>
 
 <nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2011/11.html">2011年11月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+<script type="application/json" id="raw-text">"[statuses] [cocolog:70648516]\nhttp://jrf.cocolog-nifty.com/statuses/2011/11/inksc.html\n\nInkscape のバッチ処理で変なエラーが出る。出たり出なかったりするのが気持ち悪い。調べると既知のバグで、以前([aboutme:138754])ひっかかった rebaseall のバグだった。Inkscape を入れてからまた必要になってたらしい。\nJRF 2011年11月23日\n\nエラーとしては↓のあとにスタックトレースが表示される。\n\n\u003cpre\u003e\n\n [main] perl 5604 C:\\cygwin\\bin\\perl.exe: *** fatal error - unable to remap \\\\?\\C:\\cygwin\\lib\\perl5\\vendor_perl\\5.10\\i686-cygwin\\auto\\Image\\Magick\\Magick.dll to same address as parent\n\n\u003c/pre\u003e\n\nInkscape で特殊なのは、-z のバッチモードのはずなのに、X11系の libXaw.dll などがないとかいうエラーも出ていたこと。\n\nJRF 2011年11月23日\n\nただ、今日の上のエラーを見る限り、InkscapeではなくPerl::Magickが吐いてたのかもしれない。\n\n解決方法すなわちrebaseallすればいいよってのは今回は↓で思い出した。\n\n《My Life, Starting Up: *** fatal error - unable to remap to same address as parent : Cygwin, Ruby on Rails, System calls》\nhttp://www.mylifestartingup.com/2009/04/fatal-error-unable-to-remap-to-same.html\n\nJRF 2011年11月23日\n\nあと、異常終了はしないんだけど、警告として Inkscape が↓と言う。\n\n\u003cpre\u003e\nRegistryTool: Could not set the value 'C:\\Program Files\\Inkscape\\inkscape.exe'\n\u003c/pre\u003e\n\nJRF 2011年11月23日\n\nこれは Windows 7 系のバグなのかな？「解決」はされてなさそう…。\n\n《Bug #627943 in Inkscape: “Unexpected message RegistryTool: Could not set the value 'c:\\program \u003e files\\inkscape\\inkscape.exe'”》\nhttps://bugs.launchpad.net/inkscape/+bug/627943\n\nJRF 2011年11月23日"</script>
+<script src="../../../article.js"></script>
 </body>
 </html>

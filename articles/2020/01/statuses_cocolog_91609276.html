@@ -21,6 +21,7 @@
 </table>
 </div>
 <h1>曽我部東馬『強化学習アルゴリズム入門』と伊藤多一 他『現場で使える！…</h1>
+<div class="art-tools" data-pagefind-ignore><button type="button" id="btn-copy">原文をコピー</button><span class="tools-msg" id="tools-msg"></span></div>
 <pre class="body">曽我部東馬『強化学習アルゴリズム入門』と伊藤多一 他『現場で使える！ Python 深層強化学習入門』を読んだ。ソースがあるのがありがたい。二冊を交互に読むことでアルファ碁ゼロが私の強化学習のイメージに近いことがわかった。一方だけではわからなかった。
 JRF 2020年1月14日
 
@@ -280,7 +281,7 @@ JRF 2020年1月21日
 
 JRF 2020年1月21日
 
-&lt;pre&gt;
+<span class="src-pre">&lt;pre&gt;
     def _compile_graph(self, model):
 (…)
         self.loss = -K.sum(
@@ -288,7 +289,7 @@ JRF 2020年1月21日
             axis=1) * self.advantage
         self.loss = K.mean(self.loss)
 (…)
-&lt;/pre&gt;
+&lt;/pre&gt;</span>
 
 JRF 2020年1月21日
 
@@ -300,7 +301,7 @@ JRF 2020年1月21日
 
 JRF 2020年1月21日
 
-&lt;pre&gt;
+<span class="src-pre">&lt;pre&gt;
         l1 = K.sum(
             K.log(self.act_prob) * self.act_onehot,
             axis=1) * self.advantage
@@ -308,7 +309,7 @@ JRF 2020年1月21日
         m1 = K.mean(l1)
         m2 = K.mean(l2)
         self.loss = - K.log(m2) + 0.5 * K.log(K.mean(K.square(l2 - m2)))
-&lt;/pre&gt;
+&lt;/pre&gt;</span>
 
 JRF 2020年1月21日
 
@@ -320,13 +321,13 @@ JRF 2020年1月21日
 
 JRF 2020年1月21日
 
-&lt;pre&gt;
+<span class="src-pre">&lt;pre&gt;
         l3 = K.sum(
             K.log(1.0 + self.act_prob) * self.act_onehot,
             axis=1) * self.advantage
         m3 = K.mean(l3)
         self.loss = - m3
-&lt;/pre&gt;
+&lt;/pre&gt;</span>
 
 JRF 2020年1月21日
 
@@ -342,14 +343,14 @@ self.act_prob は 0 から 1.0 の間になり、その log はマイナスに�
 
 JRF 2020年1月21日
 
-&lt;pre&gt;
+<span class="src-pre">&lt;pre&gt;
         l5 = K.sum(
             (100.0 + K.log(self.act_prob)) * self.act_onehot,
             axis=1) * self.advantage
         m5 = K.mean(l5)
         self.loss = - m5
 
-&lt;/pre&gt;
+&lt;/pre&gt;</span>
 
 JRF 2020年1月21日
 
@@ -380,11 +381,11 @@ JRF 2020年1月21日
 
 JRF 2020年1月21日
 
-&lt;pre&gt;
+<span class="src-pre">&lt;pre&gt;
 $ python policy_iteration_epsilon.py
 (…)
 step: 2  value: [23.86013098 24.01045186 23.55251256]  policy: [0.95 0.95 0.95]  value2: [23.625788676124007, 23.920355941678718, 23.231137352094546]
-&lt;/pre&gt;
+&lt;/pre&gt;</span>
 
 JRF 2020年1月21日
 
@@ -422,24 +423,24 @@ JRF 2020年1月22日
 JRF 2020年1月22日
 
 オリジナル…
-&lt;pre&gt;
+<span class="src-pre">&lt;pre&gt;
 def pos_check(bottom_left, top_right, input_pos):
 (…)
     check = (pos.size == 2) * (pos.dtype == np.int) * \
             (bl &lt;= pos).all() * (pos &lt;= tr).all()
 (…)
-&lt;/pre&gt;
+&lt;/pre&gt;</span>
 
 JRF 2020年1月22日
 
 変更後…
-&lt;pre&gt;
+<span class="src-pre">&lt;pre&gt;
 def pos_check(bottom_left, top_right, input_pos):
 (…)
     check = (pos.size == 2) * np.issubdtype(pos.dtype, np.integer) * \
             (bl &lt;= pos).all() * (pos &lt;= tr).all()
 (…)
-&lt;/pre&gt;
+&lt;/pre&gt;</span>
 
 JRF 2020年1月22日</pre>
 
@@ -460,5 +461,7 @@ JRF 2020年1月22日</pre>
 <nav class="prevnext" data-pagefind-ignore><span class="prev-art">← <a href="../../../articles/2020/01/statuses_cocolog_91609275.html">ネーメ・ヤルヴィ指揮スコティッシュ・ナショナル管弦楽団『ショスタコーヴィチ:…</a> <span class="pn-date">2020年01月14日</span></span><span class="next-art"><a href="../../../articles/2020/01/statuses_cocolog_91621112.html">2020年10月期・秋アニメ。今期も地上波・BS・d…</a> <span class="pn-date">2020年01月20日</span> →</span></nav>
 
 <nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2020/01.html">2020年01月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+<script type="application/json" id="raw-text">"[statuses] [cocolog:91609276]\nhttp://jrf.cocolog-nifty.com/statuses/2020/01/post-ed7a36.html\n\n曽我部東馬『強化学習アルゴリズム入門』と伊藤多一 他『現場で使える！ Python 深層強化学習入門』を読んだ。ソースがあるのがありがたい。二冊を交互に読むことでアルファ碁ゼロが私の強化学習のイメージに近いことがわかった。一方だけではわからなかった。\nJRF 2020年1月14日\n\nおもちゃの自動車を AI で動かしたいなどと言って、これまで何冊か本を読んできた(直近では [cocolog:91382428] など)。そういう目的なら「強化学習」を詳しく調べる必要がありそうだ…ということで、それに関する本を二冊読んだ。どちらの本も最後のほうは理解できていないが、「目を通す」以上にしっかり読めたと思う。\n\nJRF 2020年1月14日\n\n……。\n\n……。\n\n『強化学習アルゴリズム入門 「平均」からはじめる基礎と応用』(曽我部 東馬 著, オーム社, 2019年5月)\nhttps://www.amazon.co.jp/dp/427422371X\nhttps://7net.omni7.jp/detail/1106992518\n\n最後の章は別として、例が詳しくわかりやすい本。が、けっこう誤字・脱字がある。正誤表がないかとググったがないようだ。\n\nJRF 2020年1月14日\n\n……。\n\n読んでて、グリッドワールドで、↓の「負の学習」みたいなことができないかと考える。\n\n《ニューラルネットで負の学習: 競争的な学習の実験 その２》\nhttp://jrf.cocolog-nifty.com/software/2019/05/post-3c97df.html\n\nJRF 2020年1月14日\n\nあるアクションの価値がマイナスになれば、別のアクションの側に逆側に倒して学習する…とか考えるが、そうすると Q が求まらない。『現場で使える！ Python 深層強化学習入門』のほうで説明するが、決定的な MDP に対しては、Q の最良のところを辿っていくのが方策にならねばならず、そういう Q に関係なく辿って良いなら、わざわざ学習するほどのことではなくなる。どうも、うまくいく方法が思いつかない。\n\nJRF 2020年1月14日\n\n……。\n\n＞X_N は N 回目に探索したサンプル値なので、定数として扱ってもかまいません。＜(p.19)\n\nこれがいまいち納得できない。この次の本も含めて、全般的に定数と見なして良いところとそうでないところの差の理解が私にはできなかった。\n\nJRF 2020年1月14日\n\n……。\n\n＞各バンディットにおける事後分布は、以下のようにベイズ理論で表現できます。＜(p.57)\n\nこのあとの式の無限の片方が開いたようなマークが、この次の本でも出てくるが良くわからない。また、ベイズの定理、そのものでないので、この式自体も今いちわからなかった。私の勉強不足ということだろうが…。\n\nJRF 2020年1月14日\n\n……。\n\np.63 で S = (0,0), (3,0), (3,2) のところ、S = (2,0) や (2,2) などもそうではないのか？ よくわからない。\n\nJRF 2020年1月14日\n\n……。\n\np.73 で γ * G(S_{t+1}, a_t) となっているところ γ * G(S_{t+1}, a_{t+1}) だろう。\n\nJRF 2020年1月14日\n\n……。\n\np.96 SARSA 法のところ V() が抜けている。\n\nJRF 2020年1月14日\n\n……。\n\np.158 θ(s_30,L) のところ 2.34 でなく 2.67 だろう。\n\nJRF 2020年1月14日\n\n……。\n\np.165 TD(λ) 法と書いているがこれは TD(n) 法ではないか。\n\nJRF 2020年1月14日\n\n……。\n\n4章は、この次の本と読み比べながら読まないとほとんど理解できなかった。この本だけでもダメだし、この次の本だけでわかるほど私は頭良くなかった。\n\nJRF 2020年1月14日\n\n……。\n\n……。\n\n\n『現場で使える！ Python 深層強化学習入門』(伊藤 多一 ＆ 今津 義充 ＆ 須藤 広大 ＆ 仁ノ平 将人 ＆ 川崎 悠介 ＆ 酒井 裕企 ＆ 魏 崇哲 著, 翔泳社, 2019年8月)\nhttps://www.amazon.co.jp/dp/4798159921\nhttps://7net.omni7.jp/detail/1106999270\n\nJRF 2020年1月14日\n\n最後の ENAS はよくわからなかったが、それ以外はかなりわかりやすく書かれていると思う。ただ、これも意外な脱字のようなものが多い。誤字は少ない気がするが。こちらは誤字脱字のメモしてなかったので指摘はしない。\n\nJRF 2020年1月14日\n\n……。\n\np.4 から「教師あり学習」「教師なし学習」などの説明があるが、どうもこの二分法はやめたほうがいいのではないか。例えば、進化モデルみたいなものを作るとき、環境からは、または相手の行動から報酬を受けとる。それは教師データと呼んだら何がいけないか。そして、そもそもそういう環境を作ったというのが「教師データ」ではないのか…などという考え方も出てくる。\n\nあるのは「シンプルな教師あり学習」だけで、あとそれ以外は曖昧模糊としているということでいいのではないか？ もちろん、「強化学習」は「それ以外」のほうになる。\n\nJRF 2020年1月14日\n\n……。\n\n強化学習の例をあげての説明は、『強化学習アルゴリズム入門』のほうがわかりやすいが、式のまとめ方はこの『現場で使える！ Python 深層強化学習入門』のほうが良かった。\n\n両方を読んでなのだが、ひっかかったのが、π が q に従って行動を決めないなら、q の具体的数値にいったい何の意味があるんだろう？…ということ。\n\nJRF 2020年1月14日\n\nq がスコアなどと一致する必要はまったくないのでは？ いや、どうも q は期待報酬であり、期待報酬が最良のものを辿っていけば最良の報酬が平均的には得られるという仮定がある。最後に報酬を得るというモデルの限りそれで良いのだろう。そうは得られない(途中で報酬をもらう)モデルの例を示せるか？ やってみるべきか…とか考えた。\n\nあくまで π が決まって q が決まるから、期待報酬が最大のものを π がたどるとは限らない。期待報酬が最良のものを辿っていくという π のもとでの期待報酬が q になる。\n\nJRF 2020年1月14日\n\n\n同じメタ探索で、違う設定群を試し、その中で最良のメタ探索があり、最終的な探索 π があるというのはよくわかる(その後、q が決まる。q の最良探索を π が辿るとは限らない)。が、こちらはよくわからない。\n\np.36 のように、ある π について v = R + γ *  P ・ v → v = inv(1 - γ * P) ・ R で q が求まる。その q について最良探索を π' として、また q' を求め π'' を求めると、π != π' だが π = π'' で、つまり、π と π'' の間を振動するという例が作れないか？\n\nJRF 2020年1月14日\n\n…と頭の中でいろいろ試してみたのだが、どうも例が作れない。\n\nそこでググったところ↓を見つけた。\n\n《markov process - Why is there always at least one policy that is better than or equal to all other policies?》\nhttps://stats.stackexchange.com/questions/207780/why-is-there-always-at-least-one-policy-that-is-better-than-or-equal-to-all-othe\n\nJRF 2020年1月14日\n\n期待報酬が最良のものを辿っていく π で q を更新し、その q の期待報酬が最良のものをまた辿っていくというのを繰り返すだけで、かならず MDP (マルコフ決定過程) は、期待報酬が最大のものを π がたどるようになる…ということは言えそうだ。\n\nJRF 2020年1月14日\n\n……。\n\np.54 でやっと気付いたのだが、ε greedy 法で、ε の値を変えたら Q の値が変わるのが当然なのではないか？ 最良の π についてのみ Q が決まるのではなく、ε を含めた π の戦略によって得られる平均によって Q 値は変わると見るべきだろう。\n\nJRF 2020年1月14日\n\n……。\n\np.64 には方策勾配定理が紹介され、その証明も載っているのはわかりやすい。\n\nただ、この log に q をかけたものを微分するというもの。どう使えるんだ…と思って、追っていくと、p.141 のソースなどから、q (など)は定数とみなして、log の項だけが微分されるのだとわかる。\n\nそして、π にはソフトマックス型の関数を使うので、結局、交差エントロピー誤差に関して誤差逆伝播するときの、おなじみの差の形になるわけである。\n\nJRF 2020年1月14日\n\nただ、私は最初、別のことを考えた。微分を外に和を中に持ってきて log を足し合わせると考えると↓を思い出した。\n\n《ミクロ経済学の我流シミュレーション その３ log 戦略》\nhttp://jrf.cocolog-nifty.com/society/2019/05/post-79cdc2.html\n\nJRF 2020年1月14日\n\n↑で、log を使ったのは、＞一分野だけプラスの利益を増やすよりも、他の利益を増やすほうが増分が大きくなる。これによりある種の「弾力」が表せる。＜ことで、平均からの分散がないよう保ったままその和を大きくしていくことの代わりに使えると考えたからであった。\n\nJRF 2020年1月14日\n\nここで逆に、log の和を使っているところについて、平均からの分散がないよう保つという「正則化」項みたいなものをつけて minimize すれば、学習結果がよくなるのではないかと予想した。…が試していない。\n\nq や δ などの重みが付いている部分は、重み付き平均で考え、その平均からの差の二乗に再度重みの絶対値をかけたものの和を「正則化」項的に使えばいいのではないか。マイナスの扱いがやっかいだが、不可能ではないと思う。\n\nいずれ試してみたい。\n\nJRF 2020年1月14日\n\n……。\n\nDPG (Deterministic Policy Gradient) (p.162) や p.186-188 に DDPG TRPO PPO について、文献の紹介がある。このあたりは結局私はわからなかった。ルービックキューブの例はこのうちのどれかを使ってそうだがよくわからない。\n\nJRF 2020年1月14日\n\n……。\n\n上で「メタ探索」をまずして…ということを考えた。\n\nこの本のルービックキューブ問題で、モンテカルロ木探索(MCTS)を使っているが、完全に「ポストプロセス」で学習が終ったあとに使っているだけだった。「これじゃない感」がある。\n\nJRF 2020年1月14日\n\nが、このソースを読んだあと、『強化学習アルゴリズム入門』の 4.6 節 アルファ碁ゼロ学習法が理解できるようになって、そちらのソースを読むと、探索をまずして…ということをやっていたのだった。しかも、Q 値みたいなものはほぼ使っていない。これが私が「強化学習」でやりたかったことに近いな…と理解した。\n\nJRF 2020年1月14日\n\n……。\n\n……。\n\n今回は、プログラムを読みはしたが、実行はしなかった。そのあたりのチャックは他の人に委ねたい。\n\nJRF 2020年1月14日\n\n……。\n\n読んでていくつか試したいことができた。\n\n一つは、グリッドワールドで負の学習を行うこと。\n\n一つは、ε greedy 法で ε が違えば Q が違うことを確けっること。\n\n一つは、方策勾配法で、log の和を使っているところで、平均からの分散がないよう保つという「正則化」項みたいなものをつけて minimize すること。\n\nもう少し時間をかけて考えてみて、場合によっては実装したい。\n\nJRF 2020年1月14日\n\n……。\n\n……。\n\n追記。\n\n『強化学習アルゴリズム入門』のアルファ碁ゼロ学習法は、例としては碁ではなく三目並べ(TicTacToe)になっている。\n\nで、\n\n＞新しいリーフノードが展開されたら、従来の MCTS 手法では、Roll-out という手法を使って最後の勝ち負けまでシミュレーションします。アルファ碁ゼロでは、Roll-out を実行せずに新しいリーフノードが展開された時点で逆伝播が始まります。＜(p.192)\n\nJRF 2020年1月16日\n\nとあるが、ソースをみると、確かに search は途中まで展開された段階で V の値をニューラルネットの出力から得た数値を返している。しかし、execute_episode を見ると、結局、勝敗がつくまで展開しているようにみえる。\n\n…私の読みまちがいかもしれないが…。例だから、それでいいということなのか…。\n\nJRF 2020年1月16日\n\ntypo 「確けっる」→「確かめる」。\n\nJRF 2020年1月21日\n\n……。\n\n……。\n\n追記。\n\n「方策勾配法で、log の和を使っているところで、平均からの分散がないよう保つという「正則化」項みたいなものをつけて minimize すること。」について。\n\nJRF 2020年1月21日\n\n↓でダウンロードできるソース…\n\n《現場で使える！Python深層強化学習入門 強化学習と深層学習による探索と制御 ダウンロード｜翔泳社の本》\nhttps://www.shoeisha.co.jp/book/download/9784798159928/detail\n\nその RL_Book/contents/4-3_ac_pendulum/agent/actor.py の↓の部分…\n\nJRF 2020年1月21日\n\n\u003cpre\u003e\n    def _compile_graph(self, model):\n(…)\n        self.loss = -K.sum(\n            K.log(self.act_prob) * self.act_onehot,\n            axis=1) * self.advantage\n        self.loss = K.mean(self.loss)\n(…)\n\u003c/pre\u003e\n\nJRF 2020年1月21日\n\nここを変えて、いろいろ試してみた。\n\nまず、「正則化」項みたいなものを付ける試みはまったく成功しなかった。\n\n例えば、上の部分を…\n\nJRF 2020年1月21日\n\n\u003cpre\u003e\n        l1 = K.sum(\n            K.log(self.act_prob) * self.act_onehot,\n            axis=1) * self.advantage\n        l2 = K.exp(K.clip(l1, -100, 10))\n        m1 = K.mean(l1)\n        m2 = K.mean(l2)\n        self.loss = - K.log(m2) + 0.5 * K.log(K.mean(K.square(l2 - m2)))\n\u003c/pre\u003e\n\nJRF 2020年1月21日\n\n…と変えたものをやっても、学習が早くなるということあなかったし、まともに学習されている様子もなかった。- K.log(m2) のところを - m1 にしてもダメ。「正則化」項の部分をいろいろいじってみたけど、ダメだった。ちなみに、ときどき学習の途中で、act_prob の計算で NaN があるというエラーが出て止まることがあったが、再現性がなく原因がわからなかった。\n\nJRF 2020年1月21日\n\nこれらをやっているうちに気になったのが、変える前の例でも、loss が最初増えていくということ。minimize のはずなのにこれはおかしいと思った。それは、上の l1 の部分が、マイナスになるのが問題のようなので、そこがプラスになるようまず↓に変えてみた。\n\nJRF 2020年1月21日\n\n\u003cpre\u003e\n        l3 = K.sum(\n            K.log(1.0 + self.act_prob) * self.act_onehot,\n            axis=1) * self.advantage\n        m3 = K.mean(l3)\n        self.loss = - m3\n\u003c/pre\u003e\n\nJRF 2020年1月21日\n\n最適化に Nelder-Mead 法を使っていた私は、最適化の具合は、関数形よりも増えるか減るかの問題であとは和のバランスだ…という感覚がある。log(π()) を log(1+π()) にしても本質的に問題ないのではないかと考えたのだった。\n\n結果は、上の「正則化」項と違って、割とまともに学習は進む。loss も単調減少になってくれる。しかし、score が元の例だと -15 ぐらい行くのに、この変更をすると -20 ぐらいで貼り付き、それ以降改善が見られない様子となった。\n\n…ということで、少し失敗。\n\nJRF 2020年1月21日\n\nself.act_prob は 0 から 1.0 の間になり、その log はマイナスになる。これをだいたいプラスにするには、単純に 100 ぐらい足せば良いだろう…と考えたのが下の変更になる。\n\nJRF 2020年1月21日\n\n\u003cpre\u003e\n        l5 = K.sum(\n            (100.0 + K.log(self.act_prob)) * self.act_onehot,\n            axis=1) * self.advantage\n        m5 = K.mean(l5)\n        self.loss = - m5\n\n\u003c/pre\u003e\n\nJRF 2020年1月21日\n\nこの場合、微分すると、100 * self.advantage の項は定数項だから消えるはずで、学習には影響がないはず…。\n\n実際、試してみると、loss も単調減少になり、学習もほぼ遜色なく進むのであった。ただ、loss は、移動平均のグラフで見ると単調減少だが、個々の数値を見るとかなり激しく振動していた。\n\nJRF 2020年1月21日\n\nloss は単調減少になったとはいえ、学習が良くなるほどのことはなく、あまり意味のない変更ということになった。なぜ、元の例で、loss が増えてもうまくいくのか、それは私には謎のまま残った。\n\nJRF 2020年1月21日\n\n……。\n\n……。\n\n「ε greedy 法で ε が違えば Q が違うことを確かめること。」について。\n\n実際違うことを計算および試行で確かめた。ε = 0.1 で計算および試行するプログラムが↓。(『現場で使える！ Python 深層強化学習入門』のサンプル・プログラムを元にしている。)\n\nJRF 2020年1月21日\n\n《policy_iteration_epsilon.py》\nhttps://www.sugarsync.com/pf/D252372_79_7908952020\n\nその結果が↓になる。\n\nJRF 2020年1月21日\n\n\u003cpre\u003e\n$ python policy_iteration_epsilon.py\n(…)\nstep: 2  value: [23.86013098 24.01045186 23.55251256]  policy: [0.95 0.95 0.95]  value2: [23.625788676124007, 23.920355941678718, 23.231137352094546]\n\u003c/pre\u003e\n\nJRF 2020年1月21日\n\nvalue: が V の計算して求めた結果で、実際、試行した結果が value2: になる。\n\nちなみに ε = 0 のときは最終的な step 2 の value == [25.01947209 25.14928602 24.76849849] になるので、違っていることがわかる。\n\nJRF 2020年1月21日\n\n……。\n\n……。\n\n「グリッドワールドで負の学習を行うこと。」については、まだ思いついていない。グリッドワールド以外でも、強化学習で負の学習を行える例があるなら何でも良いのだが、Q の計算で結局、マイナスが必要だというのがネックになっている。\n\nJRF 2020年1月21日\n\n……。\n\n……。\n\n追記。\n\nアルファ碁ゼロ学習法の ipynb を実行しようとして一苦労。いろいろなモジュールをインストールしなければならないのはいいとして、Juptyter Notebook のバグにまずはまった(↓)。\n\nJRF 2020年1月22日\n\n《Jupyter Notebook で venv の Python 3.6 上の TensorFlow 1.x が ImportError: DLL load failed になる。その venv でコマンドラインの .py ではちゃんと import されるのに！》\nhttp://jrf.cocolog-nifty.com/statuses/2020/01/post-718549.html\n\nJRF 2020年1月22日\n\nその上でさらに、numpy の仕様変更があったらしく、ソース(train_alpha_0_tic_tac_toe.ipynb と test_alpha_0_tic_tac_toe.ipynb どちらも)の以下の部分を変更する必要があった。\n\nJRF 2020年1月22日\n\nオリジナル…\n\u003cpre\u003e\ndef pos_check(bottom_left, top_right, input_pos):\n(…)\n    check = (pos.size == 2) * (pos.dtype == np.int) * \\\n            (bl \u003c= pos).all() * (pos \u003c= tr).all()\n(…)\n\u003c/pre\u003e\n\nJRF 2020年1月22日\n\n変更後…\n\u003cpre\u003e\ndef pos_check(bottom_left, top_right, input_pos):\n(…)\n    check = (pos.size == 2) * np.issubdtype(pos.dtype, np.integer) * \\\n            (bl \u003c= pos).all() * (pos \u003c= tr).all()\n(…)\n\u003c/pre\u003e\n\nJRF 2020年1月22日"</script>
+<script src="../../../article.js"></script>
 </body>
 </html>

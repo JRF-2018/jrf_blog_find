@@ -9,7 +9,7 @@
 </head>
 <body>
 <nav><a href="../../../index.html">TOP</a> | <a href="../../../index/2019/07.html">2019年07月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
-<article data-pagefind-body data-pagefind-meta="種別:ひとこと">
+<article data-pagefind-body data-pagefind-meta="種別:ひとこと" class="pre-joined">
 <div data-pagefind-meta="投稿月:2019年07月" style="display:none"></div>
 <div class="meta">
 <table class="meta-table">
@@ -21,6 +21,7 @@
 </table>
 </div>
 <h1>Mew で So-net のメールの SSL…</h1>
+<div class="art-tools" data-pagefind-ignore><label><input type="checkbox" id="opt-prejoin" checked> pre 連結</label><button type="button" id="btn-copy">原文をコピー</button><span class="tools-msg" id="tools-msg"></span></div>
 <pre class="body">Mew で So-net のメールの SSL 化に対応しようとしたが、かなりダーティなことをしてやっと POP ができた。
 JRF 2019年7月19日
 
@@ -44,29 +45,31 @@ JRF 2019年7月19日
 
 JRF 2019年7月19日
 
-&lt;pre&gt;
+<span class="src-pre">&lt;pre&gt;
 (defadvice mew-open-ssl-stream (around mew-open-ssl-stream-pop3-hack)
   &quot;&quot;
  (let ((mew-prog-ssl-arg mew-prog-ssl-arg))
     (if (and (string= (ad-get-arg 3) &quot;pop3&quot;)
-             (string= (ad-get-arg 1) &quot;pop.so-net.ne.jp&quot;))
+             (string= (ad-get-arg 1) &quot;pop.so-net.ne.jp&quot;))<span class="pre-joint">
 &lt;/pre&gt;
 
 JRF 2019年7月19日
 
 &lt;pre&gt;
-        (progn
+</span><span class="pre-joint-nl">
+</span>        (progn
           (ad-set-arg 3 nil)
           (setq mew-prog-ssl-arg &quot;sslVersion=TLSv1\n&quot;)))
-    ad-do-it))
+    ad-do-it))<span class="pre-joint">
 &lt;/pre&gt;
 
 JRF 2019年7月19日
 
 &lt;pre&gt;
-(eval-after-load &quot;mew-ssl&quot;
+</span><span class="pre-joint-nl">
+</span>(eval-after-load &quot;mew-ssl&quot;
   '(ad-activate 'mew-open-ssl-stream))
-&lt;/pre&gt;
+&lt;/pre&gt;</span>
 
 JRF 2019年7月19日
 
@@ -111,30 +114,32 @@ JRF 2019年7月20日
 
 JRF 2019年7月20日
 
-&lt;pre&gt;
+<span class="src-pre">&lt;pre&gt;
 (defadvice mew-open-ssl-stream (around mew-open-ssl-stream-pop3-hack)
   &quot;&quot;
   (let ((mew-prog-ssl-arg mew-prog-ssl-arg)
         (expand-file-name (lambda (x) x)))
     (if (and (string= (ad-get-arg 3) &quot;pop3&quot;)
-             (string= (ad-get-arg 1) &quot;pop.so-net.ne.jp&quot;))
+             (string= (ad-get-arg 1) &quot;pop.so-net.ne.jp&quot;))<span class="pre-joint">
 &lt;/pre&gt;
 
 JRF 2019年7月20日
 
 &lt;pre&gt;
-        (progn
+</span><span class="pre-joint-nl">
+</span>        (progn
           (ad-set-arg 3 nil)
           (setq mew-prog-ssl-arg &quot;sslVersion=TLSv1\n&quot;)))
-    ad-do-it))
+    ad-do-it))<span class="pre-joint">
 &lt;/pre&gt;
 
 JRF 2019年7月20日
 
 &lt;pre&gt;
-(eval-after-load &quot;mew-ssl&quot;
+</span><span class="pre-joint-nl">
+</span>(eval-after-load &quot;mew-ssl&quot;
   '(ad-activate 'mew-open-ssl-stream))
-&lt;/pre&gt;
+&lt;/pre&gt;</span>
 
 その上で (setq mew-ssl-cert-directory &quot;/フルパス_to/.certs&quot;) で指定する。
 
@@ -194,21 +199,22 @@ JRF 2020年4月16日
 
 JRF 2020年4月16日
 
-&lt;pre&gt;
+<span class="src-pre">&lt;pre&gt;
 (defadvice mew-open-ssl-stream (around mew-open-ssl-stream-pop3-hack)
   (let ((mew-prog-ssl-arg mew-prog-ssl-arg))
     (if (and (string= (ad-get-arg 3) &quot;pop3&quot;)
              (string= (ad-get-arg 1) &quot;pop.so-net.ne.jp&quot;))
         (ad-set-arg 3 nil))
-    ad-do-it))
+    ad-do-it))<span class="pre-joint">
 &lt;/pre&gt;
 
 JRF 2020年4月16日
 
 &lt;pre&gt;
-(eval-after-load &quot;mew-ssl&quot;
+</span><span class="pre-joint-nl">
+</span>(eval-after-load &quot;mew-ssl&quot;
   '(ad-activate 'mew-open-ssl-stream))
-&lt;/pre&gt;
+&lt;/pre&gt;</span>
 
 JRF 2020年4月16日
 
@@ -217,9 +223,9 @@ JRF 2020年4月16日
 
 ただし、
 
-&lt;pre&gt;
+<span class="src-pre">&lt;pre&gt;
 (setq mew-ssl-verify-level 0)
-&lt;/pre&gt;
+&lt;/pre&gt;</span>
 
 …じゃないとダメだった。expand-file-name に advice したり Windows の tstunnel を使ったり、いろいろしたが level 2 はダメだった。
 
@@ -267,22 +273,23 @@ Cygwin の stunnel を使うには、やはり、config の CApath に与える�
 
 JRF 2020年4月16日
 
-&lt;pre&gt;
+<span class="src-pre">&lt;pre&gt;
 (defadvice mew-open-ssl-stream (around mew-open-ssl-stream-pop3-hack)
   (let ((mew-prog-ssl-arg mew-prog-ssl-arg)
 	(expand-file-name (lambda (x) x)))
     (if (and (string= (ad-get-arg 3) &quot;pop3&quot;)
 	     (string= (ad-get-arg 1) &quot;pop.so-net.ne.jp&quot;))
 	(ad-set-arg 3 nil))
-    ad-do-it))
+    ad-do-it))<span class="pre-joint">
 &lt;/pre&gt;
 
 JRF 2020年4月16日
 
 &lt;pre&gt;
-(eval-after-load &quot;mew-ssl&quot;
+</span><span class="pre-joint-nl">
+</span>(eval-after-load &quot;mew-ssl&quot;
   '(ad-activate 'mew-open-ssl-stream))
-&lt;/pre&gt;
+&lt;/pre&gt;</span>
 
 JRF 2020年4月16日
 
@@ -303,5 +310,7 @@ JRF 2020年4月16日</pre>
 <nav class="prevnext" data-pagefind-ignore><span class="prev-art">← <a href="../../../articles/2019/07/statuses_cocolog_91160099.html">NDS『レイトン教授と最後の時間旅行』をプレイ。初期三部作の最後。攻略サイトを見…</a> <span class="pn-date">2019年07月14日</span></span><span class="next-art"><a href="../../../articles/2019/07/statuses_cocolog_91179993.html">参議院議員選挙の投票をしてきた。で、結果を見て考えたことは、交際費について。消費…</a> <span class="pn-date">2019年07月22日</span> →</span></nav>
 
 <nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2019/07.html">2019年07月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+<script type="application/json" id="raw-text">"[statuses] [cocolog:91172368]\nhttp://jrf.cocolog-nifty.com/statuses/2019/07/post-ca4dac.html\n\nMew で So-net のメールの SSL 化に対応しようとしたが、かなりダーティなことをしてやっと POP ができた。\nJRF 2019年7月19日\n\nSo-net がメールを受信するときの POP の APOP を廃止し、SSL (TLS)を使うことを強制しようとしている。これは、もう前からなんだけど、つい最近、その期日が迫っているというので焦って設定を見直した。\n\n2017年2月ごろにも案内があって、そのとき試した結果として、メール送信の SMTP を SSL に載せることは成功したが、受信の POP を SSL 化することはできなかった。これが謎であった。\n\nJRF 2019年7月19日\n\nで、再び案内があったので、(setq mew-debug t) にした上で、いろいろ試した結果 pop-port=110 pop-ssl-port=995 で、(setq mew-prog-ssl-arg \"sslVersion=TLSv1\\n\") なら通ることがまずわかった。\n\nJRF 2019年7月19日\n\nなぜ、これなら通るのか調べると、どうも、mew-open-ssl-stream するとき mew-ssl-options を呼ぶが、その中の stunnel の config で protocol=pop3 をすると、アウトになることがわかった。で、それをしないようにすると、とりあえず、pop-port=995 であっても POP3 がうまく動くことが確かめられた。\n\nJRF 2019年7月19日\n\nでも、プロトコル的にそういうことしていいかはわからない。どちらかと言えばマズそうな気がする。\n\n一応、defadvice するなら、次のようにすればいい。\n\nJRF 2019年7月19日\n\n\u003cpre\u003e\n(defadvice mew-open-ssl-stream (around mew-open-ssl-stream-pop3-hack)\n  \"\"\n (let ((mew-prog-ssl-arg mew-prog-ssl-arg))\n    (if (and (string= (ad-get-arg 3) \"pop3\")\n             (string= (ad-get-arg 1) \"pop.so-net.ne.jp\"))\n\u003c/pre\u003e\n\nJRF 2019年7月19日\n\n\u003cpre\u003e\n        (progn\n          (ad-set-arg 3 nil)\n          (setq mew-prog-ssl-arg \"sslVersion=TLSv1\\n\")))\n    ad-do-it))\n\u003c/pre\u003e\n\nJRF 2019年7月19日\n\n\u003cpre\u003e\n(eval-after-load \"mew-ssl\"\n  '(ad-activate 'mew-open-ssl-stream))\n\u003c/pre\u003e\n\nJRF 2019年7月19日\n\n(pre タグは取り除いてください。)\n\n今は defadvice を使わないらしいけど、私は古い人間なので…。\n\nJRF 2019年7月19日\n\nちなみに Emacs もかなり古いバージョン(23.3.1)を使っているため、最新の Mew には替えられなくなっている…。まぁ、そのあたりをまずなんとかすべきという話はあるが、フォントがらみとかで、このバージョンが快適なんだよね…。\n\nJRF 2019年7月19日\n\nstunnel も古い。Windows 7 で cygwin の stunnel 4.29 を使って、(setq mew-ssl-ver 4) して使っている。まぁ、セキュリティ関連でこんな古いバージョン使うなんて邪道でしかないけど…。しかも、(setq mew-ssl-verify-level 0) で動かしている。orz\n\nJRF 2019年7月19日\n\n……。\n\n追記。\n\n(setq mew-ssl-verify-level 2) にしないとまずいかと思い、いろいろ調べてみた。\n\nJRF 2019年7月20日\n\n↓を参考に So-net の CA を調べると DigiCert らしい。\n\n《mewでsakura共有サーバとSSL暗号化通信（IMAP） - tranphonic’s blog》\nhttp://tranphonic.hatenablog.com/entry/2015/07/20/194748\n\nwww.digicert.com に行って、Firefox の機能で pem を取得し(方法はググれ)、↑に従って、~/.certs にファイルを置く。\n\nJRF 2019年7月20日\n\nopenssl を使った通信はこれでうまく行くようになった。…が、mew からの stunnel がうまく動かない。\n\nJRF 2019年7月20日\n\nいろいろ試すと、stunnel の config で CApath を指定するときに、Windows の Emacs だと expand-file-name が悪さをしていることがわかった。Cygwin の stunnel は c:/なんちゃら/.certs を受け容れないから。\n\nその辺を無理矢理通すには、上のコードを少し変えればいい。\n\nJRF 2019年7月20日\n\n\u003cpre\u003e\n(defadvice mew-open-ssl-stream (around mew-open-ssl-stream-pop3-hack)\n  \"\"\n  (let ((mew-prog-ssl-arg mew-prog-ssl-arg)\n        (expand-file-name (lambda (x) x)))\n    (if (and (string= (ad-get-arg 3) \"pop3\")\n             (string= (ad-get-arg 1) \"pop.so-net.ne.jp\"))\n\u003c/pre\u003e\n\nJRF 2019年7月20日\n\n\u003cpre\u003e\n        (progn\n          (ad-set-arg 3 nil)\n          (setq mew-prog-ssl-arg \"sslVersion=TLSv1\\n\")))\n    ad-do-it))\n\u003c/pre\u003e\n\nJRF 2019年7月20日\n\n\u003cpre\u003e\n(eval-after-load \"mew-ssl\"\n  '(ad-activate 'mew-open-ssl-stream))\n\u003c/pre\u003e\n\nその上で (setq mew-ssl-cert-directory \"/フルパス_to/.certs\") で指定する。\n\nJRF 2019年7月20日\n\nただ、こんなダーティなことをやるぐらいなら、(setq mew-ssl-verify-level 0) のほうが素直かな…と思う。\n\nJRF 2019年7月20日\n\n……。\n\n追記。\n\n上で使っている sslVersion=TLSv1 とかいうのは、今の stunnel では使えなくな(ってい)るらしい。\n\n《stunnel 5.45にしたら動かなくなりました - Google グループ》\nhttps://groups.google.com/d/topic/mew-ja/DDAZa8pMTcg\n\nJRF 2019年7月22日\n\nで、昔拾った stunnel 5.40 の Windows 版(tstunnel.exe)だと foreground 等のオプションが使えず、私の Mew 6.7 ではそのままでは使えないらしい。\n\n《Success! Mew 6.6 + stunnel 5.14 on Windows 2015年4月6日 - 新納浩幸のホームページ》\nhttp://nlp.dse.ibaraki.ac.jp/~shinnou/memo/mew6.6-stunnel5.14\n\nJRF 2019年7月22日\n\nただ、Mew 6.8 の mew-ssl.el のソースを読むと、すでに対応はされているようす…。\n\nGoogle グループの記事では、Cygwin の stunnel で Windows でうまくいってるらしいから、新しい Cygwin の stunnel を使えば良さそうではあるが…。\n\n基本、この「ひとこと」で書いたようなことはすでに解決済みなのだろう。\n\nJRF 2019年7月22日\n\nそれでも So-net に特殊くさいところは protocol=pop3 がらみだから、もし解決されてなかったら、上の最初のコードで (setq mew-prog-ssl-arg \"sslVersion=TLSv1\\n\") のところを消してどうなるか…といったところ。\n\nJRF 2019年7月22日\n\n試すべきだが、私の古い省電力 Windows 7 マシンの Cygwin の stunnel をバージョンアップするか、父から譲り受けた Windows 10 マシンに新しい Emacs と Mew と stunnel を入れてそちらでメールを読むようにするか…。迷うなぁ…。とりあえず私は使えてるし…。\n\nJRF 2019年7月22日\n\n……。\n\n……。\n\n追記 (2020年4月16日)。\n\n今、新しいマシンに Cygwin 環境を整えた上([cocolog:91803660])で、Windows 用(not cygwin 用)の Emacs 26.3 + Mew 6.8 に Cygwin の stunnel 5.56 を使っている。\n\nJRF 2020年4月16日\n\nこれらのバージョンでも、So-net では、pop-ssl-port=995, pop-port=110 であれば動くが、pop-port=995 にすると動かない。どうも stunnel を開くときの config で、protocol=pop3 を指定しているからダメになっているようだ。\n\nよって pop-ssl-port=995 pop-port=995 で使うときは、↓の設定をする必要があった。\n\nJRF 2020年4月16日\n\n\u003cpre\u003e\n(defadvice mew-open-ssl-stream (around mew-open-ssl-stream-pop3-hack)\n  (let ((mew-prog-ssl-arg mew-prog-ssl-arg))\n    (if (and (string= (ad-get-arg 3) \"pop3\")\n             (string= (ad-get-arg 1) \"pop.so-net.ne.jp\"))\n        (ad-set-arg 3 nil))\n    ad-do-it))\n\u003c/pre\u003e\n\nJRF 2020年4月16日\n\n\u003cpre\u003e\n(eval-after-load \"mew-ssl\"\n  '(ad-activate 'mew-open-ssl-stream))\n\u003c/pre\u003e\n\nJRF 2020年4月16日\n\nこの設定に関しては stunnel が Cygwin か非 Cygwin　かで差はなく必要なはず。\nJRF 2020年4月16日\n\nただし、\n\n\u003cpre\u003e\n(setq mew-ssl-verify-level 0)\n\u003c/pre\u003e\n\n…じゃないとダメだった。expand-file-name に advice したり Windows の tstunnel を使ったり、いろいろしたが level 2 はダメだった。\n\nCERT: Pre-verification error: unable to get issuer certificate\n\n…になる。\n\nJRF 2020年4月16日\n\nopenssl だとエラーが出ないのに…。\n\nJRF 2020年4月16日\n\n……。\n\n追記。\n\nlevel 2 できたできた。\n\n~/.certs に、DigiCert High Assurance EV Root CA の pem がないだけだった。\n\nJRF 2020年4月16日\n\n.certs 用の PEM ファイルの取って来かたは、Firefox だと、digicert.com に行って、Firefox のアドレスバーの鍵のアイコンをクリックし、矢印を押して「詳細を表示」して出てくるウィンドウで「証明書」を表示すれば、証明書がダウンロードできるページが現れる。\n\nJRF 2020年4月16日\n\nそこで、「digicert.com」「DigiCert SHA2 Extended Validation Server CA」「DigiCert High Assurance EV Root CA」の三つから選べる。そこのダウンロードの PEM(cert) と PEM(chain) をそれぞれダウンロードする。三つのをダウンロードすると同じファイル名になるが、それぞれ内容が違うので、それぞれを ~/.cert に登録する。\n\nJRF 2020年4月16日\n\nopenssl を使って ~/.certs に登録する方法は、Mew のマニュアルの SSL を使うところに書いてある。\n\nJRF 2020年4月16日\n\n*Mew debug* には、DigiCert SHA2 Extended Validation Server CA の名が出て来たから、それだけが必要かと勘違いしてた。\n\nJRF 2020年4月16日\n\n……。\n\nWindows の tstunnel を使うなら、(setq mew-ssl-unixlike nil) した上で、mew-ssl-cert-directory を Windows 上の ~/.certs のフルパスにすればいい。あとは、2020年4月16日に追記した elisp コードを使えばいい。\n\nCygwin の stunnel を使うには、やはり、config の CApath に与えるのに c: からはじまるパスだとエラーが出るので、↓のような expand-file-name のハックが必要。\n\nJRF 2020年4月16日\n\n\u003cpre\u003e\n(defadvice mew-open-ssl-stream (around mew-open-ssl-stream-pop3-hack)\n  (let ((mew-prog-ssl-arg mew-prog-ssl-arg)\n\t(expand-file-name (lambda (x) x)))\n    (if (and (string= (ad-get-arg 3) \"pop3\")\n\t     (string= (ad-get-arg 1) \"pop.so-net.ne.jp\"))\n\t(ad-set-arg 3 nil))\n    ad-do-it))\n\u003c/pre\u003e\n\nJRF 2020年4月16日\n\n\u003cpre\u003e\n(eval-after-load \"mew-ssl\"\n  '(ad-activate 'mew-open-ssl-stream))\n\u003c/pre\u003e\n\nJRF 2020年4月16日\n\nmew-ssl-cert-directory には Cygwin 上でのフルパスを指定すること。\nJRF 2020年4月16日"</script>
+<script src="../../../article.js"></script>
 </body>
 </html>

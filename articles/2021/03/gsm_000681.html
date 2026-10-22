@@ -21,6 +21,7 @@
 </table>
 </div>
 <h1>[仏教の最適化プログラムの続き。]…</h1>
+<div class="art-tools" data-pagefind-ignore><button type="button" id="btn-copy">原文をコピー</button><span class="tools-msg" id="tools-msg"></span></div>
 <pre class="body">jrf&gt; [仏教の最適化プログラムの続き。]
 
 「火がつくと決まったあと、どの関係が再燃するかは、昔の init_favor とその関係の存続期間を加味して決まることにする」というところの式。
@@ -58,5 +59,7 @@ l2 = [0.1 + math.log(1 + (x.end - x.begin) / 12) \
 <nav class="prevnext" data-pagefind-ignore><span class="prev-art">← <a href="../../../articles/2021/03/gsm_000680.html">マイナンバーなぁ。システム的に裏で国民に一つの ID…</a> <span class="pn-date">2021-03-04T05:20:28Z</span></span><span class="next-art"><a href="../../../articles/2021/03/gsm_000682.html">[仏教の最適化プログラムの続き。] ↓、「結婚」を実装した (バージョン…</a> <span class="pn-date">2021-03-05T09:58:10Z</span> →</span></nav>
 
 <nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2021/03.html">2021年03月</a> | <a href="../../../index/gsm.html">共有メモ</a></nav>
+<script type="application/json" id="raw-text">"[gsm]\n○ 2021-03-04T19:10:31Z qcUyTOV2fz\n\njrf\u003e [仏教の最適化プログラムの続き。]\n\n「火がつくと決まったあと、どの関係が再燃するかは、昔の init_favor とその関係の存続期間を加味して決まることにする」というところの式。\n\nl2 = [0.1 + math.log(1 + (x.end - x.begin) / 12) \\\n      * np_clip(x.init_favor, 0, 10) for x in rellist]\n\n…に替える。今後も替わるかもしれないで、詳しくは今後ソースをご覧あれ。\n\n……。\n\n資産・所得は家族単位で見ていくことのになるが、計算に上限を使うものは上限を家族の数によって増やさねばならない。ただ、まるまる倍になる…とかはおかしい気がするので、一人用の上限を X、家族の数を n とすると家族での上限は X * (1 + 0.25 * (n - 1)) ぐらいにする感じか。\n\nだからこそ、上限を突破するために、このシステムでは扶養からの独立が求められるのかもしれないな…。\n\n……。\n\n結婚誘度、結婚好意度(、別れやすさも？)を決めるにあたって注意しなければならないのは、結婚が不倫と違って公的関係であり、体裁を非常に気にするということ。\n\n資産の多さが、教育でスポイルされることはない。教育そのものは高く評価されるかもしれないけど。誘度の計算のとき、教育の最大が 0.2 の効果で、資産の多さの最大が 0.3 の効果だとして、その和ではなく、その最大値が取られる感じか。\n\nそしてそれらより何より、年齢が釣り合ってることが重視されるだろう。年齢が離れ過ぎているのは、評価がマイナスになっていい。\n\n初婚どうしが非常に好まれ、不倫経験はマイナス(は言い過ぎにしろゼロ)にしかはたらかないだろう。いや、ほどほどの adult_success は魅力には若干プラスにすべきか…。誘度の計算のときは結婚を嫌って若干のマイナス、好意度の計算のときは若干のプラスかな。\n\n幸運の要素も不倫より少なくていい。\n\n誘度については、誰しも結婚のチャンスがあるようにあまり差をつけないほうがよいだろう。若いほうが結婚のチャンスが多い…ぐらいの感じか。\n\n誘度での選抜はゆるめに多めに選んで、前書いたように matching の際に favor に threshold を設けてかなり落とす感じがいいのではないか。"</script>
+<script src="../../../article.js"></script>
 </body>
 </html>

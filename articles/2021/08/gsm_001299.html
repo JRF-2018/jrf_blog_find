@@ -21,6 +21,7 @@
 </table>
 </div>
 <h1>[仏教の最適化プログラムの続き。]…</h1>
+<div class="art-tools" data-pagefind-ignore><button type="button" id="btn-copy">原文をコピー</button><span class="tools-msg" id="tools-msg"></span></div>
 <pre class="body">jrf&gt; [仏教の最適化プログラムの続き。]
 
 一つ前のメモで、test_of_matching_2.py や simbdp1.py にバグがあって直したと書いた。しかし、検討しなおしたところ、それはバグではなかった。それらでは、p.land + p.prop が 0 未満にならないという「仕様」が成立しているのでバグにはならなかった部分を前回「直して」しまったのであった。その部分、simbdp2.py では、災害でその「仕様」が崩れるため、相続の処理において修正が必要になったというだけのことであった。
@@ -33,5 +34,7 @@
 <nav class="prevnext" data-pagefind-ignore><span class="prev-art">← <a href="../../../articles/2021/08/gsm_001298.html">ファイザーのワクチン2回目副反応。二日目の夜、寝てるときにこの季節なのに寒さを少…</a> <span class="pn-date">2021-08-05T02:44:31Z</span></span><span class="next-art"><a href="../../../articles/2021/08/gsm_001300.html">[仏教の最適化プログラムの続き。]…</a> <span class="pn-date">2021-08-06T17:53:19Z</span> →</span></nav>
 
 <nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2021/08.html">2021年08月</a> | <a href="../../../index/gsm.html">共有メモ</a></nav>
+<script type="application/json" id="raw-text">"[gsm]\n○ 2021-08-06T05:14:34Z IPU5htPiz2\n\njrf\u003e [仏教の最適化プログラムの続き。]\n\n一つ前のメモで、test_of_matching_2.py や simbdp1.py にバグがあって直したと書いた。しかし、検討しなおしたところ、それはバグではなかった。それらでは、p.land + p.prop が 0 未満にならないという「仕様」が成立しているのでバグにはならなかった部分を前回「直して」しまったのであった。その部分、simbdp2.py では、災害でその「仕様」が崩れるため、相続の処理において修正が必要になったというだけのことであった。\n\nまた、simbdp2.py において、支配者の退職と後任に関してバグを取ったつもりでいたが、そこも検討し直した結果、無意味な修正であったことがわかった。この部分、「修正」後、1200期回しても前と同様のエラーが出ないことから「直った」と判断していたが、無意味な修正で直ってるはずもなく、単に偶然エラーが出なかっただけと思われる。しかし、エラーの再現性がない…かなり稀な起こり方をすると思われ、その条件がわかっていない。いつか、そのエラーが再び出ないことには修正しようがない感じ…。"</script>
+<script src="../../../article.js"></script>
 </body>
 </html>

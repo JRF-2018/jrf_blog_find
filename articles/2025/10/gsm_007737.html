@@ -21,6 +21,7 @@
 </table>
 </div>
 <h1>太田…</h1>
+<div class="art-tools" data-pagefind-ignore><button type="button" id="btn-copy">原文をコピー</button><span class="tools-msg" id="tools-msg"></span></div>
 <pre class="body">jrf&gt; 太田 他『現場で活用するためのAIエージェント実践入門』を読んだ。私のなんちゃってエージェントフレームワーク MemoryBanditWorkflow の実装経験を思い出しながら読んだ。大変参考になった。
 
 『現場で活用するためのAIエージェント実践入門』(太田 真人 ＆ 宮脇 峻平 ＆ 西見 公宏 ＆ 後藤 勇輝 ＆ 阿田木 勇八 著, 講談社 KS情報科学専門書, 2025年7月)
@@ -58,5 +59,7 @@ LangGraph のグラフはあまりわかりやすいと私には思えない。f
 <nav class="prevnext" data-pagefind-ignore><span class="prev-art">← <a href="../../../articles/2025/10/gsm_007736.html">私は外国人政策は家族同伴も認めるが、その教育とかができる範囲で…という意味で「慎…</a> <span class="pn-date">2025-10-01T05:38:17Z</span></span><span class="next-art"><a href="../../../articles/2025/10/gsm_007738.html">(承前) ……。 他にこの本には時代的制約があったのかな…とも思った。私の…</a> <span class="pn-date">2025-10-01T13:52:44Z</span> →</span></nav>
 
 <nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2025/10.html">2025年10月</a> | <a href="../../../index/gsm.html">共有メモ</a></nav>
+<script type="application/json" id="raw-text">"[gsm]\n○ 2025-10-01T13:52:27Z ZqCOXDsJK+\n\njrf\u003e 太田 他『現場で活用するためのAIエージェント実践入門』を読んだ。私のなんちゃってエージェントフレームワーク MemoryBanditWorkflow の実装経験を思い出しながら読んだ。大変参考になった。\n\n『現場で活用するためのAIエージェント実践入門』(太田 真人 ＆ 宮脇 峻平 ＆ 西見 公宏 ＆ 後藤 勇輝 ＆ 阿田木 勇八 著, 講談社 KS情報科学専門書, 2025年7月)\nhttps://www.amazon.co.jp/dp/4065401402\nhttps://7net.omni7.jp/detail/1107617518\n\nまず私の自己紹介から。\n\n最近、私はエージェントに汎用に使えるメモリシステムとして、MemoryBanditWorkflow というちょっとしたクラス、なんちゃってフレームワーク…を作った。ツールによってメモリ機能を実現し、その利用の足りなさを強制させるバンディット機能を有するものである。基本的には迷路問題を解くために作ったのだが、汎用に動くことを心掛けて作り、実際、RAG エージェントも同フレームワークをそのまま使って書けることを実証している。\n\nRAG エージェントの例がわかりやすいと思うので、まずそちらの ipynb にリンクを貼っておく。\n\n《MemoryBanditWorkflow を使った RAG の試験実装 - langchain_maze/experimental_rag_0_0_2.ipynb - GitHub》  \nhttps://github.com/JRF-2018/langchain_maze/blob/master/experimental_rag_0_0_2.ipynb\n\nその経緯は↓にあるが、バージョンアップの情報やそれに向けての考察などかなり長くなってしまったため、読むのはあまりオススメしない。\n\n[cocolog:95619779](2025年9月)\n《「LLM のメモリ機能を強制的に使うバンディットマシンの試験実装」と「LLM のメモリ機能とバンディット機能の試験実装」を行った。後者がメインの成果物で、メモリ機能の使用増加をどう強制するかから拡張したフレームワーク。 - JRF のひとこと》\nhttp://jrf.cocolog-nifty.com/statuses/2025/09/post-8225e2.html\n\n……。\n\nこのようなフレームワークを作って一段落した上で、今のエージェントプログラミングの実際はどのようなものかと関心を抱いて手に取ったのがこの本ということになる。Amazon ランキングの上位にあり、目に付いた。\n\n読んでみて、LangGraph が使われていて、LangGraph にあまり良い印象のない私は少し辟易した。LangGraph が使われているのも、この本を選んだ理由の一つだったが、それにかなり肯定的という現代の雰囲気はよくわかった。\n\nLangGraph のグラフはあまりわかりやすいと私には思えない。for などを使った制御文のほうがプログラマには見通ししやすいというのがこれまでの流れでなかったか。グラフアプローチは初心者向けにはよく使われるが、それきりというのがこれまでの流れでなかったか。\n\nただ、確かに、非同期プログラミングには、状態を持つオブジェクト指向はあまり適していないというのは事実で、それで LangGraph を用いているのかな…というのが私の直近の理解である。しかし、非同期の並列化で時間短縮するのがどこまで求められているかはあやしく、普通は、タスクキューとデータベースで、あとは、シングルタスクのオブジェクトが複数走っている…というので十分でないか…という疑念が私にはある。私の MemoryBanditWorkflow の設計はそのようにシングルタスクのオブジェクトが前提となっている。"</script>
+<script src="../../../article.js"></script>
 </body>
 </html>

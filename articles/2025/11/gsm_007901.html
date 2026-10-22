@@ -21,6 +21,7 @@
 </table>
 </div>
 <h1>(承前) ……。 実装の核。 SkipPromptDT()…</h1>
+<div class="art-tools" data-pagefind-ignore><button type="button" id="btn-copy">原文をコピー</button><span class="tools-msg" id="tools-msg"></span></div>
 <pre class="body">jrf&gt; (承前)
 
 ……。
@@ -59,5 +60,7 @@ Transformer を2段というか、4段重ねて、他はそれぞれ Linear が1
 <nav class="prevnext" data-pagefind-ignore><span class="prev-art">← <a href="../../../articles/2025/11/gsm_007900.html">「「多層目的＝アテンション」を確かめる二足歩行の実験」を行った。今回は「歩行」と…</a> <span class="pn-date">2025-11-02T18:03:28Z</span></span><span class="next-art"><a href="../../../articles/2025/11/gsm_007902.html">私がやってることは無意味だなぁ…。アクセスもない。稼げない。むなしい。</a> <span class="pn-date">2025-11-02T20:39:15Z</span> →</span></nav>
 
 <nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2025/11.html">2025年11月</a> | <a href="../../../index/gsm.html">共有メモ</a></nav>
+<script type="application/json" id="raw-text">"[gsm]\n○ 2025-11-02T18:03:57Z HyriXQd962\n\njrf\u003e (承前)\n\n……。\n\n実装の核。\n\nSkipPromptDT() クラスが実装の核となる部分で、ここが Grok さんのアイデアによる。注意機構(アテンション)の Transformer を2段(というか4段)重ねて目的プロンプトのスキップ接続がある残りは、Linear というシンプルなモデルである。\n\n実験に使う軌跡データは、D4RL というのが当初想定されていたのだが、これが古くなっていてうまく扱えず、それを継承した Minari のデータを使った。Mujoco の Humanoid-v5 の歩行データである。\n\n……。\n\n実験結果。\n\n軌跡データを単純に使うだけだと「歩行」は創発しなかったが、前進した上位5% のデータを prompt_id=2 として与えることで、「前進」が創発した。ビデオに記録されているとおりである。ただ、きれいに歩く姿になってはおらず、とにかく前進するというだけの軌跡になっている。\n\n以前歩行を試みた実験では歩行に完全に失敗していたが、今回はまがりなりにも前進ができたので、うれしかった。\n\n……。\n\n結果を受けた考察。\n\nTransformer を2段というか、4段重ねて、他はそれぞれ Linear が1段で、これほど能力があるのは驚きだった。\n\nアテンションが、多層目的に対応しているというのは、おそらく今回の実験では、全体の歩行という目的に対し、右足や左足といったより小さな単位での目的と同時にあって、それが適切に選択された結果である…ということだと私は解釈する。\n\n基本的に、これは、強化学習の実験ではなく、おそらく特定のモデルで強化学習で作られた軌跡データを別のモデルで「コピー」する実験だった。ロボットのモデルの実装というのは、こういうものなのだというのは、私にとっては大事な知見だった。\n\nただ、これは Grok さんの作ったモデルの成果なのかな？…という疑いはある。というのは、DecisionTransformer というもの自体がこういうことが可能なモデルとして知られていて、要は Transformer がこういう能力のあるものということでしかないのではないか…とも思えるからだ。\n\nそれはそれとして、ニューラルネットがタスク分担でできるという解釈を以前得た(参: [[cocolog:95690194](2025年10月))。今回は、実験でアテンションが多層目的と解釈できるということがわかった。それらを合わせて、ニューラルネットやアテンションという今回必要となった部分について、それらを使わないで「構造的学習」ができるかもしれない…という方向は示せたかな…と思う。それは AGI を目指すうえで必要になるかもしれない。"</script>
+<script src="../../../article.js"></script>
 </body>
 </html>

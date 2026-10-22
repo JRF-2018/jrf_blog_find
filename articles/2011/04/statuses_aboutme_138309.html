@@ -21,6 +21,7 @@
 </table>
 </div>
 <h1>Javascript のソース内で XML…</h1>
+<div class="art-tools" data-pagefind-ignore><button type="button" id="btn-copy">原文をコピー</button><span class="tools-msg" id="tools-msg"></span></div>
 <pre class="body">Javascript のソース内で XML タグを直に記述している例があってそれをマネていたのだが、それが E4X という名の機能であることをやっと知った。…が、すごい使いにくい。配列 Array を含むようなのはどうやって記述すればいいんだ？
 JRF 2011年4月12日
 
@@ -55,5 +56,7 @@ JRF 2011年4月12日</pre>
 <nav class="prevnext" data-pagefind-ignore><span class="prev-art">← <a href="../../../articles/2011/04/statuses_aboutme_138307.html">Javascript の parseInt…</a> <span class="pn-date">2011年04月11日</span></span><span class="next-art"><a href="../../../articles/2011/04/statuses_aboutme_138324.html">アバウトミーからの「ひとこと」の移行作業。移転はとりあえずココログ内にすることに…</a> <span class="pn-date">2011年04月12日</span> →</span></nav>
 
 <nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2011/04.html">2011年04月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+<script type="application/json" id="raw-text">"[statuses] [aboutme:138309]\nhttp://jrf.cocolog-nifty.com/statuses/2011/04/aboutme138309.html\n\nJavascript のソース内で XML タグを直に記述している例があってそれをマネていたのだが、それが E4X という名の機能であることをやっと知った。…が、すごい使いにくい。配列 Array を含むようなのはどうやって記述すればいいんだ？\nJRF 2011年4月12日\n\n\u003ctag\u003etext\u003c/tag\u003e と書くのが普通だが、\u003ctag\u003e{varname}\u003c/tag\u003eとすると varname の内容が tag に挟まれる。このとき、varname が \u003c や \u003e を含んでいると自動的にエスケープされてしまうため、この記述のままだと、tag の中に変数に入った xml 文書を書き込むということができない。(やる方法を私は見つけられなかった。)\n\nJRF 2011年4月12日\n\n{} のテクニックは、タグにも属性にも使え \u003c{tag} {attr}={value}\u003e{cont}\u003c/{tag}\u003e みたいな使い方もできるそうだが、\u003cdiv class=\"a-{id}\"\u003e...\u003c/div\u003e みたいに属性値の一部に含ませるような器用なことはできない。\n\nJRF 2011年4月12日\n\nで、どうしたかというと、xml を文字列に直したあと、class 属性の中の {id} は、form で使っていたので {id} と書かれる部分がほかにないから、{id} と書いている部分を replace した。また、タグ内で、Array を書きたちときは、一端 \u003cplace\u003eplace\u003c/place\u003e などと書いておいて、\u003c \u003e は変数から書き換わったやつには含まれないはずなので、それを replace した。\n\nJRF 2011年4月12日\n\n例えば…、\n\nvar xml =\n\u003carray class=\"a-{id}\"\u003e\n\u003cvalue\u003e\u003cplace\u003eplace\u003c/place\u003e\u003c/value\u003e\n\u003c/array\u003e;\n\nvar r = xml.toString().replace(/\\{id\\}/g, id).replace(/\\s*\u003cplace\u003eplace\u003c\\/place\u003e\\s*/, arraystr);\n\n…などとする。\u003cplace\u003e を置きかえるときに \\s で空白も取っておかないと、余計な空白が入って困ることがあった。\n\nJRF 2011年4月12日"</script>
+<script src="../../../article.js"></script>
 </body>
 </html>

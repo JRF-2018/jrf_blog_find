@@ -21,6 +21,7 @@
 </table>
 </div>
 <h1>[仏教の最適化プログラムの続き。] 重犯罪をいじった simbdp3x1.py…</h1>
+<div class="art-tools" data-pagefind-ignore><button type="button" id="btn-copy">原文をコピー</button><span class="tools-msg" id="tools-msg"></span></div>
 <pre class="body">jrf&gt; [仏教の最適化プログラムの続き。]
 
 重犯罪をいじった simbdp3x1.py を試す。前回、MeanAmplifier BlockMeanAmplifier の alpha1 alpha2 を 0.3 にして試した結果が pnormal。今回のが normal、ちなみに alpha1 alpha2 は 0.3。
@@ -56,5 +57,7 @@ ltom の効果はそれで説明がつくとしても、lsth にまったく効�
 <nav class="prevnext" data-pagefind-ignore><span class="prev-art">← <a href="../../../articles/2021/10/gsm_001550.html">[仏教の最適化プログラムの続き。] Python をアップデート。今度から使う…</a> <span class="pn-date">2021-10-14T06:59:46Z</span></span><span class="next-art"><a href="../../../articles/2021/10/gsm_001552.html">音楽鑑賞。 エッシェンバッハ指揮 パドリッサ演出…</a> <span class="pn-date">2021-10-16T07:36:04Z</span> →</span></nav>
 
 <nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2021/10.html">2021年10月</a> | <a href="../../../index/gsm.html">共有メモ</a></nav>
+<script type="application/json" id="raw-text">"[gsm]\n○ 2021-10-16T04:26:51Z 8XA1R34RoX\n\njrf\u003e [仏教の最適化プログラムの続き。]\n\n重犯罪をいじった simbdp3x1.py を試す。前回、MeanAmplifier BlockMeanAmplifier の alpha1 alpha2 を 0.3 にして試した結果が pnormal。今回のが normal、ちなみに alpha1 alpha2 は 0.3。\n\npython plot_logs.py normal pnormal -p AccDeath -o fig-20211016_01.png\npython plot_logs.py normal pnormal -p AccAbortion -o fig-20211016_02.png\npython plot_logs.py normal pnormal -p Education -o fig-20211016_03.png\npython plot_logs.py normal pnormal -p AccKarma -o fig-20211016_04.png\npython plot_logs.py normal pnormal -p Population -o fig-20211016_05.png\npython plot_logs.py normal pnormal -p Power -o fig-20211016_06.png\npython plot_logs.py normal pnormal -p NewKarma2 -o fig-20211016_07.png\npython plot_logs.py normal pnormal -p AccVKarma -o fig-20211016_08.png\n\n《グラフ集: 2021-10-16 から - Issue #6 - JRF-2018/simbd》  \nhttps://github.com/JRF-2018/simbd/issues/6\n\nAccDeath や Population や AccAbortioin は変わって欲しくないところだが、少し違いがある。カルマ関連に違いがあるのはいい傾向だが、肝心の AccVKarma に変化がないのが気にかかる。\n\n問題の lsth がらみを見て行こう。コマンドは省略する。\n\nnormal lsth ltom ltomlsth のどれもほとんど差がない。ltom ltomlsth が AccKarma で下がっている…というのも今回は観測できない。肝心の AccVKarma にも差がない。これは、VirutalHating が1200期の前に下がりぎみだったため、ltom の効果がなくなったからではないか。それを確かめるために 1期から1200期までの VitrualHating の変化を描いてみる。\n\npython plot_logs.py simbdp3x1 -p VirtualHating -o fig-20211016_16.png\npython plot_logs.py simbdp3x1 -p Hating -o fig-20211016_17.png\n\nltom の効果はそれで説明がつくとしても、lsth にまったく効果がないのが説明できない。Hating が上がって VirtualHating が上がって(ここまでは上がっている)、AccKarma も上がるはずなのだがそうなってない…。\n\nなぜこんなにダメだったのか理由がわからない。MeanAmplifier という考え方がいけなかったのだろうか？"</script>
+<script src="../../../article.js"></script>
 </body>
 </html>

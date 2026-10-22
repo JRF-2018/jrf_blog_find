@@ -21,6 +21,7 @@
 </table>
 </div>
 <h1>(承前) Actor に入力される予想を「目的」と呼び、Predictor…</h1>
+<div class="art-tools" data-pagefind-ignore><button type="button" id="btn-copy">原文をコピー</button><span class="tools-msg" id="tools-msg"></span></div>
 <pre class="body">jrf&gt; (承前)
 
 Actor に入力される予想を「目的」と呼び、Predictor の出力を「結果予想」、現実の行動結果を「行動結果」と呼ぼう。基本的に「目的」「行動結果」「行動」で、まずは、Actor Predictor ともに学習する。その上で、「行動結果」-「目的」 と 「結果予想」- 「目的」 の絶対値を比較し、前者が大きければ、Actor を負の学習をする。後者が大きければ、Predictor を負の学習をする。さらに、「行動結果」-「結果予想」の絶対値が小さいときは、(「行動結果」+「結果予想」)/2 を正例として、Recollector を学習する。
@@ -35,5 +36,7 @@ Actor に入力される予想を「目的」と呼び、Predictor の出力を�
 <nav class="prevnext" data-pagefind-ignore><span class="prev-art">← <a href="../../../articles/2023/06/gsm_004250.html">PAR (Predictor - Actor -…</a> <span class="pn-date">2023-06-21T19:04:49Z</span></span><span class="next-art"><a href="../../../articles/2023/06/gsm_004252.html">(承前) いや、Recollector…</a> <span class="pn-date">2023-06-22T04:01:30Z</span> →</span></nav>
 
 <nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2023/06.html">2023年06月</a> | <a href="../../../index/gsm.html">共有メモ</a></nav>
+<script type="application/json" id="raw-text">"[gsm]\n○ 2023-06-22T02:32:06Z S/fjQKXZ7C\n\njrf\u003e (承前)\n\nActor に入力される予想を「目的」と呼び、Predictor の出力を「結果予想」、現実の行動結果を「行動結果」と呼ぼう。基本的に「目的」「行動結果」「行動」で、まずは、Actor Predictor ともに学習する。その上で、「行動結果」-「目的」 と 「結果予想」- 「目的」 の絶対値を比較し、前者が大きければ、Actor を負の学習をする。後者が大きければ、Predictor を負の学習をする。さらに、「行動結果」-「結果予想」の絶対値が小さいときは、(「行動結果」+「結果予想」)/2 を正例として、Recollector を学習する。\n\nこの Recollector の学習は、Recollector の目的はどういう行動をしても達成できないという解釈により、そのような学習をする。\n\nただ、今回の議論は、以前までの学習の枠組みで言えることであって、ファインチューニングだからどう、という最近の議論にマッチするものではない。"</script>
+<script src="../../../article.js"></script>
 </body>
 </html>

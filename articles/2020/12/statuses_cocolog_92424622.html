@@ -21,16 +21,17 @@
 </table>
 </div>
 <h1>うぉ〜。Windows 用 Emacs 26.3 と Cygwin 3.1.7…</h1>
+<div class="art-tools" data-pagefind-ignore><button type="button" id="btn-copy">原文をコピー</button><span class="tools-msg" id="tools-msg"></span></div>
 <pre class="body">うぉ〜。Windows 用 Emacs 26.3 と Cygwin 3.1.7 の bash の関係がメチャクチャだ。
 JRF 2020年12月19日
 
 昔のように、
 
-&lt;pre&gt;
+<span class="src-pre">&lt;pre&gt;
 (add-hook 'shell-mode-hook
           (lambda ()
            (set-buffer-process-coding-system 'utf-8-unix 'utf-8-unix)))
-&lt;/pre&gt;
+&lt;/pre&gt;</span>
 
 …とかやってればいいという話ではない。
 
@@ -40,20 +41,20 @@ JRF 2020年12月19日
 
 だから…
 
-&lt;pre&gt;
+<span class="src-pre">&lt;pre&gt;
 (setenv &quot;LANG&quot; &quot;ja_JP.UTF8&quot;)
-&lt;/pre&gt;
+&lt;/pre&gt;</span>
 
 …した上で…、
 
 JRF 2020年12月19日
 
-&lt;pre&gt;
+<span class="src-pre">&lt;pre&gt;
 (let ((coding-system-for-read 'utf-8-unix)
       (coding-system-for-write 'cp932))
   (start-file-process &quot;test&quot; (get-buffer-create &quot;*test*&quot;)
 		      &quot;c:/cygwin/bin/bash&quot; &quot;-c&quot; &quot;echo ほげほげ&quot;))
-&lt;/pre&gt;
+&lt;/pre&gt;</span>
 
 JRF 2020年12月19日
 
@@ -69,24 +70,24 @@ grep とかメッチャ困る。
 
 JRF 2020年12月19日
 
-&lt;pre&gt;
+<span class="src-pre">&lt;pre&gt;
 (setq grep-command &quot;~/bin/jgrep -n &quot;)
 (defadvice grep
     (around grep-set-coding-system activate)
   (let ((coding-system-for-read 'utf-8-unix)
 	(coding-system-for-write 'cp932))
     ad-do-it))
-&lt;/pre&gt;
+&lt;/pre&gt;</span>
 
 JRF 2020年12月19日
 
 前提として…
 
-&lt;pre&gt;
+<span class="src-pre">&lt;pre&gt;
 (setq shell-file-name &quot;bash&quot;)
 (setq shell-command-switch &quot;-c&quot;)
 (setq explicit-shell-file-name &quot;bash&quot;)
-&lt;/pre&gt;
+&lt;/pre&gt;</span>
 
 JRF 2020年12月19日
 
@@ -109,5 +110,7 @@ JRF 2020年12月19日</pre>
 <nav class="prevnext" data-pagefind-ignore><span class="prev-art">← <a href="../../../articles/2020/12/statuses_cocolog_92422763.html">相互養子契約が可能なのは男子18歳・女子16歳。配偶者相続が有利になる「結婚」は…</a> <span class="pn-date">2020年12月18日</span></span><span class="next-art"><a href="../../../articles/2020/12/statuses_cocolog_92431465.html">仏教の最適化プログラムのメモ その２…</a> <span class="pn-date">2020年12月22日</span> →</span></nav>
 
 <nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2020/12.html">2020年12月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+<script type="application/json" id="raw-text">"[statuses] [cocolog:92424622]\nhttp://jrf.cocolog-nifty.com/statuses/2020/12/post-2bb16f.html\n\nうぉ〜。Windows 用 Emacs 26.3 と Cygwin 3.1.7 の bash の関係がメチャクチャだ。\nJRF 2020年12月19日\n\n昔のように、\n\n\u003cpre\u003e\n(add-hook 'shell-mode-hook\n          (lambda ()\n           (set-buffer-process-coding-system 'utf-8-unix 'utf-8-unix)))\n\u003c/pre\u003e\n\n…とかやってればいいという話ではない。\n\nJRF 2020年12月19日\n\nなぜかは知らないが、コマンドラインは cp932 に指定する必要がありながら、同時に (setenv \"LANG\" \"ja_JP.UTF8\") をする必要がある。矛盾している。\n\nだから…\n\n\u003cpre\u003e\n(setenv \"LANG\" \"ja_JP.UTF8\")\n\u003c/pre\u003e\n\n…した上で…、\n\nJRF 2020年12月19日\n\n\u003cpre\u003e\n(let ((coding-system-for-read 'utf-8-unix)\n      (coding-system-for-write 'cp932))\n  (start-file-process \"test\" (get-buffer-create \"*test*\")\n\t\t      \"c:/cygwin/bin/bash\" \"-c\" \"echo ほげほげ\"))\n\u003c/pre\u003e\n\nJRF 2020年12月19日\n\n…とかやってやっとまともな表示になる。なんだそれ。\n\nJRF 2020年12月19日\n\n……。\n\ngrep とかメッチャ困る。\n\n私は、日本語 grep を perl で作って ~/bin/jgrep に置いてるとして、とりあえず次のようにしている。\n\nJRF 2020年12月19日\n\n\u003cpre\u003e\n(setq grep-command \"~/bin/jgrep -n \")\n(defadvice grep\n    (around grep-set-coding-system activate)\n  (let ((coding-system-for-read 'utf-8-unix)\n\t(coding-system-for-write 'cp932))\n    ad-do-it))\n\u003c/pre\u003e\n\nJRF 2020年12月19日\n\n前提として…\n\n\u003cpre\u003e\n(setq shell-file-name \"bash\")\n(setq shell-command-switch \"-c\")\n(setq explicit-shell-file-name \"bash\")\n\u003c/pre\u003e\n\nJRF 2020年12月19日\n\nこのようにすると誤解するかもしれないが、~/bin/jgrep には引数が cp932 でなくちゃんと utf-8 で渡されている。笑っちゃうね。\n\nもっといい方法はないものか…。\n\nJRF 2020年12月19日"</script>
+<script src="../../../article.js"></script>
 </body>
 </html>

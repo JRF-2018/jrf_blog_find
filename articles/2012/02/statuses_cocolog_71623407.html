@@ -21,6 +21,7 @@
 </table>
 </div>
 <h1>ポップアップで入力を求める処理が IE6…</h1>
+<div class="art-tools" data-pagefind-ignore><button type="button" id="btn-copy">原文をコピー</button><span class="tools-msg" id="tools-msg"></span></div>
 <pre class="body">ポップアップで入力を求める処理が IE6 でうまくいかなかった。position:absolute まわりで要素が表示されないというバグがあるらしく、それを疑ったが違った。JavaScript で、innerHTMLに要素を入れる前にappendChildしていたのが原因だった。
 JRF 2012年2月15日
 
@@ -39,23 +40,23 @@ JRF 2012年2月15日
 
 最初、↓みたいに書いてしまった。
 
-&lt;pre&gt;
+<span class="src-pre">&lt;pre&gt;
   var popup = document.createElement('div');
   popup.className = &quot;popup-overlay&quot;;
   container.appendChild(popup);
   popup.innerHTML = 'ここに中身を書く。'
-&lt;/pre&gt;
+&lt;/pre&gt;</span>
 
 JRF 2012年2月15日
 
 それを↓にしたら直った。
 
-&lt;pre&gt;
+<span class="src-pre">&lt;pre&gt;
   var popup = document.createElement('div');
   popup.className = &quot;popup-overlay&quot;;
   popup.innerHTML = 'ここに中身を書く。'
   container.appendChild(popup);
-&lt;/pre&gt;
+&lt;/pre&gt;</span>
 
 JRF 2012年2月15日
 
@@ -71,5 +72,7 @@ JRF 2012年2月15日</pre>
 <nav class="prevnext" data-pagefind-ignore><span class="prev-art">← <a href="../../../articles/2012/02/statuses_cocolog_71567131.html">NTT…</a> <span class="pn-date">2012年02月10日</span></span><span class="next-art"><a href="../../../articles/2012/02/statuses_cocolog_71653595.html">ココログで「削除パスワード」が使えるようにするため、[cocolog:71400…</a> <span class="pn-date">2012年02月17日</span> →</span></nav>
 
 <nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2012/02.html">2012年02月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+<script type="application/json" id="raw-text">"[statuses] [cocolog:71623407]\nhttp://jrf.cocolog-nifty.com/statuses/2012/02/post-021d.html\n\nポップアップで入力を求める処理が IE6 でうまくいかなかった。position:absolute まわりで要素が表示されないというバグがあるらしく、それを疑ったが違った。JavaScript で、innerHTMLに要素を入れる前にappendChildしていたのが原因だった。\nJRF 2012年2月15日\n\n(まぁ、いまさら個人のサイトで InternetExplorer 6 に対応する必要はないというのも真なんだろうけど。)\n\nJRF 2012年2月15日\n\nposition:absolute まわりのバグは↓。\n\n《jmblog.jp - IEで絶対配置（position:absolute）のボックスが消えるバグの検証》\nhttp://jmblog.jp/archives/180\n\n私の症状は、↑とは違いボックスは表示されて、例えば、backgroud: red とかにすれば、確かにそれは有効なのに、innerHTML に突っこんだ要素は表示されないというものだった。\n\nJRF 2012年2月15日\n\n最初、↓みたいに書いてしまった。\n\n\u003cpre\u003e\n  var popup = document.createElement('div');\n  popup.className = \"popup-overlay\";\n  container.appendChild(popup);\n  popup.innerHTML = 'ここに中身を書く。'\n\u003c/pre\u003e\n\nJRF 2012年2月15日\n\nそれを↓にしたら直った。\n\n\u003cpre\u003e\n  var popup = document.createElement('div');\n  popup.className = \"popup-overlay\";\n  popup.innerHTML = 'ここに中身を書く。'\n  container.appendChild(popup);\n\u003c/pre\u003e\n\nJRF 2012年2月15日\n\ntypo 「backgroud」→「background」。\ntypo 「'ここに中身を書く。'」→「'ここに中身を書く。';」。\n修正 「それを↓にしたら」→「それを↓の順序にしたら」。\n\nJRF 2012年2月15日"</script>
+<script src="../../../article.js"></script>
 </body>
 </html>

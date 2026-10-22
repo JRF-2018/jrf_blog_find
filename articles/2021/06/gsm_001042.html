@@ -21,6 +21,7 @@
 </table>
 </div>
 <h1>[仏教の最適化プログラムの続き。] 災害のモデル化。 ダメージの計算。…</h1>
+<div class="art-tools" data-pagefind-ignore><button type="button" id="btn-copy">原文をコピー</button><span class="tools-msg" id="tools-msg"></span></div>
 <pre class="body">jrf&gt; [仏教の最適化プログラムの続き。]
 
 災害のモデル化。
@@ -57,5 +58,7 @@ d[i] = F[i](Q * q[i] / sum(q)) という感じで良い。
 <nav class="prevnext" data-pagefind-ignore><span class="prev-art">← <a href="../../../articles/2021/06/gsm_001041.html">アニメ『スーパーカブ』。必要だったのは雨の日はバス通学してます的描写と、「免許取…</a> <span class="pn-date">2021-06-01T09:14:25Z</span></span><span class="next-art"><a href="../../../articles/2021/06/gsm_001043.html">金遣いが荒くなってる。精神的におかしくなると私は金遣いが荒くなることが多い。「仕…</a> <span class="pn-date">2021-06-01T17:12:05Z</span> →</span></nav>
 
 <nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2021/06.html">2021年06月</a> | <a href="../../../index/gsm.html">共有メモ</a></nav>
+<script type="application/json" id="raw-text">"[gsm]\n○ 2021-06-01T15:42:00Z 1uH8vmZxE5\n\njrf\u003e [仏教の最適化プログラムの続き。]\n\n災害のモデル化。\n\nダメージの計算。\n\n人死にのダメージを d[0]、財産のダメージを d[1]、建物へのダメージを d[2] …として、d[0]...d[n-1] を計算したい。\n\nすべての災害について共通の 0,...,n-1 のダメージの基準値を F[0]...F[n-1] とする。そして、ある災害において、人死にのほうが財産のダメージよりも目立つというとき、p[0] = 2, p[1] = 1 などと p[] という係数で表すとする。規模の概要値は Q で表す。\n\nこのとき d[i] = F[i] * Q * p[i] / sum(p) であれば良さそうだ。\n\nただ、ダメージに乱数要素が欲しい。そこで乱数 r[0]...r[n-1] を考える。r[i] は正規乱数でも良いかもしれないが、上限下限がないのは扱いにくいので、-1.0 から 1.0 の一様乱数としよう。\n\nそこで q[i] = p[i] * (1 + 0.2 * r[i]) として d[i] = F[i] * Q * q[i] / sum(q) とすれば良さそうだ。\n\nなお F[i] は数値でなく、関数的な作用素と考えても良さそうだから…\n\nd[i] = F[i](Q * q[i] / sum(q)) という感じで良い。\n\nそして、この d[i] 自体が、economy に対する作用素であると考えても良い。(作用素というと話が難しくなるが、要は、economy も取る関数で求める…という話である。)\n\n……。\n\nダメージは「大きさ」という一軸ではなく、「深さ」と「広さ」という二軸など複数軸を持っている可能性がある。\n\nこのとき、d(j) がある二軸変化するダメージとして、d(j) を複数に分ける、すなわち、d[k] が「深い」が「狭い」もの、d[k+1] が「浅い」が「広い」ものとする。そして、d[k] d[k+1] が乱数的に変化すれば、d[k] + d[k+1] がもともとの「広さ」「深さ」の二軸が変化するダメージ d(j) に相当するものになってると考える。\n\n…という感じにすればいいかと思う。"</script>
+<script src="../../../article.js"></script>
 </body>
 </html>

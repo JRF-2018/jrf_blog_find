@@ -21,6 +21,7 @@
 </table>
 </div>
 <h1>《めめちも:X:2024-07-24》…</h1>
+<div class="art-tools" data-pagefind-ignore><button type="button" id="btn-copy">原文をコピー</button><span class="tools-msg" id="tools-msg"></span></div>
 <pre class="body">jrf&gt; 《めめちも:X:2024-07-24》  
 <a href="https://x.com/mecimecimemeci/status/1816099453398614268" class="ext-link">https://x.com/mecimecimemeci/status/1816099453398614268</a>
 ＞＞鉄緑会恋愛発展講座定期
@@ -76,5 +77,7 @@ P(B1|A)/P(B2|A) = 2q
 <nav class="prevnext" data-pagefind-ignore><span class="prev-art">← <a href="../../../articles/2024/07/gsm_005960.html">jilpa&gt; #クラシック音楽館 『ニルセン: 交響曲…</a> <span class="pn-date">2024-07-25T00:46:25Z</span></span><span class="next-art"><a href="../../../articles/2024/07/gsm_005962.html">(承前) p を使った方法は、次のようにした方が適切かもしれない。…</a> <span class="pn-date">2024-07-25T06:44:38Z</span> →</span></nav>
 
 <nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2024/07.html">2024年07月</a> | <a href="../../../index/gsm.html">共有メモ</a></nav>
+<script type="application/json" id="raw-text">"[gsm]\n○ 2024-07-25T05:45:58Z bzdRDyGuze\n\njrf\u003e 《めめちも:X:2024-07-24》  \nhttps://x.com/mecimecimemeci/status/1816099453398614268\n＞＞鉄緑会恋愛発展講座定期\nところでこれクソ問すぎる\n＞第4問\n\nAdam には Barbara と Carrol という2人の恋人がいる。ある日、Adam のところに恋人から手紙が届いたが、不幸なことに雨で差出人の名前が消えてしまっていた。幸いなんとか \"ar\" という文字だけは読み取ることができたが、さて、Adam が返事を出すとすればどちらの恋人に出すのが無難か、理由を付けて答えよ。ただし、雨で消えなかった可能性があるのは隣どうしの2文字であって、それらが残る可能性はいずれも同じとする。また、手紙が Barbara からくる確率と Carrol からくる確率はともに 1/2 とする。\n＜\n＜＜\n\nまず、数学外で答えると、どちらにも当たり障りない返事をするか、どちらにも返事をしないことが最適な戦略であると思われる。どちらかのみに返そうというのはリスク選好性が高い。\n\nどちらかにしか返せないとして数学してみる。ベイズの定理(全確率の和の公式含む)を使う。事象 A を \"ar\" が残った事象とする。事象 B1 を Barbara が送った事象とする。事象 B2 を Carrol が送った事象とする。\n\nさて、解法は２つほどあるように思う。一つは文字が消える確率を等しく q とする方法である。こちらを私は先に考えたが、その答えは後述する。\n\nもう一つは ar が残る確率を p とし、B1 には ar が２つ含まれているので、P(A|B1) = 2p とし、B2 には ar が１つだけなので P(A|B2) = 1p とする。p \u003c 1/2 でなければならない。\n\nまず全確率の公式を使い。\n\nP(A) = P(A|B1) * P(B1) + P(A|b2) * P(B2) = 2p * (1/2) + 1p * (1/2) = (3/2) * p\n\nベイズの定理を使い、\n\nP(B1|A) = P(A|B1) * P(B1) / P(A) = 2p * (1/2) / ((3/2) * p) = 2/3\nP(B2|A) = P(A|B2) * P(B2) / P(A) = 1p * (1/2) / ((3/2) * p) = 1/3\n\nP(B1|A)/P(B2|A) = 2\n\nゆえに Barbara からきたほうが 2倍、もっともらしいので Barbara に送り返すべきとなる。\n\n\n次に文字が消える確率を q として考察しよう。\n\nP(A|B1) =　q * (1-q) * (1-q) * q * q * q * q + q * q * q * q * (1-q) * (1-q) * q = 2q^5 * (1-q)^2\n\nP(A|B2) = q * (1-q) * (1-q) * q * q * q = q^4 * (1-q)^2\n\nP(A) = P(A|B1) * P(B1) + P(A|B2) * P(B2) = (1/2) (2q^5 * (1-q)^2 + q^4 * (1-q)^2)\n\nP(B1|A) = P(A|B1) * P(B1) / P(A) = (1/2) * (2q^5 * (1-q)^2) / P(A)\nP(B2|A) = P(A|B2) * P(B2) / P(A) = (1/2) * (q^4 * (1-q)^2) / P(A)\n\nP(B1|A)/P(B2|A) = 2q\n\nつまり、q \u003e 1/2 ならば、Barbara が送ったほうがもっともらしく、q \u003c 1/2 ならば Carrol が送ったほうがもっともらしい。ただ、文字がほとんどが消える状況だと q \u003e 1/2 のほうがもっともらしいと思われる。Barbara に送り返すべきであろう。\n\nこれで合っているのだろうか？ 合っている自信はない。orz"</script>
+<script src="../../../article.js"></script>
 </body>
 </html>

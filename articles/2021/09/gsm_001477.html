@@ -21,6 +21,7 @@
 </table>
 </div>
 <h1>[仏教の最適化プログラムの続き。] normal…</h1>
+<div class="art-tools" data-pagefind-ignore><button type="button" id="btn-copy">原文をコピー</button><span class="tools-msg" id="tools-msg"></span></div>
 <pre class="body">jrf&gt; [仏教の最適化プログラムの続き。]
 
 normal のログを求めるところからやり直す。前とパラメータは同じなので、run_simbdp3.sh と plot_logs.py のコマンドはこの先しばらく、示さない。グラフ集は Issue に新たなエントリを作った。
@@ -57,5 +58,7 @@ worst2 は、「仏教」がないとした場合の発展の方向といった�
 <nav class="prevnext" data-pagefind-ignore><span class="prev-art">← <a href="../../../articles/2021/09/gsm_001476.html">[仏教の最適化プログラムの続き。]…</a> <span class="pn-date">2021-09-19T19:57:19Z</span></span><span class="next-art"><a href="../../../articles/2021/09/gsm_001478.html">[仏教の最適化プログラムの続き。]…</a> <span class="pn-date">2021-09-20T00:28:58Z</span> →</span></nav>
 
 <nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2021/09.html">2021年09月</a> | <a href="../../../index/gsm.html">共有メモ</a></nav>
+<script type="application/json" id="raw-text">"[gsm]\n○ 2021-09-20T00:19:10Z /FftjMM0fA\n\njrf\u003e [仏教の最適化プログラムの続き。]\n\nnormal のログを求めるところからやり直す。前とパラメータは同じなので、run_simbdp3.sh と plot_logs.py のコマンドはこの先しばらく、示さない。グラフ集は Issue に新たなエントリを作った。\n\nあと、新たに worst1 と worst2 のログを作った。worst1 は ledu ltom lpe fana mwar 。worst2 は ledu ltom lpe fana mwar mpop mamb mpr。コマンドとしては…\n\nrun_simbdp3.sh worst1 10 -L -t 360 --education-goal=0.35 --education-goal-max=0.5 --education-goal-min=0.20 --tombs-population=10000 --prophecy-effect=0.5 --nation-education-power-threshold=0.925 --faith-realization-power-threshold=0.925 --invasion-average-term-min=60\n\nrun_simbdp3.sh worst2 10 -L -t 360 --education-goal=0.35 --education-goal-max=0.5 --education-goal-min=0.20 --tombs-population=10000 --prophecy-effect=0.5 --nation-education-power-threshold=0.925 --faith-realization-power-threshold=0.925 --invasion-average-term-min=60 --priests-rate-max=0.0125 --priests-rate=0.00666666666666667 --priests-rate-min=0.004 --invasion-average-term-min=60 --population=11000,11000,5500 --change-ambition --ambition-goal=0.70\n\npython plot_logs.py normal worst1 worst2 -p AccDeath\npython plot_logs.py normal worst1 worst2 -p AccAbortion\npython plot_logs.py normal worst1 worst2 -p AccKarma\npython plot_logs.py normal worst1 worst2 -p Education\n\n…になる。\n\n本当の worst は worst1。ただし、ltom は必ずしも悪い方向ではないが、ltom には lpe が必ず伴う…とするとすると、worst に ltom も現れるという感じでこれを worst に入れている。\n\nworst2 は、「仏教」がないとした場合の発展の方向といった感じになる。逆に normal は、人口上昇がどうしてもできない場合に、その「エネルギー」を「仏教」に振り向けたといった感じか。\n\nなお、simbdp3.py はこのログを取ったときから若干の変更がある。そのため、このログを取るのに、バージョン 0.0.8 ではこれまでのオプションにさらに、--soothe-political-hating-decay=1.0 --soothe-merchant-hating-decay=1.0 --soothe-merchant-hated-decay=1.0 を指定したのと同じことになる。\n\n《グラフ集: 2021-09-20 - Issue #3 - JRF-2018/simbd》  \nhttps://github.com/JRF-2018/simbd/issues/3\n\n次回は、これらの soothe に関するオプションなしのデフォルトで行い、諸行無常の効果が薄い low soothe の条件も試そうと思う。worst1 や worst2 は low soothe の条件付きになるので、それらも少し変わる予定。\n\nなお、グラフについてだが、fanamprmprs の死亡が大きく出過ぎている。このシミュレーションはどうしてもそういうことが起きることがあるらしい。カルマについて ltom の効果だと思うが、normal が worst1 や worst2 よりハッキリ悪いのはいかがなものか…といったところ。"</script>
+<script src="../../../article.js"></script>
 </body>
 </html>

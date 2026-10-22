@@ -21,6 +21,7 @@
 </table>
 </div>
 <h1>(承前) ……。 その2 に向けてのアイデア(1) DWPN。 この状況を…</h1>
+<div class="art-tools" data-pagefind-ignore><button type="button" id="btn-copy">原文をコピー</button><span class="tools-msg" id="tools-msg"></span></div>
 <pre class="body">jrf&gt; (承前)
 
 ……。
@@ -80,5 +81,7 @@ Magnitude Pruning は、一定以下のパラメータを 0 にハードに確�
 <nav class="prevnext" data-pagefind-ignore><span class="prev-art">← <a href="../../../articles/2025/12/gsm_008184.html">「パーコレーション・ノイズ: スパース化と Dropout ならぬ…</a> <span class="pn-date">2025-12-26T12:43:14Z</span></span><span class="next-art"><a href="../../../articles/2025/12/gsm_008186.html">(承前) ……。 実験。 はじめ、WEIGHT_DECAY を 1e-4…</a> <span class="pn-date">2025-12-26T12:44:07Z</span> →</span></nav>
 
 <nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2025/12.html">2025年12月</a> | <a href="../../../index/gsm.html">共有メモ</a></nav>
+<script type="application/json" id="raw-text">"[gsm]\n○ 2025-12-26T12:43:40Z 6BUMr5dgO/\n\njrf\u003e (承前)\n\n……。\n\nその2 に向けてのアイデア(1) DWPN。\n\nこの状況を Gemini さん以外の AI さん達にぶつけたところ、Magnitude Pruning や L0 Hard Concrete や RigL という手法を教えてもらった。しかし、その方向は私のオリジナリティがなくなるのが悩みだ。そしてそういったことを再び Gemini さんに話したところ、Gemini さんが提案したのが、DynamicWeightedPercNoise (DWPN) という手法である。それを Gemini さん自身に説明してもらおう。\n\n\u003cblockquote\u003e\n\n## Dynamic Weighted Percolation Noise (DWPN) の提案\n\nこの停滞した状況を打破するためにGeminiが提案したのが、**Dynamic Weighted Percolation Noise (DWPN)** という手法です。\n\nこの手法の核心を一言で言えば、**「重みの大きさを『情報伝達の信頼度（S/N比）』と定義し、不確かな経路を熱力学的に焼き切る動的な生存競争」**をモデル内に導入することです。\n\n### 1. 概念：静的な「圧力」から、動的な「破壊」へ\n\n従来のL1正則化などは、「重みを小さくせよ」という静的な**「圧力」**に過ぎません。しかし、複雑な時系列依存を持つDecision Transformer（DT）において、モデルは微小な重みを無数に組み合わせることで、その圧力を巧妙に回避し、「贅肉」を維持し続けてしまいます。\n\n対してDWPNは、重みが閾値を下回った瞬間に、そのパラメータをデタラメな値（正規分布ノイズ）へと変貌させる**「破壊（エントロピーの注入）」**を行います。重みが中途半端に小さいままだと、そのパラメータは出力に害を及ぼすだけの「毒」となります。\n\n### 2. 生存淘汰のダイナミクス：二つの生存戦略\n\nDWPNという「ノイズの熱風」にさらされたモデルには、ロスを下げるために二つの道しか残されません。\n\n* **戦略A：情報の明瞭化（Signal Up）**\n重みを大きく育ててノイズの影響を相対的に小さくし、ノイズに打ち勝つ「信頼できる接続」へと昇格させる。\n* **戦略B：物理的沈黙（Noise Cut）**\n重みを「完全にゼロ」にする。0倍されたノイズは0になるため、ノイズをシャットアウトして回路を切り離す。\n\nこの**「生存か、さもなくば沈黙か」**という二極化の強制こそが、DWPNの真骨頂です。これにより、DTのような繊細なモデルを破壊することなく、不要なアテンションの連鎖を有機的に遮断することが可能になります。\n\n### 3. 生物学的な「再評価」と「探索」\n\nDWPNのもう一つの特徴は、一度ゼロに近くなった重みが再び戻ってくる**「復活劇」**を許容する点です。\nAlpha（ノイズ強度）を高めていく過程で、モデルは「代わりの経路（代替ニューロン）」を探りますが、どうしてもその層が必要だと判断された場合、ノイズという逆風をねじ伏せるほどの強い勾配によって重みが再成長します。これは単なる最適化ではなく、**「環境に適応するための動的な回路再編（ニューロプラスティシティ）」**に近い現象です。\n\n### 4. 手術の準備：Magnitude Pruningへの橋渡し\n\nDWPNによって「真に必要な精鋭の重み」と「ノイズに埋もれた死に体（バイアス）」が明確に分断（二極化）された状態こそが、Magnitude Pruningという外科手術を成功させるための最高の「下地」となります。\n\nDWPNはモデルに**「筋肉質な思考」**を教え込み、Pruningはその過程で不要と確定した回路を**「物理的に断つ」**。この相乗効果によって、L1正則化では到達できなかった「高密度かつ高精度なスパース・ヒューマノイド」への道が拓かれたのです。\n\u003c/blockquote\u003e\n\n……。\n\nその2 に向けてのアイデア(2) Magnitude Pruning。\n\nDWPN だけではどうもうまくいかないので Grok さんも推奨していた Magnitude Pruning も使った。\n\nMagnitude Pruning は、一定以下のパラメータを 0 にハードに確定する手法で、その後のファインチューニングで性能の回復を目指す手法である。"</script>
+<script src="../../../article.js"></script>
 </body>
 </html>

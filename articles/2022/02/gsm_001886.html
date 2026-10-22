@@ -21,6 +21,7 @@
 </table>
 </div>
 <h1>[cocolog:93262667] の因明の話つづき。…</h1>
+<div class="art-tools" data-pagefind-ignore><button type="button" id="btn-copy">原文をコピー</button><span class="tools-msg" id="tools-msg"></span></div>
 <pre class="body">jrf&gt; <a href="../../../articles/2022/01/statuses_cocolog_93262667.html" class="int-link cocolog-id" title="ひとこと">[cocolog:93262667]</a> の因明の話つづき。
 
 とりとめのない話。いくつか。
@@ -96,5 +97,7 @@ A ∨ B ==&gt; ◇A ∧ ◇B
 <nav class="prevnext" data-pagefind-ignore><span class="prev-art">← <a href="../../../articles/2022/02/gsm_001885.html">最近、Steamゲーム『Street Fighter 30th…</a> <span class="pn-date">2022-02-11T10:41:40Z</span></span><span class="next-art"><a href="../../../articles/2022/02/gsm_001887.html">(承前) ……。 とりとめのない話 その４。 IM(P,Q) が成り立つ P,…</a> <span class="pn-date">2022-02-11T13:15:16Z</span> →</span></nav>
 
 <nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2022/02.html">2022年02月</a> | <a href="../../../index/gsm.html">共有メモ</a></nav>
+<script type="application/json" id="raw-text">"[gsm]\n○ 2022-02-11T13:14:26Z IXnvrkxF+4\n\njrf\u003e [cocolog:93262667] の因明の話つづき。\n\nとりとめのない話。いくつか。\n\nとりとめのない話 その１。\n\n2022年1月22日追記の「時間的な推移」の τ(Q,P,x) についてもう少し詳細に考える。\n\nx はオブジェクトみたいなもので、x の中に様々な情報が入っていると考え、それをメンバ関数で呼び出す…みたいな考え方をしてみる。\n\nτ(Q,P,x) は、ある時刻 t1 における x を特別に選ぶ at 関数を使って P(at(x, t1))  が成り立ち、Q(at(x, t2)) が成り立っていて、t2 \u003c t1 で t2 と t1 が重なる部分があるみたいに定義すれば良いのだろうか？\n\nいや、しかし時間が重なっていても原因と結果になっていなければ意味がない場合もありうる。すると、オブジェクト x は履歴も含んでいて、そこに Q が P につながったという原因結果の履歴があることをチェックするという形にすればいいのではないか。\n\nτ(Q,P,x) とは x.GenninRireki('Q', 'P') …みたいにすればいいのだと思う。\n\nこれを使うとき x はそういうオブジェクトでないといけないから、その型を指定するのを T(x) とする…より T(x) の名前を適切にして RirekiAriObject(x)  としよう。そういうオブジェクト x はある程度のタイムスパンを持っていて、ただ注目しているデフォルト時というのがあるとしよう。\n\nすると因明は、x がデフォルト時に述語 P を満たすことを x.dtp('P') と表すとすると、\n\nIM'2(P, Q) == ((∃y. RirekiAriObject(y) ∧ y.GenninRireki('Q','P')) → (∀x. RirekiAriObject(x) → (x.dtp('P') → ◇ x.dtp('Q'))))\n\n…みたいにすれば良いのだろう。P Q が '' に囲まれてるのがちょっと嘘くさいが、まぁ、そういうものとここでは読んで欲しい。なお、y.GenninRireki('Q','P') → (y.dtp('P') ∧ y.dtp('Q')) は成り立っているものとする。\n\n2022年2月8日の追記で、仮定を落として可能性を導く演算を考えたが、直上の例は、仮定を落とすのに似ているが少し違い、原因履歴の参照を落として可能性を導く演算になっていると言える。\n\n……。\n\nここで新たな記号を導入しよう。\n\nΓ |- A (前提の列 Γ から A が証明手続きによって導出できる。)\nΓ !|- A (前提の列 Γ から A が証明手続きによって導出できない。)\n\nちなみに Γ !|- A はどうやっても導出できないことを示せないとダメなのでいうのがかなり難しい。\n\n……。\n\nとりとめのない話 その２。\n\n「仮定を落として可能性を導く演算」の仲間として A ∨ B ==\u003e ◇A が挙げられる。これは A にも B にも言えることだから結局、\n\nA ∨ B ==\u003e ◇A ∧ ◇B\n\n…ということになる。これを存在記号・全称記号に拡張すると、\n\n(∃x. P(x)) ==\u003e (∀x. ◇P(x))\n\n…となる。これに先の仮定を落とす演算を加える。\n\nΓ,A |- X ==\u003e Γ |- ◇X\n\nさて、こういった演算を使っていいか、矛盾が出てこないかが問題となる。\n\n確かマズかった気がするのだが、詳しく今はなぜダメなのか私は示せない。\n\n……。\n\nとりとめのない話 その３。\n\n「あり得ないわけではない」ということと、「可能性がある」には、差がある。…という話だが、「あり得ないわけではない」というのは、必然的に P(a) でないようなものは導けないということつまり、\n\nΓ !|- □¬P(a)\n\n…のとき ◇P(a) を仮定しても問題ないということだった。つまり、…\n\n(Γ !|- □¬P(a)) ∧ (Γ !|- ⊥) ==\u003e (Γ, ◇P(a) !|- ⊥)\n\nこれをどう推論規則に仕上げたら良いものか…。"</script>
+<script src="../../../article.js"></script>
 </body>
 </html>

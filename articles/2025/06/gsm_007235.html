@@ -21,11 +21,12 @@
 </table>
 </div>
 <h1>(承前) 先の Tips…</h1>
+<div class="art-tools" data-pagefind-ignore><button type="button" id="btn-copy">原文をコピー</button><span class="tools-msg" id="tools-msg"></span></div>
 <pre class="body">jrf&gt; (承前)
 
 先の Tips を更新。若干ダーティだけど、以下のようにしたほうが、意図どおりの動作になると思う。
 
-&lt;pre&gt;
+<span class="src-pre">&lt;pre&gt;
 (require 'quail-naggy)
 
 (defun quail-naggy-alt-convert-naggy-backend-command-advice
@@ -52,7 +53,7 @@
 			      [?\S- ] 'quail-naggy-alt-convert)
 		  (define-key (quail-conversion-keymap)
 			      [?\C- ] 'quail-naggy-insert-space)))))
-&lt;/pre&gt;</pre>
+&lt;/pre&gt;</span></pre>
 
 
 
@@ -60,5 +61,7 @@
 <nav class="prevnext" data-pagefind-ignore><span class="prev-art">← <a href="../../../articles/2025/06/gsm_007234.html">quail-naggy について Tips を↓のコメント欄に書いておいた。…</a> <span class="pn-date">2025-06-23T19:11:52Z</span></span><span class="next-art"><a href="../../../articles/2025/06/gsm_007236.html">イスラエル。国が滅んでもいいと思っているなら、嫌われずに力を行使しないという道も…</a> <span class="pn-date">2025-06-24T03:19:07Z</span> →</span></nav>
 
 <nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2025/06.html">2025年06月</a> | <a href="../../../index/gsm.html">共有メモ</a></nav>
+<script type="application/json" id="raw-text">"[gsm]\n○ 2025-06-24T01:26:32Z 0KeF12PiFU\n\njrf\u003e (承前)\n\n先の Tips を更新。若干ダーティだけど、以下のようにしたほうが、意図どおりの動作になると思う。\n\n\u003cpre\u003e\n(require 'quail-naggy)\n\n(defun quail-naggy-alt-convert-naggy-backend-command-advice\n    (old-function \u0026rest args)\n  (if (string= (caar args) \"convert\")\n      (apply old-function\n\t     (list (list \"convert\" (concat (cadar args) \":\"))))\n    (apply old-function args)))\n\n(defun quail-naggy-alt-convert ()\n  (interactive)\n  (advice-add 'naggy-backend-command :around\n\t      #'quail-naggy-alt-convert-naggy-backend-command-advice)\n  (unwind-protect\n      (quail-naggy-convert)\n    (advice-remove 'naggy-backend-command\n\t\t   #'quail-naggy-alt-convert-naggy-backend-command-advice)))\n\n(add-hook 'input-method-activate-hook\n\t  (lambda ()\n\t    (if (string= (quail-name) \"japanese-naggy\")\n\t\t(progn\n\t\t  (define-key (quail-conversion-keymap)\n\t\t\t      [?\\S- ] 'quail-naggy-alt-convert)\n\t\t  (define-key (quail-conversion-keymap)\n\t\t\t      [?\\C- ] 'quail-naggy-insert-space)))))\n\u003c/pre\u003e"</script>
+<script src="../../../article.js"></script>
 </body>
 </html>

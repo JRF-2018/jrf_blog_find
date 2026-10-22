@@ -21,6 +21,7 @@
 </table>
 </div>
 <h1>ショック。ELDE (Exhaustive Lock Dependency…</h1>
+<div class="art-tools" data-pagefind-ignore><button type="button" id="btn-copy">原文をコピー</button><span class="tools-msg" id="tools-msg"></span></div>
 <pre class="body">ショック。ELDE (Exhaustive Lock Dependency Emulator) に大きなミスを発見。実際にはありえない「虚実行」を数え上げてた。「虚実行」群がすべてのテストに合格すればそれに含まれる「実実行」群も合格する…といった使い方ができるかもしれないが…。
 JRF 2018年4月6日
 
@@ -95,5 +96,7 @@ Trackbacks:
 <nav class="prevnext" data-pagefind-ignore><span class="prev-art">← <a href="../../../articles/2018/04/statuses_cocolog_89156370.html">2018年1月期・冬期アニメ。今期もかなりのアニメを観た。感動作も多く、「豊作」…</a> <span class="pn-date">2018年04月06日</span></span><span class="next-art"><a href="../../../articles/2018/04/statuses_cocolog_89185782.html">組み合わせと順列の数え上げのアルゴリズムの Python のソースを Perl…</a> <span class="pn-date">2018年04月11日</span> →</span></nav>
 
 <nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2018/04.html">2018年04月</a> | <a href="../../../index/statuses.html">ひとこと</a></nav>
+<script type="application/json" id="raw-text">"[statuses] [cocolog:89156596]\nhttp://jrf.cocolog-nifty.com/statuses/2018/04/post-683a.html\n\nショック。ELDE (Exhaustive Lock Dependency Emulator) に大きなミスを発見。実際にはありえない「虚実行」を数え上げてた。「虚実行」群がすべてのテストに合格すればそれに含まれる「実実行」群も合格する…といった使い方ができるかもしれないが…。\nJRF 2018年4月6日\n\nあるプロセスで別のプロセスのアンロックロックをかけ、双方のプロセスでいくつかロックが過ぎてから、、元のプロセスへ復帰したというとき、その間のロックには必ず前後関係がなければならないが、そのような関係がない仕様も含めていたのが問題となった。\n\nエミュレートはできるが、実際にはそういう実行はありえないということで、そういうのを「虚実行」と呼ぶことにする。対称的なものを「実実行」と呼ぶ。\n\nELDE ではそういう「虚実行」も普通の実行として扱っていたのだった。これは大きなミスだ。\n\nなぜ今まで誰も指摘してくれなかったんだろう！ ああ、過疎ブログの悲しさよ。\n\nJRF 2018年4月6日\n\n……。\n\n詳しくは↓に追記した。\n\n《Exhaustive Lock Dependency Emulator その１ 並列処理の総当り》\nhttp://jrf.cocolog-nifty.com/software/2011/06/post-1.html\n\n↓にも注意を書いた。\n\n《Exhaustive Lock Dependency Emulator その２ wait_and_lock》\nhttp://jrf.cocolog-nifty.com/software/2011/07/post.html\n\nJRF 2018年4月6日\n\n……。\n\nはじめは上の追記で「もっと簡単に」で説明した最初のロックと最後のロックの場合のみが問題だと思い、「左開実行」が一つで残りが「左閉実行」、「右開実行」が一つで残りが「右閉実行」のものを、「閉実行」などと呼んで、それだけ検出すればよいかと思っていて検討していたら、上の「虚実行」の一般的な問題に気付いた。\n\n追記にも書いたように、「虚実行」か「実実行」かを判定するプログラムを書こうかと思ったが難しい。ロック仕様から完全に別物にしたほうが早いと思う。今、それを考えているところ。\n\nJRF 2018年4月6日\n\n……。\n\nキッカケは、複数ロックを可能にしようともくろんだことにあった。複数ロックは、単一ロックへの変換みたいなのを考えればできるかな…と長い間考えていたが、どうもダメそうなので、複数ロックそのものをやったほうがいいと思い直して…しばらくして、最近になってやっと真剣に考えはじめ、それで、過去の記事を詳しく調べているところ、この問題に気付いたのだった。\n\nでも、過去のプログラムを実行するうちに、なんか合ってる部分はある。こう考えたのにも何らかの理由があるはず。…と信じて、なんとか「虚実行」という考え方に致ったのであった。\n\nJRF 2018年4月6日\n\n……。\n\nしかし、間違えていたことは認めなければならない。あちらでは書かなかったが、こちらでは素直に謝っておきたい。\n\n申し訳ありませんでした。\n\nJRF 2018年4月6日\n\nTrackbacks:\n\n《cocolog:89185782》 from JRF のひとこと\nhttp://jrf.cocolog-nifty.com/statuses/2018/04/post-3768.html\n\n組み合わせと順列の数え上げのアルゴリズムの Python のソースを Perl に書き換えた。効率的なアルゴリズムが日本語での紹介がググってもなかったので、一応、ブログ記事にしておいた。 \n\n受信： 2018-06-29 14:35:53 (JST)"</script>
+<script src="../../../article.js"></script>
 </body>
 </html>

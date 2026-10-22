@@ -21,6 +21,7 @@
 </table>
 </div>
 <h1>Firefox などの CSS3 を使ってローカルなリンクに別の色を付ける</h1>
+<div class="art-tools" data-pagefind-ignore><button type="button" id="btn-copy">原文をコピー</button><span class="tools-msg" id="tools-msg"></span></div>
 <pre class="body">ローカルなリンクと外部へのリンクを区別したい場合、Firefox など CSS3 を使えるブラウザ相手には、次のようにすれば良い。
 
 a:link[href^=&quot;file:&quot;] { color: lime; }
@@ -72,5 +73,7 @@ userContent.css と userChrome.css で Firefox のカスタマイズ: <a href="h
 <nav class="prevnext" data-pagefind-ignore><span class="prev-art">← <a href="../../../articles/2006/02/software_10024353.html">XML や XHTML のチェックに xmllint --valid を使う</a> <span class="pn-date">2006年02月16日 03:44:13</span></span><span class="next-art"><a href="../../../articles/2006/02/software_10024568.html">Ghostscript で -dSAFER にすると日本語が使えない</a> <span class="pn-date">2006年02月16日 04:46:59</span> →</span></nav>
 
 <nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2006/02.html">2006年02月</a> | <a href="../../../index/software.html">ソフトウェア Tips</a></nav>
+<script type="application/json" id="raw-text">"[software] [cocolog:10024421]\n《Firefox などの CSS3 を使ってローカルなリンクに別の色を付ける》\nhttp://jrf.cocolog-nifty.com/software/2006/02/post_10.html\n2006年2月16日 03:58:17 [HTML/XML/CSS][Firefox]\n\nローカルなリンクと外部へのリンクを区別したい場合、Firefox など CSS3 を使えるブラウザ相手には、次のようにすれば良い。\n\na:link[href^=\"file:\"] { color: lime; }\na:link:not([href*=\":\"]) { color: green; }\na:visited[href^=\"file:\"] { color: olive; }\na:visited:not([href*=\":\"]) { color: olive; }\n\nちなみにこのサイトではだいたい次のように設定している。\n\na:link { color: #cc3333; }\na:visited { color: darkred;}\na:active { color: #ffcc33;}\na:hover { color: #ffcc33;}\n\na:link:not([href^=\"http://jrf.cocolog-nifty.com/\"]) { color: blue; }\na:link:not([href*=\":\"]) { color: #990000; }\na:visited:not([href^=\"http://jrf.cocolog-nifty.com/\"]) { color: purple; }\na:visited:not([href*=\":\"]) { color: darkred; }\na:active:not([href^=\"http://jrf.cocolog-nifty.com/\"]) { color: #ffcc33; }\na:active:not([href*=\":\"]) { color: #ffcc33; }\na:hover:not([href^=\"http://jrf.cocolog-nifty.com/\"]) { color: #ffcc33; }\na:hover:not([href*=\":\"]) { color: #ffcc33; }\n\n\u003cb\u003e参考\u003c/b\u003e\n  《userContent.css と userChrome.css で Firefox のカスタマイズ》\n  \n更新：05/05/07,06/02/16\n初公開：2006年02月16日 03:58:17\n最新版：2006年03月01日 14:16:33\n\n\nTrackbacks:\n\n《Firefoxのネタ》 from ネタ蔵\nhttp://www.netazo.com/firefox/2006/2/16/\n\nFirefoxのネタを追いかけるヨ！ \n\n受信： 2006-02-16 06:23:07 (JST)\n\n\nLinks:\n\nFirefox: http://www.mozilla-japan.org/\nCSS3: http://www.w3.org/Style/CSS/current-work\nuserContent.css と userChrome.css で Firefox のカスタマイズ: http://memo.xight.org/2006-02-07-3"</script>
+<script src="../../../article.js"></script>
 </body>
 </html>

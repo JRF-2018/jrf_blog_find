@@ -21,6 +21,7 @@
 </table>
 </div>
 <h1>MemoryBanditWorkflow…</h1>
+<div class="art-tools" data-pagefind-ignore><button type="button" id="btn-copy">原文をコピー</button><span class="tools-msg" id="tools-msg"></span></div>
 <pre class="body">jrf&gt; MemoryBanditWorkflow の今後の方向としてはいくつか考えられる。マルチエージェントの方向。read したものを HumanMessage で流す方向。workflow に条件分岐やループを認める方向。…など。
 
   * マルチエージェントの方向。つまり、タスクキューとデータベースの方向。intra_(memory_)new とか作っていく方向。ただ、intra と web と memory の三種をどう混合検索するか、または企業秘密などを考慮して混合検索はあえてしないか…などを考える必要がある。
@@ -39,5 +40,7 @@
 <nav class="prevnext" data-pagefind-ignore><span class="prev-art">← <a href="../../../articles/2025/09/gsm_007697.html">「ミラーリングとかで男性向けエロ本に対してBLの規制とか言い出すのは、気持ちはわ…</a> <span class="pn-date">2025-09-23T10:00:28Z</span></span><span class="next-art"><a href="../../../articles/2025/09/gsm_007699.html">(承前) workflow…</a> <span class="pn-date">2025-09-23T20:02:01Z</span> →</span></nav>
 
 <nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2025/09.html">2025年09月</a> | <a href="../../../index/gsm.html">共有メモ</a></nav>
+<script type="application/json" id="raw-text">"[gsm]\n○ 2025-09-23T18:20:43Z +cx1pWOWLN\n\njrf\u003e MemoryBanditWorkflow の今後の方向としてはいくつか考えられる。マルチエージェントの方向。read したものを HumanMessage で流す方向。workflow に条件分岐やループを認める方向。…など。\n\n  * マルチエージェントの方向。つまり、タスクキューとデータベースの方向。intra_(memory_)new とか作っていく方向。ただ、intra と web と memory の三種をどう混合検索するか、または企業秘密などを考慮して混合検索はあえてしないか…などを考える必要がある。\n\n  * Recursive Limit などの際に read したものを HumanMessage で流す方向。この先にはバックグラウンドでの要約実行などが控える。read したものを HumanMessage ぐらいならなんとかなるが、これまでの bandits と別に管理するのかなど決めねばならない。さらにその先まで考えるとなると、この辺は特定システムのメモリ実装とかでないと要件を定めにくいのではという気がする。\n\n  * workflow に条件分岐やループを認める方向。experimental_rag_0.0.2.ipynb では、結局 workflow:main を書き換えてそのようなことをやったが、それをもうちょっと「フレームワーク内部」でやる方向は考えられる。条件分岐だけなら、workflow_do の aux_prompt で「〜ならば workflow:1001 を 〜 ならば workflow:1002 を呼んでください」とかやれば今でも実現はできるのだが、確率的バンディットがそれに付いて来ないのをどうするかなど考えるべきことはある。\n\n…など。\n\nいずれの課題も難しく、素人の私にできる範囲を超えている気もする。「私がやるのか？」という気はする。AI さん達が実装するか、若者や専門家が実装すべきなのかはよくわからないが。"</script>
+<script src="../../../article.js"></script>
 </body>
 </html>

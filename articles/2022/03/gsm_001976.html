@@ -21,6 +21,7 @@
 </table>
 </div>
 <h1>Judea Pearl 他『入門 統計的因果推論』(朝倉書店,…</h1>
+<div class="art-tools" data-pagefind-ignore><button type="button" id="btn-copy">原文をコピー</button><span class="tools-msg" id="tools-msg"></span></div>
 <pre class="body">jrf&gt; Judea Pearl 他『入門 統計的因果推論』(朝倉書店, 2019年8月)に目を通した。
 
 私は若いころから、仏教について因果ではなく縁起を重視することに関心を持っていた。最近では仏教論理学の因明に関心を持っていた(<a href="../../../articles/2022/01/statuses_cocolog_93262667.html" class="int-link cocolog-id" title="ひとこと">[cocolog:93262667]</a>)。また、大学時代はグラフ理論に注目して、独学で圏論を学んだりしたがうまく活かすことができなかった。さらに、大学を出た後、Monty Hall 問題にこだわったりしていた。
@@ -64,5 +65,7 @@ M := (1-X) * ((F + U_M) % 3) + X * ((3 - F - C) % 3)
 <nav class="prevnext" data-pagefind-ignore><span class="prev-art">← <a href="../../../articles/2022/03/gsm_001975.html">オーディオの設定。 また、サランネットを付けるべきか否かで迷っている。…</a> <span class="pn-date">2022-03-21T10:25:16Z</span></span><span class="next-art"><a href="../../../articles/2022/03/gsm_001977.html">(承前) モンティホール問題についてもう少し。 反事実と呼べるようなものは、M…</a> <span class="pn-date">2022-03-21T18:15:57Z</span> →</span></nav>
 
 <nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2022/03.html">2022年03月</a> | <a href="../../../index/gsm.html">共有メモ</a></nav>
+<script type="application/json" id="raw-text">"[gsm]\n○ 2022-03-21T15:03:50Z vxiZT0MJ/9\n\njrf\u003e Judea Pearl 他『入門 統計的因果推論』(朝倉書店, 2019年8月)に目を通した。\n\n私は若いころから、仏教について因果ではなく縁起を重視することに関心を持っていた。最近では仏教論理学の因明に関心を持っていた([cocolog:93262667])。また、大学時代はグラフ理論に注目して、独学で圏論を学んだりしたがうまく活かすことができなかった。さらに、大学を出た後、Monty Hall 問題にこだわったりしていた。\n\nそれらの伏線が一気に回収されるようなテーマで驚いた。私がもう少し若ければ、もっと真剣に読めたであろうが、いかんせん、ボケボケの今では目を通すのがやっとだった。\n\nただ、Monty Hall に関して「反事実」が重要と言いながら、結局、Monty Hall のような「反事実」で事実がゆがむような例は他になかった。「反事実」を使って、統計的真実を述べるというのはそれはそれで意味のあることだとは思うが、当初予想したようなトピックはなかった。\n\nモンティホール問題が反事実というのはどういうことだろうか、と本を閉じたあと考えた。\n\n構造方程式は素直に書くと、最初の選択を F、車の位置を C、司会者の選択を M とし、それぞれ 0 から 2 までの値をとるとすると、\n\nF := U_F\nC := U_C\nM := if F == C then ((F + U_M) % 3) else ((3 - F - C) % 3)\n\nみたいに書けると思う。で、求めたいのは P(C == 2| F == 0, M == 1) == 2/3 ということ。\n\nここに反事実を持ってくるということは M == 0 のとき P(C_{M==2} == 2 | F == 0) を求めたいといったことになるのだろうか。\n\nしかし、M == 2 という反事実は C や F に遡及しないので、結局、P(C_{M==2} == 2 | F == 0) == P(C == 2) == 1/3 でしかない。\n\nもう少し工夫して\n\nF := U_F\nC := U_C\nX := if F == C then 0 else 1\nM := (1-X) * ((F + U_M) % 3) + X * ((3 - F - C) % 3)\n\nにして X でコントロールしようとすると、C_{X==0} とかは上と変わらないので、M_{X==0} や M_{X==1} に意味があるかどうかになる。\n\nしかし P(C == 2|M_{X==0} == 1, F == 0) == 1/3 と出て、P(C == 2|M_{X==1} == 1, F == 0) == 1 と出るが、それに何の意味があるというのか？\n\nモンティ・ホール問題の反事実性はどこにあって、どんな役割をしているか、結局わからずじまい…ということになる。\n\n結局、この本もぜんぜん読めてなくて、目を通しただけということになろう。情けなや orz。"</script>
+<script src="../../../article.js"></script>
 </body>
 </html>

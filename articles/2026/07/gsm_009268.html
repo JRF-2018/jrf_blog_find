@@ -21,6 +21,7 @@
 </table>
 </div>
 <h1>xxGemma 実験を行った。 《xxgemma_sft.ipynb -…</h1>
+<div class="art-tools" data-pagefind-ignore><button type="button" id="btn-copy">原文をコピー</button><span class="tools-msg" id="tools-msg"></span></div>
 <pre class="body">jrf&gt; xxGemma 実験を行った。
 
 《xxgemma_sft.ipynb - xxGemma プロジェクト: Unsloth を使って Gemma を xxLLM になるよう SFT する - Colab》  
@@ -85,5 +86,7 @@ plays $balls balls.
 <nav class="prevnext" data-pagefind-ignore><span class="prev-art">← <a href="../../../articles/2026/07/gsm_009267.html">[cocolog:96065263](2026年7月) 《xxGemma…</a> <span class="pn-date">2026-07-10T23:17:01Z</span></span><span class="next-art"><a href="../../../articles/2026/07/gsm_009269.html">(承前) 実際のところ…、 「ロボットの制御のモデルのルーターとしても使える」…</a> <span class="pn-date">2026-07-10T23:49:00Z</span> →</span></nav>
 
 <nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2026/07.html">2026年07月</a> | <a href="../../../index/gsm.html">共有メモ</a></nav>
+<script type="application/json" id="raw-text">"[gsm]\n○ 2026-07-10T23:18:15Z l72CCT/Umz\n\njrf\u003e xxGemma 実験を行った。\n\n《xxgemma_sft.ipynb - xxGemma プロジェクト: Unsloth を使って Gemma を xxLLM になるよう SFT する - Colab》  \nhttps://colab.research.google.com/drive/1GCUJO3i4vdLllBzPjxU52CGoymUHwNpM\n\n## 概要\n\nxxLLM (JSON を出力する xLLM に対し、JSON を出力するプログラムを出力する LLM) を Gemma のファインチューニングで実装する。そのプロジェクトを xxGemma と呼ぶ。この IPYNB は Unsloth を使ってそのファインチューニングを行うためのものである。\n\nただし、今回の実装は、相対的に能力の低い小さい Gemma による実装で、実用的な実装とは言えず、PoC (Proof of Concept) 的な実装に留まっている。もちろん、将来的には小さく速い LLM で xxLLM が十分に機能してほしいというのはあるのだが。\n\n## DSL (Domain Specific Language) の簡単な仕様\n\n今回使うデータセットは私が定義した DSL 仕様をもとに、Gemini 3.5 Flashさんに列挙してもらったシチュエーションを ChatGPT 5.5(?) さんに DSL プログラムにしてもらったもの。\n\n例えば、次のような DSL プログラムを出力するように訓練する。\n\n```\n[CODE]$animal = str \"long cat\"\nThe $animal\n[CODE]show 1 + 1\n[RESULT]2\n[CODE]$balls = int $RESULT\nplays $balls balls.\n```\n\n…はインタプリタによって、`{\"animal\":\"long cat\", \"balls\": 2, \"__STATEMENT__\": \"The long cat plays 2 balls.\"}` という JSON を出力する。\n\nまた、これだけだと心許ないのでロボット関連に使えないか…と考えて次のような DSL プログラムも理解するように訓練した。\n\n```\n[CODE]import tensor\n[CODE]import robot1\n[CODE]$t1 = tensor robot1_normal_act()\n[EXCEPTION]robot1_exception: Robot stumbled.\n[COMMENT]if robot1 should choose walking recovery then use robot1_walk_error_recovery.\n[CODE]show robot1_error_router_determine()\n[RESULT]\"walking\"\n[CODE]$loss = tensor robot1_walk_error_recovery()\n[CODE]robot1_error_router_reinforce($loss)\n[RESULT]None\n```\n\nこの場合、出力する JSON は重要でなく、DSL プログラムがある種のルーターとして機能することを想定している。\n\nちなみに COMMENT や「ヘッダ」にある変数定義部はある種 CoT (Chain of Thought) のように機能することを期待している。この発想は、私が昔、定義部分だけ書いてプログラムを書いた気分になっていたことを思い出させる。\n\n詳しくは以下の GitHub の GENERATE_EXAMPLES_2.md を読んでいただきたい。\n\n《xxgemma/GENERATE_EXAMPLES_2.md - JRF-2018/xxgemma - GitHub》  \nhttps://github.com/JRF-2018/xxgemma/blob/master/GENERATE_EXAMPLES_2.md\n\n## 結論\n\n結局のところ、CODE EXCEPTION RESULT COMMENT の使い方はだいたい覚えさせることができたようだが、プログラミング能力自体の壁にぶつかった感じである。\n\nこれが Gemma 4 E2B でなく E4B になったところでどれぐらい伸びるのかは疑問である。Gemma の売りはマルチモーダルなので、エージェント的な上増しはそれほど期待できるのだろうか。それは今後の課題としておこう。ご興味のある方はぜひご自分で確かめていただきたい。"</script>
+<script src="../../../article.js"></script>
 </body>
 </html>

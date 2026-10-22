@@ -21,6 +21,7 @@
 </table>
 </div>
 <h1>[仏教の最適化プログラムの続き。]…</h1>
+<div class="art-tools" data-pagefind-ignore><button type="button" id="btn-copy">原文をコピー</button><span class="tools-msg" id="tools-msg"></span></div>
 <pre class="body">jrf&gt; [仏教の最適化プログラムの続き。]
 
 指名により子や孫、兄弟から選ばれる件、嫡出、非嫡出、養子の扱いについて。
@@ -59,5 +60,7 @@ test_of_matching_2.pickle の変わりに simbdp1.pickle が使えるように�
 <nav class="prevnext" data-pagefind-ignore><span class="prev-art">← <a href="../../../articles/2021/07/gsm_001274.html">[仏教の最適化プログラムの続き。]…</a> <span class="pn-date">2021-07-30T12:52:08Z</span></span><span class="next-art"><a href="../../../articles/2021/07/gsm_001276.html">『易双六』のひみつ その２。そろばん、トークン、カードの販売。…</a> <span class="pn-date">2021-07-31T04:47:05Z</span> →</span></nav>
 
 <nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2021/07.html">2021年07月</a> | <a href="../../../index/gsm.html">共有メモ</a></nav>
+<script type="application/json" id="raw-text">"[gsm]\n○ 2021-07-30T12:53:01Z 0C8V7Jh+vn\n\njrf\u003e [仏教の最適化プログラムの続き。]\n\n指名により子や孫、兄弟から選ばれる件、嫡出、非嫡出、養子の扱いについて。\n\nまずは、嫡出子つまり正式な結婚による関係の子や孫、兄弟が選ばれる。それらがいない場合、非嫡出な関係までみて、子や孫、兄弟から選ばれる。それらもいない場合、養子までみて子や孫、兄弟から選ばれる…とする。\n\nもしかすると、嫡出的な弟の子より、非嫡出な孫のほうがリアルには優先されるかもしれないが、アルゴリズムは上記のほうが簡単なのでそうする。\n\n……。\n\n指名を試すプログラムを作った。結局、親子のデータのテストは、test_of_matching_2.py のデータを読み込み、その親子データの上に支配層の構造をランダムに構築することで行った。それが test_of_domination_3.py。(バージョン 0.0.1)\n\n《simbd/test_of_domination_3.py at master - JRF-2018/simbd》  \nhttps://github.com/JRF-2018/simbd/blob/master/test_of_domination_3.py\n\nこの実行の前には…、\n\npython test_of_matching_2.py -S -t 1200\n\n…を実行し正常終了し、test_of_matching_2.pickle ができている必要がある。\n\ntest_of_matching_2.pickle の変わりに simbdp1.pickle が使えるようにしたかったが、pickle のモジュールシステムに関する仕様が難しく諦めた。test_of_matching_2.py であって、test_of_domination_2.py でも simbdp1.py でも simbdp2.py でもないのでお間違えないよう。\n\n……。\n\nいちおう、test_of_domination_2.py に指名のアルゴリズムも入れておいた。(バージョン 0.0.6)\n\nただし、test_of_domination_2.py には親子関係が入っていないのであまり意味はない。\n\n《simbd/test_of_domination_2.py at master - JRF-2018/simbd》  \nhttps://github.com/JRF-2018/simbd/blob/master/test_of_domination_2.py"</script>
+<script src="../../../article.js"></script>
 </body>
 </html>

@@ -21,6 +21,7 @@
 </table>
 </div>
 <h1>Python の型システム… typing…</h1>
+<div class="art-tools" data-pagefind-ignore><button type="button" id="btn-copy">原文をコピー</button><span class="tools-msg" id="tools-msg"></span></div>
 <pre class="body">jrf&gt; Python の型システム… typing 関連は、まだ私には使えなさそうだな。
 
 Haskell とか SML とか使ったことがあるから、型システム自体はわかるんだが、それと Python との組み合わせがどうも気持ち悪い。また、今 Python のバージョン 3.7 系を使っているのだけど、3.9 系あたりになるとかなり違って、発展途上で、日本語サイトとかがあまり役に立たない感じだし…。
@@ -49,5 +50,7 @@ Class Economy:
 <nav class="prevnext" data-pagefind-ignore><span class="prev-art">← <a href="../../../articles/2021/02/gsm_000600.html">サンテレビなぁ…、野球やるのはいいんだよ。今はそれほどだけど、昔一時期私もよく見…</a> <span class="pn-date">2021-02-07T14:58:40Z</span></span><span class="next-art"><a href="../../../articles/2021/02/gsm_000602.html">サンテレビなぁ…、野球やるのはいいんだよ。今はそれほどだけど、昔一時期私もよく見…</a> <span class="pn-date">2021-02-07T23:32:47Z</span> →</span></nav>
 
 <nav class="bottom" data-pagefind-ignore><a href="../../../index.html">TOP</a> | <a href="../../../index/2021/02.html">2021年02月</a> | <a href="../../../index/gsm.html">共有メモ</a></nav>
+<script type="application/json" id="raw-text">"[gsm]\n○ 2021-02-07T23:22:23Z HpbpqyCfw0\n\njrf\u003e Python の型システム… typing 関連は、まだ私には使えなさそうだな。\n\nHaskell とか SML とか使ったことがあるから、型システム自体はわかるんだが、それと Python との組み合わせがどうも気持ち悪い。また、今 Python のバージョン 3.7 系を使っているのだけど、3.9 系あたりになるとかなり違って、発展途上で、日本語サイトとかがあまり役に立たない感じだし…。\n\n↓の Frozen を使い出してるけど、\n\n《How to freeze Python classes « Python recipes « ActiveState Code》  \nhttps://code.activestate.com/recipes/252158-how-to-freeze-python-classes/\n\nfrozen attribute をググると dataclass を使え…っぽくサジェストされる。\n\nこれを dataclass で書けば…\n\n@dataclass(frozen=True)\nClass Economy:\n    x: int = 0\n    people: list[Person] = []\n\n…みたいなことになるのかな…だったらいいな…と思って試すと、3.7系だと list が typing.List でないといけないとかある上に、これは 3.9系でも初期値に [] は使えないらしい。代わりに dataclasses.field(default_factory=list) を使えということらしいんだけど、それをしても、economy.people に Person のリストを代入しようとするとダメなんだよね(.append とかなら OK)。実は economy.x への代入もできないので、上の Frozen とは目的が違う感じ。\n\n「気持ち悪い」というのはイイワケで、要は老いた私には難しくて使えないというのが正直なところなのかな…。"</script>
+<script src="../../../article.js"></script>
 </body>
 </html>
