@@ -150,6 +150,7 @@ docs/
 ├── search.html                        検索専用ページ（?q=クエリ でURL直接指定可）
 ├── blogparts.html                     ブログパーツ（元ブログのサイドバーに貼るHTML）
 ├── style.css                          スタイルシート
+├── article.js                         記事ページ用 JS（MathJax・pre 連結・原文コピー）
 ├── articles/YYYY/MM/TYPE_ID.html     各記事
 ├── index/YYYY/MM.html                月別インデックス（全タイプ混在）
 ├── index/YYYY/MM/statuses.html       月別ひとこと専用インデックス
@@ -282,6 +283,18 @@ steps:
   * ローカルは Cygwin (Perl)。Pagefind は GitHub Actions 上で実行。
   * Claude のネットワーク制限: xrea.com・GitHub CDN・主要クラウドストレージには Claude から直接アクセス不可。zip の確認は `git clone` でリポジトリをクローンして行う。
   * スマートフォンでの日本語検索: Pagefind のわかちがき実装の差により、PC とスマホで検索結果件数が異なる場合がある。スペース区切りで検索すると解消することが多い。
+
+## 記事ツール（2026-10-22 追加）
+
+各記事ページの h1 の下に `div.art-tools`（`data-pagefind-ignore`）を置く。処理は `docs/article.js`（`gen_article_js()` が生成）。
+
+  * **数式表示 (MathJax)** チェックボックス — MathJax を使う記事にのみ表示。デフォルト on。off にすると本文を元の HTML に戻す（テキストとしてコピーできるように）。
+    - `statuses`: 本文に `[mathjax-on]` または `<mathjax-on/>` がある場合のみ（`data-mathjax="dollar"`）。区切りは元ブログと同じ `$…$` `\(…\)` `$$…$$` `\[…\]`。
+    - `column` `religion` `society` `software`: 本文に `\begin{math}` か `\begin{displaymath}` がある場合のみ（`data-mathjax="latex"`）。区切りはこの二つだけ。
+    - MathJax (v3.2.2, jsDelivr) はチェックが on のときだけ動的に読み込む。
+    - 本文中に文字列として書かれた `<pre>…</pre>` は `span.src-pre` で囲み、MathJax の対象外（元ブログで pre 内を処理しないのと同じ）。
+  * **pre 連結** チェックボックス — 本文中の `</pre>` と `<pre>` の間が「JRF YYYY年M月D日」署名行と空白だけのとき（ひとことの 300字制限による分割）、継ぎ目を `span.pre-joint` にする。継ぎ目がある記事にのみ表示。デフォルト on（`article.pre-joined` クラスで CSS により継ぎ目を隠す）。連結されたものの最初の `<pre>` と最後の `</pre>` は表示される。
+  * **原文をコピー** ボタン — 全記事に表示。full_dump.txt 上のその記事のチャンク全体（ヘッダ行から末尾まで）をクリップボードにコピーする。原文は `<script type="application/json" id="raw-text">` に埋め込む。
 
 ## 未実装・今後の課題
 

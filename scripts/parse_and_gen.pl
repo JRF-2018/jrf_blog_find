@@ -20,6 +20,7 @@ use File::Basename;
 #   docs/index/tags.html                 タグ一覧
 #   docs/index.html                      トップページ
 #   docs/style.css                       スタイルシート
+#   docs/article.js                      記事ページ用 JS（MathJax・pre 連結・原文コピー）
 #
 # 検索(Pagefind)対応:
 #   - <article data-pagefind-body> で本文全体をインデックス対象
@@ -43,6 +44,10 @@ while (@ARGV) {
     elsif ($a eq '--imgdir') { $img_dir   = shift @ARGV }
     else  { die "Unknown option: $a\n" }
 }
+
+# 本文中で </pre> と <pre> の間にこれだけしかなければ「分割された pre」とみなす
+# （ひとことの 300字制限で分割したときの「JRF YYYY年M月D日」署名行と空行）
+my $PRE_JOINT_SEP = qr/(?:\s*JRF \d{4}年\d{1,2}月\d{1,2}日)*\s*/;
 
 # ---------- images/ ファイルセット ----------
 my %img_exists;
@@ -193,6 +198,7 @@ gen_tag_pages(\%tag_index, $out_dir);
 gen_top_index(\%month_index, \%type_index, \%tag_index, $out_dir);
 gen_blogparts($out_dir);
 gen_css($out_dir);
+gen_article_js($out_dir);
 print STDERR "完了。\n";
 
 # ============================================================
@@ -256,6 +262,7 @@ sub parse_blog {
             title=>$title, url=>$url,
             year=>$year, month=>$month, day=>$day, time_str=>$time_str,
             tags=>\@tags, body=>$body, trackbacks=>\@tbs, links_text=>$links_text,
+            raw=>raw_chunk($chunk),
             section=>$sec_name, html_path=>'',
         };
     }
@@ -281,7 +288,7 @@ sub parse_statuses {
             title=>'', url=>$url,
             year=>$year, month=>$month, day=>$day, time_str=>'',
             tags=>[], body=>$body, trackbacks=>[], section=>$sec_name,
-            html_path=>'',
+            html_path=>'', raw=>raw_chunk($chunk),
         );
         $id_type eq 'cocolog' ? ($art{cocolog_id}=$num_id) : ($art{aboutme_id}=$num_id);
         push @arts, \%art;
@@ -309,6 +316,7 @@ sub parse_hbm {
         $body =~ s/\s+$//;
         push @arts, {
             type=>'hbm', id=>sprintf("hbm_%05d",$seq),
+            raw=>raw_chunk($chunk),
             title=>$title, url=>$url,
             year=>$year, month=>$month, day=>$day, time_str=>$time_str,
             tags=>\@tags, body=>$body, trackbacks=>[], section=>$sec_name,
@@ -339,6 +347,7 @@ sub parse_gsm {
         $body =~ s/\s+$//;
         push @arts, {
             type=>'gsm', id=>sprintf("gsm_%06d",$seq), ts_raw=>$ts_raw,
+            raw=>raw_chunk($chunk),
             title=>'', url=>'',
             year=>$year, month=>$month, day=>$day, time_str=>$time_str,
             tags=>[], body=>$body, trackbacks=>[], section=>$sec_name,
@@ -420,6 +429,21 @@ sub html_article {
 
     # --- 本文 ---
     my $body_html = body_to_html($body, $root, $img_dir);
+
+    # --- 記事ツール（MathJax 切替・pre 連結切替・原文コピー）---
+    my $mj_mode   = mathjax_mode($art);
+    my $has_joint = ($body_html =~ /class="pre-joint"/) ? 1 : 0;
+    my $tools_html = qq(<div class="art-tools" data-pagefind-ignore>);
+    $tools_html .= qq(<label><input type="checkbox" id="opt-mathjax" checked> 数式表示 (MathJax)</label>)
+        if $mj_mode;
+    $tools_html .= qq(<label><input type="checkbox" id="opt-prejoin" checked> pre 連結</label>)
+        if $has_joint;
+    $tools_html .= qq(<button type="button" id="btn-copy">原文をコピー</button>)
+                .  qq(<span class="tools-msg" id="tools-msg"></span></div>);
+    my $art_attrs = '';
+    $art_attrs .= qq( data-mathjax="$mj_mode") if $mj_mode;
+    $art_attrs .= qq( class="pre-joined")      if $has_joint;
+    my $raw_json = js_str($art->{raw});
 
     # --- Trackback（折りたたみ廃止・直出し）---
     my $tb_html = '';
@@ -504,7 +528,7 @@ sub html_article {
 </head>
 <body>
 <nav><a href="${root}index.html">TOP</a>$month_link$type_link</nav>
-<article data-pagefind-body data-pagefind-meta="種別:${\ h(label_for_type($type))}">
+<article data-pagefind-body data-pagefind-meta="種別:${\ h(label_for_type($type))}"$art_attrs>
 ${\ ($art->{year} && $art->{month}
     ? sprintf('<div data-pagefind-meta="投稿月:%04d年%02d月" style="display:none"></div>', $art->{year}, $art->{month})
     : '')}
@@ -518,6 +542,7 @@ ${\ ($tags_html ? "<tr><th>タグ</th><td>$tags_html</td></tr>" : '')}
 </table>
 </div>
 <h1>${\h($disp_title)}</h1>
+$tools_html
 <pre class="body">$body_html</pre>
 ${\($tb_html    ? "<pre class=\"trackbacks\">$tb_html</pre>"    : '')}
 ${\($links_html ? "<pre class=\"links\">$links_html</pre>"      : '')}
@@ -525,6 +550,8 @@ $backref_html
 </article>
 $prevnext_html
 <nav class="bottom" data-pagefind-ignore><a href="${root}index.html">TOP</a>$month_link$type_link</nav>
+<script type="application/json" id="raw-text">$raw_json</script>
+<script src="${root}article.js"></script>
 </body>
 </html>
 HTML
@@ -616,6 +643,11 @@ sub body_to_html {
     # HTMLエスケープ
     $body = h($body);
 
+    # 本文中の <pre>〜</pre>（文字列として書かれたもの）を span で囲む。
+    # 「JRF 日付」の署名行だけを挟んで続く pre 群は一つにまとめ、
+    # 継ぎ目を span.pre-joint にする（pre 連結 on のとき CSS で隠す）。
+    $body =~ s{(&lt;pre&gt;.*?&lt;/pre&gt;(?:$PRE_JOINT_SEP&lt;pre&gt;.*?&lt;/pre&gt;)*)}{wrap_src_pre($1)}gse;
+
     # URL リンク化（内部/外部判定）
     $body =~ s{(https?://[^\s<>"]+)}{url_to_link_escaped($1, $root)}ge;
 
@@ -635,6 +667,31 @@ sub body_to_html {
     $body =~ s/\x00IMG(\d+)\x00/image_html($images[$1], $root)/ge;
 
     return $body;
+}
+
+# --- 本文中の <pre> 群を span.src-pre で囲み、継ぎ目を span.pre-joint にする ---
+# src-pre は MathJax の処理対象外（元ブログで pre 内の数式を処理しないのと同じ）。
+# pre-joint-nl は連結時にだけ表示する改行（</pre> が行末にない場合の保険）。
+sub wrap_src_pre {
+    my ($s) = @_;
+    $s =~ s{(\n?&lt;/pre&gt;$PRE_JOINT_SEP&lt;pre&gt;\n?)}
+           {<span class="pre-joint">$1</span><span class="pre-joint-nl">\n</span>}g;
+    return qq(<span class="src-pre">$s</span>);
+}
+
+# --- MathJax を使う記事か判定 ---
+#   statuses: [mathjax-on] または <mathjax-on/> と明示されている場合のみ → 'dollar'
+#   column 等: \begin{math} / \begin{displaymath} が使われている場合のみ → 'latex'
+sub mathjax_mode {
+    my ($art) = @_;
+    my $body = $art->{body} // '';
+    if ($art->{type} eq 'statuses') {
+        return ($body =~ /\[mathjax-on\]|<mathjax-on\/>/) ? 'dollar' : '';
+    }
+    if ($art->{type} =~ /^(?:column|religion|society|software)$/) {
+        return ($body =~ /\\begin\{(?:display)?math\}/) ? 'latex' : '';
+    }
+    return '';
 }
 
 # --- URL→内部/外部リンク（エスケープ済みテキスト中のURL用）---
@@ -1427,7 +1484,155 @@ span.keyword-ref { display:inline-block; background:#fff8e8;
 a.keyword-link { color:#885500; font-weight:500; }
 a.keyword-link:hover { color:#cc7700; }
 .bottom { margin-top:2em; border-top:1px solid #ccc; padding-top:.5em; font-size:.9em; }
+/* 記事ツール（MathJax・pre 連結・原文コピー） */
+div.art-tools { display:flex; flex-wrap:wrap; align-items:center; gap:.3em 1.2em;
+  margin:.3em 0 .5em; font-size:.85em; color:#444; }
+div.art-tools label { cursor:pointer; user-select:none; white-space:nowrap; }
+div.art-tools input[type=checkbox] { vertical-align:middle; margin:0 .2em 0 0; }
+div.art-tools button { font:inherit; padding:.1em .8em; color:#333; background:#fff;
+  border:1px solid #aaa; border-radius:3px; cursor:pointer; }
+div.art-tools button:hover { background:#e0e8ff; border-color:#88a; }
+span.tools-msg { color:#007744; }
+span.tools-msg.error { color:#cc0000; }
+/* pre 連結: on のとき継ぎ目（</pre> 署名行 <pre>）を隠す */
+article.pre-joined span.pre-joint { display:none; }
+span.pre-joint-nl { display:none; }
+article.pre-joined span.pre-joint-nl { display:inline; }
+/* MathJax */
+pre.body mjx-container { white-space:normal; word-break:normal; }
+pre.body mjx-container[display="true"] { max-width:100%; overflow-x:auto; overflow-y:hidden; }
 CSS
+    close($out);
+}
+
+sub gen_article_js {
+    my ($out_dir) = @_;
+    open(my $out, '>:encoding(UTF-8)', "$out_dir/article.js") or return;
+    print $out <<'JS';
+// JRF ブログ退避所: 記事ページ用（MathJax 切替・pre 連結切替・原文コピー）
+(function() {
+  'use strict';
+  var MATHJAX_SRC = 'https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-chtml.js';
+  var TEX_CONFIG = {
+    // ひとこと: [mathjax-on] / <mathjax-on/> のある記事のみ（元ブログと同じ区切り）
+    dollar: {
+      inlineMath:  [['$', '$'], ['\\(', '\\)']],
+      displayMath: [['$$', '$$'], ['\\[', '\\]']],
+      processEscapes: true
+    },
+    // 雑記など: \begin{math} / \begin{displaymath} のみ
+    latex: {
+      inlineMath:  [['\\begin{math}', '\\end{math}']],
+      displayMath: [['\\begin{displaymath}', '\\end{displaymath}']],
+      processEnvironments: false
+    }
+  };
+
+  var art  = document.querySelector('article');
+  var body = document.querySelector('pre.body');
+  var msg  = document.getElementById('tools-msg');
+  if (!art || !body) return;
+
+  var msgTimer = null;
+  function showMsg(text, isError) {
+    if (!msg) return;
+    msg.textContent = text;
+    msg.className = 'tools-msg' + (isError ? ' error' : '');
+    clearTimeout(msgTimer);
+    if (!isError) msgTimer = setTimeout(function() { msg.textContent = ''; }, 2000);
+  }
+
+  // --- pre 連結 ---
+  var preJoin = document.getElementById('opt-prejoin');
+  if (preJoin) {
+    var applyPreJoin = function() { art.classList.toggle('pre-joined', preJoin.checked); };
+    preJoin.addEventListener('change', applyPreJoin);
+    applyPreJoin();  // 「戻る」でチェック状態が復元された場合に合わせる
+  }
+
+  // --- MathJax ---
+  var mathOpt = document.getElementById('opt-mathjax');
+  var mode = art.getAttribute('data-mathjax');
+  if (mathOpt && TEX_CONFIG[mode]) {
+    var origHTML = body.innerHTML;
+    var loading = null;
+    var chain = Promise.resolve();
+    var loadMathJax = function() {
+      if (loading) return loading;
+      loading = new Promise(function(resolve, reject) {
+        window.MathJax = {
+          startup: { typeset: false },
+          tex: TEX_CONFIG[mode],
+          options: {
+            // 本文自体が pre.body なので pre は除外しない。
+            // 本文中に文字列として書かれた <pre> 部分 (span.src-pre) は除外する。
+            skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'code'],
+            ignoreHtmlClass: 'src-pre'
+          }
+        };
+        var s = document.createElement('script');
+        s.src = MATHJAX_SRC;
+        s.async = true;
+        s.onload = function() { window.MathJax.startup.promise.then(resolve, reject); };
+        s.onerror = function() { reject(new Error('MathJax を読み込めませんでした')); };
+        document.head.appendChild(s);
+      });
+      return loading;
+    };
+    var applyMathJax = function() {
+      chain = chain.then(function() {
+        if (window.MathJax && window.MathJax.typesetClear) window.MathJax.typesetClear([body]);
+        body.innerHTML = origHTML;
+        if (!mathOpt.checked) return;
+        return loadMathJax().then(function() {
+          return window.MathJax.typesetPromise([body]);
+        });
+      }).catch(function(e) {
+        console.error('mathjax:', e);
+        loading = null;
+        mathOpt.checked = false;
+        body.innerHTML = origHTML;
+        showMsg('数式表示に失敗しました: ' + (e && e.message ? e.message : e), true);
+      });
+    };
+    mathOpt.addEventListener('change', applyMathJax);
+    if (mathOpt.checked) applyMathJax();
+  }
+
+  // --- 原文コピー ---
+  var copyBtn = document.getElementById('btn-copy');
+  var rawEl   = document.getElementById('raw-text');
+  function copyByExecCommand(text) {
+    var ta = document.createElement('textarea');
+    ta.value = text;
+    ta.setAttribute('readonly', '');
+    ta.style.position = 'fixed';
+    ta.style.top = '0';
+    ta.style.opacity = '0';
+    document.body.appendChild(ta);
+    ta.select();
+    var ok = false;
+    try { ok = document.execCommand('copy'); } catch (e) { ok = false; }
+    document.body.removeChild(ta);
+    return ok;
+  }
+  if (copyBtn && rawEl) {
+    copyBtn.addEventListener('click', function() {
+      var text = JSON.parse(rawEl.textContent);
+      var done = function() { showMsg('コピーしました'); };
+      var fallback = function() {
+        if (copyByExecCommand(text)) done();
+        else showMsg('コピーできませんでした', true);
+      };
+      if (navigator.clipboard && window.isSecureContext) {
+        navigator.clipboard.writeText(text).then(done, fallback);
+      } else {
+        fallback();
+      }
+    });
+  }
+})();
+JS
     close($out);
 }
 
@@ -1438,6 +1643,22 @@ CSS
 sub h {
     my ($s) = @_; $s //= '';
     $s =~ s/&/&amp;/g; $s =~ s/</&lt;/g; $s =~ s/>/&gt;/g; $s =~ s/"/&quot;/g;
+    return $s;
+}
+
+# <script type="application/json"> に埋め込める JSON 文字列リテラルにする
+sub js_str {
+    my ($s) = @_; $s //= '';
+    $s =~ s/([\\"])/\\$1/g;
+    $s =~ s/\n/\\n/g; $s =~ s/\r/\\r/g; $s =~ s/\t/\\t/g;
+    $s =~ s/([\x00-\x1f<>&\x{2028}\x{2029}])/sprintf('\\u%04x', ord($1))/ge;
+    return qq("$s");
+}
+
+# 記事の原文（full_dump.txt 上のチャンク）の前後の空行を除く
+sub raw_chunk {
+    my ($s) = @_; $s //= '';
+    $s =~ s/^\s*\n//; $s =~ s/\s+$//;
     return $s;
 }
 
